@@ -1,13 +1,9 @@
 import Link from "next/link";
 import { getPublishedPosts } from "@/features/posts/queries";
 import { Calendar, ArrowRight, BookOpen } from "lucide-react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
 
 export default async function BlogFeedPage() {
     const posts = await getPublishedPosts();
-    const session = await getServerSession(authOptions);
 
     return (
         <main className="container mx-auto py-12 px-4 max-w-4xl min-h-screen">
@@ -25,20 +21,6 @@ export default async function BlogFeedPage() {
                         A chronicle of build logs, hopeposts, and late-night architectural notes. Documenting the struggle sessions as we sail.
                     </p>
                 </div>
-                {session && (
-                    <div className="flex items-center gap-2 pt-2">
-                        <Link href="/dashboard">
-                            <Button variant="outline" size="sm" className="shadow-sm">
-                                Dashboard
-                            </Button>
-                        </Link>
-                        <Link href="/api/auth/signout">
-                            <Button variant="ghost" size="sm">
-                                Log out
-                            </Button>
-                        </Link>
-                    </div>
-                )}
             </div>
 
             {/* Posts Feed */}

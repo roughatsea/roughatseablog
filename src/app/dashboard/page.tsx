@@ -30,11 +30,6 @@ export default async function DashboardPage() {
                     </p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Link href="/api/auth/signout">
-                        <Button variant="ghost" className="shadow-sm">
-                            Log out
-                        </Button>
-                    </Link>
                     <Link href="/dashboard/new">
                         <Button className="shadow-lg hover:shadow-indigo-500/20 transition-all flex items-center gap-2">
                             <Plus className="h-4 w-4" />

@@ -1,11 +1,7 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 
 export default async function Home() {
-  // Check if you are currently logged in
-  const session = await getServerSession(authOptions);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24 text-center">
@@ -20,28 +16,6 @@ export default async function Home() {
             Read the Blog
           </Button>
         </Link>
-        {session ? (
-          // If logged in, show the dashboard button and a logout button
-          <>
-            <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Go to Captain&apos;s Log (Dashboard)
-              </Button>
-            </Link>
-            <Link href="/api/auth/signout">
-              <Button size="lg" variant="ghost" className="w-full sm:w-auto">
-                Log out
-              </Button>
-            </Link>
-          </>
-        ) : (
-          // If logged out, show the login button
-          <Link href="/api/auth/signin">
-            <Button size="lg" variant="outline" className="w-full sm:w-auto">
-              Login to Write
-            </Button>
-          </Link>
-        )}
       </div>
     </main>
   );
