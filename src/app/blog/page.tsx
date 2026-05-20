@@ -1,24 +1,44 @@
 import Link from "next/link";
 import { getPublishedPosts } from "@/features/posts/queries";
 import { Calendar, ArrowRight, BookOpen } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
 
 export default async function BlogFeedPage() {
     const posts = await getPublishedPosts();
+    const session = await getServerSession(authOptions);
 
     return (
         <main className="container mx-auto py-12 px-4 max-w-4xl min-h-screen">
             {/* Header section */}
-            <div className="border-b border-border pb-8 mb-12">
-                <div className="flex items-center gap-2 text-indigo-500 mb-2">
-                    <BookOpen className="h-5 w-5" />
-                    <span className="text-sm font-semibold tracking-wider uppercase">Ship Logs</span>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 border-b border-border pb-8 mb-12">
+                <div>
+                    <div className="flex items-center gap-2 text-indigo-500 mb-2">
+                        <BookOpen className="h-5 w-5" />
+                        <span className="text-sm font-semibold tracking-wider uppercase">Ship Logs</span>
+                    </div>
+                    <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+                        Rough at Sea
+                    </h1>
+                    <p className="text-muted-foreground text-base sm:text-lg mt-3 max-w-2xl leading-relaxed">
+                        A chronicle of build logs, hopeposts, and late-night architectural notes. Documenting the struggle sessions as we sail.
+                    </p>
                 </div>
-                <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-                    Rough at Sea
-                </h1>
-                <p className="text-muted-foreground text-base sm:text-lg mt-3 max-w-2xl leading-relaxed">
-                    A chronicle of build logs, hopeposts, and late-night architectural notes. Documenting the struggle sessions as we sail.
-                </p>
+                {session && (
+                    <div className="flex items-center gap-2 pt-2">
+                        <Link href="/dashboard">
+                            <Button variant="outline" size="sm" className="shadow-sm">
+                                Dashboard
+                            </Button>
+                        </Link>
+                        <Link href="/api/auth/signout">
+                            <Button variant="ghost" size="sm">
+                                Log out
+                            </Button>
+                        </Link>
+                    </div>
+                )}
             </div>
 
             {/* Posts Feed */}
