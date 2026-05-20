@@ -80,8 +80,6 @@ BLOB_READ_WRITE_TOKEN="vercel_blob_rw_xxxx_xxxx"
 4. Click **Deploy**.
 5. Once deployed, run your database migrations. You can do this by running `npx drizzle-kit push` from your local machine (with your `.env.local` pointed to the Neon production database) to ensure your tables are created.
 
-*Fair winds and following seas!* ⛵
-
 ---
 
 ## 📁 File Structure
@@ -89,30 +87,89 @@ BLOB_READ_WRITE_TOKEN="vercel_blob_rw_xxxx_xxxx"
 The project follows a feature-driven, highly modular architecture built on Next.js 15 principles.
 
 ```text
-src/
-├── app/                        # Next.js App Router (Pages, Layouts, API Routes)
-│   ├── api/                    # Serverless API endpoints
-│   │   ├── auth/[...nextauth]/ # NextAuth authentication provider setup
-│   │   └── upload/             # Vercel Blob secure image upload route
-│   ├── blog/                   # Public blog feed and individual post pages
-│   ├── dashboard/              # Protected writer dashboard (new/edit/delete posts)
-│   ├── layout.tsx              # Root HTML layout and global Navbar
-│   └── page.tsx                # Landing page
-├── components/                 # Shared UI Components
-│   ├── layout/                 # Structural components like the Navbar
-│   └── ui/                     # shadcn/ui components (Buttons, Inputs, Forms)
-├── db/                         # Database connection and Drizzle client initialization
-│   └── index.ts                
-├── features/                   # Feature-driven domain logic
-│   ├── auth/                   # Auth-specific database schemas (users, sessions)
-│   └── posts/                  # Everything related to blog posts
-│       ├── actions.ts          # Next.js Server Actions (Create, Update, Delete)
-│       ├── queries.ts          # Drizzle Database Queries (Get posts, Get post by ID)
-│       ├── schema.ts           # Drizzle table schemas and Zod validation types
-│       └── components/         # Feature-specific UI components (PostForm, DeleteButton)
-└── lib/                        # Global utilities and configurations
-    ├── auth.ts                 # NextAuth configuration and Google Provider logic
-    └── utils.ts                # Tailwind merge utilities (cn)
+|   .env.local                        - Stores local environment variables (DB URLs, API keys, NextAuth secrets).
+|   components.json                   - Configuration file for shadcn/ui to manage component installations.
+|   drizzle.config.ts                 - Configuration for Drizzle ORM specifying the schema path and database credentials.
+|   eslint.config.mjs                 - Configuration for ESLint to maintain code quality and style rules.
+|   next.config.ts                    - Configuration for Next.js, including compiler options and environment variables.
+|   package-lock.json                 - Auto-generated file ensuring exact dependency versions for reproducible builds.
+|   package.json                      - Defines project dependencies, scripts, and basic metadata.
+|   postcss.config.mjs                - Configuration for PostCSS, primarily used here to process Tailwind CSS.
+|   tsconfig.json                     - Configuration for the TypeScript compiler.
+|   
+\---src                               - The root folder for all application source code.
+    +---app                           - Next.js App Router root. Contains all pages, layouts, and API routes.
+    |   |   favicon.ico               - The website's favicon.
+    |   |   globals.css               - Global CSS file containing Tailwind directives and base styles.
+    |   |   layout.tsx                - The root layout that wraps all pages (contains the HTML/Body tags and global Navbar).
+    |   |   page.tsx                  - The landing/home page of the application.
+    |   |   
+    |   +---api                       - Next.js serverless API routes.
+    |   |   +---auth                  - Authentication API endpoints.
+    |   |   |   \---[...nextauth]     - Catch-all route for NextAuth.js handling login, logout, and callbacks.
+    |   |   |           route.ts      - The implementation of the NextAuth route handler.
+    |   |   |           
+    |   |   \---upload                - API route for handling file uploads.
+    |   |           route.ts          - Takes uploaded images and pushes them securely to Vercel Blob.
+    |   |           
+    |   +---blog                      - Routes for the public blog feed and articles.
+    |   |   |   page.tsx              - The main blog feed displaying a list of all published posts.
+    |   |   |   
+    |   |   \---[slug]                - Dynamic route for viewing a specific blog post by its URL slug.
+    |   |           page.tsx          - Renders the individual blog post content.
+    |   |           
+    |   +---compose                   - Legacy or alternative route for composing posts (seems unused/deprecated).
+    |   |       page.tsx              - The compose page UI.
+    |   |       
+    |   +---dashboard                 - Protected routes for authenticated authors.
+    |   |   |   page.tsx              - The main dashboard showing all posts (published and drafts) for the user.
+    |   |   |   
+    |   |   +---edit                  - Routes for editing existing posts.
+    |   |   |   \---[id]              - Dynamic route for editing a specific post by its ID.
+    |   |   |           page.tsx      - Loads the post data and renders the PostForm for editing.
+    |   |   |           
+    |   |   \---new                   - Route for creating a new post.
+    |   |           page.tsx          - Renders an empty PostForm to create a new draft or published post.
+    |   |           
+    |   \---[slug]                    - Root-level dynamic route (potentially a legacy route for posts).
+    |           page.tsx              - Render logic for a root-level dynamic page.
+    |           
+    +---components                    - Reusable UI components.
+    |   +---layout                    - Components defining page layout structure.
+    |   |       Navbar.tsx            - The global navigation bar containing links and auth state buttons.
+    |   |       
+    |   \---ui                        - Raw UI components generated by shadcn/ui.
+    |           alert-dialog.tsx      - Modal component for destructive actions (like deleting a post).
+    |           button.tsx            - Standard button component.
+    |           checkbox.tsx          - Checkbox component (used for the publish toggle).
+    |           form.tsx              - Form wrapper components integrating react-hook-form.
+    |           input.tsx             - Standard text input field.
+    |           label.tsx             - Form label component.
+    |           sonner.tsx            - Toast notification system provider.
+    |           textarea.tsx          - Standard textarea component.
+    |           
+    +---features                      - Domain-driven logic grouped by feature rather than type.
+    |   +---auth                      - Logic specifically related to authentication.
+    |   |       schema.ts             - Database schema for users, accounts, and sessions (NextAuth required tables).
+    |   |       
+    |   \---posts                     - Logic specifically related to blog posts.
+    |       |   actions.ts            - Server Actions for mutating post data (create, update, delete).
+    |       |   queries.ts            - Database Queries for fetching post data (get by ID, get all, etc.).
+    |       |   schema.ts             - Database schema definition for the "posts" table.
+    |       |   
+    |       \---components            - UI Components specific to the posts feature.
+    |               DeletePostButton.tsx - A button that triggers a Server Action to delete a specific post.
+    |               PostForm.tsx      - The main form (incorporating the Markdown editor) for creating and editing posts.
+    |               
+    +---lib                           - Global utility functions and core configurations.
+    |   |   auth.ts                   - NextAuth configuration object (providers, callbacks, session strategies).
+    |   |   utils.ts                  - Generic utilities (like the `cn` function for merging Tailwind classes).
+    |   |   
+    |   \---db                        - Database connection setup.
+    |           index.ts              - Initializes the Neon HTTP client and binds it to Drizzle ORM.
+    |           
+    \---types                         - Global TypeScript type declarations.
+            next-auth.d.ts            - Type overrides extending the default NextAuth session types (e.g. adding `id`).
 ```
 
 ### Purpose of Key Directories
@@ -121,3 +178,5 @@ src/
 - **`src/features`**: Instead of having a monolithic `components` or `actions` folder, we use a feature-driven architecture. The `posts` folder self-contains the UI, Server Actions, Database Queries, and Schemas all required to make the blogging system work. This keeps domain logic tightly coupled and highly maintainable.
 - **`src/components/ui`**: Contains raw, unstyled components generated by `shadcn/ui`. These are meant to be primitive building blocks (like an `<Input />` or `<Button />`) rather than domain-specific components.
 - **`src/db`**: Initializes the Neon HTTP connection pool and binds it to the Drizzle ORM client so the entire application can query the database.
+
+*Fair winds and following seas!* ⛵
