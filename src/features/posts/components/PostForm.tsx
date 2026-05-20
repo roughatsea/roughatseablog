@@ -178,7 +178,7 @@ export function PostForm({ initialData }: PostFormProps) {
                                     <MDEditor
                                         value={field.value}
                                         onChange={field.onChange}
-                                        preview="edit"
+                                        preview="live"
                                         height={400}
                                         className="w-full"
                                         textareaProps={{
