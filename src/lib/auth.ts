@@ -14,6 +14,13 @@ export const authOptions: NextAuthOptions = {
     ],
     session: { strategy: "jwt" },
     callbacks: {
+        async signIn({ user }) {
+            const allowedEmails = (process.env.ALLOWED_EMAILS || "").split(",").map(e => e.trim());
+            if (user.email && allowedEmails.includes(user.email)) {
+                return true;
+            }
+            return false;
+        },
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
