@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import { CreatePostForm } from "@/features/posts/components/CreatePostForm";
+import { PostForm } from "@/features/posts/components/PostForm";
 
 export default async function ComposePage() {
     // Protect the route at the server level.
@@ -23,7 +23,7 @@ export default async function ComposePage() {
                 </p>
             </div>
 
-            <CreatePostForm />
+            <PostForm />
         </main>
     );
 }
