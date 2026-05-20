@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
+import { toast } from "sonner";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 
@@ -60,6 +61,76 @@ export function PostForm({ initialData }: PostFormProps) {
         },
     });
 
+    // --- Image Upload Logic ---
+    const insertTextAtCursor = (textToInsert: string) => {
+        const textarea = document.querySelector('.w-md-editor-text-input') as HTMLTextAreaElement;
+        if (!textarea) return;
+
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const currentValue = form.getValues("content");
+
+        const newValue = currentValue.substring(0, start) + textToInsert + currentValue.substring(end);
+        form.setValue("content", newValue, { shouldValidate: true });
+
+        // Restore cursor after React updates the DOM
+        setTimeout(() => {
+            textarea.focus();
+            textarea.selectionStart = start + textToInsert.length;
+            textarea.selectionEnd = start + textToInsert.length;
+        }, 10);
+    };
+
+    const processFile = async (file: File) => {
+        if (!file.type.startsWith("image/")) {
+            toast.error("Only image files are allowed.");
+            return;
+        }
+
+        const placeholder = `\n![Uploading ${file.name}...]()\n`;
+        insertTextAtCursor(placeholder);
+
+        try {
+            const response = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+                method: "POST",
+                body: file,
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || "Upload failed");
+            }
+
+            const data = await response.json();
+            
+            // Replace placeholder with real URL
+            const currentValue = form.getValues("content");
+            const finalImageMarkdown = `\n![${file.name}](${data.url})\n`;
+            form.setValue("content", currentValue.replace(placeholder, finalImageMarkdown), { shouldValidate: true });
+        } catch (error) {
+            console.error("Upload error:", error);
+            toast.error("Failed to upload image");
+            // Remove the placeholder
+            const currentValue = form.getValues("content");
+            form.setValue("content", currentValue.replace(placeholder, ""), { shouldValidate: true });
+        }
+    };
+
+    const handlePaste = async (e: React.ClipboardEvent) => {
+        if (e.clipboardData.files.length > 0) {
+            e.preventDefault();
+            await processFile(e.clipboardData.files[0]);
+        }
+    };
+
+    const handleDrop = async (e: React.DragEvent) => {
+        if (e.dataTransfer.files.length > 0) {
+            e.preventDefault();
+            await processFile(e.dataTransfer.files[0]);
+        }
+    };
+    // --------------------------
+
     // 2. Submit handler connects to create or update Server Action
     async function onSubmit(data: CreatePostInput) {
         setServerError(null);
@@ -111,7 +182,9 @@ export function PostForm({ initialData }: PostFormProps) {
                                         height={400}
                                         className="w-full"
                                         textareaProps={{
-                                            placeholder: "Start writing your draft here..."
+                                            placeholder: "Start writing your draft here...",
+                                            onPaste: handlePaste,
+                                            onDrop: handleDrop
                                         }}
                                     />
                                 </div>
