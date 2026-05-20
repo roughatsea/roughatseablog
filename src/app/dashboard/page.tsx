@@ -29,12 +29,19 @@ export default async function DashboardPage() {
                         Welcome back, <span className="font-semibold text-foreground">{session.user.name || session.user.email}</span>. Manage your posts and drafts below.
                     </p>
                 </div>
-                <Link href="/dashboard/new">
-                    <Button className="shadow-lg hover:shadow-indigo-500/20 transition-all flex items-center gap-2">
-                        <Plus className="h-4 w-4" />
-                        Write New Post
-                    </Button>
-                </Link>
+                <div className="flex items-center gap-4">
+                    <Link href="/api/auth/signout">
+                        <Button variant="ghost" className="shadow-sm">
+                            Log out
+                        </Button>
+                    </Link>
+                    <Link href="/dashboard/new">
+                        <Button className="shadow-lg hover:shadow-indigo-500/20 transition-all flex items-center gap-2">
+                            <Plus className="h-4 w-4" />
+                            Write New Post
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             {/* Posts List */}

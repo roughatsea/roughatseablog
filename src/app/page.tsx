@@ -21,12 +21,19 @@ export default async function Home() {
           </Button>
         </Link>
         {session ? (
-          // If logged in, show the dashboard button
-          <Link href="/dashboard">
-            <Button size="lg" variant="outline" className="w-full sm:w-auto">
-              Go to Captain&apos;s Log (Dashboard)
-            </Button>
-          </Link>
+          // If logged in, show the dashboard button and a logout button
+          <>
+            <Link href="/dashboard">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                Go to Captain&apos;s Log (Dashboard)
+              </Button>
+            </Link>
+            <Link href="/api/auth/signout">
+              <Button size="lg" variant="ghost" className="w-full sm:w-auto">
+                Log out
+              </Button>
+            </Link>
+          </>
         ) : (
           // If logged out, show the login button
           <Link href="/api/auth/signin">
