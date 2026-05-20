@@ -11,7 +11,7 @@ export default async function NewPostPage() {
     }
 
     return (
-        <main className="container mx-auto py-10 px-4">
+        <main className="container mx-auto py-10 px-4 max-w-3xl">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold tracking-tight">Write a New Post</h1>
                 <p className="text-muted-foreground text-sm mt-2">
