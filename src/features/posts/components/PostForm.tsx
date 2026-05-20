@@ -3,7 +3,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor"),
+  { ssr: false }
+);
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +43,12 @@ interface PostFormProps {
 export function PostForm({ initialData }: PostFormProps) {
     const router = useRouter();
     const [serverError, setServerError] = useState<string | null>(null);
+    const { resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // 1. Initialize the form, pre-filling defaults if initialData is provided
     const form = useForm<CreatePostInput>({
@@ -88,11 +103,18 @@ export function PostForm({ initialData }: PostFormProps) {
                         <FormItem>
                             <FormLabel>Content</FormLabel>
                             <FormControl>
-                                <Textarea
-                                    placeholder="Start writing your draft here..."
-                                    className="min-h-[300px]"
-                                    {...field}
-                                />
+                                <div data-color-mode={mounted ? (resolvedTheme === 'dark' ? 'dark' : 'light') : 'light'}>
+                                    <MDEditor
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        preview="edit"
+                                        height={400}
+                                        className="w-full"
+                                        textareaProps={{
+                                            placeholder: "Start writing your draft here..."
+                                        }}
+                                    />
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
