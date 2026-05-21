@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getPublishedPostBySlug } from "@/features/posts/queries";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Calendar, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -57,7 +57,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     <ReactMarkdown
                         components={{
                             code(props) {
-                                const { children, className, node, ...rest } = props;
+                                const { children, className, node, ref, ...rest } = props;
                                 const match = /language-(\w+)/.exec(className || "");
                                 const isBlock = match || String(children).includes("\n");
 
