@@ -59,12 +59,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             code(props) {
                                 const { children, className, node, ...rest } = props;
                                 const match = /language-(\w+)/.exec(className || "");
-                                return match ? (
+                                const isBlock = match || String(children).includes("\n");
+
+                                return isBlock ? (
                                     <SyntaxHighlighter
                                         {...rest}
                                         PreTag="div"
                                         children={String(children).replace(/\n$/, "")}
-                                        language={match[1]}
+                                        language={match ? match[1] : "text"}
                                         style={vscDarkPlus}
                                     />
                                 ) : (
