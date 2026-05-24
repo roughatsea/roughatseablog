@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getPublishedPostBySlug } from "@/features/posts/queries";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Calendar, ChevronLeft } from "lucide-react";
@@ -55,6 +56,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {/* Markdown Content */}
                 <div className="prose dark:prose-invert max-w-none leading-relaxed">
                     <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
                         components={{
                             code(props) {
                                 const { children, className, node, ref, ...rest } = props;
@@ -65,10 +67,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                     <SyntaxHighlighter
                                         {...rest}
                                         PreTag="div"
-                                        children={String(children).replace(/\n$/, "")}
                                         language={match ? match[1] : "text"}
                                         style={vscDarkPlus}
-                                    />
+                                    >
+                                        {String(children).replace(/\n$/, "")}
+                                    </SyntaxHighlighter>
                                 ) : (
                                     <code {...rest} className={className}>
                                         {children}
