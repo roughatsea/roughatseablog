@@ -73,7 +73,7 @@ export function Footer() {
 
                 <div className="flex items-center gap-4">
                     <Link
-                        href="https://github.com"
+                        href="https://github.com/roughatsea/roughatseablog"
                         target="_blank"
                         rel="noreferrer"
                         className="text-muted-foreground hover:text-foreground transition-colors"
@@ -81,7 +81,7 @@ export function Footer() {
                         <GithubIcon className="h-5 w-5" />
                         <span className="sr-only">GitHub</span>
                     </Link>
-                    <Link
+                    {/* <Link
                         href="https://twitter.com"
                         target="_blank"
                         rel="noreferrer"
@@ -89,8 +89,8 @@ export function Footer() {
                     >
                         <TwitterIcon className="h-5 w-5" />
                         <span className="sr-only">Twitter</span>
-                    </Link>
-                    <Link
+                    </Link> */}
+                    {/* <Link
                         href="https://linkedin.com"
                         target="_blank"
                         rel="noreferrer"
@@ -98,7 +98,7 @@ export function Footer() {
                     >
                         <LinkedinIcon className="h-5 w-5" />
                         <span className="sr-only">LinkedIn</span>
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
         </footer>
