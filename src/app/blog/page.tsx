@@ -18,7 +18,7 @@ export default async function BlogFeedPage() {
                         Rough at Sea
                     </h1>
                     <p className="text-muted-foreground text-base sm:text-lg mt-3 max-w-2xl leading-relaxed">
-                        A chronicle of build logs, hopeposts, and late-night architectural notes. Documenting the struggle sessions as we sail.
+                        A chronicle of building a ship while sailing it.
                     </p>
                 </div>
             </div>
