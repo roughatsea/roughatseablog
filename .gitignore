@@ -36,6 +36,10 @@ coverage/
 out/
 build/
 
+# Astro generated files
+.astro/
+dist/
+
 # Vercel
 .vercel/
 

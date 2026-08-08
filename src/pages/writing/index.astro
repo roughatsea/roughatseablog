@@ -1,0 +1,20 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+const posts = (await getCollection("writing", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+
+<BaseLayout title="Writing" description="Field notes on software architecture, interfaces, and building with intent.">
+  <header class="page-header shell">
+    <p class="eyebrow">THE SHIP’S LOG</p>
+    <h1>Writing from<br /><em>the messy middle.</em></h1>
+    <p>Notes on tradeoffs, architecture, interface design, and the practical work of making software better.</p>
+  </header>
+
+  <section class="shell archive-list" aria-label="Articles">
+    {posts.map((post, index) => <PostCard post={post} index={index} />)}
+  </section>
+</BaseLayout>

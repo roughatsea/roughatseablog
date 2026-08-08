@@ -1,0 +1,53 @@
+---
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/writing/", label: "Writing" },
+  { href: "/work/", label: "Work" },
+  { href: "/lab/", label: "Lab" },
+  { href: "/about/", label: "About" },
+];
+
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="wordmark" href="/" aria-label="Rough at Sea, home">
+      <span class="wordmark-mark" aria-hidden="true">R/S</span>
+      <span>Rough at Sea</span>
+    </a>
+
+    <nav aria-label="Primary navigation">
+      <ul class="nav-list">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <button class="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
+      <span class="theme-toggle-icon" aria-hidden="true">◐</span>
+    </button>
+  </div>
+</header>
+
+<script is:inline>
+  const toggle = document.querySelector('.theme-toggle');
+  const setLabel = () => {
+    if (!toggle) return;
+    const isLight = document.documentElement.dataset.theme === 'light';
+    toggle.setAttribute('aria-label', `Switch to ${isLight ? 'dark' : 'light'} theme`);
+  };
+  setLabel();
+  toggle?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('rough-at-sea-theme', next); } catch {}
+    setLabel();
+  });
+</script>

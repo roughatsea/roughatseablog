@@ -1,0 +1,19 @@
+---
+import { SITE } from "../site";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <p class="footer-kicker">Keep a weather eye open.</p>
+      <p class="footer-note">Occasional notes on code, craft, and changing course.</p>
+    </div>
+    <div class="footer-links">
+      <a href={SITE.github}>GitHub</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="#top">Back to top ↑</a>
+    </div>
+    <p class="footer-meta">© {year} {SITE.author}<br />Built as static HTML with Astro.</p>
+  </div>
+</footer>
