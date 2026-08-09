@@ -1,103 +1,69 @@
 ---
-import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
+import LinkCard from '../components/LinkCard.astro';
+import { getCollection } from 'astro:content';
 
-const posts = (await getCollection("writing", ({ data }) => !data.draft))
-  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
-const featuredPosts = posts.filter((post) => post.data.featured).slice(0, 2);
+const notes = await getCollection('notes');
+const links = await getCollection('links');
+
+// Combine and sort by date descending
+const allEntries = [
+  ...notes.map(note => ({ type: 'note', data: note })),
+  ...links.map(link => ({ type: 'link', data: link }))
+].sort((a, b) => b.data.data.date.valueOf() - a.data.data.date.valueOf());
 ---
+<BaseLayout title="Commonplace Book">
+  <div class="feed-header">
+    <h1>The Commonplace</h1>
+    <p>A collection of thoughts, notes, and interesting links.</p>
+  </div>
 
-<BaseLayout>
-  <section class="hero shell">
-    <div class="hero-copy reveal">
-      <p class="eyebrow"><span class="status-dot"></span> Note-keeper · Arizona</p>
-      <h1>A commonplace book with a<br /><em>point of view.</em></h1>
-      <p class="hero-lede">
-        I’m Manny. A collector of short notes, quotations, and fragments—recorded here for future reading and unexpected connections.
-      </p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="/work/">Browse collections <span>↗</span></a>
-        <a class="text-link" href="/writing/">Browse entries <span>→</span></a>
-      </div>
-    </div>
-
-    <div class="hero-instrument reveal glass-card" style="--delay: 120ms" aria-label="Current position">
-      <div class="instrument-topline">
-        <span>ROUGH AT SEA / 2026</span>
-        <span class="signal-bars" aria-label="Signal strong"><i></i><i></i><i></i><i></i></span>
-      </div>
-      <div class="compass" aria-hidden="true">
-        <span class="compass-n">N</span>
-        <div class="compass-orbit orbit-one"></div>
-        <div class="compass-orbit orbit-two"></div>
-        <div class="compass-needle"></div>
-        <span class="compass-center">R/S</span>
-      </div>
-      <div class="instrument-readout">
-        <div><small>MODE</small><strong>READ / REFLECT</strong></div>
-        <div><small>BEARING</small><strong>USEFUL ↗</strong></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="manifesto-section">
-    <div class="shell manifesto-grid glass-card reveal" style="padding: 3rem;">
-      <p class="section-number">01 / PRACTICE</p>
-      <div>
-        <p class="manifesto">
-          The best ideas feel <em>inevitable</em>—clear enough to trust, simple enough to return to, and memorable enough to carry forward.
-        </p>
-        <div class="principles-grid">
-          <article><span>01</span><h3>Start with the constraint</h3><p>Good boundaries turn vague ambition into a system that can ship.</p></article>
-          <article><span>02</span><h3>Make the interface honest</h3><p>Structure, language, and motion should clarify what the product is doing.</p></article>
-          <article><span>03</span><h3>Leave less behind</h3><p>Performance, accessibility, and maintainability are features—not cleanup.</p></article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="featured-work shell">
-    <div class="section-heading">
-      <div><p class="section-number">02 / HIGHLIGHTS</p><h2>Selected threads<br />and notable entries.</h2></div>
-      <a class="text-link" href="/work/">Browse the collections <span>→</span></a>
-    </div>
-    <a class="project-feature glass-card reveal" style="--delay: 150ms" href="/work/#rough-at-sea">
-      <div class="project-visual" aria-hidden="true">
-        <div class="project-window">
-          <div class="window-bar"><i></i><i></i><i></i><span>roughatsea.com</span></div>
-          <div class="window-code">
-            <span>01</span><span class="fragment">Direction: clarity</span>
-            <span>02</span><span class="fragment">Ship less, better</span>
-            <span>03</span><span class="fragment accent">change course deliberately</span>
-          </div>
-        </div>
-      </div>
-      <div class="project-copy">
-        <p class="eyebrow">Notebook · 2026</p>
-        <h3>Rough at Sea</h3>
-        <p>A personal commonplace book built around reflection, reading notes, and the small patterns that recur over time.</p>
-        <ul><li>Entries</li><li>Collections</li><li>Reading notes</li></ul>
-        <span class="project-arrow">↗</span>
-      </div>
-    </a>
-  </section>
-
-  <section class="latest-writing shell">
-    <div class="section-heading compact">
-      <div><p class="section-number">03 / FIELD NOTES</p><h2>Recent writing</h2></div>
-      <a class="text-link" href="/writing/">The full log <span>→</span></a>
-    </div>
-    <div class="post-grid">
-      {featuredPosts.map((post, index) => <PostCard post={post} index={index} />)}
-    </div>
-  </section>
-
-  <section class="contact-band">
-    <div class="shell contact-band-inner glass-card reveal" style="padding: 4rem;">
-      <p class="eyebrow">OPEN CHANNEL</p>
-      <h2>Have a useful problem?</h2>
-      <a href="https://github.com/roughatsea">Source repository <span>↗</span></a>
-    </div>
-  </section>
+  <div class="feed">
+    {allEntries.map((entry: any) => {
+      if (entry.type === 'note') {
+        const noteData = entry.data.data;
+        return (
+          <NoteCard 
+            title={noteData.title}
+            description={noteData.description}
+            slug={entry.data.id}
+            date={noteData.date}
+            tags={noteData.tags}
+          />
+        );
+      } else if (entry.type === 'link') {
+        const linkData = entry.data.data;
+        return (
+          <LinkCard
+            title={linkData.title}
+            url={linkData.url}
+            date={linkData.date}
+            tags={linkData.tags}
+          />
+        );
+      }
+    })}
+  </div>
 </BaseLayout>
+
+<style>
+  .feed-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .feed-header h1 {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+  .feed-header p {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+  }
+  .feed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+</style>

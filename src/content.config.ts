@@ -1,18 +1,28 @@
-import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
-import { z } from "astro/zod";
+import { defineCollection } from 'astro:content';
+import { z } from 'astro:schema';
+import { glob } from 'astro/loaders';
 
-const writing = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/data/writing" }),
+const notesCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/notes" }),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
-    publishedAt: z.coerce.date(),
-    updatedAt: z.coerce.date().optional(),
+    description: z.string().optional(),
+    date: z.date(),
     tags: z.array(z.string()).default([]),
-    featured: z.boolean().default(false),
-    draft: z.boolean().default(false),
   }),
 });
 
-export const collections = { writing };
+const linksCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/links" }),
+  schema: z.object({
+    title: z.string(),
+    url: z.string().url(),
+    date: z.date(),
+    tags: z.array(z.string()).default([]),
+  }),
+});
+
+export const collections = {
+  'notes': notesCollection,
+  'links': linksCollection,
+};
