@@ -271,14 +271,14 @@
   .reveal { animation: reveal 700ms cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--delay, 0ms); }
 
   .manifesto-section { padding-block: clamp(100px, 14vw, 190px); color: var(--ocean-deep); background: var(--sand); }
-  [data-theme="light"] .manifesto-section { color: #f4eee1; background: #15373a; }
+  [data-theme="light"] .manifesto-section { color: #f4eee1; background: var(--signal); }
   .manifesto-section .section-number { color: currentColor; opacity: 0.62; }
   .manifesto-grid { display: grid; grid-template-columns: 180px 1fr; gap: clamp(40px, 8vw, 120px); }
   .manifesto { max-width: 930px; font: 400 clamp(2.5rem, 5vw, 5.2rem)/1.02 var(--display); letter-spacing: -0.045em; }
   .manifesto em { color: var(--signal); }
   .principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 86px; background: color-mix(in srgb, currentColor 18%, transparent); }
   .principles-grid article { padding: 28px 26px 8px; background: var(--sand); }
-  [data-theme="light"] .principles-grid article { background: #15373a; }
+  [data-theme="light"] .principles-grid article { background: var(--signal); }
   .principles-grid span { font: 700 0.65rem var(--mono); opacity: 0.6; }
   .principles-grid h3 { margin-top: 58px; font: 650 1rem/1.25 var(--sans); }
   .principles-grid p { margin-top: 13px; font-size: 0.88rem; line-height: 1.65; opacity: 0.72; }
@@ -437,7 +437,7 @@
   .about-hero h1 { max-width: 770px; margin-top: 26px; font-size: clamp(4rem, 7.7vw, 7.8rem); }
   .about-intro { display: grid; gap: 24px; padding-bottom: 12px; color: var(--ink-soft); font-size: 1.03rem; line-height: 1.8; }
   .about-details { padding-block: 120px; color: var(--ocean-deep); background: var(--sand); }
-  [data-theme="light"] .about-details { color: #f4eee1; background: #15373a; }
+  [data-theme="light"] .about-details { color: #f4eee1; background: var(--signal); }
   .about-grid { display: grid; grid-template-columns: 190px 1fr; gap: 70px; }
   .about-details .section-number { color: currentColor; opacity: 0.6; }
   .belief-list article { display: grid; grid-template-columns: 50px 1fr 0.8fr; gap: 30px; padding-block: 40px; border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
