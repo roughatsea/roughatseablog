@@ -10,7 +10,7 @@ interface Props {
 const { post, index = 0 } = Astro.props;
 ---
 
-<article class="post-card reveal" style={`--delay: ${index * 70}ms`}>
+<article class="post-card glass-card reveal" style={`--delay: ${index * 70}ms`}>
   <a class="post-card-link" href={`/writing/${post.id}/`} aria-label={`Read ${post.data.title}`}>
     <div class="post-card-meta">
       <time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt)}</time>
