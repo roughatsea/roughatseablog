@@ -7,11 +7,11 @@ const posts = (await getCollection("writing", ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 ---
 
-<BaseLayout title="Writing" description="Field notes on software architecture, interfaces, and building with intent.">
+<BaseLayout title="Entries" description="A notebook of short entries, reflections, and collected notes.">
   <header class="page-header shell">
     <p class="eyebrow">THE SHIP’S LOG</p>
-    <h1>Writing from<br /><em>the messy middle.</em></h1>
-    <p>Notes on tradeoffs, architecture, interface design, and the practical work of making software better.</p>
+    <h1>Entries from<br /><em>a commonplace book.</em></h1>
+    <p>Short notes, quotations, and observations gathered from reading, projects, and the moments when an idea sticks.</p>
   </header>
 
   <section class="shell archive-list" aria-label="Articles">

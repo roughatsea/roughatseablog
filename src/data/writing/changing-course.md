@@ -8,7 +8,7 @@ featured: false
 
 A note: when the purpose shifts, the tools should follow.
 
-I once spent time keeping a full-stack site running because it was familiar. The lesson was not that the system failed—only that it no longer solved the question I cared about.
+I once spent time keeping a complex site running because it was familiar. The lesson was not that the system failed—only that it no longer solved the question I cared about.
 
 Consider this checklist when the architecture feels heavy:
 

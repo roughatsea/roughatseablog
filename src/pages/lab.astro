@@ -3,14 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import TypeScaleLab from "../components/TypeScaleLab";
 ---
 
-<BaseLayout title="Lab" description="Small interactive experiments in interface design and front-end engineering.">
+</BaseLayout>
+<BaseLayout title="Experiments" description="Short interactive experiments and small demonstrations.">
   <header class="page-header shell split-header">
-    <div><p class="eyebrow">THE LAB</p><h1>Small experiments.<br /><em>Useful signals.</em></h1></div>
-    <p>A proving ground for interface ideas that are easier to understand by touching them.</p>
+    <div><p class="eyebrow">EXPERIMENTS</p><h1>Small experiments.<br /><em>Useful signals.</em></h1></div>
+    <p>A place for short interactive prompts and small visual experiments.</p>
   </header>
 
   <div class="shell lab-shell">
     <TypeScaleLab client:visible />
-    <p class="lab-footnote"><span>Implementation note</span> The surrounding page is static HTML. React hydrates only when this experiment approaches the viewport.</p>
+    <p class="lab-footnote"><span>Note</span> This section contains an interactive experiment; the rest of the page is static content.</p>
   </div>
 </BaseLayout>

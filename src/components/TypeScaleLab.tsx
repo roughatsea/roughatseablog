@@ -16,9 +16,9 @@ export default function TypeScaleLab() {
       <div className="type-lab-controls">
         <div>
           <p className="eyebrow">Interactive specimen</p>
-          <h2 id="type-lab-title">Build a readable type scale</h2>
+          <h2 id="type-lab-title">Explore a readable type scale</h2>
           <p>
-            Two inputs, one consistent rhythm. The values update in real time; only this component ships React.
+            Two inputs, one consistent rhythm. The values update in real time; this section is an interactive experiment.
           </p>
         </div>
 

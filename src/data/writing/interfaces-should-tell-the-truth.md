@@ -28,7 +28,7 @@ Visual quality is not decoration applied after the product works. It is part of 
 
 ## State should be visible
 
-People should be able to answer a few questions without reverse-engineering the application:
+People should be able to answer a few questions without reverse-engineering the site:
 
 - Where am I?
 - What can I do here?
@@ -42,7 +42,7 @@ This is why mundane details matter: current navigation states, descriptive label
 
 A layout is not finished when it looks good on the designer's screen. It should remain understandable on a narrow viewport, at 200% zoom, with a long title, in bright sunlight, or when motion is disabled.
 
-Semantic HTML, resilient spacing, fluid type, visible focus styles, and strong contrast are not separate accessibility decorations. They are how the hierarchy keeps telling the truth when conditions change.
+Semantic structure, resilient spacing, fluid type, visible focus styles, and strong contrast are not separate accessibility decorations. They are how the hierarchy keeps telling the truth when conditions change.
 
 ## Motion should explain geography
 
@@ -59,7 +59,7 @@ Visual quality is not decoration applied after the product works. It is part of 
 
 ## State should be visible
 
-People should be able to answer a few questions without reverse-engineering the application:
+People should be able to answer a few questions without reverse-engineering the site:
 
 - Where am I?
 - What can I do here?

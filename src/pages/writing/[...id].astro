@@ -16,7 +16,7 @@ const { Content, headings } = await render(post);
 <BaseLayout title={post.data.title} description={post.data.description} article>
   <article class="article shell">
     <header class="article-header">
-      <a class="back-link" href="/writing/">← All writing</a>
+      <a class="back-link" href="/writing/">← All entries</a>
       <div class="article-meta">
         <time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt)}</time>
         <span>/</span><span>{readingTime(post.body)}</span>
@@ -42,8 +42,8 @@ const { Content, headings } = await render(post);
   <section class="article-next">
     <div class="shell">
       <p class="eyebrow">END OF NOTE</p>
-      <h2>Keep following the signal.</h2>
-      <a class="button button-primary" href="/writing/">Browse all writing <span>→</span></a>
+      <h2>Keep following these threads.</h2>
+      <a class="button button-primary" href="/writing/">Browse all entries <span>→</span></a>
     </div>
   </section>
 </BaseLayout>
