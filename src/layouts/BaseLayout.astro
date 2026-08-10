@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
+import ToxicSunriseToggle from '../components/ToxicSunriseToggle.astro';
 
 interface Props {
   title: string;
@@ -31,6 +32,10 @@ const { title, description = "A commonplace book." } = Astro.props;
       if (theme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
       }
+
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('toxic-sunrise') === 'on') {
+        document.documentElement.setAttribute('data-toxic-sunrise', 'true');
+      }
     </script>
   </head>
   <body>
@@ -38,5 +43,8 @@ const { title, description = "A commonplace book." } = Astro.props;
     <main class="container">
       <slot />
     </main>
+    <footer class="container">
+      <ToxicSunriseToggle />
+    </footer>
   </body>
 </html>
