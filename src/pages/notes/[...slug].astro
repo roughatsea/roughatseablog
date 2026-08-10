@@ -1,0 +1,89 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note: any) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props as any;
+const { Content } = await render(note);
+
+const formattedDate = note.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
+---
+<BaseLayout title={note.data.title} description={note.data.description}>
+  <article class="note-container">
+    <header class="note-header">
+      <div class="meta">
+        <a href="/" class="back-link">&larr; Back</a>
+        <time class="date">{formattedDate}</time>
+      </div>
+      <h1 class="title">{note.data.title}</h1>
+      {note.data.tags.length > 0 && (
+        <div class="tags">
+          {note.data.tags.map((tag: string) => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+    
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .note-container {
+    padding-bottom: 4rem;
+  }
+  .note-header {
+    margin-bottom: 3rem;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .back-link {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    display: inline-block;
+  }
+  .back-link:hover {
+    color: var(--text-primary);
+  }
+  .date {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  .title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+</style>
