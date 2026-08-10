@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteCard from '../components/NoteCard.astro';
 import LinkCard from '../components/LinkCard.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 const notes = await getCollection('notes');
 const links = await getCollection('links');
@@ -20,7 +20,7 @@ const allEntries = [
   </div>
 
   <div class="feed">
-    {allEntries.map((entry: any) => {
+    {allEntries.map(async (entry: any) => {
       if (entry.type === 'note') {
         const noteData = entry.data.data;
         return (
@@ -34,13 +34,16 @@ const allEntries = [
         );
       } else if (entry.type === 'link') {
         const linkData = entry.data.data;
+        const { Content } = await render(entry.data);
         return (
           <LinkCard
             title={linkData.title}
             url={linkData.url}
             date={linkData.date}
             tags={linkData.tags}
-          />
+          >
+            <Content />
+          </LinkCard>
         );
       }
     })}
