@@ -14,10 +14,10 @@ const formattedDate = date.toLocaleDateString('en-US', {
   day: 'numeric'
 });
 ---
-<a href={`/notes/${slug}`} class="note-card hover-lift">
+<div class="note-card hover-lift">
   <div class="card-content">
     <div class="header-row">
-      <h3 class="title">{title}</h3>
+      <h3 class="title"><a href={`/notes/${slug}`}>{title}</a></h3>
       <span class="date">{formattedDate}</span>
     </div>
     {description && <p class="description">{description}</p>}
@@ -32,7 +32,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
       </div>
     )}
   </div>
-</a>
+</div>
 
 <style>
   .note-card {
@@ -42,8 +42,8 @@ const formattedDate = date.toLocaleDateString('en-US', {
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    text-decoration: none;
     color: inherit;
+    position: relative;
   }
   .header-row {
     display: flex;
@@ -55,6 +55,15 @@ const formattedDate = date.toLocaleDateString('en-US', {
     margin: 0;
     font-size: 1.25rem;
     font-family: var(--font-serif);
+  }
+  .title a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
   }
   .description {
     color: var(--text-secondary);

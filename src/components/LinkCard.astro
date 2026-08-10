@@ -14,10 +14,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
   day: 'numeric'
 });
 ---
-<a href={url} target="_blank" rel="noopener noreferrer" class="link-card hover-lift">
+<div class="link-card hover-lift">
   <div class="card-content">
     <div class="header-row">
-      <h3 class="title">{title}</h3>
+      <h3 class="title">
+        <a href={url} target="_blank" rel="noopener noreferrer">{title}</a>
+      </h3>
       <svg class="external-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
     </div>
     <div class="description">
@@ -34,7 +36,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
       )}
     </div>
   </div>
-</a>
+</div>
 
 <style>
   .link-card {
@@ -46,6 +48,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
     margin-bottom: 1rem;
     text-decoration: none;
     color: inherit;
+    position: relative;
   }
   .header-row {
     display: flex;
@@ -56,7 +59,15 @@ const formattedDate = date.toLocaleDateString('en-US', {
   .title {
     margin: 0;
     font-size: 1.125rem;
+  }
+  .title a {
     color: var(--link-color);
+    text-decoration: none;
+  }
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
   }
   .external-icon {
     color: var(--text-secondary);

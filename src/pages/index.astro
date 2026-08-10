@@ -7,6 +7,9 @@ import { getCollection, render } from 'astro:content';
 const notes = await getCollection('notes');
 const links = await getCollection('links');
 
+console.log("NOTES:", JSON.stringify(notes, null, 2));
+console.log("LINKS:", JSON.stringify(links, null, 2));
+
 // Combine and sort by date descending
 const allEntries = [
   ...notes.map(note => ({ type: 'note', data: note })),
