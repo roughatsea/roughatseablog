@@ -23,6 +23,7 @@ const allEntries = [
     {allEntries.map(async (entry: any) => {
       if (entry.type === 'note') {
         const noteData = entry.data.data;
+        const { Content } = await render(entry.data);
         return (
           <NoteCard 
             title={noteData.title}
@@ -30,7 +31,9 @@ const allEntries = [
             slug={entry.data.id}
             date={noteData.date}
             tags={noteData.tags}
-          />
+          >
+            <Content />
+          </NoteCard>
         );
       } else if (entry.type === 'link') {
         const linkData = entry.data.data;
