@@ -1,0 +1,129 @@
+---
+---
+
+<div class="toxic-toggle-wrap">
+  <button
+    id="toxic-sunrise-toggle"
+    type="button"
+    aria-label="Toggle Toxic Sunrise mode"
+    aria-pressed="false"
+    title="Toggle Toxic Sunrise mode"
+  >
+    <span class="toxic-icon" aria-hidden="true">
+      <span class="toxic-dot pink"></span>
+      <span class="toxic-dot green"></span>
+      <span class="toxic-dot blue"></span>
+    </span>
+  </button>
+  <span class="toxic-label">Toxic Sunrise</span>
+</div>
+
+<style>
+  .toxic-toggle-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2.5rem 0 3rem;
+  }
+
+  #toxic-sunrise-toggle {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--surface-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-smooth);
+  }
+
+  #toxic-sunrise-toggle:hover {
+    transform: translateY(-2px);
+    border-color: var(--text-secondary);
+  }
+
+  .toxic-icon {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+
+  .toxic-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+  }
+
+  .pink {
+    background: #FF1493;
+    top: 0;
+    left: 5px;
+  }
+
+  .green {
+    background: #93FF14;
+    bottom: 1px;
+    left: 0;
+  }
+
+  .blue {
+    background: #1493FF;
+    bottom: 1px;
+    right: 0;
+  }
+
+  .toxic-label {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  :global(:root[data-toxic-sunrise="true"]) #toxic-sunrise-toggle {
+    border-color: #93FF14;
+    box-shadow:
+      0 0 0 1px rgba(255, 20, 147, 0.45),
+      0 0 18px rgba(20, 147, 255, 0.35);
+  }
+
+  :global(:root[data-toxic-sunrise="true"]) .toxic-label {
+    background: linear-gradient(90deg, #FF1493, #93FF14, #1493FF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>
+
+<script>
+  const toxicToggle = document.getElementById('toxic-sunrise-toggle');
+
+  const syncPressedState = () => {
+    const isActive = document.documentElement.getAttribute('data-toxic-sunrise') === 'true';
+    toxicToggle?.setAttribute('aria-pressed', String(isActive));
+  };
+
+  toxicToggle?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const isActive = root.getAttribute('data-toxic-sunrise') === 'true';
+
+    if (isActive) {
+      root.removeAttribute('data-toxic-sunrise');
+      localStorage.setItem('toxic-sunrise', 'off');
+    } else {
+      root.setAttribute('data-toxic-sunrise', 'true');
+      localStorage.setItem('toxic-sunrise', 'on');
+    }
+
+    syncPressedState();
+  });
+
+  syncPressedState();
+</script>
