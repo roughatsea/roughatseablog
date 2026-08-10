@@ -10,6 +10,20 @@ const links = await getCollection('links');
 console.log("NOTES:", JSON.stringify(notes, null, 2));
 console.log("LINKS:", JSON.stringify(links, null, 2));
 
+function createExcerpt(body: string | undefined, maxLength = 200) {
+  const plainText = (body ?? '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/[*_`~]/g, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (plainText.length <= maxLength) return plainText;
+  return `${plainText.slice(0, maxLength).trimEnd()}…`;
+}
+
 // Combine and sort by date descending
 const allEntries = [
   ...notes.map(note => ({ type: 'note', data: note })),
@@ -26,7 +40,6 @@ const allEntries = [
     {allEntries.map(async (entry: any) => {
       if (entry.type === 'note') {
         const noteData = entry.data.data;
-        const { Content } = await render(entry.data);
         return (
           <NoteCard 
             title={noteData.title}
@@ -34,9 +47,8 @@ const allEntries = [
             slug={entry.data.id}
             date={noteData.date}
             tags={noteData.tags}
-          >
-            <Content />
-          </NoteCard>
+            preview={createExcerpt(entry.data.body)}
+          />
         );
       } else if (entry.type === 'link') {
         const linkData = entry.data.data;
