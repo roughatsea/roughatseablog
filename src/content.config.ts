@@ -3,7 +3,7 @@ import { z } from 'astro:schema';
 import { glob } from 'astro/loaders';
 
 const notesCollection = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/notes" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/notes" }),
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
@@ -13,7 +13,7 @@ const notesCollection = defineCollection({
 });
 
 const linksCollection = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/links" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/links" }),
   schema: z.object({
     title: z.string(),
     url: z.string().url(),

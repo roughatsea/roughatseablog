@@ -1,0 +1,21 @@
+---
+title: "The Physics of Bouncing Objects"
+description: "An interactive demonstration of gravity and restitution using a custom React component."
+date: 2026-08-09
+tags: ["physics", "interactive", "react"]
+---
+import PhysicsDemo from '../../components/PhysicsDemo.jsx';
+
+Physics is the natural science that studies matter, its fundamental constituents, its motion and behavior through space and time, and the related entities of energy and force. One of the most intuitive ways to understand physical forces is through simulation!
+
+### Gravity and Restitution
+
+When an object falls, it is accelerated by **gravity**. When it hits the ground, it bounces back up. The height of the bounce depends on the object's **restitution** (or bounciness)—a perfectly elastic object (restitution = 1.0) will bounce back to its original height, while an inelastic object (restitution = 0.0) will not bounce at all.
+
+Play with the sliders below to see how these forces interact! 
+
+<PhysicsDemo client:load />
+
+Notice how changing the restitution above `1.0` adds energy to the system, causing the ball to bounce higher with each collision! This breaks the laws of thermodynamics, but it's very fun in a simulation.
+
+You can click anywhere on the canvas to spawn a new ball with a randomized horizontal velocity and drop it from the top again.
