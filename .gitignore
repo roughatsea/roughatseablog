@@ -26,7 +26,7 @@ service-account*.json
 *.pfx
 
 # Private notes (at any depth, including archive/)
-notes/
+/notes/
 
 # Test and coverage output
 coverage/
