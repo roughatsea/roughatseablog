@@ -1,0 +1,567 @@
+---
+title: "Essential Coding Patterns for Senior Software Engineers"
+description: "A practical guide to the reusable patterns senior engineers use to keep software understandable, testable, resilient, and safe to change—with matching C# and Python examples."
+date: 2026-08-10
+tags:
+  - software-engineering
+  - design-patterns
+  - csharp
+  - python
+---
+
+import CodeLanguageToggle from '../../components/CodeLanguageToggle.jsx';
+
+# Essential Coding Patterns for Senior Software Engineers
+
+Senior engineers are not senior because they can recite every pattern in the *Gang of Four* book. They are senior because they recognize recurring shapes in software, understand the tradeoffs, and choose the smallest design that makes the next change safer.
+
+A **coding pattern** is a reusable way of organizing a decision. It is not a law, a framework, or a chunk of code to paste everywhere. Patterns give teams a shared vocabulary: “put an adapter at the boundary” communicates much more than “make this cleaner.”
+
+The patterns below matter across languages and architectures. Each example has a C#/Python switch. Changing the language in one example changes all of them.
+
+## 1. Guard clauses: reject invalid states early
+
+The happy path should be easy to see. Validate assumptions at the boundary, fail immediately, and avoid deeply nested `if` statements. A guard clause turns a hidden assumption into an explicit contract.
+
+<CodeLanguageToggle
+  client:load
+  label="Guard clauses"
+  csharp={String.raw`
+public static decimal CalculateShipping(decimal subtotal, string country)
+{
+    ArgumentOutOfRangeException.ThrowIfNegativeOrZero(subtotal);
+    ArgumentException.ThrowIfNullOrWhiteSpace(country);
+
+    if (subtotal >= 75m) return 0m;
+
+    return country.ToUpperInvariant() switch
+    {
+        "US" => 7.99m,
+        "CA" => 12.99m,
+        _ => throw new NotSupportedException($"We do not ship to {country}.")
+    };
+}`}
+  python={String.raw`
+from decimal import Decimal
+
+def calculate_shipping(subtotal: Decimal, country: str) -> Decimal:
+    if subtotal <= 0:
+        raise ValueError("subtotal must be positive")
+    if not country or not country.strip():
+        raise ValueError("country is required")
+
+    if subtotal >= Decimal("75"):
+        return Decimal("0")
+
+    rates = {"US": Decimal("7.99"), "CA": Decimal("12.99")}
+    try:
+        return rates[country.upper()]
+    except KeyError as error:
+        raise ValueError(f"We do not ship to {country}.") from error`}
+/>
+
+Use guards for programmer errors, malformed requests, and impossible domain values. Do not use them to scatter the same validation across every layer; validate once at the boundary that owns the rule.
+
+## 2. Functional core, imperative shell: isolate decisions from effects
+
+Most difficult tests are difficult because business decisions are tangled with databases, clocks, networks, randomness, or UI state. Keep the calculation pure, then let a thin shell perform the effects.
+
+<CodeLanguageToggle
+  client:load
+  label="Pure pricing logic"
+  csharp={String.raw`
+public sealed record OrderLine(decimal UnitPrice, int Quantity);
+public sealed record Totals(decimal Subtotal, decimal Tax, decimal Total);
+
+public static Totals CalculateTotals(
+    IReadOnlyCollection<OrderLine> lines,
+    decimal taxRate)
+{
+    var subtotal = lines.Sum(line => line.UnitPrice * line.Quantity);
+    var tax = decimal.Round(subtotal * taxRate, 2);
+    return new Totals(subtotal, tax, subtotal + tax);
+}
+
+// The shell performs effects.
+var lines = await orderRepository.GetLines(orderId, cancellationToken);
+var totals = CalculateTotals(lines, taxRate);
+await invoiceRepository.Save(orderId, totals, cancellationToken);`}
+  python={String.raw`
+from dataclasses import dataclass
+from decimal import Decimal
+
+@dataclass(frozen=True)
+class OrderLine:
+    unit_price: Decimal
+    quantity: int
+
+@dataclass(frozen=True)
+class Totals:
+    subtotal: Decimal
+    tax: Decimal
+    total: Decimal
+
+def calculate_totals(lines: list[OrderLine], tax_rate: Decimal) -> Totals:
+    subtotal = sum((line.unit_price * line.quantity for line in lines), Decimal())
+    tax = (subtotal * tax_rate).quantize(Decimal("0.01"))
+    return Totals(subtotal, tax, subtotal + tax)
+
+# The shell performs effects.
+lines = await order_repository.get_lines(order_id)
+totals = calculate_totals(lines, tax_rate)
+await invoice_repository.save(order_id, totals)`}
+/>
+
+Pure functions are deterministic: the same input produces the same output. They are easy to test, reuse, and reason about. Not everything should be pure, but important decisions usually can be.
+
+## 3. Dependency injection and the composition root
+
+A class should receive its collaborators instead of constructing them. This makes dependencies visible and lets tests substitute controlled implementations. Create the real object graph in one place—the **composition root**—usually at application startup.
+
+<CodeLanguageToggle
+  client:load
+  label="Injected dependency"
+  csharp={String.raw`
+public interface IOrderRepository
+{
+    Task<Order?> Find(Guid id, CancellationToken cancellationToken);
+}
+
+public sealed class OrderService(IOrderRepository orders, TimeProvider clock)
+{
+    public async Task<bool> CanCancel(Guid id, CancellationToken cancellationToken)
+    {
+        var order = await orders.Find(id, cancellationToken);
+        return order is not null && order.ShipsAt > clock.GetUtcNow();
+    }
+}
+
+// Composition root
+services.AddScoped<IOrderRepository, SqlOrderRepository>();
+services.AddSingleton(TimeProvider.System);`}
+  python={String.raw`
+from datetime import datetime
+from typing import Protocol
+
+class OrderRepository(Protocol):
+    async def find(self, order_id: str) -> "Order | None": ...
+
+class OrderService:
+    def __init__(self, orders: OrderRepository, now):
+        self._orders = orders
+        self._now = now
+
+    async def can_cancel(self, order_id: str) -> bool:
+        order = await self._orders.find(order_id)
+        return order is not None and order.ships_at > self._now()
+
+# Composition root
+service = OrderService(SqlOrderRepository(connection_pool), datetime.now)`}
+/>
+
+Dependency injection does not require a container. Passing a collaborator through a constructor is dependency injection. Avoid interfaces for objects that never need substitution or represent no meaningful boundary.
+
+## 4. Strategy: make a varying rule replaceable
+
+When one business rule has several legitimate algorithms, extract the changing part behind a common contract. Strategy prevents a central function from accumulating an ever-growing conditional.
+
+<CodeLanguageToggle
+  client:load
+  label="Discount strategies"
+  csharp={String.raw`
+public interface IDiscountPolicy
+{
+    decimal Apply(decimal subtotal);
+}
+
+public sealed class NoDiscount : IDiscountPolicy
+{
+    public decimal Apply(decimal subtotal) => subtotal;
+}
+
+public sealed class PercentageDiscount(decimal rate) : IDiscountPolicy
+{
+    public decimal Apply(decimal subtotal) => subtotal * (1 - rate);
+}
+
+public static decimal Checkout(decimal subtotal, IDiscountPolicy policy) =>
+    policy.Apply(subtotal);`}
+  python={String.raw`
+from typing import Protocol
+
+class DiscountPolicy(Protocol):
+    def apply(self, subtotal: float) -> float: ...
+
+class NoDiscount:
+    def apply(self, subtotal: float) -> float:
+        return subtotal
+
+class PercentageDiscount:
+    def __init__(self, rate: float):
+        self._rate = rate
+
+    def apply(self, subtotal: float) -> float:
+        return subtotal * (1 - self._rate)
+
+def checkout(subtotal: float, policy: DiscountPolicy) -> float:
+    return policy.apply(subtotal)`}
+/>
+
+Use Strategy when variants change independently, are selected at runtime, or deserve focused tests. If there are only two stable cases, a clear conditional may be better.
+
+## 5. Adapter: translate at system boundaries
+
+External APIs, databases, and legacy systems should not leak their peculiar shapes into the domain. An adapter translates an outside contract into the application’s vocabulary. When the vendor changes, the blast radius stays at the edge.
+
+<CodeLanguageToggle
+  client:load
+  label="Payment adapter"
+  csharp={String.raw`
+public interface IPaymentGateway
+{
+    Task<PaymentReceipt> Charge(
+        Money amount,
+        string idempotencyKey,
+        CancellationToken cancellationToken);
+}
+
+public sealed class AcmePaymentAdapter(AcmeClient client) : IPaymentGateway
+{
+    public async Task<PaymentReceipt> Charge(
+        Money amount,
+        string idempotencyKey,
+        CancellationToken cancellationToken)
+    {
+        var response = await client.CreateCharge(
+            amount.MinorUnits,
+            amount.Currency,
+            idempotencyKey,
+            cancellationToken);
+
+        return new PaymentReceipt(response.TransactionId, response.ApprovedAtUtc);
+    }
+}`}
+  python={String.raw`
+from typing import Protocol
+
+class PaymentGateway(Protocol):
+    async def charge(
+        self, amount: "Money", idempotency_key: str
+    ) -> "PaymentReceipt": ...
+
+class AcmePaymentAdapter:
+    def __init__(self, client: "AcmeClient"):
+        self._client = client
+
+    async def charge(self, amount: "Money", idempotency_key: str) -> "PaymentReceipt":
+        response = await self._client.create_charge(
+            minor_units=amount.minor_units,
+            currency=amount.currency,
+            idempotency_key=idempotency_key,
+        )
+        return PaymentReceipt(response.transaction_id, response.approved_at_utc)`}
+/>
+
+Keep vendor types inside the adapter. The application should speak in `Money` and `PaymentReceipt`, not in `AcmeChargeRequestV3`.
+
+## 6. Decorator and middleware: add behavior without changing the core
+
+A decorator wraps an object with the same contract and adds behavior before or after delegation. Logging, metrics, authorization, caching, retries, and transactions often fit this pattern. A chain of decorators becomes middleware.
+
+<CodeLanguageToggle
+  client:load
+  label="Logging decorator"
+  csharp={String.raw`
+public sealed class LoggingPaymentGateway(
+    IPaymentGateway inner,
+    ILogger<LoggingPaymentGateway> logger) : IPaymentGateway
+{
+    public async Task<PaymentReceipt> Charge(
+        Money amount,
+        string idempotencyKey,
+        CancellationToken cancellationToken)
+    {
+        using var scope = logger.BeginScope("Payment {Key}", idempotencyKey);
+        var started = Stopwatch.GetTimestamp();
+
+        try
+        {
+            return await inner.Charge(amount, idempotencyKey, cancellationToken);
+        }
+        finally
+        {
+            logger.LogInformation(
+                "Payment finished in {Elapsed}",
+                Stopwatch.GetElapsedTime(started));
+        }
+    }
+}`}
+  python={String.raw`
+import time
+
+class LoggingPaymentGateway:
+    def __init__(self, inner: "PaymentGateway", logger):
+        self._inner = inner
+        self._logger = logger
+
+    async def charge(self, amount: "Money", idempotency_key: str) -> "PaymentReceipt":
+        started = time.monotonic()
+        try:
+            return await self._inner.charge(amount, idempotency_key)
+        finally:
+            elapsed = time.monotonic() - started
+            self._logger.info(
+                "payment finished",
+                extra={"key": idempotency_key, "elapsed_seconds": elapsed},
+            )`}
+/>
+
+Order matters. “Retry inside transaction” behaves differently from “transaction inside retry.” Document the decorator order at the composition root.
+
+## 7. State machine: make legal transitions explicit
+
+If behavior depends on a status field, the real abstraction is often a state machine. List the states, events, and allowed transitions. Reject impossible transitions instead of letting boolean flags drift into contradictory combinations.
+
+<CodeLanguageToggle
+  client:load
+  label="Order state machine"
+  csharp={String.raw`
+public enum OrderStatus { Draft, Submitted, Paid, Shipped, Cancelled }
+public enum OrderEvent { Submit, Pay, Ship, Cancel }
+
+public static OrderStatus Transition(OrderStatus state, OrderEvent command) =>
+    (state, command) switch
+    {
+        (OrderStatus.Draft, OrderEvent.Submit) => OrderStatus.Submitted,
+        (OrderStatus.Submitted, OrderEvent.Pay) => OrderStatus.Paid,
+        (OrderStatus.Paid, OrderEvent.Ship) => OrderStatus.Shipped,
+        (OrderStatus.Draft or OrderStatus.Submitted, OrderEvent.Cancel) =>
+            OrderStatus.Cancelled,
+        _ => throw new InvalidOperationException(
+            $"Cannot apply {command} while order is {state}.")
+    };`}
+  python={String.raw`
+from enum import Enum, auto
+
+class OrderStatus(Enum):
+    DRAFT = auto()
+    SUBMITTED = auto()
+    PAID = auto()
+    SHIPPED = auto()
+    CANCELLED = auto()
+
+class OrderEvent(Enum):
+    SUBMIT = auto()
+    PAY = auto()
+    SHIP = auto()
+    CANCEL = auto()
+
+TRANSITIONS = {
+    (OrderStatus.DRAFT, OrderEvent.SUBMIT): OrderStatus.SUBMITTED,
+    (OrderStatus.SUBMITTED, OrderEvent.PAY): OrderStatus.PAID,
+    (OrderStatus.PAID, OrderEvent.SHIP): OrderStatus.SHIPPED,
+    (OrderStatus.DRAFT, OrderEvent.CANCEL): OrderStatus.CANCELLED,
+    (OrderStatus.SUBMITTED, OrderEvent.CANCEL): OrderStatus.CANCELLED,
+}
+
+def transition(state: OrderStatus, event: OrderEvent) -> OrderStatus:
+    try:
+        return TRANSITIONS[state, event]
+    except KeyError as error:
+        raise ValueError(f"Cannot apply {event.name} while order is {state.name}.") from error`}
+/>
+
+State machines are useful for orders, workflows, connection lifecycles, background jobs, and UI screens. A diagram or transition table often exposes missing cases before code is written.
+
+## 8. Result values: model expected failure
+
+Exceptions are appropriate for broken assumptions and infrastructure failures. They are often awkward for ordinary outcomes such as “coupon expired” or “username unavailable.” A result value makes success and expected failure visible in the return type.
+
+<CodeLanguageToggle
+  client:load
+  label="Result value"
+  csharp={String.raw`
+public sealed record Result<T>(T? Value, string? Error)
+{
+    public bool IsSuccess => Error is null;
+    public static Result<T> Success(T value) => new(value, null);
+    public static Result<T> Failure(string error) => new(default, error);
+}
+
+public static Result<int> ParseQuantity(string text)
+{
+    if (!int.TryParse(text, out var quantity))
+        return Result<int>.Failure("Quantity must be a whole number.");
+
+    if (quantity is < 1 or > 100)
+        return Result<int>.Failure("Quantity must be between 1 and 100.");
+
+    return Result<int>.Success(quantity);
+}`}
+  python={String.raw`
+from dataclasses import dataclass
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
+
+@dataclass(frozen=True)
+class Result(Generic[T]):
+    value: T | None = None
+    error: str | None = None
+
+    @property
+    def is_success(self) -> bool:
+        return self.error is None
+
+def parse_quantity(text: str) -> Result[int]:
+    try:
+        quantity = int(text)
+    except ValueError:
+        return Result(error="Quantity must be a whole number.")
+
+    if not 1 <= quantity <= 100:
+        return Result(error="Quantity must be between 1 and 100.")
+
+    return Result(value=quantity)`}
+/>
+
+Do not create a vague result with a free-form string for a large system. Prefer a small set of typed error codes that callers can handle deliberately.
+
+## 9. Idempotency: make retries safe
+
+Networks fail ambiguously. A client may time out after the server completed the operation, then retry. An **idempotent** command produces the same externally visible result when repeated with the same key. This is essential for payments, job scheduling, webhooks, and message consumers.
+
+<CodeLanguageToggle
+  client:load
+  label="Idempotent command handler"
+  csharp={String.raw`
+public async Task<PaymentReceipt> Handle(
+    ChargeCard command,
+    CancellationToken cancellationToken)
+{
+    var existing = await receipts.FindByKey(
+        command.IdempotencyKey,
+        cancellationToken);
+
+    if (existing is not null) return existing;
+
+    var receipt = await gateway.Charge(
+        command.Amount,
+        command.IdempotencyKey,
+        cancellationToken);
+
+    // Enforce a unique constraint on IdempotencyKey in the database.
+    return await receipts.InsertIfAbsent(
+        command.IdempotencyKey,
+        receipt,
+        cancellationToken);
+}`}
+  python={String.raw`
+async def handle_charge(command: "ChargeCard") -> "PaymentReceipt":
+    existing = await receipts.find_by_key(command.idempotency_key)
+    if existing is not None:
+        return existing
+
+    receipt = await gateway.charge(
+        command.amount,
+        command.idempotency_key,
+    )
+
+    # Enforce a unique constraint on idempotency_key in the database.
+    return await receipts.insert_if_absent(
+        command.idempotency_key,
+        receipt,
+    )`}
+/>
+
+The read-before-write check is not enough by itself: two requests can race. Back it with a unique database constraint, transaction, compare-and-swap, or another atomic operation.
+
+## 10. Bounded concurrency and cancellation
+
+“Async” does not mean “unlimited.” Starting ten thousand network calls at once can exhaust sockets, memory, database connections, or a downstream service. Put a deliberate bound around concurrent work and propagate cancellation.
+
+<CodeLanguageToggle
+  client:load
+  label="Bounded asynchronous work"
+  csharp={String.raw`
+public static async Task<IReadOnlyList<Page>> FetchPages(
+    IEnumerable<Uri> urls,
+    HttpClient client,
+    CancellationToken cancellationToken)
+{
+    var options = new ParallelOptions
+    {
+        MaxDegreeOfParallelism = 8,
+        CancellationToken = cancellationToken
+    };
+
+    var pages = new ConcurrentBag<Page>();
+
+    await Parallel.ForEachAsync(urls, options, async (url, token) =>
+    {
+        var html = await client.GetStringAsync(url, token);
+        pages.Add(new Page(url, html));
+    });
+
+    return pages.ToArray();
+}`}
+  python={String.raw`
+import asyncio
+
+async def fetch_pages(urls: list[str], client) -> list["Page"]:
+    semaphore = asyncio.Semaphore(8)
+
+    async def fetch_one(url: str) -> "Page":
+        async with semaphore:
+            response = await client.get(url)
+            response.raise_for_status()
+            return Page(url, response.text)
+
+    # If this task is cancelled, gather propagates cancellation to its children.
+    return await asyncio.gather(*(fetch_one(url) for url in urls))`}
+/>
+
+Choose the bound from measured capacity, not instinct. Decide what should happen on partial failure: fail fast, collect individual errors, retry selectively, or return partial results.
+
+## How these patterns fit together
+
+A well-shaped service often combines several patterns:
+
+1. A controller or message consumer uses **guard clauses** to reject malformed input.
+2. It invokes an application service assembled through **dependency injection**.
+3. The service keeps business decisions in a **functional core**.
+4. **Strategies** represent rules that vary.
+5. **Adapters** isolate databases and external services.
+6. **Decorators** add logging, metrics, authorization, or resilience.
+7. A **state machine** protects lifecycle transitions.
+8. **Result values** describe expected refusal.
+9. **Idempotency** makes retrying a command safe.
+10. **Bounded concurrency** protects finite resources.
+
+The important point is not to use all ten in every feature. It is to notice the pressure each pattern resolves.
+
+## The pattern-selection checklist
+
+Before adding an abstraction, ask:
+
+- **What is changing?** Extract the axis that actually varies, not one that might vary someday.
+- **Where is the boundary?** Keep translation and side effects at system edges.
+- **What must never happen?** Encode invariants and legal transitions.
+- **How can this fail?** Separate expected outcomes from exceptional failures.
+- **Can it run twice?** Design for retries when work crosses a network or queue.
+- **Who owns the resource?** Make lifetimes, cancellation, and concurrency limits explicit.
+- **Does the pattern remove more complexity than it adds?** If not, keep the direct code.
+
+## Patterns are compressed experience, not ceremony
+
+The most dangerous use of patterns is ceremonial: adding factories, interfaces, repositories, and event buses because the code is “enterprise.” Every abstraction creates another place the reader must visit.
+
+The senior move is often surprisingly plain:
+
+- use a function until variation appears
+- use a conditional until the cases need independent ownership
+- introduce an interface at a real boundary
+- keep effects at the edges
+- make failure, state, and resource limits explicit
+
+Good design is not the maximum number of patterns. It is the minimum structure that makes important truths obvious and future changes safe.
