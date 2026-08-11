@@ -65,9 +65,9 @@ Many other units are built from these.
 
 For example, speed is measured in meters per second:
 
-```latex
+$$
 \mathrm{m/s}
-```
+$$
 
 ## Position: where is something?
 
@@ -81,9 +81,9 @@ We can describe its **position** with a variable such as $x$.
 
 If the object is 5 meters to the right of our chosen origin, we might write:
 
-```latex
+$$
 x = 5\ \mathrm{m}
-```
+$$
 
 The **origin** is simply the location we have chosen to call zero.
 
@@ -103,9 +103,9 @@ But you end where you started, so your displacement is zero.
 
 If initial position is $x_i$ and final position is $x_f$, displacement can be written as:
 
-```latex
+$$
 \Delta x = x_f - x_i
-```
+$$
 
 The Greek letter delta, $\Delta$, is commonly used in physics to mean **change in**.
 
@@ -117,15 +117,15 @@ So $\Delta x$ simply means "change in position."
 
 The basic relationship is:
 
-```latex
+$$
 \text{speed} = \frac{\text{distance}}{\text{time}}
-```
+$$
 
 If a car travels 100 meters in 5 seconds, its average speed is:
 
-```latex
+$$
 \text{speed} = \frac{100\ \mathrm{m}}{5\ \mathrm{s}} = 20\ \mathrm{m/s}
-```
+$$
 
 **Velocity** is closely related to speed, but velocity includes direction.
 
@@ -133,9 +133,9 @@ A car traveling 20 m/s east and a car traveling 20 m/s west have the same speed 
 
 Average velocity can be written:
 
-```latex
+$$
 v = \frac{\Delta x}{\Delta t}
-```
+$$
 
 where:
 
@@ -155,15 +155,15 @@ That can mean:
 
 Average acceleration is:
 
-```latex
+$$
 a = \frac{\Delta v}{\Delta t}
-```
+$$
 
 The SI unit of acceleration is meters per second per second, usually written:
 
-```latex
+$$
 \mathrm{m/s^2}
-```
+$$
 
 An acceleration of $2\ \mathrm{m/s^2}$ means the velocity changes by 2 meters per second every second.
 
@@ -221,9 +221,9 @@ That definition comes from one of the most famous equations in physics.
 
 Newton's second law is commonly written:
 
-```latex
+$$
 F = ma
-```
+$$
 
 where:
 
@@ -240,15 +240,15 @@ If the same force is applied to two objects, the less massive object accelerates
 
 For example, suppose a net force of 10 N acts on a 2 kg object.
 
-```latex
+$$
 a = \frac{F}{m}
-```
+$$
 
 so:
 
-```latex
+$$
 a = \frac{10\ \mathrm{N}}{2\ \mathrm{kg}} = 5\ \mathrm{m/s^2}
-```
+$$
 
 ## Net force
 
@@ -290,17 +290,17 @@ Gravity is an interaction between objects that have mass-energy.
 
 Near Earth's surface, falling objects accelerate downward at approximately:
 
-```latex
+$$
 g \approx 9.8\ \mathrm{m/s^2}
-```
+$$
 
 Ignoring air resistance, a heavy object and a light object fall with the same gravitational acceleration.
 
 Newton described gravitational attraction between two masses with:
 
-```latex
+$$
 F = G\frac{m_1m_2}{r^2}
-```
+$$
 
 where:
 
@@ -338,9 +338,9 @@ An object has **kinetic energy** because it is moving.
 
 For an ordinary object moving much slower than light, kinetic energy is:
 
-```latex
+$$
 K = \frac{1}{2}mv^2
-```
+$$
 
 where:
 
@@ -360,9 +360,9 @@ That is one reason high-speed collisions become dramatically more energetic.
 
 Near Earth's surface, gravitational potential energy can be approximated by:
 
-```latex
+$$
 U = mgh
-```
+$$
 
 where:
 
@@ -383,9 +383,9 @@ Energy can move between objects and change forms, but in a closed system the tot
 
 For a simple falling object with no air resistance:
 
-```latex
+$$
 K + U = \text{constant}
-```
+$$
 
 As the object falls, gravitational potential energy decreases while kinetic energy increases.
 
@@ -399,9 +399,9 @@ A force does work when it causes displacement.
 
 For a constant force acting in the same direction as motion:
 
-```latex
+$$
 W = Fd
-```
+$$
 
 where:
 
@@ -411,9 +411,9 @@ where:
 
 More generally:
 
-```latex
+$$
 W = Fd\cos\theta
-```
+$$
 
 where $\theta$ is the angle between the force and the displacement.
 
@@ -423,9 +423,9 @@ Work transfers energy.
 
 **Power** tells us how quickly energy is transferred or work is done.
 
-```latex
+$$
 P = \frac{W}{t}
-```
+$$
 
 Power is measured in **watts**, abbreviated W.
 
@@ -439,9 +439,9 @@ Another conserved quantity in physics is **momentum**.
 
 For an ordinary object moving much slower than light:
 
-```latex
+$$
 p = mv
-```
+$$
 
 where:
 
@@ -457,9 +457,9 @@ That principle is extremely useful for analyzing collisions.
 
 For two objects colliding:
 
-```latex
+$$
 p_{\text{before}} = p_{\text{after}}
-```
+$$
 
 assuming no important external forces act on the system.
 
@@ -515,9 +515,9 @@ One hertz means one cycle per second.
 
 For a wave:
 
-```latex
+$$
 v = f\lambda
-```
+$$
 
 where:
 
@@ -554,9 +554,9 @@ The electromagnetic spectrum also includes:
 
 In vacuum, all electromagnetic waves travel at the speed of light:
 
-```latex
+$$
 c \approx 3.00 \times 10^8\ \mathrm{m/s}
-```
+$$
 
 That is about 300,000 kilometers per second.
 
@@ -589,9 +589,9 @@ Opposite charges attract each other.
 
 The electric force between two point charges is described by Coulomb's law:
 
-```latex
+$$
 F = k\frac{|q_1q_2|}{r^2}
-```
+$$
 
 where:
 
@@ -659,17 +659,17 @@ Moving clocks can run more slowly relative to other observers, lengths can contr
 
 One famous relationship from relativity is:
 
-```latex
+$$
 E = mc^2
-```
+$$
 
 This says that mass contributes to the energy of a system.
 
 A more complete energy-momentum relationship is:
 
-```latex
+$$
 E^2 = (pc)^2 + (mc^2)^2
-```
+$$
 
 ## General relativity
 
@@ -701,9 +701,9 @@ One of its central mathematical objects is the **wavefunction**, often represent
 
 The probability density for finding a particle in a particular region is related to:
 
-```latex
+$$
 |\psi|^2
-```
+$$
 
 Quantum mechanics also tells us that quantities such as energy can sometimes come in discrete allowed amounts rather than varying continuously.
 
@@ -715,9 +715,9 @@ Light behaves in ways that can be described using particles called **photons**.
 
 The energy of a photon is related to its frequency:
 
-```latex
+$$
 E = hf
-```
+$$
 
 where:
 
@@ -733,9 +733,9 @@ Quantum mechanics contains a fundamental limit on how sharply certain pairs of q
 
 For position and momentum, the Heisenberg uncertainty relation is commonly written:
 
-```latex
+$$
 \Delta x\,\Delta p \geq \frac{\hbar}{2}
-```
+$$
 
 This is not merely a statement that our instruments are imperfect.
 
@@ -789,9 +789,9 @@ Physics equations can look intimidating because they compress a lot of meaning i
 
 Consider:
 
-```latex
+$$
 F = ma
-```
+$$
 
 It is not merely a calculation recipe.
 
@@ -799,9 +799,9 @@ It expresses a relationship between force, mass, and acceleration.
 
 Likewise:
 
-```latex
+$$
 E = hf
-```
+$$
 
 expresses a relationship between the energy of a photon and the frequency of light.
 
@@ -813,15 +813,15 @@ Units behave algebraically and can reveal errors.
 
 Suppose velocity is calculated using:
 
-```latex
+$$
 v = \frac{d}{t}
-```
+$$
 
 Distance has units of meters and time has units of seconds, so the result must have units:
 
-```latex
+$$
 \frac{\mathrm{m}}{\mathrm{s}}
-```
+$$
 
 If your calculation somehow produced kilograms, something has gone wrong.
 
