@@ -32,7 +32,7 @@ After you complete Route C and obtain Ending C or D, *NieR:Automata* unlocks **C
 
 That changes the meaning of "missable" considerably.
 
-I use four labels in this guide:
+I use five labels in this guide:
 
 - **Permanent:** you can lock this out on the current save file even after Chapter Select.
 - **Destructive choice:** optional, but doing it really does destroy something you may care about.
@@ -134,7 +134,7 @@ After all five are found, Emil gives you an **Elevator Key**. Use the strange el
 
 At the bottom is one of the game's best secrets: a reconstruction of **Kainé's shack**, surrounded by Lunar Tears. The location is explicitly listed as the destination of the Shopping Center's keyed elevator, and the Lunar Tear documentation identifies the hidden shack and garden. ([NieR Wiki — Shopping Center][shopping-center]; [NieR Wiki — Lunar Tear][lunar-tear])
 
-This is more than an Easter egg. It unlocks the **Lunar Tear** accessory/trophy and opens the route into Emil's deeper underground area.
+This is more than an Easter egg. It unlocks the **Lunar Tear** accessory/trophy and gives the game one of its most overt physical links to the original *NieR*.
 
 **Missability: route-window.** The quest has a normal-story deadline before the Grün sequence, but Chapter Select lets you return to its valid chapter later. ([NieR Wiki — Emil's Memories][emil-memories])
 
@@ -581,7 +581,7 @@ The links below are the sources actually used for the claims in this article. I 
 - [NieR Wiki — Mysterious Invitation][mysterious-invitation]
 - [NieR Wiki — Ending ◬][ending-triangle]
 - [NieR Wiki — Gambler's Colosseum][gamblers]
-- [WIRED — *NieR:Automata* church mystery and the real 2021 "final secret"] [wired-secret]
+- [WIRED — *NieR:Automata* church mystery and the real 2021 "final secret"][wired-secret]
 - [PC Gamer — the church mystery solved][church-solved]
 - [PC Gamer — interview with the church mod creators][church-creators]
 
