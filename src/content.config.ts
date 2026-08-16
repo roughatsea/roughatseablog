@@ -8,6 +8,7 @@ const notesCollection = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     date: z.date(),
+    publishedAt: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
   }),
 });
@@ -18,6 +19,7 @@ const linksCollection = defineCollection({
     title: z.string(),
     url: z.string().url(),
     date: z.date(),
+    publishedAt: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
   }),
 });

@@ -3,12 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteCard from '../components/NoteCard.astro';
 import LinkCard from '../components/LinkCard.astro';
 import { getCollection, render } from 'astro:content';
+import { notePublicationTimes } from '../notePublicationTimes';
 
 const notes = await getCollection('notes');
 const links = await getCollection('links');
-
-console.log("NOTES:", JSON.stringify(notes, null, 2));
-console.log("LINKS:", JSON.stringify(links, null, 2));
 
 function createExcerpt(body: string | undefined, maxLength = 200) {
   const plainText = (body ?? '')
@@ -24,11 +22,35 @@ function createExcerpt(body: string | undefined, maxLength = 200) {
   return `${plainText.slice(0, maxLength).trimEnd()}…`;
 }
 
-// Combine and sort by date descending
+function getPublishedTimestamp(entry: any) {
+  const explicitPublishedAt = entry.data.data.publishedAt;
+  if (explicitPublishedAt instanceof Date) {
+    return explicitPublishedAt.valueOf();
+  }
+
+  if (entry.type === 'note') {
+    const migratedPublishedAt = notePublicationTimes[entry.data.id];
+    if (migratedPublishedAt) {
+      return new Date(migratedPublishedAt).valueOf();
+    }
+  }
+
+  return entry.data.data.date.valueOf();
+}
+
+// Combine and sort newest-first. Publication timestamps resolve same-day ties;
+// the stable ID comparison makes ordering deterministic even without one.
 const allEntries = [
   ...notes.map(note => ({ type: 'note', data: note })),
   ...links.map(link => ({ type: 'link', data: link }))
-].sort((a, b) => b.data.data.date.valueOf() - a.data.data.date.valueOf());
+].sort((a, b) => {
+  const timestampDifference = getPublishedTimestamp(b) - getPublishedTimestamp(a);
+  if (timestampDifference !== 0) return timestampDifference;
+
+  const aKey = `${a.type}:${a.data.id}`;
+  const bKey = `${b.type}:${b.data.id}`;
+  return bKey.localeCompare(aKey);
+});
 ---
 <BaseLayout title="Commonplace Book">
   <div class="feed-header">
