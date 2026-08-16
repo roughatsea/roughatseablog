@@ -38,12 +38,16 @@ function getPublishedTimestamp(entry: any) {
   return entry.data.data.date.valueOf();
 }
 
-// Combine and sort newest-first. Publication timestamps resolve same-day ties;
-// the stable ID comparison makes ordering deterministic even without one.
+// Sort by the declared calendar date first. Publication timestamps are only
+// used to resolve same-day ordering so timezone offsets can never move an
+// August 15 entry ahead of an August 16 entry.
 const allEntries = [
   ...notes.map(note => ({ type: 'note', data: note })),
   ...links.map(link => ({ type: 'link', data: link }))
 ].sort((a, b) => {
+  const dateDifference = b.data.data.date.valueOf() - a.data.data.date.valueOf();
+  if (dateDifference !== 0) return dateDifference;
+
   const timestampDifference = getPublishedTimestamp(b) - getPublishedTimestamp(a);
   if (timestampDifference !== 0) return timestampDifference;
 
