@@ -28,79 +28,67 @@ A low tone hangs almost below hearing. Something like a choir appears very far a
 
 The scene is familiar enough that we can almost hear it without watching it.
 
-There is no single genre called *music for waking up dead*. The sound comes from several neighboring traditions: ambient music, minimalism, sacred and choral music, electronic sound design, twentieth-century concert music, and modern film scoring. The remarkable part is how consistently a handful of musical decisions can suggest the same impossible place.
+There is no single genre called *music for waking up dead*. The sound comes from several neighboring traditions: ambient music, minimalism, sacred and choral music, electronic sound design, twentieth-century concert music, and modern film scoring. A small collection of musical decisions can make the same white room feel like Heaven, a simulation, a memory, an alien intelligence, or a trap.
 
-They can also change what that place means.
+The version that interests me most is the one that refuses to choose.
 
-A composer can make the white room feel like Heaven. Another can make the same room feel like a simulation. A third can leave one note rubbing against the harmony until the audience starts wondering whether the beautiful figures in the distance are waiting to welcome the dead man or eat him.
-
-That last version interests me most.
+The room looks heavenly. The music is beautiful. One detail will not let you relax.
 
 ## The first trick is to make time stop
 
 Ordinary tonal music is full of small promises.
 
-A chord creates expectations about what might follow it. A rhythm establishes when the next event should occur. A bass line points somewhere. A cadence arrives and gives the ear a kind of grammatical period at the end of a musical sentence.
+A chord creates expectations about what might follow it. A rhythm establishes when the next event should occur. A cadence gives the ear a kind of grammatical period at the end of a musical sentence.
 
-The imagined afterlife cue can weaken all of those signals at once.
+The imagined afterlife cue can weaken those signals.
 
-One of the simplest tools is **slow harmonic rhythm**: chords change infrequently, perhaps after many seconds instead of every beat or every measure. Harmonic rhythm is simply the rate at which the underlying harmony changes. [T1]
+One of the simplest tools is **slow harmonic rhythm**: the underlying harmony changes infrequently, perhaps after many seconds instead of every beat or every measure. Harmonic rhythm is simply the rate at which harmony changes. [T1]
 
 A pop song might move through four chords in a few seconds. Our white room might sit on essentially the same sonority long enough that it stops feeling like a chord in a progression and starts feeling like a property of the air.
 
-That difference is small on paper and enormous on screen.
+Music that keeps moving suggests events. Music that barely moves can suggest a condition.
 
-Music that keeps moving suggests events. Music that barely moves suggests a condition.
-
-If the character has entered a place outside normal life, a nearly static harmony gives the audience one less familiar way to measure passing time.
+If the character has entered a place outside normal life, nearly static harmony removes one familiar way of measuring passing time.
 
 > **Sidebar: What is harmonic rhythm?**
 >
-> Rhythm usually makes us think of drums or note lengths. **Harmonic rhythm** is different: it describes how quickly the chords change. [T1]
+> Rhythm usually makes us think of drums or note lengths. **Harmonic rhythm** describes how quickly the chords change. [T1]
 >
-> Imagine a pianist playing C major for four beats, F major for four, G major for four, then returning to C. The harmonic rhythm is fairly active because a new harmony arrives every measure.
+> Imagine a pianist playing C major for four beats, F major for four, G major for four, then returning to C. New harmonies arrive regularly.
 >
-> Now imagine the pianist holding one vast C-based chord for thirty seconds while its individual notes slowly fade in and out. The pulse could technically remain the same, but the *harmony* has nearly stopped moving.
+> Now imagine one vast C-based chord lasting thirty seconds while individual notes slowly fade in and out. The pulse could technically remain the same, but the harmony has nearly stopped moving.
 
-This is why **harmonic stasis** is such useful language for the sound we are after. It does not require literal immobility. Notes can drift, voices can enter and leave, and timbres can change. What remains weak is the sense that one chord is urgently trying to get to the next one.
+This is where **harmonic stasis** becomes useful language. The music does not have to be literally motionless. Notes can drift, voices can enter and leave, and timbres can change. What weakens is the sense that one chord urgently needs to become another.
 
-Brian Eno's ambient work is an obvious reference point. *Apollo: Atmospheres and Soundtracks*, made with Roger Eno and Daniel Lanois for footage of the Apollo missions, was explicitly concerned with evoking weightlessness and a frontier unlike ordinary terrestrial experience. Critics have repeatedly singled out “An Ending (Ascent)” for its slow, suspended beauty. [M1][M2]
-
-Put that piece under our opening shot and very little explanation is necessary.
-
-The man is somewhere else.
+Brian Eno's *Apollo: Atmospheres and Soundtracks*, made with Roger Eno and Daniel Lanois around images of the Apollo missions, is an obvious reference point for this kind of suspended space. Contemporary and retrospective writing about the project repeatedly returns to weightlessness, drift, and the extraordinary stillness of “An Ending (Ascent).” [M1][M2]
 
 ### Brian Eno — “An Ending (Ascent)”
 
 This is the closest thing on the list to the default sound I hear when I imagine the scene.
 
-The piece is sparse without feeling empty. The synthesizer does not behave like a keyboard being played in a room so much as a glow that changes intensity. There is enough harmonic motion to keep it alive, but not enough to establish the normal feeling of departure, journey, arrival.
+The piece is sparse without feeling empty. The synthesizer behaves less like a keyboard being struck in a room than a glow changing intensity. There is harmonic motion, but little sense of ordinary departure and arrival.
 
-Eno's official site lists “An Ending (Ascent)” among his videos, and the *Apollo* project came from music written around images of the moon missions. [M1][M2]
+Eno's official site lists “An Ending (Ascent)” among his videos, and the *Apollo* project grew from music composed around images of the moon missions. [M1][M2]
 
 **Listen:** [YouTube — Brian Eno, “An Ending (Ascent)” (Remastered 2019)](https://www.youtube.com/watch?v=OlaTeXX3uH8)
 
-If this plays when the dead man opens his eyes, I expect the scene to be peaceful.
+If this starts when the dead man opens his eyes, I expect peace.
 
 At least at first.
 
 ## Remove the note that tells us whether to smile
 
-There is another remarkably cheap way to make harmony emotionally ambiguous: leave out the third.
+There is a wonderfully cheap way to make harmony emotionally ambiguous: leave out the third.
 
-Take the notes C and G.
+Take C and G.
 
-Played together, they form an **open fifth**. The interval sounds stable and spacious, but it does not tell us whether the missing harmony is C major or C minor. Add E and the chord becomes recognizably major. Add E-flat and it becomes minor.
+Played together, they make a fifth. If those notes are functioning as the root and fifth of a C chord, they do not tell us whether the missing third will be E, giving us C major, or E-flat, giving us C minor. The harmony can feel broad and stable while postponing one of the strongest familiar major/minor signals.
 
-With only C and G, the emotional verdict has been postponed.
+A film composer has many subtler tools available, but the principle is useful: give the listener enough consonance to hear order, then withhold the information that would make the order emotionally easy to classify.
 
-Film composers have many more sophisticated ways to create ambiguity, but this tiny trick captures the general principle. Give the listener enough consonance to hear order, then withhold the information that would make the order emotionally easy to classify.
+Is the character safe? Has he been judged? Is this memory? A hospital hallucination? Is the figure walking toward him his mother?
 
-A white afterlife scene benefits from exactly that uncertainty.
-
-Is the character safe? Has he been judged? Is this memory? Is this a hospital hallucination? Is the figure walking toward him his mother?
-
-The music can decline to answer.
+The harmony can decline to answer.
 
 > **Sidebar: Interval, chord, consonance — three terms that sound harder than they are**
 >
@@ -108,21 +96,19 @@ The music can decline to answer.
 >
 > A **chord** is a collection of notes heard as a harmonic unit. A basic C-major triad contains C, E, and G.
 >
-> **Consonance** usually describes combinations perceived as comparatively stable or smooth; **dissonance** describes combinations perceived as comparatively tense, rough, or unstable. Those perceptions are affected by acoustics, musical style, culture, familiarity, and training, so “consonant = objectively pleasant” is too simple. Research on musical roughness and dissonance finds real psychoacoustic effects while also showing that context and musical expertise alter judgments. [T5][T6]
+> **Consonance** usually describes combinations perceived as comparatively stable or smooth; **dissonance** describes combinations perceived as comparatively tense, rough, or unstable. The relationship is not a simple pleasant/unpleasant switch. Psychoacoustic properties such as beating and harmonicity matter, but musical style and listener expertise also change judgments. [T5][T6][T7]
 
-The same strategy works with **suspensions** and other unresolved notes.
+The same broad strategy appears in **suspensions** and other unresolved notes.
 
-A suspension occurs when a note from one harmony is held into the next harmony, where it temporarily clashes before resolving. Open Music Theory describes the familiar pattern directly: a previously consonant tone is sustained across a change, becomes dissonant, and then resolves. [T2]
+A suspension occurs when a note from one harmony is held into the next harmony, where it becomes dissonant before resolving. Open Music Theory describes the familiar sequence directly: preparation, suspension, resolution. [T2]
 
-The useful word in an afterlife cue is *then*.
+The useful word in an afterlife cue is *resolution*.
 
-Normally, the resolution comes.
+Normally, it comes.
 
 Suppose it does not.
 
-The listener keeps a tiny piece of unfinished business in working memory. A beautiful chord is nearly complete. The ear can imagine how it would settle. The composer simply refuses to supply the final motion.
-
-That is a much more interesting kind of unease than a sudden horror sting.
+The listener keeps a tiny piece of unfinished business in mind. A beautiful harmony is almost complete. The ear can imagine how it might settle. The composer refuses to supply that final motion.
 
 A horror sting tells you that something is wrong.
 
@@ -132,45 +118,43 @@ An unresolved beautiful harmony makes you wonder whether something is wrong.
 
 Our imagined set is white and borderless. Sound can reinforce that geometry.
 
-Long reverberation lets a note remain present after the performer has stopped producing it. Slow attacks let sounds enter without a sharp beginning. Long releases let them disappear without a sharp ending. With enough overlap, separate events smear into a continuous field.
+Long reverberation lets a note remain after the performer has stopped producing it. Slow attacks let sounds enter without a sharp beginning. Long releases let them disappear without a sharp ending. With enough overlap, separate events smear into a field.
 
-Synthesizer envelopes give producers direct control over this behavior. In the familiar ADSR model, **attack** controls how long a sound takes to rise toward its peak, while **release** controls how long it takes to fall away after the note ends. [T3]
+Synthesizer envelopes give producers direct control over this behavior. In the familiar ADSR model, **attack** controls how a sound rises toward its peak, while **release** controls how it falls away after the note ends. [T3]
 
-A long attack is perfect for a sound that should seem to materialize rather than begin.
+A long attack is useful for a sound that should seem to materialize rather than begin.
 
-A long release is perfect for a place that does not seem willing to let go of anything.
+A long release is useful for a place that does not seem willing to let go of anything.
 
 > **Sidebar: ADSR without the synthesizer manual**
 >
 > Many synthesizers describe the shape of a note with four stages: **Attack, Decay, Sustain, Release**. [T3]
 >
-> **Attack:** How quickly the sound appears.
+> **Attack:** how quickly the sound appears.
 >
-> **Decay:** How it moves from its initial peak toward a steadier level.
+> **Decay:** how it moves from its initial peak toward a steadier level.
 >
-> **Sustain:** The level it holds while the note continues.
+> **Sustain:** the level it holds while the note continues.
 >
-> **Release:** How long it takes to disappear after the note is released.
+> **Release:** how long it takes to disappear after the note is released.
 >
-> For our imaginary scene, long attack and release times are useful because they hide the edges of individual notes. Instead of *note, silence, note*, the listener gets something closer to luminous weather.
+> For our imaginary scene, long attack and release times hide the edges of individual notes. Instead of *note, silence, note*, the listener gets something closer to luminous weather.
 
 Strings can do something similar without electronics.
 
-Bow over the fingerboard — **sul tasto** — and a violin takes on a softer, flute-like quality. Bow near the bridge — **sul ponticello** — and the sound becomes glassier and more brittle. Tremolo can make a sustained pitch shimmer instead of sitting still. [T4]
+Bow over the fingerboard — **sul tasto** — and the sound becomes softer and more flute-like. Bow near the bridge — **sul ponticello** — and it becomes glassier and more brittle. Tremolo can make a sustained pitch shimmer instead of sitting still. [T4]
 
-String **harmonics** push the instrument toward high, thin, unusually pure tones. A composer does not need all of these techniques at once. One or two are enough to make a familiar violin stop announcing itself as “a violin sitting ten feet in front of you.”
+Harmonics and other extended string techniques offer more ways to thin out or estrange the normal string sound. Mica Levi, while discussing the musical language surrounding *Under the Skin*, specifically talks about harmonics, extended techniques, altered pitch, and instrumental sounds that are recognizable yet made physically uncomfortable. [M10]
 
-The same goes for processed piano, bowed metal, breath, bells, and reversed sounds. Once the attack is hidden or inverted, it becomes harder to infer what physical action produced the sound.
+The same general idea works with processed piano, bowed metal, breath, bells, and reversed sounds. Once the attack is hidden or inverted, it becomes harder to infer what physical action produced the sound.
 
 That brings us to one of the best terms in this entire subject: **acousmatic**.
 
 > **Sidebar: What does acousmatic mean?**
 >
-> In audiovisual theory, an **acousmatic sound** is heard without its cause or source being seen. The term is strongly associated with Pierre Schaeffer's musique concrète and Michel Chion's writing on film sound. A scholarly discussion in the *Journal of the Royal Musical Association* gives the concise definition: a sound is acousmatic when its source is not visible. [T7]
+> In audiovisual theory, an **acousmatic sound** is heard without its source being seen. The term is strongly associated with Pierre Schaeffer's musique concrète and Michel Chion's writing on film sound. Scholarly discussion of Chion's usage gives the concise idea: the sound is present, but its cause is visually absent. [T8]
 >
 > A voice behind a wall is acousmatic. So is a bell heard in a white void when there is no bell anywhere on screen.
->
-> Horror directors love this problem for obvious reasons: an unidentified sound forces the audience to imagine its cause.
 
 The afterlife is a natural habitat for acousmatic sound.
 
@@ -188,64 +172,58 @@ A wordless choir can do something instruments cannot quite duplicate.
 
 The sound is unmistakably produced by human bodies, yet without intelligible lyrics it withholds an ordinary speaker. There is no character saying a sentence. There may not even be a visible group singing. The voice becomes material: breath, vowel, pitch, mass.
 
-This is why choral writing can travel so quickly between sacred beauty and horror.
+That is one reason choral writing can travel so quickly between sacred beauty and horror.
 
-The listener recognizes people without necessarily recognizing persons.
+If the singers use sustained vowels, move slowly, and occupy a large reverberant space, the result can suggest sacred architecture without requiring the scene to explain a theology. Add denser intervals and the same choir can shift from “angels welcoming you” toward “the universe has noticed you.”
 
-If the singers use sustained vowels, move slowly, and occupy a large reverberant space, the result can evoke church music without committing the scene to a specific theology. Add denser intervals and the same choir becomes less “angels welcoming you” and more “the universe has noticed you.”
-
-No composer demonstrates that transformation more clearly than György Ligeti.
+No composer demonstrates the useful instability of that sound more clearly than György Ligeti.
 
 ## Ligeti and the choir whose intentions are impossible to read
 
 If Brian Eno gives us the peaceful version of the white room, Ligeti gives us the suspicious one.
 
-“Lux Aeterna,” composed in 1966 for sixteen-part a cappella choir, sets text from the Requiem Mass. Ligeti's own work catalogue gives the instrumentation, date, and performance marking: *Sostenuto, molto calmo*, “from afar.” [L1]
+“Lux Aeterna,” composed in 1966 for sixteen-part a cappella choir, sets text from the Requiem Mass. Ligeti's official work catalogue gives the instrumentation, date, and performance marking: *Sostenuto, molto calmo*, “from afar.” [L1]
 
 That description alone could be a direction for our scene.
 
 What makes the piece stranger is the way its voices move.
 
-Ligeti developed a technique commonly called **micropolyphony**. Instead of a melody with obvious accompaniment, many independent lines overlap so densely that the listener often stops hearing them as separate melodies. Schott's description of *Lontano* explains the technique as many lines moving at different rates and rhythms until they form clusters; Ligeti himself wrote that the polyphony may be nearly imperceptible even while its harmonic effect becomes the audible musical action. [L3]
+Ligeti developed a technique commonly called **micropolyphony**. Many independent lines overlap so densely that the listener can lose track of them as separate melodies. Schott's discussion of *Lontano* describes lines moving at different rates and rhythms until they form clusters; Ligeti himself wrote of polyphony becoming nearly imperceptible while its harmonic effect remains audible. [L2][L3]
 
-This is one reason “Lux Aeterna” can sound sacred and alien at the same time.
+This is why “Lux Aeterna” can sound sacred and alien at the same time.
 
-It is a choir. We know what choirs mean in centuries of Western sacred music.
-
-But the choir refuses to behave like a congregation singing a tune.
-
-It becomes a slowly changing cloud of human voices.
+It is a choir, one of the most familiar carriers of sacred music in the Western concert tradition. But the choir refuses to behave like a congregation singing a tune. It becomes a slowly changing cloud of human voices.
 
 > **Sidebar: Micropolyphony**
 >
 > **Polyphony** means that multiple musical lines have some degree of independence. A round such as “Row, Row, Row Your Boat” is an easy example: different voices sing related lines at different times.
 >
-> Ligeti's **micropolyphony** packs many lines together so tightly that the individual threads can become difficult to follow. What reaches the listener is often a shifting mass of harmony and timbre rather than a set of clearly separable melodies. [L3]
+> Ligeti's **micropolyphony** packs many lines together so tightly that the individual threads can become difficult to follow. What reaches the listener is often a shifting mass of harmony and timbre rather than a set of clearly separable melodies. [L2][L3]
 >
-> Think of looking at a fog bank. Up close it consists of countless droplets. From a distance you perceive one moving body.
+> Think of a fog bank. Up close it consists of countless droplets. From a distance you perceive one moving body.
 
-Stanley Kubrick understood the cinematic usefulness immediately. *2001: A Space Odyssey* famously used pre-existing music by Ligeti, including *Requiem*, “Lux Aeterna,” and *Atmosphères*. [F1] The effect permanently connected Ligeti's sound world with images of intelligence, transcendence, cosmic scale, and things human beings do not understand.
+Stanley Kubrick used pre-existing music by Ligeti in *2001: A Space Odyssey*, including *Requiem*, “Lux Aeterna,” and *Atmosphères*. [F1] That cinematic context is one reason Ligeti's music works so readily, to my ear, with images of intelligence, transcendence, cosmic scale, and things human beings cannot parse.
 
-“Lux Aeterna” is my strongest answer to the question that started this entire detour:
+“Lux Aeterna” is my strongest answer to the question that started this detour:
 
 What should play if the room looks like Heaven, but the film refuses to tell us whether it is?
 
-The piece contains plenty of beauty. It never has to become conventionally ugly to become disturbing. Its voices simply move in ways that are too smooth, too dense, too impersonal to reassure us.
+The piece contains plenty of beauty. It never needs to become conventionally ugly to become disturbing. Its voices simply move in ways that are too smooth, too dense, too impersonal to reassure me.
 
 **Listen:** [YouTube — Ligeti, “Lux Aeterna”](https://www.youtube.com/watch?v=-iVYu5lyX5M)  
-**Reference recording/source:** [György Ligeti official work catalogue](https://en.gyorgy-ligeti.com/work/lux-aeterna)
+**Reference:** [György Ligeti official work catalogue](https://en.gyorgy-ligeti.com/work/lux-aeterna)
 
 ### “Lontano”: the orchestra seen through fog
 
 Ligeti's *Lontano*, written the following year for large orchestra, does a related thing without relying on a choir. Ligeti described it as micropolyphonic but also diatonic, built from numerous unison canons and octave doublings that create a “soft-edged overall sound.” [L2]
 
-Schott notes its use in connection with *The Shining* and *Shutter Island*. [L3]
+Schott notes the piece's later film associations with *The Shining* and *Shutter Island*. [L3]
 
 For our hypothetical film, *Lontano* shifts the question slightly.
 
 “Lux Aeterna” can make the room feel sacred but inscrutable.
 
-*Lontano* makes the room feel **distant from itself**. Shapes form in the harmony, recede, and form elsewhere. A sound that seems to be approaching can dissolve before it arrives.
+*Lontano* makes the room feel distant from itself. Shapes form in the harmony, recede, and form elsewhere. A sound that seems to be approaching can dissolve before it arrives.
 
 That is useful when the protagonist has not yet decided whether he has awakened into a destination or merely another layer of reality.
 
@@ -259,19 +237,15 @@ I would make it overwhelmingly beautiful.
 
 Then I would damage one small part of the beauty.
 
-Imagine a choir holding something spacious and consonant. Somewhere inside it, one voice introduces a pitch a semitone away from a note already sounding. The interval creates **beating** and **roughness** because nearby frequencies interact in the auditory system. Psychoacoustic research treats roughness as one contributor to perceived dissonance, although it is not the whole story; harmonic structure, context, musical style, familiarity, and listener expertise also matter. [T5][T6]
+Imagine a choir holding something spacious and consonant. Somewhere inside it, one voice introduces a pitch a semitone away from a note already sounding. Nearby frequency components can produce audible beating and roughness; roughness is one important ingredient in theories of sensory dissonance, although it does not explain musical consonance or preference by itself. [T5][T6]
 
-This distinction is useful because “dissonance” is often taught as if certain intervals contain an objective chemical called unpleasantness.
+The pleasantness of dissonance also depends on context. A 2019 study comparing chords from classical, jazz, avant-garde, and randomly generated materials found that style and listeners' musical sophistication affected how roughness, consonance, and pleasantness related to one another. [T7]
 
-They do not.
+So “dissonant” does not contain an objective chemical called “bad.”
 
-But some combinations really do produce physical beating or spectral interactions that can add sensory tension, and composers can exploit those interactions within an otherwise gentle texture. [T5]
+That is useful for our scene.
 
-That gives us a more precise version of the “one wrong note” idea.
-
-The note does not have to scream.
-
-It can simply refuse to belong completely.
+The intrusive note does not have to scream. It can simply refuse to belong completely.
 
 The audience may not consciously identify the interval. They may only feel that the music has stopped granting full permission to relax.
 
@@ -281,41 +255,43 @@ The visual equivalent would be a perfect white room with one door whose shadow p
 
 Traditional suspense often promises a future event: something is coming.
 
-This musical version can work differently. It promises **resolution**.
+This musical version can promise resolution instead.
 
-A suspension wants to settle. A cluster suggests that voices might separate into a simpler chord. A long crescendo suggests arrival. A bass note suggests a harmonic foundation.
+A suspension wants to settle. A cluster suggests that voices might separate into something simpler. A crescendo suggests arrival. A bass note suggests a foundation.
 
 Then nothing settles.
 
 The composer can keep renewing the promise without paying it off.
 
-That is ideal for a scene built around ontological uncertainty. We are not waiting for a killer to leap out. We are waiting to learn what kind of reality we are in.
+We are not waiting for a killer to leap out. We are waiting to learn what kind of reality we are in.
 
-Music can keep that question open for minutes.
+Music can keep that question open far longer than dialogue can.
 
 ## A listening room for the dead
 
-The following pieces do not all use the same technique, and several were never written for an afterlife scene. That is part of the point. The “waking up dead” sound is less a genre than a family resemblance.
+The pieces below do not all use the same technique, and several were never written for an afterlife scene. The “waking up dead” sound is less a genre than a family resemblance.
 
-Some pieces give us weightlessness. Some give us sacred space. Some remove rhythm. Some turn the human voice into atmosphere. Some let tenderness and threat occupy the same chord.
+Some pieces give us weightlessness. Some give us sacred space. Some remove rhythmic landmarks. Some turn the human voice into atmosphere. Some let tenderness and threat occupy the same musical surface.
+
+Where I could verify a stable direct YouTube link, I have included one. Where I could not, I have linked an official artist, label, or soundtrack page rather than guess at a video ID.
 
 ### Clint Mansell — “Together We Will Live Forever”
 
-Mansell's score for *The Fountain* was performed with Kronos Quartet and Mogwai; Nonesuch's credits also list piano and choir in the score's broader instrumental palette. “Together We Will Live Forever” is the final track. [M3]
+Mansell's score for *The Fountain* was performed with Kronos Quartet and Mogwai; Nonesuch's credits list the ensemble and track sequence, with “Together We Will Live Forever” closing the album. [M3]
 
-This sits closer to grief and reconciliation than to terror. Piano gives the listener a physical, human point of contact that Eno's floating synthesizers often avoid.
+This sits closer to grief and reconciliation than terror. Piano gives the listener a physical, human point of contact that Eno's floating synthesizers often avoid.
 
 For the imaginary film, I would use it after the protagonist recognizes someone in the white distance.
 
 The uncertainty is no longer “Where am I?” It becomes “Do I have to leave the life I knew?”
 
-**Listen/reference:** [Nonesuch Records — *The Fountain* soundtrack, “Together We Will Live Forever”](https://www.nonesuch.com/albums/fountain-soundtrack)
+**Listen/reference:** [Nonesuch Records — *The Fountain* soundtrack](https://www.nonesuch.com/albums/fountain-soundtrack)
 
 ### Nine Inch Nails — “A Warm Place”
 
-“A Warm Place” sits at track ten on *The Downward Spiral*, an album whose surrounding material is far harsher; Nine Inch Nails' own discography confirms the placement. [M4]
+“A Warm Place” is track ten on *The Downward Spiral*; Nine Inch Nails' own discography confirms the album placement. [M4]
 
-That context changes the piece. It feels like shelter discovered inside something destructive rather than uncomplicated serenity.
+Its surrounding context matters to the way I hear it. It feels like shelter discovered inside something destructive rather than uncomplicated serenity.
 
 In our scene, that makes it useful if the white room is peaceful but the audience remembers the violence that brought the character there.
 
@@ -324,11 +300,11 @@ In our scene, that makes it useful if the white room is peaceful but the audienc
 
 ### Sigur Rós — “Samskeyti” / “Untitled #3”
 
-Sigur Rós identifies “Samskeyti” as the third track on the untitled album usually written *( )*. The band's own notes describe that album as unusually minimalist and atmospheric; the track is largely built around a repeating piano figure and sustained accompaniment. [M5]
+Sigur Rós identifies “Samskeyti” as the third track on the untitled album usually written *( )*. The band's own album page provides the track listing and context for the record. [M5]
 
-Repetition matters here. The piano keeps touching the same memory instead of developing into a conventional dramatic statement.
+Repetition does most of the emotional work for me. The piano keeps touching the same memory instead of developing into a conventional dramatic statement.
 
-I would use this for the version of the scene in which the distant figures turn out to be people the protagonist once knew.
+I would use it for the version of the scene in which the distant figures turn out to be people the protagonist once knew.
 
 Not a theological revelation. A recognition.
 
@@ -337,17 +313,17 @@ Not a theological revelation. A recognition.
 
 ### Jon Hopkins — “Abandon Window”
 
-“Abandon Window” appeared on *Immunity* in 2013. Hopkins later explained that the piece began in connection with a benefit compilation after the 2011 Japan earthquake and tsunami, and described its inspiration in terms of surrender and a soul escaping a crushed body. [M6]
+“Abandon Window” appeared on *Immunity* in 2013. Hopkins later explained that the piece began in connection with a benefit compilation after the 2011 Japan earthquake and tsunami and described its imagery in terms of surrender and a soul escaping a crushed body. [M6]
 
 That background makes its relevance here less accidental than the title might suggest.
 
-The piece is gentle, but I do not hear it as reassuring. Its softness feels detached from ordinary bodily scale. It is a good choice when the filmmakers want the audience to wonder whether consciousness is continuing after the person has stopped.
+The piece is gentle, but I do not hear it as reassuring. Its softness feels detached from ordinary bodily scale. It works when the filmmakers want the audience to wonder whether consciousness is continuing after the person has stopped.
 
 **Listen/reference:** [Jon Hopkins — “Abandon Window” on Bandcamp](https://jonhopkins.bandcamp.com/track/abandon-window)
 
 ### Arvo Pärt — *Spiegel im Spiegel*
 
-The Arvo Pärt Centre dates *Spiegel im Spiegel* to 1978 and describes the piece's simple construction: a diatonic melodic line is paired with a repeating three-note piano accompaniment according to a strict formula. [M7]
+The Arvo Pärt Centre dates *Spiegel im Spiegel* to 1978 and describes its construction: a diatonic melodic line is paired with a repeating three-note piano accompaniment according to a strict formula. [M7]
 
 That clarity is its strength.
 
@@ -358,11 +334,11 @@ I would choose it when the scene has already decided what the white room means. 
 **Listen:** [YouTube — Arvo Pärt, *Spiegel im Spiegel*](https://www.youtube.com/watch?v=TJ6Mzvh3XCc)  
 **Reference:** [Arvo Pärt Centre — *Spiegel im Spiegel*](https://www.arvopart.ee/en/arvo-part/work/546/)
 
-Pärt is often associated with what critics call **sacred minimalism**, a loose label applied to composers whose reduced musical materials and spiritual concerns overlap. The label is useful as a signpost, but it is broad enough that it should not be mistaken for a precise compositional method. The important thing for this discussion is what the music actually does: repetition, restraint, exposed consonance, and unusually slow musical time.
+For this discussion, the useful part is not a genre label. It is what the piece actually does: repetition, restraint, exposed consonance, and unusually slow musical time.
 
 ### Stars of the Lid — “Requiem for Dying Mothers, Pt. 2”
 
-Stars of the Lid's own Bandcamp places “Requiem for Dying Mothers, Part 2” on *The Tired Sounds of Stars of the Lid*, released in 2001. [M8]
+Stars of the Lid's Bandcamp places “Requiem for Dying Mothers, Part 2” on *The Tired Sounds of Stars of the Lid*, released in 2001. [M8]
 
 This is drone music in the most useful sense of the word. Harmony seems to change on a geological schedule. The listener has time to notice tiny shifts in density that a faster piece would treat as background.
 
@@ -377,26 +353,26 @@ A white room scored this way could remain onscreen for an uncomfortably long tim
 >
 > A **pedal tone** is a sustained note, traditionally often in the bass, that continues while harmonies above it change. Open Music Theory treats pedal tones as sustained embellishing tones beneath shifting chords. [T2]
 >
-> In film, either technique can make a place feel anchored to something the characters cannot escape. If a low D has been sounding since the character woke up, the audience may stop hearing it as “a note” and start hearing it as part of the room.
+> In film, either can make a place feel anchored to something the characters cannot escape. If a low D has been sounding since the character woke up, the audience may stop hearing it as “a note” and start hearing it as part of the room.
 
 ### Jóhann Jóhannsson — “Flight From the City”
 
-“Flight From the City” opens Jóhann Jóhannsson's *Orphée*. The album itself draws on the Orpheus myth and ideas of transition, and contemporary descriptions of the track note its repeated piano and strings. [M9]
+“Flight From the City” opens Jóhann Jóhannsson's *Orphée*. Deutsche Grammophon lists the album as a 2016 release; its Orpheus framing makes transition and passage an explicit part of the surrounding work. [M9]
 
 The piece is sadder than Eno and more intimate than Ligeti.
 
 If a figure walks out of the white distance and the protagonist realizes it is somebody he lost years earlier, this is where my ear goes.
 
 **Listen:** [YouTube — Jóhann Jóhannsson, “Flight From The City”](https://www.youtube.com/watch?v=OtfmorEK50Y)  
-**Reference:** [Deutsche Grammophon / Jóhann Jóhannsson — *Orphée*](https://www.deutschegrammophon.com/en/catalogue/products/johannsson-orphee-3117)
+**Reference:** [Deutsche Grammophon — *Orphée*](https://www.deutschegrammophon.com/en/catalogue/products/johannsson-orphee-6626)
 
 ### Mica Levi — “Love,” from *Under the Skin*
 
-Mica Levi's *Under the Skin* score is one of the best demonstrations of how a film can make the boundary between human warmth and alien threat unstable.
+Mica Levi's *Under the Skin* score is one of the best demonstrations I know of a film making the boundary between human warmth and alien threat unstable.
 
-Levi has explained that the score was built around the protagonist's developing experience, using altered instrumental sounds and processes such as slowing and pitch changes to make something recognizably human feel uncomfortable. [M10] Director Jonathan Glazer described the stretched and bending sounds as part of the film's musical language. [M11]
+Levi explained that the score follows the protagonist's developing experience and discussed harmonics, stretched or altered instrumental sounds, pitch changes, and techniques intended to make recognizable sound feel physically strange. [M10] Director Jonathan Glazer likewise described stretched and bending sounds as part of the film's language. [M11]
 
-“Love” is especially useful for our question because it emerges from a score full of bodily unease yet becomes startlingly tender. A contemporary review specifically called out “Bedroom” and “Love” as moments in which the music lifts out of anxiety into something sorrowful and exalted. [M12]
+“Love” is especially useful for our question because it emerges from a score full of bodily unease yet becomes startlingly tender. A contemporary review singled out “Bedroom” and “Love” as places where the score rises out of anxiety into something sorrowful and exalted. [M12]
 
 So imagine the white room again.
 
@@ -404,30 +380,28 @@ The music sounds compassionate.
 
 The movie that taught you how to hear that music has also taught you not to trust compassion too quickly.
 
-That is the tension.
-
 **Listen/reference:** [Milan Records — *Under the Skin*](https://www.milanrecords.com/release/under-the-skin/)  
 **YouTube:** [Milan Records soundtrack video](https://www.youtube.com/watch?v=NoSWbyvdhHw)
 
 ### Ben Salisbury & Geoff Barrow — “The Alien,” from *Annihilation*
 
-“The Alien” is the long seventeenth track of the *Annihilation* soundtrack; Lakeshore's release listing gives it a duration of 12:04. Credits for the piece include orchestra, choir, and vocalists. [M13][M14]
+“The Alien” is the seventeenth track of the *Annihilation* soundtrack and runs a little over twelve minutes on official release listings. The composers' Bandcamp identifies it directly as a track from the film score. [M13]
 
-The cue travels farther toward horror than most of the music in this article. What keeps it relevant is the sense of awe. The sound does not behave like a conventional villain theme. It suggests contact with an intelligence or process whose categories may not include human ideas such as benevolent and malicious.
+The cue travels farther toward horror than most of the music in this article. What keeps it relevant is the sense of awe. I do not hear a conventional villain theme so much as contact with an intelligence or process whose categories may not include human ideas such as benevolent and malicious.
 
 That is perfect for a white room that may be Heaven only because the protagonist lacks a better word for it.
 
-**Listen/reference:** [“The Alien” — soundtrack release information](https://soundtracksscoresandmore.com/2018/02/15/annihilation-soundtrack-ben-salisbury-geoff-barrow-debuts-february-23/)
+**Listen/reference:** [Ben Salisbury & Geoff Barrow — “The Alien” on Bandcamp](https://salisburybarrow.bandcamp.com/track/the-alien)
 
 ### Aphex Twin — “#3” (“Rhubarb”)
 
-Warp's release history dates “#3” to *Selected Ambient Works Volume II*, originally released in 1994; the track runs 7:44. [M15]
+Warp's official Aphex Twin release page dates *Selected Ambient Works Volume II* to 1994 and lists “#3” at 7:44. [M14]
 
 The piece is a useful reminder that ambiguity does not require obvious dissonance. Something can be soft, slow, and beautiful yet still feel emotionally uninhabited. The harmony seems to remember sadness without turning it into a dramatic statement.
 
 For our scene, it works when the afterlife is neither reward nor punishment. It is simply enormous, quiet, and indifferent to the character's need for an explanation.
 
-**Listen/reference:** [Warp Records — *Selected Ambient Works Volume II*](https://warp.net/products/453742-selected-ambient-works-volume-ii-expanded-edition)
+**Listen/reference:** [Warp / Aphex Twin — *Selected Ambient Works Volume II*](https://aphextwin.warp.net/release/68148-aphex-twin-selected-ambient-works-volume-ii?lang=en_GB)
 
 ### Dead Can Dance — “The Host of Seraphim”
 
@@ -435,9 +409,9 @@ This is what happens when the subtle version stops being subtle.
 
 Lisa Gerrard's vocal does not sound like a woman humming in a room. It sounds like lament has been given a body large enough to fill the landscape.
 
-Frank Darabont used the piece in the ending of *The Mist*; the film's soundtrack credits list both “The Host of Seraphim” and a special film version, and the soundtrack release includes the track. [F2][M16]
+Frank Darabont used the piece in the ending of *The Mist*; the film's soundtrack credits list “The Host of Seraphim” and a special film version, and the soundtrack album includes the cue. [F2][M15]
 
-That use demonstrates something important. The musical vocabulary we associate with transcendence does not guarantee hope. A vast wordless voice can sanctify an image, mourn it, terrify us with it, or do all three simultaneously.
+That use demonstrates something important about this whole vocabulary. A vast wordless voice does not guarantee hope. It can sanctify an image, mourn it, terrify us with it, or do all three simultaneously.
 
 If Eno says, “You have crossed a threshold,” Dead Can Dance says, “The threshold has cosmic consequences.”
 
@@ -447,31 +421,23 @@ If Eno says, “You have crossed a threshold,” Dead Can Dance says, “The thr
 
 Most of the pieces above either lack a strong pulse or keep it from becoming the center of attention.
 
-That is not an accident.
+For this imagined scene, that is useful.
 
-A beat does several useful things for ordinary embodied life. It predicts the next moment. It encourages movement. It divides time into repeatable units. It gives the body something to synchronize with.
+A clear beat predicts another moment. It divides time into repeatable units. It offers the editor, performer, and listener a ruler.
 
 Our dead protagonist has just lost the ordinary body whose pulse, footsteps, breathing, and daily routines made time legible.
 
-Remove the beat and the scene loses another bodily ruler.
+Remove the beat and the scene loses another ruler.
 
-This is not a universal rule. A filmmaker could deliberately use a heartbeat, ritual drum, dance pulse, or mechanical clock in an afterlife scene. But those choices would immediately tell us something different about the place.
+A filmmaker could deliberately do the opposite. A heartbeat would pull us toward the body. A clock would insist on measured time. A mechanical pulse could imply a system or simulation.
 
-A heartbeat says body.
+The beatless pad and choir tell us much less.
 
-A clock says measured time.
-
-A dance rhythm says communal movement.
-
-A machine pulse says system.
-
-The beatless pad and choir tell us almost nothing except that sound continues.
-
-For a scene whose power comes from uncertainty, that is useful.
+For a scene whose power comes from uncertainty, less can be useful.
 
 ## Reverse the arrow of cause and effect
 
-One sound-design trick deserves separate attention even though it belongs as much to production as composition: reverse a sound with an obvious natural decay.
+One sound-design trick belongs as much to production as composition: reverse a sound with an obvious natural decay.
 
 A struck piano normally begins abruptly and fades.
 
@@ -479,9 +445,7 @@ A cymbal crash begins with impact and trails away.
 
 A bell has a clear cause followed by resonance.
 
-Reverse the recording and the decay becomes an approach. The sound seems to gather itself from silence and rush toward an event that occurs at the end.
-
-The audience has heard reversed reverberation and reversed percussion in thousands of supernatural, dream, horror, and transition cues, even if they do not know the studio technique by name.
+Reverse the recording and the decay becomes an approach. The sound gathers itself from silence and rushes toward an event at the end.
 
 Its usefulness in our scene is almost embarrassingly literal.
 
@@ -489,7 +453,7 @@ Death has apparently reversed the normal order of things.
 
 The sound arrives before its cause.
 
-I would use this sparingly. Once every element whooshes backward, the technique becomes an effect. One almost-unnoticed reversed piano resonance beneath an otherwise serene cue can be more disturbing because the listener cannot immediately explain why the sound feels physically impossible.
+I would use this sparingly. Once every element whooshes backward, the technique announces itself as an effect. One almost-unnoticed reversed piano resonance beneath an otherwise serene cue can be stranger because the listener may not immediately know why the sound feels physically impossible.
 
 ## The useful tension is not “happy versus scary”
 
@@ -499,7 +463,7 @@ After listening through these pieces, I think there is a better distinction.
 
 The tension is between **recognition and legibility**.
 
-We recognize the ingredients:
+We recognize the ingredients.
 
 A choir sounds human.
 
@@ -513,17 +477,17 @@ Slow movement sounds calm.
 
 But the whole refuses to become legible.
 
-We cannot tell who is singing. We cannot see the room creating the reverberation. We cannot decide whether the harmony is major or minor. We cannot predict when the next chord will arrive. We cannot tell whether the one rubbing note is going to resolve. We cannot decide whether the distant figures are approaching.
+We cannot tell who is singing. We cannot see the room creating the reverberation. We cannot decide whether the harmony is major or minor. We cannot predict when the next chord will arrive. We cannot tell whether the rubbing note will resolve. We cannot decide whether the distant figures are approaching.
 
 Everything is almost interpretable.
 
 That *almost* is where the unease lives.
 
-Ligeti is the extreme case. The raw material is one of the most culturally familiar sacred sounds available to a Western audience — a choir singing Latin Requiem text — but the musical behavior makes the choir feel like a phenomenon rather than a group of people. [L1][L3]
+Ligeti reaches it by making many human voices behave like a harmonic phenomenon. [L1][L3]
 
-Levi achieves a related uncertainty from the opposite direction. Instruments remain recognizably physical, yet stretching, detuning, repetition, and processing make their humanity unreliable. [M10][M11]
+Levi reaches it from another direction: recognizable instrumental bodies are stretched, bent, altered, and made unreliable. [M10][M11]
 
-Eno reduces the number of events until the listener stops asking what happens next and starts inhabiting the sound itself. [M1][M2]
+Eno reduces the number of events until the listener can stop asking what happens next and simply inhabit the sound. [M1][M2]
 
 Different methods. Same cinematic opportunity.
 
@@ -535,7 +499,7 @@ The image fades from black to white before the music becomes clearly audible. A 
 
 No percussion.
 
-A high synthesizer tone takes four or five seconds to reach full volume. Its attack is slow enough to hide the moment of onset. [T3]
+A high synthesizer tone takes four or five seconds to reach full volume. Its slow attack hides the moment of onset. [T3]
 
 Then an open fifth appears somewhere above the drone.
 
@@ -543,7 +507,7 @@ Still no third.
 
 The protagonist looks down at his hands.
 
-A distant choir enters on vowels only. The voices overlap rather than articulating a melody. The scene borrows the perceptual idea of Ligeti's micropolyphony without attempting to imitate *Lux Aeterna* directly. [L3]
+A distant choir enters on vowels only. The voices overlap rather than articulating a melody. The scene borrows the perceptual idea of Ligeti's micropolyphony without imitating *Lux Aeterna*. [L3]
 
 A blurry figure crosses the background.
 
@@ -579,9 +543,9 @@ It does not.
 
 That is where I would cut the scene.
 
-Not because the music has revealed Hell.
+The music has not revealed Hell.
 
-Because it has refused to certify Heaven.
+It has refused to certify Heaven.
 
 ## The playlist, from safest to least trustworthy
 
@@ -592,7 +556,7 @@ If you want to hear the idea change one degree at a time, this is the order I wo
 3. **Brian Eno — “An Ending (Ascent)”** — weightlessness and peaceful removal from ordinary time.
 4. **Jóhann Jóhannsson — “Flight From the City”** — tenderness with mortality still attached.
 5. **Sigur Rós — “Samskeyti”** — memory circling itself.
-6. **Nine Inch Nails — “A Warm Place”** — shelter that carries the shadow of what surrounds it.
+6. **Nine Inch Nails — “A Warm Place”** — shelter carrying the shadow of what surrounds it.
 7. **Stars of the Lid — “Requiem for Dying Mothers, Pt. 2”** — beauty stretched beyond ordinary human pacing.
 8. **Jon Hopkins — “Abandon Window”** — consciousness becoming detached from the body.
 9. **Aphex Twin — “#3”** — beautiful, melancholy, emotionally uninhabited space.
@@ -604,7 +568,7 @@ If you want to hear the idea change one degree at a time, this is the order I wo
 
 The order is interpretive, not a measurement. Another listener may put Aphex Twin near the comforting end or hear more terror in Eno than I do.
 
-That variability is useful evidence in itself. This vocabulary works because it does not encode a single emotion with the reliability of a road sign. It gives filmmakers a field of suggestions: sacred, empty, maternal, cosmic, mournful, suspended, immense, bodiless, peaceful, wrong.
+That variability is part of why the vocabulary is useful. It does not encode a single emotion with the reliability of a road sign. It gives filmmakers a field of suggestions: sacred, empty, maternal, cosmic, mournful, suspended, immense, bodiless, peaceful, wrong.
 
 The white room can remain white.
 
@@ -616,7 +580,7 @@ The music decides how long we trust it.
 
 ### Music theory, acoustics, and sound
 
-**[T1]** Iowa State University, *Comprehensive Musicianship*, “Harmonic Rhythm.” Defines harmonic rhythm as the rate of harmonic change.  
+**[T1]** Iowa State University, *Comprehensive Musicianship*, “Harmonic Rhythm.” Definition and examples of harmonic rhythm as the rate of harmonic change.  
 https://iastate.pressbooks.pub/comprehensivemusicianship/chapter/6-4-harmonic-rhythm-tutorial/
 
 **[T2]** Open Music Theory, “Embellishing Tones.” Discussion of suspensions and pedal tones.  
@@ -629,25 +593,27 @@ https://www.ableton.com/en/manual/live-instrument-reference/
 **[T4]** Violin Online, “Bowing Directions.” Definitions and descriptions of sul tasto, sul ponticello, and tremolo.  
 https://www.violinonline.com/bowingeffects.html
 
-**[T5]** Vassilakis, Pantelis N., et al. / review literature summarized in “Roughness perception: a computational approach.” *Frontiers / PMC*. Discussion of auditory roughness, beating, consonance, and dissonance.  
+**[T5]** Di Stefano, Nicola, and Charles Spence. “Roughness perception: A multisensory/crossmodal perspective.” *Attention, Perception, & Psychophysics* 84 (2022): 2087–2114. Review of auditory roughness and its relationship to dissonant sound.  
 https://pmc.ncbi.nlm.nih.gov/articles/PMC9481510/
 
-**[T6]** McDermott, Josh H., Andriana J. Lehr, and Andrew J. Oxenham. Research and later literature on consonance, harmonicity, beating, and listener context; see also research on the effect of musical style and expertise on dissonance pleasantness.  
-https://pmc.ncbi.nlm.nih.gov/articles/PMC3511708/  
+**[T6]** Cousineau, Marion, Josh H. McDermott, and Isabelle Peretz. “The basis of musical consonance as revealed by congenital amusia.” *Proceedings of the National Academy of Sciences* 109, no. 48 (2012): 19858–19863. Experimental work separating the roles of beating and harmonicity in consonance preference.  
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3511708/
+
+**[T7]** Popescu, Tudor, Monja P. Neuser, Markus Neuwirth, et al. “The pleasantness of sensory dissonance is mediated by musical style and expertise.” *Scientific Reports* 9, 1070 (2019). Study of roughness, pleasantness, musical style, and listener sophistication.  
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6355932/
 
-**[T7]** Grimshaw-Aagaard, Mark. “Music in Radio Drama: The Curious Case of the Acousmatic Detective.” *Journal of the Royal Musical Association*. Discussion of Michel Chion's acousmatic concept: sound heard without seeing its source.  
+**[T8]** Grimshaw-Aagaard, Mark. “Music in Radio Drama: The Curious Case of the Acousmatic Detective.” *Journal of the Royal Musical Association*. Discussion of Michel Chion's acousmatic concept: sound heard without seeing its source.  
 https://www.cambridge.org/core/journals/journal-of-the-royal-musical-association/article/music-in-radio-drama-the-curious-case-of-the-acousmatic-detective/C5909754EF917B1C756A4AB77234B022
 
 ### Ligeti and film
 
-**[L1]** György Ligeti official catalogue, “Lux Aeterna.” Work details: 16-part a cappella choir, 1966, *Sostenuto, molto calmo*, “From afar.”  
+**[L1]** György Ligeti official catalogue, “Lux Aeterna.” Work details: sixteen-part a cappella choir, 1966, *Sostenuto, molto calmo*, “From afar.”  
 https://en.gyorgy-ligeti.com/work/lux-aeterna
 
 **[L2]** György Ligeti official catalogue, “Lontano.” Work details and Ligeti's commentary on micropolyphony, diatonic writing, canons, and octave doubling.  
 https://en.gyorgy-ligeti.com/work/lontano
 
-**[L3]** Schott Music, Christopher Peter, “Work of the Week — György Ligeti: Lontano.” Explanation of micropolyphony and discussion of *Lontano* in *The Shining* and *Shutter Island*.  
+**[L3]** Peter, Christopher. “Work of the Week — György Ligeti: Lontano.” Schott Music. Explanation of micropolyphony and discussion of *Lontano* in *The Shining* and *Shutter Island*.  
 https://www.schott-music.com/en/blog/gyorgy-ligeti-lontano
 
 **[F1]** Platt, Russell. “Clarke, Kubrick, and Ligeti: A Tale.” *The New Yorker*, August 12, 2008. Documents Kubrick's use of Ligeti's *Requiem*, “Lux Aeterna,” and *Atmosphères* in *2001: A Space Odyssey*.  
@@ -665,7 +631,7 @@ https://www.brian-eno.net/videos/
 https://pitchfork.com/reviews/albums/brian-eno-apollo-atmospheres-and-soundtracks-extended-edition/  
 https://pitchfork.com/reviews/albums/11732-music-for-films-apollo-thursday-afternoon-more-music-for-films/
 
-**[M3]** Nonesuch Records, *The Fountain* soundtrack. Credits Clint Mansell, Kronos Quartet, Mogwai, piano, choir, and track listing including “Together We Will Live Forever.”  
+**[M3]** Nonesuch Records, *The Fountain* soundtrack. Credits Clint Mansell, Kronos Quartet, Mogwai, and track listing including “Together We Will Live Forever.”  
 https://www.nonesuch.com/albums/fountain-soundtrack
 
 **[M4]** Nine Inch Nails, official discography, *The Downward Spiral*.  
@@ -684,8 +650,8 @@ https://www.arvopart.ee/en/arvo-part/work/546/
 **[M8]** Stars of the Lid, “Requiem for Dying Mothers, Part 2,” Bandcamp.  
 https://starsofthelid.bandcamp.com/track/requiem-for-dying-mothers-part-2
 
-**[M9]** Jóhann Jóhannsson, *Orphée*, Deutsche Grammophon; see also contemporary album coverage for the track listing and context.  
-https://www.deutschegrammophon.com/en/catalogue/products/johannsson-orphee-3117  
+**[M9]** Deutsche Grammophon, Jóhann Jóhannsson, *Orphée*. Album release information; see also contemporary album coverage for context.  
+https://www.deutschegrammophon.com/en/catalogue/products/johannsson-orphee-6626  
 https://pitchfork.com/reviews/albums/22305-orphee/
 
 **[M10]** Levi, Mica. “How Mica Levi got Under The Skin of her first film soundtrack.” *The Guardian*, March 15, 2014. Levi discusses instrumentation, harmonics, extended techniques, slowing, pitch alteration, and the score's intended physical effect.  
@@ -697,18 +663,15 @@ https://pitchfork.com/features/interview/9366-under-the-skins-jonathan-glazer-an
 **[M12]** Richardson, Mark. “Mica Levi: *Under the Skin OST*.” *Pitchfork*, April 17, 2014. Contemporary critical analysis of the score's Ligeti influence, processed/live ambiguity, tonal warmth, and “Love.”  
 https://pitchfork.com/reviews/albums/19239-mica-levi-under-the-skin-ost/
 
-**[M13]** Lakeshore Records, *Annihilation (Music From the Motion Picture)*. Track listing and duration for “The Alien.”  
-https://lakeshorerecordsshop.com/products/annihilation-music-from-the-motion-picture-black-vinyl-ben-salisbury-geoff-barrow-1
+**[M13]** Salisbury, Ben, and Geoff Barrow. “The Alien,” from *Annihilation (Music From The Motion Picture)*. Official Bandcamp release.  
+https://salisburybarrow.bandcamp.com/track/the-alien
 
-**[M14]** Shazam, “The Alien” — Ben Salisbury & Geoff Barrow. Performance credits including RSVP Singers and the Chamber Orchestra of London.  
-https://www.shazam.com/song/1342394686/the-alien
+**[M14]** Warp / Aphex Twin, *Selected Ambient Works Volume II*. Official release page listing the original 1994 release and track durations.  
+https://aphextwin.warp.net/release/68148-aphex-twin-selected-ambient-works-volume-ii?lang=en_GB
 
-**[M15]** Warp Records / Aphex Twin, *Selected Ambient Works Volume II*; see also the 2024 expanded-edition release information.  
-https://warp.net/products/453742-selected-ambient-works-volume-ii-expanded-edition
-
-**[M16]** *The Mist (Original Motion Picture Soundtrack)*, Varèse Sarabande release information via Qobuz. Track list includes Dead Can Dance's “The Host of Seraphim.”  
+**[M15]** *The Mist (Original Motion Picture Soundtrack)*, Varèse Sarabande release information via Qobuz. Track list includes Dead Can Dance's “The Host of Seraphim.”  
 https://www.qobuz.com/us-en/album/the-mist-mark-isham/eg2qo05irpuqb
 
 ### A note on interpretation
 
-The sources above establish composition dates, instrumentation, production methods, terminology, documented film uses, and statements made by composers and filmmakers. Claims such as “this sounds like Heaven with something wrong inside it” or “I would use this when the protagonist recognizes his mother” are listening interpretations, not empirical findings attributed to those sources. They are included as examples of how the documented musical devices can function in an imagined scene.
+The sources above establish composition dates, instrumentation, production methods, terminology, documented film uses, release information, and statements made by composers and filmmakers. Claims such as “this sounds like Heaven with something wrong inside it” or “I would use this when the protagonist recognizes someone he lost” are listening interpretations, not empirical findings attributed to those sources. They are included as examples of how the documented musical devices can function in an imagined scene.
