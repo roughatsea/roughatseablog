@@ -109,8 +109,23 @@ const allEntries = [
     font-size: 1.125rem;
   }
   .feed {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .feed :global(.note-card),
+  .feed :global(.link-card) {
+    height: 100%;
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 768px) {
+    :global(main.container) {
+      max-width: 1200px;
+    }
+
+    .feed {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    }
   }
 </style>
