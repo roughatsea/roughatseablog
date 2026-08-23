@@ -1,6 +1,8 @@
 ---
 title: "The Transformer Killers: A Field Guide to the Post-Transformer AI Architecture Race"
 description: "Mamba, Kimi Linear, Titans, RWKV, xLSTM, Dragon Hatchling, and a growing cast of challengers are trying to fix the Transformer’s weaknesses. The interesting story is not which one wins, but what they are converging toward."
+heroImage: "/images/notes/the-transformer-killers.webp"
+heroImageAlt: "Five radically different computational machines race beyond an old lattice toward a shared sunrise."
 date: 2026-08-15
 tags:
   - artificial-intelligence

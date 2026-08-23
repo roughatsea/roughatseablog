@@ -2,12 +2,14 @@
 interface Props {
   title: string;
   description?: string;
+  heroImage: string;
+  heroImageAlt: string;
   slug: string;
   date: Date;
   tags: string[];
   preview: string;
 }
-const { title, description, slug, date, tags, preview } = Astro.props;
+const { title, description, heroImage, heroImageAlt, slug, date, tags, preview } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -16,6 +18,15 @@ const formattedDate = date.toLocaleDateString('en-US', {
 });
 ---
 <div class="note-card hover-lift">
+  <img
+    class="card-image"
+    src={heroImage}
+    alt={heroImageAlt}
+    width="1600"
+    height="900"
+    loading="lazy"
+    decoding="async"
+  />
   <div class="card-content">
     <div class="header-row">
       <h3 class="title"><a href={`/notes/${slug}`}>{title}</a></h3>
@@ -35,14 +46,29 @@ const formattedDate = date.toLocaleDateString('en-US', {
 
 <style>
   .note-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
     background-color: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 1.5rem;
+    padding: 0;
     margin-bottom: 1.5rem;
     color: inherit;
     position: relative;
+    overflow: hidden;
+  }
+  .card-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: var(--bg-color);
+  }
+  .card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.25rem 1.5rem 1.5rem;
   }
   .header-row {
     display: flex;
@@ -76,10 +102,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
   .date {
     font-size: 0.875rem;
     color: var(--text-secondary);
+    white-space: nowrap;
   }
   .tags {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
   }
   .tag {
     background: var(--bg-color);
@@ -87,5 +115,13 @@ const formattedDate = date.toLocaleDateString('en-US', {
     border-radius: 4px;
     font-size: 0.75rem;
     color: var(--text-secondary);
+  }
+
+  @media (max-width: 480px) {
+    .header-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
   }
 </style>

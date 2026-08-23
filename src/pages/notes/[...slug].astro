@@ -35,6 +35,18 @@ const formattedDate = note.data.date.toLocaleDateString('en-US', {
         </div>
       )}
     </header>
+
+    <figure class="hero-image">
+      <img
+        src={note.data.heroImage}
+        alt={note.data.heroImageAlt}
+        width="1600"
+        height="900"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
     
     <div class="prose">
       <Content />
@@ -47,7 +59,22 @@ const formattedDate = note.data.date.toLocaleDateString('en-US', {
     padding-bottom: 4rem;
   }
   .note-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
+  }
+  .hero-image {
+    width: min(1000px, calc(100vw - 3rem));
+    margin: 0 0 3rem 50%;
+    transform: translateX(-50%);
+  }
+  .hero-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
   }
   .meta {
     display: flex;

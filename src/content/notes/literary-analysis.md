@@ -1,6 +1,8 @@
 ---
 title: "Literary Analysis: How to Read Beneath the Surface"
 description: "A practical introduction to literary analysis, including close reading, form, context, interpretation, and perspectives from Western and non-Western literary traditions."
+heroImage: "/images/notes/literary-analysis.webp"
+heroImageAlt: "A reader lifts the surface of a book to reveal layers of history, symbols, characters, and roots beneath it."
 date: 2026-08-11
 tags:
   - literature

@@ -1,6 +1,8 @@
 ---
 title: "Curiosity-Driven Close Reading: A Framework for Noticing More"
 description: "A practical framework for investigating stories, games, films, places, images, and other cultural artifacts by following curiosity from observation to research, connection, and reinterpretation."
+heroImage: "/images/notes/curiosity-driven-close-reading.webp"
+heroImageAlt: "An explorer examines a vast open book whose details connect films, buildings, artifacts, and star maps."
 date: 2026-08-11
 tags:
   - curiosity

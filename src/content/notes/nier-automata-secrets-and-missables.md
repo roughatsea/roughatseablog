@@ -1,6 +1,8 @@
 ---
 title: "The Secrets of NieR:Automata: Hidden Endings, Bosses, Weapons, Rooms, and Missables"
 description: "A sourced guide to NieR:Automata's hidden endings, Emil quest chain, secret bosses, weapons, Pods, Pod Programs, rooms, cheat code, DLC secrets, Easter eggs, and the few things you can actually miss for good."
+heroImage: "/images/notes/nier-automata-secrets-and-missables.webp"
+heroImageAlt: "Two white-haired android explorers survey a flower-covered ruined city filled with machines and hidden paths."
 date: 2026-08-16
 tags:
   - nier-automata

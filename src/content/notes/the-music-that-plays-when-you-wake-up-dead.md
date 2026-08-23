@@ -1,6 +1,8 @@
 ---
 title: "The Music That Plays When You Wake Up Dead"
 description: "Why white rooms, distant choirs, drones, unresolved chords, and one carefully wrong note can make the afterlife sound heavenly, alien, or quietly terrifying."
+heroImage: "/images/notes/the-music-that-plays-when-you-wake-up-dead.webp"
+heroImageAlt: "A person awakens in a luminous white hall as distant figures gather and an impossible shadow stretches behind him."
 date: 2026-08-16
 tags:
   - music

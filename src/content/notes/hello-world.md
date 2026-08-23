@@ -1,6 +1,8 @@
 ---
 title: "Hello World"
 description: "My first note in the commonplace book."
+heroImage: "/images/notes/hello-world.webp"
+heroImageAlt: "A small ship leaves a lighthouse at dawn beneath a sky filled with books, planets, and constellations."
 date: 2026-08-09
 tags: ["general", "intro"]
 ---

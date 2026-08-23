@@ -1,6 +1,8 @@
 ---
 title: "Physics: The Extreme Basics"
 description: "A from-zero introduction to the basic ideas of physics: measurement, motion, forces, energy, momentum, waves, fields, relativity, and quantum mechanics."
+heroImage: "/images/notes/physics-the-extreme-basics.webp"
+heroImageAlt: "Everyday motion transforms into waves, fields, orbits, and a quantum cloud across a cosmic laboratory."
 date: 2026-08-10
 tags:
   - physics

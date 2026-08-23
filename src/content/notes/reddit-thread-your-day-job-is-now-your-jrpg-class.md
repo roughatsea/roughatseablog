@@ -1,6 +1,8 @@
 ---
 title: "You Get Isekai'd Into a JRPG, but Your Class Is Based on Your Actual Day Job"
 description: "A completely fictional Reddit thread in which software engineers, medical laboratory scientists, librarians, accountants, parents, HVAC techs, project managers, and one alarmingly prepared night-shift pharmacist discover what their real-world jobs look like as JRPG classes."
+heroImage: "/images/notes/reddit-thread-your-day-job-is-now-your-jrpg-class.webp"
+heroImageAlt: "Eight modern workers wield fantastical powers in a JRPG-style adventuring party."
 date: 2026-08-16
 tags:
   - humor

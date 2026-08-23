@@ -1,6 +1,8 @@
 ---
 title: "The LLM-ism Dictionary: A Field Guide to the Tics, Tells, and Templates of AI Writing"
 description: "A large, practical taxonomy of the words, sentence forms, rhetorical maneuvers, paragraph habits, formatting patterns, tonal quirks, and reasoning templates that make modern LLM prose feel unmistakably like LLM prose."
+heroImage: "/images/notes/the-llm-ism-dictionary.webp"
+heroImageAlt: "A field guide and specimen cabinet classifies repeated machine-written patterns like pinned insects."
 date: 2026-08-15
 tags:
   - artificial-intelligence

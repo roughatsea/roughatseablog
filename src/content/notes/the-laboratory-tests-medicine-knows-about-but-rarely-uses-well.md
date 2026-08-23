@@ -1,6 +1,8 @@
 ---
 title: "The Laboratory Tests Medicine Knows About but Rarely Uses Well"
 description: "A guide to evidence-backed laboratory tests and diagnostic paradigms that mainstream medicine already knows about, but often fails to use consistently—from Lp(a) and aldosterone-renin testing to UACR, cystatin C, FIB-4, fecal calprotectin, diabetes autoantibodies, pharmacogenomics, and longitudinal interpretation."
+heroImage: "/images/notes/the-laboratory-tests-medicine-knows-about-but-rarely-uses-well.webp"
+heroImageAlt: "A clinician opens a hidden diagnostic cabinet revealing connected organs, biomarkers, DNA, and long-term trends."
 date: 2026-08-15
 tags:
   - medicine

@@ -1,6 +1,8 @@
 ---
 title: "Clinical Laboratory Tests: Reading the Body as a System"
 description: "A practical guide to common and uncommon clinical laboratory tests, what individual values mean, why clinicians order them, and how patterns across bloodwork, urinalysis, ECGs, imaging, and other tests can reveal physiology that no single result can show."
+heroImage: "/images/notes/clinical-laboratory-tests-reading-the-body-as-a-system.webp"
+heroImageAlt: "A translucent human figure connected to glowing organs, blood cells, and laboratory glassware."
 date: 2026-08-15
 tags:
   - medicine

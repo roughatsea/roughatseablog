@@ -1,6 +1,8 @@
 ---
 title: "Stock Market Investing: The Extreme Basics"
 description: "A from-zero explanation of stocks, the stock market, brokerage accounts, funds, diversification, risk, and what actually happens when you invest."
+heroImage: "/images/notes/stock-market-investing-the-extreme-basics.webp"
+heroImageAlt: "A beginner investor assembles a diversified basket while many different businesses float across a calm economic sea."
 date: 2026-08-10
 tags:
   - investing

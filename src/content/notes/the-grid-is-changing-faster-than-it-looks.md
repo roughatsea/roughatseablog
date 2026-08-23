@@ -1,6 +1,8 @@
 ---
 title: "The grid is changing faster than it looks"
 description: "Renewable energy had another record year, and the quiet accumulation of solar panels and wind turbines is beginning to reshape the world's power supply."
+heroImage: "/images/notes/the-grid-is-changing-faster-than-it-looks.webp"
+heroImageAlt: "Solar panels, wind turbines, batteries, power lines, and cities connected by bright streams of electricity at sunrise."
 date: 2026-08-09
 tags:
   - good news

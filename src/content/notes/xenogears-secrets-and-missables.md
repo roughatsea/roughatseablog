@@ -1,6 +1,8 @@
 ---
 title: "The Secrets of Xenogears: Hidden Items, Sidequests, Easter Eggs, and Missables"
 description: "A sourced guide to Xenogears' hidden rewards, optional sidequests, secret arena Gears, strange Easter eggs, and the one-shot items that can disappear for the rest of a save file."
+heroImage: "/images/notes/xenogears-secrets-and-missables.webp"
+heroImageAlt: "A martial artist explores desert ruins beneath a shattered moon and an enormous buried red machine."
 date: 2026-08-16
 tags:
   - xenogears

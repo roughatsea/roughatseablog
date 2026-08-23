@@ -1,6 +1,8 @@
 ---
 title: "Final Fantasy XVII: What We Actually Know So Far"
 description: "Final Fantasy XVII has not been announced, but years of developer comments, Square Enix strategy changes, and a few very suggestive 2026 remarks let us sketch the shape of the unknown."
+heroImage: "/images/notes/final-fantasy-xvii-what-we-know.webp"
+heroImageAlt: "A lone fantasy traveler looks toward a giant crystal containing several possible worlds above the sea."
 date: 2026-08-16
 tags:
   - final-fantasy

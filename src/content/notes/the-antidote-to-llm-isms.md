@@ -1,6 +1,8 @@
 ---
 title: "The Antidote to LLM-isms: 240 Bad Habits and What to Do Instead"
 description: "A positive companion to the LLM-ism dictionary: 240 recurring AI-writing habits inverted into concrete writing behaviors, with sources for every antidote."
+heroImage: "/images/notes/the-antidote-to-llm-isms.webp"
+heroImageAlt: "A human writer turns repetitive machine-made pages into colorful ink, branches, and birds."
 date: 2026-08-15
 tags:
   - artificial-intelligence

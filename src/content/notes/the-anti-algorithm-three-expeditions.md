@@ -1,6 +1,8 @@
 ---
 title: "The Anti-Algorithm: Three Expeditions Beyond the Recommendation Loop"
 description: "A field report from three deliberately unconstrained expeditions across human intellectual history, looking for fascinating ideas and artifacts that ordinary recommendation systems almost never surface."
+heroImage: "/images/notes/the-anti-algorithm-three-expeditions.webp"
+heroImageAlt: "An explorer leaves a circular maze of identical books for three paths through a world of strange historical artifacts."
 date: 2026-08-15
 tags:
   - curiosity
