@@ -124,4 +124,55 @@ const formattedDate = date.toLocaleDateString('en-US', {
       gap: 0.25rem;
     }
   }
+
+  @media (min-width: 960px) {
+    .note-card {
+      display: grid;
+      grid-template-columns: clamp(22rem, 36vw, 26rem) minmax(0, 1fr);
+      min-height: 14rem;
+    }
+
+    .card-image {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 14rem;
+    }
+
+    .card-content {
+      min-width: 0;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .header-row {
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .title {
+      display: -webkit-box;
+      line-height: 1.25;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .description {
+      display: -webkit-box;
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .content {
+      display: none;
+    }
+
+    .tags {
+      margin-top: auto;
+      max-height: 3.5rem;
+      overflow: hidden;
+    }
+  }
 </style>
