@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteCard from '../components/NoteCard.astro';
 import LinkCard from '../components/LinkCard.astro';
+import TagExplorer from '../components/TagExplorer.astro';
 import { getCollection } from 'astro:content';
 import { notePublicationTimes } from '../notePublicationTimes';
 
@@ -55,6 +56,16 @@ const allEntries = [
   const bKey = `${b.type}:${b.data.id}`;
   return bKey.localeCompare(aKey);
 });
+
+const tagCounts = new Map<string, number>();
+for (const entry of [...notes, ...links]) {
+  for (const tag of new Set(entry.data.tags)) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+
+const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 ---
 <BaseLayout title="Commonplace Book">
   <div class="feed-header">
@@ -62,44 +73,59 @@ const allEntries = [
     <p>A collection of thoughts, notes, and interesting links.</p>
   </div>
 
-  <div class="feed">
+  <TagExplorer
+    tags={tagOptions}
+    totalEntries={allEntries.length}
+    noteCount={notes.length}
+    linkCount={links.length}
+  />
+
+  <div class="feed" id="entries" data-entry-feed>
     {allEntries.map((entry: any) => {
-      if (entry.type === 'note') {
-        const noteData = entry.data.data;
-        return (
-          <NoteCard 
-            title={noteData.title}
-            description={noteData.description}
-            heroImage={noteData.heroImage}
-            heroImageAlt={noteData.heroImageAlt}
-            slug={entry.data.id}
-            date={noteData.date}
-            tags={noteData.tags}
-            preview={createExcerpt(entry.data.body)}
-          />
-        );
-      } else if (entry.type === 'link') {
-        const linkData = entry.data.data;
-        return (
-          <LinkCard
-            title={linkData.title}
-            url={linkData.url}
-            heroImage={linkData.heroImage}
-            heroImageAlt={linkData.heroImageAlt}
-            slug={entry.data.id}
-            date={linkData.date}
-            tags={linkData.tags}
-            preview={createExcerpt(entry.data.body)}
-          />
-        );
-      }
+      const entryData = entry.data.data;
+      const card = entry.type === 'note' ? (
+        <NoteCard
+          title={entryData.title}
+          description={entryData.description}
+          heroImage={entryData.heroImage}
+          heroImageAlt={entryData.heroImageAlt}
+          slug={entry.data.id}
+          date={entryData.date}
+          tags={entryData.tags}
+          preview={createExcerpt(entry.data.body)}
+        />
+      ) : (
+        <LinkCard
+          title={entryData.title}
+          url={entryData.url}
+          heroImage={entryData.heroImage}
+          heroImageAlt={entryData.heroImageAlt}
+          slug={entry.data.id}
+          date={entryData.date}
+          tags={entryData.tags}
+          preview={createExcerpt(entry.data.body)}
+        />
+      );
+
+      return (
+        <div
+          class="feed-item"
+          data-entry-card
+          data-entry-type={entry.type}
+          data-entry-tags={JSON.stringify(entryData.tags)}
+          data-entry-timestamp={getPublishedTimestamp(entry)}
+          data-entry-title={entryData.title}
+        >
+          {card}
+        </div>
+      );
     })}
   </div>
 </BaseLayout>
 
 <style>
   .feed-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     text-align: center;
   }
   .feed-header h1 {
@@ -115,6 +141,10 @@ const allEntries = [
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    scroll-margin-top: 1rem;
+  }
+  .feed-item {
+    min-width: 0;
   }
   .feed :global(.note-card),
   .feed :global(.link-card) {

@@ -37,7 +37,11 @@ const formattedDate = date.toLocaleDateString('en-US', {
     {tags.length > 0 && (
       <div class="tags">
         {tags.map((tag) => (
-          <span class="tag">#{tag}</span>
+          <a
+            class="tag"
+            href={`/?tag=${encodeURIComponent(tag)}#entries`}
+            data-entry-tag={tag}
+          >#{tag}</a>
         ))}
       </div>
     )}
@@ -115,6 +119,11 @@ const formattedDate = date.toLocaleDateString('en-US', {
     border-radius: 4px;
     font-size: 0.75rem;
     color: var(--text-secondary);
+    position: relative;
+    z-index: 1;
+  }
+  .tag:hover {
+    color: var(--link-color);
   }
 
   @media (max-width: 480px) {

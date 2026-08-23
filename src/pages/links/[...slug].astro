@@ -31,7 +31,7 @@ const formattedDate = link.data.date.toLocaleDateString('en-US', {
         {link.data.tags.length > 0 && (
           <div class="tags">
             {link.data.tags.map((tag: string) => (
-              <span class="tag">#{tag}</span>
+              <a class="tag" href={`/?tag=${encodeURIComponent(tag)}#entries`}>#{tag}</a>
             ))}
           </div>
         )}
@@ -123,6 +123,10 @@ const formattedDate = link.data.date.toLocaleDateString('en-US', {
     border-radius: 4px;
     font-size: 0.75rem;
     color: var(--text-secondary);
+  }
+  .tag:hover {
+    border-color: var(--link-color);
+    color: var(--link-color);
   }
   .source-link {
     display: inline-flex;

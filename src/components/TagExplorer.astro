@@ -1,0 +1,448 @@
+---
+interface TagOption {
+  name: string;
+  count: number;
+}
+
+interface Props {
+  tags: TagOption[];
+  totalEntries: number;
+  noteCount: number;
+  linkCount: number;
+}
+
+const { tags, totalEntries, noteCount, linkCount } = Astro.props;
+const featuredTags = [...tags]
+  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+  .slice(0, 10);
+---
+
+<section class="tag-explorer glass-panel" data-tag-explorer aria-labelledby="tag-explorer-title">
+  <div class="explorer-heading">
+    <div>
+      <p class="eyebrow">Explore the commonplace</p>
+      <h2 id="tag-explorer-title">Follow a thread</h2>
+    </div>
+    <button class="clear-button" type="button" data-clear-filters hidden>Clear filters</button>
+  </div>
+
+  <nav class="featured-tags" aria-label="Featured tags">
+    <a class="tag-filter is-active" href="/#entries" data-tag-filter="">
+      <span>Everything</span>
+      <span class="tag-count">{totalEntries}</span>
+    </a>
+    {featuredTags.map((tag) => (
+      <a
+        class="tag-filter"
+        href={`/?tag=${encodeURIComponent(tag.name)}#entries`}
+        data-tag-filter={tag.name}
+      >
+        <span>#{tag.name}</span>
+        <span class="tag-count">{tag.count}</span>
+      </a>
+    ))}
+  </nav>
+
+  <details class="all-tags-panel" data-all-tags-panel>
+    <summary>Browse all {tags.length} tags</summary>
+    <div class="all-tags-content">
+      <label class="tag-search">
+        <span>Find a tag</span>
+        <input type="search" placeholder="Search tags…" autocomplete="off" data-tag-search />
+      </label>
+      <nav class="all-tags" aria-label="All tags">
+        {tags.map((tag) => (
+          <a
+            class="tag-filter"
+            href={`/?tag=${encodeURIComponent(tag.name)}#entries`}
+            data-tag-filter={tag.name}
+            data-searchable-tag={tag.name.toLowerCase()}
+          >
+            <span>#{tag.name}</span>
+            <span class="tag-count">{tag.count}</span>
+          </a>
+        ))}
+      </nav>
+      <p class="no-tag-matches" data-no-tag-matches hidden>No matching tags.</p>
+    </div>
+  </details>
+
+  <div class="explorer-toolbar">
+    <div class="select-controls">
+      <label>
+        <span>Show</span>
+        <select data-type-filter>
+          <option value="all">Everything ({totalEntries})</option>
+          <option value="note">Notes ({noteCount})</option>
+          <option value="link">Links ({linkCount})</option>
+        </select>
+      </label>
+      <label>
+        <span>Order</span>
+        <select data-sort-filter>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title A–Z</option>
+        </select>
+      </label>
+    </div>
+    <p class="result-count" data-result-count aria-live="polite">
+      {totalEntries} entries
+    </p>
+  </div>
+
+  <p class="no-results" data-no-results hidden>
+    No entries match this combination. Try another tag or clear the filters.
+  </p>
+</section>
+
+<script>
+  const explorer = document.querySelector<HTMLElement>('[data-tag-explorer]');
+  const feed = document.querySelector<HTMLElement>('[data-entry-feed]');
+
+  if (explorer && feed) {
+    const cards = Array.from(feed.querySelectorAll<HTMLElement>('[data-entry-card]'));
+    const tagFilters = Array.from(explorer.querySelectorAll<HTMLAnchorElement>('[data-tag-filter]'));
+    const entryTagLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-entry-tag]'));
+    const searchableTags = Array.from(explorer.querySelectorAll<HTMLElement>('[data-searchable-tag]'));
+    const typeFilter = explorer.querySelector<HTMLSelectElement>('[data-type-filter]');
+    const sortFilter = explorer.querySelector<HTMLSelectElement>('[data-sort-filter]');
+    const clearButton = explorer.querySelector<HTMLButtonElement>('[data-clear-filters]');
+    const resultCount = explorer.querySelector<HTMLElement>('[data-result-count]');
+    const noResults = explorer.querySelector<HTMLElement>('[data-no-results]');
+    const tagSearch = explorer.querySelector<HTMLInputElement>('[data-tag-search]');
+    const noTagMatches = explorer.querySelector<HTMLElement>('[data-no-tag-matches]');
+    const allTagsPanel = explorer.querySelector<HTMLDetailsElement>('[data-all-tags-panel]');
+
+    let activeTag = '';
+    let activeType = 'all';
+    let activeSort = 'newest';
+
+    const normalize = (value: string) => value.trim().toLowerCase();
+
+    const readUrlState = () => {
+      const params = new URLSearchParams(window.location.search);
+      activeTag = normalize(params.get('tag') ?? '');
+      activeType = ['note', 'link'].includes(params.get('type') ?? '')
+        ? params.get('type')!
+        : 'all';
+      activeSort = ['oldest', 'title'].includes(params.get('sort') ?? '')
+        ? params.get('sort')!
+        : 'newest';
+
+      if (typeFilter) typeFilter.value = activeType;
+      if (sortFilter) sortFilter.value = activeSort;
+    };
+
+    const writeUrlState = () => {
+      const url = new URL(window.location.href);
+
+      if (activeTag) url.searchParams.set('tag', activeTag);
+      else url.searchParams.delete('tag');
+
+      if (activeType !== 'all') url.searchParams.set('type', activeType);
+      else url.searchParams.delete('type');
+
+      if (activeSort !== 'newest') url.searchParams.set('sort', activeSort);
+      else url.searchParams.delete('sort');
+
+      url.hash = 'entries';
+      window.history.pushState({}, '', url);
+    };
+
+    const applyFilters = (updateUrl = false) => {
+      const orderedCards = [...cards].sort((a, b) => {
+        if (activeSort === 'title') {
+          return (a.dataset.entryTitle ?? '').localeCompare(b.dataset.entryTitle ?? '');
+        }
+
+        const direction = activeSort === 'oldest' ? 1 : -1;
+        return direction * (Number(a.dataset.entryTimestamp) - Number(b.dataset.entryTimestamp));
+      });
+
+      let visibleCount = 0;
+      orderedCards.forEach((card) => {
+        const tags = JSON.parse(card.dataset.entryTags ?? '[]') as string[];
+        const matchesTag = !activeTag || tags.map(normalize).includes(activeTag);
+        const matchesType = activeType === 'all' || card.dataset.entryType === activeType;
+        card.hidden = !(matchesTag && matchesType);
+        if (!card.hidden) visibleCount += 1;
+        feed.append(card);
+      });
+
+      tagFilters.forEach((filter) => {
+        const isActive = normalize(filter.dataset.tagFilter ?? '') === activeTag;
+        filter.classList.toggle('is-active', isActive);
+        if (isActive) filter.setAttribute('aria-current', 'true');
+        else filter.removeAttribute('aria-current');
+      });
+
+      const description = [
+        `${visibleCount} ${visibleCount === 1 ? 'entry' : 'entries'}`,
+        activeTag ? `tagged #${activeTag}` : '',
+        activeType === 'note' ? 'among notes' : activeType === 'link' ? 'among links' : '',
+      ].filter(Boolean).join(' ');
+
+      if (resultCount) resultCount.textContent = description;
+      if (noResults) noResults.hidden = visibleCount !== 0;
+      if (clearButton) {
+        clearButton.hidden = !activeTag && activeType === 'all' && activeSort === 'newest';
+      }
+
+      const activeFeaturedTag = explorer.querySelector(`.featured-tags [data-tag-filter="${CSS.escape(activeTag)}"]`);
+      if (activeTag && !activeFeaturedTag && allTagsPanel) allTagsPanel.open = true;
+
+      if (updateUrl) writeUrlState();
+    };
+
+    tagFilters.forEach((filter) => {
+      filter.addEventListener('click', (event) => {
+        event.preventDefault();
+        activeTag = normalize(filter.dataset.tagFilter ?? '');
+        applyFilters(true);
+      });
+    });
+
+    entryTagLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        activeTag = normalize(link.dataset.entryTag ?? '');
+        applyFilters(true);
+        explorer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    typeFilter?.addEventListener('change', () => {
+      activeType = typeFilter.value;
+      applyFilters(true);
+    });
+
+    sortFilter?.addEventListener('change', () => {
+      activeSort = sortFilter.value;
+      applyFilters(true);
+    });
+
+    clearButton?.addEventListener('click', () => {
+      activeTag = '';
+      activeType = 'all';
+      activeSort = 'newest';
+      if (typeFilter) typeFilter.value = activeType;
+      if (sortFilter) sortFilter.value = activeSort;
+      applyFilters(true);
+    });
+
+    tagSearch?.addEventListener('input', () => {
+      const query = normalize(tagSearch.value);
+      let matches = 0;
+      searchableTags.forEach((tag) => {
+        const isMatch = (tag.dataset.searchableTag ?? '').includes(query);
+        tag.hidden = !isMatch;
+        if (isMatch) matches += 1;
+      });
+      if (noTagMatches) noTagMatches.hidden = matches !== 0;
+    });
+
+    window.addEventListener('popstate', () => {
+      readUrlState();
+      applyFilters();
+    });
+
+    readUrlState();
+    applyFilters();
+  }
+</script>
+
+<style>
+  .tag-explorer {
+    background: linear-gradient(145deg, var(--surface-color), var(--glass-bg));
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    padding: 1.25rem;
+    position: relative;
+    scroll-margin-top: 1rem;
+  }
+  .tag-explorer::before {
+    background: linear-gradient(90deg, #ff1493, #93ff14, #1493ff);
+    content: '';
+    height: 3px;
+    inset: 0 0 auto;
+    opacity: 0.75;
+    position: absolute;
+  }
+  .explorer-heading {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  .eyebrow {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.2rem;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin-bottom: 0.9rem;
+  }
+  .clear-button {
+    background: transparent;
+    border: 0;
+    color: var(--link-color);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.8rem;
+    padding: 0.35rem 0;
+  }
+  .clear-button:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .featured-tags,
+  .all-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .tag-filter {
+    align-items: center;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    display: inline-flex;
+    font-size: 0.78rem;
+    gap: 0.4rem;
+    line-height: 1;
+    padding: 0.45rem 0.65rem;
+  }
+  .tag-filter:hover {
+    border-color: var(--link-color);
+    color: var(--text-primary);
+  }
+  .tag-filter.is-active {
+    background: var(--link-color);
+    border-color: var(--link-color);
+    color: #fff;
+  }
+  .tag-count {
+    border-left: 1px solid currentColor;
+    opacity: 0.7;
+    padding-left: 0.4rem;
+  }
+  .all-tags-panel {
+    border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+  }
+  .all-tags-panel summary {
+    color: var(--link-color);
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    width: fit-content;
+  }
+  .all-tags-content {
+    padding-top: 0.9rem;
+  }
+  .tag-search {
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .tag-search span {
+    color: var(--text-secondary);
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+  }
+  .tag-search input,
+  select {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font: inherit;
+  }
+  .tag-search input {
+    max-width: 22rem;
+    padding: 0.55rem 0.7rem;
+    width: 100%;
+  }
+  .all-tags {
+    max-height: 12rem;
+    overflow-y: auto;
+    padding: 0.1rem 0.2rem 0.1rem 0;
+  }
+  .no-tag-matches,
+  .no-results {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0.75rem 0 0;
+  }
+  .explorer-toolbar {
+    align-items: end;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  .select-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .select-controls label span {
+    color: var(--text-secondary);
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+  }
+  select {
+    min-width: 9.5rem;
+    padding: 0.45rem 2rem 0.45rem 0.6rem;
+  }
+  .result-count {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin: 0 0 0.45rem;
+    text-align: right;
+  }
+
+  @media (max-width: 620px) {
+    .tag-explorer {
+      padding: 1rem;
+    }
+    .explorer-toolbar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .select-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    select {
+      min-width: 0;
+      width: 100%;
+    }
+    .result-count {
+      margin: 0;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .select-controls {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
