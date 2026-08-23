@@ -20,6 +20,8 @@ const linksCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     url: z.string().url(),
+    heroImage: z.string(),
+    heroImageAlt: z.string(),
     date: z.date(),
     publishedAt: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),

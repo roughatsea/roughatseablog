@@ -1,6 +1,8 @@
 ---
 title: "ExplainShell"
 url: "https://explainshell.com/"
+heroImage: "/images/links/explainshell.webp"
+heroImageAlt: "A glowing command pipeline splits into diagrams and reference manuals in a dark technical archive."
 date: 2026-08-09
 tags: ["shell", "linux", "developer-tools"]
 ---
