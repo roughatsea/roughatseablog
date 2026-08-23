@@ -2,10 +2,12 @@
 interface Props {
   title: string;
   url: string;
+  slug: string;
   date: Date;
   tags: string[];
+  preview: string;
 }
-const { title, url, date, tags } = Astro.props;
+const { title, url, slug, date, tags, preview } = Astro.props;
 
 // Formatting the date nicely
 const formattedDate = date.toLocaleDateString('en-US', {
@@ -18,22 +20,25 @@ const formattedDate = date.toLocaleDateString('en-US', {
   <div class="card-content">
     <div class="header-row">
       <h3 class="title">
-        <a href={url} target="_blank" rel="noopener noreferrer">{title}</a>
+        <a href={`/links/${slug}`}>{title}</a>
       </h3>
-      <svg class="external-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
     </div>
-    <div class="description">
-      <slot />
-    </div>
+    {preview && <p class="description">{preview}</p>}
     <div class="footer-row">
-      <span class="date">{formattedDate}</span>
-      {tags.length > 0 && (
-        <div class="tags">
-          {tags.map((tag) => (
-            <span class="tag">#{tag}</span>
-          ))}
-        </div>
-      )}
+      <div class="metadata">
+        <span class="date">{formattedDate}</span>
+        {tags.length > 0 && (
+          <div class="tags">
+            {tags.map((tag) => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      <a class="source-link" href={url} target="_blank" rel="noopener noreferrer">
+        Visit source
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
     </div>
   </div>
 </div>
@@ -50,10 +55,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
     color: inherit;
     position: relative;
   }
-  .header-row {
+  .card-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  .header-row {
     margin-bottom: 0.75rem;
   }
   .title {
@@ -69,34 +76,50 @@ const formattedDate = date.toLocaleDateString('en-US', {
     position: absolute;
     inset: 0;
   }
-  .external-icon {
-    color: var(--text-secondary);
-    opacity: 0.6;
-  }
   .description {
     font-size: 1rem;
     line-height: 1.6;
     color: var(--text-secondary);
     margin-bottom: 1.25rem;
   }
-  .description :global(p:last-child) {
-    margin-bottom: 0;
-  }
   .footer-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
+    gap: 1rem;
     font-size: 0.875rem;
     color: var(--text-secondary);
+    margin-top: auto;
+  }
+  .metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
   }
   .tags {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
   }
   .tag {
     background: var(--bg-color);
     padding: 0.125rem 0.375rem;
     border-radius: 4px;
     font-size: 0.75rem;
+  }
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--link-color);
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+  }
+  .source-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 </style>

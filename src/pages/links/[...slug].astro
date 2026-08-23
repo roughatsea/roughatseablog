@@ -1,0 +1,123 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const links = await getCollection('links');
+  return links.map((link: any) => ({
+    params: { slug: link.id },
+    props: { link },
+  }));
+}
+
+const { link } = Astro.props as any;
+const { Content } = await render(link);
+
+const formattedDate = link.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
+---
+<BaseLayout title={link.data.title}>
+  <article class="link-container">
+    <header class="link-header">
+      <div class="meta">
+        <a href="/" class="back-link">&larr; Back</a>
+        <time class="date">{formattedDate}</time>
+      </div>
+      <h1 class="title">{link.data.title}</h1>
+      <div class="header-footer">
+        {link.data.tags.length > 0 && (
+          <div class="tags">
+            {link.data.tags.map((tag: string) => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </div>
+        )}
+        <a class="source-link" href={link.data.url} target="_blank" rel="noopener noreferrer">
+          Visit original source
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+      </div>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .link-container {
+    padding-bottom: 4rem;
+  }
+  .link-header {
+    margin-bottom: 3rem;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .back-link {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  .back-link:hover {
+    color: var(--text-primary);
+  }
+  .date {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  .title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+  .header-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--link-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .source-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 560px) {
+    .title {
+      font-size: 2.25rem;
+    }
+    .header-footer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
