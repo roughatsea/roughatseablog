@@ -67,10 +67,17 @@ for (const entry of [...notes, ...links]) {
 const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
   .sort((a, b) => a.name.localeCompare(b.name));
 ---
-<BaseLayout title="Commonplace Book">
+<BaseLayout
+  title="Rough at Sea"
+  description="A personal logbook of ideas, deep dives, and useful signals found in uncertain waters."
+>
   <div class="feed-header">
-    <h1>The Commonplace</h1>
-    <p>A collection of thoughts, notes, and interesting links.</p>
+    <p class="eyebrow">Notes from uncertain waters</p>
+    <h1>Rough at Sea</h1>
+    <p>A logbook of ideas, deep dives, and useful signals found while wandering off the algorithmic map.</p>
+    <svg class="wave-rule" aria-hidden="true" viewBox="0 0 180 18" fill="none">
+      <path d="M2 5c11 0 11 8 22 8s11-8 22-8 11 8 22 8 11-8 22-8 11 8 22 8 11-8 22-8 11 8 22 8 11-8 22-8" />
+    </svg>
   </div>
 
   <TagExplorer
@@ -130,12 +137,33 @@ const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
   }
   .feed-header h1 {
     font-family: var(--font-serif);
-    font-size: 3rem;
+    font-size: clamp(3rem, 8vw, 5rem);
+    letter-spacing: -0.035em;
     margin-bottom: 0.5rem;
+  }
+  .feed-header .eyebrow {
+    color: var(--link-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
   }
   .feed-header p {
     color: var(--text-secondary);
     font-size: 1.125rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 44rem;
+  }
+  .wave-rule {
+    color: var(--link-color);
+    height: 1rem;
+    margin-top: 0.25rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2;
+    width: 9rem;
   }
   .feed {
     display: grid;

@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="About Rough at Sea, a personal logbook for ideas, deep dives, and useful discoveries."
+>
+  <article class="about-page">
+    <header class="about-header">
+      <p class="eyebrow">About this logbook</p>
+      <h1>Rough at Sea</h1>
+      <p class="lede">
+        Rough at Sea is a place for ideas worth holding onto: long-form notes, practical
+        explainers, strange discoveries, and useful links that deserve a home outside an
+        algorithmic feed.
+      </p>
+    </header>
+
+    <div class="about-sections">
+      <section>
+        <h2>What you’ll find here</h2>
+        <p>
+          The subjects change with the current—software, artificial intelligence, games,
+          books, science, medicine, music, and whatever else proves difficult to stop thinking
+          about. The common thread is curiosity rather than a single niche.
+        </p>
+      </section>
+
+      <section>
+        <h2>Why “Rough at Sea”?</h2>
+        <!-- Replace this paragraph with the story behind the site's name. -->
+        <p class="placeholder">
+          [Use this space to explain what the name means to you, where it came from, and why it
+          fits the kind of work you want to make.]
+        </p>
+      </section>
+
+      <section>
+        <h2>About the author</h2>
+        <!-- Replace this paragraph with your preferred public biography. -->
+        <p class="placeholder">
+          [Introduce yourself here. A few sentences about who you are, what you work on, and
+          the questions or projects that keep pulling you back would be plenty.]
+        </p>
+      </section>
+
+      <section>
+        <h2>Contact and elsewhere</h2>
+        <!-- Add only the contact methods and profiles you want to make public. -->
+        <p class="placeholder">
+          [Add an email address, social profile, YouTube channel, or any other place where
+          readers can find your work.]
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding-bottom: 4rem;
+  }
+  .about-header {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    position: relative;
+  }
+  .about-header::after {
+    background: linear-gradient(90deg, #ff1493, #93ff14, #1493ff);
+    bottom: -2px;
+    content: '';
+    height: 3px;
+    left: 0;
+    position: absolute;
+    width: 7rem;
+  }
+  .eyebrow {
+    color: var(--link-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 9vw, 4.75rem);
+    letter-spacing: -0.035em;
+    margin-bottom: 1rem;
+  }
+  .lede {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+  .about-sections {
+    display: grid;
+    gap: 2.25rem;
+  }
+  section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin-bottom: 0.65rem;
+  }
+  section p {
+    line-height: 1.8;
+    margin: 0;
+  }
+  .placeholder {
+    border-left: 3px solid var(--border-color);
+    color: var(--text-secondary);
+    font-style: italic;
+    padding-left: 1rem;
+  }
+</style>

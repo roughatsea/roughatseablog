@@ -9,7 +9,8 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "A commonplace book." } = Astro.props;
+const { title, description = "Notes, links, and useful signals gathered in uncertain waters." } = Astro.props;
+const pageTitle = title === 'Rough at Sea' ? title : `${title} · Rough at Sea`;
 ---
 
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ const { title, description = "A commonplace book." } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script is:inline>
@@ -36,6 +37,16 @@ const { title, description = "A commonplace book." } = Astro.props;
 
       if (typeof localStorage !== 'undefined' && localStorage.getItem('toxic-sunrise') === 'on') {
         document.documentElement.setAttribute('data-toxic-sunrise', 'true');
+      }
+
+      try {
+        const hasActiveTag = new URLSearchParams(window.location.search).has('tag');
+        const explorerIsCollapsed = localStorage.getItem('roughatsea-tag-explorer-collapsed') === 'true';
+        if (explorerIsCollapsed && !hasActiveTag) {
+          document.documentElement.setAttribute('data-tag-explorer-collapsed', 'true');
+        }
+      } catch {
+        // The explorer simply starts open if storage is unavailable.
       }
     </script>
   </head>

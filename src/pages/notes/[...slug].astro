@@ -30,7 +30,7 @@ const formattedDate = note.data.date.toLocaleDateString('en-US', {
       {note.data.tags.length > 0 && (
         <div class="tags">
           {note.data.tags.map((tag: string) => (
-            <a class="tag" href={`/?tag=${encodeURIComponent(tag)}#entries`}>#{tag}</a>
+            <a class="tag" href={`/?tag=${encodeURIComponent(tag)}#tag-explorer`}>#{tag}</a>
           ))}
         </div>
       )}

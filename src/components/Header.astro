@@ -1,59 +1,158 @@
 ---
+const pathname = Astro.url.pathname;
 ---
+
 <header class="glass-panel">
   <div class="header-content container">
-    <a href="/" class="logo">Commonplace Book</a>
-    <button id="theme-toggle" aria-label="Toggle Dark Mode">
-      <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-      <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-    </button>
+    <a href="/" class="brand" aria-label="Rough at Sea home">
+      <svg class="brand-mark" aria-hidden="true" viewBox="0 0 48 32" fill="none">
+        <path d="M3 11c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5S29 6 34.2 6s5.2 5 10.4 5" />
+        <path d="M3 20c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5 5.2-5 10.4-5 5.2 5 10.4 5" />
+        <path d="M3 29c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5 5.2-5 10.4-5 5.2 5 10.4 5" />
+      </svg>
+      <span class="brand-copy">
+        <span class="logo">Rough at Sea</span>
+        <span class="brand-line">A logbook for curious waters</span>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <nav aria-label="Primary navigation">
+        <a href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
+        <a href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>About</a>
+      </nav>
+      <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="sun-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
   </div>
 </header>
 
 <style>
   header {
+    margin-bottom: 3rem;
+    padding: 0.8rem 0;
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: 1rem 0;
-    margin-bottom: 3rem;
+  }
+  .header-content,
+  .header-actions,
+  .brand,
+  nav {
+    align-items: center;
+    display: flex;
   }
   .header-content {
-    display: flex;
     justify-content: space-between;
-    align-items: center;
+  }
+  .brand {
+    gap: 0.7rem;
+    min-width: 0;
+  }
+  .brand-mark {
+    color: var(--link-color);
+    flex: 0 0 auto;
+    height: 1.75rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2.5;
+    width: 2.65rem;
+  }
+  .brand-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
   }
   .logo {
-    font-weight: 600;
+    font-family: var(--font-serif);
     font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .brand-line {
+    color: var(--text-secondary);
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    margin-top: 0.18rem;
+    text-transform: uppercase;
+  }
+  .header-actions {
+    gap: 0.8rem;
+  }
+  nav {
+    gap: 0.2rem;
+  }
+  nav a {
+    border-radius: 999px;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    padding: 0.4rem 0.65rem;
+  }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    background: var(--bg-color);
+    color: var(--text-primary);
+  }
+  nav a[aria-current='page'] {
+    box-shadow: inset 0 0 0 1px var(--border-color);
   }
   #theme-toggle {
+    align-items: center;
     background: none;
     border: none;
+    border-radius: 50%;
     color: var(--text-primary);
     cursor: pointer;
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 0.5rem;
-    border-radius: 50%;
     transition: background-color 0.2s ease;
   }
   #theme-toggle:hover {
     background-color: var(--border-color);
   }
-  
-  :global([data-theme="dark"]) .sun-icon { display: block; }
-  :global([data-theme="dark"]) .moon-icon { display: none; }
-  :global(:root:not([data-theme="dark"])) .sun-icon { display: none; }
-  :global(:root:not([data-theme="dark"])) .moon-icon { display: block; }
+
+  :global([data-theme='dark']) .sun-icon { display: block; }
+  :global([data-theme='dark']) .moon-icon { display: none; }
+  :global(:root:not([data-theme='dark'])) .sun-icon { display: none; }
+  :global(:root:not([data-theme='dark'])) .moon-icon { display: block; }
+
+  @media (max-width: 600px) {
+    header {
+      margin-bottom: 2.25rem;
+    }
+    .brand-line {
+      display: none;
+    }
+    .brand-mark {
+      height: 1.45rem;
+      width: 2.2rem;
+    }
+    .logo {
+      font-size: 1.05rem;
+    }
+    .header-actions {
+      gap: 0.2rem;
+    }
+    nav a {
+      font-size: 0.76rem;
+      padding: 0.35rem 0.5rem;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .brand-mark {
+      display: none;
+    }
+  }
 </style>
 
 <script>
   const handleToggleClick = () => {
     const element = document.documentElement;
     const isDark = element.getAttribute('data-theme') === 'dark';
-    
+
     if (isDark) {
       element.removeAttribute('data-theme');
       localStorage.setItem('theme', 'light');
