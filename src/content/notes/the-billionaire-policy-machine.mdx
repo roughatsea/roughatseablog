@@ -1,0 +1,68 @@
+---
+title: "The Billionaire Policy Machine"
+description: "An interactive, source-linked catalog of 59 federal and state policy records since 2000—and 23 final-passage roll calls showing who voted for and against them."
+heroImage: "/images/notes/the-billionaire-policy-machine.svg"
+heroImageAlt: "An editorial diagram of tax laws moving through a timeline into a split field of recorded votes, with state markers arranged around the edges."
+date: 2026-08-22T12:00:00Z
+tags: ["politics", "taxes", "billionaires", "data", "interactive"]
+---
+import BillionairePolicyExplorer from '../../components/BillionairePolicyExplorer';
+
+The richest people in America do not live inside a single tax system. They live at the intersection of federal rules, state taxes, trust codes, constitutional limits, and deals written for very large companies or projects. Looking only for a bill with “billionaire” in its title would miss almost everything.
+
+So I built a different kind of ledger: **59 evidence-screened records** covering 12 federal laws and 47 state laws or linked legislative series enacted from 2000 through August 22, 2026. It follows the ten states that ranked highest in a July 2025 billionaire-per-capita snapshot, then attaches the federal final-passage record wherever Congress held a roll-call vote.
+
+The result is not a villain scoreboard. It is a way to inspect the machinery, read the limiting evidence, and see the names on both sides of 23 official congressional roll calls.
+
+<BillionairePolicyExplorer client:visible />
+
+## What counts here
+
+No statute in this catalog says “this benefit is for billionaires.” Wealth is also not the same thing as taxable income. The test is narrower: **does an enacted provision confer a benefit whose value is structurally concentrated among owners of very large fortunes, estates, pass-through income, capital gains, trusts, or corporate equity?**
+
+Every record carries one of four evidence labels:
+
+| Label | Meaning | Why the distinction matters |
+|---|---|---|
+| **A — Concentrated tax benefit** | The relevant base—large estates, capital gains, or high pass-through income—is concentrated near the top. | The legal benefit may be available to others, but its dollar value scales sharply with wealth or qualifying income. |
+| **S — Structural shield** | Trust law protects control or assets, or a constitutional rule blocks a future tax on capital, transfers, wealth, or high incomes. | These provisions often preserve an advantageous baseline rather than cut a current tax bill. |
+| **B — Business or project benefit** | A large corporate tax preference or project subsidy benefits a firm in which very wealthy owners may hold equity. | Corporate-tax incidence is contested; a company benefit is not automatically a personal transfer to its richest shareholder. |
+| **M — Mixed package** | A top-heavy provision sits inside a law with broad credits, spending, relief, or offsetting tax increases. | A vote for the package cannot honestly be read as a vote for only its billionaire-favorable component. |
+
+That last category does a lot of work. The 2009 stimulus made the qualified-small-business-stock exclusion more generous, but it also financed a vast recession response. The 2010 tax compromise protected favorable rates on estates and investment income while extending unemployment insurance and cutting payroll taxes. The 2012 fiscal-cliff deal preserved a large estate-tax exemption but raised the top income and investment rates. A single ideological label would erase the actual bargain.
+
+## The state policy is often architecture, not a rate cut
+
+The federal story centers on capital income, estates, pass-through businesses, and corporate tax. The states add several different forms of policy competition.
+
+Wyoming, Nevada, Montana, Illinois, and Florida repeatedly revised trust law: longer permissible duration, asset-protection trusts, directed trusts, decanting, sealed proceedings, or rules meant to attract trust administration. Those statutes can matter enormously to a family controlling a concentrated business across generations. They can also serve ordinary estate planning, and they do not by themselves erase federal tax. The explorer keeps that caveat attached to the record.
+
+New York, California, Connecticut, Massachusetts, Illinois, and Montana enacted elective pass-through entity taxes after the IRS said entity-level state income taxes could remain deductible under the federal SALT cap. The mechanism is a workaround, not usually a state revenue giveaway: a partnership or S corporation pays at the entity level, owners receive state credits or exclusions, and the federal deduction grows with eligible pass-through income. [IRS Notice 2020-75 explains the federal treatment.](https://www.irs.gov/pub/irs-drop/n-20-75.pdf)
+
+Texas took a different route. In addition to large-project tax programs, voters approved prospective constitutional barriers against individual income taxes and several possible taxes on capital, securities transactions, wealth, and transfers. These measures did not repeal taxes already being collected. They made future adoption harder or impossible under the state constitution.
+
+## What a “yes” vote means—and what it does not
+
+For each federal entry, the explorer uses the official [House Clerk](https://clerk.house.gov/Votes) and [Senate](https://www.senate.gov/legislative/votes_new.htm) final-passage or conference-report roll calls. Party is the affiliation reported on the date of that vote. The roster excludes “present” and “not voting” from the for-and-against totals, and it separately identifies vice-presidential tie breakers.
+
+These are votes on whole laws. They are **not** proof that a member supported every provision, preferred the high-wealth provision, wrote it, or personally benefited from it. The 2020 CARES Act makes the limitation especially visible: the Senate recorded a 96–0 roll call, while the House passed the measure by voice vote, so there is no House member-by-member final-passage roster to invent.
+
+State vote systems are much less uniform. Some histories expose machine-readable final votes; others interleave amendments, substitutions, conference reports, gubernatorial actions, and ballot stages. This edition links each state record to its official bill or public-act history but does not normalize thousands of state legislators into a single roster. That is a deliberate boundary: a missing transcription is better than a false claim about party or final passage.
+
+## Patterns worth noticing
+
+The federal vote record does not produce one permanent party split. The 2001, 2003, 2017, and 2025 tax packages were sharply polarized. Other measures were coalitions: 2010’s tax compromise, the fiscal-cliff legislation, the 2015 tax extenders, and the emergency CARES Act drew substantial votes from both parties. Package design and the economic moment changed the coalition.
+
+Nor does billionaire density give us a causal ranking. Wyoming’s 11.89 billionaires per million residents makes it an extreme per-capita outlier, but a small denominator magnifies every resident. California combines enormous absolute wealth with high density. Texas has many billionaire residents but a much lower per-capita rate. The chart puts those facts beside the catalog count so a reader can ask better questions; it does not pretend that one caused the other.
+
+The most durable pattern may be the least cinematic one: wealth policy is cumulative. A rate cut, a larger estate exemption, a trust amendment, a workaround, and a future-tax prohibition can arrive in different years, under different coalitions, and through different legal instruments. No single vote explains the system they eventually form.
+
+## Scope, exclusions, and reproducibility
+
+This is an **evidence-bounded catalog, not a mathematically exhaustive census of every favorable clause** in every appropriations act, revenue bill, and state code revision. Each included record must be enacted, fall within the date and jurisdiction screen, have a primary enactment source, and clear the concentration test above. Linked amendments to the same mechanism may be grouped into one legislative series so the interface does not pretend that every technical revision created a new policy.
+
+The catalog excludes bills that never became law; administrative rulings; monetary policy; ordinary procurement; broad deregulation; baseline no-individual-income-tax systems that predate 2000; and a sector-wide credit merely because one billionaire owns shares in an eligible company. It also excludes Nevada’s original 1999 asset-protection-trust law while retaining later enacted expansions. Automatic state estate-tax changes caused only by the disappearance of the old federal credit are omitted unless a state affirmatively legislated.
+
+The density denominator is the Census Bureau’s [Vintage 2025 population estimate](https://www.census.gov/programs-surveys/popest/data/tables.html). Billionaire residence comes from a [Forbes Real-Time Billionaires](https://www.forbes.com/real-time-billionaires/) snapshot accessed July 24, 2025; residence and fortune estimates change. Distributional judgments use the statutory mechanism and published analysis where available—for example, [CRS on the 2001 tax cut](https://www.everycrsreport.com/reports/RL30973.html), [Tax Policy Center on the 2017 business-tax changes](https://taxpolicycenter.org/briefing-book/how-did-tax-cuts-and-jobs-act-change-business-taxes), and [CBO on the distribution of Public Law 119-21](https://www.cbo.gov/publication/61367). Every policy card links its enactment record and, where used, a separate analytical source.
+
+That makes the project auditable in the useful sense: not because its categories are beyond argument, but because you can inspect the rule, the caveat, the statute, and the recorded vote—and decide where you disagree.

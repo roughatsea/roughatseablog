@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">The Billionaire Policy Machine</title>
+  <desc id="desc">A stylized data timeline connects state policy records to congressional votes for and against.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090b12"/>
+      <stop offset="0.52" stop-color="#10152a"/>
+      <stop offset="1" stop-color="#080a10"/>
+    </linearGradient>
+    <radialGradient id="pinkGlow" cx="0.18" cy="0.25" r="0.7">
+      <stop offset="0" stop-color="#ff1493" stop-opacity="0.27"/>
+      <stop offset="1" stop-color="#ff1493" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blueGlow" cx="0.84" cy="0.63" r="0.62">
+      <stop offset="0" stop-color="#1493ff" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#1493ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="tinyGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#d7deff" stroke-opacity="0.055"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#pinkGlow)"/>
+  <rect width="1600" height="900" fill="url(#blueGlow)"/>
+  <rect x="40" y="40" width="1520" height="820" rx="32" fill="url(#grid)" stroke="#d7deff" stroke-opacity="0.11"/>
+
+  <g font-family="Inter, Arial, sans-serif" fill="#f6f7ff">
+    <text x="112" y="142" font-size="28" font-weight="500" letter-spacing="6" opacity="0.68">ENACTED 2000—2026</text>
+    <text x="112" y="225" font-size="74" font-weight="500">THE BILLIONAIRE</text>
+    <text x="112" y="304" font-size="74" font-weight="500">POLICY MACHINE</text>
+    <text x="113" y="350" font-size="24" letter-spacing="2" opacity="0.64">LAWS  •  MECHANISMS  •  ROLL-CALL VOTES</text>
+  </g>
+
+  <g transform="translate(112 426)" font-family="Inter, Arial, sans-serif">
+    <g fill="#f6f7ff" opacity="0.58" font-size="16" letter-spacing="2">
+      <text x="0" y="0">STATE DENSITY</text>
+      <text x="414" y="0">POLICY TIMELINE</text>
+      <text x="1110" y="0">VOTE SPLIT</text>
+    </g>
+
+    <g transform="translate(0 42)">
+      <path d="M0 0H272M0 46H272M0 92H272M0 138H272M0 184H272M0 230H272M0 276H272" stroke="#f6f7ff" stroke-opacity="0.12"/>
+      <g fill="#f6f7ff" opacity="0.72" font-size="17">
+        <text x="0" y="6">WY</text><text x="0" y="52">NY</text><text x="0" y="98">NV</text>
+        <text x="0" y="144">MT</text><text x="0" y="190">CA</text><text x="0" y="236">FL</text><text x="0" y="282">OTHER</text>
+      </g>
+      <g stroke="#93ff14" stroke-width="4" stroke-linecap="round" filter="url(#tinyGlow)">
+        <path d="M58 0H260"/><path d="M58 46H174"/><path d="M58 92H157"/>
+        <path d="M58 138H147"/><path d="M58 184H143"/><path d="M58 230H141"/><path d="M58 276H106"/>
+      </g>
+      <g fill="#93ff14">
+        <circle cx="260" cy="0" r="8"/><circle cx="174" cy="46" r="8"/><circle cx="157" cy="92" r="8"/>
+        <circle cx="147" cy="138" r="8"/><circle cx="143" cy="184" r="8"/><circle cx="141" cy="230" r="8"/><circle cx="106" cy="276" r="8"/>
+      </g>
+    </g>
+
+    <g transform="translate(390 38)">
+      <path d="M0 144H610" stroke="#f6f7ff" stroke-opacity="0.3" stroke-width="2"/>
+      <g stroke="#f6f7ff" stroke-opacity="0.22">
+        <path d="M0 129V159"/><path d="M141 129V159"/><path d="M282 129V159"/><path d="M423 129V159"/><path d="M610 129V159"/>
+      </g>
+      <g fill="#f6f7ff" opacity="0.55" font-size="15">
+        <text x="0" y="188">2000</text><text x="129" y="188">2006</text><text x="270" y="188">2012</text>
+        <text x="411" y="188">2018</text><text x="576" y="188">2026</text>
+      </g>
+      <g stroke-linecap="round" filter="url(#tinyGlow)">
+        <g stroke="#ff1493" fill="#ff1493">
+          <path d="M24 144V83"/><circle cx="24" cy="76" r="7"/>
+          <path d="M71 144V50"/><circle cx="71" cy="43" r="7"/>
+          <path d="M118 144V101"/><circle cx="118" cy="94" r="7"/>
+          <path d="M212 144V66"/><circle cx="212" cy="59" r="7"/>
+          <path d="M306 144V91"/><circle cx="306" cy="84" r="7"/>
+          <path d="M400 144V39"/><circle cx="400" cy="32" r="7"/>
+          <path d="M494 144V73"/><circle cx="494" cy="66" r="7"/>
+          <path d="M588 144V44"/><circle cx="588" cy="37" r="7"/>
+        </g>
+        <g stroke="#1493ff" fill="#1493ff">
+          <path d="M48 144V214"/><circle cx="48" cy="221" r="7"/>
+          <path d="M95 144V247"/><circle cx="95" cy="254" r="7"/>
+          <path d="M165 144V203"/><circle cx="165" cy="210" r="7"/>
+          <path d="M259 144V236"/><circle cx="259" cy="243" r="7"/>
+          <path d="M353 144V218"/><circle cx="353" cy="225" r="7"/>
+          <path d="M447 144V257"/><circle cx="447" cy="264" r="7"/>
+          <path d="M541 144V211"/><circle cx="541" cy="218" r="7"/>
+        </g>
+      </g>
+      <g fill="none" stroke="#93ff14" stroke-width="2" opacity="0.75">
+        <circle cx="141" cy="144" r="13"/><circle cx="282" cy="144" r="13"/><circle cx="423" cy="144" r="13"/><circle cx="610" cy="144" r="13"/>
+      </g>
+    </g>
+
+    <g transform="translate(1090 40)">
+      <circle cx="115" cy="140" r="108" fill="none" stroke="#f6f7ff" stroke-opacity="0.12" stroke-width="18"/>
+      <path d="M115 32A108 108 0 1 1 44 221" fill="none" stroke="#f6f7ff" stroke-width="18" stroke-linecap="round" filter="url(#softGlow)"/>
+      <path d="M44 221A108 108 0 0 1 115 32" fill="none" stroke="#1493ff" stroke-width="18" stroke-linecap="round" filter="url(#softGlow)"/>
+      <g fill="#f6f7ff" text-anchor="middle">
+        <text x="115" y="128" font-size="54" font-weight="500">23</text>
+        <text x="115" y="158" font-size="16" letter-spacing="2" opacity="0.65">ROLL CALLS</text>
+      </g>
+      <g font-size="16" fill="#f6f7ff">
+        <circle cx="16" cy="291" r="6" fill="#f6f7ff"/><text x="31" y="297" opacity="0.75">FOR</text>
+        <circle cx="115" cy="291" r="6" fill="#1493ff"/><text x="130" y="297" opacity="0.75">AGAINST</text>
+      </g>
+    </g>
+  </g>
+
+  <g fill="#f6f7ff" font-family="Inter, Arial, sans-serif">
+    <text x="1478" y="816" text-anchor="end" font-size="18" letter-spacing="3" opacity="0.48">ROUGH AT SEA / DATA NOTE</text>
+  </g>
+</svg>
