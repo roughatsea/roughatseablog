@@ -1,8 +1,8 @@
 ---
 title: "What Makes a Story Stay With You? A Periodic Table of Emotional Storytelling"
 description: "A Reddit question about Final Fantasy XVII led to a much bigger question: can psychology, neuroscience, and media research explain why some stories hit like a truck and keep echoing years later?"
-heroImage: "/images/notes/final-fantasy-xvii-what-we-know.webp"
-heroImageAlt: "A lone fantasy traveler looks toward a giant crystal containing several possible worlds above the sea."
+heroImage: "/images/notes/what-makes-a-story-stay-with-you-periodic-table-emotional-storytelling.webp"
+heroImageAlt: "A lone figure stands in a dark sea before a luminous grid of symbolic story moments connected like constellations."
 date: 2026-08-24
 publishedAt: 2026-08-24T15:43:00-07:00
 tags:
