@@ -4,7 +4,7 @@ description: "When the worst storm in a century comes for the island city of Bel
 heroImage: "/images/notes/the-lighthouse-that-ate-his-name.webp"
 heroImageAlt: "A woman and a man share a last breakfast while a memory-powered lighthouse burns against a black storm beyond their window."
 date: 2026-08-24
-publishedAt: 2026-08-24T18:30:00-07:00
+publishedAt: 2026-08-24T17:30:00-07:00
 tags:
   - fiction
   - short-story
@@ -658,4 +658,3 @@ He salted the egg and put it on her plate.
 Ren nodded. “All right.”
 
 Outside, the sea was too far away to hear. The station clock lost another second.
-
