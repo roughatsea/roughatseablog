@@ -1,0 +1,324 @@
+---
+import catalog from '../data/code-guru/index.js';
+
+type InlinePart = { code: boolean; text: string };
+
+function inlineParts(value: string | null | undefined): InlinePart[] {
+  const text = value ?? '';
+  const pieces = text.split(/(`[^`]+`)/g).filter(Boolean);
+  return pieces.map((piece) => ({
+    code: piece.startsWith('`') && piece.endsWith('`'),
+    text: piece.startsWith('`') && piece.endsWith('`') ? piece.slice(1, -1) : piece
+  }));
+}
+
+function conceptId(index: number): string {
+  return `concept-${String(index).padStart(3, '0')}`;
+}
+
+function relatedText(value: string | null | undefined): string {
+  return (value ?? '').replace(/^Related:\s*/i, '');
+}
+---
+
+<div class="code-guru-catalog">
+  {catalog.map((part) => (
+    <section class="catalog-part" aria-labelledby={`part-${part.number}`}>
+      <p class="part-label">{part.label}</p>
+      <h2 id={`part-${part.number}`}>{part.title}</h2>
+      {part.lead && <p class="part-lead">{part.lead}</p>}
+
+      {part.chapters.map((chapter) => (
+        <section class="catalog-chapter" aria-labelledby={`chapter-${chapter.slug}`}>
+          <h3 id={`chapter-${chapter.slug}`}>{chapter.title}</h3>
+          {chapter.intro && <p class="chapter-intro">{chapter.intro}</p>}
+
+          {chapter.concepts.map((concept) => (
+            <article class="catalog-entry" aria-labelledby={conceptId(concept.index)}>
+              <h4 id={conceptId(concept.index)}>
+                <a class="heading-anchor" href={`#${conceptId(concept.index)}`} aria-label={`Link to ${concept.title}`}>#</a>
+                <span>{concept.index}. {concept.title}</span>
+              </h4>
+
+              <p class="entry-meta">
+                <span class:list={["tier-badge", `tier-${concept.tier.toLowerCase()}`]}>{concept.tier_label}</span>
+                <span class="source-tag">{concept.source_tag}</span>
+              </p>
+
+              <p>
+                {inlineParts(concept.definition).map((part) => part.code ? <code>{part.text}</code> : part.text)}
+              </p>
+
+              <p>
+                <strong>Recognize it when:</strong>{' '}
+                {inlineParts(concept.look_for).map((part) => part.code ? <code>{part.text}</code> : part.text)}
+              </p>
+
+              <details class="code-examples">
+                <summary>View C# and Python examples</summary>
+                <div class="code-examples-body">
+                  <div class="language-group">
+                    <p class="code-label">C# · expanded</p>
+                    <pre><code class="language-csharp">{concept.csharp_expanded.trim()}</code></pre>
+                    {concept.csharp_shorthand && (
+                      <>
+                        <p class="code-label shorthand-label">C# · modern shorthand</p>
+                        <pre><code class="language-csharp">{concept.csharp_shorthand.trim()}</code></pre>
+                      </>
+                    )}
+                  </div>
+
+                  <div class="language-group">
+                    <p class="code-label">Python · expanded</p>
+                    <pre><code class="language-python">{concept.python_expanded.trim()}</code></pre>
+                    {concept.python_shorthand && (
+                      <>
+                        <p class="code-label shorthand-label">Python · modern shorthand</p>
+                        <pre><code class="language-python">{concept.python_shorthand.trim()}</code></pre>
+                      </>
+                    )}
+                  </div>
+
+                  <div class="example-walkthrough">
+                    <p>
+                      <strong>Why these examples fit:</strong>{' '}
+                      {inlineParts(concept.walkthrough).map((part) => part.code ? <code>{part.text}</code> : part.text)}
+                    </p>
+                  </div>
+                </div>
+              </details>
+
+              {concept.modern_note && (
+                <p class="modern-note">
+                  <strong>Modern note:</strong>{' '}
+                  {inlineParts(concept.modern_note).map((part) => part.code ? <code>{part.text}</code> : part.text)}
+                </p>
+              )}
+
+              <aside class="watch-out">
+                <strong>Watch out:</strong>{' '}
+                {inlineParts(concept.caution).map((part) => part.code ? <code>{part.text}</code> : part.text)}
+              </aside>
+
+              {concept.related && (
+                <p class="related">
+                  <strong>Related:</strong>{' '}
+                  {inlineParts(relatedText(concept.related)).map((part) => part.code ? <code>{part.text}</code> : part.text)}
+                </p>
+              )}
+            </article>
+          ))}
+        </section>
+      ))}
+    </section>
+  ))}
+</div>
+
+<style>
+  .code-guru-catalog {
+    --code-bg: #0d1117;
+    --code-fg: #e6edf3;
+    margin-top: 2.5rem;
+  }
+
+  .catalog-part {
+    margin-top: 5rem;
+  }
+
+  .part-label {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.45rem;
+    text-transform: uppercase;
+  }
+
+  .part-lead,
+  .chapter-intro {
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .catalog-chapter {
+    margin-top: 3.5rem;
+  }
+
+  .catalog-entry {
+    border-top: 1px solid var(--border-color);
+    margin-top: 3rem;
+    padding-top: 2rem;
+  }
+
+  .catalog-entry h4 {
+    align-items: baseline;
+    display: flex;
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    gap: 0.55rem;
+    line-height: 1.3;
+    margin: 0 0 0.8rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .heading-anchor {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    opacity: 0;
+    text-decoration: none;
+  }
+
+  .catalog-entry h4:hover .heading-anchor,
+  .heading-anchor:focus {
+    opacity: 1;
+  }
+
+  .entry-meta {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: var(--font-sans);
+    gap: 0.55rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tier-badge,
+  .source-tag {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.24rem 0.58rem;
+    text-transform: uppercase;
+  }
+
+  .tier-core {
+    border-color: #1493ff;
+    color: #1493ff;
+  }
+
+  .tier-broader {
+    border-color: #ff1493;
+    color: #d6117d;
+  }
+
+  .tier-specialized {
+    color: var(--text-secondary);
+  }
+
+  .source-tag {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .code-examples {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    margin: 1.5rem 0 2rem;
+    overflow: hidden;
+  }
+
+  .code-examples summary {
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 0.85rem 1rem;
+    user-select: none;
+  }
+
+  .code-examples[open] summary {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .code-examples-body {
+    padding: 1rem;
+  }
+
+  .language-group + .language-group {
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .example-walkthrough {
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .example-walkthrough p:last-child {
+    margin-bottom: 0;
+  }
+
+  .code-label {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.45rem;
+    text-transform: uppercase;
+  }
+
+  .shorthand-label {
+    margin-top: 1.25rem;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border-radius: 8px;
+    color: var(--code-fg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin: 0;
+    overflow-x: auto;
+    padding: 1rem;
+    tab-size: 4;
+    white-space: pre;
+  }
+
+  .watch-out,
+  .modern-note {
+    border-left: 3px solid var(--border-color);
+    margin: 1.25rem 0;
+    padding: 0.15rem 0 0.15rem 1rem;
+  }
+
+  .watch-out {
+    border-left-color: #ff1493;
+  }
+
+  .related {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    .catalog-part {
+      margin-top: 4rem;
+    }
+
+    .catalog-entry h4 {
+      font-size: 1.2rem;
+    }
+
+    .heading-anchor {
+      display: none;
+    }
+
+    .code-examples-body {
+      padding: 0.7rem;
+    }
+
+    pre {
+      font-size: 0.76rem;
+      padding: 0.8rem;
+    }
+  }
+</style>

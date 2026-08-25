@@ -1,0 +1,61 @@
+---
+import catalog from '../data/code-guru/index.js';
+
+const coreGroups = catalog.map((part) => ({
+  ...part,
+  chapters: part.chapters
+    .map((chapter) => ({
+      ...chapter,
+      concepts: chapter.concepts.filter((concept) => concept.tier === 'CORE')
+    }))
+    .filter((chapter) => chapter.concepts.length > 0)
+}));
+
+function conceptId(index: number): string {
+  return `concept-${String(index).padStart(3, '0')}`;
+}
+---
+
+<div class="fast-path">
+  {coreGroups.map((part) => (
+    <section>
+      <h3>{part.title}</h3>
+      {part.chapters.map((chapter) => (
+        <p>
+          <strong>{chapter.title}:</strong>{' '}
+          {chapter.concepts.map((concept, index) => (
+            <>
+              <a href={`#${conceptId(concept.index)}`}>{concept.title}</a>{index < chapter.concepts.length - 1 ? ' · ' : ''}
+            </>
+          ))}
+        </p>
+      ))}
+    </section>
+  ))}
+</div>
+
+<style>
+  .fast-path {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin: 1.5rem 0 3rem;
+    padding: 0.5rem 1.25rem 0.25rem;
+  }
+
+  .fast-path section + section {
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .fast-path h3 {
+    font-size: 1.05rem;
+    margin: 1rem 0 0.7rem;
+  }
+
+  .fast-path p {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    margin-bottom: 0.85rem;
+  }
+</style>
