@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SoundingCard from '../../components/SoundingCard.astro';
+
+const soundings = (await getCollection('soundings')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+function createExcerpt(body: string | undefined, maxLength = 210) {
+  const plainText = (body ?? '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/[*_`~]/g, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return plainText.length <= maxLength ? plainText : `${plainText.slice(0, maxLength).trimEnd()}…`;
+}
+---
+
+<BaseLayout
+  title="Morning Soundings"
+  description="Daily signals and one deeper descent, selected for curiosity rather than algorithmic volume."
+>
+  <header class="soundings-header">
+    <p class="eyebrow">A daily reading of uncertain waters</p>
+    <h1>Morning Soundings</h1>
+    <p class="lede">
+      Three signals near the surface, then one deeper descent. Games, science, art, books,
+      technology, and whatever else sends back an interesting echo.
+    </p>
+    <svg class="sounding-mark" aria-hidden="true" viewBox="0 0 180 42" fill="none">
+      <ellipse cx="90" cy="21" rx="18" ry="6" />
+      <ellipse cx="90" cy="21" rx="42" ry="13" />
+      <ellipse cx="90" cy="21" rx="70" ry="20" />
+      <path d="M90 2v38" />
+    </svg>
+  </header>
+
+  <div class="archive">
+    {soundings.map((sounding) => (
+      <SoundingCard
+        title={sounding.data.title}
+        description={sounding.data.description}
+        heroImage={sounding.data.heroImage}
+        heroImageAlt={sounding.data.heroImageAlt}
+        slug={sounding.id}
+        date={sounding.data.date}
+        tags={sounding.data.tags}
+        preview={createExcerpt(sounding.body)}
+      />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .soundings-header {
+    margin: 0 auto 2.5rem;
+    max-width: 48rem;
+    text-align: center;
+  }
+  .eyebrow {
+    color: var(--link-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    letter-spacing: -0.035em;
+  }
+  .lede {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+  .sounding-mark {
+    color: var(--link-color);
+    height: 2.2rem;
+    margin-top: 0.5rem;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    width: 9rem;
+  }
+  .archive {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 800px) {
+    :global(main.container) {
+      max-width: 1080px;
+    }
+  }
+</style>
+

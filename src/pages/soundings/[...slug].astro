@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const soundings = await getCollection('soundings');
+  return soundings.map((sounding: any) => ({
+    params: { slug: sounding.id },
+    props: { sounding },
+  }));
+}
+
+const { sounding } = Astro.props as any;
+const { Content } = await render(sounding);
+const formattedDate = sounding.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout title={sounding.data.title} description={sounding.data.description}>
+  <article class="sounding-container">
+    <header class="sounding-header">
+      <div class="meta">
+        <a href="/soundings/" class="back-link">&larr; All Soundings</a>
+        <time datetime={sounding.data.date.toISOString()}>{formattedDate}</time>
+      </div>
+      <p class="series">Morning Soundings</p>
+      <h1>{sounding.data.title}</h1>
+      {sounding.data.description && <p class="description">{sounding.data.description}</p>}
+      {sounding.data.tags.length > 0 && (
+        <div class="tags" aria-label="Topics">
+          {sounding.data.tags.filter((tag: string) => tag !== 'morning-soundings').map((tag: string) => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <figure class="hero-image">
+      <img
+        src={sounding.data.heroImage}
+        alt={sounding.data.heroImageAlt}
+        width="1600"
+        height="900"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
+
+    <div class="prose"><Content /></div>
+  </article>
+</BaseLayout>
+
+<style>
+  .sounding-container { padding-bottom: 4rem; }
+  .sounding-header { margin-bottom: 2.5rem; }
+  .meta {
+    align-items: center;
+    color: var(--text-secondary);
+    display: flex;
+    font-size: 0.875rem;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .back-link:hover { color: var(--text-primary); }
+  .series {
+    color: var(--link-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.65rem;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.35rem, 7vw, 4.25rem);
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+  }
+  .description {
+    color: var(--text-secondary);
+    font-size: 1.08rem;
+    max-width: 44rem;
+  }
+  .hero-image {
+    margin: 0 0 3rem 50%;
+    transform: translateX(-50%);
+    width: min(1120px, calc(100vw - 3rem));
+  }
+  .hero-image img {
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1rem; }
+  .tag {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.45rem;
+  }
+</style>
+

@@ -1,0 +1,125 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  heroImage: string;
+  heroImageAlt: string;
+  slug: string;
+  date: Date;
+  tags: string[];
+  preview: string;
+}
+
+const { title, description, heroImage, heroImageAlt, slug, date, tags, preview } = Astro.props;
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<article class="sounding-card hover-lift">
+  <a class="image-link" href={`/soundings/${slug}`} aria-label={`Read ${title}`}>
+    <img
+      class="card-image"
+      src={heroImage}
+      alt={heroImageAlt}
+      width="1600"
+      height="900"
+      loading="lazy"
+      decoding="async"
+    />
+  </a>
+  <div class="card-content">
+    <div class="edition-row">
+      <span class="series">Morning Soundings</span>
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+    </div>
+    <h2><a href={`/soundings/${slug}`}>{title}</a></h2>
+    {description && <p class="description">{description}</p>}
+    {preview && <p class="preview">{preview}</p>}
+    {tags.length > 0 && (
+      <div class="tags" aria-label="Topics">
+        {tags.filter((tag) => tag !== 'morning-soundings').map((tag) => <span class="tag">#{tag}</span>)}
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .sounding-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: grid;
+    overflow: hidden;
+  }
+  .image-link {
+    background: var(--bg-color);
+    display: block;
+  }
+  .card-image {
+    aspect-ratio: 16 / 9;
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+  .card-content {
+    padding: 1.4rem 1.5rem 1.5rem;
+  }
+  .edition-row {
+    align-items: center;
+    color: var(--text-secondary);
+    display: flex;
+    font-size: 0.75rem;
+    justify-content: space-between;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.65rem;
+    text-transform: uppercase;
+  }
+  .series {
+    color: var(--link-color);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    line-height: 1.2;
+  }
+  h2 a:hover {
+    color: var(--link-color);
+  }
+  .description {
+    color: var(--text-secondary);
+  }
+  .preview {
+    margin-bottom: 1.1rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tag {
+    background: var(--bg-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    padding: 0.15rem 0.4rem;
+  }
+  @media (min-width: 800px) {
+    .sounding-card {
+      grid-template-columns: minmax(19rem, 0.9fr) minmax(0, 1.1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .edition-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+</style>
+
