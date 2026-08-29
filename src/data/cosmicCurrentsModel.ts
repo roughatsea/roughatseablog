@@ -24,9 +24,9 @@ export interface Landmark {
 }
 
 export interface GalaxyField {
-  positions: Float32Array;
-  colors: Float32Array;
-  sizes: Float32Array;
+  positions: Float32Array<ArrayBuffer>;
+  colors: Float32Array<ArrayBuffer>;
+  sizes: Float32Array<ArrayBuffer>;
   count: number;
 }
 

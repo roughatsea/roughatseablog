@@ -177,7 +177,7 @@ function randomFactory(seed: number): () => number {
   };
 }
 
-function perspective(fovRadians: number, aspect: number, near: number, far: number): Float32Array {
+function perspective(fovRadians: number, aspect: number, near: number, far: number): Float32Array<ArrayBuffer> {
   const result = new Float32Array(16);
   const f = 1 / Math.tan(fovRadians / 2);
   result[0] = f / aspect;
@@ -188,7 +188,7 @@ function perspective(fovRadians: number, aspect: number, near: number, far: numb
   return result;
 }
 
-function lookAt(eye: Vec3, target: Vec3): Float32Array {
+function lookAt(eye: Vec3, target: Vec3): Float32Array<ArrayBuffer> {
   const z = normalize(subtract(eye, target));
   let x = normalize(cross([0, 0, 1], z));
   if (magnitude(x) < 0.001) x = [1, 0, 0];
@@ -201,7 +201,10 @@ function lookAt(eye: Vec3, target: Vec3): Float32Array {
   return result;
 }
 
-function multiply(a: Float32Array, b: Float32Array): Float32Array {
+function multiply(
+  a: Float32Array<ArrayBuffer>,
+  b: Float32Array<ArrayBuffer>,
+): Float32Array<ArrayBuffer> {
   const result = new Float32Array(16);
   for (let column = 0; column < 4; column += 1) {
     for (let row = 0; row < 4; row += 1) {
