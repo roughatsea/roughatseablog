@@ -124,17 +124,6 @@ interface WikiResult {
 }
 
 const EMPTY_COLLECTION: FeatureCollection = { type: 'FeatureCollection', features: [] };
-const WORLD_POLYGON: FeatureCollection = {
-  type: 'FeatureCollection',
-  features: [{
-    type: 'Feature',
-    properties: {},
-    geometry: {
-      type: 'Polygon',
-      coordinates: [[[-180, -90], [180, -90], [180, 90], [-180, 90], [-180, -90]]],
-    },
-  }],
-};
 
 const DEFAULT_LAYERS: AtlasLayers = {
   countryBorders: true,
@@ -214,6 +203,13 @@ const MAP_LAYER_VISIBILITY: Record<keyof AtlasLayers, string[]> = {
   rivers: ['river-lines'],
   lakes: ['lake-fill', 'lake-lines'],
 };
+
+const OPTIONAL_SOURCES: Array<{ layer: keyof AtlasLayers; source: string; url: string }> = [
+  { layer: 'majorCities', source: 'major-cities', url: '/atlas/major-cities.geojson' },
+  { layer: 'heritage', source: 'heritage', url: '/atlas/heritage.geojson' },
+  { layer: 'rivers', source: 'rivers', url: '/atlas/rivers.geojson' },
+  { layer: 'lakes', source: 'lakes', url: '/atlas/lakes.geojson' },
+];
 
 const PALETTES = {
   illuminated: {
@@ -301,25 +297,23 @@ function createStyle(theme: AtlasTheme): StyleSpecification {
     projection: { type: 'globe' },
     sky: { 'atmosphere-blend': theme === 'illuminated' ? 1 : 0 },
     sources: {
-      ocean: { type: 'geojson', data: WORLD_POLYGON },
       countries: { type: 'geojson', data: '/atlas/countries.geojson', generateId: true },
       'country-label-points': { type: 'geojson', data: '/atlas/country-labels.geojson' },
       capitals: { type: 'geojson', data: '/atlas/capitals.geojson' },
       admin1: { type: 'geojson', data: EMPTY_COLLECTION },
-      'major-cities': { type: 'geojson', data: '/atlas/major-cities.geojson' },
+      'major-cities': { type: 'geojson', data: EMPTY_COLLECTION },
       heritage: {
         type: 'geojson',
-        data: '/atlas/heritage.geojson',
+        data: EMPTY_COLLECTION,
         cluster: true,
         clusterMaxZoom: 5,
         clusterRadius: 36,
       },
-      rivers: { type: 'geojson', data: '/atlas/rivers.geojson' },
-      lakes: { type: 'geojson', data: '/atlas/lakes.geojson' },
+      rivers: { type: 'geojson', data: EMPTY_COLLECTION },
+      lakes: { type: 'geojson', data: EMPTY_COLLECTION },
     },
     layers: [
-      { id: 'atlas-background', type: 'background', paint: { 'background-color': palette.outside } },
-      { id: 'ocean-fill', type: 'fill', source: 'ocean', paint: { 'fill-color': palette.ocean } },
+      { id: 'atlas-background', type: 'background', paint: { 'background-color': palette.ocean } },
       {
         id: 'countries-fill',
         type: 'fill',
@@ -601,8 +595,7 @@ function applyMapTheme(map: MapLibreMap, theme: AtlasTheme) {
     }
   };
   map.setSky({ 'atmosphere-blend': theme === 'illuminated' ? 1 : 0 });
-  setPaint('atlas-background', 'background-color', palette.outside);
-  setPaint('ocean-fill', 'fill-color', palette.ocean);
+  setPaint('atlas-background', 'background-color', palette.ocean);
   setPaint('countries-fill', 'fill-color', landExpression(theme));
   setPaint('countries-fill', 'fill-opacity', theme === 'illuminated' ? 0.98 : 1);
   setPaint('country-lines', 'line-color', palette.border);
@@ -816,6 +809,7 @@ export default function AtlasExperience() {
   const mapRef = useRef<MapLibreMap | null>(null);
   const sourceDialogRef = useRef<HTMLElement | null>(null);
   const sourceTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const loadedOptionalSourcesRef = useRef(new Set<string>());
   const selectCountryRef = useRef<(code: string, coordinates?: [number, number], zoom?: number) => void>(() => {});
   const selectDivisionRef = useRef<(code: string, coordinates: [number, number]) => void>(() => {});
   const selectHeritageRef = useRef<(properties: HeritageProperties, coordinates: [number, number]) => void>(() => {});
@@ -914,6 +908,14 @@ export default function AtlasExperience() {
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
     document.fonts?.load("12px 'Inter'");
+    const probe = document.createElement('canvas');
+    const probeContext = probe.getContext('webgl2');
+    if (!probeContext) {
+      setMapError('This atlas needs WebGL2, which is unavailable or disabled in this browser.');
+      return;
+    }
+    probeContext.getExtension('WEBGL_lose_context')?.loseContext();
+    let startupTimer: number | undefined;
     try {
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
@@ -933,9 +935,21 @@ export default function AtlasExperience() {
         customAttribution: '<a href="https://www.naturalearthdata.com/">Natural Earth</a> · <a href="https://www.wikidata.org/">Wikidata</a>',
       }), 'bottom-left');
 
-      map.on('load', () => {
+      startupTimer = window.setTimeout(() => {
+        if (!map.isStyleLoaded()) setMapError('The atlas style did not finish loading. Reload the page to try again.');
+      }, 20_000);
+
+      map.on('style.load', () => {
+        if (startupTimer) window.clearTimeout(startupTimer);
         setMapReady(true);
         map.getCanvas().setAttribute('aria-label', 'Interactive world globe. Drag to rotate and use the atlas search or layer controls to explore.');
+      });
+
+      map.on('error', (event) => {
+        const message = event.error?.message ?? '';
+        if (/WebGL2|countries\.geojson|country-labels\.geojson|capitals\.geojson/i.test(message)) {
+          setMapError('The globe or its core reference data could not be loaded. Reload the page to try again.');
+        }
       });
 
       map.on('click', async (event: MapMouseEvent) => {
@@ -998,6 +1012,7 @@ export default function AtlasExperience() {
     }
 
     return () => {
+      if (startupTimer) window.clearTimeout(startupTimer);
       mapRef.current?.remove();
       mapRef.current = null;
     };
@@ -1066,6 +1081,13 @@ export default function AtlasExperience() {
   useEffect(() => {
     const map = mapRef.current;
     if (!mapReady || !map) return;
+    for (const optional of OPTIONAL_SOURCES) {
+      if (!layers[optional.layer] || loadedOptionalSourcesRef.current.has(optional.source)) continue;
+      const source = map.getSource(optional.source) as GeoJSONSource | undefined;
+      if (!source) continue;
+      loadedOptionalSourcesRef.current.add(optional.source);
+      source.setData(optional.url);
+    }
     for (const [key, layerIds] of Object.entries(MAP_LAYER_VISIBILITY) as Array<[keyof AtlasLayers, string[]]>) {
       for (const layerId of layerIds) {
         if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', layers[key] ? 'visible' : 'none');
