@@ -7,6 +7,7 @@ import React, {
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
 import * as maplibregl from 'maplibre-gl';
+import mapLibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import {
   type GeoJSONSource,
   type Map as MapLibreMap,
@@ -937,6 +938,10 @@ export default function AtlasExperience() {
     probeContext.getExtension('WEBGL_lose_context')?.loseContext();
     let startupTimer: number | undefined;
     try {
+      // MapLibre v6 ships its worker as a separate ES module. Vite's worker
+      // pipeline bundles it with its shared module so the production URL is
+      // self-contained rather than pointing at an un-emitted sibling file.
+      maplibregl.setWorkerUrl(mapLibreWorkerUrl);
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
         style: createStyle(themeRef.current),
@@ -956,13 +961,16 @@ export default function AtlasExperience() {
       }), 'bottom-left');
 
       startupTimer = window.setTimeout(() => {
-        if (!map.isStyleLoaded()) setMapError('The atlas style did not finish loading. Reload the page to try again.');
+        if (!map.loaded()) setMapError('The atlas renderer did not finish loading. Reload the page to try again.');
       }, 20_000);
 
       map.on('style.load', () => {
+        map.getCanvas().setAttribute('aria-label', 'Interactive world globe. Drag to rotate and use the atlas search or layer controls to explore.');
+      });
+
+      map.on('load', () => {
         if (startupTimer) window.clearTimeout(startupTimer);
         setMapReady(true);
-        map.getCanvas().setAttribute('aria-label', 'Interactive world globe. Drag to rotate and use the atlas search or layer controls to explore.');
       });
 
       map.on('error', (event) => {
@@ -1043,31 +1051,23 @@ export default function AtlasExperience() {
     if (!mapReady || !map) return;
 
     const controller = new AbortController();
-    let dataApplied = false;
     let finished = false;
-    const finishWhenLoaded = () => {
-      if (!dataApplied || finished || !CORE_SOURCES.every(({ source }) => map.isSourceLoaded(source))) return;
-      finished = true;
-      window.clearTimeout(loadTimer);
-      map.off('sourcedata', finishWhenLoaded);
-      setCoreDataReady(true);
-    };
     const loadTimer = window.setTimeout(() => {
       if (!finished) setMapError('The country map data took too long to prepare. Reload the page to try again.');
     }, 20_000);
 
-    map.on('sourcedata', finishWhenLoaded);
     Promise.all(CORE_SOURCES.map(({ url }) => fetchJson<FeatureCollection>(url, controller.signal)))
-      .then((collections) => {
+      .then(async (collections) => {
         if (controller.signal.aborted) return;
         if (collections.some((collection) => collection.type !== 'FeatureCollection' || collection.features.length === 0)) {
           throw new Error('A core atlas dataset was empty.');
         }
-        CORE_SOURCES.forEach(({ source }, index) => {
-          (map.getSource(source) as GeoJSONSource).setData(collections[index]);
-        });
-        dataApplied = true;
-        window.requestAnimationFrame(finishWhenLoaded);
+        await Promise.all(CORE_SOURCES.map(({ source }, index) =>
+          (map.getSource(source) as GeoJSONSource).setData(collections[index])));
+        if (controller.signal.aborted) return;
+        finished = true;
+        window.clearTimeout(loadTimer);
+        setCoreDataReady(true);
       })
       .catch(() => {
         if (!controller.signal.aborted) setMapError('The atlas country data could not be loaded. Reload the page to try again.');
@@ -1076,7 +1076,6 @@ export default function AtlasExperience() {
     return () => {
       controller.abort();
       window.clearTimeout(loadTimer);
-      map.off('sourcedata', finishWhenLoaded);
     };
   }, [mapReady]);
 
