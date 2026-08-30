@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "npm run validate:wake && astro check && astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "validate:wake": "node scripts/validate-wake-data.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
