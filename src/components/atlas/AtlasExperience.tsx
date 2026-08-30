@@ -12,6 +12,7 @@ import {
   type GeoJSONSource,
   type Map as MapLibreMap,
   type MapMouseEvent,
+  type PaddingOptions,
   type StyleSpecification,
 } from 'maplibre-gl';
 import type { Feature, FeatureCollection, Point } from 'geojson';
@@ -217,6 +218,18 @@ const CORE_SOURCES = [
   { source: 'country-label-points', url: '/atlas/country-labels.geojson' },
   { source: 'capitals', url: '/atlas/capitals.geojson' },
 ] as const;
+
+const ZERO_CAMERA_PADDING: PaddingOptions = { top: 0, right: 0, bottom: 0, left: 0 };
+
+function drawerCameraPadding(): PaddingOptions {
+  return window.innerWidth > 820
+    ? { top: 80, right: 430, bottom: 40, left: 90 }
+    : { top: 90, right: 20, bottom: 260, left: 20 };
+}
+
+function cameraDuration(duration: number) {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : duration;
+}
 
 const PALETTES = {
   illuminated: {
@@ -500,7 +513,7 @@ function createStyle(theme: AtlasTheme): StyleSpecification {
         type: 'symbol',
         source: 'admin1',
         filter: ['==', ['get', 'kind'], 'division-label'],
-        minzoom: 2.4,
+        minzoom: 1.8,
         layout: {
           'text-field': ['get', 'labelEnglish'],
           'text-font': ['Inter'],
@@ -1082,13 +1095,30 @@ export default function AtlasExperience() {
   const flyTo = useCallback((coordinates: [number, number], zoom: number) => {
     const map = mapRef.current;
     if (!map) return;
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     map.flyTo({
       center: coordinates,
       zoom,
-      duration: reducedMotion ? 0 : 1350,
+      duration: cameraDuration(1350),
       essential: false,
-      padding: window.innerWidth >= 900 ? { top: 80, right: 430, bottom: 40, left: 90 } : { top: 90, right: 20, bottom: 260, left: 20 },
+      padding: drawerCameraPadding(),
+    });
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerOpen(false);
+    mapRef.current?.easeTo({
+      padding: ZERO_CAMERA_PADDING,
+      duration: cameraDuration(420),
+      essential: false,
+    });
+  }, []);
+
+  const reopenDrawer = useCallback(() => {
+    setDrawerOpen(true);
+    mapRef.current?.easeTo({
+      padding: drawerCameraPadding(),
+      duration: cameraDuration(420),
+      essential: false,
     });
   }, []);
 
@@ -1132,6 +1162,26 @@ export default function AtlasExperience() {
     initialFocusHandledRef.current = true;
     flyTo(selectedProfile.label, countryZoom(selectedProfile));
   }, [flyTo, mapReady, selectedProfile]);
+
+  useEffect(() => {
+    if (!mapReady) return;
+    const drawerLayout = window.matchMedia('(max-width: 820px)');
+    const updatePaddingForViewport = () => {
+      const map = mapRef.current;
+      if (!map) return;
+      const nextPadding = drawerOpen ? drawerCameraPadding() : ZERO_CAMERA_PADDING;
+      const currentPadding = map.getPadding();
+      if (
+        currentPadding.top === nextPadding.top
+        && currentPadding.right === nextPadding.right
+        && currentPadding.bottom === nextPadding.bottom
+        && currentPadding.left === nextPadding.left
+      ) return;
+      map.setPadding(nextPadding);
+    };
+    drawerLayout.addEventListener('change', updatePaddingForViewport);
+    return () => drawerLayout.removeEventListener('change', updatePaddingForViewport);
+  }, [drawerOpen, mapReady]);
 
   useEffect(() => {
     if (!mapReady) return;
@@ -1305,7 +1355,12 @@ export default function AtlasExperience() {
     setDrawerOpen(false);
     setDivisions([]);
     const map = mapRef.current;
-    if (map) map.flyTo({ center: [-18, 18], zoom: 1.25, duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1200 });
+    if (map) map.flyTo({
+      center: [-18, 18],
+      zoom: 1.25,
+      padding: ZERO_CAMERA_PADDING,
+      duration: cameraDuration(1200),
+    });
   };
 
   return (
@@ -1403,9 +1458,9 @@ export default function AtlasExperience() {
             {LAYER_GROUPS.map((item) => (
               <LayerSwitch
                 key={item.key}
-                checked={layers[item.key]}
+                checked={item.selectedOnly && !selectedProfile ? false : layers[item.key]}
                 label={item.label}
-                detail={item.selectedOnly && !selectedProfile ? `${item.detail} · select a country` : item.detail}
+                detail={item.selectedOnly && !selectedProfile ? 'Click a country to show' : item.detail}
                 disabled={item.selectedOnly && !selectedProfile}
                 onChange={() => updateLayer(item.key)}
               />
@@ -1439,7 +1494,7 @@ export default function AtlasExperience() {
         <aside className="atlas-place-drawer" aria-label={`About ${selectedProfile.name}`}>
           <div className="atlas-place-scroll">
             <div className="atlas-place-heading">
-              <button type="button" className="atlas-drawer-close" aria-label="Collapse place information" onClick={() => setDrawerOpen(false)}>×</button>
+              <button type="button" className="atlas-drawer-close" aria-label="Collapse place information" onClick={closeDrawer}>×</button>
               <span className="atlas-flag" aria-hidden="true">{selectedProfile.flag}</span>
               <p>{selectedProfile.kind ?? 'Country or territory'} · {selectedProfile.subregion ?? selectedProfile.continent}</p>
               <h2>{selectedProfile.name}</h2>
@@ -1524,7 +1579,7 @@ export default function AtlasExperience() {
       )}
 
       {selectedProfile && !drawerOpen && (
-        <button type="button" className="atlas-reopen-drawer" onClick={() => setDrawerOpen(true)}>
+        <button type="button" className="atlas-reopen-drawer" onClick={reopenDrawer}>
           <span aria-hidden="true">{selectedProfile.flag}</span><strong>{selectedProfile.name}</strong><i aria-hidden="true">‹</i>
         </button>
       )}
