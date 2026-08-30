@@ -4,6 +4,8 @@
 
 When the user tells you to read or follow this file, treat it as an adjunct to the user's request. Read it completely before composing. Apply the mode-specific instructions for **fiction** or **nonfiction**, together with the shared standards.
 
+When this guide is activated, also read [Unintroduced Referents](./unintroduced_referents.md) completely before composing or revising. Apply its referential-clarity tests alongside this guide.
+
 This guide is an aspiration toward exceptional original writing. It is not a request to impersonate any named writer, reproduce recognizable passages, manufacture prestige, or claim that the result is prize-worthy.
 
 The order of authority is:
