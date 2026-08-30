@@ -40,6 +40,15 @@ const pageTitle = title === 'Rough at Sea' ? title : `${title} · Rough at Sea`;
       }
 
       try {
+        const fieldGuideLanguage = localStorage.getItem('roughatsea-field-guide-language');
+        if (fieldGuideLanguage && ['csharp', 'python', 'both'].includes(fieldGuideLanguage)) {
+          document.documentElement.setAttribute('data-field-guide-language', fieldGuideLanguage);
+        }
+      } catch {
+        // Field-guide pages show both languages if storage is unavailable.
+      }
+
+      try {
         const hasActiveTag = new URLSearchParams(window.location.search).has('tag');
         const explorerIsCollapsed = localStorage.getItem('roughatsea-tag-explorer-collapsed') === 'true';
         if (explorerIsCollapsed && !hasActiveTag) {

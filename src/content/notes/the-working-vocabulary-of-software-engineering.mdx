@@ -1,0 +1,76 @@
+---
+title: "The Working Vocabulary of Software Engineering"
+description: "I learned many software-engineering ideas before I learned their names. A recognition-first path connects those instincts to the vocabulary programmers use together."
+heroImage: "/images/notes/code-guru-rebuilt-recognition-first.webp"
+heroImageAlt: "An experienced software engineer maps glowing modular structures at a drafting table while a lighthouse guides a sailboat through a storm."
+date: 2026-08-30
+tags:
+  - software-engineering
+  - programming
+  - self-taught
+  - design-patterns
+---
+
+import WorkingVocabularyPath from '../../components/WorkingVocabularyPath.astro';
+
+The first program I wrote was a Visual Basic 3 form with a text box and a button. I was eleven. A person typed a name, clicked the button, and saw a message box:
+
+> Hello, &lt;name&gt;
+
+The program itself was tiny. The idea inside it was enormous to me. `Hello, ` stayed fixed; the name arrived from the person using the program. I could join something static to something supplied at runtime and produce a sentence that had never been stored in full.
+
+That realization was a watershed. Beyond the greeting, I had found a general arrangement: decide which part must remain stable, leave a place for the part that may vary, then define how the two meet.
+
+I taught myself by obsessively reading the help files that came with Visual Basic 3. After that came books and hours upon hours of experimentation. Much of my education in software followed a similar order: I encountered a pressure in code, worked out a response, and only later discovered its established name.
+
+## I kept meeting ideas before their names
+
+About a year ago, a colleague used the word *singleton*. I already understood the classic shape he meant: a class controls access to one globally reachable instance. I simply had not attached the word *singleton* to it.
+
+The missing word had not prevented me from understanding the design. Once I had the word, however, I could recognize the idea in documentation, discuss its costs without reconstructing it from first principles, and distinguish it from another meaning that software developers often give the same word.
+
+The [Singleton Pattern](/guides/software-engineering/singleton-pattern/) is the classic design pattern my colleague meant. The class controls its own construction, retains its sole instance, and gives the rest of the program a global way to reach it. The global access is not incidental. It is part of the pattern, and it is also the source of much of the pattern's trouble: dependencies become easy to hide, mutable state can become everybody's state, and isolated tests become harder.
+
+A [Singleton Lifetime](/guides/software-engineering/singleton-lifetime/) is different. The part of startup code that creates and connects the application's dependencies is sometimes called the *composition root*. It may create one instance of a service and pass that same instance to every consumer that requests it. A dependency-injection container can enforce the same lifetime. The consumers still receive the service explicitly; the service does not need to make itself globally reachable.
+
+Both arrangements reuse one object. They do not create the same design.
+
+That distinction is what a working vocabulary should make possible. A useful term compresses experience, but only after the people using it agree about the experience being compressed.
+
+## What the degree could name
+
+Later I earned a master's degree in computer science. The program was heavy on theory and proofs. The name *computer science* felt like a misnomer because the proof-heavy discipline I was studying looked less like a science of computers than a branch of applied mathematics concerned with computation and algorithms.
+
+For my daily work as a software engineer, most of that curriculum was almost completely useless. The proofs were not trying to answer the questions my job kept asking: How do we make this software exist? How do we keep it working? How do we change it without breaking promises that users and other systems already depend on? How do several people work in the same codebase without turning every change into an expedition?
+
+That judgment applies to the proof-heavy program I attended, not every course taught under the name of computer science. Computer science and software engineering both matter, but they do different work. Treating them as interchangeable obscures the strengths of both.
+
+The program did give me another established name for an idea I already understood: a *loop invariant* is a fact that remains true before and after each pass through a loop. I had already reasoned with that kind of fact without knowing its established name. Learning the name did not retroactively create the understanding. It gave me a handle for examining it, verifying it, and discussing it with someone else.
+
+At a broader level, the degree gave me some confidence.
+
+## Recognition before recital
+
+Vocabulary can also be used badly. A list of terms easily becomes an entrance exam, a substitute for judgment, or a way to make familiar reasoning sound more rarefied than it is. A programmer who can recite *Strategy* but cannot notice an algorithm tangled with the code that uses it has learned a label and missed the work. The reverse case is common too: someone understands the pressure perfectly well but lacks the shared term that would let a team discuss it quickly.
+
+A working vocabulary should shorten a useful conversation, not decide who belongs in it.
+
+That principle changes the order of teaching. Instead of presenting a term and asking the reader to memorize its definition, begin with a situation the reader may already have met. What keeps changing? What must remain stable? Where has knowledge been duplicated? Which way should the source-code dependency point? What can fail halfway through?
+
+Only then reveal the name.
+
+The twenty recognitions below are not a miniature canon. They are a route into the habit: situation first, name second, boundary always. Real code can support several descriptions at once, so each answer identifies the name worth noticing rather than pretending that one label exhausts the example.
+
+<WorkingVocabularyPath />
+
+## Keep the rest within reach
+
+Twenty terms cannot cover the working vocabulary of software engineering. Memorizing another two hundred terms in sequence would not create a working vocabulary either. Vocabulary becomes useful when a live problem creates a reason to retrieve it.
+
+The [Software Engineering Field Guide](/guides/software-engineering/) is the larger reference. It covers design pressure, code smells, refactoring, patterns, architecture, testing, concurrency, distributed systems, reliability, security, and performance. Search it by a term, an alias, or the symptom you recognize in code. Each result has its own page, so opening *Adapter* does not make a browser render hundreds of unrelated examples first. Related concepts are links rather than inert lists. Each page also identifies the broader source tradition used for that part of the reference.
+
+The examples put explicit code before compressed syntax. That is partly a teaching choice and partly mercy for my ailing 1990s brain. A dense lambda often becomes ordinary once it is expanded into a named function with visible parameters and a return value. Concision is valuable when it removes noise. It is not valuable when it merely conceals the mechanism from the person trying to learn it.
+
+A language control lets readers choose C#, Python, or both, and preserves that choice from one concept page to the next. The field guide also marks concepts by reading depth. Those labels direct attention without pretending that *Refactoring*, *dependency inversion*, and the two meanings of *singleton* deserve the same priority as a rarely encountered specialist term.
+
+My first program held one fixed string beside one changing value. I did not know enough to call that a design decision. I only knew that the pieces could meet. The vocabulary came later. At its best, it helps me see which pieces may change, which promises must hold, and how to explain the difference to someone else.

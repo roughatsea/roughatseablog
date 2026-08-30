@@ -8,6 +8,9 @@ import rehypeKatex from "rehype-katex";
 export default defineConfig({
   site: "https://www.roughatsea.com",
   output: "static",
+  redirects: {
+    "/notes/code-guru-rebuilt-recognition-first": "/notes/the-working-vocabulary-of-software-engineering/",
+  },
   integrations: [mdx(), react(), sitemap()],
   markdown: {
     remarkPlugins: [remarkMath],

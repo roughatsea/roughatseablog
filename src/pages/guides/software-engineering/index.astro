@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SoftwareEngineeringGuideIndex from '../../../components/SoftwareEngineeringGuideIndex.astro';
+import { guideDomains, guideIndex, guideSources } from '../../../data/software-engineering-guide.js';
+---
+
+<BaseLayout
+  title="Software Engineering Field Guide"
+  description="Search software-engineering vocabulary by term, alias, or the pressure you recognize in code, with C# and Python examples on focused concept pages."
+>
+  <article class="guide-introduction">
+    <nav aria-label="Breadcrumb"><a href="/">← Rough at Sea</a></nav>
+    <p class="eyebrow">Searchable companion reference</p>
+    <h1>Software Engineering Field Guide</h1>
+    <p class="lede">
+      Search for a name you heard, an alias you half remember, or a problem you can see but cannot yet name. Each result opens a focused page with explicit C# and Python examples, trade-offs, nearby terms, and source lineage.
+    </p>
+    <p>
+      This guide contains 206 terms. Singleton Pattern and Singleton Lifetime are separate because a globally accessible object and a container-managed lifetime impose different dependencies, even when both reuse one instance.
+    </p>
+    <p>
+      For the personal argument behind the format, read <a href="/notes/the-working-vocabulary-of-software-engineering/">The Working Vocabulary of Software Engineering</a>.
+    </p>
+  </article>
+
+  <SoftwareEngineeringGuideIndex concepts={guideIndex} domains={guideDomains} sources={guideSources} />
+</BaseLayout>
+
+<style>
+  .guide-introduction { padding-top: 1rem; }
+  .guide-introduction nav {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    margin-bottom: 3rem;
+  }
+  .guide-introduction nav a:hover { color: var(--link-color); }
+  .eyebrow {
+    color: var(--link-color);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.7rem, 8vw, 4.8rem);
+    line-height: 1.02;
+    margin-bottom: 1.5rem;
+  }
+  .lede {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    line-height: 1.7;
+  }
+  .guide-introduction p:not(.eyebrow) { font-family: var(--font-serif); }
+  .guide-introduction a {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
