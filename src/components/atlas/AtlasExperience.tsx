@@ -211,6 +211,12 @@ const OPTIONAL_SOURCES: Array<{ layer: keyof AtlasLayers; source: string; url: s
   { layer: 'lakes', source: 'lakes', url: '/atlas/lakes.geojson' },
 ];
 
+const CORE_SOURCES = [
+  { source: 'countries', url: '/atlas/countries.geojson' },
+  { source: 'country-label-points', url: '/atlas/country-labels.geojson' },
+  { source: 'capitals', url: '/atlas/capitals.geojson' },
+] as const;
+
 const PALETTES = {
   illuminated: {
     outside: '#010611',
@@ -276,6 +282,15 @@ function storedLanguage(): LabelLanguage {
   }
 }
 
+function storedWelcomeDismissed(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem('roughatsea-atlas-welcome-dismissed') === 'true';
+  } catch {
+    return false;
+  }
+}
+
 function initialCountry(): string | null {
   if (typeof window === 'undefined') return null;
   return new URLSearchParams(window.location.search).get('country')?.toUpperCase() ?? null;
@@ -284,9 +299,11 @@ function initialCountry(): string | null {
 function landExpression(theme: AtlasTheme): unknown[] {
   const colors = PALETTES[theme].land;
   return [
-    'match', ['%', ['to-number', ['get', 'mapColor']], colors.length],
-    0, colors[0], 1, colors[1], 2, colors[2], 3, colors[3],
-    4, colors[4], 5, colors[5], 6, colors[6], 7, colors[7], colors[0],
+    'match', ['to-number', ['get', 'mapColor'], 1],
+    1, colors[0], 2, colors[1], 3, colors[2], 4, colors[3],
+    5, colors[4], 6, colors[5], 7, colors[6], 8, colors[7],
+    9, colors[0], 10, colors[1], 11, colors[2], 12, colors[3],
+    13, colors[4], colors[0],
   ];
 }
 
@@ -297,9 +314,9 @@ function createStyle(theme: AtlasTheme): StyleSpecification {
     projection: { type: 'globe' },
     sky: { 'atmosphere-blend': theme === 'illuminated' ? 1 : 0 },
     sources: {
-      countries: { type: 'geojson', data: '/atlas/countries.geojson', generateId: true },
-      'country-label-points': { type: 'geojson', data: '/atlas/country-labels.geojson' },
-      capitals: { type: 'geojson', data: '/atlas/capitals.geojson' },
+      countries: { type: 'geojson', data: EMPTY_COLLECTION, generateId: true },
+      'country-label-points': { type: 'geojson', data: EMPTY_COLLECTION },
+      capitals: { type: 'geojson', data: EMPTY_COLLECTION },
       admin1: { type: 'geojson', data: EMPTY_COLLECTION },
       'major-cities': { type: 'geojson', data: EMPTY_COLLECTION },
       heritage: {
@@ -835,7 +852,9 @@ export default function AtlasExperience() {
   const [drawerOpen, setDrawerOpen] = useState(Boolean(initialCountry()));
   const [sourcePanelOpen, setSourcePanelOpen] = useState(false);
   const [mapReady, setMapReady] = useState(false);
+  const [coreDataReady, setCoreDataReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
+  const [welcomeDismissed, setWelcomeDismissed] = useState(storedWelcomeDismissed);
   const [hoverCard, setHoverCard] = useState<HoverCard | null>(null);
   const [openSections, setOpenSections] = useState<Record<SectionId, boolean>>({
     overview: true,
@@ -885,6 +904,7 @@ export default function AtlasExperience() {
   }, [divisionQuery, divisions]);
 
   useEffect(() => {
+    if (!coreDataReady) return;
     const controller = new AbortController();
     Promise.all([
       fetchJson<Record<string, CountryProfile>>('/atlas/profiles.json', controller.signal),
@@ -903,7 +923,7 @@ export default function AtlasExperience() {
       }
     }).catch(() => setMapError('The atlas reference data could not be loaded.'));
     return () => controller.abort();
-  }, []);
+  }, [coreDataReady]);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -1018,6 +1038,48 @@ export default function AtlasExperience() {
     };
   }, []);
 
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map) return;
+
+    const controller = new AbortController();
+    let dataApplied = false;
+    let finished = false;
+    const finishWhenLoaded = () => {
+      if (!dataApplied || finished || !CORE_SOURCES.every(({ source }) => map.isSourceLoaded(source))) return;
+      finished = true;
+      window.clearTimeout(loadTimer);
+      map.off('sourcedata', finishWhenLoaded);
+      setCoreDataReady(true);
+    };
+    const loadTimer = window.setTimeout(() => {
+      if (!finished) setMapError('The country map data took too long to prepare. Reload the page to try again.');
+    }, 20_000);
+
+    map.on('sourcedata', finishWhenLoaded);
+    Promise.all(CORE_SOURCES.map(({ url }) => fetchJson<FeatureCollection>(url, controller.signal)))
+      .then((collections) => {
+        if (controller.signal.aborted) return;
+        if (collections.some((collection) => collection.type !== 'FeatureCollection' || collection.features.length === 0)) {
+          throw new Error('A core atlas dataset was empty.');
+        }
+        CORE_SOURCES.forEach(({ source }, index) => {
+          (map.getSource(source) as GeoJSONSource).setData(collections[index]);
+        });
+        dataApplied = true;
+        window.requestAnimationFrame(finishWhenLoaded);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setMapError('The atlas country data could not be loaded. Reload the page to try again.');
+      });
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(loadTimer);
+      map.off('sourcedata', finishWhenLoaded);
+    };
+  }, [mapReady]);
+
   const flyTo = useCallback((coordinates: [number, number], zoom: number) => {
     const map = mapRef.current;
     if (!map) return;
@@ -1080,7 +1142,7 @@ export default function AtlasExperience() {
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!mapReady || !map) return;
+    if (!mapReady || !coreDataReady || !map) return;
     for (const optional of OPTIONAL_SOURCES) {
       if (!layers[optional.layer] || loadedOptionalSourcesRef.current.has(optional.source)) continue;
       const source = map.getSource(optional.source) as GeoJSONSource | undefined;
@@ -1094,7 +1156,7 @@ export default function AtlasExperience() {
       }
     }
     try { localStorage.setItem('roughatsea-atlas-layers', JSON.stringify(layers)); } catch { /* Preferences remain session-only. */ }
-  }, [layers, mapReady]);
+  }, [coreDataReady, layers, mapReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1226,6 +1288,11 @@ export default function AtlasExperience() {
 
   const setPreset = (preset: keyof typeof PRESETS) => setLayers({ ...PRESETS[preset] });
   const updateLayer = (key: keyof AtlasLayers) => setLayers((current) => ({ ...current, [key]: !current[key] }));
+
+  const dismissWelcome = () => {
+    setWelcomeDismissed(true);
+    try { localStorage.setItem('roughatsea-atlas-welcome-dismissed', 'true'); } catch { /* Dismissal remains session-only. */ }
+  };
 
   const focusHeritage = (feature: HeritageFeature) => {
     setSelectedHeritageId(feature.properties.id);
@@ -1359,8 +1426,9 @@ export default function AtlasExperience() {
         </aside>
       )}
 
-      {!selectedProfile && !drawerOpen && (
+      {!selectedProfile && !drawerOpen && !welcomeDismissed && (
         <section className="atlas-welcome" aria-label="Atlas introduction">
+          <button type="button" className="atlas-welcome-close" aria-label="Dismiss atlas introduction" onClick={dismissWelcome}>×</button>
           <small>THE WORLD, WITH CONTEXT</small>
           <h1>Spin the world.</h1>
           <p>Drag the globe, choose a country, or search for a capital, state, province, region, or major city.</p>
@@ -1502,7 +1570,7 @@ export default function AtlasExperience() {
         </div>
       )}
 
-      {!mapReady && !mapError && <div className="atlas-loading" role="status"><i /><span>Charting the world…</span></div>}
+      {(!mapReady || !coreDataReady) && !mapError && <div className="atlas-loading" role="status"><i /><span>Charting the world…</span></div>}
     </div>
   );
 }
