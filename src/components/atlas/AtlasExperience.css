@@ -771,6 +771,7 @@
 
 .atlas-place-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.45rem;
   margin-top: 1rem;
 }
@@ -797,8 +798,152 @@
   border-color: var(--atlas-border-strong);
 }
 
+.atlas-heritage-heading {
+  background:
+    radial-gradient(circle at 92% 10%, color-mix(in srgb, var(--atlas-pink) 18%, transparent), transparent 34%),
+    linear-gradient(145deg, color-mix(in srgb, var(--atlas-pink) 11%, transparent), transparent 58%),
+    linear-gradient(315deg, color-mix(in srgb, var(--atlas-cyan) 7%, transparent), transparent 62%);
+}
+
+.atlas-heritage-back {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 2.5rem 0.85rem 0;
+  padding: 0;
+  border: 0;
+  color: var(--atlas-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.64rem;
+  font-weight: 650;
+}
+
+.atlas-heritage-back:hover {
+  color: var(--atlas-ink);
+}
+
+.atlas-heritage-flag {
+  color: var(--atlas-pink);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--atlas-pink) 58%, transparent);
+}
+
+.atlas-heritage-heading > p {
+  color: var(--atlas-pink);
+}
+
+.atlas-heritage-heading h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
 .atlas-place-sections {
   padding: 0 1.05rem 1rem;
+}
+
+.atlas-heritage-story {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--atlas-pink) 6%, transparent), transparent 48%),
+    var(--atlas-panel-soft);
+}
+
+.atlas-heritage-story > small {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--atlas-pink);
+  font-size: 0.55rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+}
+
+.atlas-heritage-story > h3 {
+  margin: 0 0 0.85rem;
+  color: var(--atlas-ink);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.atlas-wiki-error p {
+  margin: 0;
+  color: var(--atlas-muted);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.atlas-wiki-error button {
+  min-height: 34px;
+  margin-top: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 999px;
+  color: var(--atlas-ink);
+  background: var(--atlas-panel);
+  cursor: pointer;
+  font-size: 0.64rem;
+  font-weight: 650;
+}
+
+.atlas-wiki-retry {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--atlas-border);
+}
+
+.atlas-country-return {
+  width: 100%;
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 13px;
+  color: var(--atlas-ink);
+  background: var(--atlas-panel-soft);
+  cursor: pointer;
+  text-align: left;
+}
+
+.atlas-country-return > span:first-child {
+  font-size: 1.5rem;
+}
+
+.atlas-country-return > span:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+}
+
+.atlas-country-return small {
+  color: var(--atlas-faint);
+  font-size: 0.54rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.atlas-country-return strong {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 0.9rem;
+}
+
+.atlas-country-return i {
+  color: var(--atlas-pink);
+  font-style: normal;
+}
+
+.atlas-country-return:hover,
+.atlas-wiki-error button:hover {
+  border-color: var(--atlas-border-strong);
 }
 
 .atlas-accordion {
@@ -1101,7 +1246,11 @@
 }
 
 .atlas-reopen-drawer strong {
+  max-width: 210px;
+  overflow: hidden;
   font-size: 0.69rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .atlas-reopen-drawer i {
@@ -1382,6 +1531,12 @@
   }
   .atlas-place-heading h2 {
     font-size: 2rem;
+  }
+  .atlas-heritage-heading .atlas-heritage-flag {
+    top: 3.55rem;
+  }
+  .atlas-heritage-heading h2 {
+    font-size: 1.75rem;
   }
   .atlas-place-actions {
     margin-top: 0.8rem;

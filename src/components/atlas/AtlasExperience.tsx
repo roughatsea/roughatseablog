@@ -86,6 +86,11 @@ interface HeritageProperties {
 
 type HeritageFeature = Feature<Point, HeritageProperties>;
 
+interface SelectedHeritageSite {
+  properties: HeritageProperties;
+  coordinates: [number, number];
+}
+
 interface AtlasSources {
   generatedAt: string;
   sources: Array<{
@@ -124,6 +129,20 @@ interface WikiResult {
   extract: string;
   url: string;
 }
+
+interface HeritageDetail {
+  title: string;
+  extract: string | null;
+  wikipediaUrl: string | null;
+  wikidataDescription: string | null;
+  wikidataUrl: string;
+  retryable: boolean;
+}
+
+type HeritageLoadState =
+  | { status: 'loading' }
+  | { status: 'ready'; detail: HeritageDetail }
+  | { status: 'error' };
 
 const EMPTY_COLLECTION: FeatureCollection = { type: 'FeatureCollection', features: [] };
 
@@ -201,7 +220,7 @@ const MAP_LAYER_VISIBILITY: Record<keyof AtlasLayers, string[]> = {
   divisionLabels: ['admin1-labels'],
   divisionCapitals: ['capital-1-dots', 'capital-1-labels'],
   majorCities: ['major-city-dots', 'major-city-labels'],
-  heritage: ['heritage-clusters', 'heritage-cluster-count', 'heritage-points', 'heritage-labels'],
+  heritage: ['heritage-clusters', 'heritage-cluster-count', 'heritage-points', 'heritage-selected', 'heritage-labels'],
   rivers: ['river-lines'],
   lakes: ['lake-fill', 'lake-lines'],
 };
@@ -265,6 +284,7 @@ const PALETTES = {
 } as const;
 
 const wikiCache = new Map<string, WikiResult | null>();
+const heritageDetailCache = new Map<string, Promise<HeritageDetail>>();
 
 function storedTheme(): AtlasTheme {
   if (typeof window === 'undefined') return 'illuminated';
@@ -597,6 +617,21 @@ function createStyle(theme: AtlasTheme): StyleSpecification {
         },
       },
       {
+        id: 'heritage-selected',
+        type: 'circle',
+        source: 'heritage',
+        filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'id'], '__none__']],
+        layout: { visibility: 'none' },
+        paint: {
+          'circle-color': palette.heritage,
+          'circle-opacity': 0.2,
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 7, 7, 10],
+          'circle-stroke-color': palette.heritage,
+          'circle-stroke-width': 2,
+          'circle-stroke-opacity': 0.95,
+        },
+      },
+      {
         id: 'heritage-labels',
         type: 'symbol',
         source: 'heritage',
@@ -661,6 +696,8 @@ function applyMapTheme(map: MapLibreMap, theme: AtlasTheme) {
   setPaint('heritage-clusters', 'circle-stroke-color', palette.halo);
   setPaint('heritage-points', 'circle-color', palette.heritage);
   setPaint('heritage-points', 'circle-stroke-color', palette.halo);
+  setPaint('heritage-selected', 'circle-color', palette.heritage);
+  setPaint('heritage-selected', 'circle-stroke-color', palette.heritage);
   setPaint('heritage-labels', 'text-color', palette.heritage);
   setPaint('heritage-labels', 'text-halo-color', palette.halo);
   setPaint('river-lines', 'line-color', palette.river);
@@ -787,6 +824,240 @@ function WikiExtract({ topic, profile, active }: {
   );
 }
 
+function wikipediaTitleFromUrl(url: string | null) {
+  if (!url) return null;
+  try {
+    const pathname = new URL(url).pathname;
+    const marker = '/wiki/';
+    const markerIndex = pathname.indexOf(marker);
+    if (markerIndex < 0) return null;
+    return decodeURIComponent(pathname.slice(markerIndex + marker.length)).replaceAll('_', ' ');
+  } catch {
+    return null;
+  }
+}
+
+function heritageDisplayName(properties: HeritageProperties) {
+  return /^Q\d+$/.test(properties.name) ? 'World Heritage site' : properties.name;
+}
+
+async function loadHeritageDetail(properties: HeritageProperties): Promise<HeritageDetail> {
+  const wikidataUrl = `https://www.wikidata.org/wiki/${encodeURIComponent(properties.id)}`;
+  let title = wikipediaTitleFromUrl(properties.wikipediaUrl);
+  let resolvedName = properties.name;
+  let wikidataDescription: string | null = null;
+
+  if (!title && /^Q\d+$/.test(properties.id)) {
+    const wikidataParameters = new URLSearchParams({
+      origin: '*',
+      action: 'wbgetentities',
+      ids: properties.id,
+      props: 'sitelinks|labels|descriptions',
+      languages: 'en',
+      sitefilter: 'enwiki',
+      redirects: 'yes',
+      format: 'json',
+    });
+    const wikidataResponse = await fetch(`https://www.wikidata.org/w/api.php?${wikidataParameters}`);
+    if (!wikidataResponse.ok) throw new Error('Wikidata unavailable');
+    const wikidataPayload = await wikidataResponse.json();
+    if (wikidataPayload.error) throw new Error('Wikidata request failed');
+    const entities = Object.values(wikidataPayload.entities ?? {}) as Array<{
+      labels?: { en?: { value?: string } };
+      descriptions?: { en?: { value?: string } };
+      sitelinks?: { enwiki?: { title?: string } };
+      missing?: string;
+    }>;
+    const entity = (wikidataPayload.entities?.[properties.id] ?? entities.find((candidate) => !candidate.missing)) as typeof entities[number] | undefined;
+    resolvedName = entity?.labels?.en?.value ?? resolvedName;
+    wikidataDescription = entity?.descriptions?.en?.value ?? null;
+    title = entity?.sitelinks?.enwiki?.title ?? null;
+  }
+
+  if (!title) {
+    return {
+      title: resolvedName,
+      extract: null,
+      wikipediaUrl: null,
+      wikidataDescription,
+      wikidataUrl,
+      retryable: false,
+    };
+  }
+
+  const wikipediaParameters = new URLSearchParams({
+    origin: '*',
+    action: 'query',
+    titles: title,
+    prop: 'extracts|info',
+    exintro: '1',
+    explaintext: '1',
+    exchars: '1200',
+    inprop: 'url',
+    redirects: '1',
+    formatversion: '2',
+    format: 'json',
+  });
+
+  try {
+    const wikipediaResponse = await fetch(`https://en.wikipedia.org/w/api.php?${wikipediaParameters}`);
+    if (!wikipediaResponse.ok) throw new Error('Wikipedia unavailable');
+    const wikipediaPayload = await wikipediaResponse.json();
+    if (wikipediaPayload.error) throw new Error('Wikipedia request failed');
+    const page = (wikipediaPayload.query?.pages ?? []).find((candidate: {
+      extract?: string;
+      fullurl?: string;
+      missing?: boolean;
+    }) => !candidate.missing);
+    return {
+      title: page?.title ?? resolvedName,
+      extract: page?.extract ?? null,
+      wikipediaUrl: page?.fullurl ?? properties.wikipediaUrl,
+      wikidataDescription,
+      wikidataUrl,
+      retryable: false,
+    };
+  } catch (error) {
+    if (wikidataDescription) {
+      return {
+        title: resolvedName,
+        extract: null,
+        wikipediaUrl: properties.wikipediaUrl,
+        wikidataDescription,
+        wikidataUrl,
+        retryable: true,
+      };
+    }
+    throw error;
+  }
+}
+
+function fetchHeritageDetail(properties: HeritageProperties) {
+  const cached = heritageDetailCache.get(properties.id);
+  if (cached) return cached;
+  const request = loadHeritageDetail(properties)
+    .then((detail) => {
+      if (detail.retryable) heritageDetailCache.delete(properties.id);
+      return detail;
+    })
+    .catch((error) => {
+      heritageDetailCache.delete(properties.id);
+      throw error;
+    });
+  heritageDetailCache.set(properties.id, request);
+  return request;
+}
+
+function HeritagePanelContent({
+  site,
+  profile,
+  onClose,
+  onBack,
+}: {
+  site: SelectedHeritageSite;
+  profile: CountryProfile;
+  onClose: () => void;
+  onBack: () => void;
+}) {
+  const backButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [requestKey, setRequestKey] = useState(0);
+  const [loadState, setLoadState] = useState<HeritageLoadState>({ status: 'loading' });
+  const properties = site.properties;
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoadState({ status: 'loading' });
+    fetchHeritageDetail(properties)
+      .then((detail) => {
+        if (!cancelled) setLoadState({ status: 'ready', detail });
+      })
+      .catch(() => {
+        if (!cancelled) setLoadState({ status: 'error' });
+      });
+    return () => { cancelled = true; };
+  }, [properties.id, requestKey]);
+
+  useEffect(() => {
+    backButtonRef.current?.focus();
+  }, []);
+
+  const detail = loadState.status === 'ready' ? loadState.detail : null;
+  const displayName = /^Q\d+$/.test(properties.name)
+    ? detail?.title ?? heritageDisplayName(properties)
+    : heritageDisplayName(properties);
+  const wikipediaUrl = detail?.wikipediaUrl ?? properties.wikipediaUrl;
+  const wikipediaReferenceUrl = wikipediaUrl
+    ?? `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(displayName)}`;
+  const wikidataUrl = detail?.wikidataUrl ?? `https://www.wikidata.org/wiki/${encodeURIComponent(properties.id)}`;
+
+  return (
+    <>
+      <div className="atlas-place-heading atlas-heritage-heading">
+        <button type="button" className="atlas-drawer-close" aria-label="Collapse place information" onClick={onClose}>×</button>
+        <button
+          ref={backButtonRef}
+          type="button"
+          className="atlas-heritage-back"
+          aria-label={`Back to ${profile.name} country information`}
+          onClick={onBack}
+        ><span aria-hidden="true">←</span> {profile.name}</button>
+        <span className="atlas-flag atlas-heritage-flag" aria-hidden="true">✦</span>
+        <p>World Heritage · {profile.name}</p>
+        <h2>{displayName}</h2>
+        <small>A place in a much larger human and natural story</small>
+        <div className="atlas-place-actions">
+          {wikipediaUrl && <a href={wikipediaUrl} target="_blank" rel="noreferrer">Wikipedia <span aria-hidden="true">↗</span></a>}
+          {properties.unescoUrl && <a href={properties.unescoUrl} target="_blank" rel="noreferrer">UNESCO <span aria-hidden="true">↗</span></a>}
+          <a href={wikidataUrl} target="_blank" rel="noreferrer">Wikidata <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+
+      <div className="atlas-place-sections atlas-heritage-sections">
+        <section className="atlas-heritage-story" aria-labelledby="atlas-heritage-about-title">
+          <small>PLACE NOTES</small>
+          <h3 id="atlas-heritage-about-title">About this place</h3>
+          {loadState.status === 'loading' && <div className="atlas-wiki-loading"><i /> Consulting Wikipedia and Wikidata…</div>}
+          {loadState.status === 'error' && (
+            <div className="atlas-wiki-error">
+              <p>The introduction could not be loaded right now. The official UNESCO record and reference links above are still available.</p>
+              <button type="button" onClick={() => setRequestKey((key) => key + 1)}>Try again</button>
+            </div>
+          )}
+          {detail?.extract && (
+            <div className="atlas-wiki-extract">
+              <p>{detail.extract}</p>
+              <small>
+                From <a href={wikipediaReferenceUrl} target="_blank" rel="noreferrer">{detail.title} on Wikipedia</a> · text available under CC BY-SA
+              </small>
+            </div>
+          )}
+          {detail && !detail.extract && detail.wikidataDescription && (
+            <div className="atlas-wiki-extract">
+              <p>{detail.wikidataDescription}</p>
+              <small>English description from <a href={detail.wikidataUrl} target="_blank" rel="noreferrer">Wikidata</a> · CC0</small>
+            </div>
+          )}
+          {detail?.retryable && (
+            <div className="atlas-wiki-error atlas-wiki-retry">
+              <p>The Wikipedia introduction is temporarily unavailable.</p>
+              <button type="button" onClick={() => setRequestKey((key) => key + 1)}>Retry Wikipedia</button>
+            </div>
+          )}
+          {detail && !detail.extract && !detail.wikidataDescription && (
+            <p className="atlas-wiki-fallback">No English introduction is available here yet. The UNESCO record above is the best path into this site’s history and significance.</p>
+          )}
+        </section>
+
+        <button type="button" className="atlas-country-return" onClick={onBack}>
+          <span aria-hidden="true">{profile.flag}</span>
+          <span><small>Return to country</small><strong>{profile.name}</strong></span>
+          <i aria-hidden="true">→</i>
+        </button>
+      </div>
+    </>
+  );
+}
+
 function AccordionSection({
   id,
   title,
@@ -840,6 +1111,8 @@ export default function AtlasExperience() {
   const mapRef = useRef<MapLibreMap | null>(null);
   const sourceDialogRef = useRef<HTMLElement | null>(null);
   const sourceTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const placeScrollRef = useRef<HTMLDivElement | null>(null);
+  const countryHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const loadedOptionalSourcesRef = useRef(new Set<string>());
   const selectCountryRef = useRef<(code: string, coordinates?: [number, number], zoom?: number) => void>(() => {});
   const selectDivisionRef = useRef<(code: string, coordinates: [number, number]) => void>(() => {});
@@ -856,7 +1129,7 @@ export default function AtlasExperience() {
   const [sources, setSources] = useState<AtlasSources | null>(null);
   const [selectedCode, setSelectedCode] = useState<string | null>(initialCountry);
   const [selectedDivisionCode, setSelectedDivisionCode] = useState<string | null>(null);
-  const [selectedHeritageId, setSelectedHeritageId] = useState<string | null>(null);
+  const [selectedHeritageSite, setSelectedHeritageSite] = useState<SelectedHeritageSite | null>(null);
   const [divisions, setDivisions] = useState<DivisionSummary[]>([]);
   const [divisionQuery, setDivisionQuery] = useState('');
   const [query, setQuery] = useState('');
@@ -882,9 +1155,10 @@ export default function AtlasExperience() {
   themeRef.current = theme;
 
   const selectedProfile = selectedCode ? profiles[selectedCode] ?? null : null;
-  const selectedHeritage = selectedCode
+  const countryHeritage = selectedCode
     ? heritage.filter((feature) => feature.properties.countryCode === selectedCode)
     : [];
+  const selectedHeritageId = selectedHeritageSite?.properties.id ?? null;
 
   const activePreset = useMemo(() => {
     const match = Object.entries(PRESETS).find(([, preset]) =>
@@ -933,6 +1207,7 @@ export default function AtlasExperience() {
       if (selectedCode && profileData[selectedCode]) setDrawerOpen(true);
       else if (selectedCode) {
         setSelectedCode(null);
+        setSelectedHeritageSite(null);
         setDrawerOpen(false);
       }
     }).catch(() => setMapError('The atlas reference data could not be loaded.'));
@@ -995,7 +1270,7 @@ export default function AtlasExperience() {
 
       map.on('click', async (event: MapMouseEvent) => {
         const available = [
-          'heritage-clusters', 'heritage-points', 'capital-1-dots', 'capital-0-dots',
+          'heritage-clusters', 'heritage-labels', 'heritage-points', 'capital-1-dots', 'capital-0-dots',
           'major-city-dots', 'admin1-fill', 'selected-country-fill', 'countries-fill',
         ].filter((id) => map.getLayer(id));
         const feature = map.queryRenderedFeatures(event.point, { layers: available })[0];
@@ -1008,7 +1283,7 @@ export default function AtlasExperience() {
           map.easeTo({ center: event.lngLat, zoom, duration: 700 });
           return;
         }
-        if (feature.layer.id === 'heritage-points') {
+        if (feature.layer.id === 'heritage-points' || feature.layer.id === 'heritage-labels') {
           const coordinates = (feature.geometry as Point).coordinates as [number, number];
           selectHeritageRef.current(properties as unknown as HeritageProperties, coordinates);
           return;
@@ -1025,7 +1300,7 @@ export default function AtlasExperience() {
       });
 
       map.on('mousemove', (event: MapMouseEvent) => {
-        const available = ['heritage-points', 'capital-1-dots', 'capital-0-dots', 'major-city-dots', 'admin1-fill', 'countries-fill']
+        const available = ['heritage-labels', 'heritage-points', 'capital-1-dots', 'capital-0-dots', 'major-city-dots', 'admin1-fill', 'countries-fill']
           .filter((id) => map.getLayer(id));
         const feature = map.queryRenderedFeatures(event.point, { layers: available })[0];
         map.getCanvas().style.cursor = feature ? 'pointer' : '';
@@ -1034,10 +1309,12 @@ export default function AtlasExperience() {
           return;
         }
         const properties = feature.properties as Record<string, unknown>;
-        const name = String(properties.name ?? properties.country ?? 'Explore');
+        const name = feature.layer.id === 'heritage-points' || feature.layer.id === 'heritage-labels'
+          ? heritageDisplayName(properties as unknown as HeritageProperties)
+          : String(properties.name ?? properties.country ?? 'Explore');
         const detail = feature.layer.id === 'admin1-fill'
           ? String(properties.type ?? 'First-level division')
-          : feature.layer.id === 'heritage-points'
+          : feature.layer.id === 'heritage-points' || feature.layer.id === 'heritage-labels'
             ? 'World heritage highlight'
             : feature.layer.id.includes('capital')
               ? String(properties.role ?? 'Capital')
@@ -1128,7 +1405,7 @@ export default function AtlasExperience() {
     initialFocusHandledRef.current = true;
     setSelectedCode(code);
     setSelectedDivisionCode(null);
-    setSelectedHeritageId(null);
+    setSelectedHeritageSite(null);
     setDivisionQuery('');
     setDrawerOpen(true);
     setSearchOpen(false);
@@ -1138,20 +1415,22 @@ export default function AtlasExperience() {
 
   const selectDivision = useCallback((code: string, coordinates: [number, number]) => {
     setSelectedDivisionCode(code);
+    setSelectedHeritageSite(null);
     setDrawerOpen(true);
     setOpenSections((current) => ({ ...current, administration: true }));
     flyTo(coordinates, Math.max(mapRef.current?.getZoom() ?? 4, 4.7));
   }, [flyTo]);
 
   const selectHeritage = useCallback((properties: HeritageProperties, coordinates: [number, number]) => {
-    if (properties.countryCode && profiles[properties.countryCode]) {
-      setSelectedCode(properties.countryCode);
-      setDrawerOpen(true);
-    }
-    setSelectedHeritageId(properties.id);
+    if (!properties.countryCode) return;
+    initialFocusHandledRef.current = true;
+    setSelectedCode(properties.countryCode);
+    setSelectedDivisionCode(null);
+    setSelectedHeritageSite({ properties, coordinates });
+    setDrawerOpen(true);
     setOpenSections((current) => ({ ...current, places: true }));
-    flyTo(coordinates, Math.max(mapRef.current?.getZoom() ?? 4.5, 5.1));
-  }, [flyTo, profiles]);
+    flyTo(coordinates, Math.max(mapRef.current?.getZoom() ?? 4.5, 6));
+  }, [flyTo]);
 
   selectCountryRef.current = selectCountry;
   selectDivisionRef.current = selectDivision;
@@ -1162,6 +1441,10 @@ export default function AtlasExperience() {
     initialFocusHandledRef.current = true;
     flyTo(selectedProfile.label, countryZoom(selectedProfile));
   }, [flyTo, mapReady, selectedProfile]);
+
+  useEffect(() => {
+    placeScrollRef.current?.scrollTo({ top: 0 });
+  }, [selectedCode, selectedHeritageId]);
 
   useEffect(() => {
     if (!mapReady) return;
@@ -1259,7 +1542,13 @@ export default function AtlasExperience() {
     map.setFilter('capital-1-dots', ['all', ['==', ['get', 'level'], 1], ['==', ['get', 'countryCode'], code]]);
     map.setFilter('capital-1-labels', ['all', ['==', ['get', 'level'], 1], ['==', ['get', 'countryCode'], code]]);
     map.setFilter('admin1-selected', ['==', ['get', 'code'], selectedDivisionCode ?? '__none__']);
-  }, [mapReady, selectedCode, selectedDivisionCode]);
+    map.setFilter('heritage-selected', selectedHeritageSite
+      ? ['all',
+          ['!', ['has', 'point_count']],
+          ['==', ['get', 'id'], selectedHeritageSite.properties.id],
+          ['==', ['get', 'countryCode'], selectedHeritageSite.properties.countryCode]]
+      : ['all', ['!', ['has', 'point_count']], ['==', ['get', 'id'], '__none__']]);
+  }, [mapReady, selectedCode, selectedDivisionCode, selectedHeritageSite]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1344,14 +1633,19 @@ export default function AtlasExperience() {
   };
 
   const focusHeritage = (feature: HeritageFeature) => {
-    setSelectedHeritageId(feature.properties.id);
-    flyTo(feature.geometry.coordinates as [number, number], 5.3);
+    selectHeritage(feature.properties, feature.geometry.coordinates as [number, number]);
+  };
+
+  const showCountryProfile = () => {
+    setSelectedHeritageSite(null);
+    setOpenSections((current) => ({ ...current, places: true }));
+    window.requestAnimationFrame(() => countryHeadingRef.current?.focus());
   };
 
   const resetGlobe = () => {
     setSelectedCode(null);
     setSelectedDivisionCode(null);
-    setSelectedHeritageId(null);
+    setSelectedHeritageSite(null);
     setDrawerOpen(false);
     setDivisions([]);
     const map = mapRef.current;
@@ -1491,13 +1785,23 @@ export default function AtlasExperience() {
       )}
 
       {selectedProfile && drawerOpen && (
-        <aside className="atlas-place-drawer" aria-label={`About ${selectedProfile.name}`}>
-          <div className="atlas-place-scroll">
-            <div className="atlas-place-heading">
+        <aside className="atlas-place-drawer" aria-label={`About ${selectedHeritageSite ? heritageDisplayName(selectedHeritageSite.properties) : selectedProfile.name}`}>
+          <div ref={placeScrollRef} className="atlas-place-scroll">
+            {selectedHeritageSite ? (
+              <HeritagePanelContent
+                key={`${selectedHeritageSite.properties.countryCode}:${selectedHeritageSite.properties.id}`}
+                site={selectedHeritageSite}
+                profile={selectedProfile}
+                onClose={closeDrawer}
+                onBack={showCountryProfile}
+              />
+            ) : (
+              <>
+                <div className="atlas-place-heading">
               <button type="button" className="atlas-drawer-close" aria-label="Collapse place information" onClick={closeDrawer}>×</button>
               <span className="atlas-flag" aria-hidden="true">{selectedProfile.flag}</span>
               <p>{selectedProfile.kind ?? 'Country or territory'} · {selectedProfile.subregion ?? selectedProfile.continent}</p>
-              <h2>{selectedProfile.name}</h2>
+              <h2 ref={countryHeadingRef} tabIndex={-1}>{selectedProfile.name}</h2>
               {selectedProfile.localName !== selectedProfile.name && <h3>{selectedProfile.localName}</h3>}
               {selectedProfile.formalName && selectedProfile.formalName !== selectedProfile.name && <small>{selectedProfile.formalName}</small>}
               <div className="atlas-place-actions">
@@ -1506,7 +1810,7 @@ export default function AtlasExperience() {
               </div>
             </div>
 
-            <div className="atlas-place-sections">
+                <div className="atlas-place-sections">
               <AccordionSection id="overview" title="Overview" summary="Names, capitals, and reference facts" open={openSections.overview} onToggle={toggleSection}>
                 <dl className="atlas-facts">
                   <div><dt>{selectedProfile.capitals.length > 1 ? 'Capitals / seats' : 'Capital'}</dt><dd>{joinList(selectedProfile.capitals)}</dd></div>
@@ -1555,13 +1859,13 @@ export default function AtlasExperience() {
                 ) : <p className="atlas-empty-note">Natural Earth does not provide mapped administrative boundaries for this place, usually because it is very small or its status is disputed.</p>}
               </AccordionSection>
 
-              <AccordionSection id="places" title="Notable places" summary={selectedHeritage.length ? `${selectedHeritage.length} representative heritage highlights` : 'No heritage snapshot entries'} open={openSections.places} onToggle={toggleSection}>
-                {selectedHeritage.length ? (
+              <AccordionSection id="places" title="Notable places" summary={countryHeritage.length ? `${countryHeritage.length} representative heritage highlights` : 'No heritage snapshot entries'} open={openSections.places} onToggle={toggleSection}>
+                {countryHeritage.length ? (
                   <div className="atlas-heritage-list">
-                    {selectedHeritage.map((feature) => (
+                    {countryHeritage.map((feature) => (
                       <article key={feature.properties.id} className={selectedHeritageId === feature.properties.id ? 'is-active' : ''}>
                         <button type="button" onClick={() => focusHeritage(feature)}>
-                          <i aria-hidden="true">✦</i><span>{feature.properties.name}</span>
+                          <i aria-hidden="true">✦</i><span>{heritageDisplayName(feature.properties)}</span>
                         </button>
                         <div>
                           {feature.properties.wikipediaUrl && <a href={feature.properties.wikipediaUrl} target="_blank" rel="noreferrer">Wikipedia ↗</a>}
@@ -1573,14 +1877,17 @@ export default function AtlasExperience() {
                   </div>
                 ) : <p className="atlas-empty-note">No World Heritage entries from the current Wikidata snapshot are attached to this map unit.</p>}
               </AccordionSection>
-            </div>
+                </div>
+              </>
+            )}
           </div>
         </aside>
       )}
 
       {selectedProfile && !drawerOpen && (
         <button type="button" className="atlas-reopen-drawer" onClick={reopenDrawer}>
-          <span aria-hidden="true">{selectedProfile.flag}</span><strong>{selectedProfile.name}</strong><i aria-hidden="true">‹</i>
+          <span aria-hidden="true">{selectedHeritageSite ? '✦' : selectedProfile.flag}</span>
+          <strong>{selectedHeritageSite ? heritageDisplayName(selectedHeritageSite.properties) : selectedProfile.name}</strong><i aria-hidden="true">‹</i>
         </button>
       )}
 
@@ -1613,7 +1920,7 @@ export default function AtlasExperience() {
                 </article>
               ))}
             </div>
-            <p className="atlas-source-footnote">Mapped administrative units follow the source schema: in some places they are below the first level or omit newer divisions. Coverage is also incomplete for a small number of tiny or disputed places. Wikipedia introductions load only when their sections are opened and retain their own attribution.</p>
+            <p className="atlas-source-footnote">Mapped administrative units follow the source schema: in some places they are below the first level or omit newer divisions. Coverage is also incomplete for a small number of tiny or disputed places. Wikipedia introductions load only when a section is opened or a heritage site is selected, and retain their own attribution.</p>
           </section>
         </div>
       )}
