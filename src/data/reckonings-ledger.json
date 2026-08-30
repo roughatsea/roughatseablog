@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T23:45:00-07:00",
+  "updatedAt": "2026-08-30T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -19,6 +19,31 @@
         "instantaneous velocity",
         "tangent lines",
         "gradient descent"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-30"
+      ]
+    },
+    {
+      "date": "2026-08-30",
+      "slug": "daily-reckoning-2026-08-30",
+      "title": "How Does Mathematics Make ‘Close’ Exact?",
+      "area": "Calculus and analysis",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Algebra",
+        "Absolute value as distance",
+        "Basic function notation"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "epsilon-delta definition",
+        "limits",
+        "continuity",
+        "numerical convergence"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-29"
       ]
     }
   ]

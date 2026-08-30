@@ -1,0 +1,151 @@
+---
+const target = Math.SQRT2;
+const rows = [
+  { label: 'Start', estimate: 1.5, tolerance: 0.1 },
+  { label: 'After 1 step', estimate: 17 / 12, tolerance: 0.01 },
+  { label: 'After 2 steps', estimate: 577 / 408, tolerance: 0.00001 },
+  { label: 'After 3 steps', estimate: 665857 / 470832, tolerance: 0.000000001 },
+].map((row) => ({
+  ...row,
+  error: Math.abs(row.estimate - target),
+  ratio: Math.abs(row.estimate - target) / row.tolerance,
+}));
+
+const centerX = 480;
+const halfBand = 245;
+const rowY = [82, 148, 214, 280];
+
+function formatEstimate(value: number) {
+  return value.toFixed(12).replace(/0+$/, '').replace(/\.$/, '');
+}
+
+function formatTolerance(value: number) {
+  if (value >= 0.00001) return value.toString();
+  return value === 0.000000001 ? '1 × 10⁻⁹' : value.toExponential(0);
+}
+
+function formatError(value: number) {
+  return value < 0.000001 ? value.toExponential(2) : value.toPrecision(3);
+}
+---
+
+<figure class="convergence-compass reckoning-visual">
+  <header>
+    <p>Numerical convergence</p>
+    <h3>Each calculation earns a tighter error budget</h3>
+  </header>
+
+  <div class="compass-shell">
+    <svg viewBox="0 0 960 340" role="img" aria-labelledby="convergence-title convergence-desc">
+      <title id="convergence-title">Four Newton-method estimates approaching the square root of two</title>
+      <desc id="convergence-desc">
+        Four separately magnified number lines show successive estimates moving closer to the square
+        root of two while the allowed error shrinks from one tenth to one billionth.
+      </desc>
+
+      {rows.map((row, index) => {
+        const y = rowY[index];
+        const pointX = centerX + Math.min(row.ratio, 1) * halfBand;
+        return (
+          <g class="convergence-row">
+            <text class="step-label" x="24" y={y - 8}>{row.label}</text>
+            <text class="estimate-label" x="24" y={y + 15}>x = {formatEstimate(row.estimate)}</text>
+
+            <rect class="tolerance-band" x={centerX - halfBand} y={y - 13} width={halfBand * 2} height="26" rx="13" />
+            <line class="track" x1={centerX - halfBand} x2={centerX + halfBand} y1={y} y2={y} />
+            <line class="center-tick" x1={centerX} x2={centerX} y1={y - 19} y2={y + 19} />
+            <circle class="estimate-point" cx={pointX} cy={y} r="7" />
+            <line class="error-line" x1={centerX} x2={pointX} y1={y} y2={y} />
+
+            <text class="root-label" x={centerX} y={y - 23} text-anchor="middle">√2</text>
+            <text class="tolerance-label" x="936" y={y - 7} text-anchor="end">tolerance: {formatTolerance(row.tolerance)}</text>
+            <text class="error-label" x="936" y={y + 15} text-anchor="end">error: {formatError(row.error)}</text>
+          </g>
+        );
+      })}
+    </svg>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> each row magnifies a different interval centered on √2. The pink
+    dot marks the current estimate; the green center mark is the target. Three Newton steps reduce the
+    error from about 0.086 to roughly 1.6 × 10<sup>−12</sup>, comfortably inside the final tolerance.
+  </figcaption>
+</figure>
+
+<style>
+  .convergence-compass {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1060px, calc(100vw - 3rem));
+  }
+  header > p {
+    color: var(--link-color);
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.2rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+  }
+  .compass-shell {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    overflow-x: auto;
+  }
+  svg {
+    display: block;
+    height: auto;
+    min-width: 720px;
+    width: 100%;
+  }
+  .tolerance-band {
+    fill: color-mix(in srgb, var(--link-color) 9%, transparent);
+    stroke: var(--border-color);
+  }
+  .track {
+    stroke: var(--text-secondary);
+    stroke-width: 1.2;
+  }
+  .center-tick {
+    stroke: #4f9300;
+    stroke-width: 3;
+  }
+  :global([data-theme='dark']) .center-tick { stroke: #93ff14; }
+  .estimate-point {
+    fill: #ff1493;
+    stroke: var(--bg-color);
+    stroke-width: 2.5;
+  }
+  .error-line {
+    stroke: #ff1493;
+    stroke-dasharray: 4 4;
+    stroke-width: 2.2;
+  }
+  text { fill: var(--text-secondary); font-size: 12px; }
+  .step-label { fill: var(--text-primary); font-size: 13px; font-weight: 600; }
+  .estimate-label { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .root-label { fill: #4f9300; font-weight: 700; }
+  :global([data-theme='dark']) .root-label { fill: #93ff14; }
+  .error-label { fill: #ff1493; }
+  figcaption {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin-top: 0.85rem;
+  }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 500px) {
+    .convergence-compass { width: calc(100vw - 1.5rem); }
+  }
+</style>
