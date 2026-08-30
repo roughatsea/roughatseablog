@@ -18,8 +18,9 @@ const pathname = Astro.url.pathname;
 
     <div class="header-actions">
       <nav aria-label="Primary navigation">
-        <a href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
+        <a class="home-link" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
         <a href="/soundings/" aria-current={pathname.startsWith('/soundings/') ? 'page' : undefined}>Soundings</a>
+        <a href="/reckonings/" aria-current={pathname.startsWith('/reckonings/') ? 'page' : undefined}>Reckonings</a>
         <a href="/atlas/" aria-current={pathname === '/atlas/' ? 'page' : undefined}>Atlas</a>
         <a href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>About</a>
       </nav>
@@ -140,6 +141,9 @@ const pathname = Astro.url.pathname;
     nav a {
       font-size: 0.76rem;
       padding: 0.35rem 0.5rem;
+    }
+    .home-link {
+      display: none;
     }
   }
 

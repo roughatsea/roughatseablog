@@ -22,6 +22,23 @@ const soundingsCollection = defineCollection({
   schema: articleSchema,
 });
 
+const reckoningSchema = articleSchema.extend({
+  area: z.string(),
+  difficulty: z.enum(['Foundational', 'Intermediate', 'Advanced', 'Ultra-advanced']),
+  prerequisites: z.array(z.string()).default([]),
+  readTimeMinutes: z.number().int().positive(),
+  miniSeries: z.object({
+    title: z.string(),
+    part: z.number().int().positive(),
+    total: z.number().int().positive(),
+  }).optional(),
+});
+
+const reckoningsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/reckonings" }),
+  schema: reckoningSchema,
+});
+
 const linksCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/links" }),
   schema: articleSchema.extend({ url: z.string().url() }),
@@ -30,6 +47,6 @@ const linksCollection = defineCollection({
 export const collections = {
   notes: notesCollection,
   soundings: soundingsCollection,
+  reckonings: reckoningsCollection,
   links: linksCollection,
 };
-

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-29T23:45:00-07:00",
+  "entries": [
+    {
+      "date": "2026-08-29",
+      "slug": "daily-reckoning-2026-08-29",
+      "title": "How Can Motion Have a Speed at One Instant?",
+      "area": "Calculus",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Algebra",
+        "Slope of a line",
+        "Basic function notation"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "limits",
+        "instantaneous velocity",
+        "tangent lines",
+        "gradient descent"
+      ]
+    }
+  ]
+}

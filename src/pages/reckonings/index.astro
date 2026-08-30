@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReckoningCard from '../../components/ReckoningCard.astro';
+
+const reckonings = (await getCollection('reckonings')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout
+  title="Reckonings"
+  description="One mathematical idea, worked through each day with examples, history, applications, and visual explanations."
+>
+  <header class="reckonings-header">
+    <p class="eyebrow">One mathematical idea, worked through</p>
+    <h1>Reckonings</h1>
+    <p class="lede">
+      Daily lessons for curious generalists, from first principles to the stranger edges of
+      modern mathematics. Each lesson names its prerequisites before asking you to come aboard.
+    </p>
+    <svg class="reckoning-mark" aria-hidden="true" viewBox="0 0 200 72" fill="none">
+      <circle cx="100" cy="36" r="28" />
+      <path d="M100 3v66M67 36h66" />
+      <path class="curve" d="M54 58C78 57 79 17 101 17s24 40 47 39" />
+      <circle class="point" cx="101" cy="17" r="3.5" />
+      <path class="tangent" d="M69 39l63-44" />
+    </svg>
+  </header>
+
+  <div class="archive">
+    {reckonings.map((reckoning) => (
+      <ReckoningCard
+        title={reckoning.data.title}
+        description={reckoning.data.description}
+        heroImage={reckoning.data.heroImage}
+        heroImageAlt={reckoning.data.heroImageAlt}
+        slug={reckoning.id}
+        date={reckoning.data.date}
+        difficulty={reckoning.data.difficulty}
+        area={reckoning.data.area}
+        prerequisites={reckoning.data.prerequisites}
+        readTimeMinutes={reckoning.data.readTimeMinutes}
+      />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .reckonings-header {
+    margin: 0 auto 2.5rem;
+    max-width: 50rem;
+    text-align: center;
+  }
+  .eyebrow {
+    color: var(--link-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    letter-spacing: -0.035em;
+  }
+  .lede {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+  .reckoning-mark {
+    color: var(--text-secondary);
+    height: 3.6rem;
+    margin-top: 0.4rem;
+    stroke: currentColor;
+    stroke-width: 1.2;
+    width: 10rem;
+  }
+  .reckoning-mark .curve {
+    stroke: var(--link-color);
+    stroke-width: 2.4;
+  }
+  .reckoning-mark .point {
+    fill: #ff1493;
+    stroke: none;
+  }
+  .reckoning-mark .tangent {
+    stroke: #93ff14;
+    stroke-width: 1.7;
+  }
+  .archive {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 800px) {
+    :global(main.container) {
+      max-width: 1080px;
+    }
+  }
+</style>

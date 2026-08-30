@@ -1,0 +1,173 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  heroImage: string;
+  heroImageAlt: string;
+  slug: string;
+  date: Date;
+  difficulty: string;
+  area: string;
+  prerequisites: string[];
+  readTimeMinutes: number;
+}
+
+const {
+  title,
+  description,
+  heroImage,
+  heroImageAlt,
+  slug,
+  date,
+  difficulty,
+  area,
+  prerequisites,
+  readTimeMinutes,
+} = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<article class="reckoning-card hover-lift">
+  <a class="image-link" href={`/reckonings/${slug}`} aria-label={`Read ${title}`}>
+    <img
+      class="card-image"
+      src={heroImage}
+      alt={heroImageAlt}
+      width="1600"
+      height="900"
+      loading="lazy"
+      decoding="async"
+    />
+  </a>
+  <div class="card-content">
+    <div class="edition-row">
+      <span class="series">The Daily Reckoning</span>
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+    </div>
+    <h2><a href={`/reckonings/${slug}`}>{title}</a></h2>
+    {description && <p class="description">{description}</p>}
+    <dl class="lesson-facts">
+      <div>
+        <dt>Level</dt>
+        <dd>{difficulty}</dd>
+      </div>
+      <div>
+        <dt>Area</dt>
+        <dd>{area}</dd>
+      </div>
+      <div>
+        <dt>Time</dt>
+        <dd>{readTimeMinutes} min</dd>
+      </div>
+    </dl>
+    <p class="prerequisites">
+      <span>Prerequisites</span>
+      {prerequisites.length > 0 ? prerequisites.join(' · ') : 'None'}
+    </p>
+  </div>
+</article>
+
+<style>
+  .reckoning-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: grid;
+    overflow: hidden;
+  }
+  .image-link {
+    background: #06111f;
+    display: block;
+  }
+  .card-image {
+    aspect-ratio: 16 / 9;
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem 1.5rem 1.5rem;
+  }
+  .edition-row {
+    align-items: center;
+    color: var(--text-secondary);
+    display: flex;
+    font-size: 0.75rem;
+    justify-content: space-between;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.65rem;
+    text-transform: uppercase;
+  }
+  .series {
+    color: var(--link-color);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    line-height: 1.2;
+  }
+  h2 a:hover {
+    color: var(--link-color);
+  }
+  .description {
+    color: var(--text-secondary);
+    margin-bottom: 1.15rem;
+  }
+  .lesson-facts {
+    display: grid;
+    gap: 0.55rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: auto 0 0.9rem;
+  }
+  .lesson-facts div {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    padding: 0.55rem 0.65rem;
+  }
+  dt,
+  .prerequisites span {
+    color: var(--text-secondary);
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  dd {
+    font-size: 0.82rem;
+    margin: 0.12rem 0 0;
+  }
+  .prerequisites {
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    margin: 0;
+  }
+  .prerequisites span {
+    margin-bottom: 0.15rem;
+  }
+  @media (min-width: 800px) {
+    .reckoning-card {
+      grid-template-columns: minmax(19rem, 0.95fr) minmax(0, 1.05fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .edition-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .lesson-facts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
