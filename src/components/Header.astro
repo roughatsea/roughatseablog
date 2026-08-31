@@ -36,6 +36,7 @@ const pathname = Astro.url.pathname;
         <a class="home-link" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
         <a href="/soundings/" aria-current={pathname.startsWith('/soundings/') ? 'page' : undefined}>Soundings</a>
         <a href="/reckonings/" aria-current={pathname.startsWith('/reckonings/') ? 'page' : undefined}>Reckonings</a>
+        <a href="/wake/" aria-current={pathname.startsWith('/wake/') ? 'page' : undefined}>Wake</a>
         <a href="/atlas/" aria-current={pathname === '/atlas/' ? 'page' : undefined}>Atlas</a>
         <a href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>About</a>
       </nav>
