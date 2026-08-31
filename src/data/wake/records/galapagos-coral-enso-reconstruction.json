@@ -1,0 +1,128 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "galapagos-coral-enso-reconstruction",
+  "title": "Galápagos coral ENSO reconstruction",
+  "dek": "A millennium-scale climate reconstruction made a consequential quantitative claim and immediately attracted a substantive argument about what the proxy can support.",
+  "canonicalSubject": {
+    "name": "Galápagos coral ENSO reconstruction",
+    "kind": "scientific-study",
+    "aliases": [
+      "eastern Pacific ENSO millennium reconstruction",
+      "Cole Galápagos coral study"
+    ]
+  },
+  "topics": [
+    "climate",
+    "enso",
+    "paleoclimate",
+    "corals"
+  ],
+  "geography": [
+    "Galápagos Islands",
+    "Pacific Ocean"
+  ],
+  "trackingTerms": [
+    "Science ady2660",
+    "Galápagos coral ENSO 36.5 percent",
+    "eastern Pacific ENSO millennium coral",
+    "Julia Cole El Niño coral study"
+  ],
+  "originSignalIds": [
+    "2026-08-28-galapagos-coral-enso-reconstruction"
+  ],
+  "firstObservedAt": "2026-08-28T05:00:00-07:00",
+  "admittedAt": "2026-08-30T18:30:00-07:00",
+  "whyTracked": "The result is quantitative, consequential, and already disputed, making reanalysis and independent proxy comparison especially informative over time.",
+  "current": {
+    "lifecycle": "disputed",
+    "evidence": "disputed",
+    "attention": "unmeasured",
+    "assessment": "The primary study reports unprecedented recent eastern-Pacific ENSO variability within its record, while independent specialists dispute parts of the interpretation and attribution.",
+    "updatedAt": "2026-08-30T18:30:00-07:00",
+    "lastMaterialChangeAt": "2026-08-28T05:00:00-07:00",
+    "nextReviewAfter": "2027-02-28",
+    "nextReviewTrigger": "Review for formal commentary, corrections, reanalysis, methodological response, or an independent regional proxy reconstruction.",
+    "cadence": "quarterly"
+  },
+  "openQuestions": [
+    "Will independent proxy records reproduce the magnitude and attribution of the reported strengthening?",
+    "How sensitive is the result to local background warming and site selection?",
+    "Will subsequent analyses narrow the disagreement?"
+  ],
+  "watchFor": [
+    {
+      "description": "Formal commentary, response, reanalysis, or correction",
+      "expectedWindow": "Unknown",
+      "trigger": "A peer-reviewed publication directly tests the methods or interpretation."
+    },
+    {
+      "description": "Independent regional proxy reconstruction",
+      "expectedWindow": "Unknown",
+      "trigger": "A separate dataset reproduces or challenges the recent strengthening signal."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "galapagos-coral-enso-reconstruction-2026-08-28-point-zero",
+      "observedAt": "2026-08-28T05:00:00-07:00",
+      "recordedAt": "2026-08-30T15:42:25-07:00",
+      "kind": "point-zero",
+      "lifecycle": "disputed",
+      "evidence": "disputed",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "A Science paper reconstructed roughly a millennium of eastern-Pacific ENSO variability from living and fossil Galápagos corals and reported that variability during the preceding forty years was about 36.5 percent stronger than the preindustrial record.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-28-galapagos-coral-enso-reconstruction"
+      ],
+      "sources": [
+        {
+          "url": "https://doi.org/10.1126/science.ady2660",
+          "title": "Recent strengthening of eastern Pacific ENSO is unprecedented in the last millennium paleorecord",
+          "publisher": "Science",
+          "publishedAt": null,
+          "accessedAt": "2026-08-28",
+          "role": "primary-research",
+          "lineage": "cole-galapagos-coral-enso-study"
+        },
+        {
+          "url": "https://theconversation.com/galapagos-corals-show-el-nino-events-are-more-extreme-now-than-in-past-1-000-years-heres-how-my-team-made-the-discovery-272318",
+          "title": "How the Galápagos coral reconstruction was made",
+          "publisher": "The Conversation",
+          "publishedAt": null,
+          "accessedAt": "2026-08-28",
+          "role": "analysis-context",
+          "lineage": "cole-galapagos-coral-enso-study"
+        },
+        {
+          "url": "https://apnews.com/article/el-nino-climate-change-disasters-worsening-heat-cf2e0bbe4b241c5ad0141ca0f93f44dd",
+          "title": "Scientific reaction to the Galápagos coral ENSO study",
+          "publisher": "Associated Press",
+          "publishedAt": null,
+          "accessedAt": "2026-08-28",
+          "role": "independent-reporting",
+          "lineage": "ap-independent-enso-commentary"
+        }
+      ]
+    },
+    {
+      "observationId": "galapagos-coral-enso-reconstruction-2026-08-30-admission",
+      "observedAt": "2026-08-30T18:30:00-07:00",
+      "recordedAt": "2026-08-30T18:30:00-07:00",
+      "kind": "admission",
+      "lifecycle": "disputed",
+      "evidence": "disputed",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake pilot",
+      "summary": "Admitted because disagreement began at point zero and later evidence can show whether it narrows, deepens, or changes the original claim.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-28-galapagos-coral-enso-reconstruction"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}
