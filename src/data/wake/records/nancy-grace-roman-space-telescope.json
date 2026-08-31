@@ -1,0 +1,134 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "nancy-grace-roman-space-telescope",
+  "title": "Nancy Grace Roman Space Telescope",
+  "dek": "A successful launch begins a chain of deployments, calibrations, public data releases, and scientific tests that can be observed rather than merely anticipated.",
+  "canonicalSubject": {
+    "name": "Nancy Grace Roman Space Telescope",
+    "kind": "space-mission",
+    "aliases": [
+      "Roman Space Telescope",
+      "Nancy Grace Roman mission"
+    ]
+  },
+  "topics": [
+    "astronomy",
+    "space",
+    "telescopes",
+    "open-science"
+  ],
+  "geography": [
+    "Sun–Earth L2",
+    "United States"
+  ],
+  "trackingTerms": [
+    "Nancy Grace Roman Space Telescope status",
+    "Roman telescope commissioning",
+    "Roman first science images",
+    "Roman wide field instrument",
+    "Roman open data"
+  ],
+  "originSignalIds": [
+    "2026-08-30-nancy-grace-roman-launch"
+  ],
+  "firstObservedAt": "2026-08-30T05:00:00-07:00",
+  "admittedAt": "2026-08-30T18:30:00-07:00",
+  "whyTracked": "Roman has a precise technical baseline, near-term engineering gates, measurable scientific performance, and an unusually strong open-data promise.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "mixed",
+    "attention": "unmeasured",
+    "assessment": "The telescope has launched. Deployment, commissioning, instrument performance, first images, survey yield, and the effects of immediate public access remain unresolved.",
+    "updatedAt": "2026-08-30T18:30:00-07:00",
+    "lastMaterialChangeAt": "2026-08-30T05:00:00-07:00",
+    "nextReviewAfter": "2026-12-01",
+    "nextReviewTrigger": "Review NASA deployment and commissioning reports; reactivate immediately for an anomaly, completed commissioning, or first public observations.",
+    "cadence": "monthly"
+  },
+  "openQuestions": [
+    "Will all deployments and instrument calibrations succeed?",
+    "When will first science images and survey data be released?",
+    "Will immediate public access produce substantial research beyond the mission’s planned programs?"
+  ],
+  "watchFor": [
+    {
+      "description": "Deployment and commissioning milestones",
+      "expectedWindow": "August–November 2026",
+      "trigger": "NASA reports spacecraft or instrument deployment, anomaly, or calibration results."
+    },
+    {
+      "description": "First science images and initial data release",
+      "expectedWindow": "Early 2027",
+      "trigger": "NASA releases the first processed observations."
+    },
+    {
+      "description": "Early survey performance and discoveries",
+      "expectedWindow": "2027–2028",
+      "trigger": "Published results compare achieved field, sensitivity, cadence, and yield with mission expectations."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "nancy-grace-roman-space-telescope-2026-08-30-point-zero",
+      "observedAt": "2026-08-30T05:00:00-07:00",
+      "recordedAt": "2026-08-30T15:42:25-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "NASA launched the Nancy Grace Roman Space Telescope on August 30, 2026, beginning a roughly three-month deployment, calibration, and commissioning period before planned first science images in early 2027.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-30-nancy-grace-roman-launch"
+      ],
+      "sources": [
+        {
+          "url": "https://www.reuters.com/science/nasa-launches-powerful-new-roman-space-telescope-florida-2026-08-30/",
+          "title": "NASA launches Roman Space Telescope from Florida",
+          "publisher": "Reuters",
+          "publishedAt": "2026-08-30",
+          "accessedAt": "2026-08-30",
+          "role": "independent-reporting",
+          "lineage": "roman-launch-independent-report"
+        },
+        {
+          "url": "https://science.nasa.gov/missions/roman-space-telescope/9-things-to-know-about-nasas-nancy-grace-roman-space-telescope/",
+          "title": "Nine things to know about the Roman mission",
+          "publisher": "NASA",
+          "publishedAt": null,
+          "accessedAt": "2026-08-30",
+          "role": "official-primary",
+          "lineage": "nasa-roman-mission"
+        },
+        {
+          "url": "https://science.nasa.gov/blogs/roman/2026/08/30/nasas-roman-space-telescope-launch-updates/",
+          "title": "Roman launch updates",
+          "publisher": "NASA",
+          "publishedAt": "2026-08-30",
+          "accessedAt": "2026-08-30",
+          "role": "official-primary",
+          "lineage": "nasa-roman-mission"
+        }
+      ]
+    },
+    {
+      "observationId": "nancy-grace-roman-space-telescope-2026-08-30-admission",
+      "observedAt": "2026-08-30T18:30:00-07:00",
+      "recordedAt": "2026-08-30T18:30:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake pilot",
+      "summary": "Admitted because a single launch opens into a long sequence of observable engineering, scientific, and institutional outcomes.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-30-nancy-grace-roman-launch"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}
