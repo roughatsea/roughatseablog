@@ -7,9 +7,14 @@ import ToxicSunriseToggle from '../components/ToxicSunriseToggle.astro';
 interface Props {
   title: string;
   description?: string;
+  robots?: string;
 }
 
-const { title, description = "Notes, links, and useful signals gathered in uncertain waters." } = Astro.props;
+const {
+  title,
+  description = "Notes, links, and useful signals gathered in uncertain waters.",
+  robots,
+} = Astro.props;
 const pageTitle = title === 'Rough at Sea' ? title : `${title} · Rough at Sea`;
 ---
 
@@ -20,6 +25,7 @@ const pageTitle = title === 'Rough at Sea' ? title : `${title} · Rough at Sea`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script is:inline>
       const theme = (() => {

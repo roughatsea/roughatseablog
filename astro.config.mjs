@@ -11,7 +11,13 @@ export default defineConfig({
   redirects: {
     "/notes/code-guru-rebuilt-recognition-first": "/notes/the-working-vocabulary-of-software-engineering/",
   },
-  integrations: [mdx(), react(), sitemap()],
+  integrations: [
+    mdx(),
+    react(),
+    sitemap({
+      filter: (page) => !page.replace(/\/$/, '').endsWith('/instagram'),
+    }),
+  ],
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
