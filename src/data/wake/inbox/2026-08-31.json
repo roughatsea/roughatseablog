@@ -1,0 +1,309 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-08-31",
+  "article": {
+    "slug": "morning-soundings-2026-08-31",
+    "title": "Morning Soundings: The Number Is Not the Thing",
+    "publishedAt": "2026-08-31T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-08-31.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-08-31T05:04:19-07:00",
+    "sourceStateAsOf": "2026-08-31",
+    "notes": "Captured during the publication run from sources accessed on August 31, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-08-31-biomedical-llm-writing-estimate",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "An 89 percent estimate cannot identify one paper",
+      "canonicalSubject": {
+        "name": "LLM-assisted writing in PubMed Central papers",
+        "kind": "research-estimate",
+        "aliases": [
+          "biomedical LLM writing prevalence",
+          "Holzwarth González-Márquez Kobak estimate"
+        ]
+      },
+      "signalType": "preprint-finding",
+      "topics": [
+        "artificial-intelligence",
+        "scientific-publishing",
+        "computational-linguistics",
+        "research-integrity"
+      ],
+      "geography": [
+        "Global"
+      ],
+      "canonicalClaim": "A preprint estimated that 89 percent of sampled PubMed Central papers published in December 2025 contained signs of LLM-assisted writing or editing somewhere in their full text.",
+      "knownFacts": [
+        "The analysis included 1,194,287 English-language PubMed Central papers dated 2017 through 2025 with Introduction, Methods, Results, and Discussion sections.",
+        "The estimator compared post-2022 frequencies of 379 LLM-associated marker words with trends projected from 2018 through 2022.",
+        "For random 255-word crops in December 2025, the estimated usage was 68 percent in Discussion sections and 32 percent in Methods sections."
+      ],
+      "uncertainties": [
+        "The work was a preprint and had not completed journal peer review at capture time.",
+        "The estimate depends on the projected human-only vocabulary baseline remaining valid after 2022.",
+        "The method estimates prevalence across a corpus and cannot reliably classify an individual paper or distinguish translation, editing, and substantive generation."
+      ],
+      "evidence": {
+        "level": "preliminary",
+        "notes": "The authors provide methods, validation simulations, code, and corpus-level results in a public preprint; peer review and independent replication remain pending."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.10715",
+          "title": "Most biomedical publications show signs of LLM-assisted writing",
+          "publisher": "arXiv",
+          "publishedAt": "2026-08-11",
+          "accessedAt": "2026-08-31",
+          "role": "primary-research",
+          "lineage": "holzwarth-biomedical-llm-writing-preprint"
+        },
+        {
+          "url": "https://www.nature.com/articles/d41586-026-02551-z",
+          "title": "Staggering 90% of biomedical papers now show signs of AI help",
+          "publisher": "Nature",
+          "publishedAt": "2026-08-20",
+          "accessedAt": "2026-08-31",
+          "role": "independent-reporting",
+          "lineage": "holzwarth-biomedical-llm-writing-preprint"
+        }
+      ],
+      "openQuestions": [
+        "Will journal peer review or independent replication materially revise the estimate?",
+        "How much of the detected assistance consists of translation or editing rather than generation of scientific claims?",
+        "Can future estimators separate direct model use from human adoption or avoidance of model-associated vocabulary?"
+      ],
+      "watchFor": [
+        {
+          "description": "Peer-reviewed publication or a revised preprint",
+          "expectedWindow": null,
+          "trigger": "The authors publish a revised version, journal article, correction, or methodological response."
+        },
+        {
+          "description": "Independent replication on PubMed Central or another scholarly corpus",
+          "expectedWindow": null,
+          "trigger": "An independent group applies or tests the estimator and reports comparable prevalence results."
+        },
+        {
+          "description": "Disclosure-policy changes tied to population-level evidence",
+          "expectedWindow": null,
+          "trigger": "A major publisher or research body cites prevalence evidence when revising LLM-use disclosure rules."
+        }
+      ],
+      "trackingTerms": [
+        "arXiv 2608.10715",
+        "Most biomedical publications show signs of LLM-assisted writing",
+        "Holzwarth González-Márquez Kobak",
+        "PubMed Central LLM writing prevalence"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The estimate has clear revision and replication pathways, and its interpretation may affect scientific publishing policy."
+      },
+      "selectionReason": "The study exposes the difference between a population fingerprint and an individual accusation while measuring a consequential change in scientific language.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-08-31-reef-fish-motorboat-noise",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "Boat noise can remain after the boat has gone",
+      "canonicalSubject": {
+        "name": "Developmental motorboat-noise effects in spiny chromis",
+        "kind": "ecology-study",
+        "aliases": [
+          "Acanthochromis polyacanthus motorboat-noise experiment",
+          "reef fish noise carryover study"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "marine-biology",
+        "noise-pollution",
+        "animal-behavior",
+        "coral-reefs"
+      ],
+      "geography": [
+        "Great Barrier Reef",
+        "Australia"
+      ],
+      "canonicalClaim": "In a controlled tank experiment, developmental exposure to motorboat-noise playback was associated with smaller juvenile spiny chromis and impaired escape responses measured after the playback had stopped.",
+      "knownFacts": [
+        "The split-brood experiment exposed fish to motorboat noise or natural reef sound before hatching, after hatching, or during both periods for up to 78 days.",
+        "The predator-response test occurred after 24 hours without playback noise.",
+        "Fish exposed to motorboat noise as juveniles were about 7 percent shorter on average than fish exposed to reef sound as juveniles.",
+        "Among fish exposed to motorboat noise during both developmental periods, 68 percent responded to a simulated threat and 40 percent of responders moved toward it."
+      ],
+      "uncertainties": [
+        "A tank playback experiment does not establish the size of the effect in a complex living reef.",
+        "The experiment did not isolate one mechanism connecting noise exposure to growth and escape behavior.",
+        "The population-level consequences of seasonal motorboat restrictions were not tested."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed article reports a controlled split-brood experiment; the institutional report accurately summarizes the published results."
+      },
+      "sources": [
+        {
+          "url": "https://research-information.bris.ac.uk/en/publications/motorboat-noise-playback-during-development-limits-reef-fish-grow/",
+          "title": "Motorboat noise playback during development limits reef fish growth and impairs predator responses with carryover effects",
+          "publisher": "University of Bristol Research Portal",
+          "publishedAt": "2026-08-17",
+          "accessedAt": "2026-08-31",
+          "role": "primary-research",
+          "lineage": "velasquez-jimenez-motorboat-noise-study"
+        },
+        {
+          "url": "https://phys.org/news/2026-08-motorboat-noise-stunts-growth-impairs.html",
+          "title": "Motorboat noise stunts growth and impairs predator escape in reef fish, study shows",
+          "publisher": "University of Exeter via Phys.org",
+          "publishedAt": "2026-08-28",
+          "accessedAt": "2026-08-31",
+          "role": "institutional-reporting",
+          "lineage": "velasquez-jimenez-motorboat-noise-study"
+        }
+      ],
+      "openQuestions": [
+        "Do field studies find comparable growth and escape-response effects under real boat traffic?",
+        "Which physiological, behavioral, or parental-care pathway accounts for the carryover effect?",
+        "Would seasonal traffic limits measurably improve recruitment or survival?"
+      ],
+      "watchFor": [
+        {
+          "description": "Field replication under natural reef traffic",
+          "expectedWindow": null,
+          "trigger": "Researchers report growth, behavior, survival, or recruitment outcomes from fish exposed to measured boat traffic in the field."
+        },
+        {
+          "description": "Mechanistic follow-up",
+          "expectedWindow": null,
+          "trigger": "A study identifies a physiological, feeding, sensory-development, or parental-care pathway for the carryover effect."
+        },
+        {
+          "description": "Management trial or seasonal traffic restriction",
+          "expectedWindow": null,
+          "trigger": "A reef authority implements and evaluates a breeding-season motorboat-noise intervention."
+        }
+      ],
+      "trackingTerms": [
+        "Acanthochromis polyacanthus motorboat noise",
+        "Environmental Pollution 128975",
+        "reef fish noise carryover effects",
+        "Velasquez Jimenez Nedelec motorboat noise"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The controlled finding has clear field, mechanism, and policy tests that could confirm, bound, or contradict its ecological significance."
+      },
+      "selectionReason": "The experiment makes an invisible form of pollution legible as developmental history rather than a momentary disturbance.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-08-31-treasure-of-villena-theft",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "Gold has a price; a hoard has a history",
+      "canonicalSubject": {
+        "name": "Theft of the Treasure of Villena",
+        "kind": "cultural-heritage-theft",
+        "aliases": [
+          "Villena Museum heist",
+          "2026 Treasure of Villena robbery"
+        ]
+      },
+      "signalType": "museum-theft",
+      "topics": [
+        "archaeology",
+        "museums",
+        "cultural-heritage",
+        "art-crime"
+      ],
+      "geography": [
+        "Villena",
+        "Alicante",
+        "Spain"
+      ],
+      "canonicalClaim": "Thieves removed most of the Treasure of Villena from the Villena Museum in a four-minute raid on August 27, 2026, and its recovery status remained unresolved in the public sources reviewed on August 31.",
+      "knownFacts": [
+        "The museum alarm sounded at approximately 5:20 a.m., and officials said the thieves had departed by 5:24 a.m.",
+        "The Late Bronze Age hoard was discovered in 1963 inside a vessel buried in a dry streambed near Villena.",
+        "The collection included 29 bracelets, 11 bowls, three bottles, and other objects made from gold, silver, iron, and amber.",
+        "Villena's mayor estimated the gold content alone at approximately 1.7 million euros."
+      ],
+      "uncertainties": [
+        "Immediate reports differed on the exact number and identity of objects taken while officials completed an inventory.",
+        "The reviewed public sources did not establish whether the objects remained intact, had entered an illicit market, or had been melted.",
+        "Europol's regional assessment describes a broader pattern but does not establish the actors, motive, or disposal route in this specific theft."
+      ],
+      "evidence": {
+        "level": "mixed",
+        "notes": "Independent reporting relays named local officials and initial facts from an active investigation; Europol supplies authoritative regional context rather than case-specific attribution."
+      },
+      "sources": [
+        {
+          "url": "https://www.theguardian.com/culture/2026/aug/27/thieves-steal-bronze-age-treasure-of-villena-in-four-minute-heist",
+          "title": "Bronze age treasure stolen in four-minute Spanish museum heist",
+          "publisher": "The Guardian",
+          "publishedAt": "2026-08-27",
+          "accessedAt": "2026-08-31",
+          "role": "independent-reporting",
+          "lineage": "villena-officials-agency-reporting"
+        },
+        {
+          "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/Changing-targets-changing-tactics-museum-heists-report.pdf",
+          "title": "Changing tactics, changing targets: the evolving nature of museum heists",
+          "publisher": "Europol",
+          "publishedAt": "2026-08-24",
+          "accessedAt": "2026-08-31",
+          "role": "official-primary",
+          "lineage": "europol-museum-heists-spotlight-2026"
+        }
+      ],
+      "openQuestions": [
+        "Which objects were taken according to the completed official inventory?",
+        "Will investigators recover the objects intact?",
+        "Will the case produce documented security changes at Villena or other museums holding precious-metal heritage?"
+      ],
+      "watchFor": [
+        {
+          "description": "Official inventory and case update",
+          "expectedWindow": null,
+          "trigger": "Villena authorities or Spanish law enforcement publish a definitive stolen-object list, arrests, charges, or recovery information."
+        },
+        {
+          "description": "Condition and provenance of recovered objects",
+          "expectedWindow": null,
+          "trigger": "Any missing object is recovered and conservators report whether it remained intact or was altered."
+        },
+        {
+          "description": "Museum-security response",
+          "expectedWindow": null,
+          "trigger": "Spanish cultural authorities or museums announce concrete security or display-policy changes linked to the theft."
+        }
+      ],
+      "trackingTerms": [
+        "Treasure of Villena theft",
+        "Tesoro de Villena robo 2026",
+        "Villena Museum heist",
+        "MUVI Treasure of Villena recovery"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The case has a stable subject, unresolved recovery and preservation questions, and observable law-enforcement and museum-policy outcomes."
+      },
+      "selectionReason": "The theft reveals a collision between commodity value and archaeological value: melting preserves the former by destroying the latter.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    }
+  ]
+}
