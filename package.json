@@ -4,11 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "npm run validate:wake && astro check && astro build",
+    "dev": "npm run build:wake-exports && astro dev",
+    "build": "npm run validate:wake && npm run build:wake-exports && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "validate:wake": "node scripts/validate-wake-data.mjs"
+    "validate:wake": "node scripts/validate-wake-data.mjs && node scripts/validate-wake-records.mjs",
+    "build:wake-exports": "node scripts/build-wake-exports.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
