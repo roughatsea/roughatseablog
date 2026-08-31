@@ -1,0 +1,115 @@
+{
+  "$schema": "../wake-run.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-08-30-bootstrap",
+  "mode": "bootstrap",
+  "startedAt": "2026-08-30T18:00:00-07:00",
+  "completedAt": "2026-08-30T18:45:00-07:00",
+  "inputWindow": {
+    "start": "2026-08-25",
+    "end": "2026-08-30"
+  },
+  "inputPackets": [
+    "2026-08-25.json",
+    "2026-08-26.json",
+    "2026-08-27.json",
+    "2026-08-28.json",
+    "2026-08-29.json",
+    "2026-08-30.json"
+  ],
+  "summary": "The Wake began with seven deliberately varied records. This bootstrap run admits subjects into monitoring without claiming that any event changed after its original Soundings observation.",
+  "publicHighlights": [
+    "Seven records now preserve a point-zero claim, its evidence state, unresolved questions, and explicit future checkpoints.",
+    "The initial cohort spans space science, game accessibility, energy policy, battery materials, climate reconstruction, archaeology, and game preservation.",
+    "Nine additional active candidates remain in the inbox rather than disappearing from the selection history.",
+    "Public-attention measurements remain unmeasured until a reproducible corpus and deduplication method are adopted."
+  ],
+  "admissions": [
+    {
+      "wakeId": "nancy-grace-roman-space-telescope",
+      "sourceSignalId": "2026-08-30-nancy-grace-roman-launch",
+      "observationId": "nancy-grace-roman-space-telescope-2026-08-30-admission",
+      "reason": "Admitted because a single launch opens into a long sequence of observable engineering, scientific, and institutional outcomes."
+    },
+    {
+      "wakeId": "coloratura-spatial-audio",
+      "sourceSignalId": "2026-08-30-coloratura-spatial-audio",
+      "observationId": "coloratura-spatial-audio-2026-08-30-admission",
+      "reason": "Admitted because the advertised accessibility design has a clearly identifiable future test and should not be judged only by promotional intent."
+    },
+    {
+      "wakeId": "residential-demand-turn-up",
+      "sourceSignalId": "2026-08-29-demand-turn-up-renewable-curtailment",
+      "observationId": "residential-demand-turn-up-2026-08-30-admission",
+      "reason": "Admitted because the central claim can mature through peer review, independent replication, tariff design, and measured curtailment outcomes."
+    },
+    {
+      "wakeId": "solid-state-battery-dendrite-deflection",
+      "sourceSignalId": "2026-08-29-solid-state-battery-dendrite-deflection",
+      "observationId": "solid-state-battery-dendrite-deflection-2026-08-30-admission",
+      "reason": "Admitted because it provides a clean laboratory baseline against which replication and practical scale-up can be compared."
+    },
+    {
+      "wakeId": "galapagos-coral-enso-reconstruction",
+      "sourceSignalId": "2026-08-28-galapagos-coral-enso-reconstruction",
+      "observationId": "galapagos-coral-enso-reconstruction-2026-08-30-admission",
+      "reason": "Admitted because disagreement began at point zero and later evidence can show whether it narrows, deepens, or changes the original claim."
+    },
+    {
+      "wakeId": "cova-dones-roman-sanctuary",
+      "sourceSignalId": "2026-08-25-cova-dones-roman-inscriptions",
+      "observationId": "cova-dones-roman-sanctuary-2026-08-30-admission",
+      "reason": "Admitted because the first report preserves unusually consequential unknowns that later epigraphy and material analysis may resolve."
+    },
+    {
+      "wakeId": "terranigma-revival",
+      "sourceSignalId": "2026-08-25-terranigma-revival",
+      "observationId": "terranigma-revival-2026-08-30-admission",
+      "reason": "Admitted because the project can be followed from announcement through technical comparison and eventually into evidence about audience and critical reach."
+    }
+  ],
+  "updates": [],
+  "reviews": [],
+  "deferred": [
+    {
+      "signalId": "2026-08-25-final-fantasy-vii-revelation-highwind",
+      "reason": "Strong future release checkpoint, but the pilot already includes two game records and needed greater domain diversity."
+    },
+    {
+      "signalId": "2026-08-25-neverway-delay",
+      "reason": "A useful development baseline, deferred to keep the first cohort small; retain in the inbox for later promotion."
+    },
+    {
+      "signalId": "2026-08-26-mom-bh-1-black-hole-star",
+      "reason": "Consequential and provisional, but deferred while the pilot tests a different astronomy record with nearer operational milestones."
+    },
+    {
+      "signalId": "2026-08-26-ontos-rat-server",
+      "reason": "The advertised philosophical mechanism is trackable, but Coloratura offers a more consequential test involving accessibility claims."
+    },
+    {
+      "signalId": "2026-08-27-amphibian-rpg-no-money",
+      "reason": "Specific and falsifiable, but its 2028 horizon is distant for the initial pilot."
+    },
+    {
+      "signalId": "2026-08-27-starling-falcon-navigation",
+      "reason": "A strong near-term mission follow-up, deferred to avoid overloading the pilot with space programs."
+    },
+    {
+      "signalId": "2026-08-27-sardis-monumental-statue",
+      "reason": "Promising conservation questions, but Cova Dones offers a broader set of unresolved inscriptions and social interpretations."
+    },
+    {
+      "signalId": "2026-08-27-tempest-turbulence-center",
+      "reason": "A valuable multi-year program, but meaningful outcomes may arrive too slowly for the first operational test."
+    },
+    {
+      "signalId": "2026-08-28-persona-4-revival",
+      "reason": "A clean release test, deferred because Terranigma more directly tests preservation, access, and canon formation."
+    }
+  ],
+  "failures": [],
+  "recordCountAfter": 7,
+  "attentionMethod": "unmeasured",
+  "commit": null
+}
