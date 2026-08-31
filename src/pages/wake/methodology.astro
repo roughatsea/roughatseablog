@@ -1,0 +1,270 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { wakeRecords, wakeRuns } from '../../lib/wake';
+
+const observationCount = wakeRecords.reduce((sum, record) => sum + record.observations.length, 0);
+---
+
+<BaseLayout
+  title="The Wake methodology"
+  description="How Rough at Sea selects, follows, corrects, and publishes longitudinal Wake records."
+>
+  <article class="methodology">
+    <header>
+      <div class="meta-row">
+        <a href="/wake/">&larr; The Wake</a>
+        <span>Pilot methodology · Version 1</span>
+      </div>
+      <p class="eyebrow">How the observatory works</p>
+      <h1>Methodology</h1>
+      <p class="lede">
+        The Wake records the distance between first notice and later knowledge. Its purpose is not
+        to prove that Rough at Sea was early, nor to declare that lightly covered stories were
+        suppressed. It preserves what was known, what remained uncertain, and what happened next.
+      </p>
+    </header>
+
+    <section class="principles-grid" aria-label="Core principles">
+      <article class="glass-panel">
+        <strong>01</strong>
+        <h2>Observation before hindsight</h2>
+        <p>Point-zero packets are frozen historical observations. Later knowledge is appended rather than used to rewrite the beginning.</p>
+      </article>
+      <article class="glass-panel">
+        <strong>02</strong>
+        <h2>Evidence is not attention</h2>
+        <p>A claim can be well supported and little noticed, or widely repeated and weakly supported. Those dimensions remain separate.</p>
+      </article>
+      <article class="glass-panel">
+        <strong>03</strong>
+        <h2>Repetition is not corroboration</h2>
+        <p>Articles derived from the same paper, press release, wire story, interview, or announcement share an evidentiary lineage.</p>
+      </article>
+      <article class="glass-panel">
+        <strong>04</strong>
+        <h2>Missing beats fabricated</h2>
+        <p>An unknown date, count, or metric remains empty. Precise-looking guesses do more damage than an honest gap.</p>
+      </article>
+    </section>
+
+    <section>
+      <p class="eyebrow">The pipeline</p>
+      <h2>From Soundings to an active record</h2>
+      <ol class="pipeline">
+        <li>
+          <span>Daily capture</span>
+          <div>
+            <h3>Morning Soundings chooses what matters today</h3>
+            <p>
+              Editorial importance comes first. Longitudinal potential is only a tiebreaker between
+              otherwise comparable subjects. Every signal and deep sounding receives a structured
+              sidecar packet, even when it is unlikely to become an active Wake record.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span>Point zero</span>
+          <div>
+            <h3>The initial state is preserved</h3>
+            <p>
+              The packet records a narrow claim, supported facts, uncertainty, source roles,
+              evidentiary lineages, open questions, tracking terms, and concrete future evidence.
+              Contemporary packets are created during publication; the earliest six were explicitly
+              reconstructed and remain labeled as such.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span>Weekly admission</span>
+          <div>
+            <h3>A small collection is chosen deliberately</h3>
+            <p>
+              The weekly process looks for stable subjects with consequential unresolved questions,
+              observable future evidence, and durable sources. It ordinarily admits no more than one
+              to three new records and may admit none. Deferred candidates remain visible in run logs.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span>Longitudinal review</span>
+          <div>
+            <h3>Records are reviewed by cadence and event</h3>
+            <p>
+              A record is revisited when its date is due, a named milestone occurs, a new Soundings
+              signal continues it, or credible new evidence appears. Not every record is researched
+              every week. A performed review with no material change can still be valuable data.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span>Append-only change</span>
+          <div>
+            <h3>New observations do not erase old ones</h3>
+            <p>
+              Developments, disagreements, corrections, resolutions, and informed no-change reviews
+              become dated observations. The current state mirrors the latest observation, while the
+              full timeline preserves how the assessment evolved.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <p class="eyebrow">Three independent readings</p>
+      <h2>Lifecycle, evidence, and attention</h2>
+      <div class="dimension-grid">
+        <article>
+          <h3>Lifecycle</h3>
+          <p>What is happening to the subject or claim.</p>
+          <dl>
+            <div><dt>Emerging</dt><dd>Meaningful future evidence is expected.</dd></div>
+            <div><dt>Corroborated</dt><dd>Important parts gained independent support.</dd></div>
+            <div><dt>Disputed</dt><dd>Material evidence or interpretation remains contested.</dd></div>
+            <div><dt>Implemented</dt><dd>A promised program, product, policy, or design was deployed.</dd></div>
+            <div><dt>Stalled</dt><dd>Expected progress stopped without clear resolution.</dd></div>
+            <div><dt>Contradicted</dt><dd>Later evidence substantially weakened the original claim.</dd></div>
+            <div><dt>Resolved</dt><dd>The central open question has a defensible answer.</dd></div>
+            <div><dt>Dormant</dt><dd>No useful update is expected soon.</dd></div>
+            <div><dt>Retracted</dt><dd>The source or claim was formally withdrawn.</dd></div>
+          </dl>
+        </article>
+        <article>
+          <h3>Evidence</h3>
+          <p>What kind and breadth of support currently exist.</p>
+          <dl>
+            <div><dt>Primary supported</dt><dd>Durable primary evidence supports the bounded claim.</dd></div>
+            <div><dt>Mixed</dt><dd>Several kinds of evidence exist, with meaningful qualifications.</dd></div>
+            <div><dt>First-party only</dt><dd>The claim still rests on an interested source.</dd></div>
+            <div><dt>Preliminary</dt><dd>Early evidence exists but replication, review, or scale is missing.</dd></div>
+            <div><dt>Disputed</dt><dd>Qualified sources materially disagree.</dd></div>
+            <div><dt>Synthesis</dt><dd>The record joins several results rather than following one bounded claim.</dd></div>
+          </dl>
+        </article>
+        <article>
+          <h3>Attention</h3>
+          <p>How much reproducibly measured public coverage the subject receives.</p>
+          <dl>
+            <div><dt>Unmeasured</dt><dd>No defensible quantitative attention method has been applied.</dd></div>
+            <div><dt>Low to high</dt><dd>Reserved for a future reproducible corpus and fixed method.</dd></div>
+            <div><dt>Surging or declining</dt><dd>Reserved for measured change between comparable snapshots.</dd></div>
+          </dl>
+          <p class="warning">
+            Ordinary search-result estimates are not used. They are unstable, personalized,
+            incompletely deduplicated, and often count one syndicated lineage as many reports.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="lineage-section glass-panel">
+      <div>
+        <p class="eyebrow">Evidentiary ancestry</p>
+        <h2>Why source lineage matters</h2>
+      </div>
+      <div>
+        <p>
+          Ten articles can appear to corroborate a claim while all ten paraphrase one press release.
+          The Wake assigns those sources the same lineage. Independent support requires a genuinely
+          different route to the fact: another experiment, another dataset, direct observation,
+          independent documentation, or reporting based on separate evidence.
+        </p>
+        <p>
+          Lineage does not make a source bad. A primary paper and the university article explaining it
+          can both be useful. It prevents publication count from impersonating evidentiary diversity.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Selection limits</p>
+      <h2>What The Wake does not claim</h2>
+      <div class="limits">
+        <p><strong>It is not exhaustive.</strong> The collection reflects what Morning Soundings found and what the weekly process could responsibly follow.</p>
+        <p><strong>Low coverage is not proof of suppression.</strong> Sparse attention may have many causes and is not assigned a motive without evidence.</p>
+        <p><strong>Admission is not endorsement.</strong> A record may be followed precisely because an important claim is uncertain or disputed.</p>
+        <p><strong>Status is not a quality score.</strong> A disputed record can be more informative than a corroborated one.</p>
+        <p><strong>A review is not a demand for novelty.</strong> “No material change” is acceptable when a real search and source check occurred.</p>
+        <p><strong>Automation does not remove judgment.</strong> The schemas constrain what must be recorded, but evidence and significance still require accountable editorial decisions.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Corrections</p>
+      <h2>The record must be allowed to embarrass us</h2>
+      <p class="wide-copy">
+        When an earlier observation contains a factual error, it is not silently rewritten. A
+        correction points to the affected observation, explains what changed, cites the supporting
+        evidence, and appends a new timeline entry. Typographical repairs that do not alter meaning
+        may be fixed normally; substantive history remains visible.
+      </p>
+    </section>
+
+    <section class="pilot-state glass-panel">
+      <div>
+        <p class="eyebrow">Current pilot</p>
+        <h2>{wakeRecords.length} records · {observationCount} observations · {wakeRuns.length} run</h2>
+      </div>
+      <p>
+        The first run is a bootstrap admission ledger, not a retrospective claim that all seven
+        subjects changed after publication. Attention remains unmeasured. The public interface and
+        both downloads are generated from the same records that the weekly task updates.
+      </p>
+    </section>
+
+    <footer>
+      <a href="/wake/">Explore the active records</a>
+      <a href="/wake/data.json" download>Download JSON</a>
+      <a href="/wake/data.csv" download>Download CSV</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  :global(main.container) { max-width: 1060px; }
+  .methodology { padding-bottom: 5rem; }
+  header { margin: 0 auto 4rem; max-width: 60rem; }
+  .meta-row { color: var(--text-secondary); display: flex; font-size: 0.75rem; justify-content: space-between; margin-bottom: 2rem; }
+  .meta-row a:hover { color: var(--link-color); }
+  .eyebrow { color: var(--link-color); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.14em; margin-bottom: 0.5rem; text-transform: uppercase; }
+  h1 { font-family: var(--font-serif); font-size: clamp(3.4rem, 10vw, 6.5rem); letter-spacing: -0.05em; line-height: 0.95; }
+  h2 { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.03em; }
+  .lede { color: var(--text-secondary); font-family: var(--font-serif); font-size: clamp(1.08rem, 2.4vw, 1.32rem); line-height: 1.75; margin-top: 1.25rem; }
+  section { margin-bottom: 5rem; }
+  .principles-grid { display: grid; gap: 0.8rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .principles-grid article { border-radius: 14px; padding: 1.25rem; }
+  .principles-grid strong { color: var(--link-color); font-family: var(--font-serif); font-size: 2.4rem; font-weight: 400; }
+  .principles-grid h2 { font-size: 1.35rem; margin-top: 0.5rem; }
+  .principles-grid p, .pipeline p, .dimension-grid p, .lineage-section p, .wide-copy, .pilot-state p { color: var(--text-secondary); }
+  .pipeline { list-style: none; margin: 1.5rem 0 0; padding: 0; }
+  .pipeline li { border-top: 1px solid var(--border-color); display: grid; gap: 1rem; grid-template-columns: 10rem minmax(0, 1fr); padding: 1.25rem 0; }
+  .pipeline li > span { color: var(--link-color); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+  .pipeline h3 { font-family: var(--font-serif); font-size: 1.35rem; }
+  .pipeline p { line-height: 1.7; margin: 0; }
+  .dimension-grid { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 1.5rem; }
+  .dimension-grid > article { border-top: 2px solid var(--link-color); padding-top: 1rem; }
+  .dimension-grid h3 { font-family: var(--font-serif); font-size: 1.75rem; }
+  dl { display: grid; gap: 0.75rem; margin-top: 1rem; }
+  dt { font-size: 0.72rem; font-weight: 700; }
+  dd { color: var(--text-secondary); font-size: 0.75rem; margin: 0.1rem 0 0; }
+  .warning { border-left: 2px solid var(--border-color); font-size: 0.75rem; margin-top: 1.25rem; padding-left: 0.8rem; }
+  .lineage-section, .pilot-state { border-radius: 16px; display: grid; gap: 2rem; grid-template-columns: minmax(14rem, 0.75fr) minmax(0, 1.25fr); padding: clamp(1.3rem, 4vw, 2rem); }
+  .lineage-section p:last-child { margin-bottom: 0; }
+  .limits { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.5rem; }
+  .limits p { border-top: 1px solid var(--border-color); color: var(--text-secondary); margin: 0; padding: 1rem 0; }
+  .limits strong { color: var(--text-primary); }
+  .wide-copy { font-family: var(--font-serif); font-size: 1.12rem; line-height: 1.8; max-width: 52rem; }
+  .pilot-state { align-items: center; margin-bottom: 2rem; }
+  .pilot-state h2 { font-size: clamp(1.7rem, 4vw, 2.5rem); }
+  footer { border-top: 1px solid var(--border-color); display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; padding-top: 1.5rem; }
+  footer a { color: var(--link-color); font-size: 0.75rem; }
+  @media (max-width: 780px) {
+    .dimension-grid { grid-template-columns: 1fr; }
+    .lineage-section, .pilot-state { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 580px) {
+    .principles-grid, .limits { grid-template-columns: 1fr; }
+    .pipeline li { grid-template-columns: 1fr; }
+    .meta-row { align-items: flex-start; flex-direction: column; gap: 0.45rem; }
+  }
+</style>
