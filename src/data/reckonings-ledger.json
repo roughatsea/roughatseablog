@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T06:00:00-07:00",
+  "updatedAt": "2026-08-31T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -45,6 +45,26 @@
       "relatedLessons": [
         "daily-reckoning-2026-08-29"
       ]
+    },
+    {
+      "date": "2026-08-31",
+      "slug": "daily-reckoning-2026-08-31",
+      "title": "Can You Cross Every Bridge Exactly Once?",
+      "area": "Discrete mathematics and computation",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Counting",
+        "Odd and even numbers"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "graph theory",
+        "Euler trails",
+        "vertex degree",
+        "route inspection",
+        "genome assembly"
+      ],
+      "relatedLessons": []
     }
   ]
 }

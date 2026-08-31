@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Seven luminous bridges joining four land masses on a dark river chart</title>
+  <desc id="desc">A blueprint-like midnight river map shows four islands and banks connected by seven glowing bridges, overlaid with a spare neon graph of their connections.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020d19"/><stop offset="0.55" stop-color="#08213b"/><stop offset="1" stop-color="#160922"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="53%" cy="49%" r="56%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".2"/><stop offset=".55" stop-color="#ff1493" stop-opacity=".07"/><stop offset="1" stop-color="#020914" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#1493ff" stroke-opacity=".09"/></pattern>
+    <pattern id="waves" width="70" height="28" patternUnits="userSpaceOnUse"><path d="M0 15Q17 1 35 15T70 15" fill="none" stroke="#1493ff" stroke-opacity=".13" stroke-width="2"/></pattern>
+    <filter id="blue-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="pink-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <clipPath id="frame"><rect x="82" y="68" width="1436" height="736" rx="25"/></clipPath>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <rect x="82" y="68" width="1436" height="736" rx="25" fill="#031426" fill-opacity=".45" stroke="#1493ff" stroke-opacity=".42" stroke-width="2"/>
+  <g clip-path="url(#frame)">
+    <rect x="82" y="68" width="1436" height="736" fill="url(#grid)"/>
+    <rect x="82" y="68" width="1436" height="736" fill="url(#waves)"/>
+    <g fill="#93ff14" fill-opacity=".045" stroke="#93ff14" stroke-opacity=".28" stroke-width="2">
+      <path d="M82 68H1518V251C1310 286 1112 253 943 222C729 183 505 268 82 282Z"/>
+      <path d="M82 804H1518V621C1310 586 1112 619 943 650C729 689 505 604 82 590Z"/>
+      <path d="M494 341C583 292 778 293 853 347C907 387 892 515 833 556C747 616 558 595 496 541C449 500 446 376 494 341Z"/>
+      <path d="M1011 355C1090 314 1276 321 1344 375C1386 408 1374 505 1327 536C1252 586 1070 574 1011 526C970 492 967 378 1011 355Z"/>
+    </g>
+    <g fill="none" stroke-linecap="round">
+      <g stroke="#020914" stroke-width="28">
+        <path d="M615 369C565 279 493 208 397 174"/><path d="M676 359C639 244 546 163 416 144"/>
+        <path d="M615 530C565 620 493 691 397 725"/><path d="M676 540C639 655 546 736 416 755"/>
+        <path d="M713 447C829 420 947 421 1065 447"/><path d="M417 162C721 186 930 264 1089 390"/><path d="M417 737C721 713 930 635 1089 509"/>
+      </g>
+      <g stroke="#1493ff" stroke-width="11" filter="url(#blue-glow)">
+        <path d="M615 369C565 279 493 208 397 174"/><path d="M676 359C639 244 546 163 416 144"/>
+        <path d="M615 530C565 620 493 691 397 725"/><path d="M676 540C639 655 546 736 416 755"/>
+        <path d="M713 447C829 420 947 421 1065 447"/><path d="M417 162C721 186 930 264 1089 390"/><path d="M417 737C721 713 930 635 1089 509"/>
+      </g>
+    </g>
+    <g fill="#061426" stroke="#93ff14" stroke-width="5">
+      <circle cx="659" cy="449" r="31"/><circle cx="381" cy="151" r="31"/><circle cx="381" cy="748" r="31"/><circle cx="1111" cy="449" r="31"/>
+    </g>
+    <g fill="#ff1493" filter="url(#pink-glow)">
+      <circle cx="659" cy="449" r="9"/><circle cx="381" cy="151" r="9"/><circle cx="381" cy="748" r="9"/><circle cx="1111" cy="449" r="9"/>
+    </g>
+    <g fill="none" stroke="#ff1493" stroke-opacity=".34" stroke-width="2" stroke-dasharray="8 12">
+      <circle cx="659" cy="449" r="87"/><circle cx="659" cy="449" r="148"/>
+      <path d="M659 257V641M467 449H851"/>
+    </g>
+  </g>
+  <path d="M104 844C160 844 160 820 216 820s56 24 112 24 56-24 112-24 56 24 112 24 56-24 112-24 56 24 112 24 56-24 112-24 56 24 112 24 56-24 112-24 56 24 112 24 56-24 112-24 56 24 112 24 56-24 112-24" fill="none" stroke="#1493ff" stroke-opacity=".55" stroke-width="3"/>
+</svg>

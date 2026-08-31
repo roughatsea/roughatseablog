@@ -1,0 +1,211 @@
+---
+title: "Can You Cross Every Bridge Exactly Once?"
+description: "Euler’s bridge puzzle reveals how a few odd and even counts can decide whether an entire route exists."
+heroImage: "/images/reckonings/daily-reckoning-2026-08-31.svg"
+heroImageAlt: "Seven luminous blue bridges join four green-edged land masses on a dark river chart, with neon graph vertices marking the connections."
+date: 2026-08-31
+publishedAt: 2026-08-31T06:00:00-07:00
+tags:
+  - daily-reckoning
+  - discrete-mathematics
+  - graph-theory
+  - euler-trails
+  - visual-math
+  - history-of-mathematics
+area: "Discrete mathematics and computation"
+difficulty: "Foundational"
+prerequisites:
+  - "Counting"
+  - "Odd and even numbers"
+readTimeMinutes: 9
+---
+
+import BridgeTrailExplorer from '../../components/reckonings/BridgeTrailExplorer.jsx';
+import OddDegreePairing from '../../components/reckonings/OddDegreePairing.astro';
+
+Imagine a city divided by a river into four pieces of land. Seven bridges connect the pieces. Can you begin anywhere, walk across every bridge exactly once, and finish anywhere?
+
+Trying routes may keep you occupied for a while. Failure proves little: perhaps the successful route is the one you have not tried. The surprising alternative is that no successful route exists—and that four small counts can prove it.
+
+The puzzle comes from eighteenth-century Königsberg, a Prussian port on the Pregel River. The city is now Kaliningrad, Russia. Before looking at the proof, try the historical network below. Choose a starting land mass, then click or keyboard-select one bridge at a time. The **city map** view shows stylized land and water; the **abstract graph** view retains only the connections.
+
+<BridgeTrailExplorer client:load />
+
+## Keep the connections; discard the scenery
+
+A **graph** is a mathematical structure made from vertices and edges. For the bridge puzzle:
+
+- A **vertex** represents one connected piece of land.
+- An **edge** represents one bridge joining two pieces of land.
+- Two vertices are **adjacent** when an edge joins them.
+- The **degree** of a vertex is the number of edges touching it.
+
+Let $G=(V,E)$ name a graph, where $V$ is the set of vertices and $E$ is the set of edges. For a vertex $v\in V$, the notation $\deg(v)$ means the degree of $v$.
+
+The exact lengths, curves, and compass directions of the seven bridges do not affect the route question. Only the endpoints of each bridge matter. Replacing the city with four labeled points and seven connecting lines is an act of **abstraction**: we discard information that cannot change the answer and keep the information that can.
+
+For the historical Königsberg graph, the four vertex degrees are
+
+$$
+5,\quad 3,\quad 3,\quad 3.
+$$
+
+Every degree is odd.
+
+## Why odd degree creates an endpoint
+
+Suppose a route reaches a vertex that is neither its starting point nor its finishing point. One edge carries the walker in, and a different edge carries the walker out. Every later visit consumes another enter–leave pair. The edges used at that vertex therefore come in pairs.
+
+An odd-degree vertex has one edge that cannot join such a pair. A valid route must use that unpaired edge either to leave its starting vertex or to enter its finishing vertex. One open route has only one start and one finish, so it can accommodate at most two odd-degree vertices.
+
+The exact pairing argument appears in the diagram below. Five edges touch the central vertex. Two enter–leave pairs account for four edges, leaving one edge for an endpoint.
+
+<OddDegreePairing />
+
+Königsberg has four odd-degree vertices, two more than any single open route can accommodate. No choice of starting bridge can repair that mismatch.
+
+There is a useful consistency check. Every edge touches two vertices, so counting degrees counts every edge twice:
+
+$$
+\sum_{v\in V}\deg(v)=2|E|.
+$$
+
+The symbol $\sum$ means “add,” and $|E|$ is the number of edges in $E$. In Königsberg,
+
+$$
+5+3+3+3=14=2\cdot7.
+$$
+
+Because the sum of all degrees is even, every finite graph has an even number of odd-degree vertices. The number can be $0$, $2$, $4$, and so on, but never $1$ or $3$.
+
+## Euler’s trail theorem
+
+A graph is **connected** when every vertex with edges can be reached from every other such vertex by following edges. An **Euler trail** is a route through a graph that uses every edge exactly once. An **Euler circuit** is an Euler trail that finishes at its starting vertex.
+
+For a finite, connected, undirected graph:
+
+1. An Euler circuit exists if and only if every vertex has even degree.
+2. An Euler trail with different starting and finishing vertices exists if and only if exactly two vertices have odd degree. Every such trail starts at one odd-degree vertex and finishes at the other.
+
+The enter–leave pairing proves why the degree conditions are necessary. The reverse direction—that the degree conditions guarantee a route—needs a construction.
+
+When every degree is even, begin at any vertex and follow unused edges. Each arrival at a vertex leaves another unused edge available until the route returns to its starting point, producing a circuit. If unused edges remain elsewhere, connectivity guarantees that some vertex on the circuit leads to them. Build another closed circuit from that vertex and splice the two circuits together. Repeating the splice consumes every edge. This construction is now called **Hierholzer’s algorithm**, after Carl Hierholzer, whose complete proof was published posthumously in 1873.
+
+When exactly two vertices have odd degree, temporarily add one edge between them. The added edge makes both degrees even. Construct an Euler circuit, then remove the temporary edge. The opened circuit becomes an Euler trail between the two odd-degree vertices.
+
+## Worked example: find the route before walking it
+
+Consider a graph with four vertices $A$, $B$, $C$, and $D$. Its five edges are
+
+$$
+AB,\quad BC,\quad CA,\quad CD,\quad DA.
+$$
+
+An edge such as $AB$ joins vertices $A$ and $B$. First count the edges touching each vertex:
+
+| Vertex | Touching edges | Degree |
+|:--:|:--|--:|
+| $A$ | $AB,CA,DA$ | $3$ |
+| $B$ | $AB,BC$ | $2$ |
+| $C$ | $BC,CA,CD$ | $3$ |
+| $D$ | $CD,DA$ | $2$ |
+
+Exactly two vertices, $A$ and $C$, have odd degree. Euler’s trail theorem says that a complete trail exists and must start at one of those vertices and finish at the other.
+
+Start at $A$ and follow
+
+$$
+A\to B\to C\to D\to A\to C.
+$$
+
+The route uses the edges in this order:
+
+$$
+AB,\quad BC,\quad CD,\quad DA,\quad AC.
+$$
+
+Each of the five listed edges appears once. The route starts at odd-degree vertex $A$ and finishes at odd-degree vertex $C$, exactly as the theorem predicts.
+
+## Try it yourself
+
+### Problem 1
+
+A graph has vertices $P$, $Q$, $R$, and $S$, with edges
+
+$$
+PQ,\quad QR,\quad RP,\quad RS.
+$$
+
+Does the graph have an Euler trail? If so, give one.
+
+<details>
+  <summary>Reveal the solution</summary>
+
+  The degrees are
+
+  $$
+  \deg(P)=2,\quad \deg(Q)=2,\quad \deg(R)=3,\quad \deg(S)=1.
+  $$
+
+  Exactly two vertices, $R$ and $S$, have odd degree. An Euler trail exists and must connect them. One valid trail is
+
+  $$
+  S\to R\to P\to Q\to R.
+  $$
+
+  Its edge sequence is $SR,RP,PQ,QR$, so every edge is used exactly once.
+</details>
+
+### Problem 2
+
+Start with the square $WXYZ$, whose boundary edges are $WX$, $XY$, $YZ$, and $ZW$. Add both diagonal edges, $WY$ and $XZ$. Can the resulting graph be drawn in one stroke without retracing an edge?
+
+<details>
+  <summary>Reveal the solution</summary>
+
+  Each of the four vertices touches two boundary edges and one diagonal, so
+
+  $$
+  \deg(W)=\deg(X)=\deg(Y)=\deg(Z)=3.
+  $$
+
+  The graph has four odd-degree vertices. An open Euler trail can have only two odd-degree endpoints, and an Euler circuit can have none. Therefore no one-stroke route exists.
+</details>
+
+## A civic puzzle becomes a new mathematics
+
+Residents of Königsberg appear to have treated the bridges as a recreational walking puzzle. Surviving correspondence connects the puzzle’s journey to Leonhard Euler with Carl Gottlieb Ehler, the mayor of nearby Danzig—now Gdańsk, Poland—and the Danzig mathematician Heinrich Kühn. A [historical study published by the European Mathematical Society](https://ems.press/content/book-chapter-files/27351) traces the letters among Ehler, Kühn, and Euler rather than crediting a single isolated insight.
+
+Euler, a Swiss mathematician working at the Imperial Academy of Sciences in St. Petersburg, initially doubted that ordinary geometry or algebra had much to contribute. Distances and angles were irrelevant. That mismatch became the important clue: the puzzle required a “geometry of position” concerned with arrangement rather than measurement.
+
+Euler wrote *Solutio problematis ad geometriam situs pertinentis*—“Solution of a problem relating to the geometry of position”—in 1735. The paper appeared in the St. Petersburg Academy’s proceedings in 1741. The [Euler Archive’s record and Latin text](https://scholarlycommons.pacific.edu/euler-works/53/) identifies both dates, and an [English translation preserves Euler’s argument and figures](https://www.cantab.net/users/michael.behrend/repubs/maze_maths/pages/euler_en.html). Historians commonly treat the paper as the beginning of graph theory and an early step toward topology, the study of properties preserved under continuous deformation. The [MacTutor history of topology](https://mathshistory.st-andrews.ac.uk/HistTopics/Topology_in_mathematics/) explains why Euler’s indifference to distance was such a conceptual break.
+
+The problem also traveled through a specifically European network of port cities, learned societies, and imperial patronage: a Prussian civic puzzle reached a Swiss scholar employed by a Russian academy. The city itself later changed more violently than Euler’s abstraction ever could. Königsberg was devastated during World War II. At the 1945 Potsdam Conference, the Allied powers agreed in principle to transfer the city and adjacent territory to the Soviet Union; the [United States State Department publishes the conference text](https://history.state.gov/historicaldocuments/frus1945Berlinv02/d1380). The Soviet government renamed the city Kaliningrad in 1946, and the surviving bridge arrangement no longer matches the seven-edge graph.
+
+The graph remains mathematically intact because it records the eighteenth-century connections, not an eternal claim about the physical city. Abstraction can preserve a relationship after war, demolition, rebuilding, and borders have altered the landscape that first exposed it.
+
+## From snowplows to genome assembly
+
+Euler’s degree test gives a routing system an immediate diagnosis. If a connected street network has no odd-degree intersections, a sweeper or inspection vehicle can cover every street and return to its starting point without repeating a street. Real networks usually contain odd-degree intersections, so some repetition is unavoidable. The **Chinese postman problem**, formulated by Chinese mathematician Guan Meigu around 1960, asks which streets should be repeated to make the total route as short as possible. The [Technical University of Munich’s algorithm guide](https://algorithms.discrete.ma.tum.de/routing/chinese-postman/) develops that extension, and a [review in *Networks*](https://onlinelibrary.wiley.com/doi/10.1002/net.21965) surveys applications including garbage collection and snowplowing.
+
+Genome assembly uses a less literal route. Sequencing machines read many short fragments of deoxyribonucleic acid (DNA). An assembler can break those reads into fixed-length strings called $k$-mers. In a **de Bruijn graph**, each $k$-mer becomes an edge from its length-$(k-1)$ prefix to its length-$(k-1)$ suffix. An Eulerian traversal arranges the edges into a candidate reconstruction of the longer DNA sequence. Pavel Pevzner, Haixu Tang, and Michael Waterman’s 2001 paper in the [*Proceedings of the National Academy of Sciences*](https://www.pnas.org/doi/10.1073/pnas.171285098) established an influential Eulerian approach to fragment assembly.
+
+The same distinction prevents a common modeling mistake. A delivery problem that must cover every **street** concerns edges and points toward Euler. A salesperson problem that must visit every **city** concerns vertices and points toward a different family of problems associated with William Rowan Hamilton. Choosing the right abstraction comes before choosing the route.
+
+## One idea to remember
+
+Before searching for a route that uses every edge once, count the odd-degree vertices: zero permits a closed Euler circuit, two permit an open Euler trail, and any larger number makes the route impossible.
+
+Natural next directions are the **handshaking lemma**, which explains why odd-degree vertices always occur in pairs, and the **Chinese postman problem**, which asks how cheaply an impossible one-pass network can be made traversable by repeating edges.
+
+## Sources
+
+- [Leonhard Euler, *Solutio problematis ad geometriam situs pertinentis* (written 1735; published 1741), Euler Archive](https://scholarlycommons.pacific.edu/euler-works/53/)
+- [Leonhard Euler, “Solution of a Problem in the Geometry of Position,” English translation](https://www.cantab.net/users/michael.behrend/repubs/maze_maths/pages/euler_en.html)
+- [Martin Grötschel, “Euler, Mei-Ko Kwan, Königsberg, and a Chinese Postman,” European Mathematical Society](https://ems.press/content/book-chapter-files/27351)
+- [MacTutor History of Mathematics: A History of Topology](https://mathshistory.st-andrews.ac.uk/HistTopics/Topology_in_mathematics/)
+- [Discrete Mathematics: An Open Introduction, “Euler Paths and Circuits”](https://discrete.openmathbooks.org/dmoi2/sec_paths.html)
+- [United States Department of State, Potsdam Conference proceedings on Königsberg](https://history.state.gov/historicaldocuments/frus1945Berlinv02/d1380)
+- [Technical University of Munich: The Chinese Postman Method](https://algorithms.discrete.ma.tum.de/routing/chinese-postman/)
+- [Corberán and Laporte, “Arc Routing Problems: A Review of the Past, Present, and Future,” *Networks*](https://onlinelibrary.wiley.com/doi/10.1002/net.21965)
+- [Pevzner, Tang, and Waterman, “An Eulerian Path Approach to DNA Fragment Assembly,” *PNAS*](https://www.pnas.org/doi/10.1073/pnas.171285098)
