@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roughatsea.com/schemas/wake-record.schema.json",
+  "title": "The Wake longitudinal record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "wakeId",
+    "title",
+    "dek",
+    "canonicalSubject",
+    "topics",
+    "geography",
+    "trackingTerms",
+    "originSignalIds",
+    "firstObservedAt",
+    "admittedAt",
+    "whyTracked",
+    "current",
+    "openQuestions",
+    "watchFor",
+    "observations",
+    "corrections"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "wakeId": { "$ref": "#/$defs/slug" },
+    "title": { "$ref": "#/$defs/text" },
+    "dek": { "$ref": "#/$defs/text" },
+    "canonicalSubject": { "$ref": "#/$defs/subject" },
+    "topics": { "$ref": "#/$defs/nonEmptySlugArray" },
+    "geography": { "$ref": "#/$defs/stringArray" },
+    "trackingTerms": { "$ref": "#/$defs/nonEmptyStringArray" },
+    "originSignalIds": { "$ref": "#/$defs/nonEmptyStringArray" },
+    "firstObservedAt": { "type": "string", "format": "date-time" },
+    "admittedAt": { "type": "string", "format": "date-time" },
+    "whyTracked": { "$ref": "#/$defs/text" },
+    "current": { "$ref": "#/$defs/current" },
+    "openQuestions": { "$ref": "#/$defs/stringArray" },
+    "watchFor": { "type": "array", "items": { "$ref": "#/$defs/watchItem" } },
+    "observations": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/observation" }
+    },
+    "corrections": { "type": "array", "items": { "$ref": "#/$defs/correction" } }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1 },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "lifecycle": {
+      "enum": [
+        "emerging",
+        "corroborated",
+        "disputed",
+        "implemented",
+        "stalled",
+        "contradicted",
+        "resolved",
+        "dormant",
+        "retracted"
+      ]
+    },
+    "evidence": {
+      "enum": [
+        "primary-supported",
+        "mixed",
+        "first-party-only",
+        "preliminary",
+        "disputed",
+        "synthesis"
+      ]
+    },
+    "attention": {
+      "enum": ["unmeasured", "low", "moderate", "high", "surging", "declining"]
+    },
+    "cadence": {
+      "enum": ["weekly", "fortnightly", "monthly", "quarterly", "event-driven"]
+    },
+    "stringArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/text" },
+      "uniqueItems": true
+    },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/text" },
+      "uniqueItems": true
+    },
+    "nonEmptySlugArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/slug" },
+      "uniqueItems": true
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "kind", "aliases"],
+      "properties": {
+        "name": { "$ref": "#/$defs/text" },
+        "kind": { "$ref": "#/$defs/text" },
+        "aliases": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "watchItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "expectedWindow", "trigger"],
+      "properties": {
+        "description": { "$ref": "#/$defs/text" },
+        "expectedWindow": { "type": ["string", "null"] },
+        "trigger": { "$ref": "#/$defs/text" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "title",
+        "publisher",
+        "publishedAt",
+        "accessedAt",
+        "role",
+        "lineage"
+      ],
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "title": { "$ref": "#/$defs/text" },
+        "publisher": { "$ref": "#/$defs/text" },
+        "publishedAt": { "type": ["string", "null"], "format": "date" },
+        "accessedAt": { "type": "string", "format": "date" },
+        "role": {
+          "enum": [
+            "primary-research",
+            "official-primary",
+            "first-party",
+            "independent-reporting",
+            "institutional-reporting",
+            "analysis-context",
+            "archival-source"
+          ]
+        },
+        "lineage": { "$ref": "#/$defs/slug" }
+      }
+    },
+    "current": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lifecycle",
+        "evidence",
+        "attention",
+        "assessment",
+        "updatedAt",
+        "lastMaterialChangeAt",
+        "nextReviewAfter",
+        "nextReviewTrigger",
+        "cadence"
+      ],
+      "properties": {
+        "lifecycle": { "$ref": "#/$defs/lifecycle" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "attention": { "$ref": "#/$defs/attention" },
+        "assessment": { "$ref": "#/$defs/text" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "lastMaterialChangeAt": { "type": "string", "format": "date-time" },
+        "nextReviewAfter": { "type": ["string", "null"], "format": "date" },
+        "nextReviewTrigger": { "$ref": "#/$defs/text" },
+        "cadence": { "$ref": "#/$defs/cadence" }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observationId",
+        "observedAt",
+        "recordedAt",
+        "kind",
+        "lifecycle",
+        "evidence",
+        "attention",
+        "headline",
+        "summary",
+        "materialChange",
+        "sourceSignalIds",
+        "sources"
+      ],
+      "properties": {
+        "observationId": { "$ref": "#/$defs/slug" },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "recordedAt": { "type": "string", "format": "date-time" },
+        "kind": {
+          "enum": ["point-zero", "admission", "review", "development", "correction", "resolution"]
+        },
+        "lifecycle": { "$ref": "#/$defs/lifecycle" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "attention": { "$ref": "#/$defs/attention" },
+        "headline": { "$ref": "#/$defs/text" },
+        "summary": { "$ref": "#/$defs/text" },
+        "materialChange": { "type": "boolean" },
+        "sourceSignalIds": { "$ref": "#/$defs/stringArray" },
+        "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } }
+      }
+    },
+    "correction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correctionId",
+        "recordedAt",
+        "appliesToObservationId",
+        "summary",
+        "sources"
+      ],
+      "properties": {
+        "correctionId": { "$ref": "#/$defs/text" },
+        "recordedAt": { "type": "string", "format": "date-time" },
+        "appliesToObservationId": { "$ref": "#/$defs/text" },
+        "summary": { "$ref": "#/$defs/text" },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source" }
+        }
+      }
+    }
+  }
+}
