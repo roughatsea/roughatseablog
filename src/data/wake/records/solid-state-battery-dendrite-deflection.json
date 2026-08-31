@@ -1,0 +1,120 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "solid-state-battery-dendrite-deflection",
+  "title": "Solid-state battery dendrite deflection",
+  "dek": "A laboratory technique redirected a destructive failure instead of eliminating it. Replication and scale will decide whether that geometry travels beyond one cell architecture.",
+  "canonicalSubject": {
+    "name": "Biaxial dendrite deflection in solid electrolytes",
+    "kind": "scientific-study",
+    "aliases": [
+      "solid-state battery dendrite deflection",
+      "biaxial compression lithium dendrites"
+    ]
+  },
+  "topics": [
+    "batteries",
+    "materials-science",
+    "solid-state-batteries",
+    "reliability"
+  ],
+  "geography": [
+    "United States",
+    "South Korea",
+    "Canada"
+  ],
+  "trackingTerms": [
+    "Nature 10734 dendrite deflection",
+    "biaxial compression solid electrolyte",
+    "shape memory alloy ring battery dendrites",
+    "solid-state battery horizontal dendrites"
+  ],
+  "originSignalIds": [
+    "2026-08-29-solid-state-battery-dendrite-deflection"
+  ],
+  "firstObservedAt": "2026-08-29T05:00:00-07:00",
+  "admittedAt": "2026-08-30T18:30:00-07:00",
+  "whyTracked": "The mechanism is specific, consequential, and falsifiable, with clear tests in independent laboratories and commercially relevant cells.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "preliminary",
+    "attention": "unmeasured",
+    "assessment": "The peer-reviewed laboratory result is real within its tested system, but manufacturability, pack-level safety, lifetime, and independent replication remain open.",
+    "updatedAt": "2026-08-30T18:30:00-07:00",
+    "lastMaterialChangeAt": "2026-08-29T05:00:00-07:00",
+    "nextReviewAfter": "2027-02-28",
+    "nextReviewTrigger": "Review for independent replication, larger-format cells, manufacturing integration, or end-to-end safety and lifetime measurements.",
+    "cadence": "quarterly"
+  },
+  "openQuestions": [
+    "Will an independent group reproduce the deflection mechanism?",
+    "Can the applied stress be integrated into practical cell manufacturing and cycling conditions?",
+    "Does the strategy improve safety and lifetime at commercially relevant scale?"
+  ],
+  "watchFor": [
+    {
+      "description": "Independent replication or critique",
+      "expectedWindow": "Unknown",
+      "trigger": "Another research group tests dendrite deflection under biaxial stress."
+    },
+    {
+      "description": "Larger-format or manufacturable cell demonstration",
+      "expectedWindow": "Unknown",
+      "trigger": "A study reports practical architecture, scale, lifetime, and full-system tradeoffs."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "solid-state-battery-dendrite-deflection-2026-08-29-point-zero",
+      "observedAt": "2026-08-29T05:00:00-07:00",
+      "recordedAt": "2026-08-30T15:42:25-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "Researchers reported that biaxial compression redirected lithium dendrites perpendicular to the electric field in a garnet solid electrolyte, allowing many internal dendrites to form without immediately short-circuiting the cell.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-29-solid-state-battery-dendrite-deflection"
+      ],
+      "sources": [
+        {
+          "url": "https://doi.org/10.1038/s41586-026-10734-x",
+          "title": "Dendrite initiation and deflection in biaxially stressed solid electrolytes",
+          "publisher": "Nature",
+          "publishedAt": null,
+          "accessedAt": "2026-08-29",
+          "role": "primary-research",
+          "lineage": "cui-biaxial-dendrite-study"
+        },
+        {
+          "url": "https://news.stanford.edu/stories/2026/08/solid-state-batteries-compression-short-circuiting",
+          "title": "Compression redirects solid-state battery dendrites",
+          "publisher": "Stanford University",
+          "publishedAt": null,
+          "accessedAt": "2026-08-29",
+          "role": "institutional-reporting",
+          "lineage": "cui-biaxial-dendrite-study"
+        }
+      ]
+    },
+    {
+      "observationId": "solid-state-battery-dendrite-deflection-2026-08-30-admission",
+      "observedAt": "2026-08-30T18:30:00-07:00",
+      "recordedAt": "2026-08-30T18:30:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake pilot",
+      "summary": "Admitted because it provides a clean laboratory baseline against which replication and practical scale-up can be compared.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-29-solid-state-battery-dendrite-deflection"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}
