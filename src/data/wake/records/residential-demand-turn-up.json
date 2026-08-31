@@ -1,0 +1,135 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "residential-demand-turn-up",
+  "title": "Residential demand turn-up",
+  "dek": "Experiments that paid households with free electricity may reveal whether flexible demand can become durable grid infrastructure rather than a clever trial.",
+  "canonicalSubject": {
+    "name": "Residential demand turn-up experiments",
+    "kind": "energy-study",
+    "aliases": [
+      "Demand-Side Alternative to Renewable Curtailment",
+      "Octopus Energy free electricity trials",
+      "demand turn-up"
+    ]
+  },
+  "topics": [
+    "energy",
+    "economics",
+    "renewable-energy",
+    "demand-response",
+    "climate"
+  ],
+  "geography": [
+    "Great Britain",
+    "Spain"
+  ],
+  "trackingTerms": [
+    "demand turn-up renewable curtailment",
+    "free electricity Octopus Energy experiment",
+    "Demand-Side Alternative to Renewable Curtailment",
+    "Lopez Metcalfe Schein Sun"
+  ],
+  "originSignalIds": [
+    "2026-08-29-demand-turn-up-renewable-curtailment"
+  ],
+  "firstObservedAt": "2026-08-29T05:00:00-07:00",
+  "admittedAt": "2026-08-30T18:30:00-07:00",
+  "whyTracked": "The study offers a quantitative baseline with direct policy relevance and several observable routes to peer review, replication, regulation, and operational deployment.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "preliminary",
+    "attention": "unmeasured",
+    "assessment": "The randomized trials are promising but remain a working-paper result tied to two European markets and a shared research lineage.",
+    "updatedAt": "2026-08-30T18:30:00-07:00",
+    "lastMaterialChangeAt": "2026-08-29T05:00:00-07:00",
+    "nextReviewAfter": "2027-02-28",
+    "nextReviewTrigger": "Review for a revised or peer-reviewed paper, independent replication, regulatory adoption, or utility-scale results with equity and curtailment measures.",
+    "cadence": "quarterly"
+  },
+  "openQuestions": [
+    "Will peer review materially change the estimates or interpretation?",
+    "Can automated, local demand turn-up reduce actual curtailment at scale without burdening or excluding households?",
+    "Who captures the welfare gains under different tariff and compensation rules?"
+  ],
+  "watchFor": [
+    {
+      "description": "Peer-reviewed publication, revision, or replication",
+      "expectedWindow": "Unknown",
+      "trigger": "The paper is published, revised, critiqued, or independently replicated."
+    },
+    {
+      "description": "Operational rollout with measured curtailment outcomes",
+      "expectedWindow": "Unknown",
+      "trigger": "A utility or system operator reports program-scale energy, equity, and grid results."
+    },
+    {
+      "description": "Regulatory or tariff adoption",
+      "expectedWindow": "Unknown",
+      "trigger": "A jurisdiction changes tariffs or market rules to support demand turn-up."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "residential-demand-turn-up-2026-08-29-point-zero",
+      "observedAt": "2026-08-29T05:00:00-07:00",
+      "recordedAt": "2026-08-30T15:42:25-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "Randomized residential trials reported that temporary discounts and free electricity increased consumption during renewable-abundance windows, while paying customers beyond a zero price added little further response.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-29-demand-turn-up-renewable-curtailment"
+      ],
+      "sources": [
+        {
+          "url": "https://rmetcalfe.net/LopezMetcalfeScheinSun_DemandSideAlternativeRenewableCurtailment.pdf",
+          "title": "A Demand-Side Alternative to Renewable Curtailment",
+          "publisher": "Lopez Garcia, Metcalfe, Schein, and Sun",
+          "publishedAt": null,
+          "accessedAt": "2026-08-29",
+          "role": "primary-research",
+          "lineage": "demand-turn-up-study"
+        },
+        {
+          "url": "https://rmetcalfe.net/demand-turnup.html",
+          "title": "Interactive summary of demand turn-up experiments",
+          "publisher": "Robert Metcalfe",
+          "publishedAt": null,
+          "accessedAt": "2026-08-29",
+          "role": "analysis-context",
+          "lineage": "demand-turn-up-study"
+        },
+        {
+          "url": "https://www.centrefornetzero.org/news/lessons-from-gb-and-spain-on-the-economics-of-demand-turn-up",
+          "title": "Lessons from Great Britain and Spain on demand turn-up",
+          "publisher": "Centre for Net Zero",
+          "publishedAt": null,
+          "accessedAt": "2026-08-29",
+          "role": "institutional-reporting",
+          "lineage": "demand-turn-up-study"
+        }
+      ]
+    },
+    {
+      "observationId": "residential-demand-turn-up-2026-08-30-admission",
+      "observedAt": "2026-08-30T18:30:00-07:00",
+      "recordedAt": "2026-08-30T18:30:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake pilot",
+      "summary": "Admitted because the central claim can mature through peer review, independent replication, tariff design, and measured curtailment outcomes.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-29-demand-turn-up-renewable-curtailment"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}
