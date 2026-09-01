@@ -1,0 +1,129 @@
+---
+const digits = Array.from({ length: 9 }, (_, index) => {
+  const digit = index + 1;
+  const left = Math.log10(digit);
+  const right = Math.log10(digit + 1);
+  return {
+    digit,
+    left,
+    width: right - left,
+    probability: (right - left) * 100,
+  };
+});
+
+const plotLeft = 72;
+const plotWidth = 956;
+---
+
+<figure class="benford-strip reckoning-visual">
+  <header>
+    <p>One decade on a logarithmic ruler</p>
+    <h3>Smaller first digits occupy wider intervals</h3>
+  </header>
+
+  <div class="strip-shell">
+    <svg viewBox="0 0 1100 370" role="img" aria-labelledby="benford-strip-title benford-strip-desc">
+      <title id="benford-strip-title">Logarithmic intervals for decimal first digits</title>
+      <desc id="benford-strip-desc">
+        The interval from 1 to 2 occupies 30.1 percent of a base-ten logarithmic decade,
+        while the interval from 9 to 10 occupies 4.6 percent. The intervening digit intervals
+        decrease steadily in width.
+      </desc>
+      <defs>
+        <pattern id="benford-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+          <line x1="0" y1="0" x2="0" y2="12" />
+        </pattern>
+      </defs>
+
+      <g class="axis-grid" aria-hidden="true">
+        {Array.from({ length: 11 }, (_, index) => (
+          <line x1={plotLeft + (plotWidth * index) / 10} y1="82" x2={plotLeft + (plotWidth * index) / 10} y2="294" />
+        ))}
+      </g>
+
+      <text class="axis-title" x={plotLeft} y="54">equal distance in log₁₀ space</text>
+      <line class="axis" x1={plotLeft} y1="70" x2={plotLeft + plotWidth} y2="70" />
+      <text class="axis-label" x={plotLeft} y="69" text-anchor="middle">0</text>
+      <text class="axis-label" x={plotLeft + plotWidth} y="69" text-anchor="middle">1</text>
+
+      {digits.map(({ digit, left, width, probability }) => {
+        const x = plotLeft + left * plotWidth;
+        const pixelWidth = width * plotWidth;
+        const center = x + pixelWidth / 2;
+        return (
+          <g class={`digit-segment digit-${digit}`}>
+            <rect x={x} y="106" width={pixelWidth} height="148" rx="3" />
+            <rect class="hatch" x={x} y="106" width={pixelWidth} height="148" rx="3" fill="url(#benford-hatch)" />
+            <text class="digit" x={center} y="174" text-anchor="middle">{digit}</text>
+            <text class="probability" x={center} y="210" text-anchor="middle">{probability.toFixed(1)}%</text>
+            <line class="boundary" x1={x} y1="254" x2={x} y2="278" />
+            <text class="boundary-label" x={x} y="301" text-anchor="middle">log {digit}</text>
+          </g>
+        );
+      })}
+      <line class="boundary" x1={plotLeft + plotWidth} y1="254" x2={plotLeft + plotWidth} y2="278" />
+      <text class="boundary-label" x={plotLeft + plotWidth} y="301" text-anchor="middle">log 10</text>
+      <path class="width-callout" d={`M${plotLeft} 326v14h${digits[0].width * plotWidth}v-14`} />
+      <text class="callout-label" x={plotLeft + (digits[0].width * plotWidth) / 2} y="362" text-anchor="middle">log₁₀ 2 ≈ 0.301</text>
+    </svg>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the ordinary intervals from 1 to 2 and from 9 to 10 both
+    have width 1. After a base-ten logarithm compresses the number line, the first interval is
+    about 6.6 times as wide as the second. The labels and hatched fill make the comparison
+    readable without relying on color.
+  </figcaption>
+</figure>
+
+<style>
+  .benford-strip {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1060px, calc(100vw - 3rem));
+  }
+  header > p {
+    color: var(--link-color);
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.2rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+  }
+  .strip-shell {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    overflow-x: auto;
+  }
+  svg { display: block; height: auto; min-width: 760px; width: 100%; }
+  .axis-grid line { stroke: var(--border-color); stroke-width: 1; }
+  .axis { stroke: var(--text-secondary); stroke-width: 2; }
+  .axis-title { fill: var(--text-secondary); font-size: 13px; letter-spacing: 0.05em; }
+  .axis-label { fill: var(--text-secondary); font-size: 12px; }
+  .digit-segment rect:first-child { fill: color-mix(in srgb, var(--link-color) 25%, var(--surface-color)); stroke: var(--link-color); stroke-width: 2; }
+  .digit-segment:nth-of-type(even) rect:first-child { fill: color-mix(in srgb, #ff1493 16%, var(--surface-color)); stroke: #ff1493; }
+  .hatch { opacity: 0.13; stroke: none; }
+  #benford-hatch line { stroke: var(--text-primary); stroke-width: 2; }
+  .digit { fill: var(--text-primary); font-size: 26px; font-weight: 700; }
+  .probability { fill: var(--text-secondary); font-size: 12px; font-weight: 600; }
+  .boundary { stroke: var(--text-secondary); stroke-width: 1; }
+  .boundary-label { fill: var(--text-secondary); font-size: 10px; }
+  .width-callout { fill: none; stroke: #4f9300; stroke-width: 2; }
+  :global([data-theme='dark']) .width-callout { stroke: #93ff14; }
+  .callout-label { fill: #4f9300; font-size: 12px; font-weight: 700; }
+  :global([data-theme='dark']) .callout-label { fill: #93ff14; }
+  figcaption { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-top: 0.85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 500px) { .benford-strip { width: calc(100vw - 1.5rem); } }
+</style>

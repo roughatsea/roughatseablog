@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-31T06:00:00-07:00",
+  "updatedAt": "2026-09-01T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -63,6 +63,27 @@
         "vertex degree",
         "route inspection",
         "genome assembly"
+      ],
+      "relatedLessons": []
+    },
+    {
+      "date": "2026-09-01",
+      "slug": "daily-reckoning-2026-09-01",
+      "title": "Why Do So Many Numbers Begin With 1?",
+      "area": "Probability and statistics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Percentages",
+        "Base-ten logarithms as exponents"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Benford's law",
+        "first-digit distributions",
+        "logarithmic scale",
+        "scale invariance",
+        "forensic accounting",
+        "election forensics"
       ],
       "relatedLessons": []
     }
