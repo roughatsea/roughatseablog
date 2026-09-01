@@ -3,17 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteCard from '../components/NoteCard.astro';
 import LinkCard from '../components/LinkCard.astro';
 import TagExplorer from '../components/TagExplorer.astro';
-import SavePointCard from '../components/SavePointCard.astro';
 import { getCollection } from 'astro:content';
 import { notePublicationTimes } from '../notePublicationTimes';
 
 const notes = await getCollection('notes');
 const links = await getCollection('links');
-const savePoints = (await getCollection('savePoints')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
-const latestSavePoint = savePoints[0];
-
 function createExcerpt(body: string | undefined, maxLength = 200) {
   const plainText = (body ?? '')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
@@ -84,55 +78,6 @@ const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
       <path d="M2 5c11 0 11 8 22 8s11-8 22-8 11 8 22 8 11-8 22-8 11 8 22 8 11-8 22-8 11 8 22 8 11-8 22-8" />
     </svg>
   </div>
-
-  {latestSavePoint && (
-    <section class="save-point-feature" aria-labelledby="latest-save-point-heading">
-      <div class="feature-heading">
-        <div>
-          <p class="feature-eyebrow">Latest daily JRPG edition</p>
-          <h2 id="latest-save-point-heading">Save Point</h2>
-        </div>
-        <a href="/save-point/">Browse every edition <span aria-hidden="true">→</span></a>
-      </div>
-      <SavePointCard
-        title={latestSavePoint.data.title}
-        description={latestSavePoint.data.description}
-        heroImage={latestSavePoint.data.heroImage}
-        heroImageAlt={latestSavePoint.data.heroImageAlt}
-        slug={latestSavePoint.id}
-        date={latestSavePoint.data.date}
-        publishedAt={latestSavePoint.data.publishedAt}
-        featureLane={latestSavePoint.data.featureLane}
-        sections={latestSavePoint.data.sections}
-      />
-    </section>
-  )}
-
-  <a
-    class="field-guide-feature glass-panel hover-lift"
-    href="/guides/software-engineering/"
-    aria-labelledby="software-engineering-guide-title"
-  >
-    <div class="field-guide-copy">
-      <p class="field-guide-eyebrow">Standalone reference · 206 searchable terms</p>
-      <h2 id="software-engineering-guide-title">Software Engineering Field Guide</h2>
-      <p class="field-guide-description">
-        Recognize the pressure. Find the name. Search by term, alias, or symptom, then open focused concept pages with explicit C# and Python examples.
-      </p>
-      <span class="field-guide-cta">
-        Open the field guide
-        <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
-          <path d="M4 10h12m-4-4 4 4-4 4" />
-        </svg>
-      </span>
-    </div>
-
-    <div class="field-guide-coordinate" aria-hidden="true">
-      <span>Mapped vocabulary</span>
-      <strong>206</strong>
-      <small>From code smells to distributed systems</small>
-    </div>
-  </a>
 
   <TagExplorer
     tags={tagOptions}
@@ -219,146 +164,6 @@ const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
     stroke-width: 2;
     width: 9rem;
   }
-  .save-point-feature {
-    margin-bottom: 2rem;
-  }
-  .feature-heading {
-    align-items: end;
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
-    margin-bottom: 0.85rem;
-  }
-  .feature-heading h2 {
-    font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 4vw, 2.35rem);
-    margin: 0;
-  }
-  .feature-eyebrow {
-    color: var(--link-color);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.11em;
-    margin: 0 0 0.2rem;
-    text-transform: uppercase;
-  }
-  .feature-heading > a {
-    color: var(--link-color);
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding-bottom: 0.28rem;
-  }
-  .feature-heading > a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .field-guide-feature {
-    align-items: stretch;
-    background: var(--surface-color);
-    border-radius: 14px;
-    color: inherit;
-    display: grid;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    grid-template-columns: minmax(0, 1fr) minmax(11rem, 0.32fr);
-    margin-bottom: 2rem;
-    overflow: hidden;
-    padding: clamp(1.35rem, 4vw, 2rem);
-    position: relative;
-  }
-  .field-guide-feature::before {
-    background-image:
-      linear-gradient(to right, var(--border-color) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
-    background-size: 24px 24px;
-    content: '';
-    inset: 0;
-    -webkit-mask-image: linear-gradient(90deg, transparent 22%, black 100%);
-    mask-image: linear-gradient(90deg, transparent 22%, black 100%);
-    opacity: 0.42;
-    pointer-events: none;
-    position: absolute;
-  }
-  .field-guide-feature:focus-visible {
-    outline: 2px solid var(--link-color);
-    outline-offset: 3px;
-  }
-  .field-guide-copy,
-  .field-guide-coordinate {
-    position: relative;
-  }
-  .field-guide-eyebrow {
-    color: var(--link-color);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    margin-bottom: 0.55rem;
-    text-transform: uppercase;
-  }
-  .field-guide-feature h2 {
-    font-family: var(--font-serif);
-    font-size: clamp(1.8rem, 4vw, 2.7rem);
-    letter-spacing: -0.025em;
-    margin-bottom: 0.75rem;
-  }
-  .field-guide-description {
-    color: var(--text-secondary);
-    font-family: var(--font-serif);
-    font-size: 1.04rem;
-    line-height: 1.65;
-    margin: 0;
-    max-width: 44rem;
-  }
-  .field-guide-cta {
-    align-items: center;
-    color: var(--link-color);
-    display: inline-flex;
-    font-size: 0.82rem;
-    font-weight: 700;
-    gap: 0.4rem;
-    margin-top: 1.1rem;
-  }
-  .field-guide-cta svg {
-    height: 1rem;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.8;
-    transition: transform 0.2s ease;
-    width: 1rem;
-  }
-  .field-guide-feature:hover .field-guide-cta svg {
-    transform: translateX(0.2rem);
-  }
-  .field-guide-coordinate {
-    align-items: center;
-    border-left: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: clamp(1.25rem, 3vw, 2rem);
-    text-align: center;
-  }
-  .field-guide-coordinate span {
-    color: var(--text-secondary);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .field-guide-coordinate strong {
-    color: var(--link-color);
-    font-family: var(--font-serif);
-    font-size: clamp(3.2rem, 7vw, 5rem);
-    font-weight: 400;
-    line-height: 1;
-    margin: 0.35rem 0 0.55rem;
-  }
-  .field-guide-coordinate small {
-    color: var(--text-secondary);
-    font-family: var(--font-serif);
-    line-height: 1.4;
-    max-width: 11rem;
-  }
   .feed {
     display: grid;
     grid-template-columns: 1fr;
@@ -372,41 +177,6 @@ const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
   .feed :global(.link-card) {
     height: 100%;
     margin-bottom: 0;
-  }
-
-  @media (max-width: 640px) {
-    .feature-heading {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-    .field-guide-feature {
-      grid-template-columns: 1fr;
-    }
-    .field-guide-feature::before {
-      -webkit-mask-image: linear-gradient(180deg, transparent 28%, black 100%);
-      mask-image: linear-gradient(180deg, transparent 28%, black 100%);
-    }
-    .field-guide-coordinate {
-      align-items: baseline;
-      border-left: 0;
-      border-top: 1px solid var(--border-color);
-      column-gap: 0.65rem;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      padding: 1rem 0 0;
-      text-align: left;
-    }
-    .field-guide-coordinate span {
-      grid-column: 1 / -1;
-    }
-    .field-guide-coordinate strong {
-      font-size: 2.8rem;
-      margin: 0.35rem 0 0;
-    }
-    .field-guide-coordinate small {
-      max-width: 14rem;
-    }
   }
 
   @media (min-width: 768px) {
