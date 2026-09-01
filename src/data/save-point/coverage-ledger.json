@@ -213,6 +213,120 @@
           "accessedAt": "2026-08-31"
         }
       ]
+    },
+    {
+      "editionId": "2026-09-01",
+      "publicationDate": "2026-09-01",
+      "publishedAt": "2026-09-01T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-01",
+      "heroImage": "/images/save-point/save-point-2026-09-01.webp",
+      "featureLane": "final-fantasy-xiv",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy IX turns series memory into a question of legacy",
+          "game": "Final Fantasy IX",
+          "sourceType": "video",
+          "spoilerLevel": "major",
+          "spoilerScope": "The full story and ending",
+          "subjectKeys": [
+            "final-fantasy-ix-legacy-symbols",
+            "sakaguchi-series-inheritance",
+            "scribble-retrospective-ffix-analysis"
+          ],
+          "sourceIds": [
+            "ff9-scribble-retrospective-literary-analysis",
+            "ff9-2000-developer-interviews"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "English Eorzea was made in the localization workshop",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "No story spoilers",
+          "subjectKeys": [
+            "ffxiv-localization-coauthorship",
+            "koji-fox-character-voice",
+            "embedded-localization-world-building"
+          ],
+          "sourceIds": [
+            "koji-fox-rpg-site-2026",
+            "ffxiv-otakon-2026-localization"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Dragon Quarter wanted a 9/5/9/5, not a 7/7/7/7",
+          "game": "Breath of Fire: Dragon Quarter",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Design discussion only; no story spoilers",
+          "subjectKeys": [
+            "dragon-quarter-deliberate-polarization",
+            "scenario-overlay-restart-design",
+            "dragon-quarter-survival-pressure"
+          ],
+          "sourceIds": [
+            "dragon-quarter-2002-developer-interview"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff9-scribble-retrospective-literary-analysis",
+          "title": "A Final Fantasy 9 Literary Analysis",
+          "creator": "Scribble Retrospective",
+          "url": "https://www.youtube.com/watch?v=I-SWaeFHOF0",
+          "publishedAt": "2026-07-30",
+          "role": "primary",
+          "lineage": "Original video essay; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "I-SWaeFHOF0",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "ff9-2000-developer-interviews",
+          "title": "Final Fantasy IX — 2000 Developer Interviews",
+          "creator": "Hironobu Sakaguchi and the Final Fantasy IX development team; translated by Shmuplations",
+          "url": "https://shmuplations.com/ffix/",
+          "publishedAt": "2024-04-30",
+          "role": "primary",
+          "lineage": "Fan translation and edited presentation of interviews originally published in Hyper PlayStation in 2000.",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "koji-fox-rpg-site-2026",
+          "title": "Koji Fox on localization, FFXIV, FF16, Final Fantasy XI, coffee, and much more",
+          "creator": "Mikhail Madnani, interviewing Michael-Christopher Koji Fox",
+          "url": "https://www.rpgsite.net/interview/21116-koji-fox-interview-2026-ffxiv-ff16-final-fantasy-xi-localization-artbooks-logos-eorzea-square-enix-coffee",
+          "publishedAt": "2026-08-17",
+          "role": "primary",
+          "lineage": "Direct written interview with the Final Fantasy XIV localization supervisor.",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "ffxiv-otakon-2026-localization",
+          "title": "FINAL FANTASY XIV Partners with Otakon 2026",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/a077d187f908b00148b798531e1ebaf2132fce30",
+          "publishedAt": "2026-07-23",
+          "role": "primary",
+          "lineage": "Official event announcement describing Koji Fox's localization panel and role in shaping lore and world identity.",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "dragon-quarter-2002-developer-interview",
+          "title": "Breath of Fire: Dragon Quarter — 2002 Interview",
+          "creator": "Makoto Ikehara and Tatsuya Yoshikawa; translated by GSK",
+          "url": "https://shmuplations.com/dragonquarter/",
+          "publishedAt": "2024-07-31",
+          "role": "primary",
+          "lineage": "Fan translation of a developer interview originally published by Sony's PS Style webzine in 2002.",
+          "accessedAt": "2026-09-01"
+        }
+      ]
     }
   ]
 }
