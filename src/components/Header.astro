@@ -35,6 +35,7 @@ const pathname = Astro.url.pathname;
       <nav aria-label="Primary navigation">
         <a class="home-link" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
         <a href="/soundings/" aria-current={pathname.startsWith('/soundings/') ? 'page' : undefined}>Soundings</a>
+        <a href="/save-point/" aria-current={pathname.startsWith('/save-point/') ? 'page' : undefined}>Save Point</a>
         <a href="/reckonings/" aria-current={pathname.startsWith('/reckonings/') ? 'page' : undefined}>Reckonings</a>
         <a href="/wake/" aria-current={pathname.startsWith('/wake/') ? 'page' : undefined}>Wake</a>
         <a href="/atlas/" aria-current={pathname === '/atlas/' ? 'page' : undefined}>Atlas</a>
@@ -66,6 +67,7 @@ const pathname = Astro.url.pathname;
   }
   .header-content {
     justify-content: space-between;
+    max-width: 1120px;
     position: relative;
   }
   .brand {
@@ -174,7 +176,7 @@ const pathname = Astro.url.pathname;
   :global(:root:not([data-theme='dark'])) .sun-icon { display: none; }
   :global(:root:not([data-theme='dark'])) .moon-icon { display: block; }
 
-  @media (max-width: 760px) {
+  @media (max-width: 980px) {
     header {
       margin-bottom: 2.25rem;
     }
@@ -273,7 +275,7 @@ const pathname = Astro.url.pathname;
     menuToggle?.focus();
   });
 
-  window.matchMedia('(min-width: 761px)').addEventListener('change', (event) => {
+  window.matchMedia('(min-width: 981px)').addEventListener('change', (event) => {
     if (event.matches) setMenuOpen(false);
   });
 

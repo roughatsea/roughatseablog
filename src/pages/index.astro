@@ -3,11 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteCard from '../components/NoteCard.astro';
 import LinkCard from '../components/LinkCard.astro';
 import TagExplorer from '../components/TagExplorer.astro';
+import SavePointCard from '../components/SavePointCard.astro';
 import { getCollection } from 'astro:content';
 import { notePublicationTimes } from '../notePublicationTimes';
 
 const notes = await getCollection('notes');
 const links = await getCollection('links');
+const savePoints = (await getCollection('savePoints')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const latestSavePoint = savePoints[0];
 
 function createExcerpt(body: string | undefined, maxLength = 200) {
   const plainText = (body ?? '')
@@ -79,6 +84,29 @@ const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
       <path d="M2 5c11 0 11 8 22 8s11-8 22-8 11 8 22 8 11-8 22-8 11 8 22 8 11-8 22-8 11 8 22 8 11-8 22-8" />
     </svg>
   </div>
+
+  {latestSavePoint && (
+    <section class="save-point-feature" aria-labelledby="latest-save-point-heading">
+      <div class="feature-heading">
+        <div>
+          <p class="feature-eyebrow">Latest daily JRPG edition</p>
+          <h2 id="latest-save-point-heading">Save Point</h2>
+        </div>
+        <a href="/save-point/">Browse every edition <span aria-hidden="true">→</span></a>
+      </div>
+      <SavePointCard
+        title={latestSavePoint.data.title}
+        description={latestSavePoint.data.description}
+        heroImage={latestSavePoint.data.heroImage}
+        heroImageAlt={latestSavePoint.data.heroImageAlt}
+        slug={latestSavePoint.id}
+        date={latestSavePoint.data.date}
+        publishedAt={latestSavePoint.data.publishedAt}
+        featureLane={latestSavePoint.data.featureLane}
+        sections={latestSavePoint.data.sections}
+      />
+    </section>
+  )}
 
   <a
     class="field-guide-feature glass-panel hover-lift"
@@ -190,6 +218,39 @@ const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
     stroke-linecap: round;
     stroke-width: 2;
     width: 9rem;
+  }
+  .save-point-feature {
+    margin-bottom: 2rem;
+  }
+  .feature-heading {
+    align-items: end;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+  }
+  .feature-heading h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.35rem);
+    margin: 0;
+  }
+  .feature-eyebrow {
+    color: var(--link-color);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    margin: 0 0 0.2rem;
+    text-transform: uppercase;
+  }
+  .feature-heading > a {
+    color: var(--link-color);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding-bottom: 0.28rem;
+  }
+  .feature-heading > a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   .field-guide-feature {
     align-items: stretch;
@@ -314,6 +375,11 @@ const tagOptions = Array.from(tagCounts, ([name, count]) => ({ name, count }))
   }
 
   @media (max-width: 640px) {
+    .feature-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
     .field-guide-feature {
       grid-template-columns: 1fr;
     }

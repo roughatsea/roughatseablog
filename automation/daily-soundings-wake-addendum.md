@@ -54,6 +54,23 @@ Before researching the day's edition:
 4. When `src/data/wake/records/` exists, inspect it for a continuing subject
    before assigning a new longitudinal identity.
 
+## Coordination with Save Point
+
+Save Point normally publishes at 2:00 AM in `America/Phoenix`, before Morning
+Soundings begins. Before researching the day's Soundings edition, check for the
+same-day article under `src/content/save-point/` and inspect the Save Point
+coverage ledger.
+
+Treat a source, claim, video, or near-identical angle already used by Save Point
+as unavailable for routine Soundings selection. A consequential JRPG subject
+may still appear in Soundings only when the Soundings section asks a genuinely
+broader cultural, artistic, scientific, or technological question. Link to the
+Save Point edition and do not reproduce its summary.
+
+If the day's Save Point is absent because its run failed or was intentionally
+paused, continue Morning Soundings normally. Do not allow one daily series to
+block the other.
+
 ## Required point-zero packet
 
 After writing the article, create exactly one sidecar file:

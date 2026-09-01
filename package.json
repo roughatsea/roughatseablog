@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "npm run build:wake-exports && astro dev",
-    "build": "npm run validate:wake && npm run build:wake-exports && astro check && astro build",
+    "build": "npm run validate:save-point && npm run validate:wake && npm run build:wake-exports && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "validate:save-point": "node scripts/validate-save-point.mjs",
     "validate:wake": "node scripts/validate-wake-data.mjs && node scripts/validate-wake-records.mjs",
     "build:wake-exports": "node scripts/build-wake-exports.mjs"
   },
@@ -28,6 +29,7 @@
     "@astrojs/check": "^0.9.10",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "yaml": "^2.9.0"
   }
 }

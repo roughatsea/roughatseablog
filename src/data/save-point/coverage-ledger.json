@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "editions": [
+    {
+      "editionId": "2026-08-31",
+      "publicationDate": "2026-08-31",
+      "publishedAt": "2026-08-31T18:45:00-07:00",
+      "articleSlug": "save-point-2026-08-31",
+      "heroImage": "/images/save-point/save-point-2026-08-31.webp",
+      "featureLane": "final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy VIII and the fear of being remembered incorrectly",
+          "game": "Final Fantasy VIII",
+          "sourceType": "video",
+          "spoilerLevel": "major",
+          "spoilerScope": "Disc one through the ending",
+          "subjectKeys": [
+            "final-fantasy-viii-memory-identity",
+            "squall-posthumous-memory",
+            "laguna-competing-legacies"
+          ],
+          "sourceIds": [
+            "ff8-game-dove-forgotten-subplot"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "The Rising sends FFXIV toward change with a familiar Prelude",
+          "game": "Final Fantasy XIV",
+          "sourceType": "lore",
+          "spoilerLevel": "major",
+          "spoilerScope": "The Rising 2026 seasonal quests",
+          "subjectKeys": [
+            "ffxiv-rising-2026-change",
+            "uematsu-mellow-musician",
+            "evercold-continuity-without-stasis"
+          ],
+          "sourceIds": [
+            "ffxiv-rising-announcement-2026",
+            "ffxiv-rising-event-2026",
+            "ffxiv-new-year-2026",
+            "ffxiv-evercold",
+            "ffxiv-symphony-transcription",
+            "ffxiv-prelude-transcription",
+            "uematsu-contiki"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Xenosaga: Pied Piper has three different afterlives",
+          "game": "Xenosaga: Pied Piper",
+          "sourceType": "preservation",
+          "spoilerLevel": "none",
+          "spoilerScope": "Official premise only; no story spoilers",
+          "subjectKeys": [
+            "xenosaga-pied-piper-preservation",
+            "keitai-game-recovery",
+            "preservation-access-authenticity-legality"
+          ],
+          "sourceIds": [
+            "pied-piper-gmode-product",
+            "pied-piper-steam",
+            "pied-piper-gmode-comments",
+            "pied-piper-recovery",
+            "pied-piper-fan-recreation",
+            "pied-piper-rpgfan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff8-game-dove-forgotten-subplot",
+          "title": "Final Fantasy VIII's Most Forgotten Subplot",
+          "creator": "Game Dove",
+          "url": "https://www.youtube.com/watch?v=JVQal3VcT9M",
+          "publishedAt": "2026-05-29",
+          "role": "primary",
+          "lineage": "Original video essay; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "JVQal3VcT9M",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-rising-announcement-2026",
+          "title": "The Rising Returns August 27!",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/934039c77087ac5ad6e535866dedb5bc63511885",
+          "publishedAt": "2026-08-20",
+          "role": "primary",
+          "lineage": "Official Final Fantasy XIV event announcement.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-rising-event-2026",
+          "title": "The Rising 2026 — What awaits us at journey's end?",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/special/2026/The_Rising/cula62e5jx",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official Final Fantasy XIV seasonal-event page.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-new-year-2026",
+          "title": "New Year's Greetings!",
+          "creator": "Naoki Yoshida",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/3a546b93ed103e51be62958ec141af16d48c8e89",
+          "publishedAt": "2026-01-01",
+          "role": "primary",
+          "lineage": "Official producer and director message published on the Lodestone.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-evercold",
+          "title": "Final Fantasy XIV: Evercold",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/evercold/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official expansion and systems feature page; announced details remain subject to change.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-symphony-transcription",
+          "title": "The Symphony of Life",
+          "creator": null,
+          "url": "https://ffxiv.consolegameswiki.com/wiki/The_Symphony_of_Life",
+          "publishedAt": null,
+          "role": "transcription",
+          "lineage": "Community-hosted transcription of in-game quest journal and dialogue.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-prelude-transcription",
+          "title": "Prelude's Call",
+          "creator": null,
+          "url": "https://ffxiv.consolegameswiki.com/wiki/Prelude%27s_Call",
+          "publishedAt": null,
+          "role": "transcription",
+          "lineage": "Community-hosted transcription of in-game quest journal and dialogue.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "uematsu-contiki",
+          "title": "Nobuo Uematsu con TIKI",
+          "creator": "AWR Music",
+          "url": "https://www.awrmusic.com/contiki",
+          "publishedAt": null,
+          "role": "context",
+          "lineage": "Official concert page identifying the con TIKI project with Nobuo Uematsu.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-gmode-product",
+          "title": "Xenosaga: Pied Piper",
+          "creator": "G-MODE and Bandai Namco Entertainment",
+          "url": "https://info.gmodecorp.com/gmodearchives/bandainamco/xenosagapiedpiper/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official product page for the modern G-MODE Archives release.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-steam",
+          "title": "G-MODE Archives+: Xenosaga: Pied Piper",
+          "creator": "G-MODE",
+          "url": "https://store.steampowered.com/app/4532150/GMODE/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official storefront listing for release, language, story, and credit details.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-gmode-comments",
+          "title": "Comments received for G-MODE Archives",
+          "creator": "G-MODE",
+          "url": "https://info.gmodecorp.com/gmodearchives/comment/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official publisher page reproducing comments from Bandai Namco and Xenosaga producer Tomohiro Hagiwara.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-recovery",
+          "title": "Xenosaga: Pied Piper restored",
+          "creator": null,
+          "url": "https://scientia.godsibb.net/t/xenosaga-pied-piper-restored/1188",
+          "publishedAt": "2025-03-17",
+          "role": "primary",
+          "lineage": "Archived community recovery announcement naming the preservation work and anonymous donor.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-fan-recreation",
+          "title": "Xenosaga Pied Piper",
+          "creator": "CycloneFox",
+          "url": "https://cyclonefox.itch.io/xenosaga-pied-piper",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Creator-maintained page for the unofficial multilingual recreation and its features.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-rpgfan",
+          "title": "Xenosaga: Pied Piper Mobile Game Found; English Patch Incoming",
+          "creator": "RPGFan",
+          "url": "https://www.rpgfan.com/2025/03/19/xenosaga-pied-piper-found-english-patch/",
+          "publishedAt": "2025-03-19",
+          "role": "independent",
+          "lineage": "Independent report corroborating the community recovery announcement.",
+          "accessedAt": "2026-08-31"
+        }
+      ]
+    }
+  ]
+}

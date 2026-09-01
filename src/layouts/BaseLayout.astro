@@ -8,14 +8,21 @@ interface Props {
   title: string;
   description?: string;
   robots?: string;
+  image?: string;
+  article?: boolean;
 }
 
 const {
   title,
   description = "Notes, links, and useful signals gathered in uncertain waters.",
   robots,
+  image = '/og.png',
+  article = false,
 } = Astro.props;
 const pageTitle = title === 'Rough at Sea' ? title : `${title} · Rough at Sea`;
+const siteOrigin = Astro.site ?? Astro.url.origin;
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
+const imageUrl = new URL(image, siteOrigin).toString();
 ---
 
 <!DOCTYPE html>
@@ -26,6 +33,16 @@ const pageTitle = title === 'Rough at Sea' ? title : `${title} · Rough at Sea`;
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     {robots && <meta name="robots" content={robots} />}
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script is:inline>
       const theme = (() => {
