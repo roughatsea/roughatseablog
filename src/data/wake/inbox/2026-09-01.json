@@ -1,0 +1,294 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-01",
+  "article": {
+    "slug": "morning-soundings-2026-09-01",
+    "title": "Morning Soundings: The Instrument Is the Argument",
+    "publishedAt": "2026-09-01T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-01.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-01T05:02:07-07:00",
+    "sourceStateAsOf": "2026-09-01",
+    "notes": "Captured during the publication run from sources accessed on September 1, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-01-varifocal-mems-micromirror",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "One mirror can aim and focus a beam",
+      "canonicalSubject": {
+        "name": "Tip-tilt-curvature MEMS micromirror",
+        "kind": "optical-engineering-prototype",
+        "aliases": [
+          "Shillingburg Lopez varifocal micromirror",
+          "biaxial piezoelectric MEMS scanner"
+        ]
+      },
+      "signalType": "peer-reviewed-prototype",
+      "topics": [
+        "optical-engineering",
+        "mems",
+        "microscopy",
+        "augmented-reality"
+      ],
+      "geography": [
+        "Pennsylvania",
+        "United States"
+      ],
+      "canonicalClaim": "Researchers demonstrated a millimeter-scale MEMS mirror that combines two-axis laser steering with rapid axial refocusing by electrically controlling its tilt and curvature.",
+      "knownFacts": [
+        "The peer-reviewed device uses piezoelectric aluminum nitride actuators to tilt and reshape a reflective surface.",
+        "The authors report lateral scan rates above 10 kilohertz and axial focus modulation above 100 kilohertz.",
+        "A laser-scanned pattern was refocused across a 63-millimeter shift, and the researchers built a simple scanning microscope around the mirror."
+      ],
+      "uncertainties": [
+        "The demonstrations do not establish performance, durability, or manufacturability in a complete commercial microscope or display.",
+        "The paper reports distortion caused by slight asymmetry in the mirror that requires further correction.",
+        "The eventual advantage over competing optical architectures will depend on application-specific integration and control requirements."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The device, measurements, and demonstrations are described in an open peer-reviewed paper; the institutional article clearly labels end-use applications as potential rather than achieved."
+      },
+      "sources": [
+        {
+          "url": "https://www.nature.com/articles/s41378-026-01356-4",
+          "title": "High speed biaxial piezoelectric MEMS micromirror with varifocal tunability",
+          "publisher": "Microsystems & Nanoengineering",
+          "publishedAt": "2026-07-17",
+          "accessedAt": "2026-09-01",
+          "role": "primary-research",
+          "lineage": "shillingburg-lopez-varifocal-micromirror"
+        },
+        {
+          "url": "https://www.psu.edu/news/materials-research-institute/story/tiny-mirror-controls-light-3d-could-make-microscopes-smaller-and",
+          "title": "Tiny mirror controls light in 3D, could make microscopes smaller and faster",
+          "publisher": "Penn State",
+          "publishedAt": "2026-08-31",
+          "accessedAt": "2026-09-01",
+          "role": "institutional-reporting",
+          "lineage": "shillingburg-lopez-varifocal-micromirror"
+        }
+      ],
+      "openQuestions": [
+        "Can the mirror's asymmetry-related distortion be corrected without sacrificing speed or compactness?",
+        "Will an integrated microscope, display, or micromachining system demonstrate a practical advantage over separate steering and focusing components?",
+        "How will repeated high-frequency deformation affect device reliability?"
+      ],
+      "watchFor": [
+        {
+          "description": "Integrated application prototype",
+          "expectedWindow": null,
+          "trigger": "The researchers or another group report a complete microscope, display, or manufacturing system built around the tip-tilt-curvature mirror."
+        },
+        {
+          "description": "Distortion and reliability follow-up",
+          "expectedWindow": null,
+          "trigger": "A later paper quantifies corrected optical distortion or long-cycle mechanical reliability."
+        }
+      ],
+      "trackingTerms": [
+        "High speed biaxial piezoelectric MEMS micromirror with varifocal tunability",
+        "Shillingburg Lopez micromirror",
+        "tip tilt curvature MEMS scanner",
+        "s41378-026-01356-4"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The prototype has clear technical limitations and application milestones that future work can confirm, bound, or fail to realize."
+      },
+      "selectionReason": "The device makes a foundational engineering move visible: replace an assembly of functions with one controllable physical behavior.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-01-ancient-egyptian-paint-proteomics",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "Ancient paint remembers the supply chain",
+      "canonicalSubject": {
+        "name": "Paleoproteomic analysis of ancient Egyptian paint binders",
+        "kind": "archaeological-materials-study",
+        "aliases": [
+          "Beyond animal glue study",
+          "Granzotto Egyptian paint proteomics"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "ancient-egypt",
+        "art-conservation",
+        "paleoproteomics",
+        "material-culture"
+      ],
+      "geography": [
+        "Egypt",
+        "Denmark",
+        "Sweden",
+        "United Kingdom"
+      ],
+      "canonicalClaim": "Protein analysis of 28 microsamples from 14 ancient Egyptian painted objects identified multiple animal collagen sources and plant proteins, expanding the known range of binders and adhesives used on the sampled works.",
+      "knownFacts": [
+        "The sampled objects date from approximately 1425 BCE to 400 CE and include coffins, tomb paintings, painted limestone, and mummy-related plasterwork in three European museums.",
+        "Cattle collagen was the most frequent animal-glue source identified, with evidence also consistent with sheep or goats, donkeys, horses, and possibly wild antelopes.",
+        "The team identified sesame and moringa proteins and, after complementary chemical tests, proposed protein-rich seed-processing residue rather than pure plant oil as an ingredient."
+      ],
+      "uncertainties": [
+        "The museum sample is too small and historically uneven to establish a universal ancient Egyptian paint recipe.",
+        "The inferred use of seed cake reconstructs the most plausible material form from several analyses but does not directly observe the original workshop process.",
+        "Some low-abundance biological signatures may be difficult to distinguish from later contamination or handling."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The findings come from a peer-reviewed multi-method study, with the seed-cake interpretation explicitly presented as a proposal supported by proteomic and complementary chemical evidence."
+      },
+      "sources": [
+        {
+          "url": "https://www.science.org/doi/10.1126/sciadv.ady3618",
+          "title": "Beyond animal glue: Paleoproteomic analysis of paint binders and adhesives in ancient Egypt",
+          "publisher": "Science Advances",
+          "publishedAt": null,
+          "accessedAt": "2026-09-01",
+          "role": "primary-research",
+          "lineage": "granzotto-egyptian-paint-proteomics"
+        },
+        {
+          "url": "https://archaeology.org/news/2026/08/28/proteins-in-ancient-egyptian-paints-analyzed/",
+          "title": "Proteins in Ancient Egyptian Paints Analyzed",
+          "publisher": "Archaeology Magazine",
+          "publishedAt": "2026-08-28",
+          "accessedAt": "2026-09-01",
+          "role": "independent-reporting",
+          "lineage": "granzotto-egyptian-paint-proteomics"
+        }
+      ],
+      "openQuestions": [
+        "Do larger and more geographically representative samples show regional, chronological, or workshop-specific binder traditions?",
+        "Can future analyses distinguish seed-processing by-products more precisely from other plant-derived additives?",
+        "Will the results change conservation treatments for objects with similar protein profiles?"
+      ],
+      "watchFor": [
+        {
+          "description": "Expanded paleoproteomic survey",
+          "expectedWindow": null,
+          "trigger": "A new study analyzes a larger or more geographically representative set of ancient Egyptian painted objects."
+        },
+        {
+          "description": "Conservation application",
+          "expectedWindow": null,
+          "trigger": "A museum or conservation study reports a treatment decision informed by identified ancient binder proteins."
+        }
+      ],
+      "trackingTerms": [
+        "Beyond animal glue ancient Egypt",
+        "Science Advances ady3618",
+        "Clara Granzotto paint binders",
+        "ancient Egyptian paint paleoproteomics"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "passive",
+        "reason": "The study supports valuable future comparisons, but no specific replication or conservation milestone has yet been announced."
+      },
+      "selectionReason": "The analysis restores the practical economy behind painted images by treating glue and processing residue as cultural evidence rather than inert support.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-01-constant-sample-race-detector",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "A race detector can be sound without being complete",
+      "canonicalSubject": {
+        "name": "Randomized property tester for happens-before data races",
+        "kind": "software-analysis-algorithm",
+        "aliases": [
+          "RPT race detector",
+          "Dynamic Race Detection With O(1) Samples"
+        ]
+      },
+      "signalType": "peer-reviewed-algorithm",
+      "topics": [
+        "software-engineering",
+        "concurrency",
+        "property-testing",
+        "program-analysis"
+      ],
+      "geography": [
+        "United States",
+        "Singapore"
+      ],
+      "canonicalClaim": "Researchers developed a one-sided randomized property tester that samples a number of execution events independent of trace length while never reporting a false happens-before race and detecting traces far from race-free with high probability.",
+      "knownFacts": [
+        "The sample bound depends on the number of threads, the maximum number of simultaneously held locks, and the chosen distance and error parameters, but not on total trace length.",
+        "The detector deliberately has no guarantee of finding a race in a trace that is close to race-free under the paper's Hamming-distance definition.",
+        "In the authors' benchmarks, the randomized property tester ran faster than FastTrack and Pacer and often detected at least one race."
+      ],
+      "uncertainties": [
+        "The benchmark results do not establish performance or detection rates across all production workloads.",
+        "The Hamming-distance notion of being far from race-free may not always align with the operational severity of a concurrency bug.",
+        "It remains unclear how often practitioners will prefer the weaker completeness guarantee outside in-house testing."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The algorithm, proof, implementation, limitations, and benchmark comparison appear in a peer-reviewed POPL paper with an openly accessible preprint."
+      },
+      "sources": [
+        {
+          "url": "https://dl.acm.org/doi/10.1145/3571238",
+          "title": "Dynamic Race Detection With O(1) Samples",
+          "publisher": "Proceedings of the ACM on Programming Languages",
+          "publishedAt": null,
+          "accessedAt": "2026-09-01",
+          "role": "primary-research",
+          "lineage": "althokair-randomized-race-property-tester"
+        },
+        {
+          "url": "https://arxiv.org/abs/2506.20127",
+          "title": "Dynamic Race Detection With O(1) Samples",
+          "publisher": "arXiv",
+          "publishedAt": "2025-06-25",
+          "accessedAt": "2026-09-01",
+          "role": "archival-source",
+          "lineage": "althokair-randomized-race-property-tester"
+        }
+      ],
+      "openQuestions": [
+        "How does the detector perform on long-lived production services with rare but consequential races?",
+        "Can property-testing guarantees be adapted to deadlocks or atomicity violations as the authors propose?",
+        "Which operational policies make a one-sided but incomplete detector useful alongside existing tools?"
+      ],
+      "watchFor": [
+        {
+          "description": "Production deployment or independent benchmark",
+          "expectedWindow": null,
+          "trigger": "An independent team evaluates RPT on production-scale traces or integrates it into a widely used race-detection toolchain."
+        },
+        {
+          "description": "Extension to other concurrency errors",
+          "expectedWindow": null,
+          "trigger": "A peer-reviewed follow-up applies constant-sample property testing to deadlocks, atomicity violations, or another dynamic program-analysis problem."
+        }
+      ],
+      "trackingTerms": [
+        "Dynamic Race Detection With O(1) Samples",
+        "RPT race property tester",
+        "Al Thokair Zhang Mathur Viswanathan",
+        "ACM 3571238"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The method has clear independent-evaluation, deployment, and extension milestones that could test whether its formal bargain is useful in practice."
+      },
+      "selectionReason": "The algorithm shows that rigor can come from narrowing a promise rather than paying to inspect every event.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    }
+  ]
+}
