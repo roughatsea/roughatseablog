@@ -327,6 +327,142 @@
           "accessedAt": "2026-09-01"
         }
       ]
+    },
+    {
+      "editionId": "2026-09-02",
+      "publicationDate": "2026-09-02",
+      "publishedAt": "2026-09-02T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-02",
+      "heroImage": "/images/save-point/save-point-2026-09-02.webp",
+      "featureLane": "beyond-final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy X lets morale leak into battle",
+          "game": "Final Fantasy X",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Mechanical discussion only; no story spoilers",
+          "subjectKeys": [
+            "final-fantasy-x-heart-level",
+            "ffx-contextual-battle-dialogue",
+            "final-fantasy-union-ffx-secrets"
+          ],
+          "sourceIds": [
+            "ffx-final-fantasy-union-weird-secrets",
+            "ffx-battle-quotes-auronlu"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "Level 100 broke a decade of two-digit assumptions",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Interface discussion only; no story spoilers",
+          "subjectKeys": [
+            "ffxiv-level-100-ui-audit",
+            "ffxiv-interface-legacy-maintenance",
+            "ffxiv-high-resolution-icon-overhaul"
+          ],
+          "sourceIds": [
+            "ffxiv-kei-odagiri-esa-interview",
+            "ffxiv-yoichi-seki-ui-artist-interview"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "In moon, love keeps office hours",
+          "game": "moon: Remix RPG Adventure",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Premise and early systems only; no story or ending spoilers",
+          "subjectKeys": [
+            "moon-npc-daily-routines",
+            "moon-kindness-through-observation",
+            "moon-action-limit-care-friction"
+          ],
+          "sourceIds": [
+            "moon-yoshiro-kimura-vice-interview",
+            "moon-onion-games-press-kit",
+            "moon-1997-official-book-interview"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ffx-final-fantasy-union-weird-secrets",
+          "title": "Final Fantasy X Has Some Weird Secrets",
+          "creator": "Final Fantasy Union",
+          "url": "https://www.youtube.com/watch?v=vUXIB_AfTXk",
+          "publishedAt": "2026-06-22",
+          "role": "primary",
+          "lineage": "Original video essay; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "vUXIB_AfTXk",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "ffx-battle-quotes-auronlu",
+          "title": "FFX Battle Quotes",
+          "creator": "Auronlu",
+          "url": "https://auronlu.istad.org/ffx-script/ffx-battle-quotes/",
+          "publishedAt": null,
+          "role": "context",
+          "lineage": "Fan-compiled transcript of contextual battle dialogue from Final Fantasy X.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "ffxiv-kei-odagiri-esa-interview",
+          "title": "A Conversation with Final Fantasy XIV Lead User Interface Designer Kei Odagiri",
+          "creator": "Entertainment Software Association, interviewing Kei Odagiri",
+          "url": "https://www.theesa.com/behind-the-scenes/qa-with-kei-odagiri-lead-user-interface-designer-final-fantast-xiv/",
+          "publishedAt": "2024-12-20",
+          "role": "primary",
+          "lineage": "Direct written interview with Final Fantasy XIV lead UI designer Kei Odagiri.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "ffxiv-yoichi-seki-ui-artist-interview",
+          "title": "FFXIV Backstage Investigators (No. 4): Lead UI Artist Yoichi Seki",
+          "creator": "Square Enix, interviewing Yoichi Seki",
+          "url": "https://na.finalfantasyxiv.com/blog/003091.html",
+          "publishedAt": "2021-02-16",
+          "role": "primary",
+          "lineage": "Official Final Fantasy XIV developer interview about UI art, action icons, and the high-resolution overhaul.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "moon-yoshiro-kimura-vice-interview",
+          "title": "A Game Without Killing: The Story of Moon's 22-Year Journey to Leave Japan",
+          "creator": "Patrick Klepek, interviewing Yoshiro Kimura",
+          "url": "https://www.vice.com/en/article/a-game-without-killing-the-story-of-moons-22-year-journey-to-leave-japan/",
+          "publishedAt": "2020-08-31",
+          "role": "primary",
+          "lineage": "Direct written interview with moon designer and scenario writer Yoshiro Kimura.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "moon-onion-games-press-kit",
+          "title": "moon press kit",
+          "creator": "Onion Games",
+          "url": "https://oniongames.jp/press/sheet.php?p=moon",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official product description and credits documenting moon's premise, NPC schedules, soul rescue, and release dates.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "moon-1997-official-book-interview",
+          "title": "Moon — 1997 Developer Interview",
+          "creator": "Love-de-Lic development team; translated by Shmuplations",
+          "url": "https://shmuplations.com/moon/",
+          "publishedAt": "2022-04-29",
+          "role": "primary",
+          "lineage": "Fan translation of a developer interview originally published in the Moon Official Book in 1997.",
+          "accessedAt": "2026-09-02"
+        }
+      ]
     }
   ]
 }
