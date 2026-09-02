@@ -1,0 +1,111 @@
+---
+interface Props {
+  id: string;
+  image: string;
+  imageAlt: string;
+  label: string;
+  deck: string;
+}
+
+const { id, image, imageAlt, label, deck } = Astro.props;
+---
+
+<figure id={id} class="division-gate">
+  <img
+    src={image}
+    alt={imageAlt}
+    width="1600"
+    height="686"
+    loading="lazy"
+    decoding="async"
+  />
+  <span class="division-label" aria-hidden="true">{label}</span>
+  <figcaption>{deck}</figcaption>
+</figure>
+
+<style>
+  .division-gate {
+    position: relative;
+    width: min(1200px, calc(100vw - 1.5rem));
+    margin: 6.5rem 0 3.75rem 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--border-color) 72%, #b8884b 28%);
+    border-radius: 20px;
+    background: #090806;
+    box-shadow:
+      0 24px 80px rgba(0, 0, 0, 0.32),
+      var(--glass-shadow);
+    scroll-margin-top: 1rem;
+  }
+
+  .division-gate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 800 / 343;
+    object-fit: cover;
+  }
+
+  .division-label,
+  figcaption {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0b0a09;
+    text-align: center;
+  }
+
+  .division-label {
+    top: 20%;
+    min-width: 12rem;
+    padding: 0.95rem 1.25rem;
+    color: #c9a46c;
+    font-family: var(--font-sans);
+    font-size: clamp(0.58rem, 1.2vw, 0.82rem);
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  figcaption {
+    bottom: 22.5%;
+    width: max-content;
+    max-width: min(80%, 52rem);
+    margin: 0;
+    padding: 0.68rem 1.2rem;
+    color: #c8ad80;
+    font-family: var(--font-serif);
+    font-size: clamp(0.76rem, 1.55vw, 1.06rem);
+    font-style: italic;
+    line-height: 1.35;
+  }
+
+  @media (max-width: 640px) {
+    .division-gate {
+      width: min(100%, calc(100vw - 1rem));
+      margin-top: 5rem;
+      margin-bottom: 2.75rem;
+      border-radius: 12px;
+    }
+
+    .division-gate img {
+      min-height: 15.5rem;
+      object-position: center;
+    }
+
+    .division-label {
+      top: 19%;
+      min-width: 9.5rem;
+      padding: 0.72rem 0.75rem;
+      letter-spacing: 0.2em;
+    }
+
+    figcaption {
+      bottom: 20.5%;
+      width: 82%;
+      padding: 0.55rem;
+    }
+  }
+</style>
