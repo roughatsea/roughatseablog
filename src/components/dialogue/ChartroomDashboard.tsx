@@ -1,21 +1,26 @@
 import React, { useMemo, useState } from 'react';
 import type {
   BigFiveKey,
+  DialogueArtifact,
+  DialogueBenchmarkReport,
   DialogueBelief,
   DialogueCharacter,
   DialogueEvent,
   DialogueMemory,
   DialogueMessage,
+  DialogueLifeEvent,
   DialogueRelationship,
   DialogueSnapshot,
+  DialogueShadowRun,
   DialogueSource,
   DialogueValidationRun,
   RelationshipDimension,
   RelationshipDimensions,
+  FoundingRecordArchive,
 } from '../../lib/dialogue';
 import './ChartroomDashboard.css';
 
-type PanelId = 'cast' | 'relationships' | 'beliefs' | 'canon';
+type PanelId = 'cast' | 'relationships' | 'beliefs' | 'canon' | 'runs';
 
 interface ChartroomMeta {
   current_day: number;
@@ -31,10 +36,15 @@ interface ChartroomProps {
   beliefs: DialogueBelief[];
   messages: DialogueMessage[];
   sources: DialogueSource[];
+  artifacts: DialogueArtifact[];
+  lifeEvents: DialogueLifeEvent[];
   memories: DialogueMemory[];
   validationRuns: DialogueValidationRun[];
   events: DialogueEvent[];
   snapshot: DialogueSnapshot;
+  foundingRecordV1: FoundingRecordArchive;
+  shadowRuns: DialogueShadowRun[];
+  benchmarkReport: DialogueBenchmarkReport;
 }
 
 const BIG_FIVE: Array<{ key: BigFiveKey; short: string; label: string }> = [
@@ -150,9 +160,10 @@ function DataList({ items }: { items: string[] }) {
   return <ul className="data-list">{items.map((item) => <li key={item}>{item}</li>)}</ul>;
 }
 
-function CastPanel({ characters }: { characters: DialogueCharacter[] }) {
+function CastPanel({ characters, lifeEvents }: { characters: DialogueCharacter[]; lifeEvents: DialogueLifeEvent[] }) {
   const [selectedId, setSelectedId] = useState(characters[0].id);
   const character = characters.find((entry) => entry.id === selectedId) ?? characters[0];
+  const characterLife = lifeEvents.filter((entry) => entry.character_id === character.id).sort((a, b) => Date.parse(b.occurred_at) - Date.parse(a.occurred_at));
 
   return (
     <div className="panel-stack cast-panel">
@@ -218,6 +229,22 @@ function CastPanel({ characters }: { characters: DialogueCharacter[] }) {
               ))}
             </div>
           </section>
+        </div>
+      </section>
+
+      <section className="instrument life-stream">
+        <header className="instrument-header compact">
+          <div><p className="instrument-kicker">Living state // event sourced</p><h2>Current life stream</h2></div>
+          <span>{characterLife.length} seeded events</span>
+        </header>
+        <div className="life-event-grid">
+          {characterLife.map((event) => (
+            <article key={event.id}>
+              <div><span>{formatRecordLabel(event.kind)}</span><time>{formatTimestamp(event.occurred_at)}</time></div>
+              <p>{event.summary}</p>
+              <code>{event.id}</code>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -463,6 +490,7 @@ function CanonPanel({
   sources,
   memories,
   validationRuns,
+  foundingRecordV1,
 }: {
   characters: DialogueCharacter[];
   beliefs: DialogueBelief[];
@@ -470,22 +498,48 @@ function CanonPanel({
   sources: DialogueSource[];
   memories: DialogueMemory[];
   validationRuns: DialogueValidationRun[];
+  foundingRecordV1: FoundingRecordArchive;
 }) {
+  const [version, setVersion] = useState<'v2' | 'v1'>('v2');
   const [selectedId, setSelectedId] = useState(messages[0].id);
-  const message = messages.find((entry) => entry.id === selectedId) ?? messages[0];
+  const records = version === 'v2' ? messages : foundingRecordV1.messages;
+  const currentMessage = version === 'v2' ? (messages.find((entry) => entry.id === selectedId) ?? messages[0]) : null;
+  const archivedMessage = version === 'v1' ? (foundingRecordV1.messages.find((entry) => entry.id === selectedId) ?? foundingRecordV1.messages[0]) : null;
+  const message = currentMessage ?? archivedMessage!;
   const character = characters.find((entry) => entry.id === message.author_id) ?? characters[0];
-  const validation = validationRuns.find((run) => run.id === message.validation_run_id);
-  const replyTarget = messages.find((entry) => entry.id === message.in_reply_to);
-  const consultedSources = sources.filter((source) => message.provenance.external_source_ids.includes(source.id));
-  const implicatedBeliefs = beliefs.filter((belief) => message.provenance.implicated_belief_ids.includes(belief.id));
+  const validation = currentMessage ? validationRuns.find((run) => run.id === currentMessage.validation_run_id) : undefined;
+  const replyTarget = records.find((entry) => entry.id === message.in_reply_to);
+  const consultedSources = currentMessage ? sources.filter((source) => currentMessage.provenance.external_source_ids.includes(source.id)) : [];
+  const implicatedBeliefs = currentMessage ? beliefs.filter((belief) => currentMessage.provenance.implicated_belief_ids.includes(belief.id)) : [];
   const createdMemories = memories.filter((memory) => memory.originating_message_ids.includes(message.id));
 
   return (
-    <div className="canon-layout">
-      <section className="instrument canon-list">
-        <header><p className="instrument-kicker">Accepted history</p><h2>Canonical messages</h2><span>{messages.length}</span></header>
+    <div className="panel-stack">
+      <section className={`record-version-banner ${version === 'v1' ? 'is-superseded' : ''}`}>
         <div>
-          {messages.map((entry) => {
+          <span>{version === 'v2' ? 'CURRENT CANON' : 'SUPERSEDED · NON-CANON'}</span>
+          <strong>{version === 'v2' ? 'founding-record-v2' : foundingRecordV1.id}</strong>
+          <p>{version === 'v2' ? 'Commissioned, grounded record. Canon is append-only from here.' : foundingRecordV1.reason}</p>
+        </div>
+        <div className="version-switcher" aria-label="Founding record version">
+          <button type="button" className={version === 'v2' ? 'is-active' : ''} onClick={() => setVersion('v2')}>v2 · current</button>
+          <button type="button" className={version === 'v1' ? 'is-active' : ''} onClick={() => setVersion('v1')}>v1 · preserved</button>
+        </div>
+      </section>
+
+      {version === 'v1' && (
+        <section className="commissioning-review instrument">
+          <header className="instrument-header compact"><div><p className="instrument-kicker">Commissioning review</p><h2>Original pass overturned</h2></div><span>FAILED NEW GATES</span></header>
+          <p className="review-note">{foundingRecordV1.original_validation.note}</p>
+          <div>{Object.entries(foundingRecordV1.commissioning_review.checks).map(([key, check]) => <article key={key}><strong>{formatRecordLabel(key)}</strong><p>{check.note}</p></article>)}</div>
+        </section>
+      )}
+
+      <div className="canon-layout">
+      <section className="instrument canon-list">
+        <header><p className="instrument-kicker">{version === 'v2' ? 'Accepted history' : 'Preserved prior record'}</p><h2>{version === 'v2' ? 'Canonical messages' : 'Superseded messages'}</h2><span>{records.length}</span></header>
+        <div>
+          {records.map((entry) => {
             const author = characters.find((candidate) => candidate.id === entry.author_id) ?? characters[0];
             return (
               <button key={entry.id} type="button" className={entry.id === message.id ? 'is-selected' : ''} onClick={() => setSelectedId(entry.id)}>
@@ -500,30 +554,34 @@ function CanonPanel({
       <section className="instrument canon-inspector" style={{ '--character-primary': character.visual.primary } as React.CSSProperties}>
         <header className="inspector-header">
           <div><p className="instrument-kicker">Canon inspector // {message.id}</p><h2>{character.name}</h2></div>
-          <span className="passed-indicator">Accepted</span>
+          <span className={version === 'v2' ? 'passed-indicator' : 'rejected-indicator'}>{version === 'v2' ? 'Current canon' : 'Superseded'}</span>
         </header>
 
         <div className="inspected-message">
-          {message.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+          {message.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
         </div>
 
-        <div className="inspector-grid">
+        {currentMessage ? <div className="inspector-grid">
           <dl>
-            <div><dt>Published</dt><dd>{formatTimestamp(message.published_at)}</dd></div>
+            <div><dt>Published</dt><dd>{formatTimestamp(currentMessage.published_at)}</dd></div>
             <div><dt>Replying to</dt><dd>{replyTarget ? `${replyTarget.id} · ${characters.find((entry) => entry.id === replyTarget.author_id)?.name}` : 'New root message'}</dd></div>
-            <div><dt>Active threads</dt><dd>{message.provenance.active_thread_ids.join(', ')}</dd></div>
-            <div><dt>Relationship context</dt><dd>{message.provenance.relationship_context_ids.join(', ') || 'None retrieved'}</dd></div>
-            <div><dt>Memories retrieved</dt><dd>{message.provenance.retrieved_memory_ids.join(', ') || 'None — opening day'}</dd></div>
-            <div><dt>Raw model reasoning</dt><dd>{message.provenance.raw_model_reasoning_stored ? 'Stored' : 'Not stored'}</dd></div>
+            <div><dt>Active threads</dt><dd>{currentMessage.provenance.active_thread_ids.join(', ')}</dd></div>
+            <div><dt>Relationship context</dt><dd>{currentMessage.provenance.relationship_context_ids.join(', ') || 'None retrieved'}</dd></div>
+            <div><dt>Memories retrieved</dt><dd>{currentMessage.provenance.retrieved_memory_ids.join(', ') || 'None — opening day'}</dd></div>
+            <div><dt>Life events retrieved</dt><dd>{currentMessage.provenance.retrieved_life_event_ids.join(', ') || 'None'}</dd></div>
+            <div><dt>Why now</dt><dd>{currentMessage.grounding.why_now}</dd></div>
+            <div><dt>Concrete anchor</dt><dd>{currentMessage.grounding.concrete_anchor_id} · {currentMessage.grounding.anchor_detail}</dd></div>
+            <div><dt>Speech act</dt><dd>{formatRecordLabel(currentMessage.grounding.speech_act)}</dd></div>
+            <div><dt>Raw model reasoning</dt><dd>{currentMessage.provenance.raw_model_reasoning_stored ? 'Stored' : 'Not stored'}</dd></div>
           </dl>
 
           <div className="provenance-group">
             <section><h3>Beliefs implicated</h3>{implicatedBeliefs.length ? implicatedBeliefs.map((belief) => <p key={belief.id}><code>{belief.id}</code>{belief.claim}</p>) : <p>None</p>}</section>
             <section><h3>Sources consulted</h3>{consultedSources.length ? consultedSources.map((source) => <a key={source.id} href={source.url} target="_blank" rel="noreferrer">{source.title} ↗</a>) : <p>None</p>}</section>
-            <section><h3>State changes</h3>{message.state_changes.length ? message.state_changes.map((change, index) => <code key={index}>{JSON.stringify(change)}</code>) : <p>None. A message may enter canon without moving hidden state.</p>}</section>
+            <section><h3>State changes</h3>{currentMessage.state_changes.length ? currentMessage.state_changes.map((change, index) => <code key={index}>{JSON.stringify(change)}</code>) : <p>None. A message may enter canon without moving hidden state.</p>}</section>
             <section><h3>Memory residue</h3>{createdMemories.length ? createdMemories.map((memory) => <p key={memory.id}><code>{memory.id}</code>{memory.summary}</p>) : <p>No durable memory created by this message alone.</p>}</section>
           </div>
-        </div>
+        </div> : <div className="archived-provenance"><p>Structured grounding did not exist for this record. That absence is why the commissioning review could overturn its original validation.</p><code>{foundingRecordV1.id} · immutable archive</code></div>}
 
         {validation && (
           <section className="validation-rack">
@@ -536,6 +594,88 @@ function CanonPanel({
           </section>
         )}
       </section>
+      </div>
+    </div>
+  );
+}
+
+function RunsPanel({ runs, report, characters }: { runs: DialogueShadowRun[]; report: DialogueBenchmarkReport; characters: DialogueCharacter[] }) {
+  const [selectedRunId, setSelectedRunId] = useState(runs.at(-1)?.run_id ?? runs[0].run_id);
+  const run = runs.find((entry) => entry.run_id === selectedRunId) ?? runs[0];
+  const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null);
+  const candidate = run.candidates.find((entry) => entry.candidate_id === selectedCandidateId) ?? run.candidates[0];
+
+  return (
+    <div className="panel-stack runs-panel">
+      <section className="benchmark-gate instrument">
+        <header className="instrument-header compact">
+          <div><p className="instrument-kicker">Phase 2 exit gate // independent review</p><h2>Grounded voice benchmark</h2></div>
+          <span>ALL GATES PASSED</span>
+        </header>
+        <div className="benchmark-numbers">
+          <div><strong>{report.candidate_count}</strong><small>recorded candidates</small></div>
+          <div><strong>{report.positive_count}</strong><small>valid candidates passed</small></div>
+          <div><strong>{report.negative_count}</strong><small>adversarial cases rejected</small></div>
+          <div><strong>{report.evaluations.length}</strong><small>independent evaluations</small></div>
+        </div>
+        <div className="gate-grid">{Object.entries(report.exit_gate).map(([key, passed]) => <div key={key}><span>{passed ? '✓' : '×'}</span><p>{formatRecordLabel(key)}</p></div>)}</div>
+      </section>
+
+      <div className="run-layout">
+        <section className="instrument run-list">
+          <header><p className="instrument-kicker">Recorded opportunities</p><h2>Simulation runs</h2><span>{runs.length}</span></header>
+          <div>{runs.map((entry) => (
+            <button key={entry.run_id} type="button" className={entry.run_id === run.run_id ? 'is-selected' : ''} onClick={() => { setSelectedRunId(entry.run_id); setSelectedCandidateId(null); }}>
+              <span className={`run-light ${entry.outcome}`}></span>
+              <span><strong>{entry.scenario}</strong><small>{formatTimestamp(entry.started_at)}</small><code>{entry.run_id}</code></span>
+              <span><b>{entry.summary.passed}</b> / {entry.summary.generated}</span>
+            </button>
+          ))}</div>
+        </section>
+
+        <section className="instrument run-inspector">
+          <header className="inspector-header"><div><p className="instrument-kicker">Shadow opportunity // {run.run_id}</p><h2>{run.outcome === 'quiet' ? 'No one posted' : formatRecordLabel(run.outcome)}</h2></div><span className="noncanon-indicator">NON-CANON</span></header>
+          <div className="run-meta">
+            <dl>
+              <div><dt>Mode</dt><dd>{run.mode}</dd></div>
+              <div><dt>Base snapshot</dt><dd>{run.base_snapshot_id}</dd></div>
+              <div><dt>Provider</dt><dd>{run.versions.provider} · {run.versions.provider_version}</dd></div>
+              <div><dt>Validator</dt><dd>{run.versions.validator}</dd></div>
+              <div><dt>Director</dt><dd>{run.director.opportunity_only ? 'opportunity only' : 'invalid'}</dd></div>
+              <div><dt>Raw reasoning</dt><dd>{run.raw_model_reasoning_stored ? 'stored' : 'not stored'}</dd></div>
+              <div><dt>State applied</dt><dd>{run.proposed_state_changes_applied}</dd></div>
+              <div><dt>Mutation guard</dt><dd>{run.canonical_mutation_guard.passed ? 'passed · 0 files changed' : 'failed'}</dd></div>
+            </dl>
+            <code className="digest">SHA-256 {run.canonical_mutation_guard.digest_after}</code>
+          </div>
+
+          {run.outcome === 'quiet' ? (
+            <div className="quiet-readout"><span aria-hidden="true">∅</span><strong>Silence was the complete result.</strong><p>The director found no plausible reason to speak. No retries, filler, or participation balancing followed.</p></div>
+          ) : (
+            <div className="candidate-workspace">
+              <nav aria-label="Candidates in selected simulation run">
+                {run.candidates.map((entry) => {
+                  const author = characters.find((person) => person.id === entry.author_id);
+                  return <button key={entry.candidate_id} type="button" className={(candidate?.candidate_id === entry.candidate_id) ? 'is-selected' : ''} onClick={() => setSelectedCandidateId(entry.candidate_id)}><span style={{ color: author?.visual.primary }}>{author?.visual.sigil}</span><strong>{entry.candidate_id}</strong><small>{entry.validation.result}</small></button>;
+                })}
+              </nav>
+              {candidate && <article className="candidate-detail">
+                <header><div><p className="instrument-kicker">Candidate // {candidate.candidate_id}</p><h3>{characters.find((entry) => entry.id === candidate.author_id)?.name}</h3></div><span className={candidate.validation.result === 'passed' ? 'passed-indicator' : 'rejected-indicator'}>{candidate.validation.label}</span></header>
+                <blockquote>{candidate.text}</blockquote>
+                <dl>
+                  <div><dt>Why now</dt><dd>{candidate.grounding.why_now}</dd></div>
+                  <div><dt>Anchor</dt><dd>{candidate.grounding.concrete_anchor_id ?? 'unresolved'} · {candidate.grounding.anchor_detail ?? 'none'}</dd></div>
+                  <div><dt>Speech act</dt><dd>{formatRecordLabel(candidate.grounding.speech_act)}</dd></div>
+                  <div><dt>Retrieved life</dt><dd>{candidate.grounding.personal_life_event_ids.join(', ') || 'none'}</dd></div>
+                  <div><dt>Proposed changes</dt><dd>{candidate.proposed_state_changes.length} · none applied</dd></div>
+                </dl>
+                <div className="check-grid">{Object.entries(candidate.validation.checks).map(([key, passed]) => <span className={passed ? '' : 'is-failed'} key={key}>{passed ? '✓' : '×'} {formatRecordLabel(key)}</span>)}</div>
+                {candidate.validation.failures.length > 0 && <div className="failure-list">{candidate.validation.failures.map((failure) => <p key={failure.code}><code>{failure.code}</code>{failure.note}</p>)}</div>}
+              </article>}
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
@@ -564,29 +704,50 @@ export default function ChartroomDashboard(props: ChartroomProps) {
         <div><span>Messages</span><strong>{props.messages.length}</strong><small>{acceptedCount} accepted</small></div>
         <div><span>Relationships</span><strong>{props.relationships.length * 2}</strong><small>directional edges</small></div>
         <div><span>Belief positions</span><strong>{props.beliefs.length * props.characters.length}</strong><small>{props.beliefs.length} propositions</small></div>
-        <div><span>Memories</span><strong>{props.memories.length}</strong><small>persistent objects</small></div>
-        <div><span>Sources</span><strong>{props.sources.length}</strong><small>verified records</small></div>
+        <div><span>Memories</span><strong>{props.memories.length}</strong><small>{props.lifeEvents.length} life events</small></div>
+        <div><span>Sources</span><strong>{props.sources.length}</strong><small>{props.artifacts.length} fictional artifacts</small></div>
         <div><span>Events</span><strong>{props.events.length}</strong><small>through {props.snapshot.through_event_id}</small></div>
       </section>
 
-      <nav className="chartroom-tabs" aria-label="Chartroom instruments">
+      <nav className="chartroom-tabs" aria-label="Chartroom instruments" role="tablist">
         {([
           ['cast', 'Cast', 'Constitution + behavior'],
           ['relationships', 'Relationship space', 'Directional social state'],
           ['beliefs', 'Belief matrix', 'Persistent propositions'],
           ['canon', 'Canon inspector', 'Message provenance'],
+          ['runs', 'Simulation runs', 'Shadow engine observability'],
         ] as Array<[PanelId, string, string]>).map(([id, label, detail], index) => (
-          <button key={id} type="button" className={panel === id ? 'is-active' : ''} aria-current={panel === id ? 'page' : undefined} onClick={() => setPanel(id)}>
+          <button
+            key={id}
+            id={`chartroom-tab-${id}`}
+            type="button"
+            role="tab"
+            aria-selected={panel === id}
+            aria-controls="chartroom-active-panel"
+            tabIndex={panel === id ? 0 : -1}
+            className={panel === id ? 'is-active' : ''}
+            onClick={() => setPanel(id)}
+            onKeyDown={(event) => {
+              if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+              event.preventDefault();
+              const tabs = Array.from(event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? []);
+              const current = tabs.indexOf(event.currentTarget);
+              const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+              tabs[next]?.focus();
+              tabs[next]?.click();
+            }}
+          >
             <span>0{index + 1}</span><strong>{label}</strong><small>{detail}</small>
           </button>
         ))}
       </nav>
 
-      <div className="chartroom-workspace" role="region" aria-label="Chartroom active instrument">
-        {panel === 'cast' && <CastPanel characters={props.characters} />}
+      <div id="chartroom-active-panel" className="chartroom-workspace" role="tabpanel" aria-labelledby={`chartroom-tab-${panel}`}>
+        {panel === 'cast' && <CastPanel characters={props.characters} lifeEvents={props.lifeEvents} />}
         {panel === 'relationships' && <RelationshipsPanel characters={props.characters} relationships={props.relationships} />}
         {panel === 'beliefs' && <BeliefsPanel characters={props.characters} beliefs={props.beliefs} sources={props.sources} />}
-        {panel === 'canon' && <CanonPanel characters={props.characters} beliefs={props.beliefs} messages={props.messages} sources={props.sources} memories={props.memories} validationRuns={props.validationRuns} />}
+        {panel === 'canon' && <CanonPanel characters={props.characters} beliefs={props.beliefs} messages={props.messages} sources={props.sources} memories={props.memories} validationRuns={props.validationRuns} foundingRecordV1={props.foundingRecordV1} />}
+        {panel === 'runs' && <RunsPanel runs={props.shadowRuns} report={props.benchmarkReport} characters={props.characters} />}
       </div>
 
       <footer className="health-rack">

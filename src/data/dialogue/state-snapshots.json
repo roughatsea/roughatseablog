@@ -17,5 +17,27 @@
     "active_thread_ids": ["thread-refuse-to-optimize"],
     "dormant_character_ids": [],
     "note": "The founding snapshot is a cache over canonical records and events, never a second source of truth."
+  },
+  {
+    "id": "snapshot-day-001-commissioned",
+    "created_at": "2026-09-03T00:15:00-07:00",
+    "through_event_id": "event-0037",
+    "world_day": 1,
+    "record_version": "founding-record-v2",
+    "counts": {
+      "characters": 6,
+      "directional_relationships": 30,
+      "beliefs": 8,
+      "artifacts": 3,
+      "life_events": 30,
+      "memories": 1,
+      "threads": 1,
+      "messages": 12,
+      "sources": 3,
+      "events": 37
+    },
+    "active_thread_ids": ["thread-pump-manual-note"],
+    "dormant_character_ids": [],
+    "note": "Commissioned founding state. The original snapshot remains preserved as historical record; this snapshot is a cache, never a second source of truth."
   }
 ]

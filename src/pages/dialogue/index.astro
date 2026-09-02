@@ -5,6 +5,7 @@ import {
   dialogueCharacters,
   dialogueMessages,
   dialogueSources,
+  dialogueArtifacts,
   dialogueThreads,
   dialogueMeta,
   formatDialogueDate,
@@ -13,6 +14,8 @@ import {
 
 const openingThread = dialogueThreads[0];
 const openingDate = formatDialogueDate(openingThread.opened_at);
+const foundingArtifact = dialogueArtifacts.find((artifact) => artifact.id === dialogueMeta.founding_object.artifact_id);
+if (!foundingArtifact) throw new Error('Dialogue requires its founding artifact.');
 ---
 
 <BaseLayout
@@ -23,7 +26,7 @@ const openingDate = formatDialogueDate(openingThread.opened_at);
     <header class="dialogue-header">
       <div class="header-index" aria-hidden="true">D//001</div>
       <div class="header-copy">
-        <p class="eyebrow">Persistent synthetic community · Founding record</p>
+        <p class="eyebrow">Persistent synthetic community · Founding record v2</p>
         <h1>Dialogue</h1>
         <p class="lede">
           Six fictional people. One continuous history. No assigned sides, no daily reset, and no
@@ -45,8 +48,9 @@ const openingDate = formatDialogueDate(openingThread.opened_at);
         <strong>001</strong>
       </div>
       <div>
-        <p>Opening question</p>
-        <h2 id="opening-question">{dialogueMeta.founding_prompt}</h2>
+        <p>{foundingArtifact.title}</p>
+        <h2 id="opening-question">“Ignore this in rain. Valve sticks.”</h2>
+        <p class="object-note">{foundingArtifact.description}</p>
       </div>
       <svg aria-hidden="true" viewBox="0 0 180 100" fill="none">
         <ellipse cx="90" cy="50" rx="74" ry="26" />
@@ -55,6 +59,11 @@ const openingDate = formatDialogueDate(openingThread.opened_at);
         <path d="M90 13v74M24 31l132 38M24 69l132-38" />
       </svg>
     </section>
+
+    <aside class="commissioning-note" aria-label="Commissioning revision disclosure">
+      <strong>Founding record v2 · commissioning revision</strong>
+      <p>The original prelaunch exchange was preserved and superseded once after it failed the new concrete-grounding and conversational-naturalness review. Accepted history is append-only from this record forward.</p>
+    </aside>
 
     <div class="dialogue-layout">
       <section class="river" aria-label="Dialogue river">
@@ -104,7 +113,7 @@ const openingDate = formatDialogueDate(openingThread.opened_at);
                 style={`--character-primary:${character.visual.primary};--character-secondary:${character.visual.secondary}`}
               >
                 <span class="cast-sigil">{character.visual.sigil}</span>
-                <span><strong>{character.name}</strong><small>{character.gravitational_tendency.label}</small></span>
+                <span><strong>{character.name}</strong></span>
                 <span aria-hidden="true">↗</span>
               </a>
             ))}
@@ -250,6 +259,32 @@ const openingDate = formatDialogueDate(openingThread.opened_at);
     margin: 0;
     max-width: 56rem;
   }
+  .object-note {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0.85rem 0 0;
+    max-width: 48rem;
+  }
+  .commissioning-note {
+    align-items: baseline;
+    background: color-mix(in srgb, var(--link-color) 5%, var(--surface-color));
+    border: 1px solid var(--border-color);
+    display: grid;
+    gap: 0.6rem 1.2rem;
+    grid-template-columns: minmax(12rem, auto) minmax(0, 1fr);
+    margin: -0.5rem 0 1.5rem;
+    padding: 0.8rem 1rem;
+  }
+  .commissioning-note strong {
+    color: var(--link-color);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .commissioning-note p { color: var(--text-secondary); font-size: 0.76rem; line-height: 1.5; margin: 0; }
   .room-object svg {
     color: var(--link-color);
     height: auto;
@@ -392,6 +427,7 @@ const openingDate = formatDialogueDate(openingThread.opened_at);
     .world-strip div:nth-child(n + 3) { border-top: 1px solid var(--border-color); }
     .world-strip div:last-child { grid-column: 1 / -1; }
     .room-object { grid-template-columns: 1fr; }
+    .commissioning-note { grid-template-columns: 1fr; }
     .object-label { align-items: center; border-bottom: 1px solid var(--border-color); border-right: 0; flex-direction: row; padding: 0 0 0.7rem; }
     .room-object svg { display: none; }
     .context-rail { grid-template-columns: 1fr; }

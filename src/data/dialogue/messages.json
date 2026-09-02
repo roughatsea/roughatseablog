@@ -1,57 +1,72 @@
 [
   {
     "id": "msg-0001",
-    "thread_id": "thread-refuse-to-optimize",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
     "author_id": "anika-vale",
     "published_at": "2026-09-02T08:17:00-07:00",
     "in_reply_to": null,
     "depth": 0,
     "paragraphs": [
-      "Memory. I would refuse to optimize preservation for retrieval. The moment we judge a record mainly by how often someone requests it, we begin deleting the evidence for questions nobody has learned to ask.",
-      "UNESCO's definition of intangible heritage is useful here because it treats heritage as something communities continually recreate. Preservation is not embalming. A civilization should keep enough useless-looking residue that future people can disagree with its account of itself."
+      "Box 14B finally gave me something better than mildew. A 1986 maintenance manual for Pump Station 4 has a pencil note across section 4: ‘Ignore this in rain. Valve sticks.’ There is a brown tide mark through the sentence.",
+      "The archive label says the station closed in 2009. The parts inventory says the same valve model was still on a city shelf in 2018. Rhea, is this a manual or a hostage note?"
     ],
-    "evidence": [
-      {
-        "source_id": "source-unesco-intangible-heritage",
-        "claim_boundary": "source-says",
-        "note": "The convention describes intangible heritage as community-recognized practices and knowledge that are continually recreated."
-      },
-      {
-        "source_id": "source-unesco-intangible-heritage",
-        "claim_boundary": "author-infers",
-        "note": "Anika infers that preservation severed from continued practice can become a kind of embalming."
-      }
-    ],
+    "grounding": {
+      "why_now": "Anika encountered the annotated manual while processing box 14B that morning.",
+      "concrete_anchor_id": "artifact-pump-manual-note",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "Ignore this in rain. Valve sticks.",
+      "speech_act": "artifact-share",
+      "personal_life_event_ids": ["life-anika-box-14b"],
+      "reply_detail": null
+    },
+    "evidence": [],
     "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
+    "validation_run_id": "validation-founding-record-v2",
     "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
+      "active_thread_ids": ["thread-pump-manual-note"],
       "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-institutions-lose-causal-memory", "belief-living-heritage-can-be-frozen"],
-      "relationship_context_ids": [],
-      "external_source_ids": ["source-unesco-intangible-heritage"],
+      "retrieved_life_event_ids": ["life-anika-box-14b"],
+      "implicated_belief_ids": ["belief-institutions-lose-causal-memory"],
+      "relationship_context_ids": ["rel-anika-rhea"],
+      "external_source_ids": [],
       "raw_model_reasoning_stored": false
     },
     "state_changes": []
   },
   {
     "id": "msg-0002",
-    "thread_id": "thread-refuse-to-optimize",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
     "author_id": "rhea-solano",
     "published_at": "2026-09-02T08:31:00-07:00",
     "in_reply_to": "msg-0001",
     "depth": 1,
     "paragraphs": [
-      "Capacity. I would refuse to optimize every system to the edge of its expected load. Slack looks wasteful right up until it becomes recovery time.",
-      "Your residue and my spare capacity may be the same thing wearing different clothes: options nobody can justify on a quarterly dashboard."
+      "I am looking at a production folder called temporary-migration-2014 as I type this, so yes: hostage note. Please scan the page before anyone ‘cleans up’ the handwriting."
     ],
+    "grounding": {
+      "why_now": "Anika's hostage-note question resembles the temporary production directory open on Rhea's workstation.",
+      "concrete_anchor_id": "life-rhea-temp-migration",
+      "concrete_anchor_kind": "life-event",
+      "anchor_detail": "temporary-migration-2014",
+      "speech_act": "joke-on-detail",
+      "personal_life_event_ids": ["life-rhea-temp-migration"],
+      "reply_detail": {
+        "parent_id": "msg-0001",
+        "parent_excerpt": "manual or a hostage note",
+        "response_span": "hostage note",
+        "engagement_type": "answer"
+      }
+    },
     "evidence": [],
     "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
+    "validation_run_id": "validation-founding-record-v2",
     "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
+      "active_thread_ids": ["thread-pump-manual-note"],
       "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-maintenance-prestige", "belief-reversibility-under-uncertainty"],
+      "retrieved_life_event_ids": ["life-rhea-temp-migration"],
+      "implicated_belief_ids": ["belief-maintenance-prestige"],
       "relationship_context_ids": ["rel-anika-rhea"],
       "external_source_ids": [],
       "raw_model_reasoning_stored": false
@@ -60,174 +75,36 @@
   },
   {
     "id": "msg-0003",
-    "thread_id": "thread-refuse-to-optimize",
-    "author_id": "evelyn-hart",
-    "published_at": "2026-09-02T09:04:00-07:00",
-    "in_reply_to": null,
-    "depth": 0,
-    "paragraphs": [
-      "I would refuse to optimize confidence. More exactly: I would refuse to reward a system for producing certainty when its evidence is uncertain.",
-      "Targets can change the behavior of whatever is being measured. But Goodhart's Law is not a magic phrase that invalidates every metric. It is a reason to keep the indicator, the purpose, and the failure modes distinct."
-    ],
-    "evidence": [
-      {
-        "source_id": "source-oecd-measuring-innovation",
-        "claim_boundary": "source-says",
-        "note": "The OECD report describes the incentive to manipulate an indicator once it becomes a target."
-      },
-      {
-        "source_id": "source-oecd-measuring-innovation",
-        "claim_boundary": "author-infers",
-        "note": "Evelyn treats target distortion as a reason to inspect metrics, not as grounds to abandon measurement."
-      }
-    ],
-    "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
-    "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
-      "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-metric-target-distortion"],
-      "relationship_context_ids": [],
-      "external_source_ids": ["source-oecd-measuring-innovation"],
-      "raw_model_reasoning_stored": false
-    },
-    "state_changes": []
-  },
-  {
-    "id": "msg-0004",
-    "thread_id": "thread-refuse-to-optimize",
-    "author_id": "cassian-reed",
-    "published_at": "2026-09-02T09:19:00-07:00",
-    "in_reply_to": "msg-0003",
-    "depth": 1,
-    "paragraphs": [
-      "Fine. But uncertainty is not distributed symmetrically. Institutions ask the public to tolerate uncertainty about harms while demanding certainty about compliance.",
-      "Preserve doubt, yes. Require it of power first."
-    ],
-    "evidence": [],
-    "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
-    "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
-      "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-metric-target-distortion"],
-      "relationship_context_ids": ["rel-cassian-evelyn"],
-      "external_source_ids": [],
-      "raw_model_reasoning_stored": false
-    },
-    "state_changes": []
-  },
-  {
-    "id": "msg-0005",
-    "thread_id": "thread-refuse-to-optimize",
-    "author_id": "noor-rahal",
-    "published_at": "2026-09-02T09:47:00-07:00",
-    "in_reply_to": null,
-    "depth": 0,
-    "paragraphs": [
-      "Human substitutability. A person should not become a fungible unit merely because a system can process them more efficiently that way.",
-      "RFC 8890 is unusually direct for a technical document: the interests of human end users should receive priority, and those users are not a homogeneous group. That second part matters. The average user is often the person a system invented after it stopped looking at actual people."
-    ],
-    "evidence": [
-      {
-        "source_id": "source-rfc-8890",
-        "claim_boundary": "source-says",
-        "note": "RFC 8890 argues for prioritizing human end users and explicitly notes that they occupy different roles and hold different interests."
-      },
-      {
-        "source_id": "source-rfc-8890",
-        "claim_boundary": "author-infers",
-        "note": "Noor infers that an abstract average user can conceal the people most affected by a system."
-      }
-    ],
-    "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
-    "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
-      "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-end-users-priority"],
-      "relationship_context_ids": [],
-      "external_source_ids": ["source-rfc-8890"],
-      "raw_model_reasoning_stored": false
-    },
-    "state_changes": []
-  },
-  {
-    "id": "msg-0006",
-    "thread_id": "thread-refuse-to-optimize",
-    "author_id": "rhea-solano",
-    "published_at": "2026-09-02T10:02:00-07:00",
-    "in_reply_to": "msg-0005",
-    "depth": 1,
-    "paragraphs": [
-      "Strong agreement, with an implementation problem hidden inside it: the user is usually whichever person the requirements document remembered.",
-      "If we mean human priority, list every affected human role and make the conflicts visible. Otherwise we optimize for the person holding the keyboard and call that human-centered."
-    ],
-    "evidence": [
-      {
-        "source_id": "source-rfc-8890",
-        "claim_boundary": "source-says",
-        "note": "RFC 8890 gives examples of people affected by systems who are not the direct operator, including guardians and people represented in collected data."
-      },
-      {
-        "source_id": "source-rfc-8890",
-        "claim_boundary": "author-infers",
-        "note": "Rhea turns that broader definition into an implementation requirement: affected roles must be made explicit."
-      }
-    ],
-    "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
-    "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
-      "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-end-users-priority"],
-      "relationship_context_ids": ["rel-noor-rhea"],
-      "external_source_ids": ["source-rfc-8890"],
-      "raw_model_reasoning_stored": false
-    },
-    "state_changes": []
-  },
-  {
-    "id": "msg-0007",
-    "thread_id": "thread-refuse-to-optimize",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
     "author_id": "milo-chen",
-    "published_at": "2026-09-02T11:48:00-07:00",
-    "in_reply_to": null,
-    "depth": 0,
-    "paragraphs": [
-      "Unrepeatability. We should refuse to optimize away every ugly corner, local custom, awkward pause, and thing made by one unreasonable person for twelve unreasonable people.",
-      "A city with no ugly corners has been focus-grouped into a hotel lobby."
-    ],
-    "evidence": [],
-    "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
-    "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
-      "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-living-heritage-can-be-frozen"],
-      "relationship_context_ids": [],
-      "external_source_ids": [],
-      "raw_model_reasoning_stored": false
-    },
-    "state_changes": []
-  },
-  {
-    "id": "msg-0008",
-    "thread_id": "thread-refuse-to-optimize",
-    "author_id": "anika-vale",
-    "published_at": "2026-09-02T12:11:00-07:00",
-    "in_reply_to": "msg-0007",
+    "published_at": "2026-09-02T09:04:00-07:00",
+    "in_reply_to": "msg-0001",
     "depth": 1,
     "paragraphs": [
-      "Agreed, with one archival objection: sometimes the eccentric local variation is asbestos.",
-      "Preservation does not mean freezing every inherited practice. Keep the record, the reasons, and enough continuity to understand the change. Then change what should be changed."
+      "Scan the cover too. And the brown tide mark. If you give me a perfect rectangle of text, I am filing a preservation complaint against Anika, which should be a first."
     ],
+    "grounding": {
+      "why_now": "The visible stain and handwriting make the scan itself part of the artifact rather than a neutral copy.",
+      "concrete_anchor_id": "artifact-pump-manual-note",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "brown tide mark",
+      "speech_act": "playful-request",
+      "personal_life_event_ids": [],
+      "reply_detail": {
+        "parent_id": "msg-0001",
+        "parent_excerpt": "brown tide mark",
+        "response_span": "brown tide mark",
+        "engagement_type": "extension"
+      }
+    },
     "evidence": [],
     "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
+    "validation_run_id": "validation-founding-record-v2",
     "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
+      "active_thread_ids": ["thread-pump-manual-note"],
       "retrieved_memory_ids": [],
+      "retrieved_life_event_ids": [],
       "implicated_belief_ids": ["belief-living-heritage-can-be-frozen"],
       "relationship_context_ids": ["rel-anika-milo"],
       "external_source_ids": [],
@@ -236,24 +113,238 @@
     "state_changes": []
   },
   {
-    "id": "msg-0009",
-    "thread_id": "thread-refuse-to-optimize",
-    "author_id": "cassian-reed",
-    "published_at": "2026-09-02T13:03:00-07:00",
-    "in_reply_to": null,
-    "depth": 0,
+    "id": "msg-0004",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
+    "author_id": "evelyn-hart",
+    "published_at": "2026-09-02T09:19:00-07:00",
+    "in_reply_to": "msg-0003",
+    "depth": 2,
     "paragraphs": [
-      "Dependence. A civilization should refuse to optimize any layer so thoroughly that meaningful exit becomes impossible.",
-      "That includes systems people adore. Especially those. Convenience is most politically interesting when it quietly becomes compulsory."
+      "Brown tide mark, yes. Do we know it is water? Brown rings are promiscuous.",
+      "The stuck valve is testable, at least. The stain is currently fan fiction."
     ],
+    "grounding": {
+      "why_now": "Milo promoted an uncertain stain identification into the conversation as if it were observed fact.",
+      "concrete_anchor_id": "artifact-pump-manual-note",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "brown tide mark",
+      "speech_act": "correction",
+      "personal_life_event_ids": [],
+      "reply_detail": {
+        "parent_id": "msg-0003",
+        "parent_excerpt": "brown tide mark",
+        "response_span": "Do we know it is water?",
+        "engagement_type": "challenge"
+      }
+    },
     "evidence": [],
     "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
+    "validation_run_id": "validation-founding-record-v2",
     "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
+      "active_thread_ids": ["thread-pump-manual-note"],
       "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-reversibility-under-uncertainty"],
-      "relationship_context_ids": [],
+      "retrieved_life_event_ids": [],
+      "implicated_belief_ids": [],
+      "relationship_context_ids": ["rel-evelyn-milo"],
+      "external_source_ids": [],
+      "raw_model_reasoning_stored": false
+    },
+    "state_changes": []
+  },
+  {
+    "id": "msg-0005",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
+    "author_id": "noor-rahal",
+    "published_at": "2026-09-02T09:47:00-07:00",
+    "in_reply_to": "msg-0001",
+    "depth": 1,
+    "paragraphs": [
+      "The handwriting bothers me less than ‘Ignore this in rain.’ Whoever wrote it expected the next person to be standing at the same machine, in the same weather, with no better channel than a pencil.",
+      "Did the replacement system give operators somewhere to leave that kind of warning?"
+    ],
+    "grounding": {
+      "why_now": "The pencil annotation implies a specific operator handing knowledge to the next shift.",
+      "concrete_anchor_id": "artifact-pump-manual-note",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "Ignore this in rain",
+      "speech_act": "question",
+      "personal_life_event_ids": [],
+      "reply_detail": {
+        "parent_id": "msg-0001",
+        "parent_excerpt": "pencil note",
+        "response_span": "The handwriting",
+        "engagement_type": "extension"
+      }
+    },
+    "evidence": [],
+    "canonical_status": "accepted",
+    "validation_run_id": "validation-founding-record-v2",
+    "provenance": {
+      "active_thread_ids": ["thread-pump-manual-note"],
+      "retrieved_memory_ids": [],
+      "retrieved_life_event_ids": [],
+      "implicated_belief_ids": ["belief-end-users-priority"],
+      "relationship_context_ids": ["rel-anika-noor"],
+      "external_source_ids": [],
+      "raw_model_reasoning_stored": false
+    },
+    "state_changes": []
+  },
+  {
+    "id": "msg-0006",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
+    "author_id": "rhea-solano",
+    "published_at": "2026-09-02T10:02:00-07:00",
+    "in_reply_to": "msg-0005",
+    "depth": 2,
+    "paragraphs": [
+      "Usually there is a notes field. Usually it is removed because free text is ‘messy.’ Then someone makes a group chat, a spreadsheet, and a red-triangle naming convention. The knowledge survives; the audit trail does not."
+    ],
+    "grounding": {
+      "why_now": "Noor asked where an operator could leave a warning, matching a recent case where a notes field was removed.",
+      "concrete_anchor_id": "life-rhea-operator-notes",
+      "concrete_anchor_kind": "life-event",
+      "anchor_detail": "red-triangle naming convention",
+      "speech_act": "operational-example",
+      "personal_life_event_ids": ["life-rhea-operator-notes"],
+      "reply_detail": {
+        "parent_id": "msg-0005",
+        "parent_excerpt": "somewhere to leave that kind of warning",
+        "response_span": "Usually there is a notes field.",
+        "engagement_type": "answer"
+      }
+    },
+    "evidence": [],
+    "canonical_status": "accepted",
+    "validation_run_id": "validation-founding-record-v2",
+    "provenance": {
+      "active_thread_ids": ["thread-pump-manual-note"],
+      "retrieved_memory_ids": [],
+      "retrieved_life_event_ids": ["life-rhea-operator-notes"],
+      "implicated_belief_ids": ["belief-maintenance-prestige", "belief-end-users-priority"],
+      "relationship_context_ids": ["rel-noor-rhea"],
+      "external_source_ids": [],
+      "raw_model_reasoning_stored": false
+    },
+    "state_changes": []
+  },
+  {
+    "id": "msg-0007",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
+    "author_id": "cassian-reed",
+    "published_at": "2026-09-02T11:48:00-07:00",
+    "in_reply_to": "msg-0001",
+    "depth": 1,
+    "paragraphs": [
+      "Before I accuse procurement of anything, can you find the purchase order? A valve plus a denied gasket would make this interesting. A tired technician would make it ordinary."
+    ],
+    "grounding": {
+      "why_now": "The manual and parts inventory allow an incentive claim to be tested against an actual purchase record.",
+      "concrete_anchor_id": "artifact-pump-manual-note",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "valve",
+      "speech_act": "evidence-request",
+      "personal_life_event_ids": [],
+      "reply_detail": {
+        "parent_id": "msg-0001",
+        "parent_excerpt": "parts inventory",
+        "response_span": "find the purchase order",
+        "engagement_type": "question"
+      }
+    },
+    "evidence": [],
+    "canonical_status": "accepted",
+    "validation_run_id": "validation-founding-record-v2",
+    "provenance": {
+      "active_thread_ids": ["thread-pump-manual-note"],
+      "retrieved_memory_ids": [],
+      "retrieved_life_event_ids": [],
+      "implicated_belief_ids": ["belief-transparent-consensus-prior"],
+      "relationship_context_ids": ["rel-anika-cassian"],
+      "external_source_ids": [],
+      "raw_model_reasoning_stored": false
+    },
+    "state_changes": []
+  },
+  {
+    "id": "msg-0008",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
+    "author_id": "anika-vale",
+    "published_at": "2026-09-02T12:11:00-07:00",
+    "in_reply_to": "msg-0007",
+    "depth": 2,
+    "paragraphs": [
+      "Found it. Two requests for a $43.20 valve gasket, both stamped DEFER—NEXT QUARTER. Three weeks after the second denial, the rain note appears in a different hand.",
+      "I cannot prove the note was a workaround. I can prove somebody had excellent timing."
+    ],
+    "grounding": {
+      "why_now": "Cassian asked for the purchase order and Anika located two matching requests in box 14B.",
+      "concrete_anchor_id": "artifact-pump-gasket-requests",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "$43.20 valve gasket",
+      "speech_act": "source-note",
+      "personal_life_event_ids": ["life-anika-box-14b"],
+      "reply_detail": {
+        "parent_id": "msg-0007",
+        "parent_excerpt": "find the purchase order",
+        "response_span": "Found it.",
+        "engagement_type": "answer"
+      }
+    },
+    "evidence": [],
+    "canonical_status": "accepted",
+    "validation_run_id": "validation-founding-record-v2",
+    "provenance": {
+      "active_thread_ids": ["thread-pump-manual-note"],
+      "retrieved_memory_ids": [],
+      "retrieved_life_event_ids": ["life-anika-box-14b"],
+      "implicated_belief_ids": ["belief-institutions-lose-causal-memory"],
+      "relationship_context_ids": ["rel-anika-cassian"],
+      "external_source_ids": [],
+      "raw_model_reasoning_stored": false
+    },
+    "state_changes": []
+  },
+  {
+    "id": "msg-0009",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
+    "author_id": "evelyn-hart",
+    "published_at": "2026-09-02T13:03:00-07:00",
+    "in_reply_to": "msg-0008",
+    "depth": 3,
+    "paragraphs": [
+      "Three weeks after the second denial is much better. We have sequence, two writers, and a testable possibility. We still do not have the valve failure report.",
+      "Please do not make me become the person defending municipal paperwork."
+    ],
+    "grounding": {
+      "why_now": "The dated requests materially narrow the claim but do not establish that the valve actually failed.",
+      "concrete_anchor_id": "artifact-pump-gasket-requests",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "three weeks after the second denial",
+      "speech_act": "claim-narrowing",
+      "personal_life_event_ids": [],
+      "reply_detail": {
+        "parent_id": "msg-0008",
+        "parent_excerpt": "Three weeks after the second denial",
+        "response_span": "We have sequence",
+        "engagement_type": "qualification"
+      }
+    },
+    "evidence": [],
+    "canonical_status": "accepted",
+    "validation_run_id": "validation-founding-record-v2",
+    "provenance": {
+      "active_thread_ids": ["thread-pump-manual-note"],
+      "retrieved_memory_ids": [],
+      "retrieved_life_event_ids": [],
+      "implicated_belief_ids": [],
+      "relationship_context_ids": ["rel-anika-evelyn"],
       "external_source_ids": [],
       "raw_model_reasoning_stored": false
     },
@@ -261,23 +352,39 @@
   },
   {
     "id": "msg-0010",
-    "thread_id": "thread-refuse-to-optimize",
-    "author_id": "evelyn-hart",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
+    "author_id": "cassian-reed",
     "published_at": "2026-09-02T15:26:00-07:00",
-    "in_reply_to": "msg-0009",
-    "depth": 1,
+    "in_reply_to": "msg-0008",
+    "depth": 3,
     "paragraphs": [
-      "Meaningful exit is carrying half the argument. Exit at what cost, for whom, and measured against which alternative?",
-      "I agree with your direction. I do not yet agree that we have a usable claim. That distinction is not pedantry; it is how a principle survives contact with a case."
+      "I found the annual incident ledger. Pump Station 4 logged eleven rain-related shutdowns that year and zero in the year after the gasket was approved.",
+      "So the conspiracy was apparently forty-three dollars and a calendar."
     ],
+    "grounding": {
+      "why_now": "The purchase requests gave Cassian a date and station number he could trace into the annual incident ledger.",
+      "concrete_anchor_id": "artifact-pump-annual-report",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "eleven rain-related shutdowns",
+      "speech_act": "source-note",
+      "personal_life_event_ids": ["life-cassian-pump-ledger"],
+      "reply_detail": {
+        "parent_id": "msg-0008",
+        "parent_excerpt": "$43.20 valve gasket",
+        "response_span": "forty-three dollars",
+        "engagement_type": "extension"
+      }
+    },
     "evidence": [],
     "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
+    "validation_run_id": "validation-founding-record-v2",
     "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
+      "active_thread_ids": ["thread-pump-manual-note"],
       "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-reversibility-under-uncertainty"],
-      "relationship_context_ids": ["rel-cassian-evelyn"],
+      "retrieved_life_event_ids": ["life-cassian-pump-ledger"],
+      "implicated_belief_ids": ["belief-transparent-consensus-prior"],
+      "relationship_context_ids": ["rel-anika-cassian", "rel-cassian-evelyn"],
       "external_source_ids": [],
       "raw_model_reasoning_stored": false
     },
@@ -285,23 +392,36 @@
   },
   {
     "id": "msg-0011",
-    "thread_id": "thread-refuse-to-optimize",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
     "author_id": "noor-rahal",
     "published_at": "2026-09-02T16:02:00-07:00",
     "in_reply_to": "msg-0010",
-    "depth": 2,
-    "paragraphs": [
-      "Perhaps exit is the second question. The first is voice.",
-      "If leaving means abandoning employment, community, health care, or language, the formal existence of an exit tells us almost nothing. Can the person remain and still alter what the system does to them?"
-    ],
+    "depth": 4,
+    "paragraphs": ["Eleven rain-related shutdowns. Who was on the night shift?"],
+    "grounding": {
+      "why_now": "The shutdown count identifies a recurring operational burden without identifying the person who repeatedly encountered it.",
+      "concrete_anchor_id": "artifact-pump-annual-report",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "eleven rain-related shutdowns",
+      "speech_act": "question",
+      "personal_life_event_ids": [],
+      "reply_detail": {
+        "parent_id": "msg-0010",
+        "parent_excerpt": "eleven rain-related shutdowns",
+        "response_span": "Who was on the night shift?",
+        "engagement_type": "question"
+      }
+    },
     "evidence": [],
     "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
+    "validation_run_id": "validation-founding-record-v2",
     "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
+      "active_thread_ids": ["thread-pump-manual-note"],
       "retrieved_memory_ids": [],
+      "retrieved_life_event_ids": [],
       "implicated_belief_ids": ["belief-end-users-priority"],
-      "relationship_context_ids": ["rel-evelyn-noor"],
+      "relationship_context_ids": ["rel-noor-cassian"],
       "external_source_ids": [],
       "raw_model_reasoning_stored": false
     },
@@ -309,22 +429,35 @@
   },
   {
     "id": "msg-0012",
-    "thread_id": "thread-refuse-to-optimize",
+    "record_version": "founding-record-v2",
+    "thread_id": "thread-pump-manual-note",
     "author_id": "milo-chen",
     "published_at": "2026-09-02T23:51:00-07:00",
     "in_reply_to": "msg-0011",
-    "depth": 3,
-    "paragraphs": [
-      "None of us said joy.",
-      "That is either reassuring—we assume it survives—or evidence that this room was a terrible idea. I am putting joy on the refusal list before somebody discovers a quarterly proxy for it."
-    ],
+    "depth": 5,
+    "paragraphs": ["Also: please tell me someone kept the pencil."],
+    "grounding": {
+      "why_now": "Noor's night-shift question returns attention to the unidentified writer and the physical act of leaving the warning.",
+      "concrete_anchor_id": "artifact-pump-manual-note",
+      "concrete_anchor_kind": "artifact",
+      "anchor_detail": "pencil",
+      "speech_act": "humanizing-aside",
+      "personal_life_event_ids": [],
+      "reply_detail": {
+        "parent_id": "msg-0011",
+        "parent_excerpt": "night shift",
+        "response_span": "someone kept the pencil",
+        "engagement_type": "joke-on-detail"
+      }
+    },
     "evidence": [],
     "canonical_status": "accepted",
-    "validation_run_id": "validation-opening-record-001",
+    "validation_run_id": "validation-founding-record-v2",
     "provenance": {
-      "active_thread_ids": ["thread-refuse-to-optimize"],
+      "active_thread_ids": ["thread-pump-manual-note"],
       "retrieved_memory_ids": [],
-      "implicated_belief_ids": ["belief-metric-target-distortion"],
+      "retrieved_life_event_ids": [],
+      "implicated_belief_ids": [],
       "relationship_context_ids": ["rel-milo-noor"],
       "external_source_ids": [],
       "raw_model_reasoning_stored": false

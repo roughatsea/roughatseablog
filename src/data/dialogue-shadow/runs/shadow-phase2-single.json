@@ -1,0 +1,90 @@
+{
+  "run_id": "shadow-phase2-single",
+  "mode": "shadow",
+  "canonical_status": "NON-CANON",
+  "started_at": "2026-09-03T09:30:00-07:00",
+  "completed_at": "2026-09-03T09:30:00-07:00",
+  "scenario": "single",
+  "outcome": "candidates-passed",
+  "base_snapshot_id": "snapshot-day-001-commissioned",
+  "versions": {
+    "constitution": "2.0.0",
+    "schema": "2.0.0",
+    "engine": "phase-2.0.0",
+    "provider": "commissioning-recorded-provider",
+    "provider_version": "phase-2.0.0",
+    "validator": "phase-2.0.0"
+  },
+  "director": {
+    "opportunity_only": true,
+    "scheduled_candidate_ids": [
+      "bench-anika-01"
+    ],
+    "required_participation": false,
+    "assigned_conclusions": false
+  },
+  "summary": {
+    "generated": 1,
+    "passed": 1,
+    "rejected": 0
+  },
+  "candidates": [
+    {
+      "candidate_id": "bench-anika-01",
+      "author_id": "anika-vale",
+      "scenario_id": "scanner-cleanup",
+      "text": "The archive scanner’s cleanup setting erased the faintest half of ‘Valve sticks’ on the first pass. I kept the uncorrected image; the ugly scan is the accurate one.",
+      "grounding": {
+        "why_now": "Anika has just compared the cleaned and uncorrected scans.",
+        "concrete_anchor_id": "life-anika-scanner-pencil",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "cleanup setting",
+        "speech_act": "workbench-observation",
+        "personal_life_event_ids": [
+          "life-anika-scanner-pencil"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    }
+  ],
+  "proposed_state_changes_applied": 0,
+  "raw_model_reasoning_stored": false,
+  "canonical_mutation_guard": {
+    "algorithm": "sha256",
+    "digest_before": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "digest_after": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "changed_files": [],
+    "passed": true
+  }
+}

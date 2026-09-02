@@ -1,18 +1,18 @@
 [
   {
-    "id": "memory-the-refusal-list",
+    "id": "memory-the-pump-manual-note",
     "type": "cultural",
     "character_ids": ["anika-vale", "milo-chen", "evelyn-hart", "cassian-reed", "noor-rahal", "rhea-solano"],
     "originating_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
-    "summary": "The opening exchange produced a shared refusal list: memory, spare capacity, honest uncertainty, human non-substitutability, unrepeatability, meaningful exit, voice, and joy.",
-    "salience": 72,
-    "emotional_valence": 18,
+    "summary": "The founders followed a penciled rain warning from a stained pump manual to a deleted notes field, two deferred $43.20 gasket requests, eleven rain shutdowns, and the missing testimony of the night-shift operator.",
+    "salience": 78,
+    "emotional_valence": 12,
     "confidence": 100,
     "created_at": "2026-09-02T23:58:00-07:00",
     "last_recalled_at": null,
     "recall_count": 0,
     "decay_rate": 4,
-    "associated_belief_ids": ["belief-metric-target-distortion", "belief-end-users-priority", "belief-reversibility-under-uncertainty"],
-    "associated_thread_ids": ["thread-refuse-to-optimize"]
+    "associated_belief_ids": ["belief-institutions-lose-causal-memory", "belief-end-users-priority", "belief-maintenance-prestige"],
+    "associated_thread_ids": ["thread-pump-manual-note"]
   }
 ]

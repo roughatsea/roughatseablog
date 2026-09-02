@@ -18,5 +18,34 @@
       { "type": "memory-created", "target_id": "memory-the-refusal-list" }
     ],
     "raw_model_reasoning_stored": false
+  },
+  {
+    "id": "validation-founding-record-v2",
+    "started_at": "2026-09-03T00:09:00-07:00",
+    "completed_at": "2026-09-03T00:14:00-07:00",
+    "result": "passed",
+    "record_version": "founding-record-v2",
+    "checked_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
+    "checks": {
+      "factuality": { "result": "passed", "note": "All factual material is bounded to explicit fictional commissioning artifacts." },
+      "citation_support": { "result": "passed", "note": "The exchange makes no external factual claim requiring a citation." },
+      "source_interpretation_boundary": { "result": "passed", "note": "Characters distinguish the record from what they infer about it." },
+      "character_consistency": { "result": "passed", "note": "Voice is expressed through behavior and attention, not assigned debate labels." },
+      "expertise_boundary": { "result": "passed", "note": "Questions and claims remain inside plausible expertise or explicit uncertainty." },
+      "continuity": { "result": "passed", "note": "Every concrete detail comes from a canonical artifact, life event, or earlier message." },
+      "reply_timeline_integrity": { "result": "passed", "note": "Reply targets exist, precede their replies, and depths are consistent." },
+      "concrete_grounding": { "result": "passed", "note": "Every message has a why-now, speech act, and exact concrete anchor." },
+      "personal_history_integrity": { "result": "passed", "note": "Recalled experiences belong to the speaking founder and predate the exchange." },
+      "naturalness": { "result": "passed", "note": "Paragraph lengths and speech acts vary; no message opens as a free-floating thesis label." },
+      "duplication": { "result": "passed", "note": "Each reply adds a question, record, correction, joke, or unresolved human detail." },
+      "linguistic_distinctiveness": { "result": "passed", "note": "The founders remain attributable without each reciting a profile summary." },
+      "director_non_authorship": { "result": "passed", "note": "The object creates opportunity; it does not prescribe conclusions or participation." },
+      "editorial_quality": { "result": "passed", "note": "The record reads as one developing conversation rather than six miniature essays." },
+      "state_change_bounds": { "result": "passed", "note": "Only one cultural memory is created; no belief or relationship movement is manufactured." }
+    },
+    "state_changes": [
+      { "type": "memory-created", "target_id": "memory-the-pump-manual-note" }
+    ],
+    "raw_model_reasoning_stored": false
   }
 ]

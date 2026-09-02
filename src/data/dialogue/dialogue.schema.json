@@ -1,79 +1,117 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://www.roughatsea.com/schemas/dialogue-1.0.0.json",
-  "title": "Dialogue canonical record definitions",
+  "$id": "https://www.roughatsea.com/schemas/dialogue-2.0.0.json",
+  "title": "Dialogue canonical and shadow record definitions",
   "type": "object",
   "$defs": {
-    "score_0_100": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 100
-    },
-    "big_five": {
+    "score_0_100": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "id_array": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "grounding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"],
+      "required": ["why_now", "concrete_anchor_id", "concrete_anchor_kind", "anchor_detail", "speech_act", "personal_life_event_ids", "reply_detail"],
       "properties": {
-        "openness": { "$ref": "#/$defs/score_0_100" },
-        "conscientiousness": { "$ref": "#/$defs/score_0_100" },
-        "extraversion": { "$ref": "#/$defs/score_0_100" },
-        "agreeableness": { "$ref": "#/$defs/score_0_100" },
-        "neuroticism": { "$ref": "#/$defs/score_0_100" }
+        "why_now": { "type": "string", "minLength": 12 },
+        "concrete_anchor_id": { "type": "string", "minLength": 1 },
+        "concrete_anchor_kind": { "enum": ["artifact", "life-event", "message", "source"] },
+        "anchor_detail": { "type": "string", "minLength": 1 },
+        "speech_act": { "type": "string", "minLength": 1 },
+        "personal_life_event_ids": { "$ref": "#/$defs/id_array" },
+        "reply_detail": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["parent_id", "parent_excerpt", "response_span", "engagement_type"],
+              "properties": {
+                "parent_id": { "type": "string" },
+                "parent_excerpt": { "type": "string", "minLength": 1 },
+                "response_span": { "type": "string", "minLength": 1 },
+                "engagement_type": { "type": "string", "minLength": 1 }
+              }
+            }
+          ]
+        }
       }
     },
-    "relationship_dimensions": {
+    "life_event": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["affection", "trust", "intellectual_respect", "familiarity", "friction"],
+      "required": ["id", "character_id", "occurred_at", "kind", "status", "summary", "detail_keys", "artifact_ids", "source_ids", "canonical"],
       "properties": {
-        "affection": { "$ref": "#/$defs/score_0_100" },
-        "trust": { "$ref": "#/$defs/score_0_100" },
-        "intellectual_respect": { "$ref": "#/$defs/score_0_100" },
-        "familiarity": { "$ref": "#/$defs/score_0_100" },
-        "friction": { "$ref": "#/$defs/score_0_100" }
+        "id": { "type": "string", "pattern": "^life-" },
+        "character_id": { "type": "string" },
+        "occurred_at": { "type": "string", "format": "date-time" },
+        "kind": { "type": "string" },
+        "status": { "type": "string" },
+        "summary": { "type": "string", "minLength": 12 },
+        "detail_keys": { "$ref": "#/$defs/id_array" },
+        "artifact_ids": { "$ref": "#/$defs/id_array" },
+        "source_ids": { "$ref": "#/$defs/id_array" },
+        "canonical": { "const": true }
       }
     },
-    "evidence_link": {
+    "artifact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_id", "claim_boundary", "note"],
+      "required": ["id", "kind", "title", "introduced_at", "introduced_by", "description", "required_terms", "fictional_world_record", "canonical_status"],
       "properties": {
-        "source_id": { "type": "string", "minLength": 1 },
-        "claim_boundary": { "enum": ["source-says", "author-infers"] },
-        "note": { "type": "string", "minLength": 1 }
+        "id": { "type": "string", "pattern": "^artifact-" },
+        "kind": { "type": "string" },
+        "title": { "type": "string" },
+        "introduced_at": { "type": "string", "format": "date-time" },
+        "introduced_by": { "type": "string" },
+        "description": { "type": "string", "minLength": 12 },
+        "required_terms": { "$ref": "#/$defs/id_array" },
+        "fictional_world_record": { "const": true },
+        "canonical_status": { "const": "accepted" }
       }
     },
     "message": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "thread_id", "author_id", "published_at", "in_reply_to", "depth", "paragraphs", "evidence", "canonical_status", "validation_run_id", "provenance", "state_changes"],
+      "required": ["id", "record_version", "thread_id", "author_id", "published_at", "in_reply_to", "depth", "paragraphs", "grounding", "evidence", "canonical_status", "validation_run_id", "provenance", "state_changes"],
       "properties": {
         "id": { "type": "string", "pattern": "^msg-[0-9]{4,}$" },
-        "thread_id": { "type": "string", "minLength": 1 },
-        "author_id": { "type": "string", "minLength": 1 },
+        "record_version": { "const": "founding-record-v2" },
+        "thread_id": { "type": "string" },
+        "author_id": { "type": "string" },
         "published_at": { "type": "string", "format": "date-time" },
         "in_reply_to": { "type": ["string", "null"] },
         "depth": { "type": "integer", "minimum": 0 },
         "paragraphs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
-        "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence_link" } },
-        "canonical_status": { "enum": ["accepted"] },
-        "validation_run_id": { "type": "string", "minLength": 1 },
+        "grounding": { "$ref": "#/$defs/grounding" },
+        "evidence": { "type": "array" },
+        "canonical_status": { "const": "accepted" },
+        "validation_run_id": { "type": "string" },
         "provenance": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["active_thread_ids", "retrieved_memory_ids", "implicated_belief_ids", "relationship_context_ids", "external_source_ids", "raw_model_reasoning_stored"],
+          "required": ["active_thread_ids", "retrieved_memory_ids", "retrieved_life_event_ids", "implicated_belief_ids", "relationship_context_ids", "external_source_ids", "raw_model_reasoning_stored"],
           "properties": {
-            "active_thread_ids": { "type": "array", "items": { "type": "string" } },
-            "retrieved_memory_ids": { "type": "array", "items": { "type": "string" } },
-            "implicated_belief_ids": { "type": "array", "items": { "type": "string" } },
-            "relationship_context_ids": { "type": "array", "items": { "type": "string" } },
-            "external_source_ids": { "type": "array", "items": { "type": "string" } },
+            "active_thread_ids": { "$ref": "#/$defs/id_array" },
+            "retrieved_memory_ids": { "$ref": "#/$defs/id_array" },
+            "retrieved_life_event_ids": { "$ref": "#/$defs/id_array" },
+            "implicated_belief_ids": { "$ref": "#/$defs/id_array" },
+            "relationship_context_ids": { "$ref": "#/$defs/id_array" },
+            "external_source_ids": { "$ref": "#/$defs/id_array" },
             "raw_model_reasoning_stored": { "const": false }
           }
         },
         "state_changes": { "type": "array" }
       }
+    },
+    "shadow_run": {
+      "type": "object",
+      "required": ["run_id", "mode", "canonical_status", "scenario", "outcome", "versions", "summary", "candidates", "raw_model_reasoning_stored", "canonical_mutation_guard"],
+      "properties": {
+        "run_id": { "type": "string", "pattern": "^shadow-" },
+        "mode": { "const": "shadow" },
+        "canonical_status": { "const": "NON-CANON" },
+        "raw_model_reasoning_stored": { "const": false }
+      }
     }
   },
-  "description": "Dialogue data is split across named JSON files. This document defines the high-risk shared shapes; scripts/validate-dialogue.mjs enforces cross-file references and complete founding coverage."
+  "description": "The validator enforces these shapes plus all cross-file, provenance, event-order, snapshot, commissioning, and mutation-boundary invariants."
 }

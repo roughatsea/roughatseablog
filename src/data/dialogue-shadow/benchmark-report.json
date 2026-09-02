@@ -1,0 +1,68 @@
+{
+  "benchmark_id": "phase-2-grounded-voice-benchmark",
+  "run_id": "shadow-phase2-benchmark-final",
+  "completed_at": "2026-09-03T12:45:00-07:00",
+  "canonical_status": "NON-CANON",
+  "candidate_count": 60,
+  "positive_count": 42,
+  "negative_count": 18,
+  "validator_results": {
+    "passed": 42,
+    "rejected": 18,
+    "positive_acceptance_rate": 1,
+    "negative_correct_rejection_rate": 1,
+    "all_negative_failure_codes_matched": true
+  },
+  "method": {
+    "candidate_distribution": "Ten per founder: seven intended-pass and three adversarial intended-reject cases.",
+    "adversarial_classes": ["unanchored abstraction", "voice caricature", "personal-history provenance breach"],
+    "independent_review": "Two read-only evaluators separately judged all 42 intended-pass candidates for grounding, conversational naturalness, and author attribution.",
+    "raw_model_reasoning_stored": false
+  },
+  "evaluations": [
+    {
+      "evaluator_id": "phase2-evaluator-one",
+      "independent": true,
+      "evaluated": 42,
+      "grounded": 42,
+      "conversational": 42,
+      "grounded_and_conversational": 42,
+      "correct_author_attribution": 42,
+      "per_founder": {
+        "anika-vale": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "milo-chen": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "evelyn-hart": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "cassian-reed": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "noor-rahal": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "rhea-solano": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 }
+      }
+    },
+    {
+      "evaluator_id": "phase2-evaluator-two",
+      "independent": true,
+      "evaluated": 42,
+      "grounded": 42,
+      "conversational": 42,
+      "grounded_and_conversational": 42,
+      "correct_author_attribution": 42,
+      "per_founder": {
+        "anika-vale": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "milo-chen": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "evelyn-hart": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "cassian-reed": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "noor-rahal": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 },
+        "rhea-solano": { "accepted": 7, "grounded_and_conversational": 7, "correct_author": 7 }
+      }
+    }
+  ],
+  "exit_gate": {
+    "sixty_candidates_recorded": true,
+    "all_eighteen_adversarial_candidates_rejected_for_expected_reason": true,
+    "at_least_thirty_six_positive_candidates_passed_validation": true,
+    "both_evaluators_judged_at_least_thirty_four_grounded_and_conversational": true,
+    "each_founder_has_at_least_five_accepted_candidates": true,
+    "both_evaluators_attributed_at_least_thirty_candidates_and_four_per_founder": true,
+    "canonical_digest_unchanged": true
+  },
+  "raw_model_reasoning_stored": false
+}
