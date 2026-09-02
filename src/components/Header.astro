@@ -34,6 +34,7 @@ const pathname = Astro.url.pathname;
     <div class="header-actions" id="primary-navigation-panel">
       <nav aria-label="Primary navigation">
         <a class="home-link" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
+        <a href="/dialogue/" aria-current={pathname.startsWith('/dialogue/') ? 'page' : undefined}>Dialogue</a>
         <a href="/soundings/" aria-current={pathname.startsWith('/soundings/') ? 'page' : undefined}>Soundings</a>
         <a href="/save-point/" aria-current={pathname.startsWith('/save-point/') ? 'page' : undefined}>Save Point</a>
         <a href="/reckonings/" aria-current={pathname.startsWith('/reckonings/') ? 'page' : undefined}>Reckonings</a>

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "validation-opening-record-001",
+    "started_at": "2026-09-02T23:52:00-07:00",
+    "completed_at": "2026-09-02T23:57:00-07:00",
+    "result": "passed",
+    "checked_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
+    "checks": {
+      "factuality": { "result": "passed", "note": "Empirical claims are bounded to the cited sources; uncited claims are normative or explicitly inferential." },
+      "citation_support": { "result": "passed", "note": "Each source-says note was checked against the linked primary or institutional source." },
+      "continuity": { "result": "passed", "note": "Reply targets, times, and relationship context are internally consistent." },
+      "character_voice": { "result": "passed", "note": "Each founder remains within established expertise, cadence, and epistemic habits." },
+      "duplication": { "result": "passed", "note": "No message merely restates an earlier contribution." },
+      "anti_llmism": { "result": "passed", "note": "Removed generic synthesis, false balance, canned transitions, and ornamental abstraction." },
+      "editorial_quality": { "result": "passed", "note": "The opening record forms a coherent exchange without manufacturing agreement or belief change." }
+    },
+    "state_changes": [
+      { "type": "memory-created", "target_id": "memory-the-refusal-list" }
+    ],
+    "raw_model_reasoning_stored": false
+  }
+]

@@ -1,0 +1,322 @@
+---
+import type { DialogueMessage as DialogueMessageRecord } from '../../lib/dialogue';
+import {
+  dialogueCharactersById,
+  dialogueMessagesById,
+  dialogueSourcesById,
+  formatDialogueTime,
+  messageExcerpt,
+} from '../../lib/dialogue';
+
+interface Props {
+  message: DialogueMessageRecord;
+}
+
+const { message } = Astro.props;
+const character = dialogueCharactersById.get(message.author_id);
+if (!character) throw new Error(`Unknown Dialogue character: ${message.author_id}`);
+const replyTarget = message.in_reply_to ? dialogueMessagesById.get(message.in_reply_to) : undefined;
+const visibleDepth = Math.min(message.depth, 2);
+const uniqueSourceCount = new Set(message.evidence.map((entry) => entry.source_id)).size;
+---
+
+<article
+  class="dialogue-message"
+  id={message.id}
+  data-character={character.id}
+  data-depth={visibleDepth}
+  style={`--character-primary:${character.visual.primary};--character-secondary:${character.visual.secondary};--character-signal:${character.visual.signal}`}
+>
+  <div class="message-rail" aria-hidden="true">
+    <span class="sigil">{character.visual.sigil}</span>
+    <span class="rail-line"></span>
+  </div>
+
+  <div class="message-card">
+    <header>
+      <div>
+        <a class="character-name" href={`/dialogue/people/${character.slug}/`}>{character.name}</a>
+        <span class="gravity">{character.gravitational_tendency.label}</span>
+      </div>
+      <a class="timestamp" href={`#${message.id}`} aria-label={`Link to ${character.name}'s message at ${formatDialogueTime(message.published_at)}`}>
+        {formatDialogueTime(message.published_at)}
+      </a>
+    </header>
+
+    {replyTarget && (
+      <a class="reply-context" href={`#${replyTarget.id}`}>
+        <span>↳ replying to {dialogueCharactersById.get(replyTarget.author_id)?.name}</span>
+        <q>{messageExcerpt(replyTarget)}</q>
+      </a>
+    )}
+
+    <div class="message-copy">
+      {message.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    {message.evidence.length > 0 && (
+      <details class="evidence-drawer">
+        <summary>
+          <span class="evidence-icon" aria-hidden="true">⌁</span>
+          Evidence
+          <small>{uniqueSourceCount} {uniqueSourceCount === 1 ? 'source' : 'sources'} · {message.evidence.length} claim boundaries</small>
+        </summary>
+        <div class="evidence-list">
+          {message.evidence.map((entry) => {
+            const source = dialogueSourcesById.get(entry.source_id);
+            if (!source) return null;
+            return (
+              <div class="evidence-item">
+                <span class:list={['claim-boundary', entry.claim_boundary]}>
+                  {entry.claim_boundary === 'source-says' ? 'Source says' : 'Author infers'}
+                </span>
+                <div>
+                  <a href={source.url} target="_blank" rel="noreferrer">{source.title} ↗</a>
+                  <p>{entry.note}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </details>
+    )}
+
+    <footer>
+      <span>{message.id}</span>
+      <span>canonical record</span>
+    </footer>
+  </div>
+</article>
+
+<style>
+  .dialogue-message {
+    --visible-depth: 0;
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: 2.7rem minmax(0, 1fr);
+    margin-left: calc(var(--visible-depth) * 2.25rem);
+    position: relative;
+  }
+  .dialogue-message[data-depth='1'] { --visible-depth: 1; }
+  .dialogue-message[data-depth='2'] { --visible-depth: 2; }
+  .message-rail {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  .sigil {
+    align-items: center;
+    background: color-mix(in srgb, var(--character-primary) 16%, var(--surface-color));
+    border: 1px solid color-mix(in srgb, var(--character-primary) 62%, var(--border-color));
+    border-radius: 50%;
+    color: var(--character-primary);
+    display: flex;
+    flex: 0 0 auto;
+    font-family: var(--font-sans);
+    font-size: 0.62rem;
+    font-weight: 800;
+    height: 2.7rem;
+    justify-content: center;
+    letter-spacing: 0.04em;
+    position: relative;
+    width: 2.7rem;
+    z-index: 1;
+  }
+  .rail-line {
+    background: linear-gradient(var(--character-primary), color-mix(in srgb, var(--character-primary) 10%, transparent));
+    flex: 1;
+    min-height: 1.4rem;
+    opacity: 0.34;
+    width: 1px;
+  }
+  .message-card {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--character-primary) 7%, transparent), transparent 15rem),
+      color-mix(in srgb, var(--surface-color) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--character-primary) 25%, var(--border-color));
+    border-radius: 6px 18px 18px 18px;
+    box-shadow: 0 18px 48px color-mix(in srgb, var(--character-primary) 7%, transparent);
+    min-width: 0;
+    overflow: hidden;
+    padding: clamp(1rem, 3vw, 1.45rem);
+    position: relative;
+  }
+  .message-card::before {
+    background: linear-gradient(90deg, var(--character-primary), var(--character-secondary), transparent 80%);
+    content: '';
+    height: 2px;
+    inset: 0 0 auto;
+    opacity: 0.8;
+    position: absolute;
+  }
+  header,
+  header > div,
+  footer {
+    align-items: center;
+    display: flex;
+  }
+  header { justify-content: space-between; gap: 1rem; }
+  header > div { flex-wrap: wrap; gap: 0.55rem; }
+  .character-name {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+    font-weight: 750;
+  }
+  .character-name:hover { color: var(--character-primary); }
+  .gravity {
+    border: 1px solid color-mix(in srgb, var(--character-primary) 35%, var(--border-color));
+    border-radius: 999px;
+    color: var(--character-primary);
+    font-size: 0.57rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    padding: 0.18rem 0.42rem;
+    text-transform: uppercase;
+  }
+  .timestamp {
+    color: var(--text-secondary);
+    flex: 0 0 auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+  }
+  .timestamp:hover { color: var(--character-primary); }
+  .reply-context {
+    border-left: 2px solid color-mix(in srgb, var(--character-primary) 50%, var(--border-color));
+    color: var(--text-secondary);
+    display: block;
+    margin: 0.85rem 0 0.95rem;
+    overflow: hidden;
+    padding-left: 0.75rem;
+  }
+  .reply-context span {
+    color: var(--character-primary);
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.12rem;
+    text-transform: uppercase;
+  }
+  .reply-context q {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 0.78rem;
+    font-style: italic;
+    line-height: 1.45;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .message-copy {
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 2vw, 1.18rem);
+    line-height: 1.72;
+  }
+  .message-copy p:last-child { margin-bottom: 0; }
+  .evidence-drawer {
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.15rem;
+    padding-top: 0.85rem;
+  }
+  .evidence-drawer summary {
+    align-items: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    font-size: 0.72rem;
+    font-weight: 700;
+    gap: 0.45rem;
+    list-style: none;
+  }
+  .evidence-drawer summary::-webkit-details-marker { display: none; }
+  .evidence-drawer summary::after {
+    content: '+';
+    font-family: ui-monospace, monospace;
+    margin-left: auto;
+  }
+  .evidence-drawer[open] summary::after { content: '−'; }
+  .evidence-drawer summary small { font-size: 0.62rem; font-weight: 500; }
+  .evidence-icon { color: var(--character-primary); font-size: 1rem; }
+  .evidence-list { display: grid; gap: 0.75rem; margin-top: 0.85rem; }
+  .evidence-item {
+    align-items: start;
+    background: color-mix(in srgb, var(--character-primary) 5%, var(--bg-color));
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 6.3rem minmax(0, 1fr);
+    padding: 0.75rem;
+  }
+  .claim-boundary {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    padding: 0.25rem 0.42rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .claim-boundary.source-says { background: var(--character-primary); border-color: var(--character-primary); color: white; }
+  .claim-boundary.author-infers { color: var(--character-primary); }
+  .evidence-item a { color: var(--text-primary); font-size: 0.72rem; font-weight: 700; }
+  .evidence-item a:hover { color: var(--character-primary); }
+  .evidence-item p { color: var(--text-secondary); font-size: 0.7rem; line-height: 1.5; margin: 0.25rem 0 0; }
+  footer {
+    color: var(--text-secondary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.56rem;
+    gap: 0.65rem;
+    letter-spacing: 0.06em;
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+  footer span + span::before { content: '·'; margin-right: 0.65rem; }
+
+  [data-character='milo-chen'] .message-card {
+    background:
+      linear-gradient(120deg, color-mix(in srgb, var(--character-primary) 11%, transparent), transparent 36%),
+      linear-gradient(300deg, color-mix(in srgb, var(--character-secondary) 9%, transparent), transparent 32%),
+      var(--surface-color);
+    border-style: solid dashed solid solid;
+  }
+  [data-character='evelyn-hart'] .message-card {
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--character-primary) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--character-primary) 7%, transparent) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  [data-character='cassian-reed'] .message-card { border-left-width: 4px; border-radius: 2px 14px 14px 2px; }
+  [data-character='anika-vale'] .message-card { box-shadow: inset 5px 0 color-mix(in srgb, var(--character-secondary) 18%, transparent); }
+  [data-character='noor-rahal'] .message-card { border-radius: 6px 24px 24px 24px; }
+  [data-character='rhea-solano'] .message-card::after {
+    border-bottom: 1px dashed color-mix(in srgb, var(--character-primary) 36%, transparent);
+    bottom: 0.38rem;
+    content: '';
+    left: 1rem;
+    position: absolute;
+    right: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    .dialogue-message { grid-template-columns: 2.25rem minmax(0, 1fr); margin-left: 0; }
+    .dialogue-message[data-depth='1'],
+    .dialogue-message[data-depth='2'] { margin-left: 1rem; }
+    .sigil { font-size: 0.54rem; height: 2.25rem; width: 2.25rem; }
+    .evidence-item { grid-template-columns: 1fr; }
+    .claim-boundary { justify-self: start; }
+    .reply-context q { white-space: normal; }
+  }
+
+  @media (max-width: 430px) {
+    .dialogue-message { gap: 0.55rem; grid-template-columns: 1.85rem minmax(0, 1fr); }
+    .dialogue-message[data-depth='1'],
+    .dialogue-message[data-depth='2'] { margin-left: 0.45rem; }
+    .sigil { font-size: 0.48rem; height: 1.85rem; width: 1.85rem; }
+    .message-card { border-radius: 4px 14px 14px 14px; padding: 0.9rem; }
+    .message-copy { font-size: 1rem; }
+    .gravity { display: none; }
+  }
+</style>

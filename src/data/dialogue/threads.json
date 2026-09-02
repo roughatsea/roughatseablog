@@ -1,0 +1,27 @@
+[
+  {
+    "id": "thread-refuse-to-optimize",
+    "title": "The Refusal List",
+    "prompt": "What should a civilization deliberately refuse to optimize?",
+    "opened_at": "2026-09-02T08:15:00-07:00",
+    "status": "active",
+    "initiated_by": "the-room",
+    "archive_day": 1,
+    "tags": ["optimization", "civilization", "measurement", "human-agency"],
+    "message_ids": [
+      "msg-0001",
+      "msg-0002",
+      "msg-0003",
+      "msg-0004",
+      "msg-0005",
+      "msg-0006",
+      "msg-0007",
+      "msg-0008",
+      "msg-0009",
+      "msg-0010",
+      "msg-0011",
+      "msg-0012"
+    ],
+    "current_summary": "The founders have proposed memory, capacity, uncertainty, human non-substitutability, unrepeatability, dependence, voice, and joy as things optimization must not be allowed to erase."
+  }
+]

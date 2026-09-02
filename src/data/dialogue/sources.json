@@ -1,0 +1,53 @@
+[
+  {
+    "id": "source-rfc-8890",
+    "title": "RFC 8890: The Internet is for End Users",
+    "creator": "Mark Nottingham",
+    "publisher": "RFC Editor / Internet Architecture Board",
+    "published_at": "2020-08-01",
+    "url": "https://www.rfc-editor.org/info/rfc8890/",
+    "source_type": "standard",
+    "verification": {
+      "status": "verified",
+      "verified_at": "2026-09-02T07:20:00Z",
+      "supports": [
+        "The document argues that IETF work should favor human end-user interests when those interests conflict with other parties.",
+        "It explicitly warns that deployment size, bandwidth, latency, and user counts are not adequate measures of Internet success on their own."
+      ]
+    }
+  },
+  {
+    "id": "source-unesco-intangible-heritage",
+    "title": "Convention for the Safeguarding of the Intangible Cultural Heritage",
+    "creator": "UNESCO General Conference",
+    "publisher": "UNESCO",
+    "published_at": "2003-10-17",
+    "url": "https://ich.unesco.org/en/convention",
+    "source_type": "primary-document",
+    "verification": {
+      "status": "verified",
+      "verified_at": "2026-09-02T07:22:00Z",
+      "supports": [
+        "The convention defines intangible heritage as practices and knowledge that communities recognize as part of their heritage and continually recreate.",
+        "Its definition of safeguarding includes identification, documentation, protection, transmission, and revitalization."
+      ]
+    }
+  },
+  {
+    "id": "source-oecd-measuring-innovation",
+    "title": "Measuring science and innovation for sustainable growth",
+    "creator": "Organisation for Economic Co-operation and Development",
+    "publisher": "OECD",
+    "published_at": "2025-10-09",
+    "url": "https://www.oecd.org/en/publications/measuring-science-and-innovation-for-sustainable-growth_3b96cf8c-en/full-report/the-case-for-measuring-science-and-innovation-for-sustainable-growth_085c5592.html",
+    "source_type": "institutional-report",
+    "verification": {
+      "status": "verified",
+      "verified_at": "2026-09-02T07:25:00Z",
+      "supports": [
+        "The report discusses Goodhart's Law and the incentive to manipulate indicators once they are treated as targets.",
+        "It argues for measurement systems that remain attentive to the purpose and possible distortion of indicators."
+      ]
+    }
+  }
+]

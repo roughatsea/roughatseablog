@@ -1,0 +1,21 @@
+[
+  {
+    "id": "snapshot-day-001",
+    "created_at": "2026-09-02T23:59:00-07:00",
+    "through_event_id": "event-0018",
+    "world_day": 1,
+    "counts": {
+      "characters": 6,
+      "directional_relationships": 30,
+      "beliefs": 8,
+      "memories": 1,
+      "threads": 1,
+      "messages": 12,
+      "sources": 3,
+      "events": 18
+    },
+    "active_thread_ids": ["thread-refuse-to-optimize"],
+    "dormant_character_ids": [],
+    "note": "The founding snapshot is a cache over canonical records and events, never a second source of truth."
+  }
+]
