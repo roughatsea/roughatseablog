@@ -3,9 +3,11 @@ interface Props {
   id: string;
   image: string;
   imageAlt: string;
+  label: string;
+  deck: string;
 }
 
-const { id, image, imageAlt } = Astro.props;
+const { id, image, imageAlt, label, deck } = Astro.props;
 ---
 
 <figure id={id} class="division-gate">
@@ -17,10 +19,13 @@ const { id, image, imageAlt } = Astro.props;
     loading="lazy"
     decoding="async"
   />
+  <span class="division-label" aria-hidden="true">{label}</span>
+  <figcaption>{deck}</figcaption>
 </figure>
 
 <style>
   .division-gate {
+    position: relative;
     width: min(1200px, calc(100vw - 1.5rem));
     margin: 6.5rem 0 3.75rem 50%;
     transform: translateX(-50%);
@@ -42,6 +47,41 @@ const { id, image, imageAlt } = Astro.props;
     object-fit: cover;
   }
 
+  .division-label,
+  figcaption {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0b0a09;
+    color: #c9a46c;
+    text-align: center;
+  }
+
+  .division-label {
+    top: 20.25%;
+    min-width: 12rem;
+    padding: 0.28rem 1.25rem;
+    font-family: var(--font-sans);
+    font-size: clamp(0.58rem, 1.2vw, 0.82rem);
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  figcaption {
+    bottom: 20.2%;
+    width: max-content;
+    max-width: min(80%, 52rem);
+    margin: 0;
+    padding: 0.34rem 1.1rem;
+    color: #c8ad80;
+    font-family: var(--font-serif);
+    font-size: clamp(0.76rem, 1.55vw, 1.06rem);
+    font-style: italic;
+    line-height: 1.35;
+  }
+
   @media (max-width: 640px) {
     .division-gate {
       width: min(100%, calc(100vw - 1rem));
@@ -53,6 +93,19 @@ const { id, image, imageAlt } = Astro.props;
     .division-gate img {
       min-height: 15.5rem;
       object-position: center;
+    }
+
+    .division-label {
+      top: 20%;
+      min-width: 9.5rem;
+      padding-inline: 0.75rem;
+      letter-spacing: 0.2em;
+    }
+
+    figcaption {
+      bottom: 18.5%;
+      width: 82%;
+      padding-inline: 0.55rem;
     }
   }
 </style>
