@@ -1,0 +1,291 @@
+---
+const records = [
+  {
+    work: 'Nómoi (Book of Laws)',
+    outcome: 'Extinguished; fragments survived',
+    evidence: 'Confirmed',
+    access: 'Fragments and scholarly reconstructions only',
+  },
+  {
+    work: "Byron's Memoirs",
+    outcome: 'Extinguished',
+    evidence: 'Confirmed',
+    access: 'No complete text is known to survive',
+  },
+  {
+    work: 'The Scented Garden',
+    outcome: 'Extinguished',
+    evidence: 'Confirmed',
+    access: 'No; an earlier, different translation survives',
+  },
+  {
+    work: 'Mathilda',
+    outcome: 'Delayed for 140 years',
+    evidence: 'Confirmed',
+    access: 'Yes; manuscript and modern editions survive',
+  },
+  {
+    work: 'State of Excitement: Impressions of Kuwait',
+    outcome: 'Entombed',
+    evidence: 'Confirmed',
+    access: 'The only bound copy may be consulted in an archive',
+  },
+  {
+    work: 'J. D. Salinger: A Writing Life',
+    outcome: 'Enjoined; original edition never published',
+    evidence: 'Confirmed',
+    access: 'Proofs survive; a substantially rewritten book appeared',
+  },
+  {
+    work: 'Facts and Figures of the Belfast Pogrom 1920–1922',
+    outcome: 'Recalled; almost the entire run pulped',
+    evidence: 'Strongly supported',
+    access: 'Yes; a surviving copy supplied a modern reprint',
+  },
+  {
+    work: 'Life and Fate',
+    outcome: 'Seized, exiled, and delayed',
+    evidence: 'Confirmed',
+    access: 'Yes; a duplicate manuscript escaped',
+  },
+  {
+    work: 'The CIA and the Cult of Intelligence',
+    outcome: 'Mutilated by compulsory deletions',
+    evidence: 'Confirmed',
+    access: 'Yes; the published edition visibly marks the deletions',
+  },
+  {
+    work: 'Operation Dark Heart',
+    outcome: 'Recalled and mutilated',
+    evidence: 'Confirmed',
+    access: 'A redacted edition and a few unredacted copies survive',
+  },
+  {
+    work: 'Dead Men Risen',
+    outcome: 'Recalled; first print run pulped',
+    evidence: 'Confirmed',
+    access: 'Yes, as a revised edition',
+  },
+  {
+    work: 'Alms for Jihad',
+    outcome: 'Recalled; publisher sought library removals',
+    evidence: 'Confirmed',
+    access: 'Surviving library and secondhand copies remain readable',
+  },
+  {
+    work: 'The Polyester Prince',
+    outcome: 'Indian edition pulped and enjoined',
+    evidence: 'Strongly supported',
+    access: 'Foreign and illicit copies survive; the intended edition does not',
+  },
+  {
+    work: 'Doctor Zhivago',
+    outcome: 'Exiled and delayed',
+    evidence: 'Confirmed',
+    access: 'Yes; foreign editions preceded Soviet publication by decades',
+  },
+  {
+    work: 'Spycatcher',
+    outcome: 'Temporarily restrained; globally escaped',
+    evidence: 'Confirmed',
+    access: 'Yes',
+  },
+  {
+    work: 'The Jewel of Medina',
+    outcome: 'Cancelled by one publisher; escaped through another',
+    evidence: 'Confirmed',
+    access: 'Yes',
+  },
+  {
+    work: 'Careless People',
+    outcome: 'Author restrained; publisher and book escaped',
+    evidence: 'Confirmed',
+    access: 'Yes',
+  },
+  {
+    work: 'A Society on the Run',
+    outcome: 'Withdrawn and pulped; state-suppression story unsubstantiated',
+    evidence: 'Disputed',
+    access: 'The original is scarce; a revised descendant survives',
+  },
+] as const;
+---
+
+<div class="catalogue-shell">
+  <div class="catalogue-summary">
+    <p class="catalogue-kicker">Eighteen documentary trails</p>
+    <p>
+      Each row describes the particular manuscript or edition examined in this article—not every later work that inherited its title, argument, or surviving text.
+    </p>
+  </div>
+
+  <div
+    class="catalogue-scroll"
+    role="region"
+    aria-label="Catalogue of books and editions subjected to publication suppression"
+    tabindex="0"
+  >
+    <table>
+      <caption class="sr-only">
+        Suppression outcome, evidence confidence, and present-day reading status for the eighteen cases examined in this article.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Work or edition</th>
+          <th scope="col">Outcome</th>
+          <th scope="col">Evidence</th>
+          <th scope="col">Readable today?</th>
+        </tr>
+      </thead>
+      <tbody>
+        {records.map((record) => (
+          <tr>
+            <th scope="row"><cite>{record.work}</cite></th>
+            <td>{record.outcome}</td>
+            <td><span class="evidence">{record.evidence}</span></td>
+            <td class="access">{record.access}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .catalogue-shell {
+    width: min(1100px, calc(100vw - 2rem));
+    margin: 2.25rem 0 4rem 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    background: var(--surface-color);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .catalogue-summary {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1.45fr);
+    gap: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border-bottom: 1px solid var(--border-color);
+    background:
+      radial-gradient(circle at 0 0, rgba(255, 20, 147, 0.1), transparent 48%),
+      radial-gradient(circle at 100% 100%, rgba(20, 147, 255, 0.1), transparent 48%),
+      var(--bg-color);
+    font-family: var(--font-sans);
+  }
+
+  .catalogue-summary p {
+    margin: 0;
+  }
+
+  .catalogue-kicker {
+    color: var(--link-color);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .catalogue-summary p:last-child {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .catalogue-scroll {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+  }
+
+  .catalogue-scroll:focus-visible {
+    outline: 3px solid var(--link-color);
+    outline-offset: -3px;
+  }
+
+  table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  th,
+  td {
+    padding: 0.95rem 1rem;
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th:last-child,
+  td:last-child {
+    border-right: 0;
+  }
+
+  tbody tr:last-child th,
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  thead th {
+    background: var(--bg-color);
+    color: var(--text-secondary);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  tbody th {
+    width: 25%;
+    font-family: var(--font-serif);
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  tbody tr:nth-child(even) {
+    background: color-mix(in srgb, var(--bg-color) 52%, transparent);
+  }
+
+  .evidence {
+    display: inline-block;
+    padding: 0.14rem 0.45rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--bg-color);
+    white-space: nowrap;
+  }
+
+  .access {
+    color: var(--text-secondary);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 640px) {
+    .catalogue-shell {
+      border-radius: 12px;
+    }
+
+    .catalogue-summary {
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+    }
+  }
+</style>
