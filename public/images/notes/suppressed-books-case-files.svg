@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="686" viewBox="0 0 1600 686" role="img" aria-labelledby="title desc">
+  <title id="title">Part III: Case Files of Successful Suppression</title>
+  <desc id="desc">Court orders, confidential proofs, sealed correspondence, and recovered manuscripts surround the title.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#070706"/><stop offset=".57" stop-color="#17100d"/><stop offset="1" stop-color="#061720"/></linearGradient>
+    <linearGradient id="paper"><stop stop-color="#d7bf94"/><stop offset="1" stop-color="#846442"/></linearGradient>
+    <linearGradient id="gold"><stop stop-color="#f1d5a3"/><stop offset=".5" stop-color="#aa793d"/><stop offset="1" stop-color="#e2bf82"/></linearGradient>
+    <pattern id="grain" width="67" height="67" patternUnits="userSpaceOnUse"><circle cx="9" cy="12" r="1" fill="#fff" opacity=".035"/><circle cx="46" cy="39" r="1.4" fill="#000" opacity=".17"/></pattern>
+    <filter id="shadow"><feDropShadow dx="0" dy="11" stdDeviation="13" flood-opacity=".75"/></filter>
+  </defs>
+  <rect width="1600" height="686" fill="url(#bg)"/><rect width="1600" height="686" fill="url(#grain)"/>
+  <path d="M0 506Q390 476 810 510t790-9v185H0Z" fill="#150d09"/>
+  <!-- injunction -->
+  <g transform="translate(54 240) rotate(-5)" filter="url(#shadow)">
+    <rect width="325" height="375" rx="5" fill="url(#paper)" stroke="#553821" stroke-width="4"/>
+    <text x="162" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="#352318">HIGH COURT OF JUSTICE</text>
+    <text x="162" y="91" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="39" fill="#25170f">INJUNCTION</text>
+    <path d="M35 124h250M35 148h221M35 172h250M35 196h197M35 229h250M35 253h234M35 277h210" stroke="#4c3422" stroke-width="5" opacity=".53"/>
+    <g transform="translate(77 302) rotate(-3)"><rect width="176" height="48" fill="none" stroke="#7b2024" stroke-width="5"/><text x="88" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="28" fill="#7b2024">GRANTED</text></g>
+  </g>
+  <!-- boxes and typewriter -->
+  <g transform="translate(1212 282)" filter="url(#shadow)">
+    <rect x="0" y="0" width="300" height="110" fill="#4a321f" stroke="#8a6138" stroke-width="5"/><rect x="25" y="25" width="250" height="58" fill="#b89b6c"/><text x="150" y="61" text-anchor="middle" font-family="Georgia,serif" font-size="21" font-weight="700" fill="#382417">REJECTED — LEGAL</text>
+    <rect x="22" y="128" width="280" height="120" fill="#3d2a1c" stroke="#7c5735" stroke-width="5"/><rect x="49" y="159" width="225" height="59" fill="#b99c6d"/><text x="161" y="185" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#382417">SUPPRESSED</text><text x="161" y="207" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#382417">CORRESPONDENCE</text>
+  </g>
+  <g transform="translate(1055 500)" filter="url(#shadow)"><path d="M0 65h330l34 120H-28Z" fill="#090a0b" stroke="#66503c" stroke-width="5"/><rect x="22" y="0" width="288" height="85" rx="10" fill="#101214" stroke="#66503c" stroke-width="5"/><g fill="#7d715d"><circle cx="36" cy="105" r="11"/><circle cx="70" cy="105" r="11"/><circle cx="104" cy="105" r="11"/><circle cx="138" cy="105" r="11"/><circle cx="172" cy="105" r="11"/><circle cx="206" cy="105" r="11"/><circle cx="240" cy="105" r="11"/><circle cx="274" cy="105" r="11"/><circle cx="52" cy="138" r="11"/><circle cx="86" cy="138" r="11"/><circle cx="120" cy="138" r="11"/><circle cx="154" cy="138" r="11"/><circle cx="188" cy="138" r="11"/><circle cx="222" cy="138" r="11"/><circle cx="256" cy="138" r="11"/></g></g>
+  <!-- desk evidence -->
+  <g transform="translate(335 485) rotate(3)" filter="url(#shadow)"><rect width="405" height="175" rx="5" fill="#bea276" stroke="#5b3e26" stroke-width="4"/><text x="202" y="37" text-anchor="middle" font-family="Georgia,serif" font-size="21" fill="#352318">UNCORRECTED PROOFS</text><text x="202" y="63" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" letter-spacing="2" fill="#712126">CONFIDENTIAL</text><path d="M30 89h335M30 111h289M30 133h324" stroke="#49311f" stroke-width="5" opacity=".55"/></g>
+  <g transform="translate(710 502) rotate(-2)" filter="url(#shadow)"><rect width="310" height="155" rx="5" fill="#c7ad80" stroke="#5b3e26" stroke-width="4"/><text x="155" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="20" fill="#352318">COURT ORDER</text><text x="155" y="68" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="#352318">TO SEAL RECORDS</text><circle cx="155" cy="113" r="26" fill="#6c2027" stroke="#ad6452" stroke-width="4"/></g>
+  <!-- title -->
+  <g filter="url(#shadow)">
+    <rect x="356" y="64" width="870" height="410" rx="18" fill="#0b0a09" fill-opacity=".93" stroke="#8d683b" stroke-width="3"/>
+    <path d="M420 126h742M420 416h742" stroke="#a57a43" stroke-width="2" opacity=".76"/>
+    <text x="791" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="6" fill="#9d7543">PART III</text>
+    <text x="791" y="263" text-anchor="middle" font-family="Georgia,serif" font-size="72" fill="url(#gold)">Case Files of</text>
+    <text x="791" y="359" text-anchor="middle" font-family="Georgia,serif" font-size="72" fill="url(#gold)">Successful Suppression</text>
+  </g>
+  <text x="791" y="516" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-style="italic" fill="#c8ad80">Nineteen works. Nineteen different ways to lose a book.</text>
+  <rect x="20" y="20" width="1560" height="646" rx="22" fill="none" stroke="#b8884b" stroke-width="2" opacity=".38"/>
+</svg>
