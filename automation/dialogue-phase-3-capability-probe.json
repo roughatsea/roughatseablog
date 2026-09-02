@@ -1,0 +1,81 @@
+{
+  "schema_version": "dialogue-phase-3-capability-probe-v1",
+  "probe_id": "dialogue-phase-3-non-counted-2026-09-02",
+  "canonical_status": "NON-COUNTED",
+  "tested_main_sha": "d8291af34f1b08f709dac72b81f40c4678dac804",
+  "started_at_utc": "2026-09-02T16:27:48Z",
+  "completed_at_utc": "2026-09-02T16:30:45Z",
+  "isolation": {
+    "main_touched": false,
+    "runtime_branch_touched": false,
+    "probe_branch": "dialogue-phase-3-capability-probe",
+    "fresh_ephemeral_checkout": true,
+    "checkout_head_matches_tested_main": true,
+    "checkout_clean_after_tests": true
+  },
+  "capabilities": {
+    "github_read": {
+      "passed": true
+    },
+    "github_probe_branch_create": {
+      "passed": true
+    },
+    "shell": {
+      "passed": true
+    },
+    "git": {
+      "passed": true,
+      "version": "2.51.1"
+    },
+    "node": {
+      "passed": true,
+      "version": "24.19.0"
+    },
+    "npm": {
+      "passed": true,
+      "version": "11.9.0"
+    },
+    "npm_ci": {
+      "passed": true
+    },
+    "dialogue_phase3_suite": {
+      "passed": false,
+      "reason_code": "SCRIPT_NOT_PRESENT_AT_TESTED_MAIN"
+    },
+    "dialogue_phase2_control_suite": {
+      "passed": true,
+      "tests": 12,
+      "failed": 0
+    },
+    "web_search_and_open": {
+      "passed": true,
+      "source": "https://vercel.com/docs/project-configuration/git-configuration"
+    },
+    "isolated_subagents": {
+      "passed": false,
+      "requested": 2,
+      "completed": 0,
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning_effort": "high",
+      "reason_code": "AGENT_THREAD_LIMIT_REACHED"
+    }
+  },
+  "scheduler_metadata_availability": {
+    "task_id": false,
+    "scheduled_occurrence": true,
+    "actual_start": true,
+    "delivery_id": false,
+    "run_id": false,
+    "values_stored": false
+  },
+  "safety": {
+    "credentials_stored": false,
+    "environment_values_stored": false,
+    "raw_prompts_stored": false,
+    "raw_model_replies_stored": false,
+    "hidden_reasoning_stored": false,
+    "repository_file_contents_stored": false,
+    "personal_data_stored": false
+  },
+  "overall_passed": false
+}
