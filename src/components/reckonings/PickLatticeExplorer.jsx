@@ -117,10 +117,9 @@ export default function PickLatticeExplorer() {
 
       <div className="pick-grid-shell">
         <svg viewBox="0 0 760 640" role="img" aria-labelledby="pick-grid-title pick-grid-description">
-          <title id="pick-grid-title">{preset.name} on a square lattice</title>
+          <title id="pick-grid-title">{`${preset.name} on a square lattice`}</title>
           <desc id="pick-grid-description">
-            The polygon contains {interior} circular interior points and {boundary} square boundary
-            points. Pick's theorem and the coordinate-area check both give {formatNumber(pickArea)} square units.
+            {`The polygon contains ${interior} circular interior points and ${boundary} square boundary points. Pick's theorem and the coordinate-area check both give ${formatNumber(pickArea)} square units.`}
           </desc>
 
           <g className="lattice-lines" aria-hidden="true">
