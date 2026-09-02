@@ -36,7 +36,6 @@ const uniqueSourceCount = new Set(message.evidence.map((entry) => entry.source_i
     <header>
       <div>
         <a class="character-name" href={`/dialogue/people/${character.slug}/`}>{character.name}</a>
-        <span class="gravity">{character.gravitational_tendency.label}</span>
       </div>
       <a class="timestamp" href={`#${message.id}`} aria-label={`Link to ${character.name}'s message at ${formatDialogueTime(message.published_at)}`}>
         {formatDialogueTime(message.published_at)}
@@ -164,16 +163,6 @@ const uniqueSourceCount = new Set(message.evidence.map((entry) => entry.source_i
     font-weight: 750;
   }
   .character-name:hover { color: var(--character-primary); }
-  .gravity {
-    border: 1px solid color-mix(in srgb, var(--character-primary) 35%, var(--border-color));
-    border-radius: 999px;
-    color: var(--character-primary);
-    font-size: 0.57rem;
-    font-weight: 750;
-    letter-spacing: 0.1em;
-    padding: 0.18rem 0.42rem;
-    text-transform: uppercase;
-  }
   .timestamp {
     color: var(--text-secondary);
     flex: 0 0 auto;

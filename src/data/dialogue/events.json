@@ -160,5 +160,181 @@
     "subject_ids": ["memory-the-refusal-list"],
     "cause_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
     "payload": { "salience": 72, "type": "cultural" }
+  },
+  {
+    "id": "event-0019",
+    "type": "life-streams-seeded",
+    "occurred_at": "2026-09-03T00:01:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["anika-vale", "milo-chen", "evelyn-hart", "cassian-reed", "noor-rahal", "rhea-solano"],
+    "cause_message_ids": [],
+    "payload": { "life_event_count": 30, "artifact_count": 3, "source": "life-events.json" }
+  },
+  {
+    "id": "event-0020",
+    "type": "founding-record-superseded",
+    "occurred_at": "2026-09-03T00:08:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["founding-record-v1", "founding-record-v2"],
+    "cause_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
+    "payload": {
+      "reason": "One-time commissioning revision after the original record failed the new concrete-grounding and naturalness gates.",
+      "prior_record_preserved_at": "commissioning/founding-record-v1.json",
+      "message_ids_preserved": true,
+      "future_canon_policy": "append-only"
+    }
+  },
+  {
+    "id": "event-0021",
+    "type": "thread-recommissioned",
+    "occurred_at": "2026-09-03T00:08:05-07:00",
+    "actor_id": "anika-vale",
+    "subject_ids": ["thread-pump-manual-note"],
+    "cause_message_ids": [],
+    "payload": { "prior_thread_id": "thread-refuse-to-optimize", "record_version": "founding-record-v2", "artifact_id": "artifact-pump-manual-note" }
+  },
+  {
+    "id": "event-0022",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:10-07:00",
+    "actor_id": "anika-vale",
+    "subject_ids": ["msg-0001"],
+    "cause_message_ids": [],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0023",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:11-07:00",
+    "actor_id": "rhea-solano",
+    "subject_ids": ["msg-0002"],
+    "cause_message_ids": ["msg-0001"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0024",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:12-07:00",
+    "actor_id": "milo-chen",
+    "subject_ids": ["msg-0003"],
+    "cause_message_ids": ["msg-0001"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0025",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:13-07:00",
+    "actor_id": "evelyn-hart",
+    "subject_ids": ["msg-0004"],
+    "cause_message_ids": ["msg-0003"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0026",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:14-07:00",
+    "actor_id": "noor-rahal",
+    "subject_ids": ["msg-0005"],
+    "cause_message_ids": ["msg-0001"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0027",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:15-07:00",
+    "actor_id": "rhea-solano",
+    "subject_ids": ["msg-0006"],
+    "cause_message_ids": ["msg-0005"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0028",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:16-07:00",
+    "actor_id": "cassian-reed",
+    "subject_ids": ["msg-0007"],
+    "cause_message_ids": ["msg-0001"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0029",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:17-07:00",
+    "actor_id": "anika-vale",
+    "subject_ids": ["msg-0008"],
+    "cause_message_ids": ["msg-0007"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0030",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:18-07:00",
+    "actor_id": "evelyn-hart",
+    "subject_ids": ["msg-0009"],
+    "cause_message_ids": ["msg-0008"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0031",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:19-07:00",
+    "actor_id": "cassian-reed",
+    "subject_ids": ["msg-0010"],
+    "cause_message_ids": ["msg-0008"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0032",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:20-07:00",
+    "actor_id": "noor-rahal",
+    "subject_ids": ["msg-0011"],
+    "cause_message_ids": ["msg-0010"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0033",
+    "type": "message-recommissioned",
+    "occurred_at": "2026-09-03T00:08:21-07:00",
+    "actor_id": "milo-chen",
+    "subject_ids": ["msg-0012"],
+    "cause_message_ids": ["msg-0011"],
+    "payload": { "record_version": "founding-record-v2", "validation_run_id": "validation-founding-record-v2", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0034",
+    "type": "memory-superseded-during-commissioning",
+    "occurred_at": "2026-09-03T00:13:50-07:00",
+    "actor_id": "system",
+    "subject_ids": ["memory-the-refusal-list", "memory-the-pump-manual-note"],
+    "cause_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
+    "payload": { "prior_memory_preserved_by": "founding-record-v1", "record_version": "founding-record-v2" }
+  },
+  {
+    "id": "event-0035",
+    "type": "memory-created",
+    "occurred_at": "2026-09-03T00:13:55-07:00",
+    "actor_id": "system",
+    "subject_ids": ["memory-the-pump-manual-note"],
+    "cause_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
+    "payload": { "salience": 78, "type": "cultural", "record_version": "founding-record-v2" }
+  },
+  {
+    "id": "event-0036",
+    "type": "commissioning-validation-passed",
+    "occurred_at": "2026-09-03T00:14:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["validation-founding-record-v2"],
+    "cause_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
+    "payload": { "result": "passed", "new_required_checks": 8 }
+  },
+  {
+    "id": "event-0037",
+    "type": "state-snapshot-created",
+    "occurred_at": "2026-09-03T00:15:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["snapshot-day-001-commissioned"],
+    "cause_message_ids": [],
+    "payload": { "through_event_id": "event-0037", "record_version": "founding-record-v2" }
   }
 ]

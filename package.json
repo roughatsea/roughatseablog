@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "npm run build:wake-exports && astro dev",
-    "build": "npm run validate:save-point && npm run validate:wake && npm run validate:dialogue && npm run build:wake-exports && astro check && astro build",
+    "build": "npm run validate:save-point && npm run validate:wake && npm run validate:dialogue && npm run build:wake-exports && astro check && astro build && node scripts/verify-dialogue-build.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "validate:save-point": "node scripts/validate-save-point.mjs",
     "validate:wake": "node scripts/validate-wake-data.mjs && node scripts/validate-wake-records.mjs",
-    "validate:dialogue": "node scripts/validate-dialogue.mjs",
+    "validate:dialogue": "node scripts/validate-dialogue.mjs && node --test --test-concurrency=1 test/dialogue-phase2.test.mjs",
+    "dialogue:tick": "node scripts/dialogue-tick.mjs",
+    "dialogue:benchmark": "node scripts/build-dialogue-benchmark.mjs",
+    "test:dialogue:phase2": "node --test --test-concurrency=1 test/dialogue-phase2.test.mjs",
     "build:wake-exports": "node scripts/build-wake-exports.mjs"
   },
   "dependencies": {

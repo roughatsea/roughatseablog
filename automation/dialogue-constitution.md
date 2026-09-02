@@ -1,6 +1,6 @@
 # Dialogue constitution
 
-Version: 1.0.0
+Version: 2.0.0
 Established: 2026-09-02
 
 This document governs the fictional, persistent community published at `/dialogue/`. It is a constitution for a simulation, not a style prompt for generating a group chat.
@@ -17,7 +17,7 @@ Only accepted public messages, accepted source records, and explicit state-trans
 
 Generated candidates are not canon. Failed candidates are discarded privately. A failed message is never published as a character's attempt, and the public archive never displays retries.
 
-Once accepted, a canonical message is immutable. Corrections occur through later canonical messages and linked correction events. Administrative fixes to malformed data must be explicitly recorded.
+Once commissioning ends, a canonical message is immutable. Corrections occur through later canonical messages and linked correction events. Administrative fixes to malformed data must be explicitly recorded. The single commissioning revision from founding record v1 to v2 is permanently disclosed and the complete v1 record remains inspectable.
 
 ## 3. Founders are people, not debate roles
 
@@ -75,8 +75,8 @@ The system must avoid a visible clockwork cadence. A character's activity distri
 
 For every candidate turn:
 
-1. Determine whether the character has a reason to notice or revisit something.
-2. Retrieve the minimal relevant recent transcript, persistent beliefs, directional relationship context, salient memories, expertise boundaries, and sources.
+1. Determine whether the character has a specific reason to notice or revisit something now.
+2. Retrieve the minimal relevant recent transcript, persistent beliefs, directional relationship context, salient memories, expertise boundaries, life-stream events, artifacts, and sources.
 3. Ask whether silence, a reaction without a post, a reply, a new thread, a source introduction, or a delayed follow-up is most plausible.
 4. Generate one candidate action inside the character's knowledge and voice.
 5. Verify factual and cited claims against retrieved sources.
@@ -84,6 +84,8 @@ For every candidate turn:
 7. Accept atomically with its events, or discard it completely.
 
 The system does not expose hidden reasoning traces. It stores structured provenance: retrieved record IDs, implicated beliefs, relationship context, source links, validation results, and accepted state transitions.
+
+Every non-silent candidate must carry a `why_now`, a `speech_act`, and an exact `concrete_anchor_id` plus `anchor_detail`. A reply must identify the precise parent detail it engages. Free-floating thematic relevance is not grounding.
 
 ## 9. Evidence
 
@@ -130,6 +132,9 @@ Nothing publishes merely because a model produced it. Every candidate must pass:
 - expertise boundary;
 - continuity;
 - reply and timeline integrity;
+- concrete grounding and why-now integrity;
+- personal-history provenance;
+- conversational naturalness and abstraction-density limits;
 - duplication and repetition detection;
 - linguistic distinctiveness and anti-LLM-ism checks;
 - director non-authorship checks;
@@ -155,8 +160,20 @@ Chartroom may expose structured provenance but never raw model prompts, hidden c
 
 Dialogue begins with six founders who already have unequal familiarity, affection, trust, respect, and friction. The first public day is the first time this exact room exists, not the first time every pair has met.
 
-The opening record begins with one object placed on the table:
+The commissioned opening record begins with one object placed on the table:
 
-> What should a civilization deliberately refuse to optimize?
+> A stained 1986 municipal pump-station manual containing the penciled warning, “Ignore this in rain. Valve sticks.”
 
 The opening messages are small in number, canonical, validated, and sufficient to keep the first visitor from entering an empty room. They do not preordain future alliances or conclusions.
+
+## 17. Life streams and ordinary speech
+
+Each founder has an event-sourced life beyond the room: work in progress, mundane obligations, mistakes, objects handled, people encountered, small annoyances, unfinished questions, and recent experiences. Life events are bounded fictional records with stable IDs, dates, visibility, and provenance. A character may recall only their own accessible events unless another canonical record shared the information.
+
+Dialogue should sound like people noticing things, asking follow-up questions, correcting one another, making jokes, bringing records, admitting uncertainty, and occasionally saying very little. A voice is not a recurring abstract thesis. Messages that could be transplanted between characters or topics by changing a few nouns fail naturalness even when eloquent.
+
+## 18. Phase 2 shadow boundary
+
+The Phase 2 engine operates only in shadow mode. Its provider abstraction may produce zero, one, or several candidates per tick. Every candidate is validated and recorded as accepted-for-observation or rejected, but neither outcome is canon and neither can alter canonical files, public messages, beliefs, relationships, memories, or events.
+
+Shadow records live outside the canonical data directory, carry an explicit `NON-CANON` label, include before-and-after canonical digests, and never store raw model reasoning. The Phase 2 command surface exposes no canonical or promotion mode. A canonical publishing boundary may be designed only in Phase 3 after shadow behavior passes trials.

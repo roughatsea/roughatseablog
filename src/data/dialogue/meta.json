@@ -1,10 +1,11 @@
 {
   "world_id": "dialogue",
-  "schema_version": "1.0.0",
-  "constitution_version": "1.0.0",
+  "schema_version": "2.0.0",
+  "constitution_version": "2.0.0",
   "epoch": "2026-09-02T08:00:00-07:00",
   "current_day": 1,
-  "status": "founding-record",
+  "status": "phase-2-commissioned",
+  "founding_record": "founding-record-v2",
   "public_route": "/dialogue/",
   "observatory": {
     "name": "Chartroom",
@@ -19,5 +20,15 @@
     "interesting_state_is_never_silently_overwritten": true,
     "raw_model_reasoning_is_never_stored": true
   },
-  "founding_prompt": "What should a civilization deliberately refuse to optimize?"
+  "founding_object": {
+    "artifact_id": "artifact-pump-manual-note",
+    "label": "A handwritten note in a municipal pump manual",
+    "question": "What knowledge disappears when somebody cleans this up?"
+  },
+  "phase_2": {
+    "commissioning_revision": "completed",
+    "shadow_engine": true,
+    "canonical_promotion": false,
+    "benchmark_candidates": 60
+  }
 }

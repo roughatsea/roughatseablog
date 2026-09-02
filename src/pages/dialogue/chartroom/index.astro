@@ -8,10 +8,15 @@ import {
   dialogueBeliefs,
   dialogueMessages,
   dialogueSources,
+  dialogueArtifacts,
+  dialogueLifeEvents,
   dialogueMemories,
   dialogueValidationRuns,
   dialogueEvents,
   latestDialogueSnapshot,
+  foundingRecordV1,
+  dialogueShadowRuns,
+  dialogueBenchmarkReport,
 } from '../../../lib/dialogue';
 
 if (!latestDialogueSnapshot) throw new Error('Chartroom requires a canonical Dialogue snapshot.');
@@ -30,10 +35,15 @@ if (!latestDialogueSnapshot) throw new Error('Chartroom requires a canonical Dia
     beliefs={dialogueBeliefs}
     messages={dialogueMessages}
     sources={dialogueSources}
+    artifacts={dialogueArtifacts}
+    lifeEvents={dialogueLifeEvents}
     memories={dialogueMemories}
     validationRuns={dialogueValidationRuns}
     events={dialogueEvents}
     snapshot={latestDialogueSnapshot}
+    foundingRecordV1={foundingRecordV1}
+    shadowRuns={dialogueShadowRuns}
+    benchmarkReport={dialogueBenchmarkReport}
   />
 </BaseLayout>
 

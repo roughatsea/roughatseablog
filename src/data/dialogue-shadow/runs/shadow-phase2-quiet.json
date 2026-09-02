@@ -1,0 +1,39 @@
+{
+  "run_id": "shadow-phase2-quiet",
+  "mode": "shadow",
+  "canonical_status": "NON-CANON",
+  "started_at": "2026-09-03T09:00:00-07:00",
+  "completed_at": "2026-09-03T09:00:00-07:00",
+  "scenario": "quiet",
+  "outcome": "quiet",
+  "base_snapshot_id": "snapshot-day-001-commissioned",
+  "versions": {
+    "constitution": "2.0.0",
+    "schema": "2.0.0",
+    "engine": "phase-2.0.0",
+    "provider": "commissioning-recorded-provider",
+    "provider_version": "phase-2.0.0",
+    "validator": "phase-2.0.0"
+  },
+  "director": {
+    "opportunity_only": true,
+    "scheduled_candidate_ids": [],
+    "required_participation": false,
+    "assigned_conclusions": false
+  },
+  "summary": {
+    "generated": 0,
+    "passed": 0,
+    "rejected": 0
+  },
+  "candidates": [],
+  "proposed_state_changes_applied": 0,
+  "raw_model_reasoning_stored": false,
+  "canonical_mutation_guard": {
+    "algorithm": "sha256",
+    "digest_before": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "digest_after": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "changed_files": [],
+    "passed": true
+  }
+}

@@ -41,15 +41,22 @@ const founders = load('founders.json');
 const relationships = load('relationships.json');
 const beliefs = load('beliefs.json');
 const sources = load('sources.json');
+const artifacts = load('artifacts.json');
+const lifeEvents = load('life-events.json');
 const threads = load('threads.json');
 const messages = load('messages.json');
 const memories = load('memories.json');
 const validationRuns = load('validation-runs.json');
 const events = load('events.json');
 const snapshots = load('state-snapshots.json');
-load('dialogue.schema.json');
+const schema = load('dialogue.schema.json');
+const foundingV1 = load('commissioning/founding-record-v1.json');
 
 assert(meta.world_id === 'dialogue', 'meta.json must identify the Dialogue world.');
+assert(meta.schema_version === '2.0.0' && schema.$id.endsWith('dialogue-2.0.0.json'), 'Phase 2 schema version must be 2.0.0.');
+assert(meta.constitution_version === '2.0.0', 'Phase 2 constitution version must be 2.0.0.');
+assert(meta.status === 'phase-2-commissioned' && meta.founding_record === 'founding-record-v2', 'The commissioned v2 record must be current.');
+assert(meta.phase_2?.shadow_engine === true && meta.phase_2?.canonical_promotion === false, 'Phase 2 must expose a shadow engine and no canonical promotion.');
 assert(meta.observatory?.name === 'Chartroom', 'The observatory must be named Chartroom.');
 assert(meta.observatory?.read_only === true, 'Chartroom must remain read-only.');
 assert(meta.observatory?.listed === false && meta.observatory?.indexed === false, 'Chartroom must remain unlisted and noindex.');
@@ -140,12 +147,47 @@ for (const source of sources) {
   assertStringArray(source.verification?.supports, `${source.id}.verification.supports`);
 }
 
+assertUnique(artifacts, (artifact) => artifact.id, 'Artifact');
+const artifactIds = new Set(artifacts.map((artifact) => artifact.id));
+for (const artifact of artifacts) {
+  assert(founderIds.has(artifact.introduced_by), `${artifact.id}: introducer must be a founder.`);
+  assert(Number.isFinite(Date.parse(artifact.introduced_at)), `${artifact.id}: introduced_at must be a date-time.`);
+  assert(artifact.fictional_world_record === true && artifact.canonical_status === 'accepted', `${artifact.id}: artifact must be an accepted fictional world record.`);
+  assertStringArray(artifact.required_terms, `${artifact.id}.required_terms`);
+}
+
+assertUnique(lifeEvents, (lifeEvent) => lifeEvent.id, 'Life event');
+const lifeEventIds = new Set(lifeEvents.map((lifeEvent) => lifeEvent.id));
+const lifeEventsById = new Map(lifeEvents.map((lifeEvent) => [lifeEvent.id, lifeEvent]));
+for (const lifeEvent of lifeEvents) {
+  assert(founderIds.has(lifeEvent.character_id), `${lifeEvent.id}: character must be a founder.`);
+  assert(Number.isFinite(Date.parse(lifeEvent.occurred_at)), `${lifeEvent.id}: occurred_at must be a date-time.`);
+  assert(typeof lifeEvent.summary === 'string' && lifeEvent.summary.trim(), `${lifeEvent.id}: summary is required.`);
+  assert(Array.isArray(lifeEvent.detail_keys) && lifeEvent.detail_keys.length > 0, `${lifeEvent.id}: detail_keys are required.`);
+  assert(Array.isArray(lifeEvent.artifact_ids) && Array.isArray(lifeEvent.source_ids), `${lifeEvent.id}: artifact_ids and source_ids must be arrays.`);
+  lifeEvent.artifact_ids.forEach((id) => assert(artifactIds.has(id), `${lifeEvent.id}: unknown artifact ${id}.`));
+  lifeEvent.source_ids.forEach((id) => assert(sourceIds.has(id), `${lifeEvent.id}: unknown source ${id}.`));
+  assert(lifeEvent.canonical === true, `${lifeEvent.id}: life event must be canonical.`);
+}
+for (const founderId of founderIds) {
+  assert(lifeEvents.filter((entry) => entry.character_id === founderId).length >= 5, `${founderId}: Phase 2 requires at least five seeded life events.`);
+}
+
 assertUnique(threads, (thread) => thread.id, 'Thread');
 const threadIds = new Set(threads.map((thread) => thread.id));
 assertUnique(messages, (message) => message.id, 'Message');
 const messageById = new Map(messages.map((message) => [message.id, message]));
 const validationById = new Map(validationRuns.map((run) => [run.id, run]));
 const relationshipIds = new Set(relationships.map((relationship) => relationship.id));
+const normalize = (value) => String(value ?? '').toLocaleLowerCase().replace(/[‘’“”]/g, "'").replace(/\s+/g, ' ').trim();
+const includesNormalized = (value, detail) => normalize(value).includes(normalize(detail));
+const resolveAnchor = (grounding) => {
+  if (grounding.concrete_anchor_kind === 'artifact') return artifacts.find((entry) => entry.id === grounding.concrete_anchor_id);
+  if (grounding.concrete_anchor_kind === 'life-event') return lifeEvents.find((entry) => entry.id === grounding.concrete_anchor_id);
+  if (grounding.concrete_anchor_kind === 'message') return messages.find((entry) => entry.id === grounding.concrete_anchor_id);
+  if (grounding.concrete_anchor_kind === 'source') return sources.find((entry) => entry.id === grounding.concrete_anchor_id);
+  return undefined;
+};
 
 let previousTime = Number.NEGATIVE_INFINITY;
 for (const message of messages) {
@@ -157,6 +199,7 @@ for (const message of messages) {
   assert(publishedTime >= previousTime, `${message.id}: messages must be stored chronologically.`);
   previousTime = publishedTime;
   assert(message.canonical_status === 'accepted', `${message.id}: only accepted messages belong in canonical messages.json.`);
+  assert(message.record_version === 'founding-record-v2', `${message.id}: record_version must be founding-record-v2.`);
   const validation = validationById.get(message.validation_run_id);
   assert(validation?.result === 'passed', `${message.id}: validation run must exist and pass.`);
   assert(validation.checked_message_ids.includes(message.id), `${message.id}: validation run does not list this message.`);
@@ -168,6 +211,26 @@ for (const message of messages) {
   } else {
     assert(message.depth === 0, `${message.id}: top-level messages must have depth 0.`);
   }
+  const grounding = message.grounding;
+  assert(typeof grounding?.why_now === 'string' && grounding.why_now.trim().length >= 12, `${message.id}: a specific why_now is required.`);
+  assert(typeof grounding?.speech_act === 'string' && grounding.speech_act.trim(), `${message.id}: speech_act is required.`);
+  const anchor = resolveAnchor(grounding);
+  assert(anchor, `${message.id}: unknown ${grounding?.concrete_anchor_kind} anchor ${grounding?.concrete_anchor_id}.`);
+  assert(includesNormalized(JSON.stringify(anchor), grounding.anchor_detail), `${message.id}: anchor_detail is not present in its canonical anchor.`);
+  assert(includesNormalized(message.paragraphs.join(' '), grounding.anchor_detail), `${message.id}: message does not engage its anchor_detail.`);
+  assert(Array.isArray(grounding.personal_life_event_ids), `${message.id}: personal_life_event_ids must be an array.`);
+  grounding.personal_life_event_ids.forEach((id) => {
+    const lifeEvent = lifeEventsById.get(id);
+    assert(lifeEvent, `${message.id}: unknown personal life event ${id}.`);
+    assert(lifeEvent.character_id === message.author_id, `${message.id}: personal life event ${id} belongs to another founder.`);
+    assert(Date.parse(lifeEvent.occurred_at) <= publishedTime, `${message.id}: personal life event ${id} occurs after publication.`);
+  });
+  if (message.in_reply_to) {
+    assert(grounding.reply_detail?.parent_id === message.in_reply_to, `${message.id}: reply_detail must name its parent.`);
+    const parentText = messageById.get(message.in_reply_to).paragraphs.join(' ');
+    assert(includesNormalized(parentText, grounding.reply_detail.parent_excerpt), `${message.id}: parent_excerpt is not in its parent.`);
+    assert(includesNormalized(message.paragraphs.join(' '), grounding.reply_detail.response_span), `${message.id}: response_span is not in the reply.`);
+  } else assert(grounding.reply_detail === null, `${message.id}: top-level message must have null reply_detail.`);
   for (const evidence of message.evidence) {
     assert(sourceIds.has(evidence.source_id), `${message.id}: unknown source ${evidence.source_id}.`);
     assert(['source-says', 'author-infers'].includes(evidence.claim_boundary), `${message.id}: invalid claim boundary.`);
@@ -178,7 +241,14 @@ for (const message of messages) {
   message.provenance.implicated_belief_ids.forEach((id) => assert(beliefIds.has(id), `${message.id}: unknown implicated belief ${id}.`));
   message.provenance.relationship_context_ids.forEach((id) => assert(relationshipIds.has(id), `${message.id}: unknown relationship context ${id}.`));
   message.provenance.external_source_ids.forEach((id) => assert(sourceIds.has(id), `${message.id}: unknown consulted source ${id}.`));
+  assert(Array.isArray(message.provenance.retrieved_life_event_ids), `${message.id}: retrieved_life_event_ids must be an array.`);
+  message.provenance.retrieved_life_event_ids.forEach((id) => assert(lifeEventIds.has(id), `${message.id}: unknown retrieved life event ${id}.`));
+  grounding.personal_life_event_ids.forEach((id) => assert(message.provenance.retrieved_life_event_ids.includes(id), `${message.id}: personal life event ${id} must be included in provenance.`));
 }
+assert(new Set(messages.map((message) => message.paragraphs.length)).size >= 2, 'Commissioned record must not use one uniform paragraph shape.');
+assert(new Set(messages.map((message) => message.grounding.speech_act)).size >= 8, 'Commissioned record requires varied conversational speech acts.');
+const tendencyOpening = /^(memory|possibility|evidence|dissent|consequence|implementation)\b[\s:—-]*/i;
+messages.forEach((message) => assert(!tendencyOpening.test(message.paragraphs[0]), `${message.id}: message may not open by announcing its gravitational tendency.`));
 
 for (const thread of threads) {
   assertStringArray(thread.message_ids, `${thread.id}.message_ids`);
@@ -198,8 +268,48 @@ for (const memory of memories) {
 }
 
 assertUnique(events, (event) => event.id, 'Event');
+let previousEventTime = Number.NEGATIVE_INFINITY;
+events.forEach((event, index) => {
+  assert(event.id === `event-${String(index + 1).padStart(4, '0')}`, `${event.id}: event IDs must be contiguous and chronological.`);
+  const eventTime = Date.parse(event.occurred_at);
+  assert(Number.isFinite(eventTime) && eventTime >= previousEventTime, `${event.id}: event times must be chronological.`);
+  previousEventTime = eventTime;
+  assert(Array.isArray(event.subject_ids) && event.subject_ids.length > 0, `${event.id}: subject_ids are required.`);
+  assert(Array.isArray(event.cause_message_ids), `${event.id}: cause_message_ids must be an array.`);
+});
 const acceptedMessageEvents = new Set(events.filter((event) => event.type === 'message-accepted').flatMap((event) => event.subject_ids));
 messages.forEach((message) => assert(acceptedMessageEvents.has(message.id), `${message.id}: missing message-accepted event.`));
+for (const archivedMessage of foundingV1.messages) {
+  const archivedEvent = events.find((event) => event.type === 'message-accepted' && event.subject_ids.length === 1 && event.subject_ids[0] === archivedMessage.id);
+  assert(archivedEvent?.actor_id === archivedMessage.author_id, `${archivedMessage.id}: archived acceptance actor does not match v1 author.`);
+  assert(JSON.stringify(archivedEvent.cause_message_ids) === JSON.stringify(archivedMessage.in_reply_to ? [archivedMessage.in_reply_to] : []), `${archivedMessage.id}: archived acceptance cause does not match v1 reply parent.`);
+}
+const recommissionedEvents = events.filter((event) => event.type === 'message-recommissioned');
+assert(recommissionedEvents.length === messages.length, 'Each v2 message must have exactly one recommissioning event.');
+for (const message of messages) {
+  const event = recommissionedEvents.find((entry) => entry.subject_ids.length === 1 && entry.subject_ids[0] === message.id);
+  assert(event, `${message.id}: missing message-recommissioned event.`);
+  assert(event.actor_id === message.author_id, `${message.id}: recommissioning actor does not match current author.`);
+  assert(event.payload?.record_version === message.record_version, `${message.id}: recommissioning version does not match.`);
+  assert(event.payload?.validation_run_id === message.validation_run_id, `${message.id}: recommissioning validation does not match.`);
+  assert(JSON.stringify(event.cause_message_ids) === JSON.stringify(message.in_reply_to ? [message.in_reply_to] : []), `${message.id}: recommissioning cause does not match reply parent.`);
+}
+const currentThreadEvent = events.find((event) => event.type === 'thread-recommissioned' && event.subject_ids.includes(threads[0].id));
+assert(currentThreadEvent?.payload?.record_version === 'founding-record-v2', 'The current thread must have a v2 recommissioning event.');
+for (const memory of memories) {
+  const memoryEvent = events.find((event) => event.type === 'memory-created' && event.subject_ids.includes(memory.id) && event.payload?.record_version === 'founding-record-v2');
+  assert(memoryEvent, `${memory.id}: missing current memory-created event.`);
+}
+
+assert(foundingV1.id === 'founding-record-v1' && foundingV1.status === 'superseded-during-commissioning' && foundingV1.immutable === true, 'The original founding record must remain preserved and visibly superseded.');
+assert(foundingV1.messages.length === 12, 'The complete 12-message v1 record must remain preserved.');
+assert(foundingV1.commissioning_review?.result === 'failed', 'The v1 commissioning review must record failure.');
+assert(foundingV1.messages.map((entry) => entry.id).join('|') === messages.map((entry) => entry.id).join('|'), 'Commissioning revision must preserve stable message IDs.');
+
+const currentValidation = validationById.get('validation-founding-record-v2');
+const phase2Checks = ['factuality', 'citation_support', 'source_interpretation_boundary', 'character_consistency', 'expertise_boundary', 'continuity', 'reply_timeline_integrity', 'concrete_grounding', 'personal_history_integrity', 'naturalness', 'duplication', 'linguistic_distinctiveness', 'director_non_authorship', 'editorial_quality', 'state_change_bounds'];
+assert(currentValidation?.result === 'passed', 'The v2 founding validation must pass.');
+phase2Checks.forEach((key) => assert(currentValidation.checks?.[key]?.result === 'passed', `The v2 validation check ${key} must pass.`));
 
 const latestSnapshot = snapshots.at(-1);
 assert(latestSnapshot, 'At least one state snapshot is required.');
@@ -210,8 +320,12 @@ assert(latestSnapshot.counts.memories === memories.length, 'Snapshot memory coun
 assert(latestSnapshot.counts.threads === threads.length, 'Snapshot thread count is stale.');
 assert(latestSnapshot.counts.messages === messages.length, 'Snapshot message count is stale.');
 assert(latestSnapshot.counts.sources === sources.length, 'Snapshot source count is stale.');
+assert(latestSnapshot.counts.artifacts === artifacts.length, 'Snapshot artifact count is stale.');
+assert(latestSnapshot.counts.life_events === lifeEvents.length, 'Snapshot life-event count is stale.');
 assert(latestSnapshot.counts.events === events.length, 'Snapshot event count is stale.');
+assert(latestSnapshot.through_event_id === events.at(-1).id, 'Latest snapshot must run through the latest event.');
+latestSnapshot.active_thread_ids.forEach((id) => assert(threadIds.has(id), `Snapshot contains unknown active thread ${id}.`));
 
-scanForbiddenKeys({ meta, founders, relationships, beliefs, sources, threads, messages, memories, validationRuns, events, snapshots });
+scanForbiddenKeys({ meta, founders, relationships, beliefs, sources, artifacts, lifeEvents, threads, messages, memories, validationRuns, events, snapshots, foundingV1 });
 
-console.log(`Dialogue validation passed: ${founders.length} founders, ${relationships.length * 2} directional relationships, ${beliefs.length} beliefs, ${messages.length} canonical messages, ${events.length} events.`);
+console.log(`Dialogue validation passed: ${founders.length} founders, ${lifeEvents.length} life events, ${artifacts.length} artifacts, ${messages.length} grounded canonical messages, ${events.length} events.`);

@@ -3,12 +3,21 @@ import founderData from '../data/dialogue/founders.json';
 import relationshipData from '../data/dialogue/relationships.json';
 import beliefData from '../data/dialogue/beliefs.json';
 import sourceData from '../data/dialogue/sources.json';
+import artifactData from '../data/dialogue/artifacts.json';
+import lifeEventData from '../data/dialogue/life-events.json';
 import threadData from '../data/dialogue/threads.json';
 import messageData from '../data/dialogue/messages.json';
 import memoryData from '../data/dialogue/memories.json';
 import validationData from '../data/dialogue/validation-runs.json';
 import eventData from '../data/dialogue/events.json';
 import snapshotData from '../data/dialogue/state-snapshots.json';
+import foundingV1Data from '../data/dialogue/commissioning/founding-record-v1.json';
+import benchmarkReportData from '../data/dialogue-shadow/benchmark-report.json';
+import benchmarkFinalRunData from '../data/dialogue-shadow/runs/shadow-phase2-benchmark-final.json';
+import quietRunData from '../data/dialogue-shadow/runs/shadow-phase2-quiet.json';
+import singleRunData from '../data/dialogue-shadow/runs/shadow-phase2-single.json';
+import manyRunData from '../data/dialogue-shadow/runs/shadow-phase2-many.json';
+import rejectedRunData from '../data/dialogue-shadow/runs/shadow-phase2-rejected.json';
 
 export type BigFiveKey = 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness' | 'neuroticism';
 export type RelationshipDimension = 'affection' | 'trust' | 'intellectual_respect' | 'familiarity' | 'friction';
@@ -110,18 +119,29 @@ export interface DialogueEvidence {
 
 export interface DialogueMessage {
   id: string;
+  record_version: 'founding-record-v2';
   thread_id: string;
   author_id: string;
   published_at: string;
   in_reply_to: string | null;
   depth: number;
   paragraphs: string[];
+  grounding: {
+    why_now: string;
+    concrete_anchor_id: string;
+    concrete_anchor_kind: 'artifact' | 'life-event' | 'message' | 'source';
+    anchor_detail: string;
+    speech_act: string;
+    personal_life_event_ids: string[];
+    reply_detail: null | { parent_id: string; parent_excerpt: string; response_span: string; engagement_type: string };
+  };
   evidence: DialogueEvidence[];
   canonical_status: 'accepted';
   validation_run_id: string;
   provenance: {
     active_thread_ids: string[];
     retrieved_memory_ids: string[];
+    retrieved_life_event_ids: string[];
     implicated_belief_ids: string[];
     relationship_context_ids: string[];
     external_source_ids: string[];
@@ -139,6 +159,7 @@ export interface DialogueThread {
   initiated_by: string;
   archive_day: number;
   tags: string[];
+  artifact_ids?: string[];
   message_ids: string[];
   current_summary: string;
 }
@@ -190,6 +211,8 @@ export interface DialogueSnapshot {
     characters: number;
     directional_relationships: number;
     beliefs: number;
+    artifacts?: number;
+    life_events?: number;
     memories: number;
     threads: number;
     messages: number;
@@ -201,17 +224,118 @@ export interface DialogueSnapshot {
   note: string;
 }
 
+export interface DialogueArtifact {
+  id: string;
+  kind: string;
+  title: string;
+  introduced_at: string;
+  introduced_by: string;
+  description: string;
+  required_terms: string[];
+  fictional_world_record: true;
+  canonical_status: 'accepted';
+}
+
+export interface DialogueLifeEvent {
+  id: string;
+  character_id: string;
+  occurred_at: string;
+  kind: string;
+  status: string;
+  summary: string;
+  detail_keys: string[];
+  artifact_ids: string[];
+  source_ids: string[];
+  canonical: true;
+}
+
+export interface ArchivedDialogueMessage {
+  id: string;
+  author_id: string;
+  published_at: string;
+  in_reply_to: string | null;
+  paragraphs: string[];
+}
+
+export interface FoundingRecordArchive {
+  id: string;
+  status: string;
+  immutable: boolean;
+  superseded_by: string;
+  reason: string;
+  original_validation: { id: string; result: string; note: string };
+  commissioning_review: { id: string; completed_at: string; result: string; checks: Record<string, { result: string; note: string }> };
+  messages: ArchivedDialogueMessage[];
+}
+
+export interface DialogueShadowCandidate {
+  candidate_id: string;
+  author_id: string;
+  scenario_id: string;
+  text: string;
+  canonical_status: 'NON-CANON';
+  grounding: DialogueMessage['grounding'] & { reply_to_message_id?: string | null };
+  validation: {
+    result: 'passed' | 'rejected';
+    label: string;
+    checks: Record<string, boolean>;
+    failures: Array<{ code: string; note: string }>;
+    raw_model_reasoning_stored: false;
+  };
+  proposed_state_changes: Array<Record<string, unknown>>;
+}
+
+export interface DialogueShadowRun {
+  run_id: string;
+  mode: 'shadow';
+  canonical_status: 'NON-CANON';
+  started_at: string;
+  completed_at: string;
+  scenario: string;
+  outcome: string;
+  base_snapshot_id: string | null;
+  versions: Record<string, string>;
+  director: { opportunity_only: boolean; scheduled_candidate_ids: string[]; required_participation: boolean; assigned_conclusions: boolean };
+  summary: { generated: number; passed: number; rejected: number };
+  candidates: DialogueShadowCandidate[];
+  proposed_state_changes_applied: number;
+  raw_model_reasoning_stored: false;
+  canonical_mutation_guard: { algorithm: string; digest_before: string; digest_after: string; changed_files: string[]; passed: boolean };
+}
+
+export interface DialogueBenchmarkReport {
+  benchmark_id: string;
+  run_id: string;
+  candidate_count: number;
+  positive_count: number;
+  negative_count: number;
+  validator_results: Record<string, number | boolean>;
+  evaluations: Array<{ evaluator_id: string; evaluated: number; grounded: number; conversational: number; grounded_and_conversational: number; correct_author_attribution: number; per_founder: Record<string, { accepted: number; grounded_and_conversational: number; correct_author: number }> }>;
+  exit_gate: Record<string, boolean>;
+}
+
 export const dialogueMeta = metaData;
 export const dialogueCharacters = founderData as DialogueCharacter[];
 export const dialogueRelationships = relationshipData as unknown as DialogueRelationship[];
 export const dialogueBeliefs = beliefData as DialogueBelief[];
 export const dialogueSources = sourceData as DialogueSource[];
+export const dialogueArtifacts = artifactData as DialogueArtifact[];
+export const dialogueLifeEvents = lifeEventData as DialogueLifeEvent[];
 export const dialogueThreads = threadData as DialogueThread[];
 export const dialogueMessages = messageData as DialogueMessage[];
 export const dialogueMemories = memoryData as DialogueMemory[];
-export const dialogueValidationRuns = validationData as DialogueValidationRun[];
+export const dialogueValidationRuns = validationData as unknown as DialogueValidationRun[];
 export const dialogueEvents = eventData as DialogueEvent[];
 export const dialogueSnapshots = snapshotData as DialogueSnapshot[];
+export const foundingRecordV1 = foundingV1Data as FoundingRecordArchive;
+export const dialogueBenchmarkReport = benchmarkReportData as unknown as DialogueBenchmarkReport;
+export const dialogueShadowRuns = [
+  quietRunData,
+  singleRunData,
+  manyRunData,
+  rejectedRunData,
+  benchmarkFinalRunData,
+] as unknown as DialogueShadowRun[];
 
 export const dialogueCharactersById = new Map(dialogueCharacters.map((character) => [character.id, character]));
 export const dialogueSourcesById = new Map(dialogueSources.map((source) => [source.id, source]));
