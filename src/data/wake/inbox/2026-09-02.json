@@ -1,0 +1,299 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-02",
+  "article": {
+    "slug": "morning-soundings-2026-09-02",
+    "title": "Morning Soundings: The Spiral Is Made by Its Restraints",
+    "publishedAt": "2026-09-02T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-02.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-02T05:03:06-07:00",
+    "sourceStateAsOf": "2026-09-02",
+    "notes": "Captured during the publication run from sources accessed on September 2, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-02-lz-anomalous-event",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "One event is not dark matter",
+      "canonicalSubject": {
+        "name": "LUX-ZEPLIN anomalous high-energy event",
+        "kind": "particle-physics-result",
+        "aliases": [
+          "LZ 2.6-sigma event",
+          "LZ high-energy WIMP candidate"
+        ]
+      },
+      "signalType": "prepublication-experimental-result",
+      "topics": [
+        "dark-matter",
+        "particle-physics",
+        "wimps",
+        "scientific-inference"
+      ],
+      "geography": [
+        "South Dakota",
+        "United States"
+      ],
+      "canonicalClaim": "The LUX-ZEPLIN collaboration reported one high-energy particle interaction in 220 live days of data that its known-background model does not readily explain, with a reported local significance of 2.6 sigma.",
+      "knownFacts": [
+        "The analyzed data were collected between March 2023 and April 2024 in a 10-tonne liquid-xenon detector nearly one mile underground.",
+        "The collaboration reported that the event is incompatible with the simplest WIMP interaction model and that a dark-matter interpretation would require a particle mass of at least 200 GeV/c² and a less elementary interaction.",
+        "The collaboration explicitly did not claim a dark-matter discovery and said further data could strengthen or weaken the excess."
+      ],
+      "uncertainties": [
+        "The detailed paper had not yet been released on arXiv or submitted to peer review when the point-zero packet was captured.",
+        "A rare or unmodeled detector background could account for the event.",
+        "The reported background-only significance is not the posterior probability that the event was caused by dark matter."
+      ],
+      "evidence": {
+        "level": "first-party-only",
+        "notes": "The numerical result and interpretation come from the experiment's institutional announcement and related university coverage before publication of the detailed paper."
+      },
+      "sources": [
+        {
+          "url": "https://newscenter.lbl.gov/2026/09/01/lz-sees-surprising-result-in-search-for-dark-matter/",
+          "title": "LZ Sees Surprising Result in Search for Dark Matter",
+          "publisher": "Lawrence Berkeley National Laboratory",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-02",
+          "role": "official-primary",
+          "lineage": "lz-anomalous-event-announcement"
+        },
+        {
+          "url": "https://www.brown.edu/news/2026-09-01/lz-dark-matter-results",
+          "title": "LZ experiment sees surprising result in search for dark matter",
+          "publisher": "Brown University",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-02",
+          "role": "institutional-reporting",
+          "lineage": "lz-anomalous-event-announcement"
+        }
+      ],
+      "openQuestions": [
+        "Will the anomaly retain or gain significance when LZ analyzes additional data?",
+        "Will the full paper identify plausible detector backgrounds or analysis choices not described in the announcement?",
+        "Can another direct-detection experiment test the heavier or nonstandard WIMP interactions compatible with the event?"
+      ],
+      "watchFor": [
+        {
+          "description": "Detailed preprint and peer review",
+          "expectedWindow": null,
+          "trigger": "The collaboration releases the promised arXiv paper, submits it to Physical Review Letters, or publishes a revision."
+        },
+        {
+          "description": "Additional LZ exposure",
+          "expectedWindow": null,
+          "trigger": "LZ reports whether new data produce compatible events or reduce the anomaly's significance."
+        },
+        {
+          "description": "Independent experimental comparison",
+          "expectedWindow": null,
+          "trigger": "Another dark-matter detector reports a test of the same interaction or parameter region."
+        }
+      ],
+      "trackingTerms": [
+        "LUX-ZEPLIN 2.6 sigma",
+        "LZ high energy event 200 GeV",
+        "Sam Eriksen LZ anomalous event",
+        "TeVPA 2026 LZ"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The anomaly has a persistent experimental identity, a promised paper, accumulating data, and a clear possibility of confirmation, revision, or disappearance."
+      },
+      "selectionReason": "The event makes the difference between statistical surprise and physical explanation unusually concrete while preserving the collaboration's own uncertainty.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-02-cayonu-malachite-workshop",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "A workshop appears before an age of metal",
+      "canonicalSubject": {
+        "name": "Çayönü Neolithic malachite workshop",
+        "kind": "archaeological-work-area",
+        "aliases": [
+          "Çayönü copper workshop",
+          "Çayönü Tepesi mineral-working area"
+        ]
+      },
+      "signalType": "archaeological-discovery",
+      "topics": [
+        "archaeology",
+        "neolithic",
+        "craft-specialization",
+        "copper",
+        "malachite"
+      ],
+      "geography": [
+        "Diyarbakır",
+        "Türkiye"
+      ],
+      "canonicalClaim": "Excavators at Çayönü Tepesi reported a roughly five-square-meter, provisionally dated 6900–6800 BCE work area containing architecture and malachite and copper objects at multiple stages of manufacture.",
+      "knownFacts": [
+        "The reported area includes a stone-paved working surface and at least six surrounding postholes that may have supported a canopy.",
+        "Raw, partly processed, and finished malachite pieces were found with copper beads and other copper objects in and around the structure.",
+        "The co-location of architecture and multiple production stages supports an interpretation of on-site, spatially organized craft work."
+      ],
+      "uncertainties": [
+        "The chronology and material interpretation remain preliminary while radiocarbon and archaeometric work continues.",
+        "The reports do not establish ore smelting, casting, or large-scale metallurgy.",
+        "The degree of labor specialization and the products' uses cannot be reconstructed from the announcement alone."
+      ],
+      "evidence": {
+        "level": "preliminary",
+        "notes": "The baseline derives from the Culture and Tourism Ministry and excavation-team announcement as relayed by two reports; no peer-reviewed excavation publication was available at capture."
+      },
+      "sources": [
+        {
+          "url": "https://www.aa.com.tr/en/turkiye/9-000-year-old-mining-workshop-found-in-turkiye/4043827",
+          "title": "9,000-year-old mining workshop found in Türkiye",
+          "publisher": "Anadolu Agency",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-02",
+          "role": "independent-reporting",
+          "lineage": "cayonu-ministry-workshop-announcement"
+        },
+        {
+          "url": "https://www.heritagedaily.com/2026/09/9000-year-old-mining-workshop-unearthed-at-cayonu-hill/159144",
+          "title": "9,000-year-old mining workshop unearthed at Çayönü Hill",
+          "publisher": "HeritageDaily",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-02",
+          "role": "independent-reporting",
+          "lineage": "cayonu-ministry-workshop-announcement"
+        }
+      ],
+      "openQuestions": [
+        "Will radiocarbon and archaeometric analyses confirm the proposed workshop date and production sequence?",
+        "Which objects were produced there, and were malachite and native copper used mainly for ornament, pigment, exchange, or another purpose?",
+        "How was the work organized within the settlement, and does later excavation reveal comparable work areas?"
+      ],
+      "watchFor": [
+        {
+          "description": "Scientific dating and materials results",
+          "expectedWindow": null,
+          "trigger": "The excavation team publishes radiocarbon, archaeometric, or metallurgical analyses of the work area."
+        },
+        {
+          "description": "Full excavation report",
+          "expectedWindow": null,
+          "trigger": "A peer-reviewed report documents the structure, stratigraphy, objects, and production sequence."
+        }
+      ],
+      "trackingTerms": [
+        "Çayönü malachite workshop",
+        "Çayönü 6900 6800 BCE copper",
+        "Savaş Sarıaltun Çayönü workshop",
+        "Çayönü Tepesi mineral working"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The announced workshop has specific pending analyses and an active excavation program capable of confirming or revising the interpretation."
+      },
+      "selectionReason": "The bounded work area reveals technology as an organized material practice before later period labels make its development look abrupt.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-02-snake-embryo-coiling",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "A snake coils before it can choose a direction",
+      "canonicalSubject": {
+        "name": "Right-handed coiling in snake embryos",
+        "kind": "developmental-biology-mechanism",
+        "aliases": [
+          "snake embryo visceral pillar",
+          "How snake embryos coil"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "developmental-biology",
+        "biomechanics",
+        "snakes",
+        "morphogenesis"
+      ],
+      "geography": [
+        "Canada",
+        "United States",
+        "Finland"
+      ],
+      "canonicalClaim": "A comparative survey and CT anatomy study found that early snake embryos coil right-handed and proposed that unequal growth between the body axis and a yolk-tethered gut mechanically produces the spiral.",
+      "knownFacts": [
+        "The researchers assembled images of more than 900 embryos from 39 snake and other limbless-squamate species.",
+        "Early embryos consistently coiled right-handed before their muscles were mature enough to create the orientation through movement.",
+        "CT images showed a temporary visceral pillar in which the slower-growing gut is separated from the rapidly lengthening body axis and tethered to the yolk."
+      ],
+      "uncertainties": [
+        "The study supports a biomechanical model but does not experimentally manipulate each proposed force in a developing embryo.",
+        "The extent to which the mechanism generalizes to other biological spirals is unknown.",
+        "Near hatching, about half of the embryos re-coil leftward as the yolk shrinks and muscles mature, so the early handedness is not permanent."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "A peer-reviewed Current Biology article supplies the comparative and anatomical evidence; the museum release explains the mechanism and scope in accessible form."
+      },
+      "sources": [
+        {
+          "url": "https://doi.org/10.1016/j.cub.2026.07.078",
+          "title": "How snake embryos coil",
+          "publisher": "Current Biology",
+          "publishedAt": "2026-08-31",
+          "accessedAt": "2026-09-02",
+          "role": "primary-research",
+          "lineage": "weber-miyashita-snake-coiling-study"
+        },
+        {
+          "url": "https://nature.ca/en/about-the-museum/media-centre/new-study-coiling-in-snakes/",
+          "title": "New study: Coiling in snakes",
+          "publisher": "Canadian Museum of Nature",
+          "publishedAt": "2026-08-31",
+          "accessedAt": "2026-09-02",
+          "role": "institutional-reporting",
+          "lineage": "weber-miyashita-snake-coiling-study"
+        }
+      ],
+      "openQuestions": [
+        "Can experiments directly alter the gut tether, yolk position, or relative growth rates and predictably change coiling handedness?",
+        "How did the visceral pillar and extreme embryonic elongation evolve across snakes and other limbless squamates?",
+        "Do similar differential-growth constraints explain other handed spirals in animal development?"
+      ],
+      "watchFor": [
+        {
+          "description": "Experimental test of the mechanical model",
+          "expectedWindow": null,
+          "trigger": "A study manipulates the proposed tether, growth mismatch, or yolk geometry and measures the resulting coil."
+        },
+        {
+          "description": "Comparative extension",
+          "expectedWindow": null,
+          "trigger": "Researchers test the visceral-pillar mechanism in additional snake lineages, limbless lizards, or other spiraling embryos."
+        }
+      ],
+      "trackingTerms": [
+        "How snake embryos coil",
+        "snake embryo visceral pillar",
+        "Alexandra Weber Tetsuto Miyashita",
+        "10.1016/j.cub.2026.07.078"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "passive",
+        "reason": "The mechanism is clearly identifiable and experimentally testable, but no specific follow-up or near-term milestone has been announced."
+      },
+      "selectionReason": "The study shows how a complex organic form can arise from differential growth, tethering, and available space without treating genetic explanation as a literal blueprint.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    }
+  ]
+}
