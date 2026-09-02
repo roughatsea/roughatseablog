@@ -1,0 +1,105 @@
+---
+interface Props {
+  part: string;
+  title: string;
+  deck: string;
+  image: string;
+  imageAlt: string;
+  id?: string;
+}
+
+const { part, title, deck, image, imageAlt, id } = Astro.props;
+const sectionId = id ?? `part-${part.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+const headingId = `${sectionId}-heading`;
+---
+
+<section id={sectionId} class="section-gate" aria-labelledby={headingId}>
+  <figure class="section-art">
+    <img src={image} alt={imageAlt} width="1600" height="620" loading="lazy" decoding="async" />
+  </figure>
+  <div class="section-copy">
+    <p class="part-label">Part {part}</p>
+    <h2 id={headingId}>{title}</h2>
+    <p class="deck">{deck}</p>
+  </div>
+</section>
+
+<style>
+  .section-gate {
+    width: min(1100px, calc(100vw - 2rem));
+    margin: 7rem 0 3rem 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    background: var(--surface-color);
+    box-shadow: var(--glass-shadow);
+    scroll-margin-top: 1rem;
+  }
+
+  .section-art {
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+    background: #09090b;
+  }
+
+  .section-art img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 80 / 31;
+    object-fit: cover;
+  }
+
+  .section-copy {
+    position: relative;
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .section-copy::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    content: '';
+    background: linear-gradient(180deg, #ff1493, #1493ff 50%, #93ff14);
+  }
+
+  .part-label {
+    margin: 0 0 0.65rem;
+    color: var(--link-color);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.03;
+  }
+
+  .deck {
+    max-width: 48rem;
+    margin: 1rem 0 0;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 2vw, 1.18rem);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 560px) {
+    .section-gate {
+      margin-top: 5rem;
+      border-radius: 12px;
+    }
+
+    .section-art img {
+      aspect-ratio: 16 / 7;
+    }
+  }
+</style>
