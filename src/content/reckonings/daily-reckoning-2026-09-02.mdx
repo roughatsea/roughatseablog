@@ -1,0 +1,208 @@
+---
+title: "Can You Measure a Polygon by Counting Dots?"
+description: "Pick’s theorem turns the interior and boundary points of a lattice polygon into its exact area."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-02.svg"
+heroImageAlt: "A neon blue polygon surrounds lime circular interior points and cyan square boundary points on a dark maritime blueprint grid."
+date: 2026-09-02
+publishedAt: 2026-09-02T06:00:00-07:00
+tags:
+  - daily-reckoning
+  - geometry
+  - discrete-geometry
+  - picks-theorem
+  - lattice-polygons
+  - area
+  - visual-math
+  - history-of-mathematics
+area: "Geometry and topology"
+difficulty: "Foundational"
+prerequisites:
+  - "Counting"
+  - "Area of rectangles and triangles"
+  - "Coordinate grids"
+readTimeMinutes: 9
+---
+
+import PickLatticeExplorer from '../../components/reckonings/PickLatticeExplorer.jsx';
+import PickSeam from '../../components/reckonings/PickSeam.astro';
+
+Stretch a loop of string around pegs on a square board. The string may form a lopsided pentagon or bite inward to form a cove. How much board lies inside the loop?
+
+One answer would cut the shape into rectangles and triangles. A stranger answer ignores most lengths and counts pegs instead. Count the pegs strictly inside the string. Count the pegs touched by the string. Those two numbers determine the area exactly.
+
+## The rule hidden in the pegboard
+
+A **lattice point** is a point whose horizontal and vertical coordinates are both integers, such as $(3,5)$. A **lattice polygon** has every corner at a lattice point. The polygon must also be **simple**: its boundary does not cross itself, and the polygon has no holes.
+
+The interactive diagram below classifies lattice points in four polygons. Green circles lie inside a polygon. Blue squares lie on its boundary. The shapes and colors carry the same distinction, so the diagram does not depend on color alone.
+
+<PickLatticeExplorer client:load />
+
+Let $A$ be the area of a simple lattice polygon, measured in square grid units. Let $I$ be the number of lattice points strictly inside it, and let $B$ be the number of lattice points on its boundary. **Pick’s theorem** says
+
+$$
+A=I+\frac{B}{2}-1.
+$$
+
+Every interior point contributes one unit. Every boundary point contributes half a unit. The subtraction of one applies once to the whole polygon.
+
+Boundary points include more than corners. The line segment from $(1,1)$ to $(3,3)$ passes through $(2,2)$, so all three points lie on that edge. Missing a point along an edge produces the wrong area.
+
+## Worked example: survey the harbor flag
+
+Choose **Harbor flag** in the interactive diagram and show its coordinates. Starting at the lower-left corner and moving counterclockwise, the five vertices are
+
+$$
+(1,1),\quad(7,1),\quad(7,4),\quad(5,6),\quad(1,5).
+$$
+
+The diagram marks $19$ interior points, so $I=19$. We can count the boundary without counting any vertex twice. On each edge, include the starting point and omit the finishing point:
+
+1. From $(1,1)$ to $(7,1)$: $6$ points.
+2. From $(7,1)$ to $(7,4)$: $3$ points.
+3. From $(7,4)$ to $(5,6)$: $2$ points, because the edge also passes through $(6,5)$.
+4. From $(5,6)$ to $(1,5)$: $1$ point. No other lattice point lies along that slant.
+5. From $(1,5)$ back to $(1,1)$: $4$ points.
+
+Therefore,
+
+$$
+B=6+3+2+1+4=16.
+$$
+
+Substitute both counts into Pick’s formula:
+
+$$
+\begin{aligned}
+A
+&=I+\frac{B}{2}-1\\
+&=19+\frac{16}{2}-1\\
+&=19+8-1\\
+&=26.
+\end{aligned}
+$$
+
+The polygon has area $26$ square units.
+
+Now check the result without Pick’s theorem. The polygon fits inside a rectangle $6$ units wide and $5$ units high, whose area is $30$. Two triangular pieces of the rectangle lie outside the polygon. One triangle has base $2$ and height $2$, while the other has base $4$ and height $1$:
+
+$$
+30-\frac{2\cdot2}{2}-\frac{4\cdot1}{2}
+=30-2-2
+=26.
+$$
+
+The independent subtraction agrees with the dot count.
+
+## Why half a boundary point?
+
+Pick’s formula behaves well when a lattice polygon is cut into pieces. The diagram below shows two $2$-by-$3$ rectangles joined along a vertical edge. Each small rectangle has area $6$; the joined rectangle has area $12$.
+
+<PickSeam />
+
+Before the pieces are joined, the four points on the shared edge belong to both boundaries. After joining, the two middle points become interior points, while the two endpoints remain on the outer boundary. The two copies of “minus one,” one from each small rectangle, also become one copy for the joined rectangle. The changes cancel in exactly the proportions needed for area to add.
+
+A standard proof pushes that observation further. It establishes two facts:
+
+- Every lattice polygon can be divided into **primitive lattice triangles**, triangles whose only lattice points are their three vertices.
+- Every primitive lattice triangle has area $\tfrac12$.
+
+For one primitive triangle, $I=0$ and $B=3$, so Pick’s formula gives
+
+$$
+0+\frac{3}{2}-1=\frac12.
+$$
+
+Glue enough primitive triangles together and the internal edges disappear from the boundary count just as the seam disappeared in the rectangle. The University of California, Davis presents [a full triangulation proof](https://www.math.ucdavis.edu/~latte/background/countingLecture/pick/pick/index.php). One version counts the triangles, vertices, and edges with Euler’s planar relation; the earlier Reckoning on [Euler trails](/reckonings/daily-reckoning-2026-08-31/) shows a different way that local counts can govern an entire figure.
+
+## Try it yourself
+
+### Problem 1
+
+A $5$-by-$3$ rectangle has corners at lattice points. Find $I$, find $B$, and use Pick’s theorem to recover its area.
+
+<details>
+  <summary>Reveal the solution</summary>
+
+  Four interior columns and two interior rows produce
+
+  $$
+  I=4\cdot2=8.
+  $$
+
+  The bottom and top edges each contribute $5$ boundary intervals; the left and right edges each contribute $3$. Counting around the perimeter without repeating corners gives
+
+  $$
+  B=2(5)+2(3)=16.
+  $$
+
+  Pick’s theorem gives
+
+  $$
+  A=8+\frac{16}{2}-1=8+8-1=15.
+  $$
+
+  The ordinary rectangle calculation confirms that $5\cdot3=15$.
+</details>
+
+### Problem 2
+
+A simple lattice polygon has area $23.5$ square units and $9$ boundary lattice points. How many lattice points lie strictly inside it?
+
+<details>
+  <summary>Reveal the solution</summary>
+
+  Start with Pick’s formula and solve for $I$:
+
+  $$
+  \begin{aligned}
+  23.5&=I+\frac{9}{2}-1\\
+  23.5&=I+4.5-1\\
+  23.5&=I+3.5\\
+  I&=20.
+  \end{aligned}
+  $$
+
+  The polygon contains $20$ interior lattice points.
+</details>
+
+## Georg Pick’s eight-page paper
+
+Georg Alexander Pick published the theorem in Prague in 1899. His eight-page German paper was titled *Geometrisches zur Zahlenlehre*, or “Geometric Contributions to Number Theory.” The title supplies the safest answer to why he developed the formula: Pick was studying how a geometric quantity, area, relates to arithmetic properties of a lattice. No surviving anecdote is needed to turn the work into a puzzle story.
+
+Pick called the grid intersections “reticular points” and polygons built from them “reticular polygons.” The [MacTutor History of Mathematics biography](https://mathshistory.st-andrews.ac.uk/Biographies/Pick/) records that the paper received little attention until the Polish mathematician Hugo Steinhaus included the result in the 1969 edition of *Mathematical Snapshots*.
+
+Pick’s career was much larger than one formula. He published 67 papers, became a professor and dean at the German University of Prague, supervised about 20 doctoral students, and helped secure Albert Einstein’s appointment to a chair of mathematical physics in Prague in 1911.
+
+His life ended under Nazi persecution. Pick was born into a Jewish family. After Nazi Germany annexed Austria in 1938, he left Vienna for Prague. German forces occupied Prague in 1939; the Nazi regime expelled Pick from the Czech Academy of Sciences and Arts. On July 13, 1942, the Nazis deported the 82-year-old mathematician to Theresienstadt, where he died two weeks later.
+
+Theresienstadt was not a benign retirement settlement, despite Nazi propaganda designed to create that impression. The [United States Holocaust Memorial Museum](https://encyclopedia.ushmm.org/content/en/article/theresienstadt) describes it as both a transit ghetto and a so-called “ghetto for the elderly.” About 140,000 Jews passed through it; roughly 34,000 died there, and Nazi authorities deported about 88,000 others to ghettos, camps, and killing sites.
+
+Pick’s formula survived because books and mathematicians carried it forward. Pick himself did not survive the Nazi state that stripped away his institutional membership, freedom, and life because he was Jewish.
+
+## Where the dot count goes to work
+
+Pick’s theorem is exact only for simple lattice polygons, but that setting occurs naturally in tiled designs, pixel-like plans, and mathematical models built on integer coordinates. The Institute of Mathematics and its Applications uses [a large square-tile mosaic](https://ima.org.uk/10981/connecting-the-dots-with-picks-theorem/) as a physical example: when the design’s corners land at tile intersections, the theorem gives the painted area from point counts. A digital map snapped to a square grid would obey the same mathematics. That map example is hypothetical; geographic boundaries seldom cooperate with a coarse lattice without approximation.
+
+The theorem also became a tool inside mathematics. Results about lattice points connect geometry with number theory, while extensions of Pick’s formula appear in algebraic, discrete, and computational geometry. An open-access survey in [*The Mathematical Intelligencer*](https://link.springer.com/article/10.1007/s00283-019-09921-8) develops variants for shapes with holes and more complicated boundaries, cases where the original formula no longer works unchanged.
+
+In 2024, Sage Binder and Katherine Kosaian reported a formal proof of Pick’s theorem in the Isabelle/HOL theorem prover. Their [formalization paper](https://arxiv.org/html/2405.01793v1) explains why an elementary-looking picture becomes difficult for software: the machine needs explicit definitions of polygon, boundary, interior, area, and valid cuts. Pick’s theorem therefore serves as both geometry and a stress test for the libraries that let computers verify geometry.
+
+## One idea to remember
+
+For a simple polygon whose corners lie on a square lattice, count interior points once, boundary points by halves, then subtract one:
+
+$$
+A=I+\frac{B}{2}-1.
+$$
+
+Natural next directions are the **shoelace formula**, which computes polygon area directly from coordinates, and **Ehrhart theory**, which counts lattice points as a polygon is enlarged.
+
+## Sources
+
+- Georg Pick, *Geometrisches zur Zahlenlehre*, 1899; publication details and biography via the [MacTutor History of Mathematics](https://mathshistory.st-andrews.ac.uk/Biographies/Pick/).
+- University of California, Davis, [“Pick’s Theorem”](https://www.math.ucdavis.edu/~latte/background/countingLecture/pick/pick/index.php), triangulation proof.
+- Alexander Belyaev and Pierre-Alain Fayolle, [“Counting Parallel Segments: New Variants of Pick’s Area Theorem”](https://link.springer.com/article/10.1007/s00283-019-09921-8), *The Mathematical Intelligencer*, 2019.
+- Peter Rowlett, [“Connecting the Dots with Pick’s Theorem”](https://ima.org.uk/10981/connecting-the-dots-with-picks-theorem/), Institute of Mathematics and its Applications, 2018.
+- Sage Binder and Katherine Kosaian, [“Formalizing Pick’s Theorem in Isabelle/HOL”](https://arxiv.org/html/2405.01793v1), 2024.
+- United States Holocaust Memorial Museum, [“The Theresienstadt (Terezín) Ghetto”](https://encyclopedia.ushmm.org/content/en/article/theresienstadt), updated May 14, 2026.

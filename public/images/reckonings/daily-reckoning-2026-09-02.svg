@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Lattice polygon area chart</title>
+  <desc id="desc">A neon polygon encloses circular and square lattice markers above blueprint waves on a dark maritime chart.</desc>
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#031729"/>
+      <stop offset="0.62" stop-color="#07152c"/>
+      <stop offset="1" stop-color="#190a24"/>
+    </linearGradient>
+    <pattern id="minor-grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="#1493ff" stroke-opacity=".12" stroke-width="1"/>
+      <circle cx="0" cy="0" r="3.5" fill="#9edfff" fill-opacity=".45"/>
+    </pattern>
+    <pattern id="hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
+      <line x1="0" y1="0" x2="0" y2="18" stroke="#1493ff" stroke-opacity=".28" stroke-width="4"/>
+    </pattern>
+    <filter id="blue-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="green-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ocean)"/>
+  <rect x="70" y="62" width="1460" height="730" rx="34" fill="url(#minor-grid)" stroke="#1493ff" stroke-opacity=".5" stroke-width="2"/>
+
+  <g fill="none" stroke-linecap="round">
+    <path d="M0 782C120 746 226 828 350 790s228-18 352 8 236 62 358 17 246-57 540 2" stroke="#1493ff" stroke-width="5" stroke-opacity=".85"/>
+    <path d="M0 836C112 798 228 879 358 840s235-16 354 13 239 55 359 9 247-51 529 6" stroke="#ff1493" stroke-width="3" stroke-opacity=".55"/>
+  </g>
+
+  <g transform="translate(288 72)">
+    <polygon points="0,504 792,504 792,288 576,72 72,144" fill="#1493ff" fill-opacity=".12" stroke="#1493ff" stroke-width="7" stroke-linejoin="round" filter="url(#blue-glow)"/>
+    <polygon points="0,504 792,504 792,288 576,72 72,144" fill="url(#hatch)"/>
+
+    <g fill="#93ff14" stroke="#06162b" stroke-width="4" filter="url(#green-glow)">
+      <circle cx="144" cy="144" r="10"/><circle cx="216" cy="144" r="10"/><circle cx="288" cy="144" r="10"/><circle cx="360" cy="144" r="10"/><circle cx="432" cy="144" r="10"/><circle cx="504" cy="144" r="10"/><circle cx="576" cy="144" r="10"/>
+      <circle cx="72" cy="216" r="10"/><circle cx="144" cy="216" r="10"/><circle cx="216" cy="216" r="10"/><circle cx="288" cy="216" r="10"/><circle cx="360" cy="216" r="10"/><circle cx="432" cy="216" r="10"/><circle cx="504" cy="216" r="10"/><circle cx="576" cy="216" r="10"/><circle cx="648" cy="216" r="10"/>
+      <circle cx="72" cy="288" r="10"/><circle cx="144" cy="288" r="10"/><circle cx="216" cy="288" r="10"/><circle cx="288" cy="288" r="10"/><circle cx="360" cy="288" r="10"/><circle cx="432" cy="288" r="10"/><circle cx="504" cy="288" r="10"/><circle cx="576" cy="288" r="10"/><circle cx="648" cy="288" r="10"/><circle cx="720" cy="288" r="10"/>
+      <circle cx="72" cy="360" r="10"/><circle cx="144" cy="360" r="10"/><circle cx="216" cy="360" r="10"/><circle cx="288" cy="360" r="10"/><circle cx="360" cy="360" r="10"/><circle cx="432" cy="360" r="10"/><circle cx="504" cy="360" r="10"/><circle cx="576" cy="360" r="10"/><circle cx="648" cy="360" r="10"/><circle cx="720" cy="360" r="10"/>
+      <circle cx="72" cy="432" r="10"/><circle cx="144" cy="432" r="10"/><circle cx="216" cy="432" r="10"/><circle cx="288" cy="432" r="10"/><circle cx="360" cy="432" r="10"/><circle cx="432" cy="432" r="10"/><circle cx="504" cy="432" r="10"/><circle cx="576" cy="432" r="10"/><circle cx="648" cy="432" r="10"/><circle cx="720" cy="432" r="10"/>
+    </g>
+
+    <g fill="#1493ff" stroke="#06162b" stroke-width="4">
+      <rect x="565" y="61" width="22" height="22" rx="3"/><rect x="61" y="133" width="22" height="22" rx="3"/><rect x="637" y="133" width="22" height="22" rx="3"/><rect x="709" y="205" width="22" height="22" rx="3"/><rect x="781" y="277" width="22" height="22" rx="3"/><rect x="781" y="349" width="22" height="22" rx="3"/><rect x="781" y="421" width="22" height="22" rx="3"/>
+      <rect x="-11" y="493" width="22" height="22" rx="3"/><rect x="61" y="493" width="22" height="22" rx="3"/><rect x="133" y="493" width="22" height="22" rx="3"/><rect x="205" y="493" width="22" height="22" rx="3"/><rect x="277" y="493" width="22" height="22" rx="3"/><rect x="349" y="493" width="22" height="22" rx="3"/><rect x="421" y="493" width="22" height="22" rx="3"/>
+      <rect x="493" y="493" width="22" height="22" rx="3"/><rect x="565" y="493" width="22" height="22" rx="3"/><rect x="637" y="493" width="22" height="22" rx="3"/><rect x="709" y="493" width="22" height="22" rx="3"/><rect x="781" y="493" width="22" height="22" rx="3"/>
+    </g>
+  </g>
+
+  <g stroke="#ff1493" stroke-width="4" fill="none" opacity=".78">
+    <path d="M1198 186v452" stroke-dasharray="12 11"/>
+    <path d="M1168 206h60M1168 618h60"/>
+  </g>
+</svg>

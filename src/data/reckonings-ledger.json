@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-01T06:00:00-07:00",
+  "updatedAt": "2026-09-02T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -86,6 +86,30 @@
         "election forensics"
       ],
       "relatedLessons": []
+    },
+    {
+      "date": "2026-09-02",
+      "slug": "daily-reckoning-2026-09-02",
+      "title": "Can You Measure a Polygon by Counting Dots?",
+      "area": "Geometry and topology",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Counting",
+        "Area of rectangles and triangles",
+        "Coordinate grids"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Pick's theorem",
+        "lattice polygons",
+        "area",
+        "triangulation",
+        "discrete geometry",
+        "formal verification"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31"
+      ]
     }
   ]
 }
