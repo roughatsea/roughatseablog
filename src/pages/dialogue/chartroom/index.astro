@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ChartroomDashboard from '../../../components/dialogue/ChartroomDashboard';
+import {
+  dialogueMeta,
+  dialogueCharacters,
+  dialogueRelationships,
+  dialogueBeliefs,
+  dialogueMessages,
+  dialogueSources,
+  dialogueMemories,
+  dialogueValidationRuns,
+  dialogueEvents,
+  latestDialogueSnapshot,
+} from '../../../lib/dialogue';
+
+if (!latestDialogueSnapshot) throw new Error('Chartroom requires a canonical Dialogue snapshot.');
+---
+
+<BaseLayout
+  title="Dialogue Chartroom"
+  description="A read-only observatory over the canonical state and history of Dialogue."
+  robots="noindex, nofollow, noarchive"
+>
+  <ChartroomDashboard
+    client:load
+    meta={dialogueMeta}
+    characters={dialogueCharacters}
+    relationships={dialogueRelationships}
+    beliefs={dialogueBeliefs}
+    messages={dialogueMessages}
+    sources={dialogueSources}
+    memories={dialogueMemories}
+    validationRuns={dialogueValidationRuns}
+    events={dialogueEvents}
+    snapshot={latestDialogueSnapshot}
+  />
+</BaseLayout>
+
+<style>
+  :global(main.container) { max-width: 1600px; padding-left: clamp(0.5rem, 2vw, 1.5rem); padding-right: clamp(0.5rem, 2vw, 1.5rem); }
+  :global(footer.container) { max-width: 1600px; }
+</style>

@@ -1,0 +1,23 @@
+{
+  "world_id": "dialogue",
+  "schema_version": "1.0.0",
+  "constitution_version": "1.0.0",
+  "epoch": "2026-09-02T08:00:00-07:00",
+  "current_day": 1,
+  "status": "founding-record",
+  "public_route": "/dialogue/",
+  "observatory": {
+    "name": "Chartroom",
+    "route": "/dialogue/chartroom/",
+    "read_only": true,
+    "listed": false,
+    "indexed": false
+  },
+  "state_model": {
+    "constitution_is_stable": true,
+    "living_state_is_event_sourced": true,
+    "interesting_state_is_never_silently_overwritten": true,
+    "raw_model_reasoning_is_never_stored": true
+  },
+  "founding_prompt": "What should a civilization deliberately refuse to optimize?"
+}

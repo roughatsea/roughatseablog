@@ -1,0 +1,107 @@
+[
+  {
+    "id": "rel-anika-rhea",
+    "characters": ["anika-vale", "rhea-solano"],
+    "starting_context": "Long familiarity; preservation and maintainability have produced unusually high trust and intellectual respect.",
+    "anika-vale_to_rhea-solano": { "affection": 82, "trust": 90, "intellectual_respect": 92, "familiarity": 88, "friction": 18 },
+    "rhea-solano_to_anika-vale": { "affection": 79, "trust": 91, "intellectual_respect": 88, "familiarity": 88, "friction": 16 }
+  },
+  {
+    "id": "rel-milo-noor",
+    "characters": ["milo-chen", "noor-rahal"],
+    "starting_context": "The warmest relationship at launch. Genuine friends; Noor sometimes thinks Milo escapes into abstraction through art.",
+    "milo-chen_to_noor-rahal": { "affection": 91, "trust": 86, "intellectual_respect": 84, "familiarity": 90, "friction": 20 },
+    "noor-rahal_to_milo-chen": { "affection": 88, "trust": 80, "intellectual_respect": 76, "familiarity": 92, "friction": 26 }
+  },
+  {
+    "id": "rel-evelyn-rhea",
+    "characters": ["evelyn-hart", "rhea-solano"],
+    "starting_context": "High mutual respect and a shared affection for failure analysis, despite different standards for when evidence becomes operationally useful.",
+    "evelyn-hart_to_rhea-solano": { "affection": 70, "trust": 88, "intellectual_respect": 94, "familiarity": 70, "friction": 22 },
+    "rhea-solano_to_evelyn-hart": { "affection": 68, "trust": 91, "intellectual_respect": 92, "familiarity": 72, "friction": 18 }
+  },
+  {
+    "id": "rel-anika-cassian",
+    "characters": ["anika-vale", "cassian-reed"],
+    "starting_context": "Considerable history and friction. Cassian publicly criticized an argument of Anika's; she found parts excellent and other parts infuriating.",
+    "anika-vale_to_cassian-reed": { "affection": 44, "trust": 54, "intellectual_respect": 82, "familiarity": 73, "friction": 68 },
+    "cassian-reed_to_anika-vale": { "affection": 56, "trust": 61, "intellectual_respect": 86, "familiarity": 72, "friction": 62 }
+  },
+  {
+    "id": "rel-milo-cassian",
+    "characters": ["milo-chen", "cassian-reed"],
+    "starting_context": "They find one another entertaining. Neither is convinced the other is not occasionally full of it.",
+    "milo-chen_to_cassian-reed": { "affection": 66, "trust": 49, "intellectual_respect": 70, "familiarity": 57, "friction": 48 },
+    "cassian-reed_to_milo-chen": { "affection": 61, "trust": 43, "intellectual_respect": 68, "familiarity": 55, "friction": 52 }
+  },
+  {
+    "id": "rel-anika-evelyn",
+    "characters": ["anika-vale", "evelyn-hart"],
+    "starting_context": "High respect and moderate friction over what historical evidence can establish.",
+    "anika-vale_to_evelyn-hart": { "affection": 71, "trust": 78, "intellectual_respect": 88, "familiarity": 65, "friction": 45 },
+    "evelyn-hart_to_anika-vale": { "affection": 67, "trust": 80, "intellectual_respect": 85, "familiarity": 66, "friction": 42 }
+  },
+  {
+    "id": "rel-evelyn-milo",
+    "characters": ["evelyn-hart", "milo-chen"],
+    "starting_context": "Affection plus chronic epistemological warfare: a powerful example means different things to each of them.",
+    "evelyn-hart_to_milo-chen": { "affection": 73, "trust": 60, "intellectual_respect": 77, "familiarity": 68, "friction": 63 },
+    "milo-chen_to_evelyn-hart": { "affection": 76, "trust": 57, "intellectual_respect": 82, "familiarity": 67, "friction": 66 }
+  },
+  {
+    "id": "rel-evelyn-noor",
+    "characters": ["evelyn-hart", "noor-rahal"],
+    "starting_context": "Strong trust; persistent disagreement about how much knowledge disappears when evidence is forced into quantitative form.",
+    "evelyn-hart_to_noor-rahal": { "affection": 69, "trust": 86, "intellectual_respect": 90, "familiarity": 64, "friction": 46 },
+    "noor-rahal_to_evelyn-hart": { "affection": 74, "trust": 84, "intellectual_respect": 88, "familiarity": 65, "friction": 50 }
+  },
+  {
+    "id": "rel-noor-cassian",
+    "characters": ["noor-rahal", "cassian-reed"],
+    "starting_context": "Significant friction. Noor thinks Cassian reduces people to incentives; Cassian thinks Noor sometimes assigns moral weight before causal responsibility.",
+    "noor-rahal_to_cassian-reed": { "affection": 35, "trust": 41, "intellectual_respect": 70, "familiarity": 52, "friction": 76 },
+    "cassian-reed_to_noor-rahal": { "affection": 39, "trust": 46, "intellectual_respect": 79, "familiarity": 51, "friction": 72 }
+  },
+  {
+    "id": "rel-milo-rhea",
+    "characters": ["milo-chen", "rhea-solano"],
+    "starting_context": "The eternal prototype/production argument. They like one another considerably more than their exchanges imply.",
+    "milo-chen_to_rhea-solano": { "affection": 78, "trust": 71, "intellectual_respect": 80, "familiarity": 69, "friction": 55 },
+    "rhea-solano_to_milo-chen": { "affection": 72, "trust": 65, "intellectual_respect": 75, "familiarity": 67, "friction": 59 }
+  },
+  {
+    "id": "rel-cassian-evelyn",
+    "characters": ["cassian-reed", "evelyn-hart"],
+    "starting_context": "Low warmth and extremely high intellectual respect. Each considers the other's strongest arguments genuinely dangerous.",
+    "cassian-reed_to_evelyn-hart": { "affection": 28, "trust": 52, "intellectual_respect": 92, "familiarity": 48, "friction": 78 },
+    "evelyn-hart_to_cassian-reed": { "affection": 25, "trust": 47, "intellectual_respect": 76, "familiarity": 49, "friction": 74 }
+  },
+  {
+    "id": "rel-cassian-rhea",
+    "characters": ["cassian-reed", "rhea-solano"],
+    "starting_context": "Grudging respect. Rhea can puncture an incentive theory by demonstrating that the system is simply badly designed.",
+    "cassian-reed_to_rhea-solano": { "affection": 47, "trust": 63, "intellectual_respect": 81, "familiarity": 50, "friction": 57 },
+    "rhea-solano_to_cassian-reed": { "affection": 42, "trust": 58, "intellectual_respect": 75, "familiarity": 52, "friction": 61 }
+  },
+  {
+    "id": "rel-noor-rhea",
+    "characters": ["noor-rahal", "rhea-solano"],
+    "starting_context": "High trust and low drama. Both ask where abstractions eventually land.",
+    "noor-rahal_to_rhea-solano": { "affection": 73, "trust": 86, "intellectual_respect": 84, "familiarity": 69, "friction": 22 },
+    "rhea-solano_to_noor-rahal": { "affection": 70, "trust": 88, "intellectual_respect": 81, "familiarity": 68, "friction": 19 }
+  },
+  {
+    "id": "rel-anika-noor",
+    "characters": ["anika-vale", "noor-rahal"],
+    "starting_context": "High trust. Noor keeps Anika from turning history into structures without inhabitants.",
+    "anika-vale_to_noor-rahal": { "affection": 79, "trust": 88, "intellectual_respect": 86, "familiarity": 76, "friction": 20 },
+    "noor-rahal_to_anika-vale": { "affection": 80, "trust": 90, "intellectual_respect": 84, "familiarity": 78, "friction": 18 }
+  },
+  {
+    "id": "rel-anika-milo",
+    "characters": ["anika-vale", "milo-chen"],
+    "starting_context": "Warm relationship with a recurring preservation-versus-transformation dispute.",
+    "anika-vale_to_milo-chen": { "affection": 77, "trust": 74, "intellectual_respect": 80, "familiarity": 70, "friction": 47 },
+    "milo-chen_to_anika-vale": { "affection": 83, "trust": 68, "intellectual_respect": 78, "familiarity": 71, "friction": 50 }
+  }
+]

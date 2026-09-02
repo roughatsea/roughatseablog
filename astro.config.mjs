@@ -15,7 +15,10 @@ export default defineConfig({
     mdx(),
     react(),
     sitemap({
-      filter: (page) => !page.replace(/\/$/, '').endsWith('/instagram'),
+      filter: (page) => {
+        const normalized = page.replace(/\/$/, '');
+        return !normalized.endsWith('/instagram') && !normalized.includes('/dialogue/chartroom');
+      },
     }),
   ],
   markdown: {

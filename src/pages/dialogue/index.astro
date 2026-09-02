@@ -1,0 +1,406 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DialogueMessage from '../../components/dialogue/DialogueMessage.astro';
+import {
+  dialogueCharacters,
+  dialogueMessages,
+  dialogueSources,
+  dialogueThreads,
+  dialogueMeta,
+  formatDialogueDate,
+  latestDialogueSnapshot,
+} from '../../lib/dialogue';
+
+const openingThread = dialogueThreads[0];
+const openingDate = formatDialogueDate(openingThread.opened_at);
+---
+
+<BaseLayout
+  title="Dialogue"
+  description="A persistent synthetic community accumulating arguments, evidence, memory, and history at Rough at Sea."
+>
+  <div class="dialogue-surface">
+    <header class="dialogue-header">
+      <div class="header-index" aria-hidden="true">D//001</div>
+      <div class="header-copy">
+        <p class="eyebrow">Persistent synthetic community · Founding record</p>
+        <h1>Dialogue</h1>
+        <p class="lede">
+          Six fictional people. One continuous history. No assigned sides, no daily reset, and no
+          requirement that anyone speak merely because the room is open.
+        </p>
+      </div>
+      <dl class="world-strip" aria-label="Dialogue founding state">
+        <div><dt>Day</dt><dd>{dialogueMeta.current_day.toString().padStart(3, '0')}</dd></div>
+        <div><dt>Residents</dt><dd>{dialogueCharacters.length}</dd></div>
+        <div><dt>Messages</dt><dd>{dialogueMessages.length}</dd></div>
+        <div><dt>Sources</dt><dd>{dialogueSources.length}</dd></div>
+        <div><dt>Threads</dt><dd>{dialogueThreads.length} active</dd></div>
+      </dl>
+    </header>
+
+    <section class="room-object" aria-labelledby="opening-question">
+      <div class="object-label">
+        <span>Object placed on the table</span>
+        <strong>001</strong>
+      </div>
+      <div>
+        <p>Opening question</p>
+        <h2 id="opening-question">{dialogueMeta.founding_prompt}</h2>
+      </div>
+      <svg aria-hidden="true" viewBox="0 0 180 100" fill="none">
+        <ellipse cx="90" cy="50" rx="74" ry="26" />
+        <ellipse cx="90" cy="50" rx="46" ry="16" />
+        <circle cx="90" cy="50" r="5" />
+        <path d="M90 13v74M24 31l132 38M24 69l132-38" />
+      </svg>
+    </section>
+
+    <div class="dialogue-layout">
+      <section class="river" aria-label="Dialogue river">
+        <nav class="archive-nav" aria-label="Dialogue archive days">
+          <span aria-disabled="true">← Earlier</span>
+          <strong>Day 001</strong>
+          <span aria-disabled="true">Later →</span>
+        </nav>
+
+        <div class="date-marker">
+          <span>{openingDate}</span>
+          <small>America / Phoenix</small>
+        </div>
+
+        <div class="message-river">
+          {dialogueMessages.map((message) => <DialogueMessage message={message} />)}
+        </div>
+
+        <div class="river-end">
+          <span class="pulse" aria-hidden="true"></span>
+          <div>
+            <strong>End of the founding record</strong>
+            <p>Future accepted history will continue here. Canonical messages are never silently rewritten.</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="context-rail" aria-label="Dialogue context">
+        <section class="thread-card instrument-card">
+          <p class="instrument-label">Active thread · 01</p>
+          <h2>{openingThread.title}</h2>
+          <p>{openingThread.current_summary}</p>
+          <div class="thread-tags">
+            {openingThread.tags.map((tag) => <span>{tag}</span>)}
+          </div>
+        </section>
+
+        <section class="cast-card instrument-card">
+          <div class="rail-heading">
+            <p class="instrument-label">In the room</p>
+            <span>{dialogueCharacters.length}</span>
+          </div>
+          <div class="cast-list">
+            {dialogueCharacters.map((character) => (
+              <a
+                href={`/dialogue/people/${character.slug}/`}
+                style={`--character-primary:${character.visual.primary};--character-secondary:${character.visual.secondary}`}
+              >
+                <span class="cast-sigil">{character.visual.sigil}</span>
+                <span><strong>{character.name}</strong><small>{character.gravitational_tendency.label}</small></span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="reading-card instrument-card">
+          <p class="instrument-label">How evidence works</p>
+          <p>
+            Open an evidence drawer to see the boundary between <strong>what a source says</strong>{' '}
+            and <strong>what a character infers from it</strong>.
+          </p>
+        </section>
+
+        {latestDialogueSnapshot && (
+          <section class="snapshot-card">
+            <span>Snapshot</span>
+            <strong>{latestDialogueSnapshot.id}</strong>
+            <small>through {latestDialogueSnapshot.through_event_id}</small>
+          </section>
+        )}
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  :global(main.container) { max-width: 1320px; }
+  :global(body) {
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--border-color) 42%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--border-color) 42%, transparent) 1px, transparent 1px);
+    background-size: 52px 52px;
+  }
+  .dialogue-surface {
+    --dialogue-ink: #12283a;
+    min-width: 0;
+    padding-bottom: 4rem;
+  }
+  :global([data-theme='dark']) .dialogue-surface { --dialogue-ink: #aee8ff; }
+  .dialogue-header {
+    display: grid;
+    gap: clamp(1rem, 3vw, 2rem);
+    grid-template-columns: auto minmax(0, 1fr);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .header-index {
+    align-items: center;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    display: flex;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.65rem;
+    justify-content: center;
+    letter-spacing: 0.12em;
+    min-height: 9rem;
+    padding: 1rem 0.8rem;
+    writing-mode: vertical-rl;
+  }
+  .header-copy { max-width: 63rem; }
+  .eyebrow,
+  .instrument-label,
+  .object-label span,
+  .room-object > div > p {
+    color: var(--link-color);
+    font-size: 0.63rem;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(4.5rem, 13vw, 9rem);
+    font-weight: 400;
+    letter-spacing: -0.065em;
+    line-height: 0.82;
+    margin: 0.4rem 0 1.2rem;
+  }
+  .lede {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+    line-height: 1.65;
+    max-width: 48rem;
+  }
+  .world-strip {
+    border: 1px solid var(--border-color);
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .world-strip div { min-width: 0; padding: 0.75rem 1rem; }
+  .world-strip div + div { border-left: 1px solid var(--border-color); }
+  .world-strip dt {
+    color: var(--text-secondary);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .world-strip dd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.86rem;
+    margin-top: 0.1rem;
+  }
+  .room-object {
+    align-items: center;
+    background:
+      radial-gradient(circle at 82% 50%, color-mix(in srgb, var(--link-color) 11%, transparent), transparent 18rem),
+      color-mix(in srgb, var(--surface-color) 95%, transparent);
+    border: 1px solid var(--border-color);
+    display: grid;
+    gap: clamp(1rem, 3vw, 2rem);
+    grid-template-columns: auto minmax(0, 1fr) minmax(10rem, 18rem);
+    margin-bottom: 1.5rem;
+    min-height: 13rem;
+    overflow: hidden;
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+    position: relative;
+  }
+  .object-label {
+    align-self: stretch;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1.5rem;
+  }
+  .object-label span { color: var(--text-secondary); max-width: 7rem; }
+  .object-label strong {
+    color: var(--link-color);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 1.4rem;
+  }
+  .room-object h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
+    margin: 0;
+    max-width: 56rem;
+  }
+  .room-object svg {
+    color: var(--link-color);
+    height: auto;
+    opacity: 0.66;
+    stroke: currentColor;
+    stroke-width: 1;
+    width: 100%;
+  }
+  .dialogue-layout {
+    align-items: start;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 20rem);
+  }
+  .river {
+    background: color-mix(in srgb, var(--bg-color) 88%, transparent);
+    border: 1px solid var(--border-color);
+    min-width: 0;
+    padding: clamp(0.85rem, 3vw, 1.5rem);
+  }
+  .archive-nav {
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.65rem;
+    justify-content: space-between;
+    letter-spacing: 0.06em;
+    padding: 0 0 0.85rem;
+    text-transform: uppercase;
+  }
+  .archive-nav span { color: var(--text-secondary); opacity: 0.55; }
+  .date-marker {
+    align-items: center;
+    display: flex;
+    gap: 0.7rem;
+    margin: 1.5rem 0;
+  }
+  .date-marker::before,
+  .date-marker::after { background: var(--border-color); content: ''; flex: 1; height: 1px; }
+  .date-marker span { font-family: var(--font-serif); font-size: 0.88rem; white-space: nowrap; }
+  .date-marker small { color: var(--text-secondary); font-family: ui-monospace, monospace; font-size: 0.52rem; white-space: nowrap; }
+  .message-river { display: grid; gap: 1rem; }
+  .river-end {
+    align-items: flex-start;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 0.8rem;
+    margin: 1.5rem 0 0;
+    padding: 1.25rem 0 0;
+  }
+  .pulse {
+    background: var(--link-color);
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--link-color) 13%, transparent);
+    flex: 0 0 auto;
+    height: 0.48rem;
+    margin-top: 0.35rem;
+    width: 0.48rem;
+  }
+  .river-end strong { font-size: 0.76rem; }
+  .river-end p { color: var(--text-secondary); font-size: 0.68rem; line-height: 1.55; margin: 0.15rem 0 0; }
+  .context-rail {
+    display: grid;
+    gap: 0.85rem;
+    position: sticky;
+    top: 6.25rem;
+  }
+  .instrument-card {
+    background: color-mix(in srgb, var(--surface-color) 94%, transparent);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+  }
+  .thread-card { border-top: 3px solid var(--link-color); }
+  .thread-card h2 { font-family: var(--font-serif); font-size: 1.4rem; margin: 0.35rem 0 0.65rem; }
+  .thread-card > p:not(.instrument-label),
+  .reading-card > p:not(.instrument-label) { color: var(--text-secondary); font-size: 0.76rem; line-height: 1.6; }
+  .thread-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .thread-tags span {
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.56rem;
+    padding: 0.2rem 0.35rem;
+  }
+  .rail-heading { align-items: center; display: flex; justify-content: space-between; }
+  .rail-heading > span { color: var(--text-secondary); font-family: ui-monospace, monospace; font-size: 0.65rem; }
+  .cast-list { display: grid; gap: 0.2rem; margin-top: 0.7rem; }
+  .cast-list a {
+    align-items: center;
+    border: 1px solid transparent;
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    padding: 0.45rem;
+  }
+  .cast-list a:hover { background: color-mix(in srgb, var(--character-primary) 7%, transparent); border-color: color-mix(in srgb, var(--character-primary) 28%, var(--border-color)); }
+  .cast-sigil {
+    align-items: center;
+    border: 1px solid color-mix(in srgb, var(--character-primary) 58%, var(--border-color));
+    border-radius: 50%;
+    color: var(--character-primary);
+    display: flex;
+    font-size: 0.48rem;
+    font-weight: 800;
+    height: 2rem;
+    justify-content: center;
+    width: 2rem;
+  }
+  .cast-list strong { display: block; font-size: 0.72rem; }
+  .cast-list small { color: var(--text-secondary); display: block; font-size: 0.58rem; }
+  .cast-list a > span:last-child { color: var(--text-secondary); font-size: 0.7rem; }
+  .reading-card strong:first-of-type { color: #2875aa; }
+  .reading-card strong:last-of-type { color: #9a5d30; }
+  .snapshot-card {
+    border-left: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+    display: grid;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    gap: 0.15rem;
+    margin-left: 0.5rem;
+    padding: 0.35rem 0 0.35rem 0.75rem;
+  }
+  .snapshot-card span { font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .snapshot-card strong { color: var(--text-primary); font-size: 0.64rem; }
+  .snapshot-card small { font-size: 0.54rem; }
+
+  @media (max-width: 960px) {
+    .dialogue-layout { grid-template-columns: 1fr; }
+    .context-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); position: static; }
+    .snapshot-card { display: none; }
+    .reading-card { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 720px) {
+    .header-index { display: none; }
+    .dialogue-header { grid-template-columns: 1fr; }
+    .world-strip { grid-template-columns: repeat(2, 1fr); }
+    .world-strip div + div { border-left: 0; }
+    .world-strip div:nth-child(even) { border-left: 1px solid var(--border-color); }
+    .world-strip div:nth-child(n + 3) { border-top: 1px solid var(--border-color); }
+    .world-strip div:last-child { grid-column: 1 / -1; }
+    .room-object { grid-template-columns: 1fr; }
+    .object-label { align-items: center; border-bottom: 1px solid var(--border-color); border-right: 0; flex-direction: row; padding: 0 0 0.7rem; }
+    .room-object svg { display: none; }
+    .context-rail { grid-template-columns: 1fr; }
+    .reading-card { grid-column: auto; }
+  }
+
+  @media (max-width: 460px) {
+    h1 { font-size: 4rem; }
+    .river { margin-left: -0.75rem; margin-right: -0.75rem; padding: 0.7rem; }
+    .date-marker small { display: none; }
+  }
+</style>

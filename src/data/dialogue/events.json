@@ -1,0 +1,164 @@
+[
+  {
+    "id": "event-0001",
+    "type": "world-initialized",
+    "occurred_at": "2026-09-02T08:00:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["dialogue"],
+    "cause_message_ids": [],
+    "payload": { "schema_version": "1.0.0", "constitution_version": "1.0.0" }
+  },
+  {
+    "id": "event-0002",
+    "type": "characters-seeded",
+    "occurred_at": "2026-09-02T08:01:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["anika-vale", "milo-chen", "evelyn-hart", "cassian-reed", "noor-rahal", "rhea-solano"],
+    "cause_message_ids": [],
+    "payload": { "count": 6, "source": "founders.json" }
+  },
+  {
+    "id": "event-0003",
+    "type": "relationships-seeded",
+    "occurred_at": "2026-09-02T08:02:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["rel-anika-rhea", "rel-milo-noor", "rel-evelyn-rhea", "rel-anika-cassian", "rel-milo-cassian", "rel-anika-evelyn", "rel-evelyn-milo", "rel-evelyn-noor", "rel-noor-cassian", "rel-milo-rhea", "rel-cassian-evelyn", "rel-cassian-rhea", "rel-noor-rhea", "rel-anika-noor", "rel-anika-milo"],
+    "cause_message_ids": [],
+    "payload": { "pair_count": 15, "directional_edges": 30, "source": "relationships.json" }
+  },
+  {
+    "id": "event-0004",
+    "type": "beliefs-seeded",
+    "occurred_at": "2026-09-02T08:03:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["belief-metric-target-distortion", "belief-institutions-lose-causal-memory", "belief-ai-art-value", "belief-living-heritage-can-be-frozen", "belief-end-users-priority", "belief-reversibility-under-uncertainty", "belief-transparent-consensus-prior", "belief-maintenance-prestige"],
+    "cause_message_ids": [],
+    "payload": { "count": 8, "position_count": 48, "source": "beliefs.json" }
+  },
+  {
+    "id": "event-0005",
+    "type": "thread-opened",
+    "occurred_at": "2026-09-02T08:15:00-07:00",
+    "actor_id": "the-room",
+    "subject_ids": ["thread-refuse-to-optimize"],
+    "cause_message_ids": [],
+    "payload": { "prompt": "What should a civilization deliberately refuse to optimize?" }
+  },
+  {
+    "id": "event-0006",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T08:17:00-07:00",
+    "actor_id": "anika-vale",
+    "subject_ids": ["msg-0001"],
+    "cause_message_ids": [],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0007",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T08:31:00-07:00",
+    "actor_id": "rhea-solano",
+    "subject_ids": ["msg-0002"],
+    "cause_message_ids": ["msg-0001"],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0008",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T09:04:00-07:00",
+    "actor_id": "evelyn-hart",
+    "subject_ids": ["msg-0003"],
+    "cause_message_ids": [],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0009",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T09:19:00-07:00",
+    "actor_id": "cassian-reed",
+    "subject_ids": ["msg-0004"],
+    "cause_message_ids": ["msg-0003"],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0010",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T09:47:00-07:00",
+    "actor_id": "noor-rahal",
+    "subject_ids": ["msg-0005"],
+    "cause_message_ids": [],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0011",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T10:02:00-07:00",
+    "actor_id": "rhea-solano",
+    "subject_ids": ["msg-0006"],
+    "cause_message_ids": ["msg-0005"],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0012",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T11:48:00-07:00",
+    "actor_id": "milo-chen",
+    "subject_ids": ["msg-0007"],
+    "cause_message_ids": [],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0013",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T12:11:00-07:00",
+    "actor_id": "anika-vale",
+    "subject_ids": ["msg-0008"],
+    "cause_message_ids": ["msg-0007"],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0014",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T13:03:00-07:00",
+    "actor_id": "cassian-reed",
+    "subject_ids": ["msg-0009"],
+    "cause_message_ids": [],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0015",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T15:26:00-07:00",
+    "actor_id": "evelyn-hart",
+    "subject_ids": ["msg-0010"],
+    "cause_message_ids": ["msg-0009"],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0016",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T16:02:00-07:00",
+    "actor_id": "noor-rahal",
+    "subject_ids": ["msg-0011"],
+    "cause_message_ids": ["msg-0010"],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0017",
+    "type": "message-accepted",
+    "occurred_at": "2026-09-02T23:51:00-07:00",
+    "actor_id": "milo-chen",
+    "subject_ids": ["msg-0012"],
+    "cause_message_ids": ["msg-0011"],
+    "payload": { "validation_run_id": "validation-opening-record-001", "state_change_count": 0 }
+  },
+  {
+    "id": "event-0018",
+    "type": "memory-created",
+    "occurred_at": "2026-09-02T23:58:00-07:00",
+    "actor_id": "system",
+    "subject_ids": ["memory-the-refusal-list"],
+    "cause_message_ids": ["msg-0001", "msg-0002", "msg-0003", "msg-0004", "msg-0005", "msg-0006", "msg-0007", "msg-0008", "msg-0009", "msg-0010", "msg-0011", "msg-0012"],
+    "payload": { "salience": 72, "type": "cultural" }
+  }
+]
