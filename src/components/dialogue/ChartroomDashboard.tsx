@@ -12,6 +12,7 @@ import type {
   DialogueRelationship,
   DialogueSnapshot,
   DialogueShadowRun,
+  DialogueSeaTrial,
   DialogueSource,
   DialogueValidationRun,
   RelationshipDimension,
@@ -45,6 +46,7 @@ interface ChartroomProps {
   foundingRecordV1: FoundingRecordArchive;
   shadowRuns: DialogueShadowRun[];
   benchmarkReport: DialogueBenchmarkReport;
+  seaTrial: DialogueSeaTrial;
 }
 
 const BIG_FIVE: Array<{ key: BigFiveKey; short: string; label: string }> = [
@@ -599,7 +601,82 @@ function CanonPanel({
   );
 }
 
-function RunsPanel({ runs, report, characters }: { runs: DialogueShadowRun[]; report: DialogueBenchmarkReport; characters: DialogueCharacter[] }) {
+const SEA_TRIAL_GATE_LABELS: Record<string, string> = {
+  'P3-01': 'Real stack',
+  'P3-02': 'Persistent shadow',
+  'P3-03': 'Transaction safety',
+  'P3-04': '120 accelerated ticks',
+  'P3-05': '30 daily closes',
+  'P3-06': 'Validation containment',
+  'P3-07': 'Concrete human speech',
+  'P3-08': 'Evidence integrity',
+  'P3-09': 'Canon isolation',
+  'P3-10': 'Accelerated deployment',
+  'P3-11': 'Seven-day soak',
+  'P3-12': 'Zero human input',
+  'P3-13': 'Safe observability',
+  'P3-14': 'Automatic exit',
+};
+
+function SeaTrialPanel({ trial }: { trial: DialogueSeaTrial }) {
+  const accelerated = trial.accelerated;
+  const realtime = trial.realtime;
+  const finalGates = trial.finalExitReport?.gates ?? {};
+  const runtimeFrozen = Boolean(trial.runtimeManifest);
+  const status = trial.finalExitReport?.status === 'passed' ? 'PHASE 3 PASSED' : runtimeFrozen ? 'TRIAL RUNNING' : 'COMMISSIONED';
+  const statusDetail = trial.finalExitReport?.status === 'passed'
+    ? 'All fourteen binary gates passed automatically.'
+    : runtimeFrozen
+      ? 'Frozen behavior bundle · unattended shadow operations'
+      : 'Qualification passed · awaiting first autonomous tick';
+  const latestRun = [...accelerated.runs, ...realtime.runs].sort((a, b) => Date.parse(b.scheduled_at) - Date.parse(a.scheduled_at))[0];
+  const gateState = (gate: string) => {
+    if (finalGates[gate] === true) return 'passed';
+    if (gate === 'P3-03' && trial.qualification.all_scenarios_passed) return 'passed';
+    if (gate === 'P3-09' && [...accelerated.runs, ...realtime.runs].every((run) => run.canonical_mutation_guard.passed)) return 'holding';
+    if (gate === 'P3-12' && [...accelerated.runs, ...realtime.runs].every((run) => run.human_input_sources.length === 0)) return 'holding';
+    return 'pending';
+  };
+
+  return (
+    <section className="sea-trial instrument">
+      <header className="instrument-header">
+        <div><p className="instrument-kicker">Phase 3 // fixed sea trials</p><h2>Production dress rehearsal</h2></div>
+        <div className={`trial-status ${trial.finalExitReport?.status === 'passed' ? 'is-passed' : ''}`}><strong>{status}</strong><small>{statusDetail}</small></div>
+      </header>
+      <div className="trial-locks">
+        <div><span>Canon</span><strong>LOCKED</strong><small>No publication surface</small></div>
+        <div><span>Behavior bundle</span><strong>{runtimeFrozen ? 'FROZEN' : 'AWAITING FREEZE'}</strong><small>{trial.runtimeManifest?.behavior_bundle.digest.slice(0, 16) ?? 'created before tick 001'}</small></div>
+        <div><span>Human input</span><strong>FORBIDDEN</strong><small>Manny supplies nothing</small></div>
+        <div><span>Trial clock</span><strong>AMERICA / PHOENIX</strong><small>{trial.contract.slots.join(' · ')}</small></div>
+      </div>
+      <div className="trial-legs">
+        {([
+          ['accelerated', 'Accelerated leg', accelerated.runs.length, trial.contract.legs.accelerated.required_ticks, accelerated.dailyCloses.length, trial.contract.legs.accelerated.required_daily_closes, trial.contract.legs.accelerated],
+          ['realtime', 'Seven-day soak', realtime.runs.length, trial.contract.legs.realtime.required_ticks, realtime.dailyCloses.length, trial.contract.legs.realtime.required_daily_closes, trial.contract.legs.realtime],
+        ] as const).map(([id, label, completed, required, closed, closeRequired, leg]) => (
+          <article key={id}>
+            <div className="trial-leg-heading"><div><span>{id}</span><h3>{label}</h3></div><strong>{completed} / {required}</strong></div>
+            <div className="trial-progress" aria-label={`${completed} of ${required} ${label} ticks complete`}><span style={{ width: `${Math.min(100, (completed / required) * 100)}%` }} /></div>
+            <dl><div><dt>Phoenix dates</dt><dd>{leg.start_date} → {leg.end_date}</dd></div><div><dt>Daily closes</dt><dd>{closed} / {closeRequired}</dd></div><div><dt>Exit report</dt><dd>{id === 'accelerated' ? (accelerated.exitReport?.status ?? 'pending') : (realtime.exitReport?.status ?? 'pending')}</dd></div></dl>
+          </article>
+        ))}
+      </div>
+      <div className="trial-gates">
+        {trial.contract.required_gate_ids.map((gate) => {
+          const state = gateState(gate);
+          return <div key={gate} className={`is-${state}`}><span>{state === 'passed' ? '✓' : state === 'holding' ? '◇' : '·'}</span><code>{gate}</code><p>{SEA_TRIAL_GATE_LABELS[gate]}</p><small>{state}</small></div>;
+        })}
+      </div>
+      <footer className="trial-latest">
+        <span>Latest terminal opportunity</span>
+        {latestRun ? <><strong>{latestRun.tick_id}</strong><small>{latestRun.outcome} · state <code>{latestRun.shadow_state_digest_after}</code></small></> : <><strong>No live tick yet</strong><small>Qualification has passed; silence will count as a valid result once the frozen runtime begins.</small></>}
+      </footer>
+    </section>
+  );
+}
+
+function RunsPanel({ runs, report, characters, seaTrial }: { runs: DialogueShadowRun[]; report: DialogueBenchmarkReport; characters: DialogueCharacter[]; seaTrial: DialogueSeaTrial }) {
   const [selectedRunId, setSelectedRunId] = useState(runs.at(-1)?.run_id ?? runs[0].run_id);
   const run = runs.find((entry) => entry.run_id === selectedRunId) ?? runs[0];
   const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null);
@@ -607,6 +684,7 @@ function RunsPanel({ runs, report, characters }: { runs: DialogueShadowRun[]; re
 
   return (
     <div className="panel-stack runs-panel">
+      <SeaTrialPanel trial={seaTrial} />
       <section className="benchmark-gate instrument">
         <header className="instrument-header compact">
           <div><p className="instrument-kicker">Phase 2 exit gate // independent review</p><h2>Grounded voice benchmark</h2></div>
@@ -747,7 +825,7 @@ export default function ChartroomDashboard(props: ChartroomProps) {
         {panel === 'relationships' && <RelationshipsPanel characters={props.characters} relationships={props.relationships} />}
         {panel === 'beliefs' && <BeliefsPanel characters={props.characters} beliefs={props.beliefs} sources={props.sources} />}
         {panel === 'canon' && <CanonPanel characters={props.characters} beliefs={props.beliefs} messages={props.messages} sources={props.sources} memories={props.memories} validationRuns={props.validationRuns} foundingRecordV1={props.foundingRecordV1} />}
-        {panel === 'runs' && <RunsPanel runs={props.shadowRuns} report={props.benchmarkReport} characters={props.characters} />}
+        {panel === 'runs' && <RunsPanel runs={props.shadowRuns} report={props.benchmarkReport} characters={props.characters} seaTrial={props.seaTrial} />}
       </div>
 
       <footer className="health-rack">

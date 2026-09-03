@@ -1,0 +1,5 @@
+# Phase 3 Fixed Sea Trials
+
+This directory is an append-only, noncanonical trial ledger. `contract.json` is frozen before counting begins. The autonomous runner follows `automation/dialogue-phase-3-operator.md` and writes each durable boundary to `dialogue-phase-3-runtime`, whose Vercel deployments are disabled. At a production projection point, `main` fast-forwards to the exact runtime head. A newer `main` may first be merged into runtime only when it is an ancestry-preserving, conflict-free advance whose changed paths cannot alter the frozen bundle, canonical Dialogue, or trial ledger; every other movement halts the trial. The runner creates `runtime-manifest.json`, then claims, pre-terminal journals, terminal runs, daily closes, deployment receipts, and exit reports. After the final exit is projected and verified, `final-deployment.json` is the last runtime-only proof.
+
+Nothing here is read by the public Dialogue river. Chartroom reads sanitized summaries only. Raw prompts, raw provider responses, hidden reasoning, credentials, and write controls are forbidden.
