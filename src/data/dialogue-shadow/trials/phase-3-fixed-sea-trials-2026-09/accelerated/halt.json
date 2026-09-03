@@ -1,0 +1,26 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "status": "halted",
+  "tick_id": "p3-accelerated-2026-09-03-01",
+  "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+  "reason_code": "STACK_FAILURE",
+  "failed_intent_id": null,
+  "wall_recorded_at": "2026-09-03T08:40:43.577Z",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "claim_hash": "fb464e742a268fbd870792a6bf80de5f11d5af62f1b9ffe2444bba3f0df7570a",
+  "through_run_hash": "GENESIS",
+  "shadow_state_digest": "6e05d15bc005e0d27e4d471239f572f7b8c3883b4215f675be3df5fcc80bee9a",
+  "canonical_digest": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+  "restart_required": true,
+  "human_input_sources": [],
+  "canonical_status": "NON-CANON",
+  "raw_model_reasoning_stored": false,
+  "halt_hash": "f317195876ce102c88a0d3fee581a41a5997a1b40592b6ffd964b812b8be2fc8"
+}
