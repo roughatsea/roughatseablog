@@ -1,0 +1,1594 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "manifest_version": "3.0.0",
+  "immutable": true,
+  "canonical_status": "NON-CANON",
+  "created_at": "2026-09-03T14:18:31.595Z",
+  "git_sha": "57ba166ea42f2ad5fdb616e0a46ad4d10ae25449",
+  "git_transport": {
+    "runtime_branch": "dialogue-phase-3-runtime-v2",
+    "production_branch": "main",
+    "runtime_branch_deployments_enabled": false,
+    "production_projection_points": [
+      "accelerated-final-close",
+      "each-realtime-daily-close",
+      "final-exit"
+    ],
+    "initial_production_git_sha": "57ba166ea42f2ad5fdb616e0a46ad4d10ae25449"
+  },
+  "automation_runner_ids": {
+    "accelerated": "dialogue-phase-3-accelerated-v1",
+    "realtime": "dialogue-phase-3-realtime-v1"
+  },
+  "canonical_digest": {
+    "algorithm": "sha256",
+    "digest": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "files": {
+      "artifacts.json": "4de0274d90a4237979924d60fbb1fbae342914ac1e5d01d2648ec76a61097b74",
+      "beliefs.json": "f0cbb9e50cf5377e8c3d96e0433cf3b415cd4f5958eb7b33832f2e7171b79df8",
+      "commissioning/founding-record-v1.json": "fd2c54d8019f7038cd0bbd5861b9816199c911c84bbc31f5720e0a1983a6ed13",
+      "dialogue.schema.json": "ea93b1bc2c647d6d6e5ceac28044f4900511a9b8bfd7574bf53efa47560dd699",
+      "events.json": "da3c7eadd2e58f127e93e89a553a8e23b01310f863a211feee5a19c3d4e278d0",
+      "founders.json": "09e939eba7ad9dfdd1c1f447776ed5806c78dea104f7e78c565401bf7d1b7748",
+      "life-events.json": "cb19b446cbdc95249c30751a1715b53f50b04ccfbe19c4f5b5527c4f152328ad",
+      "memories.json": "5f48d295004408f4c61a795bd7a1865f689509c4e85dce4906eaaa5adeba3a2c",
+      "messages.json": "f3092ce2518f7972b104bfce52aaa1b82616124f674a36ee7f66d91aa5149c03",
+      "meta.json": "30f341431f86e3a6954d04149353e6b6b01379ff10b258dce2f6c77986e5e128",
+      "relationships.json": "9a1bdcad81349cd25413ff6b57664a6a319ccc1a3956a40c76a03fbcedbfe098",
+      "sources.json": "b2913a7cc7f450ccba7a69da572d1446d2c8739d02d84b0b0353b8703971f6c6",
+      "state-snapshots.json": "592197ae2bef146ea11854cd1893740f6e49c9bc993aae2cfd15e0b1adf1a986",
+      "threads.json": "5e064b0979232445a79a89f4f510e6f75f61931e59bde7cba099e9baef341d54",
+      "validation-runs.json": "a9abd549714e01dd7c5dfeb9e7bbee984a159f8a78e499be6d3fc1909315593e"
+    }
+  },
+  "initial_shadow_state_digest": "6e05d15bc005e0d27e4d471239f572f7b8c3883b4215f675be3df5fcc80bee9a",
+  "behavior_bundle": {
+    "algorithm": "sha256",
+    "digest": "0abf07f106bbb58dfb561fc8b5e0e954dd7aba9d433c1d71eff61956e7593b95",
+    "files": {
+      "automation/dialogue-phase-3-fixed-sea-trials.md": "3199793384aacb9347860b32dc88cdc5bec99b3b6cdbc0421ec028ce2af04f2c",
+      "automation/dialogue-phase-3-operator.md": "ca7b4ace729b6dfdb4ed253bc9d222ca65a72b09e73c624537e64f20a77bb9d7",
+      "automation/dialogue-phase-3-prompts.md": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+      "src/data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/contract.json": "50e98c7b48ff4b22d9442138a074bb862c190a1c693e18ec2a92123495c3bf01",
+      "src/data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/qualification-report.json": "bc39a3790dc30a603840ff989538327b373d49c0e71f805172fe3db294c15af3",
+      "scripts/dialogue-engine/canonical-store.mjs": "999af81a8b7b0fb5138d6909e38012e7ad7b481a3f9a95d8fd8ae0ae8418be33",
+      "scripts/dialogue-engine/sea-trial-deployment.mjs": "4f4963d1f0dc58e24291f214e2d982620cb8f48b1a590f5ab4c5c2ff2d9c6d1d",
+      "scripts/dialogue-engine/sea-trial-qualification.mjs": "23250ea1a39aeea68dcc7637f108e1a05b8ba271163925fb1632e60f6f389545",
+      "scripts/dialogue-engine/sea-trial-schedule.mjs": "a4e25066c04899609cc01397d4ab8fea27466ab1683da5eac5406b53c0f348da",
+      "scripts/dialogue-engine/sea-trial-validator.mjs": "486b2c5868b7fbd48e9f37f4689666d8d27206ab00ab3151932e45ee5c012fb2",
+      "scripts/dialogue-engine/sea-trial-reducer.mjs": "2d045250d5d993ca7162e2245cfd003e6aa44450295fbe8f536bbeef3dc36c78",
+      "scripts/dialogue-engine/sea-trial-ledger.mjs": "f87a3fa0c121bd4fa790383640658a64fde5ae6c4272138c75d1bc28a9995fba",
+      "scripts/dialogue-engine/sea-trial-orchestrator.mjs": "e609a3fecea4f6319d89b814e036bb2c3071ed82c43dd3d0f728933e4c4831b5",
+      "scripts/dialogue-sea-trial.mjs": "93ed934b2ac432540b0d85039567df4b4d4cd217612d9f7592f73462090a8970",
+      "scripts/qualify-dialogue-sea-trial.mjs": "deb01b2185343a9964fd119c1ddfda7112f9dbdc77578452954bb6cf34261599",
+      "scripts/build-wake-exports.mjs": "97f368c3d59318885369953b6c481be8959cf668bbf0ae8009ddd49f3c3f0794",
+      "scripts/validate-dialogue.mjs": "bff8eb97a461e8d6e57cdb9b62766a9b8f93e451c6d24207902bbf87466b53c8",
+      "scripts/validate-dialogue-sea-trial.mjs": "31b3c4b75a9f3c9253f508d6bd2321e155ceeb7112623a9d5138c675ab0bb4ba",
+      "scripts/validate-save-point.mjs": "8600e4a08a40e5f7ad1e75fd2f62b64315773f29b03e69acaad41a328966b7a7",
+      "scripts/validate-wake-data.mjs": "8c3634afc9444d960b490d9cbc8a3e26a7f86acb30e78a3a7d555c40dc650b78",
+      "scripts/validate-wake-records.mjs": "3f705e67fa5b15ed6a3e2273d84eab2077d711080f54d7118ae9c8cf80d52780",
+      "scripts/verify-dialogue-build.mjs": "dfee967033bd8efc6018b8127f850b85adbf22a89f5f14b405afd038cd5a4eaa",
+      "src/lib/dialogue.ts": "324871259e567969afa043eaad082776ead363bde48c5a8935a8b64882ba5ca0",
+      "src/pages/deployment.json.ts": "227e0799d5aae6013a0e99d4b1561716e657969fc74eae856e27207be222537f",
+      "src/pages/dialogue/index.astro": "f3249551090b178b22e440ca0f613980c6b8a2087b9ac2a9fcb7674ae1edef68",
+      "src/pages/dialogue/chartroom/index.astro": "9eef42316315a5114f3c9794a3f776a77e1be43fe38f54875b560fbb005f3e0d",
+      "src/pages/dialogue/people/[slug].astro": "f3f7067f28e1413f134258cbaf20733b8b2c87f7f469c62ca10e03dd17e10528",
+      "src/components/dialogue/DialogueMessage.astro": "65217519a02fb08e9f9986e0184ee1e3ce05497e00e064ceede5d6e16ffe4ff3",
+      "src/components/dialogue/ChartroomDashboard.tsx": "d682d0b918b59dac6296606dff3c5dbf35f15cc67c45266cb1aca339718c58d2",
+      "src/components/dialogue/ChartroomDashboard.css": "98fe002dd7232cbf3b4953fb7b929c1ae487eb687af844a5b8c9b949d88d7f0e",
+      "test/dialogue-phase2.test.mjs": "ef9f30d7f8ccbf4cdc1d9b5397facbc4a8ffc54438866d614baaea4c82d54f02",
+      "test/dialogue-phase3.test.mjs": "57d92bac0ea4cd0010cba5e00735c2b90ab04056da3a90325486456533eeb529",
+      "test/dialogue-phase3-deployment.test.mjs": "f7a3db94bfcae1e1f3f61ffb4d767ac5d541f51a713b43437e5c6a2df211a234",
+      "test/dialogue-phase3-qualification.test.mjs": "45dd065f289e2029fd338cb5e5311ba6873e2df679ebb8e5bb841a9d0378b961",
+      "astro.config.mjs": "2cd4478e9422d3a84fa660c2ae60828da340d6b5b13c02f1fa2e6d213d37ac2a",
+      "package.json": "781b47747494b5bd2b445832d65941ae848df99a169240a645ec45a24fa9f1fd",
+      "package-lock.json": "e09340305f4ecc320a5f65555645e6cec8eac260d21319f1b91a0f26bf493616",
+      "tsconfig.json": "1e5be5ab366f423bdf36abc8769b33c18f8967edb673be16fe999f5181473cb8",
+      "vercel.json": "1d26ef2d77fdc5878cb0155d02d7d8bc8211ed9b35c871245fd1530186a1d509"
+    }
+  },
+  "stack": {
+    "director": "deterministic-opportunity-director-v3",
+    "generator": "gpt-5.6-sol",
+    "evaluator": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "research_adapter": "web-primary-source-v1",
+    "scheduler": "3.0.0",
+    "validator": "3.0.0",
+    "reducer": "3.0.0",
+    "transaction": "3.0.0",
+    "schema": "3.0.0",
+    "build_command": "npm run build",
+    "deployment_target": "roughatsea-vercel-production"
+  },
+  "schedules": {
+    "accelerated": [
+      {
+        "leg": "accelerated",
+        "date": "2026-09-03",
+        "date_index": 1,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 1,
+        "tick_id": "p3-accelerated-2026-09-03-01",
+        "scheduled_at": "2026-09-03T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-03",
+        "date_index": 1,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 2,
+        "tick_id": "p3-accelerated-2026-09-03-02",
+        "scheduled_at": "2026-09-03T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-03",
+        "date_index": 1,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 3,
+        "tick_id": "p3-accelerated-2026-09-03-03",
+        "scheduled_at": "2026-09-03T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-03",
+        "date_index": 1,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 4,
+        "tick_id": "p3-accelerated-2026-09-03-04",
+        "scheduled_at": "2026-09-03T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-04",
+        "date_index": 2,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 5,
+        "tick_id": "p3-accelerated-2026-09-04-01",
+        "scheduled_at": "2026-09-04T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-04",
+        "date_index": 2,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 6,
+        "tick_id": "p3-accelerated-2026-09-04-02",
+        "scheduled_at": "2026-09-04T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-04",
+        "date_index": 2,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 7,
+        "tick_id": "p3-accelerated-2026-09-04-03",
+        "scheduled_at": "2026-09-04T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-04",
+        "date_index": 2,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 8,
+        "tick_id": "p3-accelerated-2026-09-04-04",
+        "scheduled_at": "2026-09-04T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-05",
+        "date_index": 3,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 9,
+        "tick_id": "p3-accelerated-2026-09-05-01",
+        "scheduled_at": "2026-09-05T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-05",
+        "date_index": 3,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 10,
+        "tick_id": "p3-accelerated-2026-09-05-02",
+        "scheduled_at": "2026-09-05T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-05",
+        "date_index": 3,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 11,
+        "tick_id": "p3-accelerated-2026-09-05-03",
+        "scheduled_at": "2026-09-05T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-05",
+        "date_index": 3,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 12,
+        "tick_id": "p3-accelerated-2026-09-05-04",
+        "scheduled_at": "2026-09-05T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-06",
+        "date_index": 4,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 13,
+        "tick_id": "p3-accelerated-2026-09-06-01",
+        "scheduled_at": "2026-09-06T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-06",
+        "date_index": 4,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 14,
+        "tick_id": "p3-accelerated-2026-09-06-02",
+        "scheduled_at": "2026-09-06T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-06",
+        "date_index": 4,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 15,
+        "tick_id": "p3-accelerated-2026-09-06-03",
+        "scheduled_at": "2026-09-06T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-06",
+        "date_index": 4,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 16,
+        "tick_id": "p3-accelerated-2026-09-06-04",
+        "scheduled_at": "2026-09-06T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-07",
+        "date_index": 5,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 17,
+        "tick_id": "p3-accelerated-2026-09-07-01",
+        "scheduled_at": "2026-09-07T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-07",
+        "date_index": 5,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 18,
+        "tick_id": "p3-accelerated-2026-09-07-02",
+        "scheduled_at": "2026-09-07T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-07",
+        "date_index": 5,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 19,
+        "tick_id": "p3-accelerated-2026-09-07-03",
+        "scheduled_at": "2026-09-07T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-07",
+        "date_index": 5,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 20,
+        "tick_id": "p3-accelerated-2026-09-07-04",
+        "scheduled_at": "2026-09-07T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-08",
+        "date_index": 6,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 21,
+        "tick_id": "p3-accelerated-2026-09-08-01",
+        "scheduled_at": "2026-09-08T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-08",
+        "date_index": 6,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 22,
+        "tick_id": "p3-accelerated-2026-09-08-02",
+        "scheduled_at": "2026-09-08T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-08",
+        "date_index": 6,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 23,
+        "tick_id": "p3-accelerated-2026-09-08-03",
+        "scheduled_at": "2026-09-08T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-08",
+        "date_index": 6,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 24,
+        "tick_id": "p3-accelerated-2026-09-08-04",
+        "scheduled_at": "2026-09-08T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-09",
+        "date_index": 7,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 25,
+        "tick_id": "p3-accelerated-2026-09-09-01",
+        "scheduled_at": "2026-09-09T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-09",
+        "date_index": 7,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 26,
+        "tick_id": "p3-accelerated-2026-09-09-02",
+        "scheduled_at": "2026-09-09T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-09",
+        "date_index": 7,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 27,
+        "tick_id": "p3-accelerated-2026-09-09-03",
+        "scheduled_at": "2026-09-09T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-09",
+        "date_index": 7,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 28,
+        "tick_id": "p3-accelerated-2026-09-09-04",
+        "scheduled_at": "2026-09-09T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-10",
+        "date_index": 8,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 29,
+        "tick_id": "p3-accelerated-2026-09-10-01",
+        "scheduled_at": "2026-09-10T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-10",
+        "date_index": 8,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 30,
+        "tick_id": "p3-accelerated-2026-09-10-02",
+        "scheduled_at": "2026-09-10T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-10",
+        "date_index": 8,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 31,
+        "tick_id": "p3-accelerated-2026-09-10-03",
+        "scheduled_at": "2026-09-10T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-10",
+        "date_index": 8,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 32,
+        "tick_id": "p3-accelerated-2026-09-10-04",
+        "scheduled_at": "2026-09-10T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-11",
+        "date_index": 9,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 33,
+        "tick_id": "p3-accelerated-2026-09-11-01",
+        "scheduled_at": "2026-09-11T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-11",
+        "date_index": 9,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 34,
+        "tick_id": "p3-accelerated-2026-09-11-02",
+        "scheduled_at": "2026-09-11T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-11",
+        "date_index": 9,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 35,
+        "tick_id": "p3-accelerated-2026-09-11-03",
+        "scheduled_at": "2026-09-11T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-11",
+        "date_index": 9,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 36,
+        "tick_id": "p3-accelerated-2026-09-11-04",
+        "scheduled_at": "2026-09-11T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-12",
+        "date_index": 10,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 37,
+        "tick_id": "p3-accelerated-2026-09-12-01",
+        "scheduled_at": "2026-09-12T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-12",
+        "date_index": 10,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 38,
+        "tick_id": "p3-accelerated-2026-09-12-02",
+        "scheduled_at": "2026-09-12T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-12",
+        "date_index": 10,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 39,
+        "tick_id": "p3-accelerated-2026-09-12-03",
+        "scheduled_at": "2026-09-12T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-12",
+        "date_index": 10,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 40,
+        "tick_id": "p3-accelerated-2026-09-12-04",
+        "scheduled_at": "2026-09-12T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-13",
+        "date_index": 11,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 41,
+        "tick_id": "p3-accelerated-2026-09-13-01",
+        "scheduled_at": "2026-09-13T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-13",
+        "date_index": 11,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 42,
+        "tick_id": "p3-accelerated-2026-09-13-02",
+        "scheduled_at": "2026-09-13T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-13",
+        "date_index": 11,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 43,
+        "tick_id": "p3-accelerated-2026-09-13-03",
+        "scheduled_at": "2026-09-13T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-13",
+        "date_index": 11,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 44,
+        "tick_id": "p3-accelerated-2026-09-13-04",
+        "scheduled_at": "2026-09-13T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-14",
+        "date_index": 12,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 45,
+        "tick_id": "p3-accelerated-2026-09-14-01",
+        "scheduled_at": "2026-09-14T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-14",
+        "date_index": 12,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 46,
+        "tick_id": "p3-accelerated-2026-09-14-02",
+        "scheduled_at": "2026-09-14T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-14",
+        "date_index": 12,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 47,
+        "tick_id": "p3-accelerated-2026-09-14-03",
+        "scheduled_at": "2026-09-14T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-14",
+        "date_index": 12,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 48,
+        "tick_id": "p3-accelerated-2026-09-14-04",
+        "scheduled_at": "2026-09-14T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-15",
+        "date_index": 13,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 49,
+        "tick_id": "p3-accelerated-2026-09-15-01",
+        "scheduled_at": "2026-09-15T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-15",
+        "date_index": 13,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 50,
+        "tick_id": "p3-accelerated-2026-09-15-02",
+        "scheduled_at": "2026-09-15T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-15",
+        "date_index": 13,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 51,
+        "tick_id": "p3-accelerated-2026-09-15-03",
+        "scheduled_at": "2026-09-15T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-15",
+        "date_index": 13,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 52,
+        "tick_id": "p3-accelerated-2026-09-15-04",
+        "scheduled_at": "2026-09-15T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-16",
+        "date_index": 14,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 53,
+        "tick_id": "p3-accelerated-2026-09-16-01",
+        "scheduled_at": "2026-09-16T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-16",
+        "date_index": 14,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 54,
+        "tick_id": "p3-accelerated-2026-09-16-02",
+        "scheduled_at": "2026-09-16T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-16",
+        "date_index": 14,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 55,
+        "tick_id": "p3-accelerated-2026-09-16-03",
+        "scheduled_at": "2026-09-16T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-16",
+        "date_index": 14,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 56,
+        "tick_id": "p3-accelerated-2026-09-16-04",
+        "scheduled_at": "2026-09-16T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-17",
+        "date_index": 15,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 57,
+        "tick_id": "p3-accelerated-2026-09-17-01",
+        "scheduled_at": "2026-09-17T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-17",
+        "date_index": 15,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 58,
+        "tick_id": "p3-accelerated-2026-09-17-02",
+        "scheduled_at": "2026-09-17T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-17",
+        "date_index": 15,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 59,
+        "tick_id": "p3-accelerated-2026-09-17-03",
+        "scheduled_at": "2026-09-17T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-17",
+        "date_index": 15,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 60,
+        "tick_id": "p3-accelerated-2026-09-17-04",
+        "scheduled_at": "2026-09-17T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-18",
+        "date_index": 16,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 61,
+        "tick_id": "p3-accelerated-2026-09-18-01",
+        "scheduled_at": "2026-09-18T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-18",
+        "date_index": 16,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 62,
+        "tick_id": "p3-accelerated-2026-09-18-02",
+        "scheduled_at": "2026-09-18T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-18",
+        "date_index": 16,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 63,
+        "tick_id": "p3-accelerated-2026-09-18-03",
+        "scheduled_at": "2026-09-18T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-18",
+        "date_index": 16,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 64,
+        "tick_id": "p3-accelerated-2026-09-18-04",
+        "scheduled_at": "2026-09-18T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-19",
+        "date_index": 17,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 65,
+        "tick_id": "p3-accelerated-2026-09-19-01",
+        "scheduled_at": "2026-09-19T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-19",
+        "date_index": 17,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 66,
+        "tick_id": "p3-accelerated-2026-09-19-02",
+        "scheduled_at": "2026-09-19T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-19",
+        "date_index": 17,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 67,
+        "tick_id": "p3-accelerated-2026-09-19-03",
+        "scheduled_at": "2026-09-19T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-19",
+        "date_index": 17,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 68,
+        "tick_id": "p3-accelerated-2026-09-19-04",
+        "scheduled_at": "2026-09-19T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-20",
+        "date_index": 18,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 69,
+        "tick_id": "p3-accelerated-2026-09-20-01",
+        "scheduled_at": "2026-09-20T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-20",
+        "date_index": 18,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 70,
+        "tick_id": "p3-accelerated-2026-09-20-02",
+        "scheduled_at": "2026-09-20T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-20",
+        "date_index": 18,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 71,
+        "tick_id": "p3-accelerated-2026-09-20-03",
+        "scheduled_at": "2026-09-20T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-20",
+        "date_index": 18,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 72,
+        "tick_id": "p3-accelerated-2026-09-20-04",
+        "scheduled_at": "2026-09-20T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-21",
+        "date_index": 19,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 73,
+        "tick_id": "p3-accelerated-2026-09-21-01",
+        "scheduled_at": "2026-09-21T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-21",
+        "date_index": 19,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 74,
+        "tick_id": "p3-accelerated-2026-09-21-02",
+        "scheduled_at": "2026-09-21T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-21",
+        "date_index": 19,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 75,
+        "tick_id": "p3-accelerated-2026-09-21-03",
+        "scheduled_at": "2026-09-21T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-21",
+        "date_index": 19,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 76,
+        "tick_id": "p3-accelerated-2026-09-21-04",
+        "scheduled_at": "2026-09-21T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-22",
+        "date_index": 20,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 77,
+        "tick_id": "p3-accelerated-2026-09-22-01",
+        "scheduled_at": "2026-09-22T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-22",
+        "date_index": 20,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 78,
+        "tick_id": "p3-accelerated-2026-09-22-02",
+        "scheduled_at": "2026-09-22T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-22",
+        "date_index": 20,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 79,
+        "tick_id": "p3-accelerated-2026-09-22-03",
+        "scheduled_at": "2026-09-22T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-22",
+        "date_index": 20,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 80,
+        "tick_id": "p3-accelerated-2026-09-22-04",
+        "scheduled_at": "2026-09-22T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-23",
+        "date_index": 21,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 81,
+        "tick_id": "p3-accelerated-2026-09-23-01",
+        "scheduled_at": "2026-09-23T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-23",
+        "date_index": 21,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 82,
+        "tick_id": "p3-accelerated-2026-09-23-02",
+        "scheduled_at": "2026-09-23T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-23",
+        "date_index": 21,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 83,
+        "tick_id": "p3-accelerated-2026-09-23-03",
+        "scheduled_at": "2026-09-23T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-23",
+        "date_index": 21,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 84,
+        "tick_id": "p3-accelerated-2026-09-23-04",
+        "scheduled_at": "2026-09-23T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-24",
+        "date_index": 22,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 85,
+        "tick_id": "p3-accelerated-2026-09-24-01",
+        "scheduled_at": "2026-09-24T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-24",
+        "date_index": 22,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 86,
+        "tick_id": "p3-accelerated-2026-09-24-02",
+        "scheduled_at": "2026-09-24T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-24",
+        "date_index": 22,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 87,
+        "tick_id": "p3-accelerated-2026-09-24-03",
+        "scheduled_at": "2026-09-24T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-24",
+        "date_index": 22,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 88,
+        "tick_id": "p3-accelerated-2026-09-24-04",
+        "scheduled_at": "2026-09-24T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-25",
+        "date_index": 23,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 89,
+        "tick_id": "p3-accelerated-2026-09-25-01",
+        "scheduled_at": "2026-09-25T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-25",
+        "date_index": 23,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 90,
+        "tick_id": "p3-accelerated-2026-09-25-02",
+        "scheduled_at": "2026-09-25T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-25",
+        "date_index": 23,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 91,
+        "tick_id": "p3-accelerated-2026-09-25-03",
+        "scheduled_at": "2026-09-25T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-25",
+        "date_index": 23,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 92,
+        "tick_id": "p3-accelerated-2026-09-25-04",
+        "scheduled_at": "2026-09-25T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-26",
+        "date_index": 24,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 93,
+        "tick_id": "p3-accelerated-2026-09-26-01",
+        "scheduled_at": "2026-09-26T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-26",
+        "date_index": 24,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 94,
+        "tick_id": "p3-accelerated-2026-09-26-02",
+        "scheduled_at": "2026-09-26T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-26",
+        "date_index": 24,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 95,
+        "tick_id": "p3-accelerated-2026-09-26-03",
+        "scheduled_at": "2026-09-26T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-26",
+        "date_index": 24,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 96,
+        "tick_id": "p3-accelerated-2026-09-26-04",
+        "scheduled_at": "2026-09-26T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-27",
+        "date_index": 25,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 97,
+        "tick_id": "p3-accelerated-2026-09-27-01",
+        "scheduled_at": "2026-09-27T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-27",
+        "date_index": 25,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 98,
+        "tick_id": "p3-accelerated-2026-09-27-02",
+        "scheduled_at": "2026-09-27T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-27",
+        "date_index": 25,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 99,
+        "tick_id": "p3-accelerated-2026-09-27-03",
+        "scheduled_at": "2026-09-27T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-27",
+        "date_index": 25,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 100,
+        "tick_id": "p3-accelerated-2026-09-27-04",
+        "scheduled_at": "2026-09-27T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-28",
+        "date_index": 26,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 101,
+        "tick_id": "p3-accelerated-2026-09-28-01",
+        "scheduled_at": "2026-09-28T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-28",
+        "date_index": 26,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 102,
+        "tick_id": "p3-accelerated-2026-09-28-02",
+        "scheduled_at": "2026-09-28T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-28",
+        "date_index": 26,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 103,
+        "tick_id": "p3-accelerated-2026-09-28-03",
+        "scheduled_at": "2026-09-28T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-28",
+        "date_index": 26,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 104,
+        "tick_id": "p3-accelerated-2026-09-28-04",
+        "scheduled_at": "2026-09-28T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-29",
+        "date_index": 27,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 105,
+        "tick_id": "p3-accelerated-2026-09-29-01",
+        "scheduled_at": "2026-09-29T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-29",
+        "date_index": 27,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 106,
+        "tick_id": "p3-accelerated-2026-09-29-02",
+        "scheduled_at": "2026-09-29T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-29",
+        "date_index": 27,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 107,
+        "tick_id": "p3-accelerated-2026-09-29-03",
+        "scheduled_at": "2026-09-29T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-29",
+        "date_index": 27,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 108,
+        "tick_id": "p3-accelerated-2026-09-29-04",
+        "scheduled_at": "2026-09-29T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-30",
+        "date_index": 28,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 109,
+        "tick_id": "p3-accelerated-2026-09-30-01",
+        "scheduled_at": "2026-09-30T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-30",
+        "date_index": 28,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 110,
+        "tick_id": "p3-accelerated-2026-09-30-02",
+        "scheduled_at": "2026-09-30T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-30",
+        "date_index": 28,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 111,
+        "tick_id": "p3-accelerated-2026-09-30-03",
+        "scheduled_at": "2026-09-30T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-09-30",
+        "date_index": 28,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 112,
+        "tick_id": "p3-accelerated-2026-09-30-04",
+        "scheduled_at": "2026-09-30T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-01",
+        "date_index": 29,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 113,
+        "tick_id": "p3-accelerated-2026-10-01-01",
+        "scheduled_at": "2026-10-01T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-01",
+        "date_index": 29,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 114,
+        "tick_id": "p3-accelerated-2026-10-01-02",
+        "scheduled_at": "2026-10-01T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-01",
+        "date_index": 29,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 115,
+        "tick_id": "p3-accelerated-2026-10-01-03",
+        "scheduled_at": "2026-10-01T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-01",
+        "date_index": 29,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 116,
+        "tick_id": "p3-accelerated-2026-10-01-04",
+        "scheduled_at": "2026-10-01T19:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-02",
+        "date_index": 30,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 117,
+        "tick_id": "p3-accelerated-2026-10-02-01",
+        "scheduled_at": "2026-10-02T01:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-02",
+        "date_index": 30,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 118,
+        "tick_id": "p3-accelerated-2026-10-02-02",
+        "scheduled_at": "2026-10-02T07:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-02",
+        "date_index": 30,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 119,
+        "tick_id": "p3-accelerated-2026-10-02-03",
+        "scheduled_at": "2026-10-02T13:17:00-07:00"
+      },
+      {
+        "leg": "accelerated",
+        "date": "2026-10-02",
+        "date_index": 30,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 120,
+        "tick_id": "p3-accelerated-2026-10-02-04",
+        "scheduled_at": "2026-10-02T19:17:00-07:00"
+      }
+    ],
+    "realtime": [
+      {
+        "leg": "realtime",
+        "date": "2026-09-06",
+        "date_index": 1,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 1,
+        "tick_id": "p3-realtime-2026-09-06-01",
+        "scheduled_at": "2026-09-06T01:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-06",
+        "date_index": 1,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 2,
+        "tick_id": "p3-realtime-2026-09-06-02",
+        "scheduled_at": "2026-09-06T07:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-06",
+        "date_index": 1,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 3,
+        "tick_id": "p3-realtime-2026-09-06-03",
+        "scheduled_at": "2026-09-06T13:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-06",
+        "date_index": 1,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 4,
+        "tick_id": "p3-realtime-2026-09-06-04",
+        "scheduled_at": "2026-09-06T19:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-07",
+        "date_index": 2,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 5,
+        "tick_id": "p3-realtime-2026-09-07-01",
+        "scheduled_at": "2026-09-07T01:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-07",
+        "date_index": 2,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 6,
+        "tick_id": "p3-realtime-2026-09-07-02",
+        "scheduled_at": "2026-09-07T07:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-07",
+        "date_index": 2,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 7,
+        "tick_id": "p3-realtime-2026-09-07-03",
+        "scheduled_at": "2026-09-07T13:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-07",
+        "date_index": 2,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 8,
+        "tick_id": "p3-realtime-2026-09-07-04",
+        "scheduled_at": "2026-09-07T19:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-08",
+        "date_index": 3,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 9,
+        "tick_id": "p3-realtime-2026-09-08-01",
+        "scheduled_at": "2026-09-08T01:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-08",
+        "date_index": 3,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 10,
+        "tick_id": "p3-realtime-2026-09-08-02",
+        "scheduled_at": "2026-09-08T07:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-08",
+        "date_index": 3,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 11,
+        "tick_id": "p3-realtime-2026-09-08-03",
+        "scheduled_at": "2026-09-08T13:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-08",
+        "date_index": 3,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 12,
+        "tick_id": "p3-realtime-2026-09-08-04",
+        "scheduled_at": "2026-09-08T19:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-09",
+        "date_index": 4,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 13,
+        "tick_id": "p3-realtime-2026-09-09-01",
+        "scheduled_at": "2026-09-09T01:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-09",
+        "date_index": 4,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 14,
+        "tick_id": "p3-realtime-2026-09-09-02",
+        "scheduled_at": "2026-09-09T07:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-09",
+        "date_index": 4,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 15,
+        "tick_id": "p3-realtime-2026-09-09-03",
+        "scheduled_at": "2026-09-09T13:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-09",
+        "date_index": 4,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 16,
+        "tick_id": "p3-realtime-2026-09-09-04",
+        "scheduled_at": "2026-09-09T19:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-10",
+        "date_index": 5,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 17,
+        "tick_id": "p3-realtime-2026-09-10-01",
+        "scheduled_at": "2026-09-10T01:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-10",
+        "date_index": 5,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 18,
+        "tick_id": "p3-realtime-2026-09-10-02",
+        "scheduled_at": "2026-09-10T07:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-10",
+        "date_index": 5,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 19,
+        "tick_id": "p3-realtime-2026-09-10-03",
+        "scheduled_at": "2026-09-10T13:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-10",
+        "date_index": 5,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 20,
+        "tick_id": "p3-realtime-2026-09-10-04",
+        "scheduled_at": "2026-09-10T19:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-11",
+        "date_index": 6,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 21,
+        "tick_id": "p3-realtime-2026-09-11-01",
+        "scheduled_at": "2026-09-11T01:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-11",
+        "date_index": 6,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 22,
+        "tick_id": "p3-realtime-2026-09-11-02",
+        "scheduled_at": "2026-09-11T07:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-11",
+        "date_index": 6,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 23,
+        "tick_id": "p3-realtime-2026-09-11-03",
+        "scheduled_at": "2026-09-11T13:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-11",
+        "date_index": 6,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 24,
+        "tick_id": "p3-realtime-2026-09-11-04",
+        "scheduled_at": "2026-09-11T19:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-12",
+        "date_index": 7,
+        "slot": "01:17",
+        "slot_index": 1,
+        "tick_index": 25,
+        "tick_id": "p3-realtime-2026-09-12-01",
+        "scheduled_at": "2026-09-12T01:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-12",
+        "date_index": 7,
+        "slot": "07:17",
+        "slot_index": 2,
+        "tick_index": 26,
+        "tick_id": "p3-realtime-2026-09-12-02",
+        "scheduled_at": "2026-09-12T07:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-12",
+        "date_index": 7,
+        "slot": "13:17",
+        "slot_index": 3,
+        "tick_index": 27,
+        "tick_id": "p3-realtime-2026-09-12-03",
+        "scheduled_at": "2026-09-12T13:17:00-07:00"
+      },
+      {
+        "leg": "realtime",
+        "date": "2026-09-12",
+        "date_index": 7,
+        "slot": "19:17",
+        "slot_index": 4,
+        "tick_index": 28,
+        "tick_id": "p3-realtime-2026-09-12-04",
+        "scheduled_at": "2026-09-12T19:17:00-07:00"
+      }
+    ]
+  },
+  "publication_enabled": false,
+  "manual_override_enabled": false,
+  "raw_model_reasoning_stored": false,
+  "manifest_hash": "367adfefa791e61ae2248c5c6ca43ddeb6f26b36b6964c53452acdd831187fc7"
+}
