@@ -1,0 +1,148 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-01",
+  "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+  "preparation_hash": "c34bd15323c3d07b46f33b5e5fcecb00332c184424cd6603d4fd293638fa3e01",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "call_intent": {
+    "intent_id": "intent-generation-183f0365056d91ebee92a3eb",
+    "role": "founder-candidate",
+    "prompt_version": "phase-3-candidate-v1",
+    "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+    "author_id": "anika-vale",
+    "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+    "role_packet_sha256": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+    "speaker_packet_index": 0,
+    "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+    "provider": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "response_attempt": 1,
+    "continuation_nonce_sha256": "a353c1c81210bdc473a22f07a0eb49e66cfcbd8c9462434a57d921734eb9fe22",
+    "started_at": "2026-09-03T08:17:30.000Z",
+    "completed_at": "2026-09-03T08:17:50.000Z"
+  },
+  "audit_call_intents": [
+    {
+      "intent_id": "intent-audit-166259279b348a5755e1dcb2",
+      "role": "independent-quality-audit",
+      "prompt_version": "phase-3-audit-v1",
+      "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+      "provider": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "context_isolated": true,
+      "evaluator_id": "audit-evaluator-7be22dc35bde2ac57783b451",
+      "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+      "audit_index": 1,
+      "conditional": false,
+      "candidate_output_sha256": "02f660c8a3d46874663b3ec1d5332b3f8848019ae9e8f492f5c314cca4b67e60",
+      "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+      "role_packet_sha256": "3a18ff4bfa628040889e44a2061a7f2d4eb5b49318627edece6af9e802f7c49a"
+    },
+    {
+      "intent_id": "intent-audit-2a63ce538edc8ba7598cb429",
+      "role": "independent-quality-audit",
+      "prompt_version": "phase-3-audit-v1",
+      "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+      "provider": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "context_isolated": true,
+      "evaluator_id": "audit-evaluator-26d9765bb4f0952f97a35230",
+      "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+      "audit_index": 2,
+      "conditional": false,
+      "candidate_output_sha256": "02f660c8a3d46874663b3ec1d5332b3f8848019ae9e8f492f5c314cca4b67e60",
+      "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+      "role_packet_sha256": "e619681bdb839fd011a6129abaec3266a1e7dac4663cfde67421f4c9693c58ab"
+    },
+    {
+      "intent_id": "intent-audit-587daf3c365a0fb41b6540f9",
+      "role": "independent-quality-audit",
+      "prompt_version": "phase-3-audit-v1",
+      "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+      "provider": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "context_isolated": true,
+      "evaluator_id": "audit-evaluator-9e115fe765abc43688b9c353",
+      "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+      "audit_index": 3,
+      "conditional": true,
+      "candidate_output_sha256": "02f660c8a3d46874663b3ec1d5332b3f8848019ae9e8f492f5c314cca4b67e60",
+      "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+      "role_packet_sha256": "26dbe6629a3652f09c2c9cf204de4610263073b0ff7529ac5f76fb35158ad90b"
+    }
+  ],
+  "source_verification_call_intents": [],
+  "candidate": {
+    "anchor": "msg-0009",
+    "author": "anika-vale",
+    "candidate": "anika-vale",
+    "claims": [
+      {
+        "sentence_indexes": [
+          0
+        ],
+        "source_ids": [],
+        "support": "author-infers",
+        "text": "Even with the shutdown ledger, three weeks after the second denial establishes sequence, not proof that the deferred gasket caused the shutdowns."
+      }
+    ],
+    "message": "Even with the shutdown ledger, three weeks after the second denial establishes sequence, not proof that the deferred gasket caused the shutdowns.",
+    "sentence_roles": [
+      {
+        "role": "claim-narrowing",
+        "sentence_index": 0
+      }
+    ],
+    "speech_act": "claim-narrowing",
+    "thread": "thread-pump-manual-note",
+    "trigger": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+    "author_id": "anika-vale",
+    "generation": {
+      "intent_id": "intent-generation-183f0365056d91ebee92a3eb",
+      "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+      "author_id": "anika-vale",
+      "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "live_model": true,
+      "invocation_id": "/root/p3_a_0903_01_candidate",
+      "started_at": "2026-09-03T08:17:30.000Z",
+      "completed_at": "2026-09-03T08:17:50.000Z",
+      "wall_started_at": "2026-09-03T08:28:30.558Z",
+      "wall_completed_at": "2026-09-03T08:30:08.744Z",
+      "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+      "response_attempt": 1,
+      "audit_intent_ids": [
+        "intent-audit-166259279b348a5755e1dcb2",
+        "intent-audit-2a63ce538edc8ba7598cb429",
+        "intent-audit-587daf3c365a0fb41b6540f9"
+      ],
+      "source_verification_intents": [],
+      "raw_model_reasoning_stored": false
+    },
+    "audits": []
+  },
+  "continuation_nonce_hashes": {
+    "audits": {
+      "intent-audit-166259279b348a5755e1dcb2": "04b0173c43a0f00290054413fae423fa350a2af7edb3092478c9656ddf234dea",
+      "intent-audit-2a63ce538edc8ba7598cb429": "772a628dde1b23291156798694a64b20ff4646f5f7c5c2ab0d2ea4cb9bb0a6cf",
+      "intent-audit-587daf3c365a0fb41b6540f9": "4f6466774f29681b6f10113390d88d23f9678f826e07f6dd16fee821286c2baf"
+    },
+    "source_verifications": {}
+  },
+  "output_sha256": "02f660c8a3d46874663b3ec1d5332b3f8848019ae9e8f492f5c314cca4b67e60",
+  "recorded_at": "2026-09-03T08:30:08.744Z",
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "generation_hash": "55f45d687c444bde2b8be1e363ca8d897a5fb944f0b6a1b1f7b01b210e8ee257"
+}
