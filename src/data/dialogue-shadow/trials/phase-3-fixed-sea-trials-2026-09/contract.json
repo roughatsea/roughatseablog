@@ -85,7 +85,7 @@
   "build_command": "npm run build",
   "deployment_target": "roughatsea-vercel-production",
   "git_transport": {
-    "runtime_branch": "dialogue-phase-3-runtime",
+    "runtime_branch": "dialogue-phase-3-runtime-v2",
     "production_branch": "main",
     "runtime_branch_deployments_enabled": false,
     "production_projection_points": [

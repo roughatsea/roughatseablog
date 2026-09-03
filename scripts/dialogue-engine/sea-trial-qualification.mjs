@@ -35,6 +35,7 @@ export const REQUIRED_QUALIFICATION_CASES = Object.freeze({
   conditional_third_audit: /^two agreeing audits finalize directly; a disagreement alone authorizes and requires the predeclared third$/,
   independent_source_journal: /^source verification is durably intended, independently recorded, and assembled only by finalize$/,
   atomic_outcomes: /^quiet, one, and ordered-many outcomes commit atomically without canon changes$/,
+  resolved_trial_root: /^terminal replay links claims through the resolved trial root$/,
   persistent_shadow_replay: /^later ticks read the prior accepted shadow state instead of rereading canon$/,
   rejection_containment: /^malformed, abstract, unsupported, and independently failed speech is rejected with zero transition$/,
   concrete_speech_regressions: /^subtle anchor-laundered mini-essays reject even when every submitted audit says pass$/,

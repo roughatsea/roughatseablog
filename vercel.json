@@ -5,7 +5,8 @@
   "outputDirectory": "dist",
   "git": {
     "deploymentEnabled": {
-      "dialogue-phase-3-runtime": false
+      "dialogue-phase-3-runtime": false,
+      "dialogue-phase-3-runtime-v2": false
     }
   },
   "redirects": [

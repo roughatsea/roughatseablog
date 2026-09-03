@@ -634,7 +634,7 @@ test('runtime freezes canon, shadow base, stack, schedule, and behavior bundle o
   assert.equal(manifest.schedules.accelerated.length, 120);
   assert.equal(manifest.schedules.realtime.length, 28);
   assert.equal(manifest.canonical_digest.digest, canonicalDigest().digest);
-  assert.equal(manifest.git_transport.runtime_branch, 'dialogue-phase-3-runtime');
+  assert.equal(manifest.git_transport.runtime_branch, 'dialogue-phase-3-runtime-v2');
   assert.equal(manifest.git_transport.production_branch, 'main');
   assert.equal(manifest.git_transport.initial_production_git_sha, gitSha);
   assert.throws(() => createRuntimeManifest({ gitSha: 'b'.repeat(40), root, unsafeTestRoot: true }), /different content/);
@@ -1080,6 +1080,21 @@ test('quiet, one, and ordered-many outcomes commit atomically without canon chan
     assert.equal(canonicalDigest().digest, before);
     assert.equal(replayLeg({ leg: 'accelerated', root, unsafeTestRoot: true }).records.length, 1);
   }
+});
+
+test('terminal replay links claims through the resolved trial root', () => {
+  const root = setupTrial();
+  const envelope = envelopeFor(root);
+  claimEnvelope(root, envelope);
+  recordTick({ envelope, root, unsafeTestRoot: true });
+
+  const relativeRoot = path.relative(process.cwd(), root);
+  const replay = replayLeg({ leg: 'accelerated', root: relativeRoot, unsafeTestRoot: true });
+  assert.equal(replay.records.length, 1);
+  assert.equal(replay.records[0].claim_hash, JSON.parse(fs.readFileSync(
+    path.join(root, 'accelerated', 'claims', `${envelope.tick_id}.json`),
+    'utf8',
+  )).claim_hash);
 });
 
 test('later ticks read the prior accepted shadow state instead of rereading canon', () => {

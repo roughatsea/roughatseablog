@@ -437,7 +437,7 @@ export function replayLeg({ leg, root, unsafeTestRoot = false, verifyManifest = 
       acceptedCandidates: expectedCandidates.filter((candidate) => candidate.validation.result === 'passed'),
     });
     if (stableStringify(expectedBundle) !== stableStringify(run.transition_bundle)) throw new Error(`${run.tick_id} transition bundle is not derivable from its envelope.`);
-    const claimPath = pathInside(root, leg, 'claims', `${run.tick_id}.json`);
+    const claimPath = pathInside(trialRoot, leg, 'claims', `${run.tick_id}.json`);
     const claim = fs.existsSync(claimPath) ? validateStoredHash(readJson(claimPath), 'claim_hash', `Claim ${run.tick_id}`) : null;
     if (!claim || claim.claim_hash !== run.claim_hash || claim.delivery_id !== run.envelope_receipt.delivery_id) throw new Error(`${run.tick_id} is detached from its preflight claim.`);
     world = applyTransitionBundle(world, run.tick_id, run.transition_bundle);

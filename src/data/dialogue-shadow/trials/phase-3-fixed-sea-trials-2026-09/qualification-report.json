@@ -4,18 +4,18 @@
   "qualification_id": "phase-3-transaction-safety-v2",
   "schema_version": "2.0.0",
   "status": "passed",
-  "completed_at": "2026-09-03T02:35:53.906Z",
+  "completed_at": "2026-09-03T13:54:55.085Z",
   "generated_by": "node scripts/qualify-dialogue-sea-trial.mjs",
   "command": "node --test --test-concurrency=1 --test-reporter=tap test/dialogue-phase3.test.mjs test/dialogue-phase3-deployment.test.mjs test/dialogue-phase3-qualification.test.mjs",
   "runner": {
     "node": "v24.19.0",
     "exit_code": 0,
-    "tests": 45,
-    "passed": 45,
+    "tests": 46,
+    "passed": 46,
     "failed": 0,
     "skipped": 0,
     "todo": 0,
-    "tap_sha256": "051002db1644635ee44bfcc5a2aaf0ee2fc9c7abd78b862072d3356488959459"
+    "tap_sha256": "3f6d15e25047b4522e19f9280f32caef609f2307d61d26e6fc66ad87aa3435c6"
   },
   "test_cases": [
     {
@@ -123,6 +123,10 @@
       "passed": true
     },
     {
+      "name": "terminal replay links claims through the resolved trial root",
+      "passed": true
+    },
+    {
       "name": "later ticks read the prior accepted shadow state instead of rereading canon",
       "passed": true
     },
@@ -214,6 +218,7 @@
     "conditional_third_audit": true,
     "independent_source_journal": true,
     "atomic_outcomes": true,
+    "resolved_trial_root": true,
     "persistent_shadow_replay": true,
     "rejection_containment": true,
     "concrete_speech_regressions": true,
@@ -232,31 +237,31 @@
   "all_scenarios_passed": true,
   "artifacts": {
     "algorithm": "sha256",
-    "set_digest": "b09b239213aa2780c538081184b58eb12380e62b3b062a4565ba1dcfa826210f",
+    "set_digest": "4f6a63c1944a1a60d28d64c5e590b7c76e5fffa29f55feb079ca4cd4544539da",
     "files": {
-      "automation/dialogue-phase-3-fixed-sea-trials.md": "de617d155368fd922e2cdc3c25bb9f5028ce2eeea7e9ab5824ef965525515692",
-      "automation/dialogue-phase-3-operator.md": "72bcbde2834b2b8cefb5da0a46edc439bf4e6c987abfa706bddcbc33c68ea3b2",
+      "automation/dialogue-phase-3-fixed-sea-trials.md": "3199793384aacb9347860b32dc88cdc5bec99b3b6cdbc0421ec028ce2af04f2c",
+      "automation/dialogue-phase-3-operator.md": "ca7b4ace729b6dfdb4ed253bc9d222ca65a72b09e73c624537e64f20a77bb9d7",
       "automation/dialogue-phase-3-prompts.md": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
       "package.json": "781b47747494b5bd2b445832d65941ae848df99a169240a645ec45a24fa9f1fd",
       "scripts/dialogue-engine/sea-trial-deployment.mjs": "4f4963d1f0dc58e24291f214e2d982620cb8f48b1a590f5ab4c5c2ff2d9c6d1d",
-      "scripts/dialogue-engine/sea-trial-ledger.mjs": "013e6a9ec8e8f98375a17427dd488f233afab961e2e53a5d81ed5dd48d501be0",
+      "scripts/dialogue-engine/sea-trial-ledger.mjs": "f87a3fa0c121bd4fa790383640658a64fde5ae6c4272138c75d1bc28a9995fba",
       "scripts/dialogue-engine/sea-trial-orchestrator.mjs": "e609a3fecea4f6319d89b814e036bb2c3071ed82c43dd3d0f728933e4c4831b5",
-      "scripts/dialogue-engine/sea-trial-qualification.mjs": "26646eb1f131a7b9409752ee898aeb4521dbf71085c710ca1c336c1584b32aae",
+      "scripts/dialogue-engine/sea-trial-qualification.mjs": "23250ea1a39aeea68dcc7637f108e1a05b8ba271163925fb1632e60f6f389545",
       "scripts/dialogue-engine/sea-trial-reducer.mjs": "2d045250d5d993ca7162e2245cfd003e6aa44450295fbe8f536bbeef3dc36c78",
-      "scripts/dialogue-engine/sea-trial-schedule.mjs": "a2ea6f2443bf858c96e6a83c9df619355b5be6fd66aac8cc116f3714521bb7f2",
+      "scripts/dialogue-engine/sea-trial-schedule.mjs": "a4e25066c04899609cc01397d4ab8fea27466ab1683da5eac5406b53c0f348da",
       "scripts/dialogue-engine/sea-trial-validator.mjs": "486b2c5868b7fbd48e9f37f4689666d8d27206ab00ab3151932e45ee5c012fb2",
       "scripts/dialogue-sea-trial.mjs": "93ed934b2ac432540b0d85039567df4b4d4cd217612d9f7592f73462090a8970",
       "scripts/qualify-dialogue-sea-trial.mjs": "deb01b2185343a9964fd119c1ddfda7112f9dbdc77578452954bb6cf34261599",
       "scripts/validate-dialogue-sea-trial.mjs": "31b3c4b75a9f3c9253f508d6bd2321e155ceeb7112623a9d5138c675ab0bb4ba",
-      "src/data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/contract.json": "7290cb18c53ec55ae7e88e03f3c198ce37e5e3c8418efd79982e6099c9a69253",
+      "src/data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/contract.json": "50e98c7b48ff4b22d9442138a074bb862c190a1c693e18ec2a92123495c3bf01",
       "test/dialogue-phase3-deployment.test.mjs": "f7a3db94bfcae1e1f3f61ffb4d767ac5d541f51a713b43437e5c6a2df211a234",
       "test/dialogue-phase3-qualification.test.mjs": "45dd065f289e2029fd338cb5e5311ba6873e2df679ebb8e5bb841a9d0378b961",
-      "test/dialogue-phase3.test.mjs": "e2262d5e235db1d99b04fb92791df6e78d2a1465e7e9d9443b9ea4353a9cbc06"
+      "test/dialogue-phase3.test.mjs": "57d92bac0ea4cd0010cba5e00735c2b90ab04056da3a90325486456533eeb529"
     }
   },
-  "test_file_sha256": "e2262d5e235db1d99b04fb92791df6e78d2a1465e7e9d9443b9ea4353a9cbc06",
+  "test_file_sha256": "57d92bac0ea4cd0010cba5e00735c2b90ab04056da3a90325486456533eeb529",
   "canonical_status": "NON-CANON",
   "human_input_sources": [],
   "raw_model_reasoning_stored": false,
-  "report_hash": "c5b70a1ecc32fc04b3b00f07a52595789a6a0ec34bf4a168583b4e429c1409ea"
+  "report_hash": "ea8a2b711aed4eb0feb3f5c993ca3dc3c70e2ed9315543a4b0b4f5606ae280ce"
 }
