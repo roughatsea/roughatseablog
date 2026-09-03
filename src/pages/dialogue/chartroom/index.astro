@@ -17,6 +17,7 @@ import {
   foundingRecordV1,
   dialogueShadowRuns,
   dialogueBenchmarkReport,
+  dialogueSeaTrial,
 } from '../../../lib/dialogue';
 
 if (!latestDialogueSnapshot) throw new Error('Chartroom requires a canonical Dialogue snapshot.');
@@ -44,6 +45,7 @@ if (!latestDialogueSnapshot) throw new Error('Chartroom requires a canonical Dia
     foundingRecordV1={foundingRecordV1}
     shadowRuns={dialogueShadowRuns}
     benchmarkReport={dialogueBenchmarkReport}
+    seaTrial={dialogueSeaTrial}
   />
 </BaseLayout>
 

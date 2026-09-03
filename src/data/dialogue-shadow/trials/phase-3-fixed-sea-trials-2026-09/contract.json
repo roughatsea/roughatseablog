@@ -1,0 +1,109 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "phase": 3,
+  "name": "Fixed Sea Trials",
+  "status": "commissioned",
+  "canonical_status": "NON-CANON",
+  "timezone": "America/Phoenix",
+  "publication_enabled": false,
+  "manual_override_enabled": false,
+  "models": {
+    "director": "deterministic-opportunity-director-v3",
+    "generator": "gpt-5.6-sol",
+    "evaluator": "gpt-5.6-sol",
+    "reasoning_effort": "high"
+  },
+  "research_adapter": "web-primary-source-v1",
+  "runner_ids": {
+    "accelerated": "dialogue-phase-3-accelerated-v1",
+    "realtime": "dialogue-phase-3-realtime-v1"
+  },
+  "versions": {
+    "contract": "3.0.0",
+    "scheduler": "3.0.0",
+    "validator": "3.0.0",
+    "reducer": "3.0.0",
+    "transaction": "3.0.0",
+    "schema": "3.0.0"
+  },
+  "slots": ["01:17", "07:17", "13:17", "19:17"],
+  "legs": {
+    "accelerated": {
+      "clock": "virtual",
+      "start_date": "2026-09-03",
+      "end_date": "2026-10-02",
+      "dates": 30,
+      "ticks_per_date": 4,
+      "required_ticks": 120,
+      "required_daily_closes": 30
+    },
+    "realtime": {
+      "clock": "wall",
+      "start_date": "2026-09-06",
+      "end_date": "2026-09-12",
+      "dates": 7,
+      "ticks_per_date": 4,
+      "required_ticks": 28,
+      "required_daily_closes": 7
+    }
+  },
+  "required_gate_ids": [
+    "P3-01", "P3-02", "P3-03", "P3-04", "P3-05", "P3-06", "P3-07",
+    "P3-08", "P3-09", "P3-10", "P3-11", "P3-12", "P3-13", "P3-14"
+  ],
+  "allowed_runtime_files": [
+    "runtime-manifest.json",
+    "accelerated/claims/*.json",
+    "accelerated/preparations/*.json",
+    "accelerated/generations/*.json",
+    "accelerated/audits/*.json",
+    "accelerated/source-verifications/*.json",
+    "accelerated/runs/*.json",
+    "accelerated/daily-closes/*.json",
+    "accelerated/deployments/*.json",
+    "accelerated/deployment-receipt.json",
+    "accelerated/exit-report.json",
+    "accelerated/halt.json",
+    "realtime/claims/*.json",
+    "realtime/preparations/*.json",
+    "realtime/generations/*.json",
+    "realtime/audits/*.json",
+    "realtime/source-verifications/*.json",
+    "realtime/runs/*.json",
+    "realtime/daily-closes/*.json",
+    "realtime/deployments/*.json",
+    "realtime/deployment-receipt.json",
+    "realtime/exit-report.json",
+    "realtime/halt.json",
+    "exit-report.json",
+    "final-deployment.json"
+  ],
+  "disallowed_input_sources": [
+    "human-chat", "human-email", "human-issue", "human-pull-request", "human-form",
+    "human-query-string", "human-cookie", "human-analytics", "human-topic", "human-source"
+  ],
+  "build_command": "npm run build",
+  "deployment_target": "roughatsea-vercel-production",
+  "git_transport": {
+    "runtime_branch": "dialogue-phase-3-runtime",
+    "production_branch": "main",
+    "runtime_branch_deployments_enabled": false,
+    "production_projection_points": [
+      "accelerated-final-close",
+      "each-realtime-daily-close",
+      "final-exit"
+    ]
+  },
+  "safe_main_advance_paths": [
+    "src/content/save-point/**",
+    "src/content/soundings/**",
+    "src/content/reckonings/**",
+    "public/images/save-point/**",
+    "public/images/soundings/**",
+    "public/images/reckonings/**",
+    "src/data/save-point/**",
+    "src/data/reckonings-ledger.json",
+    "src/data/wake/**",
+    "public/wake/**"
+  ]
+}

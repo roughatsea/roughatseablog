@@ -1,0 +1,262 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "gate_id": "P3-03",
+  "qualification_id": "phase-3-transaction-safety-v2",
+  "schema_version": "2.0.0",
+  "status": "passed",
+  "completed_at": "2026-09-03T02:25:46.518Z",
+  "generated_by": "node scripts/qualify-dialogue-sea-trial.mjs",
+  "command": "node --test --test-concurrency=1 --test-reporter=tap test/dialogue-phase3.test.mjs test/dialogue-phase3-deployment.test.mjs test/dialogue-phase3-qualification.test.mjs",
+  "runner": {
+    "node": "v24.19.0",
+    "exit_code": 0,
+    "tests": 45,
+    "passed": 45,
+    "failed": 0,
+    "skipped": 0,
+    "todo": 0,
+    "tap_sha256": "88d82b4fca4e980a6a6910bb4cff176a185951059f7e950f2f91f6ac6435bd45"
+  },
+  "test_cases": [
+    {
+      "name": "date expectation is derived from the exact four-run replay prefix",
+      "passed": true
+    },
+    {
+      "name": "projection proof binds commit, canon, terminal ledger, Chartroom, and public isolation",
+      "passed": true
+    },
+    {
+      "name": "live smoke verifier derives a hash-bound receipt from three fetched production responses",
+      "passed": true
+    },
+    {
+      "name": "live smoke verifier fails closed on status or redirect evidence",
+      "passed": true
+    },
+    {
+      "name": "build receipt validity is derived from exact evidence and its content hash",
+      "passed": true
+    },
+    {
+      "name": "daily closes accept only an exact internally hash-bound build, never caller booleans",
+      "passed": true
+    },
+    {
+      "name": "seven-day deployment evidence requires seven independently valid, distinct production commits",
+      "passed": true
+    },
+    {
+      "name": "CLI has no surface for supplying a build or deployment success receipt",
+      "passed": true
+    },
+    {
+      "name": "CLI consumes owner-only input wrappers outside the checkout and deletes them on failure",
+      "passed": true
+    },
+    {
+      "name": "qualification TAP parser requires a complete internally consistent summary",
+      "passed": true
+    },
+    {
+      "name": "qualification report verdict is derived from runner outcomes and required coverage",
+      "passed": true
+    },
+    {
+      "name": "qualification verification rejects a forged verdict and stale artifact hashes",
+      "passed": true
+    },
+    {
+      "name": "fixed schedules are exactly 120/30 and 28/7 with four Phoenix slots",
+      "passed": true
+    },
+    {
+      "name": "main reconciliation accepts only the frozen autonomous publisher paths",
+      "passed": true
+    },
+    {
+      "name": "runtime freezes canon, shadow base, stack, schedule, and behavior bundle once",
+      "passed": true
+    },
+    {
+      "name": "final exit rejects forged passing leg reports and recomputes the ledger",
+      "passed": true
+    },
+    {
+      "name": "a semantic tick must be claimed before generation is recorded",
+      "passed": true
+    },
+    {
+      "name": "automation-owned journals bind intent before calls and finalize without a caller-authored envelope",
+      "passed": true
+    },
+    {
+      "name": "an orphaned durable intent never reauthorizes a model call and can only halt the leg",
+      "passed": true
+    },
+    {
+      "name": "journal-boundary interruptions expose immutable results but never reveal a fresh continuation",
+      "passed": true
+    },
+    {
+      "name": "generation, audit, and source journal link interruptions never reissue call authority",
+      "passed": true
+    },
+    {
+      "name": "preparation and generation journals are immutable, idempotent, and never reissue call authority",
+      "passed": true
+    },
+    {
+      "name": "generator output cannot self-author generation, audit, or source-verification receipts",
+      "passed": true
+    },
+    {
+      "name": "two agreeing audits finalize directly; a disagreement alone authorizes and requires the predeclared third",
+      "passed": true
+    },
+    {
+      "name": "source verification is durably intended, independently recorded, and assembled only by finalize",
+      "passed": true
+    },
+    {
+      "name": "quiet, one, and ordered-many outcomes commit atomically without canon changes",
+      "passed": true
+    },
+    {
+      "name": "later ticks read the prior accepted shadow state instead of rereading canon",
+      "passed": true
+    },
+    {
+      "name": "malformed, abstract, unsupported, and independently failed speech is rejected with zero transition",
+      "passed": true
+    },
+    {
+      "name": "subtle anchor-laundered mini-essays reject even when every submitted audit says pass",
+      "passed": true
+    },
+    {
+      "name": "a concrete opening cannot launder a portable thesis, while a bounded conversational inference remains valid",
+      "passed": true
+    },
+    {
+      "name": "one bounded source proposition passes, while compound, mixed, and negation-scope claims fail closed",
+      "passed": true
+    },
+    {
+      "name": "source packets retain exact bounded evidence and a linked live retrieval receipt",
+      "passed": true
+    },
+    {
+      "name": "source verification is independently and cryptographically bound to its generation, source, support, and declared intent",
+      "passed": true
+    },
+    {
+      "name": "live generation and audit receipts require declared identity bindings and real wall-clock chronology",
+      "passed": true
+    },
+    {
+      "name": "state changes can update only the speaking founder and an exact owned relationship direction",
+      "passed": true
+    },
+    {
+      "name": "nested candidate schemas are exact and state deltas are integral",
+      "passed": true
+    },
+    {
+      "name": "independent audits fail a factual assertion disguised as situated opinion",
+      "passed": true
+    },
+    {
+      "name": "unavailable and prompt-injected sources fail closed before any terminal state",
+      "passed": true
+    },
+    {
+      "name": "provider or research interruption leaves a fail-closed claim and no state transition",
+      "passed": true
+    },
+    {
+      "name": "duplicate delivery is idempotent and conflicting terminal content is refused",
+      "passed": true
+    },
+    {
+      "name": "no-replace storage survives concurrent delivery and both journal interruptions",
+      "passed": true
+    },
+    {
+      "name": "Git compare-and-swap refuses a stale expected main without force",
+      "passed": true
+    },
+    {
+      "name": "claim and terminal write interruptions are either absent or fully replayable",
+      "passed": true
+    },
+    {
+      "name": "path escape, stale CAS precondition, and human input are refused",
+      "passed": true
+    },
+    {
+      "name": "Phase 3 exposes no canonical or promotion command surface",
+      "passed": true
+    }
+  ],
+  "tests": {
+    "semantic_schedule": true,
+    "safe_main_reconciliation": true,
+    "frozen_manifest": true,
+    "recomputed_final_exit": true,
+    "preflight_claim": true,
+    "automation_owned_journal": true,
+    "orphaned_intent_halt": true,
+    "preparation_interruption": true,
+    "dependent_journal_interruptions": true,
+    "immutable_preterminal_results": true,
+    "generator_cannot_self_attest": true,
+    "conditional_third_audit": true,
+    "independent_source_journal": true,
+    "atomic_outcomes": true,
+    "persistent_shadow_replay": true,
+    "rejection_containment": true,
+    "concrete_speech_regressions": true,
+    "source_evidence_receipt": true,
+    "exact_nested_shapes": true,
+    "independent_claim_classification": true,
+    "unsafe_source_fail_closed": true,
+    "provider_research_recovery": true,
+    "duplicate_delivery": true,
+    "concurrent_journal_writes": true,
+    "git_cas_conflict": true,
+    "transaction_interruptions": true,
+    "boundary_refusals": true,
+    "no_promotion_surface": true
+  },
+  "all_scenarios_passed": true,
+  "artifacts": {
+    "algorithm": "sha256",
+    "set_digest": "df4f20f5d3ee6dcde4afecc4521043b449e10c57bb2e69525d8afb1fc0fd970c",
+    "files": {
+      "automation/dialogue-phase-3-fixed-sea-trials.md": "de617d155368fd922e2cdc3c25bb9f5028ce2eeea7e9ab5824ef965525515692",
+      "automation/dialogue-phase-3-operator.md": "44c5a4c6ba16808c8c325341fee167f46ca46a931e31f0907f7d62cc55acc0de",
+      "automation/dialogue-phase-3-prompts.md": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+      "package.json": "781b47747494b5bd2b445832d65941ae848df99a169240a645ec45a24fa9f1fd",
+      "scripts/dialogue-engine/sea-trial-deployment.mjs": "4f4963d1f0dc58e24291f214e2d982620cb8f48b1a590f5ab4c5c2ff2d9c6d1d",
+      "scripts/dialogue-engine/sea-trial-ledger.mjs": "013e6a9ec8e8f98375a17427dd488f233afab961e2e53a5d81ed5dd48d501be0",
+      "scripts/dialogue-engine/sea-trial-orchestrator.mjs": "e609a3fecea4f6319d89b814e036bb2c3071ed82c43dd3d0f728933e4c4831b5",
+      "scripts/dialogue-engine/sea-trial-qualification.mjs": "26646eb1f131a7b9409752ee898aeb4521dbf71085c710ca1c336c1584b32aae",
+      "scripts/dialogue-engine/sea-trial-reducer.mjs": "2d045250d5d993ca7162e2245cfd003e6aa44450295fbe8f536bbeef3dc36c78",
+      "scripts/dialogue-engine/sea-trial-schedule.mjs": "a2ea6f2443bf858c96e6a83c9df619355b5be6fd66aac8cc116f3714521bb7f2",
+      "scripts/dialogue-engine/sea-trial-validator.mjs": "486b2c5868b7fbd48e9f37f4689666d8d27206ab00ab3151932e45ee5c012fb2",
+      "scripts/dialogue-sea-trial.mjs": "93ed934b2ac432540b0d85039567df4b4d4cd217612d9f7592f73462090a8970",
+      "scripts/qualify-dialogue-sea-trial.mjs": "deb01b2185343a9964fd119c1ddfda7112f9dbdc77578452954bb6cf34261599",
+      "scripts/validate-dialogue-sea-trial.mjs": "31b3c4b75a9f3c9253f508d6bd2321e155ceeb7112623a9d5138c675ab0bb4ba",
+      "src/data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/contract.json": "7290cb18c53ec55ae7e88e03f3c198ce37e5e3c8418efd79982e6099c9a69253",
+      "test/dialogue-phase3-deployment.test.mjs": "f7a3db94bfcae1e1f3f61ffb4d767ac5d541f51a713b43437e5c6a2df211a234",
+      "test/dialogue-phase3-qualification.test.mjs": "45dd065f289e2029fd338cb5e5311ba6873e2df679ebb8e5bb841a9d0378b961",
+      "test/dialogue-phase3.test.mjs": "e2262d5e235db1d99b04fb92791df6e78d2a1465e7e9d9443b9ea4353a9cbc06"
+    }
+  },
+  "test_file_sha256": "e2262d5e235db1d99b04fb92791df6e78d2a1465e7e9d9443b9ea4353a9cbc06",
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "report_hash": "fad0b07855b2ba6ca338c4550ccedc007859df7596bf713d140dfa6611aad4ec"
+}

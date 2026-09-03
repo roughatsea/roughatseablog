@@ -18,6 +18,19 @@ import quietRunData from '../data/dialogue-shadow/runs/shadow-phase2-quiet.json'
 import singleRunData from '../data/dialogue-shadow/runs/shadow-phase2-single.json';
 import manyRunData from '../data/dialogue-shadow/runs/shadow-phase2-many.json';
 import rejectedRunData from '../data/dialogue-shadow/runs/shadow-phase2-rejected.json';
+import phase3ContractData from '../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/contract.json';
+import phase3QualificationData from '../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/qualification-report.json';
+
+const phase3RuntimeModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/runtime-*.json', { eager: true, import: 'default' });
+const phase3AcceleratedRunModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/accelerated/runs/*.json', { eager: true, import: 'default' });
+const phase3RealtimeRunModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/realtime/runs/*.json', { eager: true, import: 'default' });
+const phase3AcceleratedCloseModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/accelerated/daily-closes/*.json', { eager: true, import: 'default' });
+const phase3RealtimeCloseModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/realtime/daily-closes/*.json', { eager: true, import: 'default' });
+const phase3AcceleratedReceiptModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/accelerated/deployment-*.json', { eager: true, import: 'default' });
+const phase3RealtimeReceiptModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/realtime/deployment-*.json', { eager: true, import: 'default' });
+const phase3AcceleratedExitModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/accelerated/exit-*.json', { eager: true, import: 'default' });
+const phase3RealtimeExitModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/realtime/exit-*.json', { eager: true, import: 'default' });
+const phase3FinalExitModules = import.meta.glob('../data/dialogue-shadow/trials/phase-3-fixed-sea-trials-2026-09/exit-*.json', { eager: true, import: 'default' });
 
 export type BigFiveKey = 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness' | 'neuroticism';
 export type RelationshipDimension = 'affection' | 'trust' | 'intellectual_respect' | 'familiarity' | 'friction';
@@ -314,6 +327,53 @@ export interface DialogueBenchmarkReport {
   exit_gate: Record<string, boolean>;
 }
 
+export interface DialogueSeaTrialRun {
+  trial_id: string;
+  leg: 'accelerated' | 'realtime';
+  tick_id: string;
+  tick_index: number;
+  scheduled_at: string;
+  status: 'terminal';
+  outcome: 'quiet' | 'all-rejected' | 'accepted' | 'mixed';
+  run_hash: string;
+  shadow_state_digest_after: string;
+  summary: { generated: number; passed: number; rejected: number; transitions: number };
+  canonical_mutation_guard: { passed: boolean };
+  human_input_sources: string[];
+}
+
+export interface DialogueSeaTrialReport {
+  status: string;
+  gates?: Record<string, boolean>;
+  shadow_state_digest?: string;
+  report_hash?: string;
+}
+
+export interface DialogueSeaTrial {
+  contract: {
+    trial_id: string;
+    name: string;
+    status: string;
+    timezone: string;
+    publication_enabled: false;
+    slots: string[];
+    legs: {
+      accelerated: { start_date: string; end_date: string; required_ticks: number; required_daily_closes: number };
+      realtime: { start_date: string; end_date: string; required_ticks: number; required_daily_closes: number };
+    };
+    required_gate_ids: string[];
+  };
+  qualification: { status: string; gate_id: string; all_scenarios_passed: boolean; tests: Record<string, boolean> };
+  runtimeManifest: null | { created_at: string; git_sha: string; behavior_bundle: { digest: string }; canonical_digest: { digest: string } };
+  accelerated: { runs: DialogueSeaTrialRun[]; dailyCloses: Array<Record<string, unknown>>; deploymentReceipt: null | Record<string, unknown>; exitReport: null | DialogueSeaTrialReport };
+  realtime: { runs: DialogueSeaTrialRun[]; dailyCloses: Array<Record<string, unknown>>; deploymentReceipt: null | Record<string, unknown>; exitReport: null | DialogueSeaTrialReport };
+  finalExitReport: null | DialogueSeaTrialReport;
+}
+
+function moduleValues<T>(modules: Record<string, unknown>): T[] {
+  return Object.entries(modules).sort(([left], [right]) => left.localeCompare(right)).map(([, value]) => value as T);
+}
+
 export const dialogueMeta = metaData;
 export const dialogueCharacters = founderData as DialogueCharacter[];
 export const dialogueRelationships = relationshipData as unknown as DialogueRelationship[];
@@ -336,6 +396,24 @@ export const dialogueShadowRuns = [
   rejectedRunData,
   benchmarkFinalRunData,
 ] as unknown as DialogueShadowRun[];
+export const dialogueSeaTrial: DialogueSeaTrial = {
+  contract: phase3ContractData as unknown as DialogueSeaTrial['contract'],
+  qualification: phase3QualificationData as unknown as DialogueSeaTrial['qualification'],
+  runtimeManifest: moduleValues<DialogueSeaTrial['runtimeManifest']>(phase3RuntimeModules).at(0) ?? null,
+  accelerated: {
+    runs: moduleValues<DialogueSeaTrialRun>(phase3AcceleratedRunModules),
+    dailyCloses: moduleValues<Record<string, unknown>>(phase3AcceleratedCloseModules),
+    deploymentReceipt: moduleValues<Record<string, unknown>>(phase3AcceleratedReceiptModules).at(0) ?? null,
+    exitReport: moduleValues<DialogueSeaTrialReport>(phase3AcceleratedExitModules).at(0) ?? null,
+  },
+  realtime: {
+    runs: moduleValues<DialogueSeaTrialRun>(phase3RealtimeRunModules),
+    dailyCloses: moduleValues<Record<string, unknown>>(phase3RealtimeCloseModules),
+    deploymentReceipt: moduleValues<Record<string, unknown>>(phase3RealtimeReceiptModules).at(0) ?? null,
+    exitReport: moduleValues<DialogueSeaTrialReport>(phase3RealtimeExitModules).at(0) ?? null,
+  },
+  finalExitReport: moduleValues<DialogueSeaTrialReport>(phase3FinalExitModules).at(0) ?? null,
+};
 
 export const dialogueCharactersById = new Map(dialogueCharacters.map((character) => [character.id, character]));
 export const dialogueSourcesById = new Map(dialogueSources.map((source) => [source.id, source]));

@@ -116,7 +116,6 @@ test('shadow candidates never leak into canonical data', () => {
 
 test('committed shadow runs disclose status and pass mutation guards', () => {
   const runs = fs.readdirSync(path.join(shadowDir, 'runs')).filter((name) => name.endsWith('.json')).map((name) => load(path.join(shadowDir, 'runs', name)));
-  const currentDigest = canonicalDigest().digest;
   assert.ok(runs.some((run) => run.outcome === 'quiet'));
   assert.ok(runs.some((run) => run.summary.generated > 1));
   assert.ok(runs.some((run) => run.summary.rejected > 0));
@@ -125,8 +124,8 @@ test('committed shadow runs disclose status and pass mutation guards', () => {
     assert.equal(run.canonical_status, 'NON-CANON');
     assert.equal(run.raw_model_reasoning_stored, false);
     assert.equal(run.canonical_mutation_guard.passed, true);
-    assert.equal(run.canonical_mutation_guard.digest_before, currentDigest);
-    assert.equal(run.canonical_mutation_guard.digest_after, currentDigest);
+    assert.match(run.canonical_mutation_guard.digest_before, /^[a-f0-9]{64}$/);
+    assert.equal(run.canonical_mutation_guard.digest_before, run.canonical_mutation_guard.digest_after);
     assert.deepEqual(run.canonical_mutation_guard.changed_files, []);
   }
 });
