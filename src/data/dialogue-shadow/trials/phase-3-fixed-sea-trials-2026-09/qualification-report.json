@@ -4,7 +4,7 @@
   "qualification_id": "phase-3-transaction-safety-v2",
   "schema_version": "2.0.0",
   "status": "passed",
-  "completed_at": "2026-09-03T02:25:46.518Z",
+  "completed_at": "2026-09-03T02:35:53.906Z",
   "generated_by": "node scripts/qualify-dialogue-sea-trial.mjs",
   "command": "node --test --test-concurrency=1 --test-reporter=tap test/dialogue-phase3.test.mjs test/dialogue-phase3-deployment.test.mjs test/dialogue-phase3-qualification.test.mjs",
   "runner": {
@@ -15,7 +15,7 @@
     "failed": 0,
     "skipped": 0,
     "todo": 0,
-    "tap_sha256": "88d82b4fca4e980a6a6910bb4cff176a185951059f7e950f2f91f6ac6435bd45"
+    "tap_sha256": "051002db1644635ee44bfcc5a2aaf0ee2fc9c7abd78b862072d3356488959459"
   },
   "test_cases": [
     {
@@ -232,10 +232,10 @@
   "all_scenarios_passed": true,
   "artifacts": {
     "algorithm": "sha256",
-    "set_digest": "df4f20f5d3ee6dcde4afecc4521043b449e10c57bb2e69525d8afb1fc0fd970c",
+    "set_digest": "b09b239213aa2780c538081184b58eb12380e62b3b062a4565ba1dcfa826210f",
     "files": {
       "automation/dialogue-phase-3-fixed-sea-trials.md": "de617d155368fd922e2cdc3c25bb9f5028ce2eeea7e9ab5824ef965525515692",
-      "automation/dialogue-phase-3-operator.md": "44c5a4c6ba16808c8c325341fee167f46ca46a931e31f0907f7d62cc55acc0de",
+      "automation/dialogue-phase-3-operator.md": "72bcbde2834b2b8cefb5da0a46edc439bf4e6c987abfa706bddcbc33c68ea3b2",
       "automation/dialogue-phase-3-prompts.md": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
       "package.json": "781b47747494b5bd2b445832d65941ae848df99a169240a645ec45a24fa9f1fd",
       "scripts/dialogue-engine/sea-trial-deployment.mjs": "4f4963d1f0dc58e24291f214e2d982620cb8f48b1a590f5ab4c5c2ff2d9c6d1d",
@@ -258,5 +258,5 @@
   "canonical_status": "NON-CANON",
   "human_input_sources": [],
   "raw_model_reasoning_stored": false,
-  "report_hash": "fad0b07855b2ba6ca338c4550ccedc007859df7596bf713d140dfa6611aad4ec"
+  "report_hash": "c5b70a1ecc32fc04b3b00f07a52595789a6a0ec34bf4a168583b4e429c1409ea"
 }
