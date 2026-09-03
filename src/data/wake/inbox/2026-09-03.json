@@ -1,0 +1,295 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-03",
+  "article": {
+    "slug": "morning-soundings-2026-09-03",
+    "title": "Morning Soundings: A Ghost Beam, an Old Job, and Seventy Metres of Memory",
+    "publishedAt": "2026-09-03T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-03.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-03T05:10:53-07:00",
+    "sourceStateAsOf": "2026-09-03",
+    "notes": "Captured during the publication run from sources accessed on September 3, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-03-superradiant-neutrino-laser-impossibility",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "The neutrino laser fails twice",
+      "canonicalSubject": {
+        "name": "Impossibility of the proposed superradiant neutrino laser",
+        "kind": "quantum-physics-result",
+        "aliases": [
+          "superradiant neutrino laser no-go result",
+          "fermionic Dicke problem"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "particle-physics",
+        "quantum-physics",
+        "neutrinos",
+        "superradiance",
+        "scientific-falsification"
+      ],
+      "geography": [
+        "Massachusetts",
+        "United States"
+      ],
+      "canonicalClaim": "Two companion Physical Review Letters papers show that the 2025 proposal for a superradiant neutrino laser cannot achieve collective amplification because fermionic statistics prevent quadratic emission-rate scaling and realistic condensate geometry and recoil destroy the required cooperativity and coherence.",
+      "knownFacts": [
+        "The fermionic analysis proves that the maximum single-fermion emission rate scales in proportion to the number of emitters rather than its square.",
+        "The second analysis finds that the neutrino wavelength makes the collectively useful emission cone extremely narrow and that the daughter atom recoils out of the condensate before coherent emission can develop.",
+        "Both papers were published in Physical Review Letters on September 2, 2026."
+      ],
+      "uncertainties": [
+        "The papers rule out the specified superradiant scheme rather than every conceivable technique for producing or directing neutrinos.",
+        "Future proposals could use different physical mechanisms that are outside the analyzed model."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The no-go result appears in two peer-reviewed papers; an independent APS Physics viewpoint explains how the constraints combine."
+      },
+      "sources": [
+        {
+          "url": "https://doi.org/10.1103/8x7k-rwx2",
+          "title": "Fundamental Impossibility of a Superradiant Neutrino Laser",
+          "publisher": "Physical Review Letters",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-03",
+          "role": "primary-research",
+          "lineage": "lu-lin-ketterle-neutrino-superradiance-analysis"
+        },
+        {
+          "url": "https://physics.aps.org/articles/v19/120",
+          "title": "To Lase or Not to Lase: The Question of Neutrino Superradiance",
+          "publisher": "American Physical Society",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-03",
+          "role": "analysis-context",
+          "lineage": "lu-lin-ketterle-neutrino-superradiance-analysis"
+        }
+      ],
+      "openQuestions": [
+        "Will the authors of the 2025 proposal publish a formal response or identify a different neutrino-control mechanism?",
+        "Can the derived fermionic bounds be applied to other proposed collective-emission systems?"
+      ],
+      "watchFor": [
+        {
+          "description": "Response from the original proposal's authors",
+          "expectedWindow": null,
+          "trigger": "The original authors publish a reply, correction, or alternative scheme addressing the no-go results."
+        },
+        {
+          "description": "Extension of the fermionic no-go theorem",
+          "expectedWindow": null,
+          "trigger": "A later study applies or revises the bound for another fermion-emission system."
+        }
+      ],
+      "trackingTerms": [
+        "superradiant neutrino laser impossible",
+        "Fundamental Impossibility of a Superradiant Neutrino Laser",
+        "fermionic Dicke problem Ketterle",
+        "10.1103/8x7k-rwx2"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The result directly overturns a recent proposal and may prompt a technical reply or broader applications of the no-go theorem."
+      },
+      "selectionReason": "A rigorous negative result shows the difference between an engineering obstacle and a physical constraint, making scientific falsification tangible.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-03-swedish-occupational-persistence",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "Most ‘new jobs’ may be old functions in finer slices",
+      "canonicalSubject": {
+        "name": "Swedish occupational persistence from 1880 to 2019",
+        "kind": "economic-history-working-paper",
+        "aliases": [
+          "history of new jobs",
+          "Smithian and Schumpeterian occupations"
+        ]
+      },
+      "signalType": "working-paper",
+      "topics": [
+        "economic-history",
+        "labor-markets",
+        "occupational-classification",
+        "technology",
+        "specialization"
+      ],
+      "geography": [
+        "Sweden"
+      ],
+      "canonicalClaim": "A CEPR discussion paper using harmonized Swedish census and administrative data from 1880 to 2019 reports that more than 70 percent of current employment is in occupations whose core economic functions existed in the late nineteenth century and that most genuinely new work arises from deeper specialization rather than direct attachment to a new technology.",
+      "knownFacts": [
+        "The authors harmonized full-count Swedish census and administrative data to a five-digit historical occupational classification.",
+        "They distinguish Schumpeterian occupations tied directly to new technology from Smithian occupations produced by a finer division of labor.",
+        "The paper reports that most new work is Smithian and that specialization carries a larger earnings premium than technological newness."
+      ],
+      "uncertainties": [
+        "The paper is a CEPR discussion paper and had not completed journal peer review at capture.",
+        "Sweden's long administrative continuity may limit generalization to other labor markets.",
+        "Matching occupations by core function requires classification judgments that could affect the measured persistence rate."
+      ],
+      "evidence": {
+        "level": "preliminary",
+        "notes": "The results and method are reported in a newly released research discussion paper; the full underlying classification was not independently audited during capture."
+      },
+      "sources": [
+        {
+          "url": "https://cepr.org/publications/dp21896",
+          "title": "What the history of (new) jobs can tell us about the impact of technological change on employment",
+          "publisher": "Centre for Economic Policy Research",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-03",
+          "role": "primary-research",
+          "lineage": "skoglund-molinder-enflo-occupational-persistence-paper"
+        }
+      ],
+      "openQuestions": [
+        "How sensitive is the 70 percent figure to alternative mappings of job titles into core economic functions?",
+        "Does the Smithian pattern hold in countries with different industrial histories and administrative records?",
+        "How do occupation-level persistence and task-level automation interact within the same job?"
+      ],
+      "watchFor": [
+        {
+          "description": "Journal publication or revised working paper",
+          "expectedWindow": null,
+          "trigger": "The authors release a revision, replication materials, or a peer-reviewed version."
+        },
+        {
+          "description": "Cross-country replication",
+          "expectedWindow": null,
+          "trigger": "A comparable long-run occupational mapping is published for another country."
+        }
+      ],
+      "trackingTerms": [
+        "DP21896 new jobs history",
+        "Skoglund Molinder Enflo occupations",
+        "Smithian Schumpeterian occupations Sweden",
+        "Swedish employment 1880 2019 HISCO"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The working paper has clear opportunities for revision, classification audits, and cross-country replication."
+      },
+      "selectionReason": "The research exposes how occupational labels can exaggerate novelty and replaces a headline count with a functional account of technological change.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-03-bayeux-tapestry-london-loan",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "The Bayeux Tapestry travels as both cloth and border",
+      "canonicalSubject": {
+        "name": "Bayeux Tapestry loan to the British Museum",
+        "kind": "cultural-heritage-loan",
+        "aliases": [
+          "Bayeux Tapestry London exhibition",
+          "Bayeux Tapestry return to Britain"
+        ]
+      },
+      "signalType": "museum-exhibition",
+      "topics": [
+        "art",
+        "textiles",
+        "museums",
+        "conservation",
+        "cultural-diplomacy",
+        "medieval-history"
+      ],
+      "geography": [
+        "Bayeux",
+        "France",
+        "London",
+        "United Kingdom"
+      ],
+      "canonicalClaim": "The eleventh-century Bayeux Tapestry reached the British Museum for a September 10, 2026 exhibition after French and British conservators rehearsed its removal and transport with a full-scale facsimile and engineered controls for handling, temperature change, and vibration.",
+      "knownFacts": [
+        "The roughly 70-metre embroidery narrates the Norman conquest of England and is owned by the French state.",
+        "The City of Bayeux says a full-scale facsimile was used to test removal, tight turns, temperature changes, vibration, and placement on a transport screen.",
+        "The British Museum exhibition opens September 10, 2026, and Reuters described the loan as the work's first return to English soil since its creation."
+      ],
+      "uncertainties": [
+        "The work's precise place of manufacture and commissioning history remain subjects of scholarship.",
+        "Descriptions such as return or homecoming impose modern national categories on an eleventh-century object.",
+        "Long-term conservation effects of the move will require continued monitoring."
+      ],
+      "evidence": {
+        "level": "mixed",
+        "notes": "The conservation preparations come from the work's home museum; exhibition timing comes from the British Museum; Reuters independently reported the September 2 official viewing and historical framing."
+      },
+      "sources": [
+        {
+          "url": "https://www.bayeuxmuseum.com/en/actus/an-historic-loan-bayeux-tapestry-to-be-displayed-at-the-british-museum-from-2026/",
+          "title": "An historic loan. Bayeux Tapestry to be displayed at the British Museum from 2026",
+          "publisher": "Bayeux Museum",
+          "publishedAt": "2025-08-01",
+          "accessedAt": "2026-09-03",
+          "role": "official-primary",
+          "lineage": "bayeux-tapestry-loan-and-conservation"
+        },
+        {
+          "url": "https://www.britishmuseum.org/exhibitions/bayeux-tapestry",
+          "title": "The Bayeux Tapestry",
+          "publisher": "British Museum",
+          "publishedAt": null,
+          "accessedAt": "2026-09-03",
+          "role": "official-primary",
+          "lineage": "bayeux-tapestry-loan-and-conservation"
+        },
+        {
+          "url": "https://www.reuters.com/world/uk/king-charles-frances-macron-view-bayeux-tapestry-british-museum-2026-09-02/",
+          "title": "King Charles and France's Macron view Bayeux Tapestry at the British Museum",
+          "publisher": "Reuters",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-03",
+          "role": "independent-reporting",
+          "lineage": "bayeux-tapestry-london-arrival"
+        }
+      ],
+      "openQuestions": [
+        "What conservation observations will emerge during and after the London display?",
+        "How will the reciprocal loans to French museums shape interpretation of the embroidery's shared history?",
+        "Will the new Bayeux museum's display system change what scholars can observe when the work returns?"
+      ],
+      "watchFor": [
+        {
+          "description": "Public exhibition and conservation reporting",
+          "expectedWindow": "2026-09-10/2027-07-11",
+          "trigger": "The British Museum publishes installation, condition-monitoring, or interpretive findings during the exhibition."
+        },
+        {
+          "description": "Return to the rebuilt Bayeux Museum",
+          "expectedWindow": "2027-10",
+          "trigger": "The embroidery returns to Bayeux and is installed in the redesigned museum."
+        }
+      ],
+      "trackingTerms": [
+        "Bayeux Tapestry British Museum 2026",
+        "Bayeux Tapestry conservation transport",
+        "Bayeux Tapestry London exhibition condition",
+        "Bayeux Museum reopening 2027"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The exhibition, conservation monitoring, reciprocal loans, and scheduled return create specific future events capable of changing the record."
+      },
+      "selectionReason": "The loan makes cultural ownership and preservation concrete by showing that keeping a fragile story sometimes requires engineered movement across a disputed boundary.",
+      "reviewAfter": "2026-09-10",
+      "attentionSnapshot": null
+    }
+  ]
+}
