@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "probe_id": "dialogue-phase-3-capability-probe-v2",
+  "non_counted": true,
+  "tested_main_sha": "fa62add8d2c0d2c78f0b57b4c3026cfb87661acf",
+  "started_at": "2026-09-03T02:52:55Z",
+  "completed_at": "2026-09-03T02:55:17Z",
+  "tools": {
+    "shell": "bash",
+    "git": "git",
+    "package_runtime": "node",
+    "package_manager": "npm",
+    "repository": "GitHub connector",
+    "web": "web search",
+    "subagents": "collaboration.spawn_agent"
+  },
+  "versions": {
+    "git": "2.51.1",
+    "node": "v24.19.0",
+    "npm": "11.9.0"
+  },
+  "capabilities": {
+    "shell_and_git": true,
+    "node_and_npm": true,
+    "npm_ci": true,
+    "phase3_tests": true,
+    "official_vercel_git_configuration_opened": true,
+    "two_isolated_subagents": true
+  },
+  "phase3_test_count": 45,
+  "official_documentation": {
+    "provider": "Vercel",
+    "label": "Git Configuration",
+    "url": "https://vercel.com/docs/projects/project-configuration/git-configuration",
+    "opened": true
+  },
+  "subagents": [
+    {
+      "role": "alpha",
+      "valid_json": true,
+      "distinct_reply": true,
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "reply_sha256": "1dd989177d355dc55242891b6ced33ea480b76e604a8e61538458fe76b6d01ae"
+    },
+    {
+      "role": "beta",
+      "valid_json": true,
+      "distinct_reply": true,
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "reply_sha256": "e8bc76e252866af4fc5727ee5bce88c51e9ca229855705b7f2091938b6937f94"
+    }
+  ],
+  "scheduler_metadata_present": false,
+  "scheduler_metadata": {
+    "present_fields": {},
+    "absent_fields": [
+      "task_id",
+      "scheduled_occurrence_id",
+      "scheduled_occurrence_time",
+      "actual_start",
+      "run_id",
+      "delivery_id"
+    ],
+    "informational_only": true
+  },
+  "overall_passed": true
+}
