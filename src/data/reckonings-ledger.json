@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-02T06:00:00-07:00",
+  "updatedAt": "2026-09-03T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -106,6 +106,31 @@
         "triangulation",
         "discrete geometry",
         "formal verification"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31"
+      ]
+    },
+    {
+      "date": "2026-09-03",
+      "slug": "daily-reckoning-2026-09-03",
+      "title": "Can a Rulebook Prove Every Truth It Can State?",
+      "area": "Logic and foundations",
+      "difficulty": "Advanced",
+      "prerequisites": [
+        "Axioms and logical implication",
+        "Proof by contradiction",
+        "Natural numbers"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Gödel's first incompleteness theorem",
+        "formal theories",
+        "Gödel numbering",
+        "diagonalization",
+        "Rosser's theorem",
+        "proof assistants",
+        "computability"
       ],
       "relatedLessons": [
         "daily-reckoning-2026-08-31"

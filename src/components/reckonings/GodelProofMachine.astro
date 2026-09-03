@@ -1,0 +1,189 @@
+---
+const stages = [
+  {
+    short: 'Rules',
+    title: 'Fix a checkable rulebook',
+    body: 'Choose a formal theory T: a list of axioms and inference rules whose alleged proofs can be checked by a mechanical procedure.',
+    notation: 'T ⊢ φ',
+    note: 'The symbol ⊢ means “has a formal proof in.”',
+  },
+  {
+    short: 'Encode',
+    title: 'Turn syntax into arithmetic',
+    body: 'Assign natural-number codes to symbols, formulas, and complete proofs. Arithmetic can then describe strings of mathematical symbols by describing their codes.',
+    notation: '⌜φ⌝ ∈ ℕ',
+    note: 'The corner marks mean “the code number of φ.”',
+  },
+  {
+    short: 'Inspect',
+    title: 'Let arithmetic check proofs',
+    body: 'Define PrfT(p, s) to mean that p is the code of a valid T-proof whose final sentence has code s. Every step in a candidate proof is finite and inspectable.',
+    notation: 'PrfT(p, s)',
+    note: 'Here p and s are natural numbers, not pieces of prose.',
+  },
+  {
+    short: 'Reflect',
+    title: 'Construct a sentence about its own code',
+    body: 'A diagonalization result produces a sentence GT that is formally equivalent, inside T, to the claim that no number codes a T-proof of GT.',
+    notation: 'T ⊢ GT ↔ ¬ProvT(⌜GT⌝)',
+    note: 'ProvT(s) abbreviates “there exists a p such that PrfT(p, s).”',
+  },
+];
+
+const nodeX = [92, 292, 492, 692];
+---
+
+<figure class="godel-machine reckoning-visual" data-godel-machine data-active-step="0">
+  <header>
+    <p>Interactive proof map</p>
+    <h3>Four moves let arithmetic inspect its own proofs</h3>
+  </header>
+
+  <div class="machine-shell">
+    <svg viewBox="0 0 840 330" role="img" aria-labelledby="godel-machine-title godel-machine-desc">
+      <title id="godel-machine-title">Four stages in the construction behind Gödel’s theorem</title>
+      <desc id="godel-machine-desc">
+        A chain runs from formal rules, through numerical encoding and proof inspection, to a
+        sentence whose arithmetic content concerns its own provability. The selected stage has a
+        heavier outline and a diamond marker.
+      </desc>
+
+      <g class="connectors" aria-hidden="true">
+        <path d="M172 160H252" />
+        <path d="M372 160H452" />
+        <path d="M572 160H652" />
+        <path class="arrow" d="m242 151 10 9-10 9M442 151l10 9-10 9M642 151l10 9-10 9" />
+      </g>
+
+      {stages.map((stage, index) => (
+        <g class:list={['stage-node', { 'is-active': index === 0 }]} data-godel-node={index}>
+          <rect x={nodeX[index] - 70} y="92" width="160" height="136" rx="14" />
+          <circle cx={nodeX[index] + 10} cy="70" r="18" />
+          <text class="step-number" x={nodeX[index] + 10} y="76" text-anchor="middle">{index + 1}</text>
+          <text class="node-label" x={nodeX[index] + 10} y="126" text-anchor="middle">{stage.short}</text>
+          {index === 0 && <path class="node-glyph" d={`M${nodeX[index] - 36} 153h92M${nodeX[index] - 36} 174h65M${nodeX[index] - 36} 195h80`} />}
+          {index === 1 && <path class="node-glyph" d={`M${nodeX[index] - 38} 172h24l12-19 18 39 17-30 20 10h20`} />}
+          {index === 2 && <path class="node-glyph" d={`M${nodeX[index] - 38} 151h76v54h-76zM${nodeX[index] - 25} 166h50M${nodeX[index] - 25} 180h34M${nodeX[index] - 25} 194h43`} />}
+          {index === 3 && <path class="node-glyph reflect" d={`M${nodeX[index] - 38} 183c0-35 48-47 70-19 17 22 1 49-23 49-19 0-33-13-33-29M${nodeX[index] - 38} 183l-8-13m8 13 14-4`} />}
+          <path class="active-diamond" d={`M${nodeX[index] + 10} 244l8 8-8 8-8-8z`} />
+        </g>
+      ))}
+
+      <g class="boundary" aria-hidden="true">
+        <path d="M50 286H790" />
+        <path d="M766 278l24 8-24 8" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="stage-controls" role="group" aria-label="Choose a stage in the construction">
+    {stages.map((stage, index) => (
+      <button type="button" aria-pressed={index === 0 ? 'true' : 'false'} data-godel-button={index}>
+        <span>{index + 1}</span>{stage.short}
+      </button>
+    ))}
+  </div>
+
+  <div class="stage-panels" aria-live="polite">
+    {stages.map((stage, index) => (
+      <section data-godel-panel={index} hidden={index !== 0}>
+        <div>
+          <span>Stage {index + 1} of {stages.length}</span>
+          <h4>{stage.title}</h4>
+          <p>{stage.body}</p>
+        </div>
+        <aside>
+          <strong>{stage.notation}</strong>
+          <small>{stage.note}</small>
+        </aside>
+      </section>
+    ))}
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> Gödel does not place an English paradox inside arithmetic.
+    Numerical encoding makes “is a valid proof” an arithmetical relation; diagonalization then
+    supplies the carefully constructed self-reference.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-godel-machine]').forEach((machine) => {
+    const buttons = [...machine.querySelectorAll('[data-godel-button]')];
+    const panels = [...machine.querySelectorAll('[data-godel-panel]')];
+    const nodes = [...machine.querySelectorAll('[data-godel-node]')];
+
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        machine.setAttribute('data-active-step', String(index));
+        buttons.forEach((candidate, candidateIndex) => {
+          candidate.setAttribute('aria-pressed', String(candidateIndex === index));
+        });
+        panels.forEach((panel, panelIndex) => {
+          panel.toggleAttribute('hidden', panelIndex !== index);
+        });
+        nodes.forEach((node, nodeIndex) => {
+          node.classList.toggle('is-active', nodeIndex === index);
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  .godel-machine {
+    --logic-blue: #087dcc;
+    --logic-green: #4f9300;
+    --logic-pink: #d9007e;
+    background: radial-gradient(circle at 88% 2%, color-mix(in srgb, var(--logic-pink) 10%, transparent), transparent 20rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1060px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .godel-machine { --logic-blue: #1493ff; --logic-green: #93ff14; --logic-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 600; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .machine-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 720px; width: 100%; }
+  .connectors path, .boundary path { fill: none; stroke: var(--text-secondary); stroke-width: 2; }
+  .connectors .arrow { stroke-linecap: round; stroke-linejoin: round; }
+  .boundary path { opacity: .45; stroke-dasharray: 5 8; }
+  .stage-node > rect { fill: var(--surface-color); stroke: var(--border-color); stroke-width: 2; transition: stroke .16s ease, stroke-width .16s ease; }
+  .stage-node > circle { fill: var(--bg-color); stroke: var(--text-secondary); stroke-width: 2; }
+  .stage-node text { fill: var(--text-secondary); }
+  .stage-node .step-number { font-size: 14px; font-weight: 700; }
+  .stage-node .node-label { fill: var(--text-primary); font-size: 16px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .node-glyph { fill: none; stroke: var(--logic-blue); stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+  .node-glyph.reflect { stroke: var(--logic-pink); }
+  .active-diamond { fill: transparent; stroke: transparent; stroke-width: 2; }
+  .stage-node.is-active > rect { stroke: var(--logic-green); stroke-width: 5; }
+  .stage-node.is-active > circle { fill: var(--logic-green); stroke: var(--bg-color); stroke-width: 3; }
+  .stage-node.is-active .step-number { fill: #07111f; }
+  .stage-node.is-active .active-diamond { fill: var(--logic-pink); stroke: var(--bg-color); }
+  .stage-controls { display: grid; gap: .4rem; grid-template-columns: repeat(4, 1fr); margin: .75rem 0; }
+  .stage-controls button { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 7px; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: .78rem; padding: .55rem .45rem; }
+  .stage-controls button span { border: 1px solid currentColor; border-radius: 50%; display: inline-grid; height: 1.4rem; margin-right: .35rem; place-items: center; width: 1.4rem; }
+  .stage-controls button[aria-pressed='true'] { background: var(--logic-blue); border-color: var(--logic-blue); color: white; font-weight: 700; }
+  .stage-controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--logic-green) 60%, transparent); outline-offset: 2px; }
+  .stage-panels section { align-items: stretch; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; display: grid; gap: 1rem; grid-template-columns: 1fr minmax(190px, .42fr); padding: clamp(.85rem, 2.5vw, 1.2rem); }
+  .stage-panels section[hidden] { display: none; }
+  .stage-panels span { color: var(--logic-pink); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .stage-panels h4 { font-family: var(--font-serif); font-size: 1.16rem; margin: .16rem 0 .4rem; }
+  .stage-panels p { color: var(--text-secondary); font-size: .84rem; line-height: 1.55; margin: 0; }
+  .stage-panels aside { align-content: center; border-left: 1px solid var(--border-color); display: grid; gap: .4rem; padding-left: 1rem; }
+  .stage-panels aside strong { color: var(--logic-green); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1rem; overflow-wrap: anywhere; }
+  .stage-panels aside small { color: var(--text-secondary); font-size: .72rem; line-height: 1.45; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 620px) {
+    .godel-machine { width: calc(100vw - 1.5rem); }
+    .stage-controls { grid-template-columns: 1fr 1fr; }
+    .stage-panels section { grid-template-columns: 1fr; }
+    .stage-panels aside { border-left: 0; border-top: 1px solid var(--border-color); padding: .8rem 0 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .godel-machine * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

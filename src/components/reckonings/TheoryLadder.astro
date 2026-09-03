@@ -1,0 +1,75 @@
+---
+const systems = [
+  { name: 'T₀', unsettled: 'R₀', note: 'starting rulebook' },
+  { name: 'T₁', unsettled: 'R₁', note: 'T₀ + R₀' },
+  { name: 'T₂', unsettled: 'R₂', note: 'T₁ + R₁' },
+];
+---
+
+<figure class="theory-ladder reckoning-visual">
+  <header>
+    <p>Extending the rulebook</p>
+    <h3>One new axiom settles one sentence, then a new boundary appears</h3>
+  </header>
+  <div class="ladder-shell">
+    <svg viewBox="0 0 920 390" role="img" aria-labelledby="theory-ladder-title theory-ladder-desc">
+      <title id="theory-ladder-title">Three increasingly strong formal theories with new undecidable sentences</title>
+      <desc id="theory-ladder-desc">
+        The consistent formal theory T zero cannot decide R zero. Adding R zero produces T one,
+        which has a new undecidable sentence R one. Repeating the move produces T two and R two.
+      </desc>
+      <path class="sea-line" d="M35 332C123 308 174 352 262 328s142 20 230-4 146 25 230 0 127 8 165-4" aria-hidden="true" />
+
+      {systems.map((system, index) => {
+        const x = 60 + index * 290;
+        return (
+          <g class="system">
+            <rect class="system-box" x={x} y="86" width="210" height="118" rx="14" />
+            <text class="system-name" x={x + 105} y="133" text-anchor="middle">{system.name}</text>
+            <text class="system-note" x={x + 105} y="166" text-anchor="middle">{system.note}</text>
+            <path class="reach" d={`M${x + 105} 204v48`} />
+            <path class="broken" d={`M${x + 79} 252h52`} />
+            <circle class="unsettled" cx={x + 105} cy="286" r="25" />
+            <text class="unsettled-label" x={x + 105} y="292" text-anchor="middle">{system.unsettled}</text>
+            <text class="status" x={x + 105} y="363" text-anchor="middle">neither proof nor refutation</text>
+            {index < systems.length - 1 && (
+              <g class="extension" aria-hidden="true">
+                <path d={`M${x + 210} 145h80`} />
+                <path d={`M${x + 278} 136l12 9-12 9`} />
+                <circle cx={x + 250} cy="145" r="18" />
+                <path d={`M${x + 242} 145h16M${x + 250} 137v16`} />
+              </g>
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  </div>
+  <figcaption>
+    <strong>What to notice:</strong> adding <em>R</em><sub>0</sub> makes the next theory stronger;
+    it does not complete every effectively axiomatized theory at once. If each enlarged theory
+    remains consistent and arithmetically expressive, incompleteness applies again.
+  </figcaption>
+</figure>
+
+<style>
+  .theory-ladder { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; font-family: var(--font-sans); margin: 2.5rem 50%; padding: clamp(1rem, 3vw, 1.5rem); transform: translateX(-50%); width: min(1000px, calc(100vw - 3rem)); }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 600; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .ladder-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 760px; width: 100%; }
+  .system-box { fill: var(--surface-color); stroke: var(--link-color); stroke-width: 3; }
+  .system-name { fill: var(--text-primary); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 26px; font-weight: 700; }
+  .system-note, .status { fill: var(--text-secondary); font-size: 12px; }
+  .reach { stroke: var(--link-color); stroke-dasharray: 5 5; stroke-width: 2; }
+  .broken { stroke: #ff1493; stroke-dasharray: 8 7; stroke-width: 4; }
+  .unsettled { fill: color-mix(in srgb, #ff1493 12%, var(--bg-color)); stroke: #ff1493; stroke-width: 3; }
+  .unsettled-label { fill: var(--text-primary); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 17px; font-weight: 700; }
+  .extension path { fill: none; stroke: var(--text-secondary); stroke-linecap: round; stroke-width: 2; }
+  .extension circle { fill: var(--bg-color); stroke: #4f9300; stroke-width: 2; }
+  :global([data-theme='dark']) .extension circle { stroke: #93ff14; }
+  .sea-line { fill: none; opacity: .35; stroke: var(--link-color); stroke-width: 2; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 500px) { .theory-ladder { width: calc(100vw - 1.5rem); } }
+</style>
