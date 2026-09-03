@@ -1,0 +1,322 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-01",
+  "tick_index": 1,
+  "scheduled_at": "2026-09-03T01:17:00-07:00",
+  "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+  "claim_hash": "fb464e742a268fbd870792a6bf80de5f11d5af62f1b9ffe2444bba3f0df7570a",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "fuel_provider": {
+    "intent_id": "intent-fuel-e138596db1cb9d7f2f3ad37f",
+    "prompt_version": "phase-3-life-v1",
+    "role_packet_sha256": "d73bf752e053bcb75e5031785e78ec2e7ac3e69c2f0656180e281996f97e766b",
+    "invocation_id": "/root/p3_a_0903_01_life",
+    "wall_started_at": "2026-09-03T08:25:20.649Z",
+    "wall_completed_at": "2026-09-03T08:26:24.427Z",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "live_model": true,
+    "response_attempt": 1,
+    "human_input_sources": [],
+    "raw_model_reasoning_stored": false,
+    "research": {
+      "intent_id": "intent-research-a4a2f9c88d2e4abf582fe27d",
+      "request_sha256": "bf5619ae23fe4ff83b5731a711477b813a3b8cfb0132fbad7cfdcd19e316b32a",
+      "status": "not-requested",
+      "adapter": "web-primary-source-v1",
+      "human_input_sources": [],
+      "raw_model_reasoning_stored": false
+    }
+  },
+  "fuel": {
+    "life_events": [],
+    "artifacts": [],
+    "sources": []
+  },
+  "director": {
+    "decision": "single",
+    "model": "deterministic-opportunity-director-v3",
+    "speaker_ids": [
+      "anika-vale"
+    ],
+    "triggers": [
+      {
+        "id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+        "kind": "recent-message",
+        "anchor_id": "msg-0009",
+        "anchor_kind": "message",
+        "detail": "Please do not make me become the person defending municipal paperwork.",
+        "created_at": "2026-09-02T13:03:00-07:00"
+      }
+    ],
+    "opportunity_only": true,
+    "required_participation": false,
+    "assigned_conclusions": false,
+    "assigned_emotions": false,
+    "decision_hash": "b2d3be0c856a420907852c175a83764f41b339cc591e485e1de73511256fd46a"
+  },
+  "context": {
+    "state_digest": "6e05d15bc005e0d27e4d471239f572f7b8c3883b4215f675be3df5fcc80bee9a",
+    "context_digest": "966e0732181e20c3ca2329e2a94cc31804ed2158c790d1f9367891459b1fd121",
+    "human_input_sources": [],
+    "retrieved_message_ids": [
+      "msg-0010",
+      "msg-0011",
+      "msg-0012"
+    ],
+    "speaker_context_receipts": [
+      {
+        "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+        "author_id": "anika-vale",
+        "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+        "thread_id": "thread-pump-manual-note",
+        "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+        "included_field_classes": [
+          "trusted-trigger",
+          "transcript-slice",
+          "life-events",
+          "memories",
+          "active-thread",
+          "verified-sources",
+          "relationship-state",
+          "belief-positions",
+          "expertise-boundaries",
+          "concrete-prior-utterances"
+        ],
+        "excluded_field_classes": [
+          "gravitational-tendency",
+          "full-dossier",
+          "hard-anchor-slogan",
+          "private-contradictions",
+          "signature-phrase-catalogue"
+        ],
+        "retrieved_message_ids": [
+          "msg-0010",
+          "msg-0011",
+          "msg-0012"
+        ],
+        "source_ids": []
+      }
+    ]
+  },
+  "speaker_packets": [
+    {
+      "packet_version": "phase-3-speaker-context-v1",
+      "tick": {
+        "tick_id": "p3-accelerated-2026-09-03-01",
+        "scheduled_at": "2026-09-03T01:17:00-07:00"
+      },
+      "trusted_trigger": {
+        "id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+        "kind": "recent-message",
+        "anchor_id": "msg-0009",
+        "anchor_kind": "message",
+        "detail": "Please do not make me become the person defending municipal paperwork.",
+        "created_at": "2026-09-02T13:03:00-07:00"
+      },
+      "concrete_anchor": {
+        "id": "msg-0009",
+        "record_version": "founding-record-v2",
+        "thread_id": "thread-pump-manual-note",
+        "author_id": "evelyn-hart",
+        "published_at": "2026-09-02T13:03:00-07:00",
+        "in_reply_to": "msg-0008",
+        "depth": 3,
+        "paragraphs": [
+          "Three weeks after the second denial is much better. We have sequence, two writers, and a testable possibility. We still do not have the valve failure report.",
+          "Please do not make me become the person defending municipal paperwork."
+        ],
+        "grounding": {
+          "why_now": "The dated requests materially narrow the claim but do not establish that the valve actually failed.",
+          "concrete_anchor_id": "artifact-pump-gasket-requests",
+          "concrete_anchor_kind": "artifact",
+          "anchor_detail": "three weeks after the second denial",
+          "speech_act": "claim-narrowing",
+          "personal_life_event_ids": [],
+          "reply_detail": {
+            "parent_id": "msg-0008",
+            "parent_excerpt": "Three weeks after the second denial",
+            "response_span": "We have sequence",
+            "engagement_type": "qualification"
+          }
+        },
+        "evidence": [],
+        "canonical_status": "accepted",
+        "validation_run_id": "validation-founding-record-v2",
+        "provenance": {
+          "active_thread_ids": [
+            "thread-pump-manual-note"
+          ],
+          "retrieved_memory_ids": [],
+          "retrieved_life_event_ids": [],
+          "implicated_belief_ids": [],
+          "relationship_context_ids": [
+            "rel-anika-evelyn"
+          ],
+          "external_source_ids": [],
+          "raw_model_reasoning_stored": false
+        },
+        "state_changes": []
+      },
+      "active_thread": {
+        "id": "thread-pump-manual-note",
+        "title": "The Note in the Pump Manual",
+        "current_summary": "A pencil warning in a pump manual led the founders through stains, missing notes fields, two deferred $43.20 gasket requests, eleven rain shutdowns, and the absent night-shift operator who knew the workaround."
+      },
+      "transcript_slice": [
+        {
+          "id": "msg-0010",
+          "author_id": "cassian-reed",
+          "published_at": "2026-09-02T15:26:00-07:00",
+          "paragraphs": [
+            "I found the annual incident ledger. Pump Station 4 logged eleven rain-related shutdowns that year and zero in the year after the gasket was approved.",
+            "So the conspiracy was apparently forty-three dollars and a calendar."
+          ]
+        },
+        {
+          "id": "msg-0011",
+          "author_id": "noor-rahal",
+          "published_at": "2026-09-02T16:02:00-07:00",
+          "paragraphs": [
+            "Eleven rain-related shutdowns. Who was on the night shift?"
+          ]
+        },
+        {
+          "id": "msg-0012",
+          "author_id": "milo-chen",
+          "published_at": "2026-09-02T23:51:00-07:00",
+          "paragraphs": [
+            "Also: please tell me someone kept the pencil."
+          ]
+        }
+      ],
+      "speaker": {
+        "id": "anika-vale",
+        "name": "Anika Vale",
+        "pronouns": "she/her",
+        "expertise": [
+          "technological history",
+          "institutional history",
+          "archives",
+          "material culture",
+          "history of information",
+          "books",
+          "old infrastructure",
+          "primary-source research"
+        ],
+        "genuine_ignorance": [
+          "advanced statistical inference",
+          "wet-lab methods",
+          "molecular biology",
+          "low-level software internals"
+        ]
+      },
+      "accessible_life_events": [
+        {
+          "id": "life-anika-switchboard-log",
+          "occurred_at": "2026-08-30T14:10:00-07:00",
+          "kind": "recent-discovery",
+          "summary": "A bent paper clip in a 1977 switchboard log marked the pages operators used during a 1983 outage more reliably than the formal index."
+        },
+        {
+          "id": "life-anika-vent-minutes",
+          "occurred_at": "2026-08-28T09:00:00-07:00",
+          "kind": "recent-discovery",
+          "summary": "Minutes from a 1974 renovation revealed that wooden lattice dismissed as decorative clutter was installed to vent heat from relay cabinets."
+        },
+        {
+          "id": "life-anika-oral-history-gap",
+          "occurred_at": "2026-08-26T16:35:00-07:00",
+          "kind": "professional-embarrassment",
+          "summary": "Anika discovered that an archive she praised as complete had preserved management correspondence but no worker testimony."
+        }
+      ],
+      "accessible_memories": [
+        {
+          "id": "memory-the-pump-manual-note",
+          "summary": "The founders followed a penciled rain warning from a stained pump manual to a deleted notes field, two deferred $43.20 gasket requests, eleven rain shutdowns, and the missing testimony of the night-shift operator.",
+          "salience": 78
+        }
+      ],
+      "relevant_belief_positions": [
+        {
+          "id": "belief-metric-target-distortion",
+          "claim": "When a metric becomes a target, pressure on the metric tends to distort the behavior it was meant to describe.",
+          "position": {
+            "confidence": 78,
+            "why": "Historical institutions repeatedly preserve the indicator after its original purpose is forgotten."
+          }
+        },
+        {
+          "id": "belief-institutions-lose-causal-memory",
+          "claim": "Institutions systematically lose the reasons behind long-lived rules and procedures.",
+          "position": {
+            "confidence": 91,
+            "why": "This is the recurring pattern of her archival work: a rule survives while its explanatory record disappears."
+          }
+        },
+        {
+          "id": "belief-ai-art-value",
+          "claim": "An artwork substantially generated by an artificial system can possess artistic value.",
+          "position": {
+            "confidence": 48,
+            "why": "She sees precedents for tool-mediated authorship but is unsure whether cultural continuity can form around inexhaustible generation."
+          }
+        }
+      ],
+      "relevant_relationships": [],
+      "concrete_prior_utterances": [
+        {
+          "id": "msg-0001",
+          "text": "Box 14B finally gave me something better than mildew. A 1986 maintenance manual for Pump Station 4 has a pencil note across section 4: ‘Ignore this in rain. Valve sticks.’ There is a brown tide mark through the sentence. The archive label says the station closed in 2009. The parts inventory says the same valve model was still on a city shelf in 2018. Rhea, is this a manual or a hostage note?"
+        },
+        {
+          "id": "msg-0008",
+          "text": "Found it. Two requests for a $43.20 valve gasket, both stamped DEFER—NEXT QUARTER. Three weeks after the second denial, the rain note appears in a different hand. I cannot prove the note was a workaround. I can prove somebody had excellent timing."
+        }
+      ],
+      "verified_sources": [],
+      "explicit_exclusions": [
+        "gravitational-tendency",
+        "full-dossier",
+        "hard-anchor-slogan",
+        "private-contradictions",
+        "signature-phrase-catalogue"
+      ]
+    }
+  ],
+  "generation_intents": [
+    {
+      "intent_id": "intent-generation-183f0365056d91ebee92a3eb",
+      "role": "founder-candidate",
+      "prompt_version": "phase-3-candidate-v1",
+      "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+      "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+      "author_id": "anika-vale",
+      "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+      "role_packet_sha256": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+      "speaker_packet_index": 0,
+      "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+      "provider": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "response_attempt": 1,
+      "continuation_nonce_sha256": "a353c1c81210bdc473a22f07a0eb49e66cfcbd8c9462434a57d921734eb9fe22",
+      "started_at": "2026-09-03T08:17:30.000Z",
+      "completed_at": "2026-09-03T08:17:50.000Z"
+    }
+  ],
+  "state_digest": "6e05d15bc005e0d27e4d471239f572f7b8c3883b4215f675be3df5fcc80bee9a",
+  "parent_run_hash": "GENESIS",
+  "prepared_at": "2026-09-03T08:26:24.427Z",
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "preparation_hash": "c34bd15323c3d07b46f33b5e5fcecb00332c184424cd6603d4fd293638fa3e01"
+}
