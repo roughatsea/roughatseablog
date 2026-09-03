@@ -1,0 +1,75 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-01",
+  "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "57a48a1d-d7b0-4335-8031-cf83f1fa7ad3",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "generation_hash": "55f45d687c444bde2b8be1e363ca8d897a5fb944f0b6a1b1f7b01b210e8ee257",
+  "call_intent": {
+    "intent_id": "intent-audit-166259279b348a5755e1dcb2",
+    "role": "independent-quality-audit",
+    "prompt_version": "phase-3-audit-v1",
+    "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+    "provider": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "context_isolated": true,
+    "evaluator_id": "audit-evaluator-7be22dc35bde2ac57783b451",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+    "audit_index": 1,
+    "conditional": false,
+    "candidate_output_sha256": "02f660c8a3d46874663b3ec1d5332b3f8848019ae9e8f492f5c314cca4b67e60",
+    "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+    "role_packet_sha256": "3a18ff4bfa628040889e44a2061a7f2d4eb5b49318627edece6af9e802f7c49a"
+  },
+  "audit": {
+    "intent_id": "intent-audit-166259279b348a5755e1dcb2",
+    "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-1",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+    "evaluator_id": "audit-evaluator-7be22dc35bde2ac57783b451",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "live_model": true,
+    "context_isolated": true,
+    "invocation_id": "/root/p3_a_0903_01_audit1",
+    "completed_at": "2026-09-03T08:19:20.000Z",
+    "wall_completed_at": "2026-09-03T08:34:51.855Z",
+    "candidate_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+    "generation_invocation_id": "/root/p3_a_0903_01_candidate",
+    "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+    "audit_prompt_version": "phase-3-audit-v1",
+    "checks": {
+      "concrete_detail_material": {
+        "note": "The three-week interval directly supports the distinction between sequence and causation.",
+        "pass": true
+      },
+      "conversational_act_real": {
+        "note": "The message visibly narrows an earlier causal interpretation.",
+        "pass": true
+      },
+      "history_expertise_continuity": {
+        "note": "The timing and ledger are supplied, and the causal limit is honestly classified as inference.",
+        "pass": true
+      },
+      "ordinary_message_not_essay": {
+        "note": "It reads as a concise evidentiary correction to known peers.",
+        "pass": true
+      },
+      "personality_implicit": {
+        "note": "Archival caution emerges through the precise limit placed on the evidence.",
+        "pass": true
+      }
+    },
+    "raw_model_reasoning_stored": false
+  },
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "audit_hash": "6f3fe03785f40d2301a1f4eccab3e26ea933b664378f418a208a96b5dbdd837f"
+}
