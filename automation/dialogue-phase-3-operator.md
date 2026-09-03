@@ -50,7 +50,7 @@ The scheduler wakes are watchdogs. They are intentionally more frequent than the
 ### Accelerated watchdog
 
 ```text
-DTSTART;TZID=America/Phoenix:20260903T161700
+DTSTART;TZID=America/Phoenix:20260903T011700
 RRULE:FREQ=HOURLY;COUNT=48
 ```
 
