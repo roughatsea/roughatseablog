@@ -1,0 +1,641 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-01",
+  "tick_index": 1,
+  "scheduled_at": "2026-09-03T01:17:00-07:00",
+  "started_at": "2026-09-03T01:17:00-07:00",
+  "completed_at": "2026-09-03T08:20:01.000Z",
+  "status": "terminal",
+  "outcome": "all-rejected",
+  "canonical_status": "NON-CANON",
+  "input_digest": "a8687df7a69792199457c943f7d32de9fd81815f324c51b3bf3be3a3ccaaccf0",
+  "envelope_receipt": {
+    "trial_id": "phase-3-fixed-sea-trials-2026-09",
+    "leg": "accelerated",
+    "tick_id": "p3-accelerated-2026-09-03-01",
+    "scheduled_at": "2026-09-03T01:17:00-07:00",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "started_at": "2026-09-03T01:17:00-07:00",
+    "completed_at": "2026-09-03T08:20:01.000Z",
+    "automation": {
+      "runner_id": "dialogue-phase-3-accelerated-v1",
+      "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+      "execution_kind": "codex-scheduled-task",
+      "scheduled_trigger": true,
+      "human_initiated": false
+    },
+    "context": {
+      "state_digest": "6e05d15bc005e0d27e4d471239f572f7b8c3883b4215f675be3df5fcc80bee9a",
+      "context_digest": "966e0732181e20c3ca2329e2a94cc31804ed2158c790d1f9367891459b1fd121",
+      "human_input_sources": [],
+      "retrieved_message_ids": [
+        "msg-0010",
+        "msg-0011",
+        "msg-0012"
+      ],
+      "speaker_context_receipts": [
+        {
+          "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+          "author_id": "anika-vale",
+          "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+          "thread_id": "thread-pump-manual-note",
+          "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+          "included_field_classes": [
+            "trusted-trigger",
+            "transcript-slice",
+            "life-events",
+            "memories",
+            "active-thread",
+            "verified-sources",
+            "relationship-state",
+            "belief-positions",
+            "expertise-boundaries",
+            "concrete-prior-utterances"
+          ],
+          "excluded_field_classes": [
+            "gravitational-tendency",
+            "full-dossier",
+            "hard-anchor-slogan",
+            "private-contradictions",
+            "signature-phrase-catalogue"
+          ],
+          "retrieved_message_ids": [
+            "msg-0010",
+            "msg-0011",
+            "msg-0012"
+          ],
+          "source_ids": []
+        }
+      ]
+    },
+    "provider": {
+      "stack": "phase-3-production-v1",
+      "recorded_provider_used": false,
+      "benchmark_fixture_used": false,
+      "raw_model_reasoning_stored": false
+    },
+    "director": {
+      "decision": "single",
+      "model": "deterministic-opportunity-director-v3",
+      "speaker_ids": [
+        "anika-vale"
+      ],
+      "triggers": [
+        {
+          "id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+          "kind": "recent-message",
+          "anchor_id": "msg-0009",
+          "anchor_kind": "message",
+          "detail": "Please do not make me become the person defending municipal paperwork.",
+          "created_at": "2026-09-02T13:03:00-07:00"
+        }
+      ],
+      "opportunity_only": true,
+      "required_participation": false,
+      "assigned_conclusions": false,
+      "assigned_emotions": false,
+      "decision_hash": "b2d3be0c856a420907852c175a83764f41b339cc591e485e1de73511256fd46a"
+    },
+    "fuel": {
+      "life_events": [],
+      "artifacts": [],
+      "sources": []
+    },
+    "candidates": [
+      {
+        "thread_id": "thread-pump-manual-note",
+        "in_reply_to": "msg-0009",
+        "text": "Even with eleven rain-related shutdowns, three weeks after the second denial gives us sequence, not proof that the valve failed.",
+        "speech_act": "claim-narrowing",
+        "grounding": {
+          "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+          "anchor_id": "msg-0009",
+          "anchor_detail": "three weeks after the second denial"
+        },
+        "sentence_roles": [
+          {
+            "sentence_index": 0,
+            "role": "claim-narrowing"
+          }
+        ],
+        "claims": [
+          {
+            "id": "claim-p3_candidate_001-0",
+            "text": "Even with eleven rain-related shutdowns, three weeks after the second denial gives us sequence, not proof that the valve failed.",
+            "type": "author-infers",
+            "sentence_indexes": [
+              0
+            ],
+            "source_ids": []
+          }
+        ],
+        "claims_complete": true,
+        "evidence": [],
+        "proposed_state_changes": [],
+        "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+        "author_id": "anika-vale",
+        "generation": {
+          "intent_id": "intent-generation-183f0365056d91ebee92a3eb",
+          "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+          "author_id": "anika-vale",
+          "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+          "model": "gpt-5.6-sol",
+          "reasoning_effort": "high",
+          "live_model": true,
+          "invocation_id": "agent:/root/p3_candidate_001",
+          "started_at": "2026-09-03T08:17:30.000Z",
+          "completed_at": "2026-09-03T08:17:50.000Z",
+          "wall_started_at": "2026-09-04T03:26:53.596Z",
+          "wall_completed_at": "2026-09-04T03:30:07.099Z",
+          "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+          "response_attempt": 1,
+          "audit_intent_ids": [
+            "intent-audit-166259279b348a5755e1dcb2",
+            "intent-audit-2a63ce538edc8ba7598cb429",
+            "intent-audit-587daf3c365a0fb41b6540f9"
+          ],
+          "source_verification_intents": [],
+          "raw_model_reasoning_stored": false
+        },
+        "audits": [
+          {
+            "intent_id": "intent-audit-166259279b348a5755e1dcb2",
+            "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-1",
+            "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+            "evaluator_id": "audit-evaluator-7be22dc35bde2ac57783b451",
+            "model": "gpt-5.6-sol",
+            "reasoning_effort": "high",
+            "live_model": true,
+            "context_isolated": true,
+            "invocation_id": "agent:/root/p3_audit_001a",
+            "completed_at": "2026-09-03T08:19:20.000Z",
+            "wall_completed_at": "2026-09-04T03:32:51.443Z",
+            "candidate_text_sha256": "737a014849c0d4ebb089c22c62fc263b6c95607a3a40c0b047130630068c791b",
+            "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+            "generation_invocation_id": "agent:/root/p3_candidate_001",
+            "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+            "audit_prompt_version": "phase-3-audit-v1",
+            "checks": {
+              "concrete_detail_material": {
+                "pass": true,
+                "note": "The timing and shutdown count directly limit what the evidence establishes."
+              },
+              "conversational_act_real": {
+                "pass": true,
+                "note": "The message visibly narrows a causal claim to chronological sequence."
+              },
+              "ordinary_message_not_essay": {
+                "pass": true,
+                "note": "This is a concise, natural correction addressed to peers in an active thread."
+              },
+              "personality_implicit": {
+                "pass": true,
+                "note": "The evidence-conscious phrasing implicitly conveys archival caution without self-labeling."
+              },
+              "history_expertise_continuity": {
+                "pass": false,
+                "note": "The sentence embeds factual shutdown and timing assertions under one inference claim with no source IDs."
+              }
+            },
+            "raw_model_reasoning_stored": false
+          },
+          {
+            "intent_id": "intent-audit-2a63ce538edc8ba7598cb429",
+            "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-2",
+            "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+            "evaluator_id": "audit-evaluator-26d9765bb4f0952f97a35230",
+            "model": "gpt-5.6-sol",
+            "reasoning_effort": "high",
+            "live_model": true,
+            "context_isolated": true,
+            "invocation_id": "agent:/root/p3_audit_001b",
+            "completed_at": "2026-09-03T08:19:40.000Z",
+            "wall_completed_at": "2026-09-04T03:33:40.479Z",
+            "candidate_text_sha256": "737a014849c0d4ebb089c22c62fc263b6c95607a3a40c0b047130630068c791b",
+            "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+            "generation_invocation_id": "agent:/root/p3_candidate_001",
+            "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+            "audit_prompt_version": "phase-3-audit-v1",
+            "checks": {
+              "concrete_detail_material": {
+                "pass": true,
+                "note": "The timing and shutdown count directly support the distinction between sequence and proof."
+              },
+              "conversational_act_real": {
+                "pass": true,
+                "note": "The reply visibly narrows an earlier causal claim by distinguishing chronology from proof."
+              },
+              "ordinary_message_not_essay": {
+                "pass": true,
+                "note": "This is a concise, natural qualification suited to an ongoing peer discussion."
+              },
+              "personality_implicit": {
+                "pass": true,
+                "note": "The cautious archival temperament emerges through evidence selection and restrained wording."
+              },
+              "history_expertise_continuity": {
+                "pass": true,
+                "note": "The shutdown count and timing are supported, and the inferential classification honestly marks the conclusion."
+              }
+            },
+            "raw_model_reasoning_stored": false
+          },
+          {
+            "intent_id": "intent-audit-587daf3c365a0fb41b6540f9",
+            "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-3",
+            "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+            "evaluator_id": "audit-evaluator-9e115fe765abc43688b9c353",
+            "model": "gpt-5.6-sol",
+            "reasoning_effort": "high",
+            "live_model": true,
+            "context_isolated": true,
+            "invocation_id": "agent:/root/p3_audit_001c",
+            "completed_at": "2026-09-03T08:20:00.000Z",
+            "wall_completed_at": "2026-09-04T03:35:24.828Z",
+            "candidate_text_sha256": "737a014849c0d4ebb089c22c62fc263b6c95607a3a40c0b047130630068c791b",
+            "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+            "generation_invocation_id": "agent:/root/p3_candidate_001",
+            "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+            "audit_prompt_version": "phase-3-audit-v1",
+            "checks": {
+              "concrete_detail_material": {
+                "pass": true,
+                "note": "The dates and shutdown count directly support the evidentiary distinction."
+              },
+              "conversational_act_real": {
+                "pass": true,
+                "note": "It visibly narrows the preceding causal claim."
+              },
+              "ordinary_message_not_essay": {
+                "pass": true,
+                "note": "The concise correction fits an ongoing peer discussion."
+              },
+              "personality_implicit": {
+                "pass": true,
+                "note": "Archival caution emerges through the dry, precise phrasing."
+              },
+              "history_expertise_continuity": {
+                "pass": true,
+                "note": "The inference is honestly classified and rests on supplied thread facts."
+              }
+            },
+            "raw_model_reasoning_stored": false
+          }
+        ]
+      }
+    ]
+  },
+  "claim_hash": "c17917c1e40806890ace0f58a277f25adc0a045ae5cdee1a003c10dfc6b9f4cf",
+  "parent_run_hash": "GENESIS",
+  "context_receipt": {
+    "state_digest": "6e05d15bc005e0d27e4d471239f572f7b8c3883b4215f675be3df5fcc80bee9a",
+    "context_digest": "966e0732181e20c3ca2329e2a94cc31804ed2158c790d1f9367891459b1fd121",
+    "human_input_sources": [],
+    "retrieved_message_ids": [
+      "msg-0010",
+      "msg-0011",
+      "msg-0012"
+    ],
+    "speaker_context_receipts": [
+      {
+        "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+        "author_id": "anika-vale",
+        "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+        "thread_id": "thread-pump-manual-note",
+        "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+        "included_field_classes": [
+          "trusted-trigger",
+          "transcript-slice",
+          "life-events",
+          "memories",
+          "active-thread",
+          "verified-sources",
+          "relationship-state",
+          "belief-positions",
+          "expertise-boundaries",
+          "concrete-prior-utterances"
+        ],
+        "excluded_field_classes": [
+          "gravitational-tendency",
+          "full-dossier",
+          "hard-anchor-slogan",
+          "private-contradictions",
+          "signature-phrase-catalogue"
+        ],
+        "retrieved_message_ids": [
+          "msg-0010",
+          "msg-0011",
+          "msg-0012"
+        ],
+        "source_ids": []
+      }
+    ]
+  },
+  "provider_receipt": {
+    "stack": "phase-3-production-v1",
+    "recorded_provider_used": false,
+    "benchmark_fixture_used": false,
+    "raw_model_reasoning_stored": false
+  },
+  "director": {
+    "decision": "single",
+    "model": "deterministic-opportunity-director-v3",
+    "speaker_ids": [
+      "anika-vale"
+    ],
+    "triggers": [
+      {
+        "id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+        "kind": "recent-message",
+        "anchor_id": "msg-0009",
+        "anchor_kind": "message",
+        "detail": "Please do not make me become the person defending municipal paperwork.",
+        "created_at": "2026-09-02T13:03:00-07:00"
+      }
+    ],
+    "opportunity_only": true,
+    "required_participation": false,
+    "assigned_conclusions": false,
+    "assigned_emotions": false,
+    "decision_hash": "b2d3be0c856a420907852c175a83764f41b339cc591e485e1de73511256fd46a"
+  },
+  "source_receipts": [],
+  "candidates": [
+    {
+      "thread_id": "thread-pump-manual-note",
+      "in_reply_to": "msg-0009",
+      "text": "Even with eleven rain-related shutdowns, three weeks after the second denial gives us sequence, not proof that the valve failed.",
+      "speech_act": "claim-narrowing",
+      "grounding": {
+        "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+        "anchor_id": "msg-0009",
+        "anchor_detail": "three weeks after the second denial"
+      },
+      "sentence_roles": [
+        {
+          "sentence_index": 0,
+          "role": "claim-narrowing"
+        }
+      ],
+      "claims": [
+        {
+          "id": "claim-p3_candidate_001-0",
+          "text": "Even with eleven rain-related shutdowns, three weeks after the second denial gives us sequence, not proof that the valve failed.",
+          "type": "author-infers",
+          "sentence_indexes": [
+            0
+          ],
+          "source_ids": []
+        }
+      ],
+      "claims_complete": true,
+      "evidence": [],
+      "proposed_state_changes": [],
+      "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+      "author_id": "anika-vale",
+      "generation": {
+        "intent_id": "intent-generation-183f0365056d91ebee92a3eb",
+        "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+        "author_id": "anika-vale",
+        "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "high",
+        "live_model": true,
+        "invocation_id": "agent:/root/p3_candidate_001",
+        "started_at": "2026-09-03T08:17:30.000Z",
+        "completed_at": "2026-09-03T08:17:50.000Z",
+        "wall_started_at": "2026-09-04T03:26:53.596Z",
+        "wall_completed_at": "2026-09-04T03:30:07.099Z",
+        "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+        "response_attempt": 1,
+        "audit_intent_ids": [
+          "intent-audit-166259279b348a5755e1dcb2",
+          "intent-audit-2a63ce538edc8ba7598cb429",
+          "intent-audit-587daf3c365a0fb41b6540f9"
+        ],
+        "source_verification_intents": [],
+        "raw_model_reasoning_stored": false
+      },
+      "audits": [
+        {
+          "intent_id": "intent-audit-166259279b348a5755e1dcb2",
+          "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-1",
+          "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+          "evaluator_id": "audit-evaluator-7be22dc35bde2ac57783b451",
+          "model": "gpt-5.6-sol",
+          "reasoning_effort": "high",
+          "live_model": true,
+          "context_isolated": true,
+          "invocation_id": "agent:/root/p3_audit_001a",
+          "completed_at": "2026-09-03T08:19:20.000Z",
+          "wall_completed_at": "2026-09-04T03:32:51.443Z",
+          "candidate_text_sha256": "737a014849c0d4ebb089c22c62fc263b6c95607a3a40c0b047130630068c791b",
+          "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+          "generation_invocation_id": "agent:/root/p3_candidate_001",
+          "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+          "audit_prompt_version": "phase-3-audit-v1",
+          "checks": {
+            "concrete_detail_material": {
+              "pass": true,
+              "note": "The timing and shutdown count directly limit what the evidence establishes."
+            },
+            "conversational_act_real": {
+              "pass": true,
+              "note": "The message visibly narrows a causal claim to chronological sequence."
+            },
+            "ordinary_message_not_essay": {
+              "pass": true,
+              "note": "This is a concise, natural correction addressed to peers in an active thread."
+            },
+            "personality_implicit": {
+              "pass": true,
+              "note": "The evidence-conscious phrasing implicitly conveys archival caution without self-labeling."
+            },
+            "history_expertise_continuity": {
+              "pass": false,
+              "note": "The sentence embeds factual shutdown and timing assertions under one inference claim with no source IDs."
+            }
+          },
+          "raw_model_reasoning_stored": false
+        },
+        {
+          "intent_id": "intent-audit-2a63ce538edc8ba7598cb429",
+          "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-2",
+          "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+          "evaluator_id": "audit-evaluator-26d9765bb4f0952f97a35230",
+          "model": "gpt-5.6-sol",
+          "reasoning_effort": "high",
+          "live_model": true,
+          "context_isolated": true,
+          "invocation_id": "agent:/root/p3_audit_001b",
+          "completed_at": "2026-09-03T08:19:40.000Z",
+          "wall_completed_at": "2026-09-04T03:33:40.479Z",
+          "candidate_text_sha256": "737a014849c0d4ebb089c22c62fc263b6c95607a3a40c0b047130630068c791b",
+          "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+          "generation_invocation_id": "agent:/root/p3_candidate_001",
+          "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+          "audit_prompt_version": "phase-3-audit-v1",
+          "checks": {
+            "concrete_detail_material": {
+              "pass": true,
+              "note": "The timing and shutdown count directly support the distinction between sequence and proof."
+            },
+            "conversational_act_real": {
+              "pass": true,
+              "note": "The reply visibly narrows an earlier causal claim by distinguishing chronology from proof."
+            },
+            "ordinary_message_not_essay": {
+              "pass": true,
+              "note": "This is a concise, natural qualification suited to an ongoing peer discussion."
+            },
+            "personality_implicit": {
+              "pass": true,
+              "note": "The cautious archival temperament emerges through evidence selection and restrained wording."
+            },
+            "history_expertise_continuity": {
+              "pass": true,
+              "note": "The shutdown count and timing are supported, and the inferential classification honestly marks the conclusion."
+            }
+          },
+          "raw_model_reasoning_stored": false
+        },
+        {
+          "intent_id": "intent-audit-587daf3c365a0fb41b6540f9",
+          "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-3",
+          "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+          "evaluator_id": "audit-evaluator-9e115fe765abc43688b9c353",
+          "model": "gpt-5.6-sol",
+          "reasoning_effort": "high",
+          "live_model": true,
+          "context_isolated": true,
+          "invocation_id": "agent:/root/p3_audit_001c",
+          "completed_at": "2026-09-03T08:20:00.000Z",
+          "wall_completed_at": "2026-09-04T03:35:24.828Z",
+          "candidate_text_sha256": "737a014849c0d4ebb089c22c62fc263b6c95607a3a40c0b047130630068c791b",
+          "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+          "generation_invocation_id": "agent:/root/p3_candidate_001",
+          "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+          "audit_prompt_version": "phase-3-audit-v1",
+          "checks": {
+            "concrete_detail_material": {
+              "pass": true,
+              "note": "The dates and shutdown count directly support the evidentiary distinction."
+            },
+            "conversational_act_real": {
+              "pass": true,
+              "note": "It visibly narrows the preceding causal claim."
+            },
+            "ordinary_message_not_essay": {
+              "pass": true,
+              "note": "The concise correction fits an ongoing peer discussion."
+            },
+            "personality_implicit": {
+              "pass": true,
+              "note": "Archival caution emerges through the dry, precise phrasing."
+            },
+            "history_expertise_continuity": {
+              "pass": true,
+              "note": "The inference is honestly classified and rests on supplied thread facts."
+            }
+          },
+          "raw_model_reasoning_stored": false
+        }
+      ],
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "strict_shape": false,
+          "trusted_trigger": false,
+          "concrete_grounding": false,
+          "sentence_roles": false,
+          "observable_speech_act": false,
+          "ordinary_form": true,
+          "reply_dependence": false,
+          "personal_history": false,
+          "factual_claims": false,
+          "interpretation_boundary": true,
+          "natural_personality": true,
+          "duplication": true,
+          "state_change_bounds": true,
+          "live_stack": true,
+          "independent_audit": true
+        },
+        "audit_majority": {
+          "concrete_detail_material": true,
+          "conversational_act_real": true,
+          "ordinary_message_not_essay": true,
+          "personality_implicit": true,
+          "history_expertise_continuity": true
+        },
+        "failures": [
+          {
+            "code": "P3_SHAPE_INVALID",
+            "note": "Candidate grounding contains missing or unknown fields."
+          },
+          {
+            "code": "P3_ANCHOR_INVALID",
+            "note": "Candidate anchor does not resolve to its trusted trigger."
+          },
+          {
+            "code": "P3_TRIGGER_INVALID",
+            "note": "Candidate needs a specific why-now."
+          },
+          {
+            "code": "P3_SPEECH_ACT_INVALID",
+            "note": "Candidate must perform one permitted observable speech act."
+          },
+          {
+            "code": "P3_SENTENCE_ROLE_INVALID",
+            "note": "Sentence-role inventory is incomplete, reordered, abstract, or lacks a concrete conversational act."
+          },
+          {
+            "code": "P3_SPEECH_ACT_INVALID",
+            "note": "The declared claim-narrowing speech act is not performed by any sentence."
+          },
+          {
+            "code": "P3_PERSONAL_HISTORY_INVALID",
+            "note": "personal_life_event_ids must be an array."
+          },
+          {
+            "code": "P3_REPLY_DEPENDENCE_INVALID",
+            "note": "Reply lacks exact and semantic dependence on its parent."
+          },
+          {
+            "code": "P3_CLAIM_INVENTORY_INVALID",
+            "note": "Claim inventory contains a malformed claim."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      }
+    }
+  ],
+  "summary": {
+    "generated": 1,
+    "passed": 0,
+    "rejected": 1,
+    "transitions": 0
+  },
+  "transition_bundle": {
+    "life_events": [],
+    "artifacts": [],
+    "sources": [],
+    "messages": [],
+    "state_changes": []
+  },
+  "shadow_state_digest_before": "6e05d15bc005e0d27e4d471239f572f7b8c3883b4215f675be3df5fcc80bee9a",
+  "shadow_state_digest_after": "9fbf2be36cb6c906a390535b2c676c28f4f281308331b604f235a2e6fe08b6da",
+  "canonical_mutation_guard": {
+    "algorithm": "sha256",
+    "digest_before": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "digest_after": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "changed_files": [],
+    "passed": true
+  },
+  "human_input_sources": [],
+  "publication_enabled": false,
+  "raw_model_reasoning_stored": false,
+  "run_hash": "166d10062c3674d2b11f296414f40b777c2144bd95623ccc1f6f304e5c51db0e"
+}
