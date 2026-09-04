@@ -1,0 +1,75 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-02",
+  "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "generation_hash": "9fc154d52a73c6e33aee2cd488362b76e2377bbdac346017f328e706a0787acf",
+  "call_intent": {
+    "intent_id": "intent-audit-60bfe169bc144c0880ba401e",
+    "role": "independent-quality-audit",
+    "prompt_version": "phase-3-audit-v1",
+    "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+    "provider": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "context_isolated": true,
+    "evaluator_id": "audit-evaluator-ffdc485efa571672afad6fb5",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-02-evelyn-hart",
+    "audit_index": 1,
+    "conditional": false,
+    "candidate_output_sha256": "5124a4ad1b129522be71c81eaacf09570728c5d4e67bd1e9551d61290a827050",
+    "context_hash": "292aa79525263f8f45ecef19dc44ec950a784d34d28c055d5bb9710bcc36a902",
+    "role_packet_sha256": "8188bb6fcbe0427ab9853bc7062ab1047563483a9003e488adf39f0aa2597b7c"
+  },
+  "audit": {
+    "intent_id": "intent-audit-60bfe169bc144c0880ba401e",
+    "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-02-evelyn-hart-1",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-02-evelyn-hart",
+    "evaluator_id": "audit-evaluator-ffdc485efa571672afad6fb5",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "live_model": true,
+    "context_isolated": true,
+    "invocation_id": "agent:/root/p3_audit_002b1",
+    "completed_at": "2026-09-03T14:19:20.000Z",
+    "wall_completed_at": "2026-09-04T03:51:37.909Z",
+    "candidate_text_sha256": "2bcf9949cde9cd6e9235bd7b6dafc90ee78eb26c565fc0143078e21d7280641c",
+    "context_hash": "292aa79525263f8f45ecef19dc44ec950a784d34d28c055d5bb9710bcc36a902",
+    "generation_invocation_id": "agent:/root/p3_candidate_002b",
+    "trigger_id": "trigger-p3-accelerated-2026-09-03-02-953e76b6e2",
+    "audit_prompt_version": "phase-3-audit-v1",
+    "checks": {
+      "concrete_detail_material": {
+        "pass": true,
+        "note": "The shutdown count directly defines the operator pattern being investigated."
+      },
+      "conversational_act_real": {
+        "pass": true,
+        "note": "It asks a specific, answerable question about operator continuity."
+      },
+      "ordinary_message_not_essay": {
+        "pass": true,
+        "note": "This is a concise peer-to-peer question in ordinary conversational form."
+      },
+      "personality_implicit": {
+        "pass": true,
+        "note": "Methodological caution appears through the request for repeated-person evidence."
+      },
+      "history_expertise_continuity": {
+        "pass": true,
+        "note": "The nonfactual classification is complete, and the question fits both the thread and her causal-analysis expertise."
+      }
+    },
+    "raw_model_reasoning_stored": false
+  },
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "audit_hash": "e476d01ce480adfa38a1e444187eb53bedd486b568c98689db1465c0bca6565a"
+}
