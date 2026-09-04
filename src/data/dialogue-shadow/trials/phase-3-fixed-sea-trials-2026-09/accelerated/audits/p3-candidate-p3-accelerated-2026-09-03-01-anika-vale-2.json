@@ -1,0 +1,75 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-01",
+  "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "generation_hash": "a5101dacba5a6f2e712656bf356e4c8c8a0501c6b805f22c1b6c25051fb391e4",
+  "call_intent": {
+    "intent_id": "intent-audit-2a63ce538edc8ba7598cb429",
+    "role": "independent-quality-audit",
+    "prompt_version": "phase-3-audit-v1",
+    "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+    "provider": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "context_isolated": true,
+    "evaluator_id": "audit-evaluator-26d9765bb4f0952f97a35230",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+    "audit_index": 2,
+    "conditional": false,
+    "candidate_output_sha256": "28bf9a7103a1676476472b89a487f5b4d0f950b1db7c6bc9e400ce09508f7c26",
+    "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+    "role_packet_sha256": "e43b955d01c8987dd678788e2e331f1e9051f270e89c5550c15c195398e7d9cc"
+  },
+  "audit": {
+    "intent_id": "intent-audit-2a63ce538edc8ba7598cb429",
+    "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-01-anika-vale-2",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-01-anika-vale",
+    "evaluator_id": "audit-evaluator-26d9765bb4f0952f97a35230",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "live_model": true,
+    "context_isolated": true,
+    "invocation_id": "agent:/root/p3_audit_001b",
+    "completed_at": "2026-09-03T08:19:40.000Z",
+    "wall_completed_at": "2026-09-04T03:33:40.479Z",
+    "candidate_text_sha256": "737a014849c0d4ebb089c22c62fc263b6c95607a3a40c0b047130630068c791b",
+    "context_hash": "9db7f594a0887e5489d6282d00b45977519df04f93cebd4865d16bad0ef03720",
+    "generation_invocation_id": "agent:/root/p3_candidate_001",
+    "trigger_id": "trigger-p3-accelerated-2026-09-03-01-5f3f955bf3",
+    "audit_prompt_version": "phase-3-audit-v1",
+    "checks": {
+      "concrete_detail_material": {
+        "pass": true,
+        "note": "The timing and shutdown count directly support the distinction between sequence and proof."
+      },
+      "conversational_act_real": {
+        "pass": true,
+        "note": "The reply visibly narrows an earlier causal claim by distinguishing chronology from proof."
+      },
+      "ordinary_message_not_essay": {
+        "pass": true,
+        "note": "This is a concise, natural qualification suited to an ongoing peer discussion."
+      },
+      "personality_implicit": {
+        "pass": true,
+        "note": "The cautious archival temperament emerges through evidence selection and restrained wording."
+      },
+      "history_expertise_continuity": {
+        "pass": true,
+        "note": "The shutdown count and timing are supported, and the inferential classification honestly marks the conclusion."
+      }
+    },
+    "raw_model_reasoning_stored": false
+  },
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "audit_hash": "4b9168013a243057ab00300f38a7dc1dee0fa3a7a7bb0a5d4c67e52c16da5ede"
+}
