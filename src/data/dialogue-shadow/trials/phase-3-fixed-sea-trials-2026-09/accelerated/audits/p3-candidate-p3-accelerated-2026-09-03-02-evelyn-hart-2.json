@@ -1,0 +1,75 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-02",
+  "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "generation_hash": "9fc154d52a73c6e33aee2cd488362b76e2377bbdac346017f328e706a0787acf",
+  "call_intent": {
+    "intent_id": "intent-audit-b8e0948d0ec94aff3d7ebc0a",
+    "role": "independent-quality-audit",
+    "prompt_version": "phase-3-audit-v1",
+    "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+    "provider": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "context_isolated": true,
+    "evaluator_id": "audit-evaluator-a8f80425f34e4d890ab07a4e",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-02-evelyn-hart",
+    "audit_index": 2,
+    "conditional": false,
+    "candidate_output_sha256": "5124a4ad1b129522be71c81eaacf09570728c5d4e67bd1e9551d61290a827050",
+    "context_hash": "292aa79525263f8f45ecef19dc44ec950a784d34d28c055d5bb9710bcc36a902",
+    "role_packet_sha256": "ca8b6cbe6d2f02a3ed1ce89380a88e1adfa54af6e3de61ddc90a6663ab8df4ad"
+  },
+  "audit": {
+    "intent_id": "intent-audit-b8e0948d0ec94aff3d7ebc0a",
+    "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-02-evelyn-hart-2",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-02-evelyn-hart",
+    "evaluator_id": "audit-evaluator-a8f80425f34e4d890ab07a4e",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "live_model": true,
+    "context_isolated": true,
+    "invocation_id": "agent:/root/p3_audit_002b2",
+    "completed_at": "2026-09-03T14:19:40.000Z",
+    "wall_completed_at": "2026-09-04T03:52:21.323Z",
+    "candidate_text_sha256": "2bcf9949cde9cd6e9235bd7b6dafc90ee78eb26c565fc0143078e21d7280641c",
+    "context_hash": "292aa79525263f8f45ecef19dc44ec950a784d34d28c055d5bb9710bcc36a902",
+    "generation_invocation_id": "agent:/root/p3_candidate_002b",
+    "trigger_id": "trigger-p3-accelerated-2026-09-03-02-953e76b6e2",
+    "audit_prompt_version": "phase-3-audit-v1",
+    "checks": {
+      "concrete_detail_material": {
+        "pass": true,
+        "note": "The question materially uses the documented eleven rain-related shutdowns to investigate who repeatedly experienced them."
+      },
+      "conversational_act_real": {
+        "pass": true,
+        "note": "It advances the parent’s staffing question by asking whether one operator was present across most incidents."
+      },
+      "ordinary_message_not_essay": {
+        "pass": true,
+        "note": "It is a concise, natural conversational question."
+      },
+      "personality_implicit": {
+        "pass": true,
+        "note": "The focus on repeated exposure and operator-level concentration quietly reflects Evelyn’s causal and methodological instincts."
+      },
+      "history_expertise_continuity": {
+        "pass": true,
+        "note": "The question is consistent with her established preference for identifying testable patterns and separating evidence from an appealing narrative."
+      }
+    },
+    "raw_model_reasoning_stored": false
+  },
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "audit_hash": "7fec90099bf01e151cd0aaa5abe3b14143d276ee5fb2422a228c3484ba4afb92"
+}
