@@ -1,0 +1,26 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "status": "halted",
+  "tick_id": "p3-accelerated-2026-09-03-04",
+  "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+  "reason_code": "STACK_FAILURE",
+  "failed_intent_id": "intent-fuel-47df39240c0cefe6ddb7ef27",
+  "wall_recorded_at": "2026-09-04T03:59:06.709Z",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "claim_hash": "e07e2af1a65fa17481998243ceb437661f0ea6e14b03527ef336baa0a21379b9",
+  "through_run_hash": "9d4032fd6ed6268886df763852647ba7fb910146d047c0186cc9fe250470a2ca",
+  "shadow_state_digest": "4588e619a1be61186ae3974279672832178901816e237d24092e1e1e7f776554",
+  "canonical_digest": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+  "restart_required": true,
+  "human_input_sources": [],
+  "canonical_status": "NON-CANON",
+  "raw_model_reasoning_stored": false,
+  "halt_hash": "ac008c30a703e68128a00372c53e63ac4e3c0c93b2947bed6d595e724b88d872"
+}
