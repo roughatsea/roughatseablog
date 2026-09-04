@@ -555,6 +555,109 @@
           "accessedAt": "2026-09-03"
         }
       ]
+    },
+    {
+      "editionId": "2026-09-04",
+      "publicationDate": "2026-09-04",
+      "publishedAt": "2026-09-04T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-04",
+      "heroImage": "/images/save-point/save-point-2026-09-04.webp",
+      "featureLane": "final-fantasy-xiv",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy II makes conversation playable",
+          "game": "Final Fantasy II",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Interface and writing discussion only; no story outcomes",
+          "subjectKeys": [
+            "final-fantasy-ii-word-memory-system",
+            "final-fantasy-ii-keyword-dialogue",
+            "famicom-conversation-interface"
+          ],
+          "sourceIds": [
+            "ff2-kenji-terada-1988-interview"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "The loudest place is a problem of attention",
+          "game": "Final Fantasy XIV",
+          "sourceType": "video",
+          "spoilerLevel": "major",
+          "spoilerScope": "Shadowbringers areas, transformations, and the final main-scenario dungeon",
+          "subjectKeys": [
+            "ffxiv-shadowbringers-sound-hierarchy",
+            "ffxiv-job-acoustic-identity",
+            "ffxiv-amaurot-attention-mix"
+          ],
+          "sourceIds": [
+            "ffxiv-spawning-the-sounds-developer-diary",
+            "ffxiv-spawning-the-sounds-lodestone"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Skies of Arcadia moved the clouds, not the ship",
+          "game": "Skies of Arcadia",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "World-map engineering only; no story spoilers",
+          "subjectKeys": [
+            "skies-of-arcadia-relative-cloud-speed",
+            "skies-of-arcadia-airship-speed-perception",
+            "kenji-hiruta-world-map-trick"
+          ],
+          "sourceIds": [
+            "skies-of-arcadia-developer-interview-collection"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff2-kenji-terada-1988-interview",
+          "title": "Kenji Terada — 1988 Developer Interview",
+          "creator": "Kenji Terada and Masanobu Endou; translated by Shmuplations",
+          "url": "https://shmuplations.com/kenjiterada/",
+          "publishedAt": "2021-12-29",
+          "role": "primary",
+          "lineage": "Fan translation of a pre-release Famicom Tsūshin interview with Final Fantasy II scenario writer Kenji Terada, supplemented by Shmuplations editorial context.",
+          "accessedAt": "2026-09-04"
+        },
+        {
+          "sourceId": "ffxiv-spawning-the-sounds-developer-diary",
+          "title": "The Creation of FINAL FANTASY XIV: Shadowbringers — Episode Five: Spawning the Sounds",
+          "creator": "FINAL FANTASY XIV",
+          "url": "https://www.youtube.com/watch?v=1wx85Ri9HAI",
+          "publishedAt": "2020-03-26",
+          "role": "primary",
+          "lineage": "Official developer diary featuring Masayoshi Soken and Go Kinuya; full English caption transcript retrieved and reviewed.",
+          "videoId": "1wx85Ri9HAI",
+          "accessedAt": "2026-09-04"
+        },
+        {
+          "sourceId": "ffxiv-spawning-the-sounds-lodestone",
+          "title": "Developer Diaries Episode Five: Spawning the Sounds",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/ee477138ed5db3727f5552f4759eca9a56a683db",
+          "publishedAt": "2020-03-26",
+          "role": "primary",
+          "lineage": "Official Lodestone announcement identifying the episode's subject and featured developers.",
+          "accessedAt": "2026-09-04"
+        },
+        {
+          "sourceId": "skies-of-arcadia-developer-interview-collection",
+          "title": "Skies of Arcadia — Developer Interview Collection",
+          "creator": "Rieko Kodama, Shuntaro Tanaka, Kenji Hiruta, and others; translated and collected by Shmuplations",
+          "url": "https://shmuplations.com/skiesofarcadia/",
+          "publishedAt": "2022-01-09",
+          "role": "primary",
+          "lineage": "Fan-translated collection of 1999–2000 interviews and later developer comments, including Kenji Hiruta's 2019 first-person production account.",
+          "accessedAt": "2026-09-04"
+        }
+      ]
     }
   ]
 }

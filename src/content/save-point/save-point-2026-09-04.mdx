@@ -1,0 +1,185 @@
+---
+title: "Save Point: The Loudest Place Needs a Listener"
+description: "FFXIV's sound team mixes a catastrophe by deciding where attention belongs; Final Fantasy II turns dialogue into a small investigation; and Skies of Arcadia makes airships faster by moving the clouds."
+heroImage: "/images/save-point/save-point-2026-09-04.webp"
+heroImageAlt: "An empty basalt listening garden opens onto a moonlit sea while cyan, magenta, and electric-lime sound ribbons pass through brass horns and suspended resonators."
+date: 2026-09-04
+publishedAt: 2026-09-04T02:00:00-07:00
+edition: "2026-09-04"
+featureLane: final-fantasy-xiv
+readTimeMinutes: 12
+tags:
+  - save-point
+  - jrpg
+  - final-fantasy
+  - final-fantasy-ii
+  - final-fantasy-xiv
+  - shadowbringers
+  - sound-design
+  - skies-of-arcadia
+  - game-development
+sections:
+  - lane: final-fantasy
+    title: "Final Fantasy II makes conversation playable"
+    game: "Final Fantasy II"
+    summary: "Writer Kenji Terada's 1988 account reveals the Word Memory System as an attempt to turn one-way NPC dialogue into a small act of inquiry."
+    sourceType: interview
+    spoilerLevel: none
+    spoilerScope: "Interface and writing discussion only; no story outcomes"
+    primarySource:
+      title: "Kenji Terada — 1988 Developer Interview"
+      creator: "Kenji Terada and Masanobu Endou; translated by Shmuplations"
+      url: "https://shmuplations.com/kenjiterada/"
+      publishedAt: 2021-12-29
+    tags:
+      - final-fantasy-ii
+      - kenji-terada
+      - dialogue-systems
+      - famicom
+  - lane: final-fantasy-xiv
+    title: "The loudest place is a problem of attention"
+    game: "Final Fantasy XIV"
+    summary: "An official developer diary shows that FFXIV sound design is less about making everything audible than choosing what the player needs to hear now."
+    sourceType: video
+    spoilerLevel: major
+    spoilerScope: "Shadowbringers areas, transformations, and the final main-scenario dungeon"
+    primarySource:
+      title: "The Creation of FINAL FANTASY XIV: Shadowbringers — Episode Five: Spawning the Sounds"
+      creator: "FINAL FANTASY XIV"
+      url: "https://www.youtube.com/watch?v=1wx85Ri9HAI"
+      publishedAt: 2020-03-26
+      videoId: "1wx85Ri9HAI"
+    tags:
+      - final-fantasy-xiv
+      - shadowbringers
+      - masayoshi-soken
+      - go-kinuya
+      - sound-design
+      - video-interview
+  - lane: beyond-final-fantasy
+    title: "Skies of Arcadia moved the clouds, not the ship"
+    game: "Skies of Arcadia"
+    summary: "Map programmer Kenji Hiruta recalls how one moving cloud layer created the speed of a new airship without rebuilding the entire world."
+    sourceType: interview
+    spoilerLevel: none
+    spoilerScope: "World-map engineering only; no story spoilers"
+    primarySource:
+      title: "Skies of Arcadia — Developer Interview Collection"
+      creator: "Rieko Kodama, Shuntaro Tanaka, Kenji Hiruta, and others; translated and collected by Shmuplations"
+      url: "https://shmuplations.com/skiesofarcadia/"
+      publishedAt: 2022-01-09
+    tags:
+      - skies-of-arcadia
+      - kenji-hiruta
+      - world-map
+      - dreamcast
+---
+
+import SavePointSource from '../../components/SavePointSource.astro';
+import SavePointSpoiler from '../../components/SavePointSpoiler.astro';
+
+Three old design problems turn out to be problems of attention. *Final Fantasy II* gives the player words to carry from one conversation to another. *Final Fantasy XIV* decides which sound should survive when an entire world is making noise. *Skies of Arcadia* changes the speed of an airship without changing how quickly the airship travels.
+
+The feature belongs to *XIV*. Its sound team describes a mix as a route through a scene: every effect may be justified, but only some of them can be allowed to lead.
+
+<h2 id="final-fantasy">Final Fantasy: Conversation becomes an inventory</h2>
+
+<SavePointSource
+  type="interview"
+  title="Kenji Terada — 1988 Developer Interview"
+  creator="Kenji Terada and Masanobu Endou; translated by Shmuplations"
+  published="Original interview: 1988 · translation posted December 29, 2021"
+  url="https://shmuplations.com/kenjiterada/"
+  note="Fan translation of a pre-release Famicom Tsūshin conversation with Final Fantasy II writer Kenji Terada. Shmuplations' editorial note supplies the console-interface context; Terada directly describes the Word Memory System and its intended effect."
+/>
+
+Most role-playing-game conversations end when the text box closes. *Final Fantasy II* tried to make a few of them travel.
+
+In a [1988 interview translated by Shmuplations](https://shmuplations.com/kenjiterada/), scenario writer Kenji Terada describes what Square called the “Word Memory System.” When an NPC says an important term, the player can learn it, then ask other people about it. The system turns information into a small inventory whose contents unlock different parts of later conversations.
+
+Terada presents the idea as an answer to the one-way flow of RPG dialogue. A resident speaks; the hero receives whatever information the writer placed there; the exchange is over. Remembering and presenting a word gives the player one modest editorial power: choose which part of the conversation deserves to continue.
+
+The hardware explains the form. In an editorial note, Shmuplations places the system beside a problem Terada and Namco designer Masanobu Endou discuss in the interview. A computer adventure could let a player type a response. On the Famicom, entering arbitrary text with a controller was cumbersome, and storing or recognizing a broad vocabulary was expensive. Multiple choice was easy to operate but risked making a riddle answer itself. A short list of learned words sat between those extremes.
+
+That compromise leaves visible seams. Plenty of people have nothing useful to say about a keyword. The correct term can behave less like conversation than a key tested against human-shaped locks. If the player forgets where a word belongs, asking it everywhere becomes clerical work.
+
+The visible list also exposes something ordinary RPG scripts conceal: information has a route. One person introduces a term, another supplies context, and a third may act because the player connects them. Conventional dialogue can arrange the same chain, but the player advances it by exhausting text boxes. Word Memory makes the dependency explicit. Progress belongs partly to the person who notices that knowledge acquired in one room has become useful somewhere else. The system is crude about human response and unusually clear about the social movement of a fact.
+
+Yet the system changes the posture of reading. A place name, code word, or political term is no longer only exposition. It may be equipment. The player begins scanning speech for portable pieces and thinking about who would know what. *Final Fantasy II* could not simulate free conversation, so it preserved one important property of inquiry: an answer can create the next question.
+
+<h2 id="final-fantasy-xiv">Final Fantasy XIV: The loudest place needs a listener</h2>
+
+<SavePointSource
+  type="video"
+  title="The Creation of FINAL FANTASY XIV: Shadowbringers — Episode Five: Spawning the Sounds"
+  creator="FINAL FANTASY XIV"
+  published="March 26, 2020 · 15:27"
+  url="https://www.youtube.com/watch?v=1wx85Ri9HAI"
+  note="Official developer diary featuring sound director and composer Masayoshi Soken and sound designer Go Kinuya. The full English caption transcript was retrieved and reviewed; production claims below come from their interviews, while the argument about attention is Save Point's analysis."
+/>
+
+The simplest theory of sound design is additive. A sword moves, so it needs a sound. A spell lands, so it needs another. Put enough well-made effects beside the music and voices, and a world should become convincing.
+
+Go Kinuya describes nearly the opposite job in [“Spawning the Sounds,”](https://www.youtube.com/watch?v=1wx85Ri9HAI) the fifth episode of Square Enix’s *Shadowbringers* developer diary. When a scene is crowded, the sound team decides what the player should attend to, which effects should move forward in the mix, and how loudly each source should carry through three-dimensional space. The material may be additive; the experience depends on subtraction and hierarchy.
+
+That work begins well before the final mix. Kinuya says each combat job needs an acoustic identity strong enough to be recognized from sound alone. Dancer suggested musicality, but its actions were too short to contain melodies. The team recorded percussion and cut the sounds to fit individual steps and movements. The job does not play a song so much as distribute instrumental color across its animation.
+
+Gunbreaker presented a different inheritance problem. Reusing *Final Fantasy VIII* effects was not practical across the games’ technical and fictional differences. The new sounds also had to remain distinct from three existing tanks: Warrior carried weight, Dark Knight had a stranger and more ominous character, and Gunbreaker needed speed alongside mechanical force. Kinuya combined swift blade motion with the heavier impact of an explosion. A player hearing a chaotic party is meant to recognize not just “an attack,” but which kind of body and role produced it.
+
+The diary’s funniest example is also its clearest statement about fabrication. For a gremlin in the opening cinematic, a Hollywood post-production collaborator could not find the right voice. After several failed attempts, a member of the sound team went home, entered a closet with a recorder, and performed the creature quietly enough not to disturb the family. The recording was processed heavily, but the source remained one person making an imaginary animal in a domestic cupboard.
+
+This is not a debunking of fantasy. It is the medium’s working method. Sound is accepted according to what it does beside an image, not whether its source resembles the thing depicted. A closet performance can become a creature. A percussion sample can become a combat vocabulary. The test Masayoshi Soken gives at the beginning of the diary is emotional: after music and sound meet the visual element, the result has to catch at the heart.
+
+The largest *Shadowbringers* examples make that test difficult because they ask audio to communicate conflicting qualities at once.
+
+<SavePointSpoiler game="Final Fantasy XIV: Shadowbringers" scope="Areas, transformations, and the final main-scenario dungeon">
+
+The expansion’s permanent daylight could easily have sounded radiant. Kinuya says the team wanted the opposite. The Flood of Light has expanded beyond safety; it presses down on the First and leaves its inhabitants uncertain. Environmental effects therefore emphasize lower frequencies instead of relying on delicate sparkle. Light acquires weight. The sound does not describe what brightness usually means. It describes what this brightness is doing to people.
+
+Sin Eaters required a similar split. Their arrival had to shock, so the game designers asked for grotesque effects and ominous music. Kinuya and Soken resisted letting horror become the only register. These enemies were people before transformation; female vocals introduce melancholy beside disgust. The diary’s notorious production instruction for Tesleen’s transformation—“pretty vomit”—sounds absurd because it compresses mutually hostile sensations into two words. The finished scene had to be revolting, luminous, and sad without any one quality cancelling the others.
+
+The problem reaches its practical limit in Amaurot. The final dungeon contains collapsing buildings, falling stars, explosions, fleeing crowds, enormous creatures, combat actions, music building toward the end of the scenario, and narration that the player must still understand. Every one of those events has a legitimate claim to volume. If each receives its expected loudness, Kinuya explains, the result is cacophony.
+
+The sound team therefore mixes the catastrophe as a sequence of instructions. Attention may zoom toward one event, then release it. Audible range and spatial fade decide which disaster feels near. Music carries anticipation while effects establish scale, but narration must keep its place because it tells the player what the spectacle means. The scene can sound enormous only if some enormous things are permitted to recede.
+
+Soken describes another contrast operating across the score. “Shadowbringers” begins in a minor key and ends in a major one; it and “Tomorrow and Tomorrow” also share similar openings before moving apart. His account connects those musical departures to people who began from common roots and took conflicting paths. The score does not reserve contrast for heroes and villains. It places divergence inside related musical material.
+
+That choice completes the sound effects’ argument. Light can be oppressive rather than pretty. A monster can be grotesque and mournful. A disaster can contain more audible events than the mix should reproduce equally. Sound does not authenticate the image by copying its obvious property. It chooses the pressure, relation, or loss the player needs to perceive.
+
+</SavePointSpoiler>
+
+An MMO makes these decisions unusually consequential. The player hears job effects thousands of times, often beside other players using their own dense vocabularies. A spectacular noise that dominates once may become exhausting in a routine encounter. An effect too polite to survive the mix may erase feedback that combat needs. The team is designing individual sounds and negotiating a commons in which all of them must coexist.
+
+“Spawning the Sounds” offers no universal formula for that negotiation. Its examples show a more useful habit: begin by asking where attention belongs. The loudest place is not the place with every fader raised. It is the place whose scale survives because somebody listened on the player’s behalf.
+
+<h2 id="beyond-final-fantasy">Beyond Final Fantasy: Move the clouds, not the ship</h2>
+
+<SavePointSource
+  type="interview"
+  title="Skies of Arcadia — Developer Interview Collection"
+  creator="Rieko Kodama, Shuntaro Tanaka, Kenji Hiruta, and others; translated and collected by Shmuplations"
+  published="Interviews and comments: 1999–2019 · collection posted January 9, 2022"
+  url="https://shmuplations.com/skiesofarcadia/"
+  note="Fan-translated collection of contemporary interviews and later developer comments. This section centers on map programmer Kenji Hiruta's 2019 first-person production account, as presented in the collection."
+/>
+
+Late in the development of *Skies of Arcadia*, a planner delivered the kind of request that can consume a project: a newly acquired airship did not feel faster. The proposed fix was to enlarge the world.
+
+Map programmer Kenji Hiruta recounts the exchange in a 2019 post preserved within Shmuplations’ [developer interview collection](https://shmuplations.com/skiesofarcadia/). Raising the ship’s actual speed would compress travel time. Shorter trips would produce fewer random encounters, so progression might have to change. Expanding the distance between islands would protect the timing, but then the islands and empty spaces would need new assets and coordinates. The estimate grew to three to six months.
+
+Hiruta separated velocity from the perception of velocity. Distant islands are weak references: perspective makes small speed changes difficult to see against them. Objects close to the camera cross the player’s view rapidly and make motion legible. The game already had a thin cloud layer near the ship. Hiruta suggested moving those clouds toward the player, opposite the direction of travel, with the relative motion adjusted for each vessel.
+
+The change took less than an hour. The airship did not cross the map any faster. It acquired resistance—a visible headwind that made the new speed feel physical—while encounter timing, island placement, assets, and the production schedule remained intact.
+
+Calling the trick an illusion undersells it. All screen motion is already a constructed relation among camera, object, and reference. Hiruta found the cheapest relation that carried the intended experience. The planner briefly worried that it was cheating; the programmer answered that the relevant test was whether it created the effect.
+
+That answer can excuse bad shortcuts if used carelessly. A sensory trick cannot repair every pacing or progression problem, and saving production time does not make a player’s complaint imaginary. Here, however, the intervention is precise. The desired difference between ships was experiential, and the new cloud motion makes that difference immediately visible without disturbing systems that were already working.
+
+*Skies of Arcadia* is a game about an enormous open sky. One of the details that gives that sky its speed is a small layer moving the other way.
+
+## Source trail
+
+- Kenji Terada and Masanobu Endou, [1988 pre-release interview about *Final Fantasy II*](https://shmuplations.com/kenjiterada/), translated and presented by Shmuplations on December 29, 2021.
+- FINAL FANTASY XIV, [“The Creation of FINAL FANTASY XIV: Shadowbringers — Episode Five: Spawning the Sounds”](https://www.youtube.com/watch?v=1wx85Ri9HAI), March 26, 2020. Official developer diary featuring Masayoshi Soken and Go Kinuya; full English caption transcript reviewed; runtime 15:27.
+- Square Enix, [“Developer Diaries Episode Five: Spawning the Sounds”](https://na.finalfantasyxiv.com/lodestone/topics/detail/ee477138ed5db3727f5552f4759eca9a56a683db), March 26, 2020.
+- *Skies of Arcadia* interviews and developer comments from 1999–2019, including Kenji Hiruta’s 2019 production account, [translated and collected by Shmuplations](https://shmuplations.com/skiesofarcadia/), January 9, 2022.
