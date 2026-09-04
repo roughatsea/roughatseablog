@@ -1,0 +1,189 @@
+---
+const ticks = [-4, -3, -2, -1, 1, 2, 3, 4];
+const turns = [
+  { x: 3, y: 2, label: 'z = 3 + 2i', equation: '3 + 2i', note: 'Starting point: (3, 2)' },
+  { x: -2, y: 3, label: 'iz = −2 + 3i', equation: 'i(3 + 2i) = −2 + 3i', note: 'One quarter-turn counterclockwise' },
+  { x: -3, y: -2, label: 'i²z = −3 − 2i', equation: 'i²(3 + 2i) = −3 − 2i', note: 'Two quarter-turns make a half-turn' },
+  { x: 2, y: -3, label: 'i³z = 2 − 3i', equation: 'i³(3 + 2i) = 2 − 3i', note: 'Three quarter-turns' },
+  { x: 3, y: 2, label: 'i⁴z = z', equation: 'i⁴(3 + 2i) = 3 + 2i', note: 'Four quarter-turns return to the start' },
+];
+
+const px = (value: number) => 400 + value * 62;
+const py = (value: number) => 295 - value * 62;
+---
+
+<figure class="quarter-turn reckoning-visual" data-quarter-turn data-turn="0">
+  <header>
+    <p>Interactive complex plane</p>
+    <h3>Multiply one point by <em>i</em>, one quarter-turn at a time</h3>
+  </header>
+
+  <div class="plane-shell">
+    <svg viewBox="0 0 800 590" role="img" aria-labelledby="quarter-turn-title quarter-turn-desc">
+      <title id="quarter-turn-title">Successive quarter-turns of the complex number three plus two i</title>
+      <desc id="quarter-turn-desc">
+        A coordinate grid shows the point three plus two i and its successive products with i.
+        Each product has the same distance from the origin and lies ninety degrees counterclockwise
+        from the previous point. The selected vector has a heavy outline and a diamond endpoint.
+      </desc>
+
+      <g class="grid" aria-hidden="true">
+        {ticks.map((tick) => (
+          <>
+            <path d={`M${px(tick)} 38V552`} />
+            <path d={`M86 ${py(tick)}H714`} />
+          </>
+        ))}
+      </g>
+      <g class="axes" aria-hidden="true">
+        <path d="M76 295H730M400 562V24" />
+        <path d="m718 287 12 8-12 8M392 36l8-12 8 12" />
+      </g>
+      <g class="axis-labels" aria-hidden="true">
+        <text x="724" y="320">real</text>
+        <text x="413" y="34">imaginary</text>
+        {ticks.map((tick) => <text x={px(tick)} y="318" text-anchor="middle">{tick}</text>)}
+        {ticks.map((tick) => <text x="382" y={py(tick) + 5} text-anchor="end">{tick}i</text>)}
+      </g>
+
+      <circle class="orbit" cx="400" cy="295" r={Math.sqrt(13) * 62} aria-hidden="true" />
+
+      <g class="turn-vectors">
+        {turns.slice(0, 4).map((turn, index) => (
+          <g class:list={['turn-vector', { 'is-active': index === 0 }]} data-turn-vector={index}>
+            <path class="vector-line halo" d={`M400 295L${px(turn.x)} ${py(turn.y)}`} />
+            <path class="vector-line" d={`M400 295L${px(turn.x)} ${py(turn.y)}`} />
+            <circle cx={px(turn.x)} cy={py(turn.y)} r="8" />
+            <path class="endpoint-diamond" d={`M${px(turn.x)} ${py(turn.y) - 13}l13 13-13 13-13-13z`} />
+            <text class="point-label" x={px(turn.x) + (turn.x > 0 ? 14 : -14)} y={py(turn.y) - 15} text-anchor={turn.x > 0 ? 'start' : 'end'}>{turn.label}</text>
+          </g>
+        ))}
+      </g>
+
+      <path class="turn-arc" d="M568 160A222 222 0 0 0 282 103" aria-hidden="true" />
+      <path class="turn-arrow" d="m291 92-9 11 14 3" aria-hidden="true" />
+      <text class="turn-label" x="428" y="90" aria-hidden="true">× i = +90°</text>
+      <circle class="origin" cx="400" cy="295" r="7" />
+    </svg>
+  </div>
+
+  <div class="turn-readout" aria-live="polite">
+    <div>
+      <span data-turn-count>0 quarter-turns</span>
+      <strong data-turn-equation>{turns[0].equation}</strong>
+    </div>
+    <p data-turn-note>{turns[0].note}</p>
+  </div>
+
+  <div class="turn-controls">
+    <button type="button" data-turn-next>Multiply by <em>i</em></button>
+    <button type="button" class="secondary" data-turn-reset disabled>Reset</button>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> every endpoint stays on the dashed circle, so the distance from
+    the origin does not change. The diamond advances counterclockwise by exactly 90 degrees after
+    each multiplication.
+  </figcaption>
+</figure>
+
+<script>
+  const states = [
+    { equation: '3 + 2i', note: 'Starting point: (3, 2)' },
+    { equation: 'i(3 + 2i) = −2 + 3i', note: 'One quarter-turn counterclockwise' },
+    { equation: 'i²(3 + 2i) = −3 − 2i', note: 'Two quarter-turns make a half-turn' },
+    { equation: 'i³(3 + 2i) = 2 − 3i', note: 'Three quarter-turns' },
+    { equation: 'i⁴(3 + 2i) = 3 + 2i', note: 'Four quarter-turns return to the start' },
+  ];
+
+  document.querySelectorAll('[data-quarter-turn]').forEach((figure) => {
+    const next = figure.querySelector('[data-turn-next]');
+    const reset = figure.querySelector('[data-turn-reset]');
+    const count = figure.querySelector('[data-turn-count]');
+    const equation = figure.querySelector('[data-turn-equation]');
+    const note = figure.querySelector('[data-turn-note]');
+    const vectors = [...figure.querySelectorAll('[data-turn-vector]')];
+    if (!(next instanceof HTMLButtonElement)
+      || !(reset instanceof HTMLButtonElement)
+      || !count
+      || !equation
+      || !note) return;
+    let step = 0;
+
+    const render = () => {
+      const vectorIndex = step % 4;
+      figure.setAttribute('data-turn', String(step));
+      count.textContent = `${step} quarter-turn${step === 1 ? '' : 's'}`;
+      equation.textContent = states[step].equation;
+      note.textContent = states[step].note;
+      vectors.forEach((vector, index) => vector.classList.toggle('is-active', index === vectorIndex));
+      next.toggleAttribute('disabled', step === 4);
+      reset.toggleAttribute('disabled', step === 0);
+    };
+
+    next.addEventListener('click', () => {
+      if (step < 4) step += 1;
+      render();
+    });
+    reset.addEventListener('click', () => {
+      step = 0;
+      render();
+    });
+  });
+</script>
+
+<style>
+  .quarter-turn {
+    --turn-blue: #087dcc;
+    --turn-green: #4f9300;
+    --turn-pink: #d9007e;
+    background: radial-gradient(circle at 86% 8%, color-mix(in srgb, var(--turn-pink) 11%, transparent), transparent 20rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .quarter-turn { --turn-blue: #1493ff; --turn-green: #93ff14; --turn-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 600; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .plane-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 650px; width: 100%; }
+  .grid path { stroke: var(--border-color); stroke-width: 1; }
+  .axes path { fill: none; stroke: var(--text-secondary); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+  .axis-labels text { fill: var(--text-secondary); font-size: 13px; }
+  .orbit { fill: none; opacity: .65; stroke: var(--turn-green); stroke-dasharray: 6 9; stroke-width: 2; }
+  .vector-line { fill: none; stroke: var(--turn-blue); stroke-linecap: round; stroke-width: 3; }
+  .vector-line.halo { stroke: var(--bg-color); stroke-width: 8; }
+  .turn-vector { opacity: .24; transition: opacity .18s ease; }
+  .turn-vector circle { fill: var(--surface-color); stroke: var(--turn-blue); stroke-width: 3; }
+  .turn-vector .endpoint-diamond { fill: transparent; stroke: transparent; stroke-width: 2; }
+  .turn-vector.is-active { opacity: 1; }
+  .turn-vector.is-active .vector-line:not(.halo) { stroke: var(--turn-pink); stroke-width: 6; }
+  .turn-vector.is-active circle { opacity: 0; }
+  .turn-vector.is-active .endpoint-diamond { fill: var(--turn-green); stroke: var(--bg-color); }
+  .point-label { fill: var(--text-primary); font-size: 14px; font-weight: 700; paint-order: stroke; stroke: var(--bg-color); stroke-width: 5px; }
+  .turn-arc, .turn-arrow { fill: none; stroke: var(--turn-pink); stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+  .turn-label { fill: var(--turn-pink); font-size: 14px; font-weight: 700; }
+  .origin { fill: var(--text-primary); stroke: var(--bg-color); stroke-width: 3; }
+  .turn-readout { align-items: center; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; display: grid; gap: 1rem; grid-template-columns: 1fr auto; margin-top: .75rem; padding: .9rem 1rem; }
+  .turn-readout div { display: grid; gap: .2rem; }
+  .turn-readout span { color: var(--turn-pink); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .turn-readout strong { color: var(--turn-green); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(.9rem, 2.2vw, 1.08rem); }
+  .turn-readout p { color: var(--text-secondary); font-size: .78rem; margin: 0; text-align: right; }
+  .turn-controls { display: flex; gap: .55rem; margin-top: .65rem; }
+  .turn-controls button { background: var(--turn-blue); border: 1px solid var(--turn-blue); border-radius: 7px; color: white; cursor: pointer; font: inherit; font-size: .82rem; font-weight: 700; padding: .58rem .9rem; }
+  .turn-controls button.secondary { background: var(--bg-color); border-color: var(--border-color); color: var(--text-secondary); }
+  .turn-controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--turn-green) 60%, transparent); outline-offset: 2px; }
+  .turn-controls button:disabled { cursor: not-allowed; opacity: .42; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 620px) {
+    .quarter-turn { width: calc(100vw - 1.5rem); }
+    .turn-readout { align-items: start; grid-template-columns: 1fr; }
+    .turn-readout p { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) { .quarter-turn * { transition: none !important; } }
+</style>

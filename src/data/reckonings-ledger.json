@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-03T06:00:00-07:00",
+  "updatedAt": "2026-09-04T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -135,6 +135,29 @@
       "relatedLessons": [
         "daily-reckoning-2026-08-31"
       ]
+    },
+    {
+      "date": "2026-09-04",
+      "slug": "daily-reckoning-2026-09-04",
+      "title": "Why Does Multiplying by i Make a Quarter-Turn?",
+      "area": "Numbers and algebra",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Algebra with negative numbers",
+        "Cartesian coordinates",
+        "The Pythagorean theorem"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "complex numbers",
+        "imaginary unit",
+        "complex plane",
+        "rotations",
+        "polar form",
+        "phasors",
+        "history of cubic equations"
+      ],
+      "relatedLessons": []
     }
   ]
 }
