@@ -1,0 +1,70 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-03",
+  "tick_index": 3,
+  "scheduled_at": "2026-09-03T13:17:00-07:00",
+  "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+  "claim_hash": "992285d52f63bc407515cef3f192df7ebc9862485b24fab7f67d9c4be925357d",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "fuel_provider": {
+    "intent_id": "intent-fuel-719cdb9f0c238347f507cbab",
+    "prompt_version": "phase-3-life-v1",
+    "role_packet_sha256": "16e7ad71ba3f01cac065cd8ad0f6ec8beb142f985e513533b4146466ab40ce46",
+    "invocation_id": "agent:/root/p3_life_003",
+    "wall_started_at": "2026-09-04T03:53:44.297Z",
+    "wall_completed_at": "2026-09-04T03:56:25.158Z",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "live_model": true,
+    "response_attempt": 1,
+    "human_input_sources": [],
+    "raw_model_reasoning_stored": false,
+    "research": {
+      "intent_id": "intent-research-210b875da07b4dc1cd8e6f7c",
+      "request_sha256": "16bdcd245a9b7e48110e06f0f2fffc458183104ec805cbe80477eba5070621ce",
+      "status": "not-requested",
+      "adapter": "web-primary-source-v1",
+      "human_input_sources": [],
+      "raw_model_reasoning_stored": false
+    }
+  },
+  "fuel": {
+    "life_events": [],
+    "artifacts": [],
+    "sources": []
+  },
+  "director": {
+    "decision": "quiet",
+    "model": "deterministic-opportunity-director-v3",
+    "speaker_ids": [],
+    "triggers": [],
+    "opportunity_only": true,
+    "required_participation": false,
+    "assigned_conclusions": false,
+    "assigned_emotions": false,
+    "decision_hash": "ce3aae5e3f12fb88e2c1434d47aa22d60786affdb0d8b1f00437a43e857a2746"
+  },
+  "context": {
+    "state_digest": "100401db3b8b67090b6cc857a60936aa3cdff67c4d5b83e0bc64b469dbb8147b",
+    "context_digest": "b9454aa46d80a23842805f8c71e94a6d27e127b9c25dca519f801ef4a803b1e8",
+    "human_input_sources": [],
+    "retrieved_message_ids": [],
+    "speaker_context_receipts": []
+  },
+  "speaker_packets": [],
+  "generation_intents": [],
+  "state_digest": "100401db3b8b67090b6cc857a60936aa3cdff67c4d5b83e0bc64b469dbb8147b",
+  "parent_run_hash": "d2ebdd7db2c63a01edd0c56e15195223598d05fb2c4d6801397a85b0bcfda603",
+  "prepared_at": "2026-09-04T03:56:25.158Z",
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "preparation_hash": "aa18ca083c6b9ac11f6d0bd65242df1f347b5e295237f8259440fada6b283961"
+}
