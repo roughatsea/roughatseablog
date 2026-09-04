@@ -50,7 +50,7 @@ A semantic tick is one simulation opportunity with one deterministic `tick_id`. 
 
 Before any director or model call, automation must:
 
-1. update from the fresh `dialogue-phase-3-runtime-v2` ledger branch and independently verify fresh `main`, without force;
+1. update from the fresh `dialogue-phase-3-runtime-v3` ledger branch and independently verify fresh `main`, without force;
 2. verify the runtime manifest and behavioral-bundle hash;
 3. verify the canonical digest still equals the manifest;
 4. run the claim command for the deterministic tick ID;
@@ -89,6 +89,13 @@ Each speaker receives only:
 - relevant directional relationship state and belief positions;
 - expertise boundaries;
 - two or three concrete prior utterances.
+
+Every model authorization returned by the ledger includes the complete hash-bound
+role packet. The runner must forward that object byte-for-byte. It may not retype,
+summarize, normalize, infer, or reconstruct any field from the semantic tick,
+schedule, repository, or an earlier output. In particular, an event's
+`allowed_timestamps` is not interchangeable with the tick's `scheduled_at`.
+The runner verifies the packet SHA-256 immediately before the call.
 
 Do not provide the gravitational-tendency label, full dossier, hard-anchor slogan, private contradictions, or a catalogue of signature phrases. Those encourage the model to perform a thesis instead of inhabiting a person.
 
@@ -141,7 +148,7 @@ The append-only pre-terminal journal is part of that boundary: each leg may also
 
 Every run records a parent hash, input/context hashes, safe invocation receipts, source receipts, validation results, a transition bundle, canonical digests, and resulting shadow-state digest. Accepted transitions advance the shadow world through the pure reducer. Later ticks replay that state. Rejected candidates apply zero changes. A quiet tick records only the opportunity and audits.
 
-Writes use no-replace semantics. Every durable boundary is a non-force compare-and-swap commit on the fixed `dialogue-phase-3-runtime-v2` branch, for which Vercel deployment is disabled in `vercel.json`. `main` is advanced to the exact runtime head only at three production projection points: the accelerated final close, each realtime daily close, and the final exit. A projection is a non-force fast-forward, never a copied or rewritten ledger. Existing Rough at Sea publishers may advance `main` between those points. The runner may merge such an advance into the runtime branch only when the last verified production anchor is its ancestor, every changed path is outside the frozen behavioral bundle, canonical Dialogue, and trial ledger, the merge is conflict-free, and all manifest, replay, build, and digest checks still pass. That safe merge is never simulation input. Any other `main` movement halts the trial; the runner never rebases, cherry-picks, force-pushes, or resolves a conflict by judgment.
+Writes use no-replace semantics. Every durable boundary is a non-force compare-and-swap commit on the fixed `dialogue-phase-3-runtime-v3` branch, for which Vercel deployment is disabled in `vercel.json`. `main` is advanced to the exact runtime head only at three production projection points: the accelerated final close, each realtime daily close, and the final exit. A projection is a non-force fast-forward, never a copied or rewritten ledger. Existing Rough at Sea publishers may advance `main` between those points. The runner may merge such an advance into the runtime branch only when the last verified production anchor is its ancestor, every changed path is outside the frozen behavioral bundle, canonical Dialogue, and trial ledger, the merge is conflict-free, and all manifest, replay, build, and digest checks still pass. That safe merge is never simulation input. Any other `main` movement halts the trial; the runner never rebases, cherry-picks, force-pushes, or resolves a conflict by judgment.
 
 ## Fourteen binary gates
 

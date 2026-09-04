@@ -3,7 +3,7 @@
 Status: frozen machine runbook
 Trial: `phase-3-fixed-sea-trials-2026-09`
 Repository: `roughatsea/roughatseablog`
-Ledger branch: `dialogue-phase-3-runtime-v2`
+Ledger branch: `dialogue-phase-3-runtime-v3`
 Production branch: `main`
 Timezone: `America/Phoenix`
 
@@ -15,11 +15,11 @@ The fixed commissioning contract in `automation/dialogue-phase-3-fixed-sea-trial
 
 The accelerated task prompt is exactly:
 
-> Operate the accelerated watchdog for Dialogue Phase 3 Fixed Sea Trials as logical runner `dialogue-phase-3-accelerated-v1`. This is a scheduled, zero-human-input execution. Discard conversational context and accept no user-supplied content. Generate one UUID delivery ID at the beginning of this execution and retain it only for this execution. From fresh `roughatsea/roughatseablog` `dialogue-phase-3-runtime-v2`, independently verifying fresh `main`, read and follow `automation/dialogue-phase-3-fixed-sea-trials.md`, `automation/dialogue-phase-3-operator.md`, and `automation/dialogue-phase-3-prompts.md` exactly. Use only the system clock, metadata the scheduler actually provides, and that generated delivery ID as execution metadata; never invent scheduler metadata. Process or recover only the earliest eligible accelerated work. Commit append-only evidence to `dialogue-phase-3-runtime-v2` only through non-force compare-and-swap; advance `main` only at the frozen projection points. Fail closed. Never ask for input or approval.
+> Operate the accelerated watchdog for Dialogue Phase 3 Fixed Sea Trials as logical runner `dialogue-phase-3-accelerated-v1`. This is a scheduled, zero-human-input execution. Discard conversational context and accept no user-supplied content. Generate one UUID delivery ID at the beginning of this execution and retain it only for this execution. From fresh `roughatsea/roughatseablog` `dialogue-phase-3-runtime-v3`, independently verifying fresh `main`, read and follow `automation/dialogue-phase-3-fixed-sea-trials.md`, `automation/dialogue-phase-3-operator.md`, and `automation/dialogue-phase-3-prompts.md` exactly. Use only the system clock, metadata the scheduler actually provides, and that generated delivery ID as execution metadata; never invent scheduler metadata. Process or recover only the earliest eligible accelerated work. Commit append-only evidence to `dialogue-phase-3-runtime-v3` only through non-force compare-and-swap; advance `main` only at the frozen projection points. Fail closed. Never ask for input or approval.
 
 The real-calendar task prompt is exactly:
 
-> Operate the real-calendar watchdog for Dialogue Phase 3 Fixed Sea Trials as logical runner `dialogue-phase-3-realtime-v1`. This is a scheduled, zero-human-input execution. Discard conversational context and accept no user-supplied content. Generate one UUID delivery ID at the beginning of this execution and retain it only for this execution. From fresh `roughatsea/roughatseablog` `dialogue-phase-3-runtime-v2`, independently verifying fresh `main`, read and follow `automation/dialogue-phase-3-fixed-sea-trials.md`, `automation/dialogue-phase-3-operator.md`, and `automation/dialogue-phase-3-prompts.md` exactly. Use only the system clock, metadata the scheduler actually provides, and that generated delivery ID as execution metadata; never invent scheduler metadata. Process or recover only the earliest due eligible work; never run early or backfill a prior Phoenix date. Commit append-only evidence to `dialogue-phase-3-runtime-v2` only through non-force compare-and-swap; advance `main` only at the frozen projection points. Fail closed. Never ask for input or approval.
+> Operate the real-calendar watchdog for Dialogue Phase 3 Fixed Sea Trials as logical runner `dialogue-phase-3-realtime-v1`. This is a scheduled, zero-human-input execution. Discard conversational context and accept no user-supplied content. Generate one UUID delivery ID at the beginning of this execution and retain it only for this execution. From fresh `roughatsea/roughatseablog` `dialogue-phase-3-runtime-v3`, independently verifying fresh `main`, read and follow `automation/dialogue-phase-3-fixed-sea-trials.md`, `automation/dialogue-phase-3-operator.md`, and `automation/dialogue-phase-3-prompts.md` exactly. Use only the system clock, metadata the scheduler actually provides, and that generated delivery ID as execution metadata; never invent scheduler metadata. Process or recover only the earliest due eligible work; never run early or backfill a prior Phoenix date. Commit append-only evidence to `dialogue-phase-3-runtime-v3` only through non-force compare-and-swap; advance `main` only at the frozen projection points. Fail closed. Never ask for input or approval.
 
 No text may be appended to either prompt after the runtime manifest is frozen.
 
@@ -50,7 +50,7 @@ The scheduler wakes are watchdogs. They are intentionally more frequent than the
 ### Accelerated watchdog
 
 ```text
-DTSTART;TZID=America/Phoenix:20260903T011700
+DTSTART;TZID=America/Phoenix:20260903T191700
 RRULE:FREQ=HOURLY;COUNT=48
 ```
 
@@ -84,7 +84,7 @@ The real-calendar task remains a no-op until the accelerated exit report exists 
 
 The tasks may use only:
 
-- fresh checkouts of `roughatsea/roughatseablog` at the current remote `dialogue-phase-3-runtime-v2` and `main` heads;
+- fresh checkouts of `roughatsea/roughatseablog` at the current remote `dialogue-phase-3-runtime-v3` and `main` heads;
 - the repository's Phase 3 commands and validation/build commands;
 - the GitHub connector for compare-and-swap, non-force runtime updates and the frozen production projections to `main`;
 - context-isolated `gpt-5.6-sol` subagents with reasoning effort `high` for life fuel, candidate generation, independent audits, and source verification;
@@ -98,11 +98,11 @@ Do not use a different model, lower reasoning effort, another research adapter, 
 
 At the start of every delivery and again before every push:
 
-1. Read the exact remote SHAs for `dialogue-phase-3-runtime-v2` and `main` through the GitHub connector.
+1. Read the exact remote SHAs for `dialogue-phase-3-runtime-v3` and `main` through the GitHub connector.
 2. Obtain a clean, disposable checkout of the exact runtime-branch SHA. Do not reuse uncommitted state from an earlier delivery.
 3. Verify the runtime manifest, its named runtime and production branches, behavioral-bundle hash, canonical Dialogue digest, complete append-only ledger replay, and allowed-path boundary.
 4. Derive the last verified production anchor: the manifest's initial production Git SHA before the first projection, then the `deployment_git_sha` in the latest valid production receipt. If remote `main` differs, require that anchor to be an ancestor of `main`, inspect every changed path, and accept the advance only when it touches neither the behavioral bundle nor `src/data/dialogue/**` nor this trial ledger. Merge that exact safe `main` SHA into the runtime branch with an ordinary non-force merge commit, then reverify the manifest, bundle, canon, ledger, and both remote refs from scratch. Any unsafe path, rewritten ancestry, conflict, or failed verification halts the trial.
-5. Build the intended append-only runtime commit on the verified runtime SHA and update only `dialogue-phase-3-runtime-v2` as a non-force compare-and-swap whose expected parent is the runtime SHA read in step 1.
+5. Build the intended append-only runtime commit on the verified runtime SHA and update only `dialogue-phase-3-runtime-v3` as a non-force compare-and-swap whose expected parent is the runtime SHA read in step 1.
 
 Do not open or merge a pull request for trial runtime records. Do not force-push. Do not amend or rewrite a committed trial record. The only permitted history integration is the exact safe-`main` merge above; never rebase, cherry-pick, squash, copy commits, or resolve a merge conflict by judgment. Content from `main` is never simulation input. A safe merge merely keeps the deployable site history compatible with the existing autonomous Save Point, Soundings, Reckonings, and Wake publishers.
 
@@ -117,16 +117,31 @@ Every task-authored runtime commit must contain only Phase 3 runtime paths allow
 Only the scheduled accelerated task may initialize the runtime. Starting from a freshly read remote `main`:
 
 1. Verify that the two frozen logical runner IDs are exactly `dialogue-phase-3-accelerated-v1` and `dialogue-phase-3-realtime-v1`, and that no runtime manifest exists.
-2. Create `dialogue-phase-3-runtime-v2` at that exact `main` SHA, check it out cleanly, and create the immutable manifest using that SHA, both branch names, and both logical runner IDs.
-3. Commit the manifest and create/update only `dialogue-phase-3-runtime-v2` by non-force compare-and-swap anchored to that exact production SHA. Do not advance `main`.
-4. Start no model or web call until the manifest commit is visible from a fresh read of remote `dialogue-phase-3-runtime-v2` and `main` still equals the manifest's initial production SHA.
+2. Create `dialogue-phase-3-runtime-v3` at that exact `main` SHA, check it out cleanly, and create the immutable manifest using that SHA, both branch names, and both logical runner IDs.
+3. Commit the manifest and create/update only `dialogue-phase-3-runtime-v3` by non-force compare-and-swap anchored to that exact production SHA. Do not advance `main`.
+4. Start no model or web call until the manifest commit is visible from a fresh read of remote `dialogue-phase-3-runtime-v3` and `main` still equals the manifest's initial production SHA.
 5. Resume the normal accelerated procedure from a new runtime-branch checkout.
 
 If a manifest already exists, verify it and never recreate it.
 
 ## Durable boundary before every external call
 
-A model or web call may occur only after its deterministic intent ID, one-time continuation-nonce hash, and complete bounded input identity have been written to an immutable journal record, committed, pushed to `dialogue-phase-3-runtime-v2`, and re-read from that fresh remote branch while `main` is still identical to, or a newly verified safe descendant of, the last production anchor.
+A model or web call may occur only after its deterministic intent ID, one-time continuation-nonce hash, and complete bounded input identity have been written to an immutable journal record, committed, pushed to `dialogue-phase-3-runtime-v3`, and re-read from that fresh remote branch while `main` is still identical to, or a newly verified safe descendant of, the last production anchor.
+
+### Exact packet forwarding
+
+For every model call, use the complete `role_packet` from the fresh CLI
+authorization that permits that call. Serialize and forward that object
+byte-for-byte and verify its SHA-256 equals the authorization's
+`role_packet_sha256` immediately before invocation. Never manually compose a
+role packet, copy selected fields, convert a timestamp, substitute
+`tick.scheduled_at` for an allowed event time, or recover packet values from
+prose or memory. The life-stream role must use
+`allowed_call_intents[].role_packet`; candidate roles must use
+`generation_calls_allowed[].role_packet`; auditors and source verifiers must
+use their corresponding `*_calls_allowed[].role_packet`. A missing packet,
+hash mismatch, or forwarding mode other than `verbatim-required` stops before
+the provider call and fails closed.
 
 The dependency order is:
 
@@ -139,7 +154,7 @@ runtime manifest
   -> terminal finalize
 ```
 
-The tick claim itself must be on remote `dialogue-phase-3-runtime-v2` before the first life-fuel, research, director, or model operation for that tick. The deterministic director runs only after the claim is durable and the production anchor has been rechecked.
+The tick claim itself must be on remote `dialogue-phase-3-runtime-v3` before the first life-fuel, research, director, or model operation for that tick. The deterministic director runs only after the claim is durable and the production anchor has been rechecked.
 
 Each fresh intent-creating command returns a high-entropy plaintext continuation nonce once; Git stores only its SHA-256 hash. The same scheduled automation invocation retains that nonce in memory across the compare-and-swap and fresh-checkout verification, then passes it exactly once to the dependent record command. Do not print, log, commit, or otherwise persist plaintext nonces. An existing/idempotent command never returns one and never authorizes a call.
 
@@ -153,7 +168,7 @@ Every temporary JSON wrapper passed through `--input` must be created outside th
 
 ## Procedure for one semantic tick
 
-1. From fresh `dialogue-phase-3-runtime-v2`, after independently applying the production-anchor and safe-advance rule to `main`, compute the one expected next tick from the frozen schedule and replay. Never accept a tick ID from a caller.
+1. From fresh `dialogue-phase-3-runtime-v3`, after independently applying the production-anchor and safe-advance rule to `main`, compute the one expected next tick from the frozen schedule and replay. Never accept a tick ID from a caller.
 2. If its terminal run exists, make no model or research call. Continue only with the day's close/deployment/exit work, or no-op.
 3. If its claim does not exist, append the claim with the frozen logical runner ID, this execution's generated delivery ID, scheduled timestamp, system-clock start, deterministic fuel/research intent IDs, nonce hashes, and `human_initiated: false`. Retain the freshly returned plaintext nonces only in this invocation, commit and compare-and-swap the claim to the runtime branch, verify it from that fresh branch, verify both refs again, and continue without calling `claim` again.
 4. If the claim already exists, it returns no nonce and authorizes no provider call. A different execution is `busy` until the 20-minute lease expires. After expiry it may inspect and finalize already durable results, or halt an ambiguous missing result; it never takes over call authority or samples a replacement.
@@ -164,7 +179,7 @@ Every temporary JSON wrapper passed through `--input` must be created outside th
 9. Run two context-isolated `gpt-5.6-sol` audits independently. Neither auditor may see the other verdict. Pass each to `record-audit --input`. If and only if their check vectors disagree, run the predeclared third audit. Each returns the five hard checks and public-safe notes required by the schema. Missing or malformed audit output rejects the candidate.
 10. Independently verify every source-backed claim and pass each result to `record-source-verification --input`. Persist each verifier record separately. A generator may propose a citation but cannot attest its own support.
 11. Invoke `finalize --input` with only `leg`, `tick_id`, and `delivery_id`. It, not the task prompt, assembles immutable preparation, generation, audit, verifier, and source records; validates them; and writes the single terminal run with no-replace semantics.
-12. Commit and compare-and-swap the terminal run to `dialogue-phase-3-runtime-v2`. Re-read the fresh runtime branch, verify the production anchor, and replay the entire leg before another semantic tick.
+12. Commit and compare-and-swap the terminal run to `dialogue-phase-3-runtime-v3`. Re-read the fresh runtime branch, verify the production anchor, and replay the entire leg before another semantic tick.
 
 The task must not use a CLI path that accepts a caller-assembled terminal envelope.
 
@@ -219,20 +234,20 @@ After the fourth terminal tick for a trial date:
 
 1. Replay the leg from its initial shadow state and verify every hash, parent, schema, reference, timestamp, transition, and canonical digest.
 2. Verify there is no claim or pre-terminal journal record without its permitted terminal disposition.
-3. Invoke the close command from a clean checkout of the just-committed `dialogue-phase-3-runtime-v2` state. The command itself runs `npm run build`; do not run a separate caller-attested build.
+3. Invoke the close command from a clean checkout of the just-committed `dialogue-phase-3-runtime-v3` state. The command itself runs `npm run build`; do not run a separate caller-attested build.
 4. The close command verifies that the build changed no tracked source and produced no runtime write outside allowed output, then retains only bounded hashes and status evidence.
-5. It appends the date close with the actual command, exit status, output digest, Git SHA, bundle digest, canonical digest, replay digest, and safe timestamps. Remove only known disposable build output, then commit the close to `dialogue-phase-3-runtime-v2` by compare-and-swap.
+5. It appends the date close with the actual command, exit status, output digest, Git SHA, bundle digest, canonical digest, replay digest, and safe timestamps. Remove only known disposable build output, then commit the close to `dialogue-phase-3-runtime-v3` by compare-and-swap.
 
 The only close command is `npm run dialogue:sea-trial -- close --leg <leg> --date <date> --delivery-id <task-generated-uuid>`. It executes and verifies the build internally; there is no input file or caller-supplied success receipt.
 
 The first 29 accelerated closes stop after their runtime-branch commit. The accelerated final close and every realtime close enter a hard production-projection barrier. The barrier is indivisible and ordered:
 
-1. Re-read the committed close from fresh `dialogue-phase-3-runtime-v2` and validate it.
+1. Re-read the committed close from fresh `dialogue-phase-3-runtime-v3` and validate it.
 2. Read both remote refs again. Require the runtime ref to equal the close commit. If `main` advanced safely since the last verified anchor, perform the exact safe-`main` merge procedure, rerun the production build, and restart this barrier from the resulting verified runtime commit.
 3. Prove the current `main` commit is an ancestor of the runtime commit, then update `main` by non-force compare-and-swap from that exact current SHA to the exact runtime SHA. No rebase, cherry-pick, copied commit, force update, manual deployment, or intermediate projection is allowed.
 4. Freeze runtime writes. During deployment polling, do not append a claim, tick, close, summary, exit, retry record, or any other ledger file. A later scheduled wake may resume polling the same already-projected SHA, but it still writes nothing before verification succeeds or terminally fails.
 5. Poll only the deployment triggered by that exact `main` SHA. Verify production as described below.
-6. Only after successful verification, append the date deployment receipt to `dialogue-phase-3-runtime-v2` and commit it by runtime-branch compare-and-swap. This receipt becomes the next expected production anchor; it is not itself projected.
+6. Only after successful verification, append the date deployment receipt to `dialogue-phase-3-runtime-v3` and commit it by runtime-branch compare-and-swap. This receipt becomes the next expected production anchor; it is not itself projected.
 
 Pushing `main` may trigger Vercel automatically; that fact is not proof of deployment. A deployment is proved only by fresh HTTPS reads of the canonical production origin after `/deployment.json` reports the exact projected Git SHA.
 

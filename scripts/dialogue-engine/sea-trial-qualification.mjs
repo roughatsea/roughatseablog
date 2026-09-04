@@ -26,6 +26,7 @@ export const REQUIRED_QUALIFICATION_CASES = Object.freeze({
   frozen_manifest: /^runtime freezes canon, shadow base, stack, schedule, and behavior bundle once$/,
   recomputed_final_exit: /^final exit rejects forged passing leg reports and recomputes the ledger$/,
   preflight_claim: /^a semantic tick must be claimed before generation is recorded$/,
+  exact_packet_forwarding: /^every model authorization exposes the exact hash-bound role packet without reconstruction$/,
   automation_owned_journal: /^automation-owned journals bind intent before calls and finalize without a caller-authored envelope$/,
   orphaned_intent_halt: /^an orphaned durable intent never reauthorizes a model call and can only halt the leg$/,
   preparation_interruption: /^journal-boundary interruptions expose immutable results but never reveal a fresh continuation$/,

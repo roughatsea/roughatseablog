@@ -634,7 +634,7 @@ test('runtime freezes canon, shadow base, stack, schedule, and behavior bundle o
   assert.equal(manifest.schedules.accelerated.length, 120);
   assert.equal(manifest.schedules.realtime.length, 28);
   assert.equal(manifest.canonical_digest.digest, canonicalDigest().digest);
-  assert.equal(manifest.git_transport.runtime_branch, 'dialogue-phase-3-runtime-v2');
+  assert.equal(manifest.git_transport.runtime_branch, 'dialogue-phase-3-runtime-v3');
   assert.equal(manifest.git_transport.production_branch, 'main');
   assert.equal(manifest.git_transport.initial_production_git_sha, gitSha);
   assert.throws(() => createRuntimeManifest({ gitSha: 'b'.repeat(40), root, unsafeTestRoot: true }), /different content/);
@@ -681,6 +681,40 @@ test('a semantic tick must be claimed before generation is recorded', () => {
   const envelope = envelopeFor(root);
   assert.throws(() => recordTick({ envelope, root, unsafeTestRoot: true }), /claimed before/);
   assert.equal(replayLeg({ leg: 'accelerated', root, unsafeTestRoot: true }).records.length, 0);
+});
+
+test('every model authorization exposes the exact hash-bound role packet without reconstruction', () => {
+  const root = setupTrial();
+  const template = envelopeFor(root, { candidates: [validCandidate({ id: 'packet-forwarding' })] });
+  const claimed = claimEnvelope(root, template, '2026-09-02T20:00:10.000Z');
+  const [lifeIntent, researchIntent] = claimed.allowed_call_intents;
+  assert.equal(lifeIntent.role_packet_forwarding, 'verbatim-required');
+  assert.deepEqual(lifeIntent.role_packet, claimed.claim.call_intents.life_stream.role_packet);
+  assert.equal(sha256(lifeIntent.role_packet), lifeIntent.role_packet_sha256);
+  assert.equal(
+    lifeIntent.role_packet.allowed_timestamps[0],
+    new Date(Date.parse(lifeIntent.role_packet.tick.scheduled_at) - 60_000).toISOString(),
+  );
+  assert.notEqual(lifeIntent.role_packet.allowed_timestamps[0], lifeIntent.role_packet.tick.scheduled_at);
+  assert.equal(researchIntent.request_forwarding, 'verbatim-required');
+  assert.deepEqual(researchIntent.request, claimed.claim.call_intents.research.request);
+  assert.equal(sha256(researchIntent.request), researchIntent.request_sha256);
+
+  const prepared = prepareTick({
+    leg: template.leg,
+    tickId: template.tick_id,
+    deliveryId: template.delivery_id,
+    continuationNonce: lifeIntent.continuation_nonce,
+    fuel: template.fuel,
+    fuelProvider: fuelProviderFor(claimed),
+    root,
+    unsafeTestRoot: true,
+  });
+  prepared.generation_calls_allowed.forEach((intent) => {
+    assert.equal(intent.role_packet_forwarding, 'verbatim-required');
+    assert.deepEqual(intent.role_packet, prepared.preparation.speaker_packets[intent.speaker_packet_index]);
+    assert.equal(sha256(intent.role_packet), intent.role_packet_sha256);
+  });
 });
 
 test('automation-owned journals bind intent before calls and finalize without a caller-authored envelope', () => {

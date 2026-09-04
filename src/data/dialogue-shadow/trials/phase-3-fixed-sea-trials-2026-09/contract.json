@@ -19,12 +19,12 @@
     "realtime": "dialogue-phase-3-realtime-v1"
   },
   "versions": {
-    "contract": "3.0.0",
-    "scheduler": "3.0.0",
-    "validator": "3.0.0",
-    "reducer": "3.0.0",
-    "transaction": "3.0.0",
-    "schema": "3.0.0"
+    "contract": "3.0.1",
+    "scheduler": "3.0.1",
+    "validator": "3.0.1",
+    "reducer": "3.0.1",
+    "transaction": "3.0.1",
+    "schema": "3.0.1"
   },
   "slots": ["01:17", "07:17", "13:17", "19:17"],
   "legs": {
@@ -85,7 +85,7 @@
   "build_command": "npm run build",
   "deployment_target": "roughatsea-vercel-production",
   "git_transport": {
-    "runtime_branch": "dialogue-phase-3-runtime-v2",
+    "runtime_branch": "dialogue-phase-3-runtime-v3",
     "production_branch": "main",
     "runtime_branch_deployments_enabled": false,
     "production_projection_points": [

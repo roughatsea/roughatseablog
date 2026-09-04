@@ -325,7 +325,7 @@ export function createRuntimeManifest({ gitSha, createdAt = new Date().toISOStri
   const initialWorld = initialShadowWorld();
   const manifest = {
     trial_id: contract.trial_id,
-    manifest_version: '3.0.0',
+    manifest_version: '3.0.1',
     immutable: true,
     canonical_status: 'NON-CANON',
     created_at: createdAt,
@@ -546,8 +546,16 @@ export function claimTick({ leg, tickId, deliveryId, claimedAt = new Date().toIS
     storage,
     model_calls_allowed: true,
     allowed_call_intents: [
-      { ...claim.call_intents.life_stream, continuation_nonce: lifeContinuationNonce },
-      { ...claim.call_intents.research, continuation_nonce: researchContinuationNonce },
+      {
+        ...claim.call_intents.life_stream,
+        role_packet_forwarding: 'verbatim-required',
+        continuation_nonce: lifeContinuationNonce,
+      },
+      {
+        ...claim.call_intents.research,
+        request_forwarding: 'verbatim-required',
+        continuation_nonce: researchContinuationNonce,
+      },
     ],
   };
 }
@@ -881,7 +889,12 @@ export function prepareTick({ leg, tickId, deliveryId, continuationNonce, resear
   return {
     preparation,
     storage,
-    generation_calls_allowed: storage.idempotent ? [] : generationIntents.map((intent, index) => ({ ...intent, continuation_nonce: generationContinuations[index] })),
+    generation_calls_allowed: storage.idempotent ? [] : generationIntents.map((intent, index) => ({
+      ...intent,
+      role_packet: structuredClone(prepared.speaker_packets[index]),
+      role_packet_forwarding: 'verbatim-required',
+      continuation_nonce: generationContinuations[index],
+    })),
     model_calls_allowed: !storage.idempotent && generationIntents.length > 0,
   };
 }
@@ -1095,11 +1108,13 @@ export function recordGeneration({ leg, tickId, deliveryId, intentId, continuati
     audit_calls_allowed: auditEntries.map(({ intent: auditIntent, rolePacket }) => ({
       ...auditIntent,
       role_packet: rolePacket,
+      role_packet_forwarding: 'verbatim-required',
       continuation_nonce: auditContinuationNonces[auditIntent.intent_id],
     })),
     source_verification_calls_allowed: verificationEntries.map(({ intent: verificationIntent, rolePacket }) => ({
       ...verificationIntent,
       role_packet: rolePacket,
+      role_packet_forwarding: 'verbatim-required',
       continuation_nonce: verificationContinuationNonces[verificationIntent.intent_id],
     })),
     model_calls_allowed: true,

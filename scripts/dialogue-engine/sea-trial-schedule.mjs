@@ -64,7 +64,7 @@ export function validateFixedSchedule(contract) {
     throw new Error('Phase 3 must expose neither publication nor manual override.');
   }
   const transport = contract.git_transport;
-  if (transport?.runtime_branch !== 'dialogue-phase-3-runtime-v2' || transport?.production_branch !== 'main'
+  if (transport?.runtime_branch !== 'dialogue-phase-3-runtime-v3' || transport?.production_branch !== 'main'
     || transport?.runtime_branch_deployments_enabled !== false
     || JSON.stringify(transport?.production_projection_points) !== JSON.stringify([
       'accelerated-final-close',
