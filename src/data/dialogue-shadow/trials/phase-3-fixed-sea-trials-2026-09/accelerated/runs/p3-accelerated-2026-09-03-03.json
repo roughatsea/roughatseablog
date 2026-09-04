@@ -1,0 +1,113 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-03",
+  "tick_index": 3,
+  "scheduled_at": "2026-09-03T13:17:00-07:00",
+  "started_at": "2026-09-03T13:17:00-07:00",
+  "completed_at": "2026-09-03T20:17:01.000Z",
+  "status": "terminal",
+  "outcome": "quiet",
+  "canonical_status": "NON-CANON",
+  "input_digest": "9a1c7e695106abe1b2c5c807767e285a7c24aa68a8b408ab7468442d6b035790",
+  "envelope_receipt": {
+    "trial_id": "phase-3-fixed-sea-trials-2026-09",
+    "leg": "accelerated",
+    "tick_id": "p3-accelerated-2026-09-03-03",
+    "scheduled_at": "2026-09-03T13:17:00-07:00",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "started_at": "2026-09-03T13:17:00-07:00",
+    "completed_at": "2026-09-03T20:17:01.000Z",
+    "automation": {
+      "runner_id": "dialogue-phase-3-accelerated-v1",
+      "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+      "execution_kind": "codex-scheduled-task",
+      "scheduled_trigger": true,
+      "human_initiated": false
+    },
+    "context": {
+      "state_digest": "100401db3b8b67090b6cc857a60936aa3cdff67c4d5b83e0bc64b469dbb8147b",
+      "context_digest": "b9454aa46d80a23842805f8c71e94a6d27e127b9c25dca519f801ef4a803b1e8",
+      "human_input_sources": [],
+      "retrieved_message_ids": [],
+      "speaker_context_receipts": []
+    },
+    "provider": {
+      "stack": "phase-3-production-v1",
+      "recorded_provider_used": false,
+      "benchmark_fixture_used": false,
+      "raw_model_reasoning_stored": false
+    },
+    "director": {
+      "decision": "quiet",
+      "model": "deterministic-opportunity-director-v3",
+      "speaker_ids": [],
+      "triggers": [],
+      "opportunity_only": true,
+      "required_participation": false,
+      "assigned_conclusions": false,
+      "assigned_emotions": false,
+      "decision_hash": "ce3aae5e3f12fb88e2c1434d47aa22d60786affdb0d8b1f00437a43e857a2746"
+    },
+    "fuel": {
+      "life_events": [],
+      "artifacts": [],
+      "sources": []
+    },
+    "candidates": []
+  },
+  "claim_hash": "992285d52f63bc407515cef3f192df7ebc9862485b24fab7f67d9c4be925357d",
+  "parent_run_hash": "d2ebdd7db2c63a01edd0c56e15195223598d05fb2c4d6801397a85b0bcfda603",
+  "context_receipt": {
+    "state_digest": "100401db3b8b67090b6cc857a60936aa3cdff67c4d5b83e0bc64b469dbb8147b",
+    "context_digest": "b9454aa46d80a23842805f8c71e94a6d27e127b9c25dca519f801ef4a803b1e8",
+    "human_input_sources": [],
+    "retrieved_message_ids": [],
+    "speaker_context_receipts": []
+  },
+  "provider_receipt": {
+    "stack": "phase-3-production-v1",
+    "recorded_provider_used": false,
+    "benchmark_fixture_used": false,
+    "raw_model_reasoning_stored": false
+  },
+  "director": {
+    "decision": "quiet",
+    "model": "deterministic-opportunity-director-v3",
+    "speaker_ids": [],
+    "triggers": [],
+    "opportunity_only": true,
+    "required_participation": false,
+    "assigned_conclusions": false,
+    "assigned_emotions": false,
+    "decision_hash": "ce3aae5e3f12fb88e2c1434d47aa22d60786affdb0d8b1f00437a43e857a2746"
+  },
+  "source_receipts": [],
+  "candidates": [],
+  "summary": {
+    "generated": 0,
+    "passed": 0,
+    "rejected": 0,
+    "transitions": 0
+  },
+  "transition_bundle": {
+    "life_events": [],
+    "artifacts": [],
+    "sources": [],
+    "messages": [],
+    "state_changes": []
+  },
+  "shadow_state_digest_before": "100401db3b8b67090b6cc857a60936aa3cdff67c4d5b83e0bc64b469dbb8147b",
+  "shadow_state_digest_after": "4588e619a1be61186ae3974279672832178901816e237d24092e1e1e7f776554",
+  "canonical_mutation_guard": {
+    "algorithm": "sha256",
+    "digest_before": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "digest_after": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "changed_files": [],
+    "passed": true
+  },
+  "human_input_sources": [],
+  "publication_enabled": false,
+  "raw_model_reasoning_stored": false,
+  "run_hash": "9d4032fd6ed6268886df763852647ba7fb910146d047c0186cc9fe250470a2ca"
+}
