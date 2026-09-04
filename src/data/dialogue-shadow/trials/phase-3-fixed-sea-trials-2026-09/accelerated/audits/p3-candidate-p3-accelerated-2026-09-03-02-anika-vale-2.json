@@ -1,0 +1,75 @@
+{
+  "trial_id": "phase-3-fixed-sea-trials-2026-09",
+  "leg": "accelerated",
+  "tick_id": "p3-accelerated-2026-09-03-02",
+  "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+  "automation": {
+    "runner_id": "dialogue-phase-3-accelerated-v1",
+    "delivery_id": "e2a7ac87-b6b9-435b-8219-cf8f932c5c6c",
+    "execution_kind": "codex-scheduled-task",
+    "scheduled_trigger": true,
+    "human_initiated": false
+  },
+  "generation_hash": "92a121f5c05b397f7d01e33c29c2f86c16c7af1f3c7b310170a56c3e8e5e7608",
+  "call_intent": {
+    "intent_id": "intent-audit-0385e18f6c5684d456adec4e",
+    "role": "independent-quality-audit",
+    "prompt_version": "phase-3-audit-v1",
+    "prompt_file_sha256": "2cb9e9b4d0c652793eb3f9f5654be926c8fc7cfe24737541d8bcd07cba51d42b",
+    "provider": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "context_isolated": true,
+    "evaluator_id": "audit-evaluator-82c34dd33bd03324129f240e",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-02-anika-vale",
+    "audit_index": 2,
+    "conditional": false,
+    "candidate_output_sha256": "f67a465be2ae84ba5974a0d72dba46b378dd88b0661e6ddb126e602e755c427f",
+    "context_hash": "723608209eb1b365447c3886903b131aa304900ba7cf59ba2fb2bb901620ae0d",
+    "role_packet_sha256": "c694bca95e665af2a3fee4f48f459876eef71d6599116eccd61218ad56936ca0"
+  },
+  "audit": {
+    "intent_id": "intent-audit-0385e18f6c5684d456adec4e",
+    "audit_id": "audit-p3-candidate-p3-accelerated-2026-09-03-02-anika-vale-2",
+    "candidate_id": "p3-candidate-p3-accelerated-2026-09-03-02-anika-vale",
+    "evaluator_id": "audit-evaluator-82c34dd33bd03324129f240e",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "live_model": true,
+    "context_isolated": true,
+    "invocation_id": "agent:/root/p3_audit_002a2",
+    "completed_at": "2026-09-03T14:19:40.000Z",
+    "wall_completed_at": "2026-09-04T03:50:50.622Z",
+    "candidate_text_sha256": "b36c18391b340222ab86b398b4df2d0c70b722b8ab55f00377174dd44e658e97",
+    "context_hash": "723608209eb1b365447c3886903b131aa304900ba7cf59ba2fb2bb901620ae0d",
+    "generation_invocation_id": "agent:/root/p3_candidate_002a",
+    "trigger_id": "trigger-p3-accelerated-2026-09-03-02-953e76b6e2",
+    "audit_prompt_version": "phase-3-audit-v1",
+    "checks": {
+      "concrete_detail_material": {
+        "pass": true,
+        "note": "The shutdown count narrows the roster search to the relevant incidents."
+      },
+      "conversational_act_real": {
+        "pass": true,
+        "note": "It directly asks for evidence that could identify the night-shift workers."
+      },
+      "ordinary_message_not_essay": {
+        "pass": true,
+        "note": "This is a concise, natural question between peers."
+      },
+      "personality_implicit": {
+        "pass": true,
+        "note": "Archival instincts appear through the search for surviving rosters."
+      },
+      "history_expertise_continuity": {
+        "pass": true,
+        "note": "The question is honestly nonfactual and follows the operator-identification thread."
+      }
+    },
+    "raw_model_reasoning_stored": false
+  },
+  "canonical_status": "NON-CANON",
+  "human_input_sources": [],
+  "raw_model_reasoning_stored": false,
+  "audit_hash": "5b3569b127128d2ae2ae0550954ef04443875647445c7dfa0f1b7aab8205a23f"
+}
