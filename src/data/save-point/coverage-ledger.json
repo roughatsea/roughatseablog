@@ -658,6 +658,120 @@
           "accessedAt": "2026-09-04"
         }
       ]
+    },
+    {
+      "editionId": "2026-09-05",
+      "publicationDate": "2026-09-05",
+      "publishedAt": "2026-09-05T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-05",
+      "heroImage": "/images/save-point/save-point-2026-09-05.webp",
+      "featureLane": "beyond-final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy IV had to invent time to think",
+          "game": "Final Fantasy IV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Battle-system development only; no story outcomes",
+          "subjectKeys": [
+            "final-fantasy-iv-atb-waiting-time",
+            "final-fantasy-iv-command-delays",
+            "final-fantasy-iv-reactive-enemy-counters"
+          ],
+          "sourceIds": [
+            "ff4-30th-anniversary-tokita-interview"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "A repair can become an old family routine",
+          "game": "Final Fantasy XIV",
+          "sourceType": "lore",
+          "spoilerLevel": "major",
+          "spoilerScope": "Dawntrail alliance-raid characters, Doomtrain aftermath, and the siblings' family history",
+          "subjectKeys": [
+            "ffxiv-an-old-routine-lumull-eyaney",
+            "ffxiv-matching-goggles-family-memory",
+            "ffxiv-treno-community-repair"
+          ],
+          "sourceIds": [
+            "ffxiv-tales-golden-sun-an-old-routine",
+            "ffxiv-tales-golden-sun-update-2026-09-04"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "The Judgment Ring makes a command answer to your hand",
+          "game": "Shadow Hearts",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Interface and early development discussion only; no story outcomes",
+          "subjectKeys": [
+            "shadow-hearts-judgment-ring-timing",
+            "shadow-hearts-visible-difficulty-interface",
+            "shadow-hearts-ring-shopping-lockpicking"
+          ],
+          "sourceIds": [
+            "shadow-hearts-earlybird-retrospective",
+            "shadow-hearts-machida-kato-interview"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff4-30th-anniversary-tokita-interview",
+          "title": "FINAL FANTASY IV 30th Anniversary Special Interview",
+          "creator": "Square Enix, interviewing Takashi Tokita",
+          "url": "https://na.finalfantasy.com/topics/296",
+          "publishedAt": "2021-07-19",
+          "role": "primary",
+          "lineage": "Official Square Enix anniversary interview with Final Fantasy IV lead designer and scenario writer Takashi Tokita.",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "ffxiv-tales-golden-sun-an-old-routine",
+          "title": "Tales under the Golden Sun: An Old Routine",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/special/tales_under_the_golden_sun/sidestory_06/",
+          "publishedAt": "2026-09-04",
+          "role": "primary",
+          "lineage": "Official sixth side story in the 2026 Tales under the Golden Sun series.",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "ffxiv-tales-golden-sun-update-2026-09-04",
+          "title": "Tales Under the Golden Sun Updated!",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/05f6f995c2147bc6c3f4ecc896cd56f5c4487db5",
+          "publishedAt": "2026-09-04",
+          "role": "primary",
+          "lineage": "Official Lodestone announcement identifying An Old Routine as the sixth story and warning that the series may contain main-scenario spoilers.",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "shadow-hearts-earlybird-retrospective",
+          "title": "Dark RPG That Pulls Off Humor and Tragedy | Shadow Hearts",
+          "creator": "Earlybird",
+          "url": "https://www.youtube.com/watch?v=IrUIzhQoNtE",
+          "publishedAt": "2024-02-24",
+          "role": "primary",
+          "lineage": "Original video retrospective; full English caption transcript retrieved and reviewed, including the development segment and final assessment.",
+          "videoId": "IrUIzhQoNtE",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "shadow-hearts-machida-kato-interview",
+          "title": "Shadow Hearts — Interview with Matsuzo Machida and Miyako Kato",
+          "creator": "Matsuzo Machida and Miyako Kato; English translation by Zaru_thustra",
+          "url": "https://www.zaruthustra.com/shadow-hearts-interview-with-the-creators/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "English translation of an Italian interview with the series director-writer and character designer; the English page does not state a publication date.",
+          "accessedAt": "2026-09-05"
+        }
+      ]
     }
   ]
 }
