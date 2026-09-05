@@ -1,5 +1,8 @@
 ---
 const pathname = Astro.url.pathname;
+const isWriting = pathname.startsWith('/notes/') || pathname.startsWith('/guides/') || pathname === '/content/';
+const isDaily = pathname.startsWith('/soundings/') || pathname.startsWith('/reckonings/') || pathname.startsWith('/save-point/') || pathname.startsWith('/dialogue/') || pathname.startsWith('/wake/');
+const isExplorations = pathname.startsWith('/atlas/');
 ---
 
 <header class="glass-panel">
@@ -34,13 +37,32 @@ const pathname = Astro.url.pathname;
     <div class="header-actions" id="primary-navigation-panel">
       <nav aria-label="Primary navigation">
         <a class="home-link" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
-        <a href="/dialogue/" aria-current={pathname.startsWith('/dialogue/') ? 'page' : undefined}>Dialogue</a>
-        <a href="/soundings/" aria-current={pathname.startsWith('/soundings/') ? 'page' : undefined}>Soundings</a>
-        <a href="/save-point/" aria-current={pathname.startsWith('/save-point/') ? 'page' : undefined}>Save Point</a>
-        <a href="/reckonings/" aria-current={pathname.startsWith('/reckonings/') ? 'page' : undefined}>Reckonings</a>
-        <a href="/wake/" aria-current={pathname.startsWith('/wake/') ? 'page' : undefined}>Wake</a>
-        <a href="/guides/software-engineering/" aria-current={pathname.startsWith('/guides/software-engineering/') ? 'page' : undefined}>Field Guide</a>
-        <a href="/atlas/" aria-current={pathname === '/atlas/' ? 'page' : undefined}>Atlas</a>
+
+        <details class:list={['nav-group', { 'is-current': isWriting }]}>
+          <summary>Writing</summary>
+          <div class="nav-menu">
+            <a href="/content/" aria-current={pathname === '/content/' ? 'page' : undefined}><strong>All writing</strong><span>The complete archive</span></a>
+            <a href="/guides/software-engineering/" aria-current={pathname.startsWith('/guides/software-engineering/') ? 'page' : undefined}><strong>Field Guide</strong><span>Software engineering, made legible</span></a>
+          </div>
+        </details>
+
+        <details class:list={['nav-group', { 'is-current': isDaily }]}>
+          <summary>Daily</summary>
+          <div class="nav-menu">
+            <a href="/soundings/" aria-current={pathname.startsWith('/soundings/') ? 'page' : undefined}><strong>Soundings</strong><span>Signals worth noticing</span></a>
+            <a href="/reckonings/" aria-current={pathname.startsWith('/reckonings/') ? 'page' : undefined}><strong>Reckonings</strong><span>A daily mathematical encounter</span></a>
+            <a href="/save-point/" aria-current={pathname.startsWith('/save-point/') ? 'page' : undefined}><strong>Save Point</strong><span>A daily JRPG corner</span></a>
+            <a href="/dialogue/" aria-current={pathname.startsWith('/dialogue/') ? 'page' : undefined}><strong>Dialogue</strong><span>An evolving public conversation</span></a>
+            <a href="/wake/" aria-current={pathname.startsWith('/wake/') ? 'page' : undefined}><strong>The Wake</strong><span>What followed the signal</span></a>
+          </div>
+        </details>
+
+        <details class:list={['nav-group', { 'is-current': isExplorations }]}>
+          <summary>Explorations</summary>
+          <div class="nav-menu">
+            <a href="/atlas/" aria-current={pathname.startsWith('/atlas/') ? 'page' : undefined}><strong>Atlas</strong><span>An interactive world atlas</span></a>
+          </div>
+        </details>
         <a href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>About</a>
       </nav>
       <button id="theme-toggle" aria-label="Toggle dark mode">
@@ -140,20 +162,61 @@ const pathname = Astro.url.pathname;
   nav {
     gap: 0.2rem;
   }
-  nav a {
+  nav a,
+  summary {
     border-radius: 999px;
     color: var(--text-secondary);
     font-size: 0.82rem;
     padding: 0.4rem 0.65rem;
   }
   nav a:hover,
-  nav a[aria-current='page'] {
+  nav a[aria-current='page'],
+  summary:hover,
+  .nav-group.is-current summary {
     background: var(--bg-color);
     color: var(--text-primary);
   }
   nav a[aria-current='page'] {
     box-shadow: inset 0 0 0 1px var(--border-color);
   }
+  .nav-group {
+    position: relative;
+  }
+  summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: '⌄';
+    display: inline-block;
+    font-size: 0.9em;
+    margin-left: 0.28rem;
+    transition: transform 0.15s ease;
+  }
+  details[open] summary::after { transform: rotate(180deg); }
+  .nav-menu {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0.9rem;
+    box-shadow: var(--glass-shadow);
+    display: grid;
+    gap: 0.15rem;
+    left: 0;
+    min-width: 15.5rem;
+    padding: 0.45rem;
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    z-index: 10;
+  }
+  .nav-menu a {
+    border-radius: 0.65rem;
+    display: grid;
+    gap: 0.13rem;
+    padding: 0.55rem 0.65rem;
+  }
+  .nav-menu strong { color: var(--text-primary); font-size: 0.78rem; font-weight: 600; }
+  .nav-menu span { font-size: 0.68rem; line-height: 1.25; }
   #theme-toggle {
     align-items: center;
     background: none;
@@ -219,11 +282,25 @@ const pathname = Astro.url.pathname;
       flex-direction: column;
       gap: 0.15rem;
     }
-    nav a {
+    nav a,
+    summary {
       border-radius: 0.7rem;
       font-size: 0.9rem;
       padding: 0.65rem 0.8rem;
     }
+    .nav-group { position: static; }
+    summary { display: flex; justify-content: space-between; }
+    summary::after { margin-left: auto; }
+    .nav-menu {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      margin: 0.1rem 0 0.3rem;
+      min-width: 0;
+      padding: 0 0 0 0.65rem;
+      position: static;
+    }
+    .nav-menu a { padding: 0.55rem 0.65rem; }
     #theme-toggle {
       border-radius: 0.7rem;
       border-top: 1px solid var(--border-color);
