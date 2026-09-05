@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-04T06:00:00-07:00",
+  "updatedAt": "2026-09-05T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -158,6 +158,31 @@
         "history of cubic equations"
       ],
       "relatedLessons": []
+    },
+    {
+      "date": "2026-09-05",
+      "slug": "daily-reckoning-2026-09-05",
+      "title": "Can a Random Process Forget Where It Started?",
+      "area": "Probability and statistics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Percentages",
+        "Basic algebra",
+        "Weighted averages"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Markov chains",
+        "transition matrices",
+        "stationary distributions",
+        "mixing time",
+        "dependent random variables",
+        "PageRank",
+        "Markov chain Monte Carlo"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-01"
+      ]
     }
   ]
 }
