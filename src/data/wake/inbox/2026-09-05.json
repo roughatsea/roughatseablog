@@ -1,0 +1,318 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-05",
+  "article": {
+    "slug": "morning-soundings-2026-09-05",
+    "title": "Morning Soundings: The Background Refuses to Stay Empty",
+    "publishedAt": "2026-09-05T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-05.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-05T05:05:49-07:00",
+    "sourceStateAsOf": "2026-09-05",
+    "notes": "Captured during the publication run from sources accessed on September 5, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-05-pottery-viscous-magnetization-authentication",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "A clay vessel keeps two magnetic memories",
+      "canonicalSubject": {
+        "name": "Viscous remanent magnetization authentication of archaeological clay",
+        "kind": "archaeomagnetic-authentication-method",
+        "aliases": [
+          "VRM pottery authentication",
+          "112 degree pottery authentication threshold"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "archaeology",
+        "archaeomagnetism",
+        "ceramics",
+        "cultural-heritage",
+        "forgery"
+      ],
+      "geography": [
+        "Israel",
+        "California",
+        "United States"
+      ],
+      "canonicalClaim": "A PNAS study found that the tested clay objects more than 1,000 years old retained viscous remanent magnetization above 112 degrees Celsius, while tested modern objects lost it below that temperature.",
+      "knownFacts": [
+        "The study tested 45 samples spanning excavated ancient pottery, modern vessels and seal impressions, Jerusalem souvenirs, and three objects of questioned provenance.",
+        "The method separates magnetization acquired during the original firing from weaker magnetization acquired gradually afterward.",
+        "Stepwise heating and micromagnetic simulations both supported a 112 degree Celsius division in the tested ancient and modern material.",
+        "The paper was published in PNAS on September 3, 2026."
+      ],
+      "uncertainties": [
+        "The reported threshold has not yet been validated across the full range of clay compositions, firing histories, storage conditions, and archaeological regions.",
+        "The method distinguishes broadly ancient from modern material rather than assigning a precise production date.",
+        "Sampling and reheating requirements may limit how it can be applied to intact or highly sensitive objects."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The claim is supported by a peer-reviewed experimental study and micromagnetic simulations, with an institutional account describing the sample classes and proposed application."
+      },
+      "sources": [
+        {
+          "url": "https://www.pnas.org/doi/10.1073/pnas.2620397123",
+          "title": "Viscous remanent magnetization authentication method for archaeological artifacts",
+          "publisher": "Proceedings of the National Academy of Sciences",
+          "publishedAt": "2026-09-03",
+          "accessedAt": "2026-09-05",
+          "role": "primary-research",
+          "lineage": "vaknin-tauxe-cych-gee-vrm-authentication"
+        },
+        {
+          "url": "https://scripps.ucsd.edu/news/researchers-develop-method-tell-authentic-artifacts-fakes",
+          "title": "Researchers Develop Method to Tell Authentic Artifacts from Fakes",
+          "publisher": "Scripps Institution of Oceanography",
+          "publishedAt": "2026-08-31",
+          "accessedAt": "2026-09-05",
+          "role": "institutional-reporting",
+          "lineage": "vaknin-tauxe-cych-gee-vrm-authentication"
+        }
+      ],
+      "openQuestions": [
+        "How stable is the 112 degree Celsius threshold across other clay mineralogies and environmental histories?",
+        "What minimum sample size and heating protocol can authenticate an object without unacceptable damage?",
+        "Will blinded tests on museum objects of independently established age reproduce the reported separation?"
+      ],
+      "watchFor": [
+        {
+          "description": "Independent validation across collections and regions",
+          "expectedWindow": null,
+          "trigger": "Another research group tests VRM authentication on independently dated or modern clay objects from different regions."
+        },
+        {
+          "description": "Museum or law-enforcement application",
+          "expectedWindow": null,
+          "trigger": "A museum, antiquities authority, or court reports a consequential authentication decision using the method."
+        }
+      ],
+      "trackingTerms": [
+        "PNAS 2620397123",
+        "viscous remanent magnetization artifact authentication",
+        "Yoav Vaknin pottery authentication",
+        "112 Celsius ancient pottery"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The method makes a testable cross-regional claim and has clear future validation and institutional-use milestones."
+      },
+      "selectionReason": "The study turns a normally discarded magnetic overprint into evidence of elapsed time and a practical test for illicit antiquities markets.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-05-bunsen-burner-airborne-asepsis",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "The Bunsen burner's clean zone shrinks under measurement",
+      "canonicalSubject": {
+        "name": "Bunsen burner effects on airborne microbial deposition",
+        "kind": "laboratory-practice-study",
+        "aliases": [
+          "Bunsen burner aseptic zone",
+          "Bunsen burner airborne contamination study"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "microbiology",
+        "aseptic-technique",
+        "laboratory-practice",
+        "scientific-method",
+        "education"
+      ],
+      "geography": [
+        "Rhode Island",
+        "United States"
+      ],
+      "canonicalClaim": "In paired settle-plate experiments, active Bunsen burners did not universally reduce deposition of bacteria-containing airborne particles and helped only under a narrow high-contamination, dry-particle condition.",
+      "knownFacts": [
+        "The researchers intentionally dispersed bacteria-containing wet and dry particles and compared deposition on paired settle plates beside lit and unlit burners.",
+        "Across the experiments, active burners did not reduce average colony-forming-unit deposition, and longer flame duration was not associated with improved outcomes.",
+        "An 18 millimetre flame mildly reduced dry-particle deposition above 83 colony-forming units per minute but increased it below that threshold.",
+        "The open-access paper was published online by Microbiology Spectrum on August 17, 2026."
+      ],
+      "uncertainties": [
+        "The experiment was conducted in one laboratory setting and may not generalize to every room geometry, ventilation system, burner placement, or workflow.",
+        "Settle-plate deposition does not measure every possible contamination route or benefit of direct flaming.",
+        "Independent replications and comparisons with non-flame aseptic methods were not available at capture."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed open-access study reports controlled paired experiments, openly listed supplementary data, and a narrow condition-dependent conclusion."
+      },
+      "sources": [
+        {
+          "url": "https://journals.asm.org/doi/10.1128/spectrum.01028-26",
+          "title": "As a component of aseptic technique, Bunsen burners do not universally decrease deposition of microbe-containing particles",
+          "publisher": "Microbiology Spectrum",
+          "publishedAt": "2026-08-17",
+          "accessedAt": "2026-09-05",
+          "role": "primary-research",
+          "lineage": "devincent-gavin-bunsen-asepsis-study"
+        },
+        {
+          "url": "https://www.nature.com/articles/d41586-026-02758-0",
+          "title": "Bunsen burners' reputation for sterilizing workplaces flames out",
+          "publisher": "Nature",
+          "publishedAt": "2026-09-04",
+          "accessedAt": "2026-09-05",
+          "role": "independent-reporting",
+          "lineage": "devincent-gavin-bunsen-asepsis-study"
+        }
+      ],
+      "openQuestions": [
+        "Will independent laboratories reproduce the contamination-dependent reversal around small flames?",
+        "How do ventilation, burner position, particle size, and room geometry change deposition patterns?",
+        "Will teaching laboratories revise aseptic protocols in response to the result?"
+      ],
+      "watchFor": [
+        {
+          "description": "Independent replication under varied laboratory conditions",
+          "expectedWindow": null,
+          "trigger": "A study repeats the paired comparison while varying ventilation, room geometry, particle type, or burner placement."
+        },
+        {
+          "description": "Revision of laboratory teaching guidance",
+          "expectedWindow": null,
+          "trigger": "A major microbiology curriculum, safety body, or institutional protocol changes its recommendation for Bunsen burners as airborne-asepsis devices."
+        }
+      ],
+      "trackingTerms": [
+        "Microbiology Spectrum 01028-26",
+        "Bunsen burner aseptic zone evidence",
+        "Bunsen burner airborne microbial deposition",
+        "Kate DeVincent Hannah Gavin Bunsen"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The result challenges a durable teaching practice with openly inspectable data and offers clear replication and protocol-change milestones."
+      },
+      "selectionReason": "The experiment follows a plausible mechanism through to the practical outcome that laboratory tradition had largely assumed rather than measured.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-05-grace-weir-herschel-exhibition",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "The Milky Way returns to the dining table",
+      "canonicalSubject": {
+        "name": "Grace Weir's The as-yet unseen at the Herschel Museum",
+        "kind": "site-responsive-art-exhibition",
+        "aliases": [
+          "The as-yet unseen",
+          "Grace Weir Herschel Museum exhibition"
+        ]
+      },
+      "signalType": "institutional-exhibition",
+      "topics": [
+        "contemporary-art",
+        "astronomy",
+        "womens-history",
+        "museums",
+        "domestic-labor"
+      ],
+      "geography": [
+        "Bath",
+        "England",
+        "United Kingdom"
+      ],
+      "canonicalClaim": "The Herschel Museum opened a site-responsive Grace Weir exhibition that places contemporary works throughout the astronomers' former home to examine observation as a practice embedded in domestic space and labor.",
+      "knownFacts": [
+        "The exhibition runs from September 5, 2026, through January 3, 2027, at 19 New King Street in Bath.",
+        "Works include an antique linen tablecloth embroidered from William Herschel's 1785 Milky Way map and a live display of Uranus's distance from the museum.",
+        "William Herschel discovered Uranus from the house's garden in 1781.",
+        "Caroline Herschel discovered eight comets and received a 50 pound annual salary from George III in 1787 for work as William's astronomical assistant."
+      ],
+      "uncertainties": [
+        "The exhibition's account of domestic and scientific collaboration is a contemporary curatorial interpretation rather than a reconstruction of unrecorded household conversations.",
+        "Public reception and any lasting changes to the museum's interpretation were not available on opening morning.",
+        "The exhibition is temporary and no permanent acquisition or digital archive of all works had been announced at capture."
+      ],
+      "evidence": {
+        "level": "mixed",
+        "notes": "The museum documents the exhibition, works, site history, and dates; Royal Museums Greenwich documents Caroline Herschel's career, while independent reporting describes the installed works and curatorial intent."
+      },
+      "sources": [
+        {
+          "url": "https://herschelmuseum.org.uk/exhibitions/",
+          "title": "Exhibitions",
+          "publisher": "Herschel Museum of Astronomy",
+          "publishedAt": null,
+          "accessedAt": "2026-09-05",
+          "role": "official-primary",
+          "lineage": "herschel-museum-weir-exhibition"
+        },
+        {
+          "url": "https://herschelmuseum.org.uk/about/history/",
+          "title": "The History of the Herschel Museum of Astronomy",
+          "publisher": "Herschel Museum of Astronomy",
+          "publishedAt": null,
+          "accessedAt": "2026-09-05",
+          "role": "official-primary",
+          "lineage": "herschel-museum-history"
+        },
+        {
+          "url": "https://www.rmg.co.uk/stories/space-astronomy/caroline-herschel-first-paid-female-astronomer",
+          "title": "Caroline Herschel: the first paid female astronomer",
+          "publisher": "Royal Museums Greenwich",
+          "publishedAt": null,
+          "accessedAt": "2026-09-05",
+          "role": "institutional-reporting",
+          "lineage": "royal-museums-greenwich-caroline-herschel"
+        },
+        {
+          "url": "https://www.theguardian.com/science/2026/sep/04/bath-show-astronomers-william-caroline-herschel-art",
+          "title": "Milky Way at the dining table: Bath art show celebrates 18th-century brother and sister astronomers",
+          "publisher": "The Guardian",
+          "publishedAt": "2026-09-04",
+          "accessedAt": "2026-09-05",
+          "role": "independent-reporting",
+          "lineage": "guardian-herschel-weir-exhibition-report"
+        }
+      ],
+      "openQuestions": [
+        "How will visitors and historians respond to the exhibition's use of contemporary art to reframe the household as scientific infrastructure?",
+        "Will any of the site-responsive works or interpretive changes remain after the temporary exhibition closes?",
+        "What additional archival research can further distinguish Caroline Herschel's scientific, computational, and domestic contributions?"
+      ],
+      "watchFor": [
+        {
+          "description": "Post-exhibition interpretation or acquisition",
+          "expectedWindow": "2027-01-03/2027-06-30",
+          "trigger": "The museum announces that a work, interpretive element, publication, or digital record from the exhibition will remain available after closing."
+        },
+        {
+          "description": "Substantive critical or scholarly response",
+          "expectedWindow": null,
+          "trigger": "A review or scholarly publication evaluates how the installation changes the representation of Caroline and William Herschel's collaboration."
+        }
+      ],
+      "trackingTerms": [
+        "Grace Weir The as-yet unseen",
+        "Herschel Museum exhibition 2026",
+        "William Herschel Milky Way tablecloth",
+        "Caroline Herschel domestic labor exhibition"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "passive",
+        "reason": "The temporary exhibition has a clear closing milestone and may affect interpretation, but its central claim is curatorial rather than a disputed factual development."
+      },
+      "selectionReason": "The installation uses domestic material and historical space to make the labor and environment of scientific observation visible without reducing art to illustration.",
+      "reviewAfter": "2027-01-04",
+      "attentionSnapshot": null
+    }
+  ]
+}
