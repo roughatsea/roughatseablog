@@ -1,0 +1,239 @@
+---
+title: "Why Does a Hanging Chain Refuse to Be a Parabola?"
+description: "A hanging chain follows a hyperbolic cosine because each point must support the weight of all the chain below it."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-06.svg"
+heroImageAlt: "A luminous magenta chain hangs between two cyan drafting towers over a dark maritime grid, while a dashed green parabola nearly follows it near the center before separating toward the supports."
+date: 2026-09-06
+publishedAt: 2026-09-06T06:00:00-07:00
+area: "Calculus and mathematical physics"
+difficulty: "Intermediate"
+prerequisites:
+  - "Slope as rise over run"
+  - "Basic derivatives and integrals"
+  - "Exponential functions"
+readTimeMinutes: 10
+tags:
+  - daily-reckoning
+  - calculus
+  - mathematical-physics
+  - catenary
+  - hyperbolic-functions
+  - structural-engineering
+---
+
+import CatenaryWorkbench from '../../components/reckonings/CatenaryWorkbench.astro';
+import CatenaryForceBalance from '../../components/reckonings/CatenaryForceBalance.astro';
+
+Hang a uniform chain from two hooks. Its middle sags into a curve that looks like the graph of $y=x^2$. If you trace the chain and fit a parabola near its lowest point, the match can be so good that a ruler will not settle the question.
+
+Move toward either hook. The chain climbs a little faster than the matching parabola. Its exact shape is a **catenary**, named from the Latin *catena*, or chain:
+
+$$
+y=a\left(\cosh\frac{x}{a}-1\right).
+$$
+
+The coordinate $x$ measures horizontal distance from the lowest point, and $y$ measures height above that point. The positive constant $a$ controls the amount of sag. A large $a$ makes a shallow curve; a small $a$ makes a deep one.
+
+The function $\cosh$, pronounced “cosh,” is the **hyperbolic cosine**:
+
+$$
+\cosh t=\frac{e^t+e^{-t}}{2}.
+$$
+
+Why should two exponential functions appear in a piece of chain?
+
+## Every outer link carries more chain
+
+Imagine cutting the right half of the hanging chain at one point while somehow holding the severed piece motionless. Three forces act on the piece between the lowest point and the cut. The tension at the lowest point pulls horizontally. Gravity pulls the whole piece downward. The tension at the cut pulls along the chain's tangent.
+
+The next diagram names those forces before the equations use them. In the diagram, $s$ is the length of chain from the lowest point to the cut, $w$ is the chain's weight per unit length, $H$ is the constant horizontal component of tension, $T$ is the total tension at the cut, and $\theta$ is the tangent's angle above horizontal.
+
+<CatenaryForceBalance />
+
+The chain is motionless, so its forces balance. The vertical part of $T$ must support a weight $ws$. The horizontal part of $T$ must equal $H$. Their ratio gives the tangent's slope:
+
+$$
+\frac{dy}{dx}=\tan\theta=\frac{ws}{H}.
+$$
+
+Define $a=H/w$. The same equation becomes
+
+$$
+\frac{dy}{dx}=\frac{s}{a}.
+$$
+
+The slope therefore depends on **arc length** $s$, the distance measured along the curved chain—not merely on horizontal distance $x$. Farther from the center, the chain segment is longer, its weight is greater, and the curve must turn upward more sharply.
+
+## From force balance to hyperbolic cosine
+
+Let $u=dy/dx$ denote the slope. The arc-length formula says
+
+$$
+\frac{ds}{dx}=\sqrt{1+\left(\frac{dy}{dx}\right)^2}=\sqrt{1+u^2}.
+$$
+
+Since $u=s/a$, differentiation gives
+
+$$
+\frac{du}{dx}=\frac{1}{a}\frac{ds}{dx}=\frac{1}{a}\sqrt{1+u^2}.
+$$
+
+Now separate the variables:
+
+$$
+\frac{du}{\sqrt{1+u^2}}=\frac{dx}{a}.
+$$
+
+The **hyperbolic sine** is $\sinh z=(e^z-e^{-z})/2$. Its inverse is written $\operatorname{arsinh}$. Integrating the separated equation and using $x=0$, $u=0$ at the lowest point gives
+
+$$
+\operatorname{arsinh}u=\frac{x}{a}.
+$$
+
+Apply the hyperbolic sine to both sides. Because $\sinh$ and $\operatorname{arsinh}$ undo each other,
+
+$$
+u=\sinh\frac{x}{a}.
+$$
+
+Recall that $u=dy/dx$, then integrate once more:
+
+$$
+\begin{aligned}
+\frac{dy}{dx}&=\sinh\frac{x}{a},\\
+y&=a\cosh\frac{x}{a}+C.
+\end{aligned}
+$$
+
+The condition $y(0)=0$ gives $C=-a$. The force balance has produced the catenary equation stated at the beginning.
+
+## Why the parabola nearly wins
+
+The resemblance to a parabola is mathematical, not an optical accident. The power series for hyperbolic cosine begins
+
+$$
+\cosh z=1+\frac{z^2}{2!}+\frac{z^4}{4!}+\frac{z^6}{6!}+\cdots.
+$$
+
+Substitute $z=x/a$ into the catenary equation:
+
+$$
+y=\frac{x^2}{2a}+\frac{x^4}{24a^3}+\frac{x^6}{720a^5}+\cdots.
+$$
+
+Near $x=0$, the fourth-, sixth-, and later-power terms are tiny. The first surviving term is the parabola $y=x^2/(2a)$. The interactive comparison below gives both curves the same lowest point and the same curvature there. Move the slider to change $a$, or hide the dashed parabola to inspect the catenary alone.
+
+<CatenaryWorkbench />
+
+## Worked example: a 20-meter span
+
+Place the supports 20 meters apart, at $x=-10$ meters and $x=10$ meters. Suppose $a=10$ meters. The height of either support above the chain's lowest point is
+
+$$
+\begin{aligned}
+y(10)
+&=10\left(\cosh\frac{10}{10}-1\right)\\
+&=10(\cosh 1-1)\\
+&=10\left(\frac{e+e^{-1}}{2}-1\right)\\
+&\approx10\left(\frac{2.71828+0.36788}{2}-1\right)\\
+&\approx5.4308\text{ meters}.
+\end{aligned}
+$$
+
+The parabola with the same curvature at the bottom reaches
+
+$$
+y_{\mathrm p}(10)=\frac{10^2}{2(10)}=5\text{ meters}.
+$$
+
+The curves differ by only $0.4308$ meter at the supports and much less near the center. A shallow hanging chain can pass for a parabola until measurements reach far enough from its lowest point.
+
+## Try the equation
+
+### Problem 1
+
+A chain has $a=5$ meters. How high is the chain at $x=5$ meters, relative to its lowest point? Use $\cosh 1\approx1.54308$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Substitute $a=5$ and $x=5$:
+
+$$
+\begin{aligned}
+y(5)
+&=5\left(\cosh\frac{5}{5}-1\right)\\
+&=5(1.54308-1)\\
+&=2.7154\text{ meters}.
+\end{aligned}
+$$
+
+The chain is about $2.715$ meters above its lowest point.
+
+</details>
+
+### Problem 2
+
+For $a=10$ meters, compare the catenary and its matching parabola at $x=2$ meters. Use $\cosh(0.2)\approx1.02006676$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+The catenary gives
+
+$$
+y(2)=10(1.02006676-1)=0.2006676\text{ meter}.
+$$
+
+The matching parabola gives
+
+$$
+y_{\mathrm p}(2)=\frac{2^2}{2(10)}=0.2\text{ meter}.
+$$
+
+Their difference is
+
+$$
+0.2006676-0.2=0.0006676\text{ meter},
+$$
+
+which is about $0.668$ millimeter. Near the bottom, the two curves are genuinely difficult to distinguish.
+
+</details>
+
+## A chain tests a new calculus
+
+Galileo discussed the hanging-cord problem in *Two New Sciences* in 1638 and treated a lightly sagging cord as approximately parabolic. Joachim Jungius later established that the exact curve was not a parabola; his result appeared after his death in 1669. The [University of St Andrews history of the catenary](https://mathshistory.st-andrews.ac.uk/Curves/Catenary/) traces that correction and the work that followed.
+
+Jacob Bernoulli made the chain's exact shape a public challenge in 1690. Gottfried Wilhelm Leibniz, Christiaan Huygens, and Johann Bernoulli supplied solutions published in the June 1691 issue of *Acta Eruditorum*. Huygens had introduced the name *catenary* in a 1690 letter to Leibniz.
+
+The challenge also tested methods. [Leibniz had first published differential calculus](https://mathshistory.st-andrews.ac.uk/Biographies/Leibniz/) only seven years earlier, in 1684. In a [September 1691 letter](https://www.dbnl.org/tekst/huyg003oeuv10_01/huyg003oeuv10_01_0039.php), Huygens credited Leibniz's calculus with revealing properties of the curve that Huygens's geometric approach had missed.
+
+The catenary challenge has an institutional story rather than a direct political one. *Acta Eruditorum* was a monthly, Latin-language journal founded in Leipzig in 1682 under the Collegium Gellianum with support from the Duke of Saxony. The [University of the Pacific's journal history](https://scholarlycommons.pacific.edu/euler-acta-eruditorum/) describes how the publication circulated work by German and foreign scholars across mathematics, medicine, law, history, and theology. A household object became a public benchmark for a new mathematical technology because a journal connected correspondents across Europe.
+
+## Chains, arches, bridges, and soap
+
+A cable hanging under its own uniformly distributed weight follows a catenary. Turn the force picture upside down, and tension becomes compression. Robert Hooke stated the architectural consequence in 1675—“as hangs the flexible line, so but inverted will stand the rigid arch”—although he hid the statement in an anagram. The University of Houston's [account of Hooke's chain theory](https://engines.egr.uh.edu/episode/1169) explains why an ideal inverted catenary carries its own weight without bending.
+
+Real structures expose the boundary of the idealization. A suspension-bridge cable carrying a roadway whose weight is uniform per horizontal meter tends toward a parabola, while a freely hanging uniform cable tends toward a catenary. The distinction changes the load term in the force calculation. A [National Institute of Standards and Technology report on suspension bridges](https://nehrpsearch.nist.gov/static/files/NSF/PB258744.pdf) defines the freely suspended uniform-cable case, and [Delft engineering notes](https://eng.libretexts.org/Bookshelves/Mechanical_Engineering/Introduction_to_Aerospace_Structures_and_Materials_%28Alderliesten%29/02%3A_Analysis_of_Statically_Determinate_Structures/06%3A_Arches_and_Cables/6.02%3A_Cables) derive the parabolic case for horizontal uniform loading.
+
+The 630-foot Gateway Arch in St. Louis uses a related **weighted catenary** because its triangular legs narrow toward the top rather than maintaining constant weight per unit of arc length. The [National Park Service](https://www.nps.gov/jeff/planyourvisit/materials-and-techniques.htm) describes the monument's dimensions and catenary-based engineering; mathematician Robert Osserman's [historical analysis](https://link.springer.com/content/pdf/10.1007/s00004-010-0030-8.pdf) distinguishes its weighted curve from the ordinary chain curve.
+
+Rotate a catenary around its vertical axis and it sweeps out a **catenoid**. A soap film stretched between two circular rings can take that minimal-surface shape. Masato Ito and Taku Sato's [laboratory study](https://www.rose-hulman.edu/~moloney/Ph425/0143-0807_31_2_013%20soap%20film%20catenoid.pdf) measured catenoids as the rings separated and recorded the film's collapse near a critical distance.
+
+## One idea to remember
+
+A parabola's slope grows with horizontal distance. A catenary's slope grows with the amount of chain already hanging below the point. That arc-length dependence changes $x^2$ into $\cosh(x/a)$.
+
+Continue with [instantaneous slope](/reckonings/daily-reckoning-2026-08-29/) if the derivatives in the force balance deserve a slower pass. Then investigate the calculus of variations, which reaches the same catenary by asking which hanging shape minimizes gravitational potential energy.
+
+## Sources
+
+- University of St Andrews, [“Catenary,” MacTutor History of Mathematics](https://mathshistory.st-andrews.ac.uk/Curves/Catenary/).
+- J. J. O'Connor and E. F. Robertson, [“Gottfried Wilhelm Leibniz,” MacTutor History of Mathematics](https://mathshistory.st-andrews.ac.uk/Biographies/Leibniz/), University of St Andrews.
+- Galileo Galilei, [*Two New Sciences* (1638), translated by Henry Crew and Alfonso de Salvio](https://galileoandeinstein.phys.virginia.edu/tns_draft/), University of Virginia digital edition.
+- Christiaan Huygens, [letter to Gottfried Wilhelm Leibniz, September 1, 1691](https://www.dbnl.org/tekst/huyg003oeuv10_01/huyg003oeuv10_01_0039.php), Huygens Institute digital edition.
+- University of the Pacific, [“Acta Eruditorum”](https://scholarlycommons.pacific.edu/euler-acta-eruditorum/), Euler Archive.
+- René Alderliesten, [“Cables”](https://eng.libretexts.org/Bookshelves/Mechanical_Engineering/Introduction_to_Aerospace_Structures_and_Materials_%28Alderliesten%29/02%3A_Analysis_of_Statically_Determinate_Structures/06%3A_Arches_and_Cables/6.02%3A_Cables), Delft University of Technology / Engineering LibreTexts.
+- Robert Osserman, [“How the Gateway Arch Got Its Shape,” *Nexus Network Journal* 12, 2010](https://link.springer.com/content/pdf/10.1007/s00004-010-0030-8.pdf).
+- Masato Ito and Taku Sato, [“In Situ Observation of a Soap-Film Catenoid,” *European Journal of Physics* 31, 2010](https://www.rose-hulman.edu/~moloney/Ph425/0143-0807_31_2_013%20soap%20film%20catenoid.pdf).

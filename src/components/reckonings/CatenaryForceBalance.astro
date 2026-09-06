@@ -1,0 +1,87 @@
+<figure class="force-balance reckoning-visual">
+  <header>
+    <p>Force balance on half a chain</p>
+    <h3>The slope records how much chain hangs below</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 860 390" role="img" aria-labelledby="force-title force-desc">
+      <title id="force-title">Forces acting on the right half of a hanging chain</title>
+      <desc id="force-desc">
+        A magenta chain segment rises from its lowest point to a cut point on the right. At the cut,
+        a diagonal tension arrow has horizontal component H and vertical component w times s. The
+        vertical component balances the weight of the chain segment, whose arc length is s.
+      </desc>
+
+      <g aria-hidden="true">
+        <path class="waterline" d="M75 330H795" />
+        <path class="chain-halo" d="M120 315C250 313 360 285 455 220S632 97 735 78" />
+        <path class="chain" d="M120 315C250 313 360 285 455 220S632 97 735 78" />
+        <circle class="point" cx="120" cy="315" r="7" />
+        <circle class="cut" cx="555" cy="151" r="9" />
+        <path class="cut-mark" d="m543 139 24 24m-23 0 23-24" />
+
+        <path class="arrow tension" d="M555 151L701 63m-20 4 20-4-8 19" />
+        <path class="arrow horizontal" d="M555 151H701m-18-10 18 10-18 10" />
+        <path class="arrow weight" d="M555 151V292m-10-18 10 18 10-18" />
+
+        <text class="label tension-label" x="674" y="48">tension T</text>
+        <text class="label horizontal-label" x="710" y="156">H</text>
+        <text class="label weight-label" x="571" y="283">ws</text>
+        <text class="label" x="295" y="296">arc length s</text>
+        <text class="small-label" x="83" y="349">lowest point</text>
+        <text class="small-label" x="518" y="128">imaginary cut</text>
+
+        <path class="angle" d="M604 151A49 49 0 0 0 597 126" />
+        <text class="angle-label" x="611" y="132">θ</text>
+      </g>
+    </svg>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the horizontal force <em>H</em> stays constant. The vertical
+    force must equal the weight <em>ws</em> of the chain between the lowest point and the cut. As
+    arc length <em>s</em> grows, the tangent angle <em>θ</em> grows too.
+  </figcaption>
+</figure>
+
+<style>
+  .force-balance {
+    --force-blue: #087dcc;
+    --force-green: #4f9300;
+    --force-pink: #d9007e;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(900px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .force-balance { --force-blue: #1493ff; --force-green: #93ff14; --force-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 600; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 620px; width: 100%; }
+  .waterline { stroke: var(--border-color); stroke-width: 1.5; }
+  .chain, .chain-halo, .arrow, .cut-mark, .angle { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .chain-halo { stroke: var(--bg-color); stroke-width: 12; }
+  .chain { stroke: var(--force-pink); stroke-width: 6; }
+  .point { fill: var(--force-blue); stroke: var(--bg-color); stroke-width: 3; }
+  .cut { fill: var(--bg-color); stroke: var(--force-green); stroke-width: 3; }
+  .cut-mark { stroke: var(--force-green); stroke-width: 2; }
+  .arrow { stroke-width: 3; }
+  .tension { stroke: var(--force-pink); }
+  .horizontal { stroke: var(--force-blue); }
+  .weight { stroke: var(--force-green); }
+  .angle { stroke: var(--text-secondary); stroke-width: 1.5; }
+  .label { fill: var(--text-primary); font-size: 16px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: var(--bg-color); stroke-width: 5px; }
+  .small-label, .angle-label { fill: var(--text-secondary); font-size: 13px; }
+  .tension-label { fill: var(--force-pink); }
+  .horizontal-label { fill: var(--force-blue); }
+  .weight-label { fill: var(--force-green); }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 620px) { .force-balance { width: calc(100vw - 1.5rem); } }
+</style>

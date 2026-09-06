@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-05T06:00:00-07:00",
+  "updatedAt": "2026-09-06T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -182,6 +182,32 @@
       ],
       "relatedLessons": [
         "daily-reckoning-2026-09-01"
+      ]
+    },
+    {
+      "date": "2026-09-06",
+      "slug": "daily-reckoning-2026-09-06",
+      "title": "Why Does a Hanging Chain Refuse to Be a Parabola?",
+      "area": "Calculus and mathematical physics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Slope as rise over run",
+        "Basic derivatives and integrals",
+        "Exponential functions"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "catenary",
+        "hyperbolic cosine",
+        "force balance",
+        "arc length",
+        "power series",
+        "suspension cables",
+        "catenary arches",
+        "catenoids"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-29"
       ]
     }
   ]
