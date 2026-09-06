@@ -1,0 +1,308 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-06",
+  "article": {
+    "slug": "morning-soundings-2026-09-06",
+    "title": "Morning Soundings: The Object Has More Than One Reader",
+    "publishedAt": "2026-09-06T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-06.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-06T05:05:57-07:00",
+    "sourceStateAsOf": "2026-09-06",
+    "notes": "Captured during the publication run from sources accessed on September 6, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-06-hachimoji-rna-polymerase-transcription",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "RNA polymerase accepts letters evolution never supplied",
+      "canonicalSubject": {
+        "name": "Transcription of the hachimoji eight-letter genetic alphabet",
+        "kind": "synthetic-biology-study",
+        "aliases": [
+          "hachimoji RNA polymerase transcription",
+          "eight-letter genetic alphabet transcription"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "synthetic-biology",
+        "genetics",
+        "biochemistry",
+        "molecular-machinery"
+      ],
+      "geography": [
+        "California",
+        "United States"
+      ],
+      "canonicalClaim": "A Nature Communications study found that E. coli RNA polymerase efficiently and selectively transcribed the four natural and four synthetic bases of the hachimoji alphabet in biochemical assays, with native-like active-site geometry.",
+      "knownFacts": [
+        "Hachimoji DNA adds the synthetic bases P, Z, B, and S as two orthogonal pairs to the four natural DNA bases.",
+        "In single-nucleotide assays, the correct partner was incorporated within 15 seconds for each tested template.",
+        "Incorporation of the synthetic P:Z pair was about twofold slower than the natural G:C comparison under the reported conditions.",
+        "Four cryo-electron microscopy structures at 2.42 to 2.75 angstrom resolution showed native-like trigger-loop closure and catalytic geometry."
+      ],
+      "uncertainties": [
+        "The experiments do not establish an organism that can replicate, repair, translate, and sustain an eight-letter genome.",
+        "The synthetic building blocks must be supplied rather than produced by ordinary E. coli metabolism.",
+        "The modified base Z* reduced a Z:G mismatch in the tested assays, but broader fidelity across complete sequences and cellular conditions remains to be established."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed paper reports biochemical kinetics and four high-resolution cryo-EM structures; an institutional account supplies accessible context without expanding the experimental claim."
+      },
+      "sources": [
+        {
+          "url": "https://www.nature.com/articles/s41467-026-76668-0",
+          "title": "Structural basis of transcription of the hachimoji eight-letter alphabet by E. coli RNA polymerase",
+          "publisher": "Nature Communications",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-06",
+          "role": "primary-research",
+          "lineage": "li-wang-hachimoji-rnap-2026"
+        },
+        {
+          "url": "https://today.ucsd.edu/story/breakthrough-helps-expand-genetic-alphabet",
+          "title": "Breakthrough Helps Expand Genetic Alphabet",
+          "publisher": "University of California San Diego",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-06",
+          "role": "institutional-reporting",
+          "lineage": "li-wang-hachimoji-rnap-2026"
+        }
+      ],
+      "openQuestions": [
+        "Can the eight-letter alphabet be transcribed with comparable fidelity across longer and more varied sequences inside living cells?",
+        "Which additional central-dogma mechanisms fail first when synthetic pairs are introduced into a complete system?",
+        "Will independent laboratories reproduce the reported kinetics and structural accommodation?"
+      ],
+      "watchFor": [
+        {
+          "description": "In-cell transcription or replication of longer eight-letter sequences",
+          "expectedWindow": null,
+          "trigger": "A study demonstrates sustained hachimoji transcription or replication in living cells with measured fidelity."
+        },
+        {
+          "description": "Independent biochemical or structural validation",
+          "expectedWindow": null,
+          "trigger": "An independent group tests natural polymerase handling of all four synthetic bases or a related expanded alphabet."
+        }
+      ],
+      "trackingTerms": [
+        "Nature Communications 76668 hachimoji",
+        "hachimoji E. coli RNA polymerase",
+        "eight-letter genetic alphabet transcription",
+        "Qingrong Li hachimoji"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The result has clear next milestones in whole-system fidelity, cellular use, and independent replication."
+      },
+      "selectionReason": "The study separates the chemistry a molecular machine can recognize from the narrower alphabet that evolutionary history happened to give it.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-06-sheeppox-medieval-parchment-genomes",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "The York Gospels carry a second archive in their skin",
+      "canonicalSubject": {
+        "name": "Ancient sheeppox virus genomes in archaeological remains and parchment",
+        "kind": "ancient-dna-study",
+        "aliases": [
+          "sheeppox parchment DNA",
+          "York Gospels sheeppox genome"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "ancient-dna",
+        "manuscripts",
+        "animal-disease",
+        "archaeology",
+        "livestock-history"
+      ],
+      "geography": [
+        "Europe",
+        "United Kingdom",
+        "Ireland"
+      ],
+      "canonicalClaim": "A Science Advances study recovered 21 ancient sheeppox-virus genomes from Bronze Age sheep teeth and historic parchment, extending direct genetic evidence of the pathogen to roughly 1700 BCE.",
+      "knownFacts": [
+        "The sampled material spans approximately 1700 BCE to early modern Europe.",
+        "Medieval sources included pages from the York Gospels, the Corpus Glossary, gospel fragments, psalters, and other manuscripts.",
+        "Several manuscripts contained sheeppox viral DNA on multiple pages.",
+        "The researchers estimated that the principal capripoxvirus lineages diverged between about 11,500 and 3,700 years ago."
+      ],
+      "uncertainties": [
+        "Sheeppox DNA detected on calfskin and goatskin could reflect rare cross-species infection or contamination among hides during parchment processing.",
+        "Divergence dates depend on the surviving sample set and the evolutionary model.",
+        "Additional archives may reveal viral diversity not represented in the current genomes."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed study reports 21 reconstructed ancient viral genomes from independently dated archaeological and codicological material, with institutional reporting describing the manuscripts and interpretive limits."
+      },
+      "sources": [
+        {
+          "url": "https://www.science.org/doi/10.1126/sciadv.aeh3571",
+          "title": "Three thousand five hundred years of sheeppox virus evolution inferred from archaeological and codicological genomes",
+          "publisher": "Science Advances",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-06",
+          "role": "primary-research",
+          "lineage": "lhote-daly-sheeppox-ancient-genomes-2026"
+        },
+        {
+          "url": "https://www.ucd.ie/newsandopinion/news/2026/september/03/hiddendnainmedievalgospelsrevealhistoryofdeadlylivestockvirus/",
+          "title": "Hidden DNA in medieval gospels reveal history of deadly livestock virus",
+          "publisher": "University College Dublin",
+          "publishedAt": "2026-09-03",
+          "accessedAt": "2026-09-06",
+          "role": "institutional-reporting",
+          "lineage": "lhote-daly-sheeppox-ancient-genomes-2026"
+        }
+      ],
+      "openQuestions": [
+        "Can material analysis distinguish cross-species infection from contamination during parchment manufacture?",
+        "How much additional sheeppox diversity remains in parchment collections from regions not yet sampled?",
+        "Can manuscript provenance and viral phylogeny jointly reconstruct historical livestock movements?"
+      ],
+      "watchFor": [
+        {
+          "description": "Expanded parchment and archaeological sampling",
+          "expectedWindow": null,
+          "trigger": "A study reconstructs additional capripoxvirus genomes from manuscripts or animal remains in new regions or periods."
+        },
+        {
+          "description": "Resolution of the non-sheep parchment signal",
+          "expectedWindow": null,
+          "trigger": "Experimental or genomic evidence distinguishes cross-species infection from workshop transfer on calfskin or goatskin."
+        }
+      ],
+      "trackingTerms": [
+        "Science Advances aeh3571",
+        "ancient sheeppox parchment genomes",
+        "York Gospels sheeppox DNA",
+        "codicological capripoxvirus"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "Large manuscript collections create a tractable path to new genomes, revised divergence estimates, and geographic reconstruction."
+      },
+      "selectionReason": "The result turns preserved writing surfaces into a distributed biological archive of livestock economies and disease.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-06-lucas-museum-narrative-art-opening",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "A museum changes the sorting key for art",
+      "canonicalSubject": {
+        "name": "Opening of the Lucas Museum of Narrative Art",
+        "kind": "museum-opening",
+        "aliases": [
+          "Lucas Museum public opening",
+          "Lucas Museum of Narrative Art inaugural exhibitions"
+        ]
+      },
+      "signalType": "institutional-opening",
+      "topics": [
+        "museums",
+        "narrative-art",
+        "visual-culture",
+        "comics",
+        "cinema"
+      ],
+      "geography": [
+        "Los Angeles",
+        "California",
+        "United States"
+      ],
+      "canonicalClaim": "The Lucas Museum began member previews ahead of its September 22 public opening with inaugural exhibitions that group more than 1,300 objects under narrative art across media and periods.",
+      "knownFacts": [
+        "The public opening is scheduled for September 22, 2026, after member previews from September 5 through 11.",
+        "The inaugural presentation uses more than 30 galleries and 100,000 square feet of exhibition space.",
+        "Its collection and reproductions place media including ancient art, Renaissance painting, photography, illustration, comics, manga, murals, and cinema within one narrative-art framework.",
+        "The museum says high-resolution reproductions were produced with institutions including the Altamira museum, the Louvre, the Vatican Museums, and Mexico's National Institute of Anthropology and History."
+      ],
+      "uncertainties": [
+        "The museum's claim that narrative provides a coherent category across these objects is an institutional thesis rather than an established scholarly consensus.",
+        "Sparse labels and phone-based optional context may produce freedom or disorientation; public use has not yet supplied enough evidence to judge.",
+        "Long-term acquisition, programming, and attendance patterns will determine whether the inaugural breadth becomes a durable curatorial model."
+      ],
+      "evidence": {
+        "level": "mixed",
+        "notes": "The museum documents its opening, scale, collection categories, and curatorial structure; Reuters and The Guardian independently report on the installed exhibitions and interpretive choices."
+      },
+      "sources": [
+        {
+          "url": "https://lucasmuseum.org/press/lucas-museum-of-narrative-art-opens-to-the-public-on-september-22-2026",
+          "title": "Lucas Museum of Narrative Art Opens to the Public on September 22, 2026",
+          "publisher": "Lucas Museum of Narrative Art",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-06",
+          "role": "official-primary",
+          "lineage": "lucas-museum-opening-2026"
+        },
+        {
+          "url": "https://www.reuters.com/lifestyle/galaxy-storytelling-comes-life-george-lucas-new-museum-2026-09-02/",
+          "title": "A galaxy of storytelling comes to life at George Lucas' new museum",
+          "publisher": "Reuters",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-06",
+          "role": "independent-reporting",
+          "lineage": "reuters-lucas-museum-preview-2026"
+        },
+        {
+          "url": "https://www.theguardian.com/culture/2026/sep/04/george-lucas-art-museum-los-angeles",
+          "title": "'I'm used to doing the impossible': George Lucas unveils new LA museum—what's its story?",
+          "publisher": "The Guardian",
+          "publishedAt": "2026-09-04",
+          "accessedAt": "2026-09-06",
+          "role": "independent-reporting",
+          "lineage": "guardian-lucas-museum-preview-2026"
+        }
+      ],
+      "openQuestions": [
+        "How will visitors use a broad narrative-art category when little wall text directs individual encounters?",
+        "Will critics find the collection's cross-media arrangement clarifying or overly flattening?",
+        "Which curatorial and educational practices remain after the inaugural exhibitions change?"
+      ],
+      "watchFor": [
+        {
+          "description": "Public-opening reception and visitor use",
+          "expectedWindow": "2026-09-22/2026-10-31",
+          "trigger": "Substantive visitor research or independent criticism evaluates the narrative-art framework and sparse-label design after public opening."
+        },
+        {
+          "description": "Durable curatorial model",
+          "expectedWindow": null,
+          "trigger": "Later exhibitions, acquisitions, or scholarly programs show whether narrative remains the museum's practical organizing principle."
+        }
+      ],
+      "trackingTerms": [
+        "Lucas Museum opening September 22 2026",
+        "Lucas Museum narrative art reviews",
+        "Lucas Museum sparse labels",
+        "Lucas Museum inaugural exhibitions"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The public opening creates near-term evidence about visitor behavior and critical reception, followed by longer-term evidence from programming."
+      },
+      "selectionReason": "The institution tests whether changing a museum's organizing category can widen the canon without erasing meaningful differences among objects.",
+      "reviewAfter": "2026-09-23",
+      "attentionSnapshot": null
+    }
+  ]
+}
