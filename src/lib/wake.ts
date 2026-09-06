@@ -194,7 +194,10 @@ export function getWakeRecord(wakeId: string) {
 
 export function formatWakeDate(value: string | null, options: Intl.DateTimeFormatOptions = {}) {
   if (!value) return 'Event-triggered';
-  return new Date(value).toLocaleDateString('en-US', {
+  const displayDate = /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ? new Date(`${value}T12:00:00Z`)
+    : new Date(value);
+  return displayDate.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
