@@ -772,6 +772,109 @@
           "accessedAt": "2026-09-05"
         }
       ]
+    },
+    {
+      "editionId": "2026-09-06",
+      "publicationDate": "2026-09-06",
+      "publishedAt": "2026-09-06T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-06",
+      "heroImage": "/images/save-point/save-point-2026-09-06.webp",
+      "featureLane": "final-fantasy-xiv",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy III made its black battlefield for Odin's blade",
+          "game": "Final Fantasy III",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Visual-effects and battle-screen development only; no story spoilers",
+          "subjectKeys": [
+            "final-fantasy-iii-zantetsuken-scanline-effect",
+            "final-fantasy-iii-black-battle-background",
+            "rad-racer-technique-reuse"
+          ],
+          "sourceIds": [
+            "ff3-30th-anniversary-tanaka-interview"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "Holminster Switch writes while the party walks",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "major",
+          "spoilerScope": "Shadowbringers' opening dungeon, including environmental events and transformations",
+          "subjectKeys": [
+            "ffxiv-holminster-switch-level-design",
+            "ffxiv-dungeon-real-time-storytelling",
+            "ffxiv-level-design-scene-authorship"
+          ],
+          "sourceIds": [
+            "ffxiv-arata-takahashi-level-design-interview"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Chrono Trigger's harmony can move without going home",
+          "game": "Chrono Trigger",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Music theory and soundtrack discussion only; no story spoilers",
+          "subjectKeys": [
+            "chrono-trigger-nonfunctional-harmony",
+            "chrono-trigger-two-chord-harmonic-fields",
+            "chrono-trigger-functional-nonfunctional-mixture"
+          ],
+          "sourceIds": [
+            "chrono-trigger-8bit-music-theory-nonfunctional-harmony",
+            "chrono-trigger-revival-disc-official"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff3-30th-anniversary-tanaka-interview",
+          "title": "FINAL FANTASY III 30th Anniversary Special Interview Vol. 1",
+          "creator": "Square Enix, interviewing Hiromichi Tanaka",
+          "url": "https://na.finalfantasy.com/topics/171",
+          "publishedAt": "2025-04-26",
+          "role": "primary",
+          "lineage": "Official Square Enix anniversary interview republished on a page dated April 26, 2025; the page notes that the article was originally published in 2020.",
+          "accessedAt": "2026-09-06"
+        },
+        {
+          "sourceId": "ffxiv-arata-takahashi-level-design-interview",
+          "title": "FFXIV Backstage Investigators (No. 2): Lead Level Designer Arata Takahashi",
+          "creator": "Square Enix, interviewing Arata Takahashi",
+          "url": "https://na.finalfantasyxiv.com/blog/003050.html",
+          "publishedAt": "2020-11-30",
+          "role": "primary",
+          "lineage": "Official interview with FFXIV lead level designer Arata Takahashi about dungeon, overworld, and attraction design.",
+          "accessedAt": "2026-09-06"
+        },
+        {
+          "sourceId": "chrono-trigger-8bit-music-theory-nonfunctional-harmony",
+          "title": "Nonfunctional Harmony in Chrono Trigger",
+          "creator": "8-bit Music Theory",
+          "url": "https://www.youtube.com/watch?v=5zGqN1ZOEJQ",
+          "publishedAt": "2017-02-21",
+          "role": "primary",
+          "lineage": "Original music-analysis video; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "5zGqN1ZOEJQ",
+          "accessedAt": "2026-09-06"
+        },
+        {
+          "sourceId": "chrono-trigger-revival-disc-official",
+          "title": "CHRONO TRIGGER Original Soundtrack Revival Disc",
+          "creator": "Square Enix Music",
+          "url": "https://www.jp.square-enix.com/music/sem/page/chrono/trigger_revival/index_en.html",
+          "publishedAt": "2019-07-10",
+          "role": "primary",
+          "lineage": "Official soundtrack release page documenting track names and composition credits.",
+          "accessedAt": "2026-09-06"
+        }
+      ]
     }
   ]
 }
