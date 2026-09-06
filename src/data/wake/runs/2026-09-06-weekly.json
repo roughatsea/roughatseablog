@@ -1,0 +1,154 @@
+{
+  "$schema": "../wake-run.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-09-06-weekly",
+  "mode": "weekly",
+  "startedAt": "2026-09-06T07:08:44-07:00",
+  "completedAt": "2026-09-06T07:18:34-07:00",
+  "inputWindow": {
+    "start": "2026-08-31",
+    "end": "2026-09-06"
+  },
+  "inputPackets": [
+    "2026-08-31.json",
+    "2026-09-01.json",
+    "2026-09-02.json",
+    "2026-09-03.json",
+    "2026-09-04.json",
+    "2026-09-05.json",
+    "2026-09-06.json"
+  ],
+  "summary": "The first weekly Wake run admitted three deliberately different unresolved subjects, recorded one material commissioning update to an existing space-mission record, and kept the remainder of the week’s intake visible as explicit deferrals rather than allowing it to disappear.",
+  "publicHighlights": [
+    "Three new records enter The Wake: the biomedical LLM-writing prevalence estimate, the theft of the Treasure of Villena, and LUX-ZEPLIN’s anomalous high-energy event.",
+    "Roman’s early commissioning moved forward: NASA reported a successful course correction, antenna and aperture-cover deployments, and Coronagraph Instrument power-on.",
+    "Villena’s post-theft record already has a second chapter: the city unanimously created an investigation commission focused on museum security and responsibility.",
+    "Public-attention measurements remain unmeasured; the pilot still has no reproducible attention corpus."
+  ],
+  "admissions": [
+    {
+      "wakeId": "biomedical-llm-writing-prevalence",
+      "sourceSignalId": "2026-08-31-biomedical-llm-writing-estimate",
+      "observationId": "biomedical-llm-writing-prevalence-2026-09-06-admission",
+      "reason": "Admitted because a consequential headline estimate remains method-dependent and has clear paths to peer review, replication, and policy consequence."
+    },
+    {
+      "wakeId": "treasure-of-villena-theft",
+      "sourceSignalId": "2026-08-31-treasure-of-villena-theft",
+      "observationId": "treasure-of-villena-theft-2026-09-06-admission",
+      "reason": "Admitted because recovery, preservation, attribution, and museum-security consequences can all produce near-term evidence that changes the record."
+    },
+    {
+      "wakeId": "lz-anomalous-high-energy-event",
+      "sourceSignalId": "2026-09-02-lz-anomalous-event",
+      "observationId": "lz-anomalous-high-energy-event-2026-09-06-admission",
+      "reason": "Admitted because a provisional 2.6-sigma anomaly has a stable identity, accumulating data, a promised detailed paper, and clear routes to confirmation or disappearance."
+    }
+  ],
+  "updates": [
+    {
+      "wakeId": "treasure-of-villena-theft",
+      "observationIds": [
+        "treasure-of-villena-theft-2026-09-06-security-review"
+      ],
+      "summary": "The newly admitted record also captures a post-point-zero development: Villena created a municipal investigation commission to examine museum security and responsibility."
+    },
+    {
+      "wakeId": "nancy-grace-roman-space-telescope",
+      "observationIds": [
+        "nancy-grace-roman-space-telescope-2026-09-06-commissioning-review"
+      ],
+      "summary": "Roman completed its first course correction, deployed the high-gain antenna and aperture cover, and powered on the Coronagraph Instrument; remaining commissioning gates stay open."
+    }
+  ],
+  "reviews": [
+    {
+      "wakeId": "nancy-grace-roman-space-telescope",
+      "observationId": "nancy-grace-roman-space-telescope-2026-09-06-commissioning-review",
+      "materialChange": true
+    }
+  ],
+  "deferred": [
+    {
+      "signalId": "2026-08-31-reef-fish-motorboat-noise",
+      "reason": "Strong field-replication candidate, but no near-term field study or management trial was identified; deferred to keep the weekly intake selective."
+    },
+    {
+      "signalId": "2026-09-01-varifocal-mems-micromirror",
+      "reason": "The prototype has clear engineering milestones, but practical integration and reliability evidence are likely to arrive more slowly than this week’s admitted subjects."
+    },
+    {
+      "signalId": "2026-09-01-ancient-egyptian-paint-proteomics",
+      "reason": "Retained as passive intake; it is a valuable comparative baseline but has no specific announced replication or conservation milestone requiring active monitoring."
+    },
+    {
+      "signalId": "2026-09-01-constant-sample-race-detector",
+      "reason": "The algorithm is falsifiable and deployable, but no independent production benchmark or follow-up extension was identified this week; defer until such a trigger appears."
+    },
+    {
+      "signalId": "2026-09-02-cayonu-malachite-workshop",
+      "reason": "The workshop has meaningful pending analyses, but their timing is unspecified and the active collection already contains an archaeological fieldwork record; defer for now."
+    },
+    {
+      "signalId": "2026-09-02-snake-embryo-coiling",
+      "reason": "Retained as passive intake; the mechanical model is testable, but no announced manipulation or comparative follow-up creates a near-term monitoring need."
+    },
+    {
+      "signalId": "2026-09-03-superradiant-neutrino-laser-impossibility",
+      "reason": "The no-go result is already peer reviewed and substantially resolves the immediate proposal; defer unless the original authors respond or a new mechanism is proposed."
+    },
+    {
+      "signalId": "2026-09-03-swedish-occupational-persistence",
+      "reason": "The working paper is consequential, but the most informative next evidence—classification audit, journal revision, or cross-country replication—has no near-term schedule."
+    },
+    {
+      "signalId": "2026-09-03-bayeux-tapestry-london-loan",
+      "reason": "The September 10 opening is a concrete checkpoint, but admitting it alongside the Villena heritage record would crowd this week’s intake; preserve it for post-opening evidence."
+    },
+    {
+      "signalId": "2026-09-04-llm-double-auction-efficiency",
+      "reason": "Public code makes replication attractive, but model-version churn and the simplified market make the current result less durable than the biomedical writing estimate selected this week."
+    },
+    {
+      "signalId": "2026-09-04-alphafold-amyloid-structure-prediction",
+      "reason": "The peer-reviewed limitation is measurable, but no expanded resolved-amyloid benchmark or amyloid-specific successor has yet been announced."
+    },
+    {
+      "signalId": "2026-09-04-paul-williams-architecture-exhibitions",
+      "reason": "Retained as passive intake; the exhibitions have fixed dates, but the current signal primarily records institutional plans rather than a contested longitudinal claim."
+    },
+    {
+      "signalId": "2026-09-05-pottery-viscous-magnetization-authentication",
+      "reason": "The method deserves future cross-regional validation, but no independent blinded test is yet scheduled and this week already adds a cultural-heritage record."
+    },
+    {
+      "signalId": "2026-09-05-bunsen-burner-airborne-asepsis",
+      "reason": "The result challenges a durable laboratory practice, but active monitoring becomes more valuable when an independent replication or teaching-guidance change appears."
+    },
+    {
+      "signalId": "2026-09-05-grace-weir-herschel-exhibition",
+      "reason": "Retained as passive intake; the temporary exhibition has a closing milestone but its central contribution is curatorial rather than a factual claim likely to change quickly."
+    },
+    {
+      "signalId": "2026-09-06-hachimoji-rna-polymerase-transcription",
+      "reason": "The biochemical result has a long scientific trajectory, but the next decisive milestones are whole-system cellular use or independent replication with no announced schedule."
+    },
+    {
+      "signalId": "2026-09-06-sheeppox-medieval-parchment-genomes",
+      "reason": "The manuscript archive can yield more genomes, but no specific expansion or resolution of cross-species signals is yet scheduled; defer until new sampling appears."
+    },
+    {
+      "signalId": "2026-09-06-lucas-museum-narrative-art-opening",
+      "reason": "The September 22 public opening is near, but the more informative admission point is after visitor use and independent criticism begin to test the museum’s narrative-art framework."
+    }
+  ],
+  "failures": [
+    {
+      "subject": "Pre-commit npm validation and build",
+      "summary": "The connected GitHub interface supports repository reads and Git-object writes but not command execution, and the local execution container could not resolve github.com to check out the repository. Therefore `npm run validate:wake`, `npm run build:wake-exports`, and `npm run build` could not be executed locally before commit. The changed JSON was checked against the repository’s documented validator invariants before publication, and deployment status must be used as the available end-to-end build check."
+    }
+  ],
+  "recordCountAfter": 10,
+  "attentionMethod": "unmeasured",
+  "commit": null
+}

@@ -1,0 +1,124 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "lz-anomalous-high-energy-event",
+  "title": "LUX-ZEPLIN’s anomalous high-energy event",
+  "dek": "One high-energy interaction survived LZ’s known-background model. The useful story is whether more data and a detailed analysis make it accumulate, acquire a mundane explanation, or disappear.",
+  "canonicalSubject": {
+    "name": "LUX-ZEPLIN anomalous high-energy event",
+    "kind": "particle-physics-result",
+    "aliases": [
+      "LZ 2.6-sigma event",
+      "LZ high-energy WIMP candidate"
+    ]
+  },
+  "topics": [
+    "dark-matter",
+    "particle-physics",
+    "wimps",
+    "scientific-inference"
+  ],
+  "geography": [
+    "South Dakota",
+    "United States"
+  ],
+  "trackingTerms": [
+    "LUX-ZEPLIN 2.6 sigma",
+    "LZ high energy event 200 GeV",
+    "Sam Eriksen LZ anomalous event",
+    "TeVPA 2026 LZ"
+  ],
+  "originSignalIds": [
+    "2026-09-02-lz-anomalous-event"
+  ],
+  "firstObservedAt": "2026-09-02T05:00:00-07:00",
+  "admittedAt": "2026-09-06T07:27:00-07:00",
+  "whyTracked": "The anomaly has a persistent experimental identity, a promised detailed paper, accumulating exposure, and a clear path to confirmation, revision, a background explanation, or disappearance.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "first-party-only",
+    "attention": "unmeasured",
+    "assessment": "LZ has reported one 2.6-sigma high-energy event that its known-background model does not readily explain, while explicitly declining to claim dark matter. The detailed analysis was still described as forthcoming during the September 6 admission review.",
+    "updatedAt": "2026-09-06T07:27:00-07:00",
+    "lastMaterialChangeAt": "2026-09-02T05:00:00-07:00",
+    "nextReviewAfter": "2026-09-13",
+    "nextReviewTrigger": "Review immediately for the promised arXiv paper, journal publication or revision, a detector-background explanation, additional LZ exposure, or an independent experiment testing compatible interactions.",
+    "cadence": "weekly"
+  },
+  "openQuestions": [
+    "Will the anomaly retain or gain significance when LZ analyzes additional data?",
+    "Will the detailed paper identify plausible detector backgrounds or analysis choices not described in the announcement?",
+    "Can another direct-detection experiment test the heavier or nonstandard WIMP interactions compatible with the event?"
+  ],
+  "watchFor": [
+    {
+      "description": "Detailed preprint and peer review",
+      "expectedWindow": null,
+      "trigger": "The collaboration releases the promised arXiv paper, submits or publishes the analysis, or issues a revision."
+    },
+    {
+      "description": "Additional LZ exposure",
+      "expectedWindow": null,
+      "trigger": "LZ reports whether new data produce compatible events or reduce the anomaly’s significance."
+    },
+    {
+      "description": "Independent experimental comparison",
+      "expectedWindow": null,
+      "trigger": "Another dark-matter detector reports a test of the same interaction or parameter region."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "lz-anomalous-high-energy-event-2026-09-02-point-zero",
+      "observedAt": "2026-09-02T05:00:00-07:00",
+      "recordedAt": "2026-09-06T07:27:00-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "first-party-only",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "The LUX-ZEPLIN collaboration reported one high-energy interaction in 220 live days that its known-background model does not readily explain, with a local significance of 2.6 sigma; the collaboration did not claim a dark-matter discovery.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-09-02-lz-anomalous-event"
+      ],
+      "sources": [
+        {
+          "url": "https://newscenter.lbl.gov/2026/09/01/lz-sees-surprising-result-in-search-for-dark-matter/",
+          "title": "LZ Sees Surprising Result in Search for Dark Matter",
+          "publisher": "Lawrence Berkeley National Laboratory",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-02",
+          "role": "official-primary",
+          "lineage": "lz-anomalous-event-announcement"
+        },
+        {
+          "url": "https://www.brown.edu/news/2026-09-01/lz-dark-matter-results",
+          "title": "LZ experiment sees surprising result in search for dark matter",
+          "publisher": "Brown University",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-02",
+          "role": "institutional-reporting",
+          "lineage": "lz-anomalous-event-announcement"
+        }
+      ]
+    },
+    {
+      "observationId": "lz-anomalous-high-energy-event-2026-09-06-admission",
+      "observedAt": "2026-09-06T07:27:00-07:00",
+      "recordedAt": "2026-09-06T07:27:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "first-party-only",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake",
+      "summary": "Admitted because this is precisely the kind of provisional anomaly a longitudinal record can handle without upgrading statistical surprise into a discovery claim.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-09-02-lz-anomalous-event"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}

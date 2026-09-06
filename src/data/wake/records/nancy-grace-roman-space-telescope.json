@@ -39,33 +39,33 @@
     "lifecycle": "emerging",
     "evidence": "mixed",
     "attention": "unmeasured",
-    "assessment": "The telescope has launched. Deployment, commissioning, instrument performance, first images, survey yield, and the effects of immediate public access remain unresolved.",
-    "updatedAt": "2026-08-30T18:30:00-07:00",
-    "lastMaterialChangeAt": "2026-08-30T05:00:00-07:00",
-    "nextReviewAfter": "2026-12-01",
-    "nextReviewTrigger": "Review NASA deployment and commissioning reports; reactivate immediately for an anomaly, completed commissioning, or first public observations.",
-    "cadence": "monthly"
+    "assessment": "Roman has completed its first mid-course correction, deployed its high-gain antenna and aperture cover, and powered on the Coronagraph Instrument. Early commissioning is proceeding through documented milestones, while Wide Field Instrument activation, full calibration, L2 insertion, and first public observations remain unresolved.",
+    "updatedAt": "2026-09-06T07:28:00-07:00",
+    "lastMaterialChangeAt": "2026-09-06T07:28:00-07:00",
+    "nextReviewAfter": "2026-09-20",
+    "nextReviewTrigger": "Review immediately for Wide Field Instrument activation, a commissioning anomaly, L2 insertion, completed commissioning, or first public observations.",
+    "cadence": "fortnightly"
   },
   "openQuestions": [
-    "Will all deployments and instrument calibrations succeed?",
+    "Will the remaining commissioning milestones, including Wide Field Instrument activation and calibration, succeed?",
     "When will first science images and survey data be released?",
     "Will immediate public access produce substantial research beyond the mission’s planned programs?"
   ],
   "watchFor": [
     {
-      "description": "Deployment and commissioning milestones",
-      "expectedWindow": "August–November 2026",
-      "trigger": "NASA reports spacecraft or instrument deployment, anomaly, or calibration results."
+      "description": "Wide Field Instrument activation and commissioning tests",
+      "expectedWindow": "September 2026",
+      "trigger": "NASA reports instrument power-on, checkout results, calibration progress, or an anomaly."
+    },
+    {
+      "description": "L2 insertion and completed commissioning",
+      "expectedWindow": "December 2026",
+      "trigger": "NASA reports orbital insertion or completion of the commissioning campaign."
     },
     {
       "description": "First science images and initial data release",
       "expectedWindow": "Early 2027",
       "trigger": "NASA releases the first processed observations."
-    },
-    {
-      "description": "Early survey performance and discoveries",
-      "expectedWindow": "2027–2028",
-      "trigger": "Published results compare achieved field, sensitivity, cadence, and yield with mission expectations."
     }
   ],
   "observations": [
@@ -128,6 +128,48 @@
         "2026-08-30-nancy-grace-roman-launch"
       ],
       "sources": []
+    },
+    {
+      "observationId": "nancy-grace-roman-space-telescope-2026-09-06-commissioning-review",
+      "observedAt": "2026-09-06T07:28:00-07:00",
+      "recordedAt": "2026-09-06T07:28:00-07:00",
+      "kind": "development",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Early commissioning milestones succeed",
+      "summary": "NASA reported that Roman completed its first mid-course correction, deployed the high-gain antenna and aperture cover, and powered on the Coronagraph Instrument. These are successful early commissioning milestones; instrument calibration, Wide Field Instrument activation, L2 insertion, and full commissioning remain ahead.",
+      "materialChange": true,
+      "sourceSignalIds": [],
+      "sources": [
+        {
+          "url": "https://science.nasa.gov/blogs/roman/2026/08/31/nasas-roman-completes-first-mid-course-correction-burn/",
+          "title": "NASA’s Roman Completes First Mid-Course Correction Burn",
+          "publisher": "NASA",
+          "publishedAt": "2026-08-31",
+          "accessedAt": "2026-09-06",
+          "role": "official-primary",
+          "lineage": "nasa-roman-commissioning"
+        },
+        {
+          "url": "https://science.nasa.gov/blogs/roman/2026/09/01/nasa-roman-space-telescopes-antenna-visor-deployed/",
+          "title": "NASA Roman Space Telescope’s Antenna, ‘Visor’ Deployed",
+          "publisher": "NASA",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-06",
+          "role": "official-primary",
+          "lineage": "nasa-roman-commissioning"
+        },
+        {
+          "url": "https://science.nasa.gov/blogs/roman/2026/09/01/nasa-romans-planet-imager-has-powered-on/",
+          "title": "NASA Roman’s Planet Imager Has Powered On",
+          "publisher": "NASA",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-06",
+          "role": "official-primary",
+          "lineage": "nasa-roman-commissioning"
+        }
+      ]
     }
   ],
   "corrections": []
