@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { buildShip, disposeObject, Scenery } from './scenery';
 import { FlightAudio } from './audio';
+import { FlightPerformance, type QualityMode } from './performance';
+import { avoidLandmarks } from './landmarks';
 import {
   clamp,
   createWorld,
@@ -9,6 +11,8 @@ import {
   safeHeight,
   smooth,
   spawnFlight,
+  GENERATOR_VERSION,
+  type GeneratorVersion,
   type FlightState,
 } from './world';
 
@@ -30,6 +34,15 @@ export type FlightSnapshot = {
   targetBehind: boolean;
   progress: number;
   assist: boolean;
+  quality: QualityMode;
+  detail: 'high' | 'balanced' | 'low';
+  fps: number;
+  p95: number;
+  drawCalls: number;
+  triangles: number;
+  terrainTiles: number;
+  terrainPending: number;
+  terrainWorker: boolean;
 };
 export type FlightOptions = {
   snapshot: (value: FlightSnapshot) => void;
@@ -39,8 +52,14 @@ export type FlightOptions = {
 export class FlightEngine {
   private renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
-  private camera = new THREE.PerspectiveCamera(65, 1, 0.5, 120000);
+  // Celestial objects use a separate depth buffer so nearby shores and the ship
+  // retain precision even with a moon tens of kilometres away.
+  private camera = new THREE.PerspectiveCamera(65, 1, 2, 22000);
+  private backgroundScene = new THREE.Scene();
+  private backgroundCamera = new THREE.PerspectiveCamera(65, 1, 10, 120000);
   private scenery: Scenery;
+  private nextScenery: Scenery | null = null;
+  private performance = new FlightPerformance();
   private world;
   private flight: FlightState;
   private ship = buildShip();
@@ -77,6 +96,26 @@ export class FlightEngine {
   private cameraPosition = new THREE.Vector3();
   private lookAt = new THREE.Vector3();
   private targetScreen = new THREE.Vector3();
+  private shipMatrix = new THREE.Matrix4();
+  private shipDirection = new THREE.Vector3();
+  private spaceColor = new THREE.Color('#030612');
+  private warpColor = new THREE.Color('#a8dcff');
+  private arrivalColor = new THREE.Color();
+  private transition = new THREE.Mesh(
+    new THREE.PlaneGeometry(2, 2),
+    new THREE.ShaderMaterial({
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+      uniforms: { tint: { value: new THREE.Color() }, opacity: { value: 0 } },
+      vertexShader: 'void main(){gl_Position=vec4(position.xy,0.,1.);}',
+      fragmentShader: `uniform vec3 tint; uniform float opacity;
+        void main(){gl_FragColor=vec4(tint,opacity);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+        }`,
+    }),
+  );
   private initialCamera = true;
   private abort = new AbortController();
   private reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -86,8 +125,9 @@ export class FlightEngine {
     private canvas: HTMLCanvasElement,
     private seed: string,
     private options: FlightOptions,
+    private version: GeneratorVersion = GENERATOR_VERSION,
   ) {
-    this.world = createWorld(seed, 0);
+    this.world = createWorld(seed, 0, version);
     this.flight = spawnFlight(this.world);
     this.renderer = new THREE.WebGLRenderer({
       canvas,
@@ -99,6 +139,8 @@ export class FlightEngine {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.12;
+    this.renderer.autoClear = false;
+    this.renderer.info.autoReset = false;
     this.renderer.debug.onShaderError = (gl, program, vertex, fragment) => {
       console.error(
         'Flight shader error',
@@ -116,7 +158,11 @@ export class FlightEngine {
     this.scene.add(this.ambient, this.sun, this.ship.ship, this.rings);
     this.scenery = new Scenery(this.world);
     this.scene.add(this.scenery.root);
+    this.backgroundScene.add(this.scenery.background);
     this.scenery.update(this.flight.x, this.flight.y, this.flight.z, 0, true);
+    this.transition.renderOrder = 100;
+    this.transition.frustumCulled = false;
+    this.scene.add(this.transition);
     const random = randomSequence(this.world.id + 80);
     this.warpBase = new Float32Array(480 * 3);
     for (let i = 0; i < 480; i++) {
@@ -156,6 +202,8 @@ export class FlightEngine {
     this.renderer.setSize(width, height, false);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+    this.backgroundCamera.aspect = this.camera.aspect;
+    this.backgroundCamera.updateProjectionMatrix();
     this.needsRender = true;
   };
 
@@ -241,6 +289,8 @@ export class FlightEngine {
     this.pointer.active = false;
     this.pointer.x = this.pointer.y = 0;
     this.boosting = false;
+    this.performance.reset();
+    this.previous = 0;
     this.emit();
   }
   setCruise(value: boolean) {
@@ -259,6 +309,56 @@ export class FlightEngine {
   }
   setSound(value: boolean) {
     return this.audio.enable(value);
+  }
+
+  setQuality(mode: QualityMode) {
+    this.performance.setMode(mode);
+    this.applyQuality();
+    this.emit();
+  }
+
+  private applyQuality() {
+    this.scenery.setDetail(this.performance.detail);
+    this.nextScenery?.setDetail(this.performance.detail);
+    this.renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, 1.65) * this.performance.resolutionScale,
+    );
+    this.resize();
+  }
+
+  /** Development preview controls exercise the same simulation/render paths. */
+  previewScenario(scenario: 'surface' | 'orbit' | 'gate' | 'arrival') {
+    if (!import.meta.env.DEV) return;
+    this.clearTrail();
+    this.nextScenery?.dispose();
+    this.nextScenery = null;
+    this.flight = spawnFlight(this.world);
+    this.phase = 'surface';
+    this.phaseTime = 0;
+    if (scenario === 'arrival') this.enterNextWorld();
+    if (scenario === 'orbit' || scenario === 'gate') {
+      this.flight.y = 5600;
+      this.flight.pitch = 0.4;
+      this.phase = 'orbit';
+      this.createTrail();
+      if (scenario === 'gate') {
+        const goal = this.ringTargets.at(-1)!;
+        this.flight.x = goal.x;
+        this.flight.y = goal.y;
+        this.flight.z = goal.z + 180;
+        this.flight.pitch = 0;
+        this.flight.yaw = 0;
+        this.ringIndex = 6;
+        this.rings.children.slice(0, 6).forEach((ring) => {
+          ring.visible = false;
+        });
+      }
+    }
+    this.cruise = scenario !== 'gate';
+    this.initialCamera = true;
+    this.needsRender = true;
+    this.setPaused(false);
+    this.canvas.focus();
   }
 
   private createTrail() {
@@ -313,14 +413,29 @@ export class FlightEngine {
     this.gate = null;
   }
 
+  private prepareNextWorld() {
+    if (this.nextScenery) return;
+    this.nextScenery = new Scenery(createWorld(this.seed, this.world.index + 1, this.version));
+    this.nextScenery.setDetail(this.performance.detail);
+    const spawn = spawnFlight(this.nextScenery.world);
+    this.nextScenery.update(spawn.x, 4300, spawn.z, this.clock, true);
+    // Acquire shared shader programs before the old world's materials release
+    // them, avoiding another compilation burst when the new planet appears.
+    this.renderer.compile(this.nextScenery.root, this.camera, this.scene);
+    this.renderer.compile(this.nextScenery.background, this.backgroundCamera, this.backgroundScene);
+  }
+
   private enterNextWorld() {
-    const index = this.world.index + 1;
+    this.prepareNextWorld();
     this.scene.remove(this.scenery.root);
+    this.backgroundScene.remove(this.scenery.background);
     this.scenery.dispose();
     this.clearTrail();
-    this.world = createWorld(this.seed, index);
-    this.scenery = new Scenery(this.world);
+    this.scenery = this.nextScenery!;
+    this.nextScenery = null;
+    this.world = this.scenery.world;
     this.scene.add(this.scenery.root);
+    this.backgroundScene.add(this.scenery.background);
     this.flight = spawnFlight(this.world);
     this.flight.y = 4300;
     this.flight.pitch = -0.36;
@@ -330,6 +445,7 @@ export class FlightEngine {
     this.phase = 'arrival';
     this.phaseTime = 0;
     this.initialCamera = true;
+    this.performance.reset();
   }
 
   private simulate(dt: number) {
@@ -389,7 +505,8 @@ export class FlightEngine {
       Math.sin(f.pitch),
       -Math.cos(f.yaw) * Math.cos(f.pitch),
     );
-    const nx = f.x + this.forward.x * f.speed * dt,
+    this.position.set(f.x, f.y, f.z);
+    let nx = f.x + this.forward.x * f.speed * dt,
       nz = f.z + this.forward.z * f.speed * dt;
     f.y += this.forward.y * f.speed * dt;
     if (f.y < 1600) {
@@ -406,6 +523,16 @@ export class FlightEngine {
       if (f.y < floor) {
         f.y = floor;
         f.pitch = Math.max(f.pitch, 0.08);
+        this.assisted = true;
+      }
+    }
+    if (f.y < 1600 && this.world.version === 2) {
+      this.target.set(nx, f.y, nz);
+      const correction = avoidLandmarks(this.world, this.position, this.target);
+      if (correction.assisted) {
+        nx = correction.x;
+        nz = correction.z;
+        f.y = Math.max(correction.y, safeHeight(this.world, f.x, f.z, nx, nz));
         this.assisted = true;
       }
     }
@@ -432,6 +559,7 @@ export class FlightEngine {
         if (this.position.distanceTo(destination) < 440 && this.boosting) {
           this.phase = 'hyperspace';
           this.phaseTime = 0;
+          this.prepareNextWorld();
         } else if (
           this.ringIndex < this.ringTargets.length - 1 &&
           this.position.distanceTo(this.ringTargets[this.ringIndex]) < 330
@@ -453,11 +581,12 @@ export class FlightEngine {
       Math.sin(f.pitch),
       -Math.cos(f.yaw) * Math.cos(f.pitch),
     );
+    this.shipDirection.copy(this.origin).add(this.forward);
     this.ship.ship.quaternion.setFromRotationMatrix(
-      new THREE.Matrix4().lookAt(this.origin, this.origin.clone().add(this.forward), this.up),
+      this.shipMatrix.lookAt(this.origin, this.shipDirection, this.up),
     );
     this.ship.ship.rotateZ(f.bank);
-    this.ship.exhaust.scale.z = 1 + (this.boosting ? 1.8 : 0) + Math.sin(this.clock * 22) * 0.06;
+    this.ship.update(f.speed, this.boosting, f.bank, f.pitch, this.clock, dt);
     this.ship.ship.visible = !this.pilot;
     const warp = this.phase === 'hyperspace';
     const distance = this.reducedMotion ? 36 : 36 + smooth(120, 1100, f.speed) * 13;
@@ -478,17 +607,33 @@ export class FlightEngine {
     );
     this.camera.updateProjectionMatrix();
     this.scenery.root.visible = !warp;
-    this.scenery.update(f.x, f.y, f.z, this.clock);
+    this.scenery.setTransit(warp ? smooth(0, 1, this.phaseTime) : 0);
+    this.scenery.update(
+      f.x,
+      f.y,
+      f.z,
+      this.clock,
+      false,
+      this.forward.x * f.speed,
+      this.forward.z * f.speed,
+    );
+    if (warp && this.nextScenery) {
+      const spawnZ = 0;
+      this.nextScenery.update(this.nextScenery.world.canyon(spawnZ), 4300, spawnZ, this.clock);
+    }
     this.rings.visible = this.phase === 'orbit';
     this.rings.position.copy(this.origin).multiplyScalar(-1);
     const space = smooth(1500, 5500, f.y);
-    this.fog.near = 1600 + space * 60000;
-    this.fog.far = 5400 + space * 80000;
-    this.fog.color.set(this.world.fog).lerp(new THREE.Color('#030612'), space);
+    // Keep the terrain window's outer edge inside the haze at every altitude.
+    // Orbital rings opt out of fog, and celestial objects use their own pass.
+    this.fog.near = 1400;
+    this.fog.far = 3400;
+    this.fog.color.set(this.world.fog).lerp(this.spaceColor, space);
     this.ambient.intensity = 2.3 - space * 0.8;
     this.warp.visible = warp;
     if (warp) {
-      this.scene.background = new THREE.Color('#05091e');
+      this.arrivalColor.set(this.nextScenery?.world.skyHorizon ?? this.world.skyHorizon);
+      this.scenery.setArrivalTint(this.arrivalColor, smooth(2, 6.5, this.phaseTime) * 0.65);
       const attribute = this.warp.geometry.getAttribute('position');
       const amount = smooth(0, 1.4, this.phaseTime) * (1 - smooth(5.8, 6.5, this.phaseTime));
       for (let i = 0; i < 480; i++) {
@@ -501,7 +646,28 @@ export class FlightEngine {
       attribute.needsUpdate = true;
       this.warp.quaternion.copy(this.camera.quaternion);
       this.warp.material.opacity = amount * 0.9;
-    } else this.scene.background = null;
+      this.warp.material.color
+        .copy(this.warpColor)
+        .lerp(this.arrivalColor, smooth(2, 6.5, this.phaseTime) * 0.7);
+    } else this.scenery.setArrivalTint(this.world.skyHorizon, 0);
+    const veil = warp
+      ? smooth(5.4, 6.5, this.phaseTime) * 0.4
+      : this.phase === 'arrival'
+        ? (1 - smooth(0, 1.8, this.phaseTime)) * 0.4
+        : 0;
+    this.transition.visible = veil > 0.001;
+    this.transition.material.uniforms.tint.value.set(
+      warp ? this.arrivalColor : this.world.skyHorizon,
+    );
+    this.transition.material.uniforms.opacity.value = veil;
+    this.backgroundCamera.position.copy(this.camera.position);
+    this.backgroundCamera.quaternion.copy(this.camera.quaternion);
+    this.backgroundCamera.fov = this.camera.fov;
+    this.backgroundCamera.updateProjectionMatrix();
+    this.renderer.info.reset();
+    this.renderer.clear();
+    this.renderer.render(this.backgroundScene, this.backgroundCamera);
+    this.renderer.clearDepth();
     this.renderer.render(this.scene, this.camera);
     this.audio.update(f.speed, f.y, warp, this.clock);
   }
@@ -542,15 +708,26 @@ export class FlightEngine {
       targetBehind,
       progress: this.phase === 'hyperspace' ? this.phaseTime / 6.5 : this.ringIndex / 6,
       assist: this.assisted,
+      quality: this.performance.mode,
+      detail: (['high', 'balanced', 'low'] as const)[this.performance.detail],
+      fps: this.performance.fps,
+      p95: this.performance.p95,
+      drawCalls: this.renderer.info.render.calls,
+      triangles: this.renderer.info.render.triangles,
+      terrainTiles: this.scenery.stats.tiles,
+      terrainPending: this.scenery.stats.pending,
+      terrainWorker: this.scenery.stats.worker,
     });
   }
 
   private animate = (now: number) => {
     if (this.disposed) return;
-    const dt = Math.min((now - (this.previous || now)) / 1000, 0.05);
+    const elapsed = now - (this.previous || now);
+    const dt = Math.min(elapsed / 1000, 0.05);
     this.previous = now;
     try {
       if (!this.paused) {
+        if (this.performance.record(elapsed)) this.applyQuality();
         this.simulate(dt);
         this.render(dt);
       } else if (this.needsRender) {
@@ -563,6 +740,7 @@ export class FlightEngine {
       }
     } catch (error) {
       this.paused = true;
+      this.audio.setPaused(true);
       this.options.error('Flight could not continue. Reload to restart this same journey.');
       console.error('Flight error', error);
       return;
@@ -577,9 +755,11 @@ export class FlightEngine {
     this.resizeObserver.disconnect();
     this.audio.dispose();
     this.scenery.dispose();
+    this.nextScenery?.dispose();
     disposeObject(this.ship.ship);
     disposeObject(this.rings);
     disposeObject(this.warp);
+    disposeObject(this.transition);
     this.renderer.dispose();
   }
 }

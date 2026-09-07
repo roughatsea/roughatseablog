@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FlightEngine, type FlightSnapshot } from './engine';
-import { journeyUrl, readJourney } from './world';
+import { GENERATOR_VERSION, journeyUrl, readJourney, type GeneratorVersion } from './world';
+import type { QualityMode } from './performance';
 import './fly.css';
 
 const initial: FlightSnapshot = {
@@ -21,6 +22,15 @@ const initial: FlightSnapshot = {
   targetBehind: false,
   progress: 0,
   assist: false,
+  quality: 'auto',
+  detail: 'high',
+  fps: 0,
+  p95: 0,
+  drawCalls: 0,
+  triangles: 0,
+  terrainTiles: 0,
+  terrainPending: 0,
+  terrainWorker: false,
 };
 const phaseLabels = {
   surface: 'Above the surface',
@@ -99,6 +109,8 @@ export default function FlyExperience() {
   const stateRef = useRef(initial);
   const [flight, setFlight] = useState(initial);
   const [seed, setSeed] = useState('');
+  const [version, setVersion] = useState<GeneratorVersion>(GENERATOR_VERSION);
+  const [inspect, setInspect] = useState(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
   const [help, setHelp] = useState(false);
@@ -112,20 +124,31 @@ export default function FlyExperience() {
   useEffect(() => {
     const journey = readJourney(window.location.search);
     setSeed(journey.seed);
+    setVersion(journey.version);
+    const inspection =
+      import.meta.env.DEV && new URLSearchParams(window.location.search).has('inspect');
+    setInspect(inspection);
     if (journey.unsupported) {
       setError('This journey uses a generation version that this release cannot open.');
       return;
     }
-    window.history.replaceState(null, '', journeyUrl(window.location.href, journey.seed));
+    const address = new URL(journeyUrl(window.location.href, journey.seed, journey.version));
+    if (inspection) address.searchParams.set('inspect', '');
+    window.history.replaceState(null, '', address);
     try {
-      engine.current = new FlightEngine(canvas.current!, journey.seed, {
-        snapshot: (value) => {
-          stateRef.current = value;
-          setFlight(value);
-          setReady(true);
+      engine.current = new FlightEngine(
+        canvas.current!,
+        journey.seed,
+        {
+          snapshot: (value) => {
+            stateRef.current = value;
+            setFlight(value);
+            setReady(true);
+          },
+          error: setError,
         },
-        error: setError,
-      });
+        journey.version,
+      );
     } catch (reason) {
       console.error('Flight initialization failed', reason);
       setError(
@@ -173,7 +196,7 @@ export default function FlyExperience() {
   }, []);
 
   async function share() {
-    const url = journeyUrl(window.location.href, seed);
+    const url = journeyUrl(window.location.href, seed, version);
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -208,7 +231,7 @@ export default function FlyExperience() {
   function keepDialogFocus(event: React.KeyboardEvent<HTMLElement>) {
     if (event.key !== 'Tab') return;
     const controls = event.currentTarget.querySelectorAll<HTMLElement>(
-      'a[href],button:not([disabled]),input',
+      'a[href],button:not([disabled]),input,select',
     );
     const first = controls[0],
       last = controls[controls.length - 1];
@@ -245,11 +268,72 @@ export default function FlyExperience() {
           disabled={!seed}
           title="Copy a link to this journey"
         >
-          <span className="journey-caption">{copied ? 'LINK COPIED' : 'JOURNEY'}</span>
+          <span className="journey-caption">
+            {copied ? 'LINK COPIED' : `JOURNEY · V${version}`}
+          </span>
           <span className="journey-seed">{seed || '…'}</span>
           <Icon name="share" />
         </button>
       </header>
+
+      {import.meta.env.DEV && inspect && ready && (
+        <aside className="flight-inspector" aria-label="Flight diagnostics">
+          <div className="inspector-heading">Flight preview · v{version}</div>
+          <dl>
+            <div>
+              <dt>Frame rate</dt>
+              <dd data-metric="fps">{flight.fps.toFixed(1)} fps</dd>
+            </div>
+            <div>
+              <dt>Frame p95</dt>
+              <dd data-metric="p95">{flight.p95.toFixed(1)} ms</dd>
+            </div>
+            <div>
+              <dt>Graphics</dt>
+              <dd data-metric="quality">
+                {flight.quality} / {flight.detail}
+              </dd>
+            </div>
+            <div>
+              <dt>Draw calls</dt>
+              <dd data-metric="draw-calls">{flight.drawCalls}</dd>
+            </div>
+            <div>
+              <dt>Triangles</dt>
+              <dd data-metric="triangles">{flight.triangles.toLocaleString()}</dd>
+            </div>
+            <div>
+              <dt>Terrain tiles</dt>
+              <dd data-metric="terrain-tiles">{flight.terrainTiles}</dd>
+            </div>
+            <div>
+              <dt>Tiles pending</dt>
+              <dd data-metric="terrain-pending">{flight.terrainPending}</dd>
+            </div>
+            <div>
+              <dt>Terrain worker</dt>
+              <dd data-metric="terrain-worker">
+                {flight.terrainWorker ? 'Active' : 'Main thread fallback'}
+              </dd>
+            </div>
+          </dl>
+          <div className="inspector-scenarios">
+            {(['surface', 'orbit', 'gate', 'arrival'] as const).map((scenario) => (
+              <button
+                key={scenario}
+                onClick={() => {
+                  setHelp(false);
+                  setShareFallback('');
+                  engine.current?.previewScenario(scenario);
+                  canvas.current?.focus();
+                }}
+              >
+                Preview {scenario}
+              </button>
+            ))}
+          </div>
+        </aside>
+      )}
 
       {ready && (
         <>
@@ -265,7 +349,10 @@ export default function FlyExperience() {
           {flight.phase === 'orbit' && flight.targetDistance > 0 && (
             <div
               className="trail-target"
-              style={{ left: `${50 + flight.targetX * 50}%`, top: `${50 - flight.targetY * 50}%` }}
+              style={{
+                left: `${50 + flight.targetX * 50}%`,
+                top: `${50 - flight.targetY * 50}%`,
+              }}
             >
               <span className="target-diamond" aria-hidden="true" />
               <span>
@@ -414,7 +501,7 @@ export default function FlyExperience() {
             <h2>A moment on the ground.</h2>
             <p>{error}</p>
             <div className="panel-actions">
-              <a className="primary-action" href={seed ? `/fly?seed=${seed}&v=1` : '/fly'}>
+              <a className="primary-action" href={seed ? `/fly?seed=${seed}&v=${version}` : '/fly'}>
                 Restart journey
               </a>
               <a href="/">Return home</a>
@@ -507,11 +594,25 @@ export default function FlyExperience() {
               />
               <span>{Math.round(flight.throttle * 100)}%</span>
             </label>
+            <div className="graphics-control">
+              <label htmlFor="flight-graphics">Graphics</label>
+              <select
+                id="flight-graphics"
+                value={flight.quality}
+                onChange={(event) => engine.current?.setQuality(event.target.value as QualityMode)}
+              >
+                <option value="auto">Auto</option>
+                <option value="high">High</option>
+                <option value="balanced">Balanced</option>
+              </select>
+              <p>Auto adjusts detail for a steady flight.</p>
+            </div>
             <div className="panel-actions">
               <button className="primary-action" onClick={resume} autoFocus>
                 Continue flight <span aria-hidden="true">↗</span>
               </button>
               <a href="/">Return home</a>
+              <a href="/fly?v=2">New journey</a>
             </div>
           </div>
         </section>

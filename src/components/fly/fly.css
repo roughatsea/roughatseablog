@@ -19,6 +19,7 @@ body {
 }
 button,
 input,
+select,
 a {
   -webkit-tap-highlight-color: transparent;
 }
@@ -41,6 +42,7 @@ a {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
+select:focus-visible,
 canvas:focus-visible {
   outline: 2px solid #bbf4eb;
   outline-offset: 5px;
@@ -507,8 +509,33 @@ kbd {
   width: 34px;
   text-align: right;
 }
+.graphics-control {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 22px;
+  color: #c9d5db;
+  font-size: 14px;
+}
+.graphics-control select {
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid #ffffff32;
+  border-radius: 6px;
+  background: #162537;
+  color: #edf4ee;
+  font: inherit;
+}
+.graphics-control p {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 13px;
+  color: #a5b7c5;
+}
 .panel-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 25px;
   margin-top: 30px;
@@ -569,6 +596,56 @@ kbd {
   border-radius: 8px;
   background: #101c2bf0;
   color: #edf4ee;
+}
+.flight-inspector {
+  position: absolute;
+  top: 108px;
+  left: 24px;
+  z-index: 4;
+  width: 300px;
+  max-width: calc(100% - 48px);
+  padding: 14px;
+  border: 1px solid #ffffff35;
+  border-radius: 10px;
+  background: #0c172bea;
+  color: #e0eee9;
+  font:
+    11px/1.5 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  font-variant-numeric: tabular-nums;
+}
+.inspector-heading {
+  font-weight: 600;
+  color: #b9eedb;
+}
+.flight-inspector dl {
+  margin: 10px 0;
+}
+.flight-inspector dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.flight-inspector dd {
+  margin: 0;
+  text-align: right;
+}
+.inspector-scenarios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.inspector-scenarios button {
+  padding: 7px 5px;
+  border: 1px solid #ffffff2d;
+  border-radius: 5px;
+  background: #21354a;
+  font: inherit;
+}
+.inspector-scenarios button:hover {
+  background: #324a62;
 }
 @media (max-width: 900px) {
   .flight-header {
