@@ -1,0 +1,350 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WakeRecordCard from '../../components/WakeRecordCard.astro';
+import { latestWakeRun, wakeRecords, formatWakeDate } from '../../lib/wake';
+
+const changedIds = new Set([
+  ...(latestWakeRun?.admissions.map((entry) => entry.wakeId) ?? []),
+  ...(latestWakeRun?.updates.map((entry) => entry.wakeId) ?? []),
+  ...(latestWakeRun?.reviews.filter((entry) => entry.materialChange).map((entry) => entry.wakeId) ?? []),
+]);
+const topicOptions = Array.from(new Set(wakeRecords.flatMap((record) => record.topics))).sort();
+const lifecycleCounts = wakeRecords.reduce<Record<string, number>>((counts, record) => {
+  counts[record.current.lifecycle] = (counts[record.current.lifecycle] ?? 0) + 1;
+  return counts;
+}, {});
+const observationCount = wakeRecords.reduce((sum, record) => sum + record.observations.length, 0);
+---
+
+<BaseLayout
+  title="The Wake"
+  description="A longitudinal record of what happened after Rough at Sea first noticed a signal."
+>
+  <header class="wake-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">A longitudinal observatory · Pilot</p>
+      <h1>The Wake</h1>
+      <p class="lede">
+        Soundings notices the signal. The Wake records what followed—without confusing attention
+        for evidence, repetition for corroboration, or hindsight for what was known at the start.
+      </p>
+      <div class="hero-actions">
+        <a class="primary-action" href="#records">Explore the records</a>
+        <a href="/wake/methodology/">Read the methodology</a>
+      </div>
+    </div>
+    <svg class="wake-mark" aria-hidden="true" viewBox="0 0 340 220" fill="none">
+      <path d="M35 110c36-43 67-43 103 0s67 43 103 0 51-43 64-29" />
+      <path d="M35 135c36-43 67-43 103 0s67 43 103 0 51-43 64-29" />
+      <path d="M35 160c36-43 67-43 103 0s67 43 103 0 51-43 64-29" />
+      <circle cx="55" cy="65" r="8" />
+      <circle cx="55" cy="65" r="23" />
+      <circle cx="55" cy="65" r="39" />
+      <path d="M55 65 205 25" />
+    </svg>
+  </header>
+
+  <section class="stat-grid" aria-label="Wake pilot summary">
+    <div class="glass-panel"><strong>{wakeRecords.length}</strong><span>active records</span></div>
+    <div class="glass-panel"><strong>{observationCount}</strong><span>dated observations</span></div>
+    <div class="glass-panel"><strong>{Object.keys(lifecycleCounts).length}</strong><span>lifecycle states</span></div>
+    <div class="glass-panel"><strong>0</strong><span>invented attention scores</span></div>
+  </section>
+
+  {latestWakeRun && (
+    <section class="latest-run glass-panel" aria-labelledby="latest-run-title">
+      <div class="run-heading">
+        <div>
+          <p class="eyebrow">Latest run · {latestWakeRun.mode}</p>
+          <h2 id="latest-run-title">{formatWakeDate(latestWakeRun.completedAt)}</h2>
+        </div>
+        <span>{latestWakeRun.runId}</span>
+      </div>
+      <p>{latestWakeRun.summary}</p>
+      <ul>
+        {latestWakeRun.publicHighlights.map((highlight) => <li>{highlight}</li>)}
+      </ul>
+    </section>
+  )}
+
+  <section class="instrument-panel" id="records" aria-labelledby="records-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">The active register</p>
+        <h2 id="records-title">What we are following</h2>
+      </div>
+      <p><span id="visible-count">{wakeRecords.length}</span> of {wakeRecords.length} records</p>
+    </div>
+
+    <div class="view-switcher" role="group" aria-label="Quick views">
+      <button type="button" class="is-active" data-view="all">All records</button>
+      <button type="button" data-view="changed">Changed in latest run</button>
+      <button type="button" data-view="unresolved">Still unresolved</button>
+      <button type="button" data-view="disputed">Disputed</button>
+    </div>
+
+    <div class="filters glass-panel">
+      <label>
+        <span>Search</span>
+        <input id="wake-search" type="search" placeholder="Subject, alias, or topic" />
+      </label>
+      <label>
+        <span>Lifecycle</span>
+        <select id="wake-lifecycle">
+          <option value="all">All states</option>
+          {Object.keys(lifecycleCounts).sort().map((state) => (
+            <option value={state}>{state.replaceAll('-', ' ')} ({lifecycleCounts[state]})</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        <span>Topic</span>
+        <select id="wake-topic">
+          <option value="all">All topics</option>
+          {topicOptions.map((topic) => <option value={topic}>{topic}</option>)}
+        </select>
+      </label>
+      <label>
+        <span>Sort</span>
+        <select id="wake-sort">
+          <option value="updated">Recently updated</option>
+          <option value="first">First observed</option>
+          <option value="title">Title</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="record-grid" data-record-grid>
+      {wakeRecords.map((record) => (
+        <WakeRecordCard record={record} changedInLatestRun={changedIds.has(record.wakeId)} />
+      ))}
+    </div>
+    <p class="empty-state" hidden>No records match this view.</p>
+  </section>
+
+  <section class="data-note glass-panel">
+    <div>
+      <p class="eyebrow">The data beneath the interface</p>
+      <h2>Use the record yourself</h2>
+      <p>
+        The complete pilot is downloadable. JSON preserves observations, sources, questions, and
+        run history; CSV provides a flat index for ordinary analysis.
+      </p>
+    </div>
+    <div class="download-actions">
+      <a href="/wake/data.json" download>Download JSON</a>
+      <a href="/wake/data.csv" download>Download CSV</a>
+    </div>
+  </section>
+
+  <aside class="attention-note">
+    <strong>Attention is currently unmeasured.</strong>
+    The pilot will not turn unstable search-result estimates into precise-looking history. A future
+    attention layer must use a reproducible corpus, stored queries, result sets, and source-lineage
+    deduplication.
+  </aside>
+</BaseLayout>
+
+<style>
+  :global(main.container) { max-width: 1180px; }
+  .wake-hero {
+    align-items: center;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+    margin: 0 auto 2rem;
+    min-height: 21rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-copy { max-width: 48rem; position: relative; z-index: 1; }
+  .eyebrow {
+    color: var(--link-color);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(4rem, 11vw, 7.5rem);
+    letter-spacing: -0.055em;
+    line-height: 0.9;
+    margin-bottom: 1.25rem;
+  }
+  .lede {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: clamp(1.08rem, 2vw, 1.28rem);
+    line-height: 1.7;
+    max-width: 47rem;
+  }
+  .hero-actions,
+  .download-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .hero-actions a,
+  .download-actions a {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 650;
+    padding: 0.65rem 0.95rem;
+  }
+  .hero-actions a:hover,
+  .download-actions a:hover { border-color: var(--link-color); color: var(--link-color); }
+  .hero-actions .primary-action { background: var(--text-primary); color: var(--bg-color); }
+  .wake-mark {
+    color: var(--link-color);
+    height: auto;
+    justify-self: end;
+    max-width: 26rem;
+    opacity: 0.72;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+    width: 100%;
+  }
+  .stat-grid {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 1rem;
+  }
+  .stat-grid div { border-radius: 12px; padding: 1rem 1.15rem; }
+  .stat-grid strong { display: block; font-family: var(--font-serif); font-size: 2.2rem; font-weight: 400; line-height: 1; }
+  .stat-grid span { color: var(--text-secondary); font-size: 0.68rem; }
+  .latest-run,
+  .data-note { border-radius: 16px; margin-bottom: 3.5rem; padding: clamp(1.25rem, 4vw, 2rem); }
+  .run-heading,
+  .section-heading,
+  .data-note { align-items: flex-start; display: flex; justify-content: space-between; gap: 1.5rem; }
+  .run-heading > span { color: var(--text-secondary); font-family: monospace; font-size: 0.7rem; }
+  .latest-run h2,
+  .section-heading h2,
+  .data-note h2 { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.03em; }
+  .latest-run > p { color: var(--text-secondary); max-width: 56rem; }
+  .latest-run ul { display: grid; gap: 0.55rem; margin: 1rem 0 0 1.2rem; }
+  .latest-run li { color: var(--text-secondary); padding-left: 0.25rem; }
+  .instrument-panel { scroll-margin-top: 6rem; }
+  .section-heading { margin-bottom: 1rem; }
+  .section-heading > p { color: var(--text-secondary); font-size: 0.75rem; padding-top: 0.8rem; }
+  .view-switcher { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.8rem; }
+  .view-switcher button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.72rem;
+    padding: 0.45rem 0.75rem;
+  }
+  .view-switcher button:hover,
+  .view-switcher button.is-active { background: var(--text-primary); border-color: var(--text-primary); color: var(--bg-color); }
+  .filters {
+    border-radius: 12px;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: minmax(14rem, 1.5fr) repeat(3, minmax(9rem, 1fr));
+    margin-bottom: 1rem;
+    padding: 0.85rem;
+  }
+  .filters label { display: grid; gap: 0.3rem; }
+  .filters label > span { color: var(--text-secondary); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .filters input,
+  .filters select {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 0.78rem;
+    min-width: 0;
+    padding: 0.62rem 0.7rem;
+    width: 100%;
+  }
+  .filters input:focus,
+  .filters select:focus { border-color: var(--link-color); outline: 1px solid var(--link-color); }
+  .record-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 3.5rem; }
+  .empty-state { border: 1px dashed var(--border-color); border-radius: 12px; color: var(--text-secondary); margin-bottom: 3rem; padding: 2rem; text-align: center; }
+  .data-note { align-items: center; }
+  .data-note p:last-child { color: var(--text-secondary); margin: 0; max-width: 48rem; }
+  .download-actions { flex: 0 0 auto; }
+  .attention-note {
+    border-left: 2px solid var(--link-color);
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    margin: 0 auto 5rem;
+    max-width: 58rem;
+    padding: 0.35rem 0 0.35rem 1.25rem;
+  }
+  .attention-note strong { color: var(--text-primary); }
+  @media (max-width: 820px) {
+    .wake-hero { grid-template-columns: 1fr; min-height: auto; }
+    .wake-mark { max-width: 20rem; opacity: 0.35; position: absolute; right: -3rem; top: 1rem; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .record-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .stat-grid,
+    .filters { grid-template-columns: 1fr; }
+    .run-heading,
+    .section-heading,
+    .data-note { align-items: stretch; flex-direction: column; }
+  }
+</style>
+
+<script>
+  const grid = document.querySelector<HTMLElement>('[data-record-grid]');
+  const search = document.querySelector<HTMLInputElement>('#wake-search');
+  const lifecycle = document.querySelector<HTMLSelectElement>('#wake-lifecycle');
+  const topic = document.querySelector<HTMLSelectElement>('#wake-topic');
+  const sort = document.querySelector<HTMLSelectElement>('#wake-sort');
+  const count = document.querySelector<HTMLElement>('#visible-count');
+  const empty = document.querySelector<HTMLElement>('.empty-state');
+  const viewButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-view]'));
+  let activeView = 'all';
+
+  function applyFilters() {
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('[data-wake-card]'));
+    const query = search?.value.trim().toLowerCase() ?? '';
+    const lifecycleValue = lifecycle?.value ?? 'all';
+    const topicValue = topic?.value ?? 'all';
+
+    for (const card of cards) {
+      const matchesSearch = !query || (card.dataset.title ?? '').includes(query) || (card.dataset.topics ?? '').includes(query);
+      const matchesLifecycle = lifecycleValue === 'all' || card.dataset.lifecycle === lifecycleValue;
+      const matchesTopic = topicValue === 'all' || (card.dataset.topics ?? '').split('|').includes(topicValue);
+      const matchesView =
+        activeView === 'all' ||
+        (activeView === 'changed' && card.dataset.changed === 'true') ||
+        (activeView === 'unresolved' && card.dataset.unresolved === 'true') ||
+        (activeView === 'disputed' && card.dataset.lifecycle === 'disputed');
+      card.hidden = !(matchesSearch && matchesLifecycle && matchesTopic && matchesView);
+    }
+
+    cards.sort((a, b) => {
+      if (sort?.value === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '');
+      if (sort?.value === 'first') return Number(a.dataset.firstObserved) - Number(b.dataset.firstObserved);
+      return Number(b.dataset.updated) - Number(a.dataset.updated);
+    });
+    cards.forEach((card) => grid.append(card));
+
+    const visible = cards.filter((card) => !card.hidden).length;
+    if (count) count.textContent = String(visible);
+    if (empty) empty.hidden = visible !== 0;
+  }
+
+  [search, lifecycle, topic, sort].forEach((control) => {
+    control?.addEventListener(control === search ? 'input' : 'change', applyFilters);
+  });
+  viewButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeView = button.dataset.view ?? 'all';
+      viewButtons.forEach((candidate) => candidate.classList.toggle('is-active', candidate === button));
+      applyFilters();
+    });
+  });
+</script>

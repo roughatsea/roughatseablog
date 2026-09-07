@@ -1,0 +1,78 @@
+---
+title: "Cosmic Currents"
+description: "An interactive journey through the gravitational currents carrying the Milky Way past Virgo, through the Great Attractor region, and into the larger cosmic web."
+heroImage: "/images/notes/cosmic-currents.svg"
+heroImageAlt: "A luminous map of galaxy currents flowing through violet voids toward magenta and gold concentrations, with the Milky Way marked You are here."
+date: 2026-08-29T00:41:00-07:00
+publishedAt: 2026-08-29T00:41:00-07:00
+tags: ["astronomy", "cosmology", "interactive", "data visualization", "science"]
+---
+import CosmicCurrentsExperience from '../../components/cosmic-currents/CosmicCurrentsExperience';
+
+The Milky Way is moving at roughly **631 kilometers per second** relative to the cosmic microwave background. Point an arrow along that motion and it leads toward the crowded part of the southern sky historically called the Great Attractor.
+
+That name invites the wrong picture. There is no colossal black hole sitting beyond the stars, swallowing whole superclusters. There is a lumpy gravitational landscape: clusters, filaments, walls, and voids exerting overlapping influences across hundreds of millions of light-years. Even the question *What is pulling us?* changes as the scale of the map changes.
+
+This experience lets you pull the ordinary expansion of the universe away from the picture, reveal the peculiar-velocity field underneath it, and follow the current outward from the Local Group. It begins as a guided journey. At the end, the camera and controls are yours.
+
+<CosmicCurrentsExperience client:visible />
+
+## What the animation is showing
+
+A distant galaxy's observed recession combines two conceptually different motions. The first is the **Hubble flow**: the large-scale expansion of the universe. The second is **peculiar velocity**: the galaxy's departure from that smooth expansion because matter is not distributed evenly.
+
+Astronomers estimate peculiar velocities by comparing redshift-based recession with independently measured distance. A large enough collection of those measurements can be used to reconstruct a three-dimensional velocity and density field. The 2014 paper that named **Laniakea** used this flow-field approach to define a gravitational watershed around our home region rather than drawing a boundary from brightness or political-looking lines on a map.
+
+The “Subtract cosmic expansion” chapter is therefore more than a visual trick. It removes an exaggerated Hubble-flow layer and reveals the modeled peculiar current beneath it.
+
+## The Great Attractor is a region, not an object
+
+The classical Great Attractor lies in the direction of Hydra–Centaurus and the Norma Cluster, partly hidden behind the stars and dust of the Milky Way's **Zone of Avoidance**. The obscuration helped give the attractor its mysterious reputation: astronomers could measure the surrounding motion before they could cleanly inventory everything producing it.
+
+But the modern picture does not resolve into one monster. Virgo matters nearby. Hydra–Centaurus and Norma matter farther out. The Shapley Concentration matters on still larger scales. An underdense direction on the opposite side of the sky—the **Dipole Repeller**—also contributes to our motion, not by introducing antigravity, but by failing to pull as strongly as denser regions do.
+
+A 2026 analysis separated three questions that popular explanations often collapse into one:
+
+1. **What mass contributes to our present velocity?** A distributed network of structures over many scales.
+2. **Where do present-day streamlines converge?** The answer depends strongly on smoothing scale.
+3. **Where will the Local Group actually go?** That requires evolving the system through time; an instantaneous streamline is not a guaranteed future orbit.
+
+In that study, the apparent convergence shifted from **Virgo** at small smoothing scales, through the classical **Hydra–Centaurus / Great Attractor** region at intermediate scales, and toward **Shapley** at large scales. That is why the gold destination ring moves when you drag the scale control. The map is answering a different scale-dependent question each time.
+
+## What is data, and what is illustration?
+
+This release deliberately keeps four visual layers separate:
+
+| Layer | Status | What it means |
+|---|---|---|
+| **Velocity current** | Scientific data when the “CF4 field active” badge appears | Tracers sample a public 64 × 64 × 64 Cosmicflows-4 peculiar-velocity cube. The 3.1 MB NumPy file is requested only after the experience begins. |
+| **Named structures** | Published anchors, simplified for presentation | Sky directions and distances are approximate and transformed into a common three-dimensional scene. Marker size is symbolic, not a physical diameter. |
+| **Galaxy field** | Pedagogical reconstruction | The surrounding points are a deterministic cosmic-web illustration shaped around the named regions. They are not a one-dot-per-object rendering of the Cosmicflows catalog. |
+| **Flow paths and future motion** | Present-field visualization | Streamlines show the direction of the current now. They do not claim to be exact future trajectories through an evolving universe. |
+
+The scientific cube is loaded from a commit-pinned mirror of the open **Laniakea visualization project** and checked for the expected NumPy format and `3 × 64 × 64 × 64` shape before use. If the download is blocked, slow, or unavailable, the experience switches to a labeled teaching field instead of silently presenting invented motion as observation.
+
+The velocity cube covers a much larger volume than the camera normally explores. Tracer speed is compressed and animation time is wildly accelerated. The goal is to make direction and topology legible—not to imply that galaxies visibly cross megaparsecs during a ten-minute browser session.
+
+## Why the scale slider matters
+
+A gravitational flow map is not a photograph. Reconstruction choices matter. Smoothing suppresses small-scale structure so larger patterns can emerge; change the smoothing and the location that looks like the bottom of the watershed can change with it.
+
+That does not make the Great Attractor unreal. It makes the single-destination metaphor inadequate. A creek can flow into a river, the river into a larger basin, and the basin can itself be moving within a continental system. “Where is the water going?” has several correct answers depending on how far back you stand.
+
+The Great Attractor is best understood in the same way: **not as the drain at the end of the universe, but as one bend in a much larger river.**
+
+## Performance and accessibility
+
+The renderer uses WebGL 2 directly rather than creating tens of thousands of browser elements. Galaxy positions, colors, sizes, tracer heads, and flow paths live in GPU buffers. The experience selects a starting quality level from the device and viewport, caps rendering resolution, and recommends a lower setting if sustained frame time becomes too high.
+
+Motion pauses automatically when the operating system requests reduced motion. Every chapter can be advanced with buttons or arrow keys; the canvas is decorative to assistive technology; the science disclosure remains readable even when WebGL is unavailable. Touch users can swipe through the guided sequence and orbit the final scene.
+
+## Primary sources and data
+
+- R. Brent Tully and collaborators, [*The Laniakea Supercluster of Galaxies*](https://arxiv.org/abs/1409.0880) (2014).
+- Yehuda Hoffman and collaborators, [*The Dipole Repeller*](https://arxiv.org/abs/1702.02483) (2017).
+- R. Brent Tully and collaborators, [*Cosmicflows-4*](https://arxiv.org/abs/2209.11238) (2022).
+- Hélène M. Courtois and collaborators, [*The Cosmicflows-4 galaxy peculiar velocity catalogue* reconstruction](https://arxiv.org/abs/2211.16390) (2022).
+- Noam I. Libeskind and collaborators, [*Revisiting the Great Attractor: The Local Group's Peculiar Velocity and the Question of its Origin*](https://arxiv.org/abs/2601.08524) (2026).
+- The [Cosmic Flows project data page](https://projets.ip2i.in2p3.fr/cosmicflows/) and the open [Laniakea visualization pipeline](https://github.com/manlius/laniakea), which provides the browser-loaded 64³ NumPy mirror used here.

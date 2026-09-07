@@ -1,0 +1,227 @@
+---
+import { getGuideConcept } from '../data/software-engineering-guide.js';
+
+function inlineParts(value: string) {
+  return value.split(/(`[^`]+`)/g).filter(Boolean).map((piece) => ({
+    code: piece.startsWith('`') && piece.endsWith('`'),
+    text: piece.startsWith('`') && piece.endsWith('`') ? piece.slice(1, -1) : piece,
+  }));
+}
+
+const recognitionPrompts: Record<string, string> = {
+  'code-smell': 'Nothing is broken, but duplicated knowledge or scattered responsibility makes the next change feel disproportionately risky.',
+  'cohesion-and-coupling': 'Responsibilities that change together live in different modules, while unrelated responsibilities crowd into one module.',
+  'encapsulation-and-information-hiding': 'Callers can reach inside an object and put it into a state the object itself would never permit.',
+  yagni: 'A design grows extension points for requirements nobody has evidence will arrive, making today\'s change harder.',
+  refactoring: 'Working code needs a structural change, but callers should observe the same results, failures, and side effects.',
+  'long-method': 'One method validates input, calculates a price, charges a card, saves a record, and sends a receipt.',
+  'extract-method': 'A coherent block of working code deserves a name and its own boundary, while observable behavior must remain the same.',
+  'shotgun-surgery': 'Adding one field requires coordinated edits to validation, persistence, serialization, and several callers in different files.',
+  'characterization-and-golden-master-tests': 'The intended rules of legacy code are unclear. Tests record representative outputs before anyone changes the legacy code.',
+  'single-responsibility-principle': 'One module changes for unrelated reasons: billing rules, report formatting, and database storage all converge there.',
+  'dependency-inversion-principle': 'Business policy imports a concrete database client, so a storage choice dictates changes to stable rules.',
+  'dependency-injection': 'A class constructs its own repository and clock, making its dependencies invisible and controlled tests awkward.',
+  'singleton-pattern': 'A class controls its own construction and gives the rest of the program a global way to reach its sole instance.',
+  'singleton-lifetime': 'Startup code creates one service and passes that same object explicitly to several consumers.',
+  strategy: 'The workflow stays stable while one calculation, ordering rule, or routing policy must vary.',
+  adapter: 'A vendor library does the required job but uses names, types, or units the application should not spread through its own code.',
+  'architectural-boundaries-and-the-dependency-rule': 'A policy module imports framework and database details, letting volatile tools dictate its source-code dependencies.',
+  'async-await': 'An operation waits on network or disk I/O. The execution thread should be free until the result arrives.',
+  idempotency: 'A network request may arrive twice, but processing it twice must not create a second charge or order.',
+  'threat-modeling-and-secure-design': 'A new data flow or privilege boundary creates abuse cases that the software\'s design must address before implementation hardens.',
+};
+
+const groups = [
+  {
+    title: 'Notice the pressure',
+    lead: 'Before reaching for a pattern, learn to describe why the current shape is becoming difficult to change.',
+    slugs: [
+      'code-smell',
+      'cohesion-and-coupling',
+      'encapsulation-and-information-hiding',
+      'yagni',
+    ],
+  },
+  {
+    title: 'Change the structure without losing the behavior',
+    lead: 'These names separate diagnosis, mechanical movement, and the tests that let a programmer move with confidence.',
+    slugs: [
+      'refactoring',
+      'long-method',
+      'extract-method',
+      'shotgun-surgery',
+      'characterization-and-golden-master-tests',
+    ],
+  },
+  {
+    title: 'Decide what varies and who owns it',
+    lead: 'The most useful design vocabulary names boundaries, dependency direction, and the responsibilities hidden inside familiar code.',
+    slugs: [
+      'single-responsibility-principle',
+      'dependency-inversion-principle',
+      'dependency-injection',
+      'singleton-pattern',
+      'singleton-lifetime',
+      'strategy',
+      'adapter',
+      'architectural-boundaries-and-the-dependency-rule',
+    ],
+  },
+  {
+    title: 'Account for waiting, repetition, and hostility',
+    lead: 'Once work can wait, repeat, or receive untrusted input, correctness must include those conditions.',
+    slugs: ['async-await', 'idempotency', 'threat-modeling-and-secure-design'],
+  },
+];
+
+let recognitionNumber = 0;
+const resolvedGroups = groups.map((group) => {
+  const concepts = group.slugs.map(getGuideConcept).filter(Boolean).map((concept) => ({
+    ...concept,
+    recognitionNumber: ++recognitionNumber,
+    recognitionPrompt: recognitionPrompts[concept.slug],
+  }));
+  return { ...group, concepts };
+});
+---
+
+<section class="recognition-path" aria-labelledby="recognition-path-heading">
+  <header>
+    <p class="path-label">Twenty recognitions</p>
+    <h2 id="recognition-path-heading">Begin with the situation</h2>
+    <p>
+      Read each pressure before opening the term. Ask what is changing, what must remain stable, and what cost the likely response would introduce.
+    </p>
+  </header>
+
+  {resolvedGroups.map((group) => (
+    <section class="recognition-group">
+      <h3>{group.title}</h3>
+      <p class="group-lead">{group.lead}</p>
+      <div class="recognition-list">
+        {group.concepts.map((concept) => (
+          <details>
+            <summary>
+              <span class="summary-marker" aria-hidden="true">{String(concept.recognitionNumber).padStart(2, '0')}</span>
+              <span>{concept.recognitionPrompt}</span>
+            </summary>
+            <div class="recognition-answer">
+              <p class="term-reveal">
+                The name worth noticing here is <a href={`/guides/software-engineering/${concept.slug}/`}>{concept.title}</a>.
+              </p>
+              <p>{inlineParts(concept.definition).map((part) => part.code ? <code>{part.text}</code> : part.text)}</p>
+              <p class="boundary">
+                <strong>Boundary:</strong>{' '}
+                {inlineParts(concept.caution).map((part) => part.code ? <code>{part.text}</code> : part.text)}
+              </p>
+              <a class="full-entry" href={`/guides/software-engineering/${concept.slug}/`}>
+                Read the examples and nearby terms <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  ))}
+</section>
+
+<style>
+  .recognition-path {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    font-family: var(--font-sans);
+    margin: 3rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1000px, calc(100vw - 3rem));
+  }
+
+  .recognition-path > header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.25rem;
+  }
+
+  .path-label {
+    color: var(--link-color);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin: 0 0 0.25rem;
+    text-transform: uppercase;
+  }
+
+  .recognition-path h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    margin: 0 0 0.6rem;
+  }
+
+  .recognition-path header p:last-child,
+  .group-lead {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    margin-bottom: 0;
+  }
+
+  .recognition-group { margin-top: 2rem; }
+  .recognition-group h3 { font-size: 1.05rem; margin-bottom: 0.35rem; }
+  .group-lead { font-size: 0.92rem; line-height: 1.55; }
+  .recognition-list { margin-top: 0.9rem; }
+
+  details {
+    border-top: 1px solid var(--border-color);
+  }
+
+  details:last-child { border-bottom: 1px solid var(--border-color); }
+
+  summary {
+    cursor: pointer;
+    display: grid;
+    font-family: var(--font-serif);
+    gap: 0.75rem;
+    grid-template-columns: 2rem 1fr;
+    line-height: 1.55;
+    padding: 0.9rem 0.25rem;
+  }
+
+  summary:hover { color: var(--link-color); }
+
+  .summary-marker {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding-top: 0.25rem;
+  }
+
+  .recognition-answer {
+    border-left: 3px solid var(--link-color);
+    margin: 0 0 1rem 2.25rem;
+    padding: 0.15rem 0 0.15rem 1rem;
+  }
+
+  .recognition-answer p {
+    font-family: var(--font-serif);
+    font-size: 0.94rem;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .term-reveal a,
+  .full-entry { color: var(--link-color); }
+
+  .boundary { color: var(--text-secondary); }
+
+  .full-entry {
+    display: inline-block;
+    font-size: 0.76rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+
+  @media (max-width: 680px) {
+    .recognition-path { width: calc(100vw - 1.5rem); }
+    .recognition-answer { margin-left: 0; }
+  }
+</style>

@@ -8,5 +8,17 @@ import part5 from './part-5.json';
 import part6 from './part-6.json';
 import part7 from './part-7.json';
 import part8 from './part-8.json';
+import { conceptOverrides } from './concept-overrides.js';
 
-export default [part1, part2, part3, part4, part5, part6, part7, part8];
+const catalog = [part1, part2, part3, part4, part5, part6, part7, part8].map((part) => ({
+  ...part,
+  chapters: part.chapters.map((chapter) => ({
+    ...chapter,
+    concepts: chapter.concepts.map((concept) => ({
+      ...concept,
+      ...(conceptOverrides[concept.index] ?? {}),
+    })),
+  })),
+}));
+
+export default catalog;

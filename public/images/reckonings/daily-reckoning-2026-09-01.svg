@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A logarithmic sea chart divided into nine shrinking luminous intervals</title>
+  <desc id="desc">Nine cyan and magenta chart compartments become progressively narrower from left to right, while a green signal glows inside the widest compartment above dark blueprint waves.</desc>
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#03101d" />
+      <stop offset="0.58" stop-color="#071d37" />
+      <stop offset="1" stop-color="#150820" />
+    </linearGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#1493ff" stroke-opacity="0.11" stroke-width="1" />
+    </pattern>
+    <pattern id="waves" width="72" height="30" patternUnits="userSpaceOnUse">
+      <path d="M0 16Q18 2 36 16T72 16" fill="none" stroke="#1493ff" stroke-opacity="0.17" stroke-width="2" />
+    </pattern>
+    <pattern id="hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <line x1="0" y1="0" x2="0" y2="18" stroke="#b8e8ff" stroke-opacity="0.1" stroke-width="5" />
+    </pattern>
+    <filter id="blueGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="greenGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="18" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ocean)" />
+  <rect x="72" y="64" width="1456" height="728" rx="28" fill="url(#grid)" stroke="#1493ff" stroke-opacity="0.48" stroke-width="2" />
+  <rect x="72" y="64" width="1456" height="728" rx="28" fill="url(#waves)" />
+
+  <path d="M100 693C241 658 330 748 473 707S713 661 858 709s247 41 386-3 228-18 312 5" fill="none" stroke="#1493ff" stroke-opacity="0.7" stroke-width="4" />
+  <path d="M100 737C246 702 332 786 478 747s237-44 382 2 246 41 384-1 227-19 312 3" fill="none" stroke="#ff1493" stroke-opacity="0.38" stroke-width="3" />
+
+  <g filter="url(#blueGlow)">
+    <rect x="180" y="248" width="373" height="330" rx="8" fill="#1493ff" fill-opacity="0.13" stroke="#1493ff" stroke-width="5" />
+    <rect x="553" y="248" width="218" height="330" rx="8" fill="#ff1493" fill-opacity="0.09" stroke="#ff1493" stroke-width="4" />
+    <rect x="771" y="248" width="155" height="330" rx="8" fill="#1493ff" fill-opacity="0.11" stroke="#1493ff" stroke-width="4" />
+    <rect x="926" y="248" width="120" height="330" rx="8" fill="#ff1493" fill-opacity="0.08" stroke="#ff1493" stroke-width="4" />
+    <rect x="1046" y="248" width="99" height="330" rx="8" fill="#1493ff" fill-opacity="0.1" stroke="#1493ff" stroke-width="4" />
+    <rect x="1145" y="248" width="83" height="330" rx="8" fill="#ff1493" fill-opacity="0.08" stroke="#ff1493" stroke-width="4" />
+    <rect x="1228" y="248" width="72" height="330" rx="8" fill="#1493ff" fill-opacity="0.1" stroke="#1493ff" stroke-width="4" />
+    <rect x="1300" y="248" width="63" height="330" rx="8" fill="#ff1493" fill-opacity="0.08" stroke="#ff1493" stroke-width="4" />
+    <rect x="1363" y="248" width="57" height="330" rx="8" fill="#1493ff" fill-opacity="0.1" stroke="#1493ff" stroke-width="4" />
+  </g>
+  <rect x="180" y="248" width="1240" height="330" rx="8" fill="url(#hatch)" />
+
+  <path d="M180 208H553M553 208H771M771 208H926M926 208H1046M1046 208H1145M1145 208H1228M1228 208H1300M1300 208H1363M1363 208H1420" stroke="#b8e8ff" stroke-opacity="0.55" stroke-width="3" stroke-dasharray="9 11" />
+  <g fill="#b8e8ff">
+    <circle cx="180" cy="208" r="6" /><circle cx="553" cy="208" r="6" /><circle cx="771" cy="208" r="6" />
+    <circle cx="926" cy="208" r="6" /><circle cx="1046" cy="208" r="6" /><circle cx="1145" cy="208" r="6" />
+    <circle cx="1228" cy="208" r="6" /><circle cx="1300" cy="208" r="6" /><circle cx="1363" cy="208" r="6" /><circle cx="1420" cy="208" r="6" />
+  </g>
+
+  <g filter="url(#greenGlow)">
+    <circle cx="360" cy="413" r="73" fill="#071d37" stroke="#93ff14" stroke-width="9" />
+    <circle cx="360" cy="413" r="18" fill="#ff1493" />
+    <path d="M360 322V350M360 476V504M269 413H297M423 413H451" stroke="#93ff14" stroke-width="5" stroke-linecap="round" />
+  </g>
+
+  <path d="M126 625H1474" stroke="#93ff14" stroke-opacity="0.42" stroke-width="2" />
+  <path d="M180 615V636M553 615V636M771 615V636M926 615V636M1046 615V636M1145 615V636M1228 615V636M1300 615V636M1363 615V636M1420 615V636" stroke="#93ff14" stroke-opacity="0.75" stroke-width="3" />
+</svg>

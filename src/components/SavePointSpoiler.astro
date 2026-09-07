@@ -1,0 +1,94 @@
+---
+interface Props {
+  game: string;
+  scope: string;
+}
+
+const { game, scope } = Astro.props;
+---
+
+<details class="save-point-spoiler">
+  <summary>
+    <span class="warning-mark" aria-hidden="true">!</span>
+    <span class="warning-copy">
+      <strong>Major spoilers · {game}</strong>
+      <span>{scope}</span>
+    </span>
+    <span class="reveal-label">Reveal</span>
+  </summary>
+  <div class="spoiler-content">
+    <slot />
+  </div>
+</details>
+
+<style>
+  .save-point-spoiler {
+    background: color-mix(in srgb, var(--surface-color) 92%, #ff1493 8%);
+    border: 1px solid color-mix(in srgb, var(--border-color) 68%, #ff1493 32%);
+    border-radius: 10px;
+    margin: 1.5rem 0 2rem;
+    overflow: hidden;
+  }
+  summary {
+    align-items: center;
+    cursor: pointer;
+    display: grid;
+    font-family: var(--font-sans);
+    gap: 0.8rem;
+    grid-template-columns: auto 1fr auto;
+    list-style: none;
+    padding: 0.9rem 1rem;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: -2px;
+  }
+  .warning-mark {
+    align-items: center;
+    background: #ff1493;
+    border-radius: 50%;
+    color: #fff;
+    display: inline-flex;
+    font-size: 0.75rem;
+    font-weight: 700;
+    height: 1.55rem;
+    justify-content: center;
+    width: 1.55rem;
+  }
+  .warning-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+  }
+  .warning-copy strong {
+    font-size: 0.82rem;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+  }
+  .warning-copy span {
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+  }
+  .reveal-label {
+    color: var(--link-color);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  details[open] .reveal-label {
+    font-size: 0;
+  }
+  details[open] .reveal-label::after {
+    content: 'Hide';
+    font-size: 0.78rem;
+  }
+  .spoiler-content {
+    border-top: 1px solid var(--border-color);
+    padding: 1.25rem 1rem 0.1rem;
+  }
+  .spoiler-content :global(p:last-child) {
+    margin-bottom: 1.25rem;
+  }
+</style>

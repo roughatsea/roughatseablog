@@ -1,0 +1,290 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-04",
+  "article": {
+    "slug": "morning-soundings-2026-09-04",
+    "title": "Morning Soundings: Capability Has an Address",
+    "publishedAt": "2026-09-04T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-04.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-04T05:04:00-07:00",
+    "sourceStateAsOf": "2026-09-04",
+    "notes": "Captured during the publication run from sources accessed on September 4, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-04-llm-double-auction-efficiency",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "A trader can protect its margin and lose the trade",
+      "canonicalSubject": {
+        "name": "Language-model agents in continuous double auctions",
+        "kind": "ai-market-experiment",
+        "aliases": [
+          "Competitive Market Behavior of LLMs",
+          "LLM double-auction convergence"
+        ]
+      },
+      "signalType": "preprint",
+      "topics": [
+        "artificial-intelligence",
+        "economics",
+        "market-design",
+        "multi-agent-systems",
+        "alignment"
+      ],
+      "geography": [
+        "Warsaw",
+        "Poland"
+      ],
+      "canonicalClaim": "In repeated Smith-style double-auction simulations, three tested populations of language-model agents converged less completely than the human benchmark, and the smaller GPT model produced the most efficient of the tested model markets.",
+      "knownFacts": [
+        "Each simulation used 11 buyer agents, 11 seller agents, five trading rounds, and up to 300 iterations per round.",
+        "The authors ran ten independent simulations for each of three model conditions: GPT-5.4, GPT-5.4 mini, and Gemini 3.1 Pro Preview.",
+        "The smaller GPT condition reached 0.91 allocative efficiency in round five, while the large GPT condition ranged from 0.36 to 0.67 across the five rounds.",
+        "The authors released the simulation framework and collected data."
+      ],
+      "uncertainties": [
+        "The work is a preprint and had not completed peer review at capture.",
+        "The design does not establish that smaller models generally make better traders.",
+        "Results may depend on prompts, iteration limits, model versions, and the deliberately simplified market."
+      ],
+      "evidence": {
+        "level": "preliminary",
+        "notes": "The preprint reports repeated experiments against a classic human benchmark and provides code and data, but independent replication and peer review were not yet available."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2609.02580",
+          "title": "Competitive Market Behavior of LLMs",
+          "publisher": "arXiv",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-04",
+          "role": "primary-research",
+          "lineage": "struski-swistak-okulska-biecek-llm-market-experiment"
+        },
+        {
+          "url": "https://github.com/jswistak/competitive-market-simulation",
+          "title": "Competitive market simulation framework",
+          "publisher": "GitHub",
+          "publishedAt": null,
+          "accessedAt": "2026-09-04",
+          "role": "archival-source",
+          "lineage": "struski-swistak-okulska-biecek-llm-market-experiment"
+        }
+      ],
+      "openQuestions": [
+        "Will independent replications recover the same ordering across model families and capability tiers?",
+        "How do different agent objectives and market time limits change convergence and allocative efficiency?",
+        "Can prompts teach agents to trade off individual margin against transaction completion without distorting the market?"
+      ],
+      "watchFor": [
+        {
+          "description": "Peer-reviewed revision or independent replication",
+          "expectedWindow": null,
+          "trigger": "The authors publish a revised or peer-reviewed version, or another group reproduces the double-auction experiment."
+        },
+        {
+          "description": "Tests of alternative market and prompting designs",
+          "expectedWindow": null,
+          "trigger": "A study varies agent instructions, iteration limits, or auction rules and reports whether model markets converge."
+        }
+      ],
+      "trackingTerms": [
+        "Competitive Market Behavior of LLMs",
+        "arXiv 2609.02580",
+        "LLM double auction convergence",
+        "competitive market simulation Struski Swistak"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The preprint provides a falsifiable benchmark, public code, and clear opportunities for replication across model and market designs."
+      },
+      "selectionReason": "The experiment tests collective economic behavior against both a theoretical optimum and human data, revealing a concrete limit of local profit optimization.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-04-alphafold-amyloid-structure-prediction",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "AlphaFold's confidence follows the archive",
+      "canonicalSubject": {
+        "name": "AlphaFold 3 performance on amyloid protein structures",
+        "kind": "protein-structure-prediction-study",
+        "aliases": [
+          "AlphaFold 3 amyloid case study",
+          "non-standard proteins in AlphaFold 3"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "alphafold",
+        "amyloids",
+        "protein-structure",
+        "machine-learning",
+        "structural-biology"
+      ],
+      "geography": [
+        "Poland"
+      ],
+      "canonicalClaim": "A peer-reviewed case study found that AlphaFold 3 recovered five of seven known amyloid structures but generated amyloid-like predictions for 34 percent of a positive set and 54 percent of non-amyloid negative controls.",
+      "knownFacts": [
+        "The study evaluated 153 amyloid-forming sequences without resolved amyloid structures, 56 non-amyloid peptides, and seven proteins with known amyloid structures.",
+        "AlphaFold 3 recovered amyloid structures for five of the seven resolved examples.",
+        "The authors report better results for shorter fragments and a tendency to assign higher quality scores to globular oligomeric models than to amyloid models.",
+        "The paper was published in Scientific Reports on September 3, 2026."
+      ],
+      "uncertainties": [
+        "The positive set lacks experimentally resolved amyloid structures, so individual predictions in that set cannot be labeled correct or incorrect directly.",
+        "The results concern amyloid prediction and do not measure AlphaFold 3 performance on ordinary globular proteins.",
+        "The authors describe limited amyloid representation in the Protein Data Bank as a likely contributor rather than a fully isolated causal mechanism."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The finding appears in a peer-reviewed open-access study with explicit positive, negative, and experimentally resolved comparison sets."
+      },
+      "sources": [
+        {
+          "url": "https://www.nature.com/articles/s41598-026-68041-4",
+          "title": "Non-standard proteins in the lens of AlphaFold 3: a case study of amyloids",
+          "publisher": "Scientific Reports",
+          "publishedAt": "2026-09-03",
+          "accessedAt": "2026-09-04",
+          "role": "primary-research",
+          "lineage": "wojciechowska-kotulska-alphafold-amyloid-study"
+        }
+      ],
+      "openQuestions": [
+        "Will larger experimentally resolved amyloid datasets reproduce the reported false-positive pattern?",
+        "Can amyloid-specific training data or inference protocols improve discrimination without weakening other structure predictions?",
+        "How well do the study's suggested shorter-fragment strategies perform prospectively?"
+      ],
+      "watchFor": [
+        {
+          "description": "Independent benchmark on expanded resolved amyloid structures",
+          "expectedWindow": null,
+          "trigger": "A later study tests AlphaFold 3 or a successor against a larger set of experimentally determined amyloid structures and non-amyloid controls."
+        },
+        {
+          "description": "Amyloid-specific prediction improvements",
+          "expectedWindow": null,
+          "trigger": "A model or protocol reports improved amyloid discrimination with prospectively validated structures."
+        }
+      ],
+      "trackingTerms": [
+        "AlphaFold 3 amyloid prediction",
+        "s41598-026-68041-4",
+        "Wojciechowska Kotulska amyloid",
+        "non-standard proteins AlphaFold 3"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The mismatch is measurable, the authors propose concrete routes for improvement, and future experimentally resolved structures can test it."
+      },
+      "selectionReason": "The study makes training-set representation visible by testing a celebrated general model on a physically unusual structural class.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-04-paul-williams-architecture-exhibitions",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "Paul R. Williams designed inside the boundary",
+      "canonicalSubject": {
+        "name": "Paul R. Williams archive and 2026 Los Angeles exhibitions",
+        "kind": "architecture-exhibition",
+        "aliases": [
+          "Paul R. Williams Architecture Across the Color Line",
+          "Paul R. Williams archive"
+        ]
+      },
+      "signalType": "institutional-exhibition",
+      "topics": [
+        "architecture",
+        "design",
+        "art-history",
+        "black-history",
+        "housing",
+        "archives"
+      ],
+      "geography": [
+        "Los Angeles",
+        "California",
+        "United States"
+      ],
+      "canonicalClaim": "Getty, USC, and LACMA are mounting three complementary 2026 exhibitions about Paul R. Williams from an archive preserved by his family and jointly acquired by Getty and USC, with the Getty exhibition emphasizing his architecture within and against systems of racialized exclusion.",
+      "knownFacts": [
+        "The Getty exhibition runs from December 15, 2026, through March 14, 2027; the USC exhibition opened August 18, 2026; and the LACMA exhibition is scheduled to open November 15, 2026.",
+        "Williams became the first Black architect licensed in the western United States in 1921.",
+        "The jointly acquired archive includes approximately 35,000 plans and 10,000 original drawings, blueprints, and project diazotypes.",
+        "Getty states that original drawings from the archive have informed restoration work on several Williams buildings."
+      ],
+      "uncertainties": [
+        "The current interpretation comes primarily from the institutions organizing the exhibitions.",
+        "The extent and timing of public digitization for the archive are not specified in the September announcement.",
+        "The exhibitions' scholarly claims and selections cannot be fully assessed before all three are open and their catalogues are available."
+      ],
+      "evidence": {
+        "level": "first-party-only",
+        "notes": "Dates, curatorial framing, archive scale, and conservation work are documented by the organizing and owning institutions; independent assessment of the exhibitions was not yet available."
+      },
+      "sources": [
+        {
+          "url": "https://www.getty.edu/news/paul-r-williams-architecture-across-the-color-line",
+          "title": "Getty Presents Paul R. Williams: Architecture Across the Color Line",
+          "publisher": "Getty Research Institute",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-04",
+          "role": "official-primary",
+          "lineage": "getty-paul-williams-2026-exhibitions"
+        },
+        {
+          "url": "https://www.getty.edu/news/architect-paul-revere-williams-archive-acquired-usc-getty/",
+          "title": "Archive of Architect Paul Revere Williams Jointly Acquired by USC and Getty",
+          "publisher": "Getty Research Institute",
+          "publishedAt": "2020-06-30",
+          "accessedAt": "2026-09-04",
+          "role": "official-primary",
+          "lineage": "getty-usc-paul-williams-archive-acquisition"
+        }
+      ],
+      "openQuestions": [
+        "What new scholarship will emerge from the catalogued archive and the three institutions' different selections?",
+        "How much of the archive will become digitally accessible to researchers and the public?",
+        "Which additional buildings can be restored or reinterpreted using the surviving plans?"
+      ],
+      "watchFor": [
+        {
+          "description": "Opening of all three coordinated exhibitions",
+          "expectedWindow": "2026-12-15/2027-03-13",
+          "trigger": "The Getty exhibition opens and catalogues, reviews, or scholarly responses make the three curatorial interpretations comparable."
+        },
+        {
+          "description": "Public access to the Paul R. Williams archive",
+          "expectedWindow": null,
+          "trigger": "Getty or USC announces a substantial digitization release, research finding, or restoration based on the archive."
+        }
+      ],
+      "trackingTerms": [
+        "Paul R. Williams Architecture Across the Color Line",
+        "Paul R. Williams archive Getty USC",
+        "Paul R. Williams exhibitions 2026",
+        "I Am an Architect Paul R. Williams archive"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "passive",
+        "reason": "The exhibitions and archive have clear future milestones, but the September notice mainly establishes institutional plans rather than an unresolved factual claim."
+      },
+      "selectionReason": "Williams's archive shows design capability operating within legal, financial, and professional constraints embedded in the city itself.",
+      "reviewAfter": "2026-12-15",
+      "attentionSnapshot": null
+    }
+  ]
+}

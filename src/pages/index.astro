@@ -8,7 +8,6 @@ import { notePublicationTimes } from '../notePublicationTimes';
 
 const notes = await getCollection('notes');
 const links = await getCollection('links');
-
 function createExcerpt(body: string | undefined, maxLength = 200) {
   const plainText = (body ?? '')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')

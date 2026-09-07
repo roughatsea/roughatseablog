@@ -1,0 +1,137 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "terranigma-revival",
+  "title": "The revival of Terranigma",
+  "dek": "A celebrated game absent from official North American release for three decades is becoming a test of preservation, access, and whether availability can change a canon.",
+  "canonicalSubject": {
+    "name": "Terranigma revival",
+    "kind": "video-game-release",
+    "aliases": [
+      "Terranigma Rebirth",
+      "Terranigma remaster",
+      "Terranigma re-release"
+    ]
+  },
+  "topics": [
+    "jrpgs",
+    "video-games",
+    "preservation",
+    "game-history"
+  ],
+  "geography": [
+    "Japan",
+    "Europe",
+    "North America",
+    "Global"
+  ],
+  "trackingTerms": [
+    "Terranigma 2027",
+    "Terranigma revival",
+    "Terranigma North America release",
+    "Terranigma Steam",
+    "Terranigma Rebirth"
+  ],
+  "originSignalIds": [
+    "2026-08-25-terranigma-revival"
+  ],
+  "firstObservedAt": "2026-08-25T20:00:00-07:00",
+  "admittedAt": "2026-08-30T18:30:00-07:00",
+  "whyTracked": "The revival has a concrete release window, a historically unusual access correction, and observable questions about technical preservation and cultural reception.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "mixed",
+    "attention": "unmeasured",
+    "assessment": "The product and broad platform plan are established. Exact timing, regional behavior, technical fidelity, and the effect of lawful access remain unknown.",
+    "updatedAt": "2026-08-30T18:30:00-07:00",
+    "lastMaterialChangeAt": "2026-08-25T20:00:00-07:00",
+    "nextReviewAfter": "2027-01-01",
+    "nextReviewTrigger": "Review for a firm release date, delay, preservation details, launch comparisons, or later audience and scholarship indicators.",
+    "cadence": "monthly"
+  },
+  "openQuestions": [
+    "Will the revival arrive in early 2027?",
+    "Which regional timing and technical behaviors will be preserved or corrected?",
+    "Will official availability materially broaden the game’s audience and critical standing?"
+  ],
+  "watchFor": [
+    {
+      "description": "A dated release announcement",
+      "expectedWindow": "Early 2027",
+      "trigger": "The publisher or storefront supplies a firm date."
+    },
+    {
+      "description": "Technical and preservation analysis of the released version",
+      "expectedWindow": "At launch",
+      "trigger": "Independent comparisons document timing, localization, assets, input, and emulation behavior."
+    },
+    {
+      "description": "Longer-term audience response",
+      "expectedWindow": "Within one year of launch",
+      "trigger": "Sales indicators, player counts, criticism, or new scholarship show whether access changed the game’s cultural reach."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "terranigma-revival-2026-08-25-point-zero",
+      "observedAt": "2026-08-25T20:00:00-07:00",
+      "recordedAt": "2026-08-30T15:42:25-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "Clear River Games and Square Enix announced a multi-platform Terranigma revival for early 2027, including the game’s first official North American release.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-25-terranigma-revival"
+      ],
+      "sources": [
+        {
+          "url": "https://store.steampowered.com/app/4193690/Terranigma/",
+          "title": "Terranigma on Steam",
+          "publisher": "Steam",
+          "publishedAt": null,
+          "accessedAt": "2026-08-25",
+          "role": "first-party",
+          "lineage": "terranigma-revival-announcement"
+        },
+        {
+          "url": "https://www.gematsu.com/2026/08/terranigma-announced-for-ps5-xbox-series-switch-2-ps4-switch-and-pc",
+          "title": "Terranigma announced for modern platforms",
+          "publisher": "Gematsu",
+          "publishedAt": "2026-08-25",
+          "accessedAt": "2026-08-25",
+          "role": "independent-reporting",
+          "lineage": "terranigma-revival-announcement"
+        },
+        {
+          "url": "https://www.gamesradar.com/games/jrpg/after-31-years-one-of-the-most-beloved-jrpgs-on-the-super-nintendo-gets-its-first-ever-north-american-release/",
+          "title": "Terranigma release history",
+          "publisher": "GamesRadar",
+          "publishedAt": null,
+          "accessedAt": "2026-08-25",
+          "role": "independent-reporting",
+          "lineage": "terranigma-release-history"
+        }
+      ]
+    },
+    {
+      "observationId": "terranigma-revival-2026-08-30-admission",
+      "observedAt": "2026-08-30T18:30:00-07:00",
+      "recordedAt": "2026-08-30T18:30:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake pilot",
+      "summary": "Admitted because the project can be followed from announcement through technical comparison and eventually into evidence about audience and critical reach.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-25-terranigma-revival"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}

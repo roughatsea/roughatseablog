@@ -1,0 +1,297 @@
+.epsilon-delta-explorer {
+  --epsilon-color: #4f9300;
+  --delta-color: #ff1493;
+  --curve-color: #087dcc;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(20, 147, 255, 0.1), transparent 19rem),
+    var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  margin: 2.5rem 50%;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  transform: translateX(-50%);
+  width: min(1060px, calc(100vw - 3rem));
+}
+
+:root[data-theme='dark'] .epsilon-delta-explorer {
+  --epsilon-color: #93ff14;
+  --curve-color: #1493ff;
+}
+
+.epsilon-delta-heading {
+  align-items: flex-end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.epsilon-delta-heading h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  margin: 0;
+}
+
+.epsilon-delta-explorer .visual-kicker {
+  color: var(--link-color);
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.2rem;
+  text-transform: uppercase;
+}
+
+.epsilon-delta-legend {
+  color: var(--text-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.72rem;
+  gap: 0.7rem;
+  justify-content: flex-end;
+}
+
+.epsilon-delta-legend span {
+  align-items: center;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.epsilon-delta-legend i {
+  display: inline-block;
+  height: 0.55rem;
+  width: 1.1rem;
+}
+
+.epsilon-swatch {
+  background: repeating-linear-gradient(135deg, transparent 0 3px, var(--epsilon-color) 3px 5px);
+  border: 1px solid var(--epsilon-color);
+}
+
+.delta-swatch {
+  background: repeating-linear-gradient(90deg, transparent 0 3px, var(--delta-color) 3px 5px);
+  border: 1px solid var(--delta-color);
+}
+
+.curve-swatch {
+  background: var(--curve-color);
+  border-radius: 999px;
+  height: 3px !important;
+}
+
+.epsilon-delta-chart {
+  background: color-mix(in srgb, var(--bg-color) 86%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.epsilon-delta-chart svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.epsilon-delta-grid line {
+  stroke: var(--border-color);
+  stroke-width: 1;
+}
+
+.epsilon-delta-axes line {
+  stroke: var(--text-secondary);
+  stroke-width: 1.15;
+}
+
+.epsilon-delta-axes text,
+.epsilon-delta-labels text {
+  fill: var(--text-secondary);
+  font-size: 13px;
+}
+
+.epsilon-band { fill: color-mix(in srgb, var(--epsilon-color) 11%, transparent); }
+.delta-band { fill: color-mix(in srgb, var(--delta-color) 9%, transparent); }
+.epsilon-pattern { opacity: 0.13; stroke: var(--epsilon-color); stroke-width: 1.5; }
+.delta-pattern { opacity: 0.11; stroke: var(--delta-color); stroke-width: 1.2; }
+
+.epsilon-boundary,
+.delta-boundary,
+.epsilon-delta-curve,
+.probe-guide {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.epsilon-boundary {
+  stroke: var(--epsilon-color);
+  stroke-dasharray: 8 5;
+  stroke-width: 2;
+}
+
+.delta-boundary {
+  stroke: var(--delta-color);
+  stroke-dasharray: 3 5;
+  stroke-width: 2;
+}
+
+.epsilon-delta-curve {
+  stroke: var(--curve-color);
+  stroke-width: 4;
+}
+
+.probe-guide {
+  opacity: 0.65;
+  stroke: var(--text-secondary);
+  stroke-dasharray: 4 4;
+  stroke-width: 1.4;
+}
+
+.limit-point {
+  fill: var(--bg-color);
+  stroke: var(--epsilon-color);
+  stroke-width: 4;
+}
+
+.probe-point {
+  fill: var(--delta-color);
+  stroke: var(--bg-color);
+  stroke-width: 3;
+}
+
+.probe-point.guaranteed {
+  fill: var(--epsilon-color);
+}
+
+.epsilon-delta-controls {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: 1fr 1fr auto;
+  margin-top: 0.9rem;
+}
+
+.epsilon-delta-controls label,
+.probe-buttons,
+.epsilon-delta-readout > div {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+}
+
+.epsilon-delta-controls label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.epsilon-delta-controls label span,
+.epsilon-delta-readout span {
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.epsilon-delta-controls input[type='range'] {
+  accent-color: var(--delta-color);
+  cursor: ew-resize;
+  width: 100%;
+}
+
+.epsilon-delta-controls label:first-child input[type='range'] {
+  accent-color: var(--epsilon-color);
+}
+
+.probe-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.probe-buttons button {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 0.4rem 0.55rem;
+  white-space: nowrap;
+}
+
+.probe-buttons button:first-child { border-radius: 6px 0 0 6px; }
+.probe-buttons button:last-child { border-left: 0; border-radius: 0 6px 6px 0; }
+
+.probe-buttons button[aria-pressed='true'] {
+  background: var(--link-color);
+  color: #fff;
+}
+
+.epsilon-delta-readout {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.65rem;
+}
+
+.epsilon-delta-readout > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.epsilon-delta-readout strong {
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86rem;
+}
+
+.guarantee-status {
+  background: color-mix(in srgb, var(--delta-color) 9%, var(--bg-color));
+  border: 1px solid color-mix(in srgb, var(--delta-color) 35%, var(--border-color));
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+}
+
+.guarantee-status.active {
+  background: color-mix(in srgb, var(--epsilon-color) 10%, var(--bg-color));
+  border-color: color-mix(in srgb, var(--epsilon-color) 45%, var(--border-color));
+  color: var(--text-primary);
+}
+
+.epsilon-delta-explorer figcaption {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin-top: 0.85rem;
+}
+
+.epsilon-delta-explorer figcaption strong { color: var(--text-primary); }
+
+@media (max-width: 780px) {
+  .epsilon-delta-heading { align-items: flex-start; flex-direction: column; }
+  .epsilon-delta-legend { justify-content: flex-start; }
+  .epsilon-delta-controls { grid-template-columns: 1fr 1fr; }
+  .probe-buttons { grid-column: 1 / -1; }
+  .epsilon-delta-readout { grid-template-columns: 1fr 1fr; }
+  .epsilon-delta-readout > div:first-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 500px) {
+  .epsilon-delta-explorer { width: calc(100vw - 1.5rem); }
+  .epsilon-delta-controls,
+  .epsilon-delta-readout { grid-template-columns: 1fr; }
+  .probe-buttons,
+  .epsilon-delta-readout > div:first-child { grid-column: auto; }
+  .epsilon-delta-axes text,
+  .epsilon-delta-labels text { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .epsilon-delta-explorer * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

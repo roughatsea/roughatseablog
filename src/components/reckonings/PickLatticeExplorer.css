@@ -1,0 +1,162 @@
+.pick-explorer {
+  --pick-blue: #087dcc;
+  --pick-green: #4f9300;
+  --pick-pink: #d9007e;
+  background: radial-gradient(circle at 8% 0%, rgba(20, 147, 255, 0.12), transparent 22rem), var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  margin: 2.5rem 50%;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  transform: translateX(-50%);
+  width: min(1060px, calc(100vw - 3rem));
+}
+
+:root[data-theme='dark'] .pick-explorer {
+  --pick-blue: #1493ff;
+  --pick-green: #93ff14;
+  --pick-pink: #ff1493;
+}
+
+.pick-heading {
+  align-items: flex-end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.pick-heading h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  margin: 0;
+}
+
+.pick-explorer .visual-kicker {
+  color: var(--link-color);
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.2rem;
+  text-transform: uppercase;
+}
+
+.coordinate-toggle,
+.preset-tabs button {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: inherit;
+}
+
+.coordinate-toggle {
+  border-radius: 6px;
+  font-size: 0.75rem;
+  padding: 0.48rem 0.68rem;
+  white-space: nowrap;
+}
+
+.coordinate-toggle[aria-pressed='true'] {
+  border-color: var(--pick-green);
+  color: var(--text-primary);
+}
+
+.coordinate-toggle:focus-visible,
+.preset-tabs button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--pick-green) 55%, transparent);
+  outline-offset: 2px;
+}
+
+.preset-tabs {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 0.75rem;
+}
+
+.preset-tabs button {
+  border-radius: 7px;
+  min-height: 3.65rem;
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+}
+
+.preset-tabs button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--pick-blue) 13%, var(--bg-color));
+  border-color: var(--pick-blue);
+  color: var(--text-primary);
+}
+
+.preset-tabs strong,
+.preset-tabs span {
+  display: block;
+}
+
+.preset-tabs strong { font-size: 0.78rem; }
+.preset-tabs span { font-size: 0.65rem; line-height: 1.25; margin-top: 0.15rem; }
+
+.pick-grid-shell {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+  overflow-x: auto;
+}
+
+.pick-grid-shell svg {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  min-width: 620px;
+  width: min(100%, 760px);
+}
+
+.lattice-lines line { stroke: var(--border-color); stroke-width: 1; }
+.lattice-polygon { fill: color-mix(in srgb, var(--pick-blue) 18%, transparent); stroke: var(--pick-blue); stroke-linejoin: round; stroke-width: 4; }
+.point-exterior { fill: var(--text-secondary); opacity: 0.35; }
+.point-interior { fill: var(--pick-green); stroke: var(--bg-color); stroke-width: 2; }
+.point-boundary { fill: var(--pick-blue); stroke: var(--bg-color); stroke-width: 2; }
+.coordinate-labels text { fill: var(--pick-pink); font-size: 13px; font-weight: 700; paint-order: stroke; stroke: var(--bg-color); stroke-width: 4px; }
+
+.point-key { display: flex; flex-wrap: wrap; gap: 0.45rem 1.2rem; margin: 0.7rem 0; }
+.point-key span { color: var(--text-secondary); font-size: 0.72rem; }
+.point-key span::before { content: ''; display: inline-block; margin-right: 0.4rem; vertical-align: -0.08rem; }
+.key-interior::before { background: var(--pick-green); border-radius: 50%; height: 0.65rem; width: 0.65rem; }
+.key-boundary::before { background: var(--pick-blue); border-radius: 2px; height: 0.65rem; width: 0.65rem; }
+.key-exterior::before { background: var(--text-secondary); border-radius: 50%; height: 0.35rem; opacity: 0.45; width: 0.35rem; }
+
+.pick-calculation {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.pick-calculation > div {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+  padding: 0.55rem 0.65rem;
+}
+
+.pick-calculation span,
+.pick-calculation strong { display: block; }
+.pick-calculation span { color: var(--text-secondary); font-size: 0.62rem; letter-spacing: 0.07em; text-transform: uppercase; }
+.pick-calculation strong { color: var(--text-primary); font-size: 0.84rem; margin-top: 0.16rem; }
+.pick-calculation .formula-result { border-color: var(--pick-pink); }
+
+.pick-explorer figcaption { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-top: 0.85rem; }
+.pick-explorer figcaption strong { color: var(--text-primary); }
+
+@media (max-width: 760px) {
+  .preset-tabs { grid-template-columns: 1fr 1fr; }
+  .pick-calculation { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 500px) {
+  .pick-explorer { width: calc(100vw - 1.5rem); }
+  .pick-heading { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pick-explorer * { scroll-behavior: auto !important; transition: none !important; }
+}

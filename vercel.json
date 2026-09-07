@@ -2,5 +2,19 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "astro",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "git": {
+    "deploymentEnabled": {
+      "dialogue-phase-3-runtime": false,
+      "dialogue-phase-3-runtime-v2": false,
+      "dialogue-phase-3-runtime-v3": false
+    }
+  },
+  "redirects": [
+    {
+      "source": "/notes/code-guru-rebuilt-recognition-first",
+      "destination": "/notes/the-working-vocabulary-of-software-engineering/",
+      "permanent": true
+    }
+  ]
 }

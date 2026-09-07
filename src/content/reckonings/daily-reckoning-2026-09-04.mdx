@@ -1,0 +1,255 @@
+---
+title: "Why Does Multiplying by i Make a Quarter-Turn?"
+description: "On the complex plane, the algebraic rule i² = −1 becomes a geometric motion: every multiplication by i rotates a point 90 degrees."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-04.svg"
+heroImageAlt: "Four luminous arrows make exact quarter-turns around a compass-like complex plane while an acid-green wake traces a square path across a dark maritime blueprint."
+date: 2026-09-04
+publishedAt: 2026-09-04T06:00:00-07:00
+area: "Numbers and algebra"
+difficulty: "Intermediate"
+prerequisites:
+  - "Algebra with negative numbers"
+  - "Cartesian coordinates"
+  - "The Pythagorean theorem"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - complex-numbers
+  - algebra
+  - geometry
+  - rotations
+  - mathematical-physics
+---
+
+import ComplexQuarterTurn from '../../components/reckonings/ComplexQuarterTurn.astro';
+import PhasorShadow from '../../components/reckonings/PhasorShadow.astro';
+
+Place the number $3$ on a number line and multiply it by $2$. The point moves twice as far from zero. Multiply $3$ by $-1$, and the point flips to the opposite side.
+
+Now try to multiply by a number whose square is $-1$. No point on an ordinary number line can do that job. A two-dimensional number system can.
+
+Mathematicians write the square root of $-1$ as $i$, so
+
+$$
+i^2=-1.
+$$
+
+On the **complex plane**, multiplying by $i$ turns every point one quarter-turn counterclockwise without changing its distance from the origin.
+
+## A number with two coordinates
+
+A **complex number** has the form
+
+$$
+z=a+bi,
+$$
+
+where $a$ and $b$ are real numbers and $i^2=-1$. Plot $z$ as the point $(a,b)$: the horizontal coordinate $a$ is the **real part**, and the vertical coordinate $b$ is the **imaginary part**.
+
+The phrase “imaginary part” is inherited terminology. The coordinate $b$ is an ordinary real number; $bi$ names its position along the vertical axis.
+
+The interactive complex plane begins with $z=3+2i$, represented by the point $(3,2)$. Press **Multiply by i** to watch four successive products. The dashed circle marks the starting distance from the origin.
+
+<ComplexQuarterTurn />
+
+## The algebra performs the rotation
+
+Multiply a general complex number $z=a+bi$ by $i$:
+
+$$
+\begin{aligned}
+iz
+&=i(a+bi)\\
+&=ai+b i^2\\
+&=ai-b\\
+&=-b+ai.
+\end{aligned}
+$$
+
+The starting point $(a,b)$ has become
+
+$$
+(a,b)\longmapsto(-b,a).
+$$
+
+That coordinate rule is a 90-degree counterclockwise rotation. Two short calculations verify both parts of the claim.
+
+First compare distances from the origin. The point $(a,b)$ has distance
+
+$$
+\sqrt{a^2+b^2}.
+$$
+
+The image $(-b,a)$ has distance
+
+$$
+\sqrt{(-b)^2+a^2}=\sqrt{b^2+a^2}=\sqrt{a^2+b^2}.
+$$
+
+Multiplication by $i$ preserves length.
+
+Next use the dot product, which multiplies matching coordinates and adds the results. The dot product of the old and new coordinate pairs is
+
+$$
+(a,b)\mathbin{\boldsymbol{\cdot}}(-b,a)=a(-b)+ba=-ab+ab=0.
+$$
+
+A zero dot product means the two arrows are perpendicular. The example $(1,0)\mapsto(0,1)$ fixes the direction as counterclockwise rather than clockwise. Equal length, a right angle, and counterclockwise direction establish the quarter-turn.
+
+## Worked example: turn $3+2i$ all the way around
+
+Begin with
+
+$$
+z=3+2i.
+$$
+
+One multiplication by $i$ gives
+
+$$
+\begin{aligned}
+iz
+&=i(3+2i)\\
+&=3i+2i^2\\
+&=3i+2(-1)\\
+&=-2+3i.
+\end{aligned}
+$$
+
+The coordinate pair changes from $(3,2)$ to $(-2,3)$, exactly as $(a,b)\mapsto(-b,a)$ predicts.
+
+Continue without skipping the powers of $i$:
+
+$$
+\begin{array}{ccll}
+i^0z &=& 3+2i     & (3,2),\\
+i^1z &=& -2+3i    & (-2,3),\\
+i^2z &=& -3-2i    & (-3,-2),\\
+i^3z &=& 2-3i     & (2,-3),\\
+i^4z &=& 3+2i     & (3,2).
+\end{array}
+$$
+
+The four-step cycle follows from $i^4=(i^2)^2=(-1)^2=1$. Algebraically, the multiplier returns to $1$. Geometrically, four quarter-turns make one complete revolution.
+
+## Try two turns yourself
+
+### Problem 1
+
+Multiply $-4+i$ by $i$. Give the result as a complex number and as a coordinate pair, then check the coordinate rule.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Distribute $i$ across both terms:
+
+$$
+\begin{aligned}
+i(-4+i)
+&=-4i+i^2\\
+&=-4i-1\\
+&=-1-4i.
+\end{aligned}
+$$
+
+The starting number $-4+i$ is the point $(-4,1)$. Applying $(a,b)\mapsto(-b,a)$ gives $(-1,-4)$, which matches $-1-4i$.
+
+</details>
+
+### Problem 2
+
+Which complex number rotates every point 90 degrees **clockwise**? Use your answer to rotate $2-3i$ clockwise.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Multiplication by $-i$ reverses the direction. For a general point,
+
+$$
+-i(a+bi)=b-ai,
+$$
+
+so $(a,b)\mapsto(b,-a)$, the coordinate rule for a clockwise quarter-turn.
+
+For $2-3i$,
+
+$$
+\begin{aligned}
+(-i)(2-3i)
+&=-2i+3i^2\\
+&=-2i-3\\
+&=-3-2i.
+\end{aligned}
+$$
+
+The point $(2,-3)$ therefore rotates clockwise to $(-3,-2)$.
+
+</details>
+
+## The detour through impossible square roots
+
+Complex numbers did not arrive as one person’s finished invention. Sixteenth-century Italian algebraists encountered square roots of negative numbers while developing formulas for cubic equations.
+
+That work unfolded inside a competitive profession. Mathematical teachers guarded successful methods because public problem-solving contests could bring students, patrons, employment, and prize money. A history published by the National Academies describes [a 1535 contest between Niccolò Tartaglia and Antonio Maria Fiore](https://www.nationalacademies.org/read/11540/chapter/7): each man supplied 30 problems, a notary recorded the deadline, and the loser owed the winner 30 banquets. Tartaglia solved every problem posed by Fiore and waived the feast.
+
+Girolamo Cardano published a general method for cubics in *Ars Magna* in 1545. Some cubics with entirely real answers forced Cardano’s formula to pass through negative square roots. The equation
+
+$$
+x^3=15x+4
+$$
+
+has the visible real solution $x=4$, yet Cardano’s cubic formula produces
+
+$$
+x=\sqrt[3]{2+\sqrt{-121}}+\sqrt[3]{2-\sqrt{-121}}.
+$$
+
+Rafael Bombelli showed in his 1572 *Algebra* how the strange middle step works. Since $(2+i)^3=2+11i$ and $(2-i)^3=2-11i$, the expression becomes
+
+$$
+(2+i)+(2-i)=4.
+$$
+
+The [Mathematical Association of America’s reconstruction](https://maa.org/math-values/calculus-for-teachers-whence-complex-numbers/) follows Bombelli’s calculation in modern notation. Bombelli gave reliable arithmetic rules for negative and complex quantities; his work turned a troublesome notation into a usable kind of number.
+
+The geometric picture came much later and more than once. Caspar Wessel, a Norwegian surveyor working for the Royal Danish Academy, needed algebra that could represent both length and direction. His paper, published in Danish in 1799, placed complex numbers in a plane. Jean-Robert Argand rediscovered the representation in 1806, and Carl Friedrich Gauss developed it again in 1831. Wessel’s paper remained largely unnoticed until 1895, so the picture still often bears Argand’s name. The [MacTutor account of Wessel](https://mathshistory.st-andrews.ac.uk/Biographies/Wessel/) traces both the surveying problem and the delayed recognition; a [European Mathematical Society history](https://orbit.dtu.dk/en/publications/caspar-wessel-on-representing-complex-numbers-1799/) notes that Wessel used the idea for directions by at least 1787.
+
+## Why engineers keep a rotating number
+
+A complex number can store two facts in one object: its distance from zero and its angle. In polar form,
+
+$$
+z=r(\cos\theta+i\sin\theta),
+$$
+
+where $r\ge0$ is the distance from the origin and $\theta$ is the angle measured counterclockwise from the positive real axis. Multiplying two complex numbers multiplies their distances and adds their angles. The number $i$ has distance $1$ and angle $90^\circ$, which recovers today’s quarter-turn.
+
+Electrical engineers represent alternating voltages and currents with **phasors**: complex arrows whose lengths record amplitudes and whose angles record phases. Multiplication can then handle phase shifts and amplitude changes together. The next diagram fixes the arrow at $60^\circ$ and shows how its real coordinate becomes one point on a cosine wave.
+
+<PhasorShadow />
+
+[Massachusetts Institute of Technology power-electronics notes](https://ocw.mit.edu/courses/6-622-power-electronics-spring-2023/resources/mit6_622s23_lecture_22_mp4/) use rotating phasors to track the magnitudes and phase differences in three-phase voltage systems. [MIT receiver-and-antenna notes](https://ocw.mit.edu/courses/6-661-receivers-antennas-and-signals-spring-2003/10025a78ab17e1e0866126246b751d11_ch3new.pdf) likewise combine arriving complex electric-field phasors when calculating the signal at an antenna.
+
+Quantum mechanics goes further: a quantum wavefunction is complex-valued, and relative complex phases control interference. [MIT’s introductory quantum course](https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/resources/lecture-3/) introduces wavefunctions, superposition, and probability amplitudes in that language. The square root of $-1$ is no longer an expendable intermediate step; complex phase is part of the theory’s working machinery.
+
+## One idea to remember
+
+Multiplication by $i$ exchanges a point’s coordinates and negates the old vertical coordinate:
+
+$$
+a+bi\longmapsto-b+ai,
+\qquad
+(a,b)\longmapsto(-b,a).
+$$
+
+That algebraic rule preserves length and makes a 90-degree counterclockwise turn. Continue with polar form and Euler’s formula to see why multiplication by $\cos\theta+i\sin\theta$ rotates through any chosen angle $\theta$.
+
+## Sources
+
+- David Pengelley, [“Whence Complex Numbers?”](https://maa.org/math-values/calculus-for-teachers-whence-complex-numbers/), Mathematical Association of America, 2025.
+- John Derbyshire, [“Commerce and Competition”](https://www.nationalacademies.org/read/11540/chapter/7) and [“Relief for the Imagination”](https://www.nationalacademies.org/read/11540/chapter/8), in *Unknown Quantity*, Joseph Henry Press, 2006.
+- J. J. O’Connor and E. F. Robertson, [“Rafael Bombelli”](https://mathshistory.st-andrews.ac.uk/Biographies/Bombelli/) and [“Caspar Wessel”](https://mathshistory.st-andrews.ac.uk/Biographies/Wessel/), MacTutor History of Mathematics, University of St Andrews.
+- Bodil Branner, [“Caspar Wessel on Representing Complex Numbers (1799)”](https://orbit.dtu.dk/en/publications/caspar-wessel-on-representing-complex-numbers-1799/), *Newsletter of the European Mathematical Society* 33, 13–16, 1999.
+- Massachusetts Institute of Technology OpenCourseWare, [“Lecture 22: Three-Phase Systems, Part 2”](https://ocw.mit.edu/courses/6-622-power-electronics-spring-2023/resources/mit6_622s23_lecture_22_mp4/), Power Electronics, Spring 2023.
+- Massachusetts Institute of Technology OpenCourseWare, [“Chapter 3: Antennas”](https://ocw.mit.edu/courses/6-661-receivers-antennas-and-signals-spring-2003/10025a78ab17e1e0866126246b751d11_ch3new.pdf), Receivers, Antennas, and Signals, Spring 2003.
+- Massachusetts Institute of Technology OpenCourseWare, [“Lecture 3: The Wave Function”](https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/resources/lecture-3/), Quantum Physics I, Spring 2013.

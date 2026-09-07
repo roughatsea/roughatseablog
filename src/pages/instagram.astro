@@ -1,0 +1,1031 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  buildInstagramCampaign,
+  standaloneInstagramCampaigns,
+  type InstagramCampaign,
+} from '../lib/instagramCampaigns';
+
+const [notes, soundings, reckonings, links] = await Promise.all([
+  getCollection('notes'),
+  getCollection('soundings'),
+  getCollection('reckonings'),
+  getCollection('links'),
+]);
+
+const campaigns: InstagramCampaign[] = [
+  ...standaloneInstagramCampaigns,
+  ...notes.map((entry) => buildInstagramCampaign(entry, 'notes')),
+  ...soundings.map((entry) => buildInstagramCampaign(entry, 'soundings')),
+  ...reckonings.map((entry) => buildInstagramCampaign(entry, 'reckonings')),
+  ...links.map((entry) => buildInstagramCampaign(entry, 'links')),
+].sort((a, b) => {
+  const dateDifference = new Date(b.date).valueOf() - new Date(a.date).valueOf();
+  if (dateDifference !== 0) return dateDifference;
+  return a.title.localeCompare(b.title);
+});
+
+const typeOptions = Array.from(
+  new Map(campaigns.map((campaign) => [campaign.kind, campaign.typeLabel] as const)).entries(),
+)
+  .map(([value, label]) => ({ value, label }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+
+const serializedCampaigns = JSON.stringify(campaigns).replace(/</g, '\\u003c');
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
+function buildAltText(campaign: InstagramCampaign, slide: InstagramCampaign['slides'][number]): string {
+  const altText =
+    slide.altText ??
+    `Rough at Sea ${campaign.typeLabel} carousel slide: ${slide.headline}. ${slide.body} Background artwork: ${campaign.heroImageAlt}`;
+  return altText.length <= 500 ? altText : `${altText.slice(0, 497).trimEnd()}…`;
+}
+---
+
+<BaseLayout
+  title="Instagram Studio"
+  description="An unlisted editorial workspace for turning Rough at Sea content into editable Instagram carousel campaigns."
+  robots="noindex, nofollow, noarchive"
+>
+  <header class="studio-hero">
+    <nav aria-label="Breadcrumb"><a href="/">← Rough at Sea</a></nav>
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Unlisted editorial workspace</p>
+        <h1>Instagram Studio</h1>
+        <p class="lede">
+          Every Rough at Sea article becomes an editable carousel draft. Rewrite the slide copy,
+          adjust the caption, download the 1080 × 1350 images, and post only when the campaign
+          feels like yours.
+        </p>
+      </div>
+      <div class="hero-mark" aria-hidden="true">
+        <span class="frame frame-one"></span>
+        <span class="frame frame-two"></span>
+        <span class="frame frame-three"></span>
+        <svg viewBox="0 0 160 46" fill="none">
+          <path d="M2 12c13 0 13 10 26 10s13-10 26-10 13 10 26 10 13-10 26-10 13 10 26 10 13-10 26-10" />
+          <path d="M2 28c13 0 13 10 26 10s13-10 26-10 13 10 26 10 13-10 26-10 13 10 26 10 13-10 26-10" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="workspace-actions" aria-label="Workspace backup controls">
+      <button type="button" class="button secondary" data-export-workspace>Export workspace</button>
+      <label class="button secondary import-button">
+        Import workspace
+        <input type="file" accept="application/json,.json" data-import-workspace />
+      </label>
+      <button type="button" class="button quiet" data-clear-workspace>Clear local edits</button>
+      <output class="global-message" data-global-message aria-live="polite"></output>
+    </div>
+  </header>
+
+  <aside class="privacy-note glass-panel">
+    <strong>This page is deliberately absent from site navigation and asks search engines not to index it.</strong>
+    It is still a public URL. Campaign edits, statuses, and notes remain in this browser unless you
+    export the workspace; no Instagram credentials or private account data are stored here.
+  </aside>
+
+  <section class="stat-grid" aria-label="Campaign status summary">
+    <div class="glass-panel">
+      <strong data-stat-total>{campaigns.length}</strong>
+      <span>Total campaigns</span>
+    </div>
+    <div class="glass-panel">
+      <strong data-stat-needs-review>{campaigns.length}</strong>
+      <span>Needs review</span>
+    </div>
+    <div class="glass-panel">
+      <strong data-stat-ready>0</strong>
+      <span>Ready to post</span>
+    </div>
+    <div class="glass-panel">
+      <strong data-stat-posted>0</strong>
+      <span>Posted</span>
+    </div>
+  </section>
+
+  <section class="workspace-panel" aria-labelledby="campaigns-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Campaign queue</p>
+        <h2 id="campaigns-title">One draft for every promotable piece</h2>
+      </div>
+      <p class="result-count" data-result-count>{campaigns.length} campaigns</p>
+    </div>
+
+    <div class="filters glass-panel">
+      <label class="search-field">
+        <span>Search</span>
+        <input type="search" placeholder="Title, tag, collection, or copy" data-filter-search />
+      </label>
+      <label>
+        <span>Type</span>
+        <select data-filter-type>
+          <option value="all">All types</option>
+          {typeOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+        </select>
+      </label>
+      <label>
+        <span>Status</span>
+        <select data-filter-status>
+          <option value="all">All statuses</option>
+          <option value="needs-review">Needs review</option>
+          <option value="ready">Ready to post</option>
+          <option value="posted">Posted</option>
+          <option value="skip">Skip</option>
+        </select>
+      </label>
+      <label>
+        <span>Sort</span>
+        <select data-filter-sort>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title</option>
+          <option value="status">Status</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="campaign-list" data-campaign-list>
+      {campaigns.map((campaign) => (
+        <article
+          class="campaign-card glass-panel"
+          data-campaign-card
+          data-campaign-id={campaign.id}
+          data-campaign-kind={campaign.kind}
+          data-campaign-date={campaign.date}
+          data-campaign-title={campaign.title}
+          data-campaign-search={`${campaign.title} ${campaign.description} ${campaign.typeLabel} ${campaign.tags.join(' ')}`.toLowerCase()}
+        >
+          <details data-campaign-details>
+            <summary>
+              <span class="summary-image">
+                <img
+                  src={campaign.heroImage}
+                  alt=""
+                  width="160"
+                  height="200"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </span>
+              <span class="summary-copy">
+                <span class="summary-meta">
+                  <span>{campaign.typeLabel}</span>
+                  <time datetime={campaign.date}>{formatDate(campaign.date)}</time>
+                </span>
+                <strong>{campaign.title}</strong>
+                <span class="summary-description">{campaign.description}</span>
+                <span class="tag-row" aria-label="Tags">
+                  {campaign.tags.slice(0, 5).map((tag) => <span>#{tag}</span>)}
+                </span>
+              </span>
+              <span class="summary-state">
+                <span class="status-pill status-needs-review" data-status-pill>Needs review</span>
+                <span class="slide-count">{campaign.slides.length} slides</span>
+                <span class="chevron" aria-hidden="true">⌄</span>
+              </span>
+            </summary>
+
+            <div class="campaign-workspace">
+              <div class="campaign-actions">
+                <label class="status-control">
+                  <span>Campaign status</span>
+                  <select data-campaign-status>
+                    <option value="needs-review">Needs review</option>
+                    <option value="ready">Ready to post</option>
+                    <option value="posted">Posted</option>
+                    <option value="skip">Skip</option>
+                  </select>
+                </label>
+                <button type="button" class="button primary" data-download-all>Download carousel</button>
+                <button type="button" class="button secondary" data-copy-caption>Copy caption</button>
+                <a class="button secondary" href={campaign.url} target="_blank" rel="noreferrer">Open source</a>
+                <button type="button" class="button quiet" data-reset-campaign>Reset campaign</button>
+                <output class="campaign-message" data-campaign-message aria-live="polite"></output>
+              </div>
+
+              <div class="slides-introduction">
+                <div>
+                  <p class="eyebrow">Carousel images</p>
+                  <h3>Edit what the reader will swipe through</h3>
+                </div>
+                <p>
+                  The preview and downloaded PNG use the same renderer. Hero art remains visible,
+                  but every slide is composed as a vertical Rough at Sea graphic rather than a blind crop.
+                </p>
+              </div>
+
+              <div class="slide-track" data-slide-track>
+                {campaign.slides.map((slide, index) => (
+                  <section class="slide-editor" data-slide-editor data-slide-index={index}>
+                    <div class="canvas-shell">
+                      <canvas
+                        width="540"
+                        height="675"
+                        data-slide-canvas
+                        role="img"
+                        aria-label={`Preview of slide ${index + 1}: ${slide.headline}`}
+                      ></canvas>
+                      <span class="rendering-label" data-rendering-label>Rendering preview…</span>
+                    </div>
+                    <div class="slide-fields">
+                      <div class="slide-field-heading">
+                        <strong>Slide {index + 1}</strong>
+                        <span>{slide.layout}</span>
+                      </div>
+                      <label>
+                        <span>Eyebrow</span>
+                        <input
+                          type="text"
+                          value={slide.eyebrow}
+                          maxlength="70"
+                          data-slide-field="eyebrow"
+                        />
+                      </label>
+                      <label>
+                        <span>Headline</span>
+                        <textarea
+                          rows="3"
+                          maxlength="180"
+                          data-slide-field="headline"
+                        >{slide.headline}</textarea>
+                      </label>
+                      <label>
+                        <span>Body</span>
+                        <textarea
+                          rows="6"
+                          maxlength="600"
+                          data-slide-field="body"
+                        >{slide.body}</textarea>
+                      </label>
+                      <label>
+                        <span>Alt text</span>
+                        <textarea
+                          rows="3"
+                          maxlength="500"
+                          data-slide-field="altText"
+                        >{buildAltText(campaign, slide)}</textarea>
+                      </label>
+                      <div class="slide-button-grid">
+                        <button type="button" class="button secondary" data-download-slide>
+                          Download slide {index + 1} PNG
+                        </button>
+                        <button type="button" class="button secondary" data-copy-alt-text>
+                          Copy alt text
+                        </button>
+                      </div>
+                    </div>
+                  </section>
+                ))}
+              </div>
+
+              <div class="copy-grid">
+                <label class="caption-field">
+                  <span>Instagram caption</span>
+                  <textarea rows="14" maxlength="2200" data-caption>{campaign.caption}</textarea>
+                  <small><span data-caption-count>{campaign.caption.length}</span> / 2,200 characters</small>
+                </label>
+                <label class="notes-field">
+                  <span>Private posting notes</span>
+                  <textarea
+                    rows="8"
+                    placeholder="Possible edits, posting date, music, people to tag, or anything else you want to remember."
+                    data-posting-notes
+                  ></textarea>
+                  <small>Saved only in this browser and included in workspace exports.</small>
+                </label>
+              </div>
+            </div>
+          </details>
+        </article>
+      ))}
+    </div>
+
+    <p class="empty-state glass-panel" data-empty-state hidden>
+      No campaigns match the current filters.
+    </p>
+  </section>
+
+  <script
+    id="instagram-campaign-data"
+    type="application/json"
+    is:inline
+    set:html={serializedCampaigns}
+  ></script>
+  <script is:inline type="module" src="/scripts/instagram-workspace.js"></script>
+</BaseLayout>
+
+<style>
+  :global(main.container) {
+    max-width: 1240px;
+  }
+
+  .studio-hero {
+    margin-bottom: 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .studio-hero nav {
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .studio-hero nav a:hover {
+    color: var(--link-color);
+  }
+
+  .hero-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(2rem, 7vw, 6rem);
+    grid-template-columns: minmax(0, 1.25fr) minmax(17rem, 0.75fr);
+  }
+
+  .eyebrow {
+    color: var(--link-color);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(3.8rem, 9vw, 7rem);
+    letter-spacing: -0.055em;
+    line-height: 0.9;
+    margin-bottom: 1.25rem;
+  }
+
+  .lede {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: clamp(1.08rem, 2vw, 1.32rem);
+    line-height: 1.7;
+    max-width: 52rem;
+  }
+
+  .hero-mark {
+    height: 22rem;
+    justify-self: end;
+    max-width: 23rem;
+    position: relative;
+    width: 100%;
+  }
+
+  .hero-mark .frame {
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+    position: absolute;
+    width: 11rem;
+  }
+
+  .frame-one {
+    background: linear-gradient(145deg, #091627, #1493ff);
+    right: 8.5rem;
+    top: 3.2rem;
+    transform: rotate(-11deg);
+  }
+
+  .frame-two {
+    background: linear-gradient(145deg, #190c1d, #ff1493);
+    right: 4.1rem;
+    top: 1.5rem;
+    transform: rotate(2deg);
+  }
+
+  .frame-three {
+    background: linear-gradient(145deg, #10200c, #93ff14);
+    right: 0;
+    top: 3.9rem;
+    transform: rotate(10deg);
+  }
+
+  .hero-mark svg {
+    bottom: 0.5rem;
+    color: var(--link-color);
+    position: absolute;
+    right: 1.5rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+    width: 15rem;
+  }
+
+  .workspace-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+  }
+
+  .button {
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 1;
+    min-height: 2.5rem;
+    padding: 0.7rem 0.95rem;
+    transition: var(--transition-smooth);
+  }
+
+  button.button {
+    background: transparent;
+    color: var(--text-primary);
+  }
+
+  .button:hover {
+    border-color: var(--link-color);
+    color: var(--link-color);
+    transform: translateY(-1px);
+  }
+
+  .button.primary {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    color: var(--bg-color);
+  }
+
+  .button.primary:hover {
+    background: var(--link-color);
+    border-color: var(--link-color);
+    color: white;
+  }
+
+  .button.quiet {
+    border-color: transparent;
+    color: var(--text-secondary);
+  }
+
+  .button.full-width {
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .slide-button-grid {
+    display: grid;
+    gap: 0.55rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .slide-button-grid .button {
+    border-radius: 10px;
+  }
+
+  .import-button {
+    position: relative;
+  }
+
+  .import-button input {
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+  }
+
+  .global-message,
+  .campaign-message {
+    color: var(--text-secondary);
+    font-size: 0.74rem;
+    min-height: 1.2rem;
+  }
+
+  .privacy-note {
+    border-left: 3px solid var(--link-color);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .privacy-note strong {
+    color: var(--text-primary);
+  }
+
+  .stat-grid {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 4rem;
+  }
+
+  .stat-grid > div {
+    border-radius: 12px;
+    padding: 1rem 1.15rem;
+  }
+
+  .stat-grid strong {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 2.35rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .stat-grid span {
+    color: var(--text-secondary);
+    font-size: 0.68rem;
+  }
+
+  .section-heading {
+    align-items: end;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .section-heading h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.3rem);
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  .result-count {
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .filters {
+    border-radius: 14px;
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: minmax(16rem, 1.5fr) repeat(3, minmax(9rem, 0.7fr));
+    margin-bottom: 1rem;
+    padding: 1rem;
+    position: sticky;
+    top: 0.75rem;
+    z-index: 8;
+  }
+
+  .filters label,
+  .slide-fields label,
+  .copy-grid label,
+  .status-control {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .filters label > span,
+  .slide-fields label > span,
+  .copy-grid label > span,
+  .status-control > span {
+    color: var(--text-secondary);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  input,
+  select,
+  textarea {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    min-width: 0;
+    padding: 0.65rem 0.75rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--link-color) 16%, transparent);
+    outline: none;
+  }
+
+  .campaign-list {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .campaign-card {
+    border-radius: 16px;
+    overflow: clip;
+  }
+
+  .campaign-card[hidden] {
+    display: none;
+  }
+
+  summary {
+    align-items: center;
+    cursor: pointer;
+    display: grid;
+    gap: 1.15rem;
+    grid-template-columns: 5.4rem minmax(0, 1fr) auto;
+    list-style: none;
+    min-height: 8.4rem;
+    padding: 0.9rem;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: -4px;
+  }
+
+  .summary-image {
+    aspect-ratio: 4 / 5;
+    border-radius: 10px;
+    display: block;
+    overflow: hidden;
+  }
+
+  .summary-image img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .summary-copy {
+    min-width: 0;
+  }
+
+  .summary-meta {
+    align-items: center;
+    color: var(--text-secondary);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.66rem;
+    gap: 0.4rem 0.75rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .summary-copy > strong {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    line-height: 1.15;
+    margin-bottom: 0.35rem;
+  }
+
+  .summary-description {
+    color: var(--text-secondary);
+    display: -webkit-box;
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.55rem;
+  }
+
+  .tag-row span {
+    color: var(--link-color);
+    font-size: 0.62rem;
+  }
+
+  .summary-state {
+    align-items: end;
+    display: grid;
+    gap: 0.35rem;
+    justify-items: end;
+    min-width: 8rem;
+  }
+
+  .status-pill {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.35rem 0.55rem;
+  }
+
+  .status-needs-review {
+    color: var(--text-secondary);
+  }
+
+  .status-ready {
+    border-color: #93ff14;
+    color: color-mix(in srgb, #93ff14 72%, var(--text-primary));
+  }
+
+  .status-posted {
+    border-color: #1493ff;
+    color: #1493ff;
+  }
+
+  .status-skip {
+    opacity: 0.58;
+  }
+
+  .slide-count {
+    color: var(--text-secondary);
+    font-size: 0.66rem;
+  }
+
+  .chevron {
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  details[open] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .campaign-workspace {
+    border-top: 1px solid var(--border-color);
+    padding: clamp(1rem, 3vw, 1.6rem);
+  }
+
+  .campaign-actions {
+    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 2rem;
+  }
+
+  .status-control {
+    min-width: 10rem;
+  }
+
+  .campaign-message {
+    margin-left: auto;
+  }
+
+  .slides-introduction {
+    align-items: end;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .slides-introduction h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    margin: 0;
+  }
+
+  .slides-introduction > p {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 37rem;
+  }
+
+  .slide-track {
+    display: grid;
+    gap: 1rem;
+    grid-auto-columns: minmax(20rem, 25rem);
+    grid-auto-flow: column;
+    margin: 0 calc(clamp(1rem, 3vw, 1.6rem) * -1) 2rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding: 0 clamp(1rem, 3vw, 1.6rem) 1rem;
+    scroll-snap-type: inline mandatory;
+    scrollbar-color: var(--border-color) transparent;
+  }
+
+  .slide-editor {
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    overflow: hidden;
+    scroll-snap-align: start;
+  }
+
+  .canvas-shell {
+    aspect-ratio: 4 / 5;
+    background: #06111f;
+    position: relative;
+  }
+
+  .canvas-shell canvas {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .rendering-label {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.72rem;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .rendering-label[hidden] {
+    display: none;
+  }
+
+  .slide-fields {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.9rem;
+  }
+
+  .slide-field-heading {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .slide-field-heading strong {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+  }
+
+  .slide-field-heading span {
+    color: var(--text-secondary);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .copy-grid {
+    align-items: start;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1.4fr) minmax(17rem, 0.6fr);
+  }
+
+  .copy-grid > label {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.9rem;
+  }
+
+  .copy-grid small {
+    color: var(--text-secondary);
+    font-size: 0.68rem;
+  }
+
+  .empty-state {
+    border-radius: 14px;
+    color: var(--text-secondary);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-mark {
+      display: none;
+    }
+
+    .filters {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      position: static;
+    }
+
+    .search-field {
+      grid-column: 1 / -1;
+    }
+
+    .copy-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 660px) {
+    .stat-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-bottom: 3rem;
+    }
+
+    .section-heading,
+    .slides-introduction {
+      align-items: start;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .filters {
+      grid-template-columns: 1fr;
+    }
+
+    .search-field {
+      grid-column: auto;
+    }
+
+    summary {
+      align-items: start;
+      grid-template-columns: 4rem minmax(0, 1fr);
+    }
+
+    .summary-state {
+      align-items: center;
+      display: flex;
+      grid-column: 2;
+      justify-content: flex-start;
+      min-width: 0;
+    }
+
+    .slide-track {
+      grid-auto-columns: minmax(18rem, calc(100vw - 4.5rem));
+    }
+
+    .slide-button-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .campaign-actions {
+      align-items: stretch;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .status-control,
+    .campaign-message {
+      grid-column: 1 / -1;
+      margin-left: 0;
+    }
+
+    .campaign-actions .button {
+      border-radius: 10px;
+    }
+  }
+
+  @media (max-width: 430px) {
+    h1 {
+      font-size: 3.4rem;
+    }
+
+    .workspace-actions,
+    .campaign-actions {
+      align-items: stretch;
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .global-message,
+    .status-control,
+    .campaign-message {
+      grid-column: auto;
+    }
+
+    summary {
+      grid-template-columns: 3.4rem minmax(0, 1fr);
+      padding: 0.75rem;
+    }
+
+    .summary-description {
+      -webkit-line-clamp: 3;
+    }
+
+    .summary-state {
+      flex-wrap: wrap;
+    }
+  }
+</style>

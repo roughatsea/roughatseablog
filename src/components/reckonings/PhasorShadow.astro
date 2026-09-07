@@ -1,0 +1,101 @@
+---
+const wavePoints = Array.from({ length: 73 }, (_, index) => {
+  const degrees = index * 5;
+  const x = 470 + (410 * degrees) / 360;
+  const y = 250 - 132.5 * Math.cos((degrees * Math.PI) / 180);
+  return `${x.toFixed(2)},${y.toFixed(2)}`;
+}).join(' ');
+
+const sampleX = 470 + 410 / 6;
+const sampleY = 250 - 132.5 / 2;
+---
+
+<figure class="phasor-shadow reckoning-visual">
+  <header>
+    <p>From rotation to a wave</p>
+    <h3>A rotating complex arrow casts a cosine shadow</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 920 400" role="img" aria-labelledby="phasor-title phasor-desc">
+      <title id="phasor-title">A phasor at sixty degrees and its matching point on a cosine wave</title>
+      <desc id="phasor-desc">
+        On the left, a unit arrow makes a sixty-degree angle with the positive real axis. Its
+        horizontal coordinate is one half. A dotted guide connects that projection to the value
+        one half on a cosine curve at sixty degrees on the right.
+      </desc>
+
+      <g class="panel-labels" aria-hidden="true">
+        <text x="170" y="35">COMPLEX PLANE</text>
+        <text x="640" y="35">REAL PROJECTION OVER TIME</text>
+      </g>
+      <g class="axes" aria-hidden="true">
+        <path d="M60 250H390M225 360V62" />
+        <path d="M450 250H880M470 82V390" />
+      </g>
+      <circle class="unit-circle" cx="225" cy="250" r="145" />
+      <path class="phasor halo" d="M225 250L297.5 124.4" />
+      <path class="phasor" d="M225 250L297.5 124.4" />
+      <path class="projection" d={`M297.5 124.4V250H${sampleX}V${sampleY}`} />
+      <path class="angle" d="M277 250A52 52 0 0 0 251 205" />
+      <text class="theta" x="268" y="220">60°</text>
+      <polyline class="wave" points={wavePoints} />
+      <circle class="sample" cx={sampleX} cy={sampleY} r="9" />
+      <path class="sample-diamond" d={`M${sampleX} ${sampleY - 13}l13 13-13 13-13-13z`} />
+      <g class="labels" aria-hidden="true">
+        <text x="372" y="274">Re</text>
+        <text x="238" y="78">Im</text>
+        <text x="305" y="116">eⁱᶿ</text>
+        <text x="235" y="275">0</text>
+        <text x="284" y="273">cos 60° = ½</text>
+        <text x={sampleX - 13} y="277">60°</text>
+        <text x="842" y="277">360°</text>
+        <text x="476" y="107">1</text>
+        <text x="476" y="188">½</text>
+        <text x="476" y="387">−1</text>
+      </g>
+    </svg>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the arrow keeps unit length while its angle changes. Reading
+    only its horizontal coordinate produces the cosine wave on the right; the vertical coordinate
+    would produce a sine wave.
+  </figcaption>
+</figure>
+
+<style>
+  .phasor-shadow {
+    --wave-blue: #087dcc;
+    --wave-green: #4f9300;
+    --wave-pink: #d9007e;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .phasor-shadow { --wave-blue: #1493ff; --wave-green: #93ff14; --wave-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 600; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 700px; width: 100%; }
+  .axes path { fill: none; stroke: var(--text-secondary); stroke-width: 1.7; }
+  .unit-circle { fill: none; stroke: var(--border-color); stroke-dasharray: 5 8; stroke-width: 2; }
+  .phasor { fill: none; stroke: var(--wave-pink); stroke-linecap: round; stroke-width: 6; }
+  .phasor.halo { stroke: var(--bg-color); stroke-width: 11; }
+  .projection { fill: none; stroke: var(--wave-green); stroke-dasharray: 5 7; stroke-width: 2.5; }
+  .angle { fill: none; stroke: var(--wave-blue); stroke-width: 3; }
+  .wave { fill: none; stroke: var(--wave-blue); stroke-width: 4; }
+  .sample { fill: var(--bg-color); stroke: var(--wave-blue); stroke-width: 3; }
+  .sample-diamond { fill: var(--wave-green); stroke: var(--bg-color); stroke-width: 2; }
+  .panel-labels text { fill: var(--text-secondary); font-size: 12px; font-weight: 700; letter-spacing: .12em; }
+  .labels text, .theta { fill: var(--text-secondary); font-size: 13px; }
+  .theta { fill: var(--wave-blue); font-weight: 700; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 620px) { .phasor-shadow { width: calc(100vw - 1.5rem); } }
+</style>

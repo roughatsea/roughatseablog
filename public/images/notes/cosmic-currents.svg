@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Cosmic Currents</title>
+  <desc id="desc">A stylized cosmic flow map with luminous cyan streams, violet voids, magenta attractor regions, and a gold marker for the Milky Way.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="48%" r="76%">
+      <stop offset="0" stop-color="#101336"/>
+      <stop offset="0.5" stop-color="#05071b"/>
+      <stop offset="1" stop-color="#010208"/>
+    </radialGradient>
+    <radialGradient id="violetVoid" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#3d176d" stop-opacity=".7"/>
+      <stop offset=".55" stop-color="#251047" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#140728" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="magentaWell" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff1fa"/>
+      <stop offset=".08" stop-color="#ffb5dd"/>
+      <stop offset=".25" stop-color="#ff1493" stop-opacity=".92"/>
+      <stop offset=".58" stop-color="#a00078" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#ff1493" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="goldWell" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fffde2"/>
+      <stop offset=".14" stop-color="#ffe96b"/>
+      <stop offset=".45" stop-color="#ffb11a" stop-opacity=".46"/>
+      <stop offset="1" stop-color="#ffb11a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="current" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1493ff" stop-opacity="0"/>
+      <stop offset=".28" stop-color="#1493ff" stop-opacity=".68"/>
+      <stop offset=".68" stop-color="#7dfcff" stop-opacity=".98"/>
+      <stop offset="1" stop-color="#ff65bb" stop-opacity=".72"/>
+    </linearGradient>
+    <linearGradient id="currentGold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#93ff14" stop-opacity="0"/>
+      <stop offset=".45" stop-color="#93ff14" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#ffe96b" stop-opacity=".95"/>
+    </linearGradient>
+    <filter id="blur40" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="40"/></filter>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="18" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="stars" width="170" height="150" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="24" r="1.3" fill="#fff" opacity=".65"/>
+      <circle cx="66" cy="108" r=".9" fill="#a9cfff" opacity=".42"/>
+      <circle cx="148" cy="48" r="1.7" fill="#fff" opacity=".48"/>
+      <circle cx="104" cy="16" r=".6" fill="#93ffef" opacity=".52"/>
+      <circle cx="30" cy="136" r=".7" fill="#ffacd8" opacity=".38"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffe96b"/>
+    </marker>
+    <clipPath id="frame"><rect x="28" y="28" width="1544" height="844" rx="30"/></clipPath>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g clip-path="url(#frame)">
+    <rect width="1600" height="900" fill="url(#stars)" opacity=".72"/>
+    <ellipse cx="285" cy="525" rx="310" ry="300" fill="url(#violetVoid)"/>
+    <ellipse cx="1290" cy="250" rx="330" ry="280" fill="url(#violetVoid)" opacity=".78"/>
+    <ellipse cx="1120" cy="520" rx="250" ry="250" fill="url(#magentaWell)" opacity=".78" filter="url(#blur40)"/>
+    <ellipse cx="1360" cy="300" rx="205" ry="205" fill="url(#magentaWell)" opacity=".88" filter="url(#blur40)"/>
+    <ellipse cx="745" cy="455" rx="115" ry="115" fill="url(#goldWell)" opacity=".74" filter="url(#blur40)"/>
+
+    <g fill="none" stroke-linecap="round">
+      <path d="M-90 675 C155 642 244 495 426 548 C610 601 660 500 772 466 C908 425 1006 503 1125 512 C1268 522 1384 418 1690 396" stroke="url(#current)" stroke-width="55" opacity=".12" filter="url(#blur40)"/>
+      <path d="M-70 690 C162 646 242 500 432 555 C602 605 665 501 781 463 C910 420 1010 500 1122 509 C1260 520 1394 408 1680 385" stroke="url(#current)" stroke-width="12" opacity=".84" filter="url(#glow)"/>
+      <path d="M-35 232 C190 304 312 400 467 384 C635 367 707 435 798 463 C926 501 1061 444 1130 509" stroke="url(#currentGold)" stroke-width="7" opacity=".76" filter="url(#glow)"/>
+      <path d="M120 920 C222 742 342 690 462 650 C611 600 662 493 779 463" stroke="url(#current)" stroke-width="8" opacity=".62" filter="url(#glow)"/>
+      <path d="M772 -40 C810 147 789 253 802 331 C820 431 945 462 1124 509" stroke="url(#current)" stroke-width="9" opacity=".7" filter="url(#glow)"/>
+      <path d="M1595 813 C1420 700 1311 649 1212 594 C1170 570 1141 539 1124 509" stroke="url(#current)" stroke-width="7" opacity=".66" filter="url(#glow)"/>
+      <path d="M1555 58 C1488 155 1442 227 1363 301" stroke="url(#current)" stroke-width="10" opacity=".75" filter="url(#glow)"/>
+      <path d="M1124 509 C1205 462 1260 398 1363 301" stroke="url(#current)" stroke-width="7" opacity=".69" filter="url(#glow)"/>
+    </g>
+
+    <g fill="#c8f8ff" opacity=".78">
+      <circle cx="183" cy="635" r="2.2"/><circle cx="214" cy="615" r="1.3"/><circle cx="254" cy="585" r="2.8"/>
+      <circle cx="292" cy="557" r="1.4"/><circle cx="341" cy="545" r="2"/><circle cx="400" cy="552" r="1.5"/>
+      <circle cx="481" cy="568" r="2.5"/><circle cx="535" cy="577" r="1.1"/><circle cx="610" cy="548" r="2.2"/>
+      <circle cx="686" cy="499" r="1.5"/><circle cx="758" cy="466" r="2.7"/><circle cx="842" cy="449" r="1.3"/>
+      <circle cx="927" cy="464" r="2.2"/><circle cx="1002" cy="492" r="1.2"/><circle cx="1080" cy="506" r="3"/>
+      <circle cx="1172" cy="505" r="1.6"/><circle cx="1250" cy="476" r="2.4"/><circle cx="1326" cy="428" r="1.4"/>
+      <circle cx="1414" cy="371" r="2.2"/><circle cx="1502" cy="351" r="1.2"/>
+    </g>
+
+    <g filter="url(#softGlow)">
+      <circle cx="1124" cy="509" r="9" fill="#ffedf8"/>
+      <circle cx="1363" cy="301" r="11" fill="#fff0fa"/>
+      <circle cx="779" cy="463" r="7" fill="#f8ffe7"/>
+    </g>
+
+    <g transform="translate(545 600)">
+      <circle r="30" fill="none" stroke="#ffe96b" stroke-width="2" opacity=".32"/>
+      <circle r="8" fill="#ffe96b" filter="url(#glow)"/>
+      <path d="M20 -9 C70 -36 117 -57 178 -95" fill="none" stroke="#ffe96b" stroke-width="4" stroke-dasharray="8 9" marker-end="url(#arrow)" opacity=".9"/>
+      <g transform="translate(-8 55)" fill="#fff7bd" font-family="Inter, Arial, sans-serif">
+        <text font-size="14" letter-spacing="3">MILKY WAY</text>
+        <text y="27" font-size="24" font-weight="700">YOU ARE HERE</text>
+      </g>
+    </g>
+
+    <g font-family="Inter, Arial, sans-serif" fill="#f4f1ff">
+      <g transform="translate(1142 470)"><text font-size="13" letter-spacing="2" opacity=".7">REGIONAL CURRENT</text><text y="28" font-size="23" font-weight="700">GREAT ATTRACTOR</text></g>
+      <g transform="translate(1378 263)"><text font-size="13" letter-spacing="2" opacity=".7">LARGER SCALE</text><text y="28" font-size="23" font-weight="700">SHAPLEY</text></g>
+      <g transform="translate(793 426)"><text font-size="13" letter-spacing="2" opacity=".7">LOCAL BEND</text><text y="27" font-size="22" font-weight="700">VIRGO</text></g>
+    </g>
+
+    <g transform="translate(104 98)" font-family="Inter, Arial, sans-serif">
+      <text fill="#7dfcff" font-size="14" font-weight="700" letter-spacing="6">ROUGH AT SEA · INTERACTIVE</text>
+      <text y="92" fill="#ffffff" font-size="86" font-weight="800" letter-spacing="-4">COSMIC</text>
+      <text y="174" fill="#ffffff" font-size="86" font-weight="800" letter-spacing="-4">CURRENTS</text>
+      <text y="221" fill="#b9bfd8" font-size="23">The universe is expanding. So why are we falling?</text>
+    </g>
+  </g>
+  <rect x="28" y="28" width="1544" height="844" rx="30" fill="none" stroke="#9defff" stroke-opacity=".16" stroke-width="2"/>
+</svg>

@@ -1,0 +1,95 @@
+{
+  "run_id": "shadow-phase2-rejected",
+  "mode": "shadow",
+  "canonical_status": "NON-CANON",
+  "started_at": "2026-09-03T10:30:00-07:00",
+  "completed_at": "2026-09-03T10:30:00-07:00",
+  "scenario": "rejected",
+  "outcome": "all-rejected",
+  "base_snapshot_id": "snapshot-day-001-commissioned",
+  "versions": {
+    "constitution": "2.0.0",
+    "schema": "2.0.0",
+    "engine": "phase-2.0.0",
+    "provider": "commissioning-recorded-provider",
+    "provider_version": "phase-2.0.0",
+    "validator": "phase-2.0.0"
+  },
+  "director": {
+    "opportunity_only": true,
+    "scheduled_candidate_ids": [
+      "bench-anika-08"
+    ],
+    "required_participation": false,
+    "assigned_conclusions": false
+  },
+  "summary": {
+    "generated": 1,
+    "passed": 0,
+    "rejected": 1
+  },
+  "candidates": [
+    {
+      "candidate_id": "bench-anika-08",
+      "author_id": "anika-vale",
+      "scenario_id": "unanchored-abstraction",
+      "text": "A civilization can keep every rule and still lose the reasons that once made those rules intelligible.",
+      "grounding": {
+        "why_now": "Anika has a general reflection with no concrete object or event.",
+        "concrete_anchor_id": null,
+        "concrete_anchor_kind": null,
+        "anchor_detail": null,
+        "speech_act": "abstract-thesis",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "GROUNDING_ANCHOR_MISSING"
+      ],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": false,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": false,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "GROUNDING_ANCHOR_MISSING",
+            "note": "The concrete anchor does not resolve in canonical state."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    }
+  ],
+  "proposed_state_changes_applied": 0,
+  "raw_model_reasoning_stored": false,
+  "canonical_mutation_guard": {
+    "algorithm": "sha256",
+    "digest_before": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "digest_after": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "changed_files": [],
+    "passed": true
+  }
+}

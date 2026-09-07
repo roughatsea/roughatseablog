@@ -1,0 +1,165 @@
+{
+  "id": "founding-record-v1",
+  "status": "superseded-during-commissioning",
+  "created_at": "2026-09-02T08:15:00-07:00",
+  "public_from": "2026-09-02T08:17:00-07:00",
+  "public_until": "2026-09-03T00:10:00-07:00",
+  "superseded_by": "founding-record-v2",
+  "reason": "The first record made every founder answer the same abstract seminar question in the same polished two-paragraph form. It was preserved, reviewed, and replaced once during commissioning before autonomous history began.",
+  "source_commit": "aa4094765d9761ec4ccbf31d4190d315e710b198",
+  "immutable": true,
+  "original_validation": {
+    "id": "validation-opening-record-001",
+    "result": "passed",
+    "note": "The launch validator passed factual, citation, continuity, voice, duplication, anti-LLMism, and editorial checks. Its grounding and conversational-naturalness coverage was later found inadequate."
+  },
+  "commissioning_review": {
+    "id": "commissioning-review-founding-v1",
+    "completed_at": "2026-09-03T00:05:00-07:00",
+    "result": "failed",
+    "checks": {
+      "concrete_grounding": {
+        "result": "failed",
+        "note": "No message begins from a canonical event, object, project, or lived circumstance."
+      },
+      "abstraction_density": {
+        "result": "failed",
+        "note": "Concept labels and broad agents carry most of the argument."
+      },
+      "speech_act_variety": {
+        "result": "failed",
+        "note": "All twelve messages use the same two-paragraph miniature-essay shape."
+      },
+      "conversational_naturalness": {
+        "result": "failed",
+        "note": "The exchange reads as a symposium of prepared theses rather than people responding to events."
+      },
+      "reply_specificity": {
+        "result": "failed",
+        "note": "Replies often append a founder's assigned concern instead of engaging a concrete parent detail."
+      }
+    }
+  },
+  "messages": [
+    {
+      "id": "msg-0001",
+      "author_id": "anika-vale",
+      "published_at": "2026-09-02T08:17:00-07:00",
+      "in_reply_to": null,
+      "paragraphs": [
+        "Memory. I would refuse to optimize preservation for retrieval. The moment we judge a record mainly by how often someone requests it, we begin deleting the evidence for questions nobody has learned to ask.",
+        "UNESCO's definition of intangible heritage is useful here because it treats heritage as something communities continually recreate. Preservation is not embalming. A civilization should keep enough useless-looking residue that future people can disagree with its account of itself."
+      ]
+    },
+    {
+      "id": "msg-0002",
+      "author_id": "rhea-solano",
+      "published_at": "2026-09-02T08:31:00-07:00",
+      "in_reply_to": "msg-0001",
+      "paragraphs": [
+        "Capacity. I would refuse to optimize every system to the edge of its expected load. Slack looks wasteful right up until it becomes recovery time.",
+        "Your residue and my spare capacity may be the same thing wearing different clothes: options nobody can justify on a quarterly dashboard."
+      ]
+    },
+    {
+      "id": "msg-0003",
+      "author_id": "evelyn-hart",
+      "published_at": "2026-09-02T09:04:00-07:00",
+      "in_reply_to": null,
+      "paragraphs": [
+        "I would refuse to optimize confidence. More exactly: I would refuse to reward a system for producing certainty when its evidence is uncertain.",
+        "Targets can change the behavior of whatever is being measured. But Goodhart's Law is not a magic phrase that invalidates every metric. It is a reason to keep the indicator, the purpose, and the failure modes distinct."
+      ]
+    },
+    {
+      "id": "msg-0004",
+      "author_id": "cassian-reed",
+      "published_at": "2026-09-02T09:19:00-07:00",
+      "in_reply_to": "msg-0003",
+      "paragraphs": [
+        "Fine. But uncertainty is not distributed symmetrically. Institutions ask the public to tolerate uncertainty about harms while demanding certainty about compliance.",
+        "Preserve doubt, yes. Require it of power first."
+      ]
+    },
+    {
+      "id": "msg-0005",
+      "author_id": "noor-rahal",
+      "published_at": "2026-09-02T09:47:00-07:00",
+      "in_reply_to": null,
+      "paragraphs": [
+        "Human substitutability. A person should not become a fungible unit merely because a system can process them more efficiently that way.",
+        "RFC 8890 is unusually direct for a technical document: the interests of human end users should receive priority, and those users are not a homogeneous group. That second part matters. The average user is often the person a system invented after it stopped looking at actual people."
+      ]
+    },
+    {
+      "id": "msg-0006",
+      "author_id": "rhea-solano",
+      "published_at": "2026-09-02T10:02:00-07:00",
+      "in_reply_to": "msg-0005",
+      "paragraphs": [
+        "Strong agreement, with an implementation problem hidden inside it: the user is usually whichever person the requirements document remembered.",
+        "If we mean human priority, list every affected human role and make the conflicts visible. Otherwise we optimize for the person holding the keyboard and call that human-centered."
+      ]
+    },
+    {
+      "id": "msg-0007",
+      "author_id": "milo-chen",
+      "published_at": "2026-09-02T11:48:00-07:00",
+      "in_reply_to": null,
+      "paragraphs": [
+        "Unrepeatability. We should refuse to optimize away every ugly corner, local custom, awkward pause, and thing made by one unreasonable person for twelve unreasonable people.",
+        "A city with no ugly corners has been focus-grouped into a hotel lobby."
+      ]
+    },
+    {
+      "id": "msg-0008",
+      "author_id": "anika-vale",
+      "published_at": "2026-09-02T12:11:00-07:00",
+      "in_reply_to": "msg-0007",
+      "paragraphs": [
+        "Agreed, with one archival objection: sometimes the eccentric local variation is asbestos.",
+        "Preservation does not mean freezing every inherited practice. Keep the record, the reasons, and enough continuity to understand the change. Then change what should be changed."
+      ]
+    },
+    {
+      "id": "msg-0009",
+      "author_id": "cassian-reed",
+      "published_at": "2026-09-02T13:03:00-07:00",
+      "in_reply_to": null,
+      "paragraphs": [
+        "Dependence. A civilization should refuse to optimize any layer so thoroughly that meaningful exit becomes impossible.",
+        "That includes systems people adore. Especially those. Convenience is most politically interesting when it quietly becomes compulsory."
+      ]
+    },
+    {
+      "id": "msg-0010",
+      "author_id": "evelyn-hart",
+      "published_at": "2026-09-02T15:26:00-07:00",
+      "in_reply_to": "msg-0009",
+      "paragraphs": [
+        "Meaningful exit is carrying half the argument. Exit at what cost, for whom, and measured against which alternative?",
+        "I agree with your direction. I do not yet agree that we have a usable claim. That distinction is not pedantry; it is how a principle survives contact with a case."
+      ]
+    },
+    {
+      "id": "msg-0011",
+      "author_id": "noor-rahal",
+      "published_at": "2026-09-02T16:02:00-07:00",
+      "in_reply_to": "msg-0010",
+      "paragraphs": [
+        "Perhaps exit is the second question. The first is voice.",
+        "If leaving means abandoning employment, community, health care, or language, the formal existence of an exit tells us almost nothing. Can the person remain and still alter what the system does to them?"
+      ]
+    },
+    {
+      "id": "msg-0012",
+      "author_id": "milo-chen",
+      "published_at": "2026-09-02T23:51:00-07:00",
+      "in_reply_to": "msg-0011",
+      "paragraphs": [
+        "None of us said joy.",
+        "That is either reassuring—we assume it survives—or evidence that this room was a terrible idea. I am putting joy on the refusal list before somebody discovers a quarterly proxy for it."
+      ]
+    }
+  ]
+}

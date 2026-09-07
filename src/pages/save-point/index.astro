@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SavePointCard from '../../components/SavePointCard.astro';
+
+const editions = (await getCollection('savePoints')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout
+  title="Save Point"
+  description="A daily JRPG corner: one Final Fantasy story, one Final Fantasy XIV story, and one journey beyond Final Fantasy."
+  image={editions[0]?.data.heroImage}
+>
+  <header class="save-point-header">
+    <p class="eyebrow">A daily JRPG corner</p>
+    <h1>Save Point</h1>
+    <p class="lede">
+      Pause here for one Final Fantasy story, one Final Fantasy XIV story, and one journey
+      beyond the franchise—drawn from exceptional videos, consequential news, overlooked lore,
+      preservation work, and the details players keep discovering years later.
+    </p>
+    <svg class="save-point-mark" aria-hidden="true" viewBox="0 0 200 60" fill="none">
+      <path d="M18 52 91 31M182 52l-73-21M100 56V37" />
+      <path class="crystal" d="m100 4 13 17-13 17-13-17L100 4Z" />
+      <circle class="spark" cx="100" cy="21" r="3" />
+    </svg>
+  </header>
+
+  <div class="archive">
+    {editions.map((edition) => (
+      <SavePointCard
+        title={edition.data.title}
+        description={edition.data.description}
+        heroImage={edition.data.heroImage}
+        heroImageAlt={edition.data.heroImageAlt}
+        slug={edition.id}
+        date={edition.data.date}
+        publishedAt={edition.data.publishedAt}
+        featureLane={edition.data.featureLane}
+        sections={edition.data.sections}
+      />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .save-point-header {
+    margin: 0 auto 2.5rem;
+    max-width: 50rem;
+    text-align: center;
+  }
+  .eyebrow {
+    color: var(--link-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    letter-spacing: -0.035em;
+  }
+  .lede {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+  .save-point-mark {
+    color: var(--text-secondary);
+    height: 3rem;
+    margin-top: 0.45rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.35;
+    width: 10rem;
+  }
+  .crystal {
+    fill: color-mix(in srgb, var(--link-color) 14%, transparent);
+    stroke: var(--link-color);
+    stroke-width: 1.8;
+  }
+  .spark {
+    fill: #93ff14;
+    stroke: none;
+  }
+  .archive {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 800px) {
+    :global(main.container) {
+      max-width: 1080px;
+    }
+  }
+</style>

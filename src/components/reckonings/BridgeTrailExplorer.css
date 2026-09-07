@@ -1,0 +1,163 @@
+.bridge-explorer {
+  --bridge-green: #4f9300;
+  --bridge-pink: #ff1493;
+  --bridge-blue: #087dcc;
+  background: radial-gradient(circle at 12% 0%, rgba(20, 147, 255, 0.11), transparent 19rem), var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  margin: 2.5rem 50%;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  transform: translateX(-50%);
+  width: min(1060px, calc(100vw - 3rem));
+}
+
+:root[data-theme='dark'] .bridge-explorer {
+  --bridge-green: #93ff14;
+  --bridge-blue: #1493ff;
+}
+
+.bridge-heading {
+  align-items: flex-end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.bridge-heading h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  margin: 0;
+}
+
+.bridge-explorer .visual-kicker {
+  color: var(--link-color);
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.2rem;
+  text-transform: uppercase;
+}
+
+.view-toggle {
+  display: flex;
+}
+
+.view-toggle button,
+.start-control button,
+.degree-toggle,
+.reset-button {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 0.48rem 0.65rem;
+}
+
+.view-toggle button:first-child,
+.start-control button:first-child { border-radius: 6px 0 0 6px; }
+.view-toggle button:last-child,
+.start-control button:last-child { border-radius: 0 6px 6px 0; }
+.view-toggle button + button,
+.start-control button + button { border-left: 0; }
+
+.view-toggle button[aria-pressed='true'],
+.start-control button[aria-pressed='true'] {
+  background: var(--link-color);
+  color: #fff;
+}
+
+.bridge-chart {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.bridge-chart svg { display: block; height: auto; width: 100%; }
+.water { fill: color-mix(in srgb, var(--bridge-blue) 16%, var(--bg-color)); }
+.water-lines { opacity: 0.24; stroke: var(--bridge-blue); stroke-width: 1; }
+.graph-grid { opacity: 0; stroke: var(--bridge-blue); stroke-width: 1; }
+.land-masses { fill: color-mix(in srgb, var(--bridge-green) 14%, var(--surface-color)); stroke: color-mix(in srgb, var(--bridge-green) 45%, var(--border-color)); stroke-width: 2; }
+.graph-view .water,
+.graph-view .water-lines { opacity: 0; }
+.graph-view .graph-grid { opacity: 0.18; }
+.graph-view .land-masses { opacity: 0; }
+
+.bridge-deck,
+.bridge-edge,
+.bridge-hit { fill: none; }
+.bridge-deck { stroke: var(--bg-color); stroke-width: 15; }
+.bridge-edge { stroke: var(--text-secondary); stroke-width: 6; }
+.bridge-edge.available { stroke: var(--bridge-blue); }
+.bridge-edge.used { opacity: 0.42; stroke: var(--bridge-pink); stroke-dasharray: 7 7; }
+.bridge-hit { cursor: pointer; outline: none; stroke: transparent; stroke-width: 28; }
+.bridge-hit:focus-visible { stroke: color-mix(in srgb, var(--bridge-green) 35%, transparent); }
+.edge-label { fill: var(--text-primary); font-size: 14px; font-weight: 700; paint-order: stroke; stroke: var(--bg-color); stroke-width: 5px; }
+
+.vertex { fill: var(--surface-color); opacity: 0.18; stroke: var(--bridge-blue); stroke-width: 3; }
+.graph-view .vertex { opacity: 1; }
+.vertex.current { fill: color-mix(in srgb, var(--bridge-green) 18%, var(--surface-color)); opacity: 1; stroke: var(--bridge-green); }
+.vertex-label { fill: var(--text-primary); font-size: 18px; font-weight: 700; }
+.degree-label { fill: var(--bridge-pink); font-size: 13px; font-weight: 700; opacity: 0; paint-order: stroke; stroke: var(--bg-color); stroke-width: 5px; }
+.degree-label.shown { opacity: 1; }
+.position-ring { fill: none; stroke: var(--bridge-green); stroke-dasharray: 5 5; stroke-width: 2; }
+
+.bridge-controls {
+  align-items: stretch;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: 1fr auto auto;
+  margin-top: 0.85rem;
+}
+
+.start-control {
+  align-items: center;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
+}
+.start-control > span { color: var(--text-secondary); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.degree-toggle,
+.reset-button { border-radius: 8px; }
+.degree-toggle:hover,
+.reset-button:hover { color: var(--text-primary); }
+
+.bridge-readout {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: auto 1fr;
+  margin-top: 0.65rem;
+  padding: 0.65rem 0.75rem;
+}
+.bridge-readout p { color: var(--text-secondary); font-size: 0.82rem; margin: 0; }
+.bridge-readout strong { color: var(--text-primary); }
+.bridge-explorer figcaption { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-top: 0.85rem; }
+.bridge-explorer figcaption strong { color: var(--text-primary); }
+
+@media (max-width: 700px) {
+  .bridge-heading { align-items: flex-start; flex-direction: column; }
+  .bridge-controls { grid-template-columns: 1fr 1fr; }
+  .start-control { grid-column: 1 / -1; }
+}
+
+@media (max-width: 500px) {
+  .bridge-explorer { width: calc(100vw - 1.5rem); }
+  .bridge-controls { grid-template-columns: 1fr; }
+  .start-control { grid-column: auto; }
+  .edge-label,
+  .degree-label { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bridge-explorer * { scroll-behavior: auto !important; transition: none !important; }
+}

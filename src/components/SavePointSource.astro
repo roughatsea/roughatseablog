@@ -1,0 +1,103 @@
+---
+interface Props {
+  type: string;
+  title: string;
+  creator?: string;
+  url: string;
+  published?: string;
+  note?: string;
+}
+
+const { type, title, creator, url, published, note } = Astro.props;
+const typeLabels: Record<string, string> = {
+  video: 'Featured video',
+  news: 'Primary report',
+  lore: 'Lore source',
+  interview: 'Interview',
+  history: 'Historical source',
+  design: 'Design source',
+  music: 'Music source',
+  preservation: 'Preservation source',
+  criticism: 'Critical source',
+  research: 'Research source',
+  other: 'Primary source',
+};
+---
+
+<aside class="source-card" aria-label={typeLabels[type] ?? 'Primary source'}>
+  <div class="source-heading">
+    <span class="source-type">{typeLabels[type] ?? 'Primary source'}</span>
+    {type === 'video' && <span class="transcript-badge">Transcript reviewed</span>}
+  </div>
+  <h3><a href={url} target="_blank" rel="noopener noreferrer">{title}</a></h3>
+  {(creator || published) && (
+    <p class="source-meta">{[creator, published].filter(Boolean).join(' · ')}</p>
+  )}
+  {note && <p class="source-note">{note}</p>}
+  <a class="source-link" href={url} target="_blank" rel="noopener noreferrer">
+    Open the original source <span aria-hidden="true">↗</span>
+  </a>
+</aside>
+
+<style>
+  .source-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--link-color);
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    margin: 1.4rem 0 2rem;
+    padding: 1rem 1.1rem 1.05rem;
+  }
+  .source-heading {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 0.45rem;
+  }
+  .source-type,
+  .transcript-badge {
+    border-radius: 999px;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.075em;
+    padding: 0.18rem 0.48rem;
+    text-transform: uppercase;
+  }
+  .source-type {
+    background: color-mix(in srgb, var(--link-color) 13%, var(--surface-color));
+    color: var(--link-color);
+  }
+  .transcript-badge {
+    background: color-mix(in srgb, #93ff14 14%, var(--surface-color));
+    color: color-mix(in srgb, #2f6300 82%, var(--text-primary));
+  }
+  :global([data-theme='dark']) .transcript-badge {
+    color: #b9ff74;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: 1.18rem;
+    line-height: 1.3;
+    margin: 0 0 0.25rem;
+  }
+  h3 a:hover {
+    color: var(--link-color);
+  }
+  .source-meta,
+  .source-note {
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    margin-bottom: 0.45rem;
+  }
+  .source-link {
+    color: var(--link-color);
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-top: 0.25rem;
+    text-decoration: none;
+  }
+</style>

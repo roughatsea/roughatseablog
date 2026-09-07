@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.roughatsea.com/schemas/save-point-coverage-ledger.schema.json",
+  "title": "Save Point coverage ledger",
+  "type": "object",
+  "required": ["version", "editions"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "editions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "editionId",
+          "publicationDate",
+          "publishedAt",
+          "articleSlug",
+          "heroImage",
+          "featureLane",
+          "sections",
+          "sources"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "editionId": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "publicationDate": { "type": "string", "format": "date" },
+          "publishedAt": { "type": "string", "format": "date-time" },
+          "articleSlug": { "type": "string", "minLength": 1 },
+          "heroImage": { "type": "string", "pattern": "^/images/save-point/" },
+          "featureLane": { "$ref": "#/$defs/lane" },
+          "revisitOf": { "type": ["string", "null"] },
+          "sections": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "$ref": "#/$defs/section" }
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 3,
+            "items": { "$ref": "#/$defs/source" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "lane": {
+      "enum": ["final-fantasy", "final-fantasy-xiv", "beyond-final-fantasy"]
+    },
+    "section": {
+      "type": "object",
+      "required": [
+        "lane",
+        "title",
+        "game",
+        "sourceType",
+        "spoilerLevel",
+        "spoilerScope",
+        "subjectKeys",
+        "sourceIds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "lane": { "$ref": "#/$defs/lane" },
+        "title": { "type": "string", "minLength": 1 },
+        "game": { "type": "string", "minLength": 1 },
+        "sourceType": { "type": "string", "minLength": 1 },
+        "spoilerLevel": { "enum": ["none", "light", "major"] },
+        "spoilerScope": { "type": "string", "minLength": 1 },
+        "subjectKeys": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["sourceId", "title", "url", "role", "lineage", "accessedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "creator": { "type": ["string", "null"] },
+        "url": { "type": "string", "format": "uri" },
+        "publishedAt": { "type": ["string", "null"], "format": "date" },
+        "role": { "enum": ["primary", "independent", "context", "transcription"] },
+        "lineage": { "type": "string", "minLength": 1 },
+        "videoId": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9_-]{11}$" },
+        "accessedAt": { "type": "string", "format": "date" }
+      }
+    }
+  }
+}

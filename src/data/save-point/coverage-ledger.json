@@ -1,0 +1,880 @@
+{
+  "version": 1,
+  "editions": [
+    {
+      "editionId": "2026-08-31",
+      "publicationDate": "2026-08-31",
+      "publishedAt": "2026-08-31T18:45:00-07:00",
+      "articleSlug": "save-point-2026-08-31",
+      "heroImage": "/images/save-point/save-point-2026-08-31.webp",
+      "featureLane": "final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy VIII and the fear of being remembered incorrectly",
+          "game": "Final Fantasy VIII",
+          "sourceType": "video",
+          "spoilerLevel": "major",
+          "spoilerScope": "Disc one through the ending",
+          "subjectKeys": [
+            "final-fantasy-viii-memory-identity",
+            "squall-posthumous-memory",
+            "laguna-competing-legacies"
+          ],
+          "sourceIds": [
+            "ff8-game-dove-forgotten-subplot"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "The Rising sends FFXIV toward change with a familiar Prelude",
+          "game": "Final Fantasy XIV",
+          "sourceType": "lore",
+          "spoilerLevel": "major",
+          "spoilerScope": "The Rising 2026 seasonal quests",
+          "subjectKeys": [
+            "ffxiv-rising-2026-change",
+            "uematsu-mellow-musician",
+            "evercold-continuity-without-stasis"
+          ],
+          "sourceIds": [
+            "ffxiv-rising-announcement-2026",
+            "ffxiv-rising-event-2026",
+            "ffxiv-new-year-2026",
+            "ffxiv-evercold",
+            "ffxiv-symphony-transcription",
+            "ffxiv-prelude-transcription",
+            "uematsu-contiki"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Xenosaga: Pied Piper has three different afterlives",
+          "game": "Xenosaga: Pied Piper",
+          "sourceType": "preservation",
+          "spoilerLevel": "none",
+          "spoilerScope": "Official premise only; no story spoilers",
+          "subjectKeys": [
+            "xenosaga-pied-piper-preservation",
+            "keitai-game-recovery",
+            "preservation-access-authenticity-legality"
+          ],
+          "sourceIds": [
+            "pied-piper-gmode-product",
+            "pied-piper-steam",
+            "pied-piper-gmode-comments",
+            "pied-piper-recovery",
+            "pied-piper-fan-recreation",
+            "pied-piper-rpgfan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff8-game-dove-forgotten-subplot",
+          "title": "Final Fantasy VIII's Most Forgotten Subplot",
+          "creator": "Game Dove",
+          "url": "https://www.youtube.com/watch?v=JVQal3VcT9M",
+          "publishedAt": "2026-05-29",
+          "role": "primary",
+          "lineage": "Original video essay; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "JVQal3VcT9M",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-rising-announcement-2026",
+          "title": "The Rising Returns August 27!",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/934039c77087ac5ad6e535866dedb5bc63511885",
+          "publishedAt": "2026-08-20",
+          "role": "primary",
+          "lineage": "Official Final Fantasy XIV event announcement.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-rising-event-2026",
+          "title": "The Rising 2026 — What awaits us at journey's end?",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/special/2026/The_Rising/cula62e5jx",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official Final Fantasy XIV seasonal-event page.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-new-year-2026",
+          "title": "New Year's Greetings!",
+          "creator": "Naoki Yoshida",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/3a546b93ed103e51be62958ec141af16d48c8e89",
+          "publishedAt": "2026-01-01",
+          "role": "primary",
+          "lineage": "Official producer and director message published on the Lodestone.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-evercold",
+          "title": "Final Fantasy XIV: Evercold",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/evercold/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official expansion and systems feature page; announced details remain subject to change.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-symphony-transcription",
+          "title": "The Symphony of Life",
+          "creator": null,
+          "url": "https://ffxiv.consolegameswiki.com/wiki/The_Symphony_of_Life",
+          "publishedAt": null,
+          "role": "transcription",
+          "lineage": "Community-hosted transcription of in-game quest journal and dialogue.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "ffxiv-prelude-transcription",
+          "title": "Prelude's Call",
+          "creator": null,
+          "url": "https://ffxiv.consolegameswiki.com/wiki/Prelude%27s_Call",
+          "publishedAt": null,
+          "role": "transcription",
+          "lineage": "Community-hosted transcription of in-game quest journal and dialogue.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "uematsu-contiki",
+          "title": "Nobuo Uematsu con TIKI",
+          "creator": "AWR Music",
+          "url": "https://www.awrmusic.com/contiki",
+          "publishedAt": null,
+          "role": "context",
+          "lineage": "Official concert page identifying the con TIKI project with Nobuo Uematsu.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-gmode-product",
+          "title": "Xenosaga: Pied Piper",
+          "creator": "G-MODE and Bandai Namco Entertainment",
+          "url": "https://info.gmodecorp.com/gmodearchives/bandainamco/xenosagapiedpiper/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official product page for the modern G-MODE Archives release.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-steam",
+          "title": "G-MODE Archives+: Xenosaga: Pied Piper",
+          "creator": "G-MODE",
+          "url": "https://store.steampowered.com/app/4532150/GMODE/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official storefront listing for release, language, story, and credit details.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-gmode-comments",
+          "title": "Comments received for G-MODE Archives",
+          "creator": "G-MODE",
+          "url": "https://info.gmodecorp.com/gmodearchives/comment/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official publisher page reproducing comments from Bandai Namco and Xenosaga producer Tomohiro Hagiwara.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-recovery",
+          "title": "Xenosaga: Pied Piper restored",
+          "creator": null,
+          "url": "https://scientia.godsibb.net/t/xenosaga-pied-piper-restored/1188",
+          "publishedAt": "2025-03-17",
+          "role": "primary",
+          "lineage": "Archived community recovery announcement naming the preservation work and anonymous donor.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-fan-recreation",
+          "title": "Xenosaga Pied Piper",
+          "creator": "CycloneFox",
+          "url": "https://cyclonefox.itch.io/xenosaga-pied-piper",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Creator-maintained page for the unofficial multilingual recreation and its features.",
+          "accessedAt": "2026-08-31"
+        },
+        {
+          "sourceId": "pied-piper-rpgfan",
+          "title": "Xenosaga: Pied Piper Mobile Game Found; English Patch Incoming",
+          "creator": "RPGFan",
+          "url": "https://www.rpgfan.com/2025/03/19/xenosaga-pied-piper-found-english-patch/",
+          "publishedAt": "2025-03-19",
+          "role": "independent",
+          "lineage": "Independent report corroborating the community recovery announcement.",
+          "accessedAt": "2026-08-31"
+        }
+      ]
+    },
+    {
+      "editionId": "2026-09-01",
+      "publicationDate": "2026-09-01",
+      "publishedAt": "2026-09-01T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-01",
+      "heroImage": "/images/save-point/save-point-2026-09-01.webp",
+      "featureLane": "final-fantasy-xiv",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy IX turns series memory into a question of legacy",
+          "game": "Final Fantasy IX",
+          "sourceType": "video",
+          "spoilerLevel": "major",
+          "spoilerScope": "The full story and ending",
+          "subjectKeys": [
+            "final-fantasy-ix-legacy-symbols",
+            "sakaguchi-series-inheritance",
+            "scribble-retrospective-ffix-analysis"
+          ],
+          "sourceIds": [
+            "ff9-scribble-retrospective-literary-analysis",
+            "ff9-2000-developer-interviews"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "English Eorzea was made in the localization workshop",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "No story spoilers",
+          "subjectKeys": [
+            "ffxiv-localization-coauthorship",
+            "koji-fox-character-voice",
+            "embedded-localization-world-building"
+          ],
+          "sourceIds": [
+            "koji-fox-rpg-site-2026",
+            "ffxiv-otakon-2026-localization"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Dragon Quarter wanted a 9/5/9/5, not a 7/7/7/7",
+          "game": "Breath of Fire: Dragon Quarter",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Design discussion only; no story spoilers",
+          "subjectKeys": [
+            "dragon-quarter-deliberate-polarization",
+            "scenario-overlay-restart-design",
+            "dragon-quarter-survival-pressure"
+          ],
+          "sourceIds": [
+            "dragon-quarter-2002-developer-interview"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff9-scribble-retrospective-literary-analysis",
+          "title": "A Final Fantasy 9 Literary Analysis",
+          "creator": "Scribble Retrospective",
+          "url": "https://www.youtube.com/watch?v=I-SWaeFHOF0",
+          "publishedAt": "2026-07-30",
+          "role": "primary",
+          "lineage": "Original video essay; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "I-SWaeFHOF0",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "ff9-2000-developer-interviews",
+          "title": "Final Fantasy IX — 2000 Developer Interviews",
+          "creator": "Hironobu Sakaguchi and the Final Fantasy IX development team; translated by Shmuplations",
+          "url": "https://shmuplations.com/ffix/",
+          "publishedAt": "2024-04-30",
+          "role": "primary",
+          "lineage": "Fan translation and edited presentation of interviews originally published in Hyper PlayStation in 2000.",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "koji-fox-rpg-site-2026",
+          "title": "Koji Fox on localization, FFXIV, FF16, Final Fantasy XI, coffee, and much more",
+          "creator": "Mikhail Madnani, interviewing Michael-Christopher Koji Fox",
+          "url": "https://www.rpgsite.net/interview/21116-koji-fox-interview-2026-ffxiv-ff16-final-fantasy-xi-localization-artbooks-logos-eorzea-square-enix-coffee",
+          "publishedAt": "2026-08-17",
+          "role": "primary",
+          "lineage": "Direct written interview with the Final Fantasy XIV localization supervisor.",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "ffxiv-otakon-2026-localization",
+          "title": "FINAL FANTASY XIV Partners with Otakon 2026",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/a077d187f908b00148b798531e1ebaf2132fce30",
+          "publishedAt": "2026-07-23",
+          "role": "primary",
+          "lineage": "Official event announcement describing Koji Fox's localization panel and role in shaping lore and world identity.",
+          "accessedAt": "2026-09-01"
+        },
+        {
+          "sourceId": "dragon-quarter-2002-developer-interview",
+          "title": "Breath of Fire: Dragon Quarter — 2002 Interview",
+          "creator": "Makoto Ikehara and Tatsuya Yoshikawa; translated by GSK",
+          "url": "https://shmuplations.com/dragonquarter/",
+          "publishedAt": "2024-07-31",
+          "role": "primary",
+          "lineage": "Fan translation of a developer interview originally published by Sony's PS Style webzine in 2002.",
+          "accessedAt": "2026-09-01"
+        }
+      ]
+    },
+    {
+      "editionId": "2026-09-02",
+      "publicationDate": "2026-09-02",
+      "publishedAt": "2026-09-02T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-02",
+      "heroImage": "/images/save-point/save-point-2026-09-02.webp",
+      "featureLane": "beyond-final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy X lets morale leak into battle",
+          "game": "Final Fantasy X",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Mechanical discussion only; no story spoilers",
+          "subjectKeys": [
+            "final-fantasy-x-heart-level",
+            "ffx-contextual-battle-dialogue",
+            "final-fantasy-union-ffx-secrets"
+          ],
+          "sourceIds": [
+            "ffx-final-fantasy-union-weird-secrets",
+            "ffx-battle-quotes-auronlu"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "Level 100 broke a decade of two-digit assumptions",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Interface discussion only; no story spoilers",
+          "subjectKeys": [
+            "ffxiv-level-100-ui-audit",
+            "ffxiv-interface-legacy-maintenance",
+            "ffxiv-high-resolution-icon-overhaul"
+          ],
+          "sourceIds": [
+            "ffxiv-kei-odagiri-esa-interview",
+            "ffxiv-yoichi-seki-ui-artist-interview"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "In moon, love keeps office hours",
+          "game": "moon: Remix RPG Adventure",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Premise and early systems only; no story or ending spoilers",
+          "subjectKeys": [
+            "moon-npc-daily-routines",
+            "moon-kindness-through-observation",
+            "moon-action-limit-care-friction"
+          ],
+          "sourceIds": [
+            "moon-yoshiro-kimura-vice-interview",
+            "moon-onion-games-press-kit",
+            "moon-1997-official-book-interview"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ffx-final-fantasy-union-weird-secrets",
+          "title": "Final Fantasy X Has Some Weird Secrets",
+          "creator": "Final Fantasy Union",
+          "url": "https://www.youtube.com/watch?v=vUXIB_AfTXk",
+          "publishedAt": "2026-06-22",
+          "role": "primary",
+          "lineage": "Original video essay; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "vUXIB_AfTXk",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "ffx-battle-quotes-auronlu",
+          "title": "FFX Battle Quotes",
+          "creator": "Auronlu",
+          "url": "https://auronlu.istad.org/ffx-script/ffx-battle-quotes/",
+          "publishedAt": null,
+          "role": "context",
+          "lineage": "Fan-compiled transcript of contextual battle dialogue from Final Fantasy X.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "ffxiv-kei-odagiri-esa-interview",
+          "title": "A Conversation with Final Fantasy XIV Lead User Interface Designer Kei Odagiri",
+          "creator": "Entertainment Software Association, interviewing Kei Odagiri",
+          "url": "https://www.theesa.com/behind-the-scenes/qa-with-kei-odagiri-lead-user-interface-designer-final-fantast-xiv/",
+          "publishedAt": "2024-12-20",
+          "role": "primary",
+          "lineage": "Direct written interview with Final Fantasy XIV lead UI designer Kei Odagiri.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "ffxiv-yoichi-seki-ui-artist-interview",
+          "title": "FFXIV Backstage Investigators (No. 4): Lead UI Artist Yoichi Seki",
+          "creator": "Square Enix, interviewing Yoichi Seki",
+          "url": "https://na.finalfantasyxiv.com/blog/003091.html",
+          "publishedAt": "2021-02-16",
+          "role": "primary",
+          "lineage": "Official Final Fantasy XIV developer interview about UI art, action icons, and the high-resolution overhaul.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "moon-yoshiro-kimura-vice-interview",
+          "title": "A Game Without Killing: The Story of Moon's 22-Year Journey to Leave Japan",
+          "creator": "Patrick Klepek, interviewing Yoshiro Kimura",
+          "url": "https://www.vice.com/en/article/a-game-without-killing-the-story-of-moons-22-year-journey-to-leave-japan/",
+          "publishedAt": "2020-08-31",
+          "role": "primary",
+          "lineage": "Direct written interview with moon designer and scenario writer Yoshiro Kimura.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "moon-onion-games-press-kit",
+          "title": "moon press kit",
+          "creator": "Onion Games",
+          "url": "https://oniongames.jp/press/sheet.php?p=moon",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Official product description and credits documenting moon's premise, NPC schedules, soul rescue, and release dates.",
+          "accessedAt": "2026-09-02"
+        },
+        {
+          "sourceId": "moon-1997-official-book-interview",
+          "title": "Moon — 1997 Developer Interview",
+          "creator": "Love-de-Lic development team; translated by Shmuplations",
+          "url": "https://shmuplations.com/moon/",
+          "publishedAt": "2022-04-29",
+          "role": "primary",
+          "lineage": "Fan translation of a developer interview originally published in the Moon Official Book in 1997.",
+          "accessedAt": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "editionId": "2026-09-03",
+      "publicationDate": "2026-09-03",
+      "publishedAt": "2026-09-03T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-03",
+      "heroImage": "/images/save-point/save-point-2026-09-03.webp",
+      "featureLane": "final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "White Mage is a dress code, not a costume",
+          "game": "Final Fantasy series",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Costume and job-design discussion only; no story spoilers",
+          "subjectKeys": [
+            "final-fantasy-white-mage-visual-grammar",
+            "white-mage-costume-evolution",
+            "job-identity-without-job-menu"
+          ],
+          "sourceIds": [
+            "white-mage-fashion-history-clovergirle"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "Every reward is a relay race",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Development workflow only; no story spoilers",
+          "subjectKeys": [
+            "ffxiv-item-production-workflow",
+            "ffxiv-reward-cross-team-handoffs",
+            "ffxiv-item-volume-2023"
+          ],
+          "sourceIds": [
+            "ffxiv-yosuke-hayashi-item-designer-interview"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Suikoden II kept smuggling personality into the build",
+          "game": "Suikoden II",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Development anecdotes and an early comic scene only; no plot outcomes",
+          "subjectKeys": [
+            "suikoden-ii-surplus-animation",
+            "suikoden-ii-team-secret-additions",
+            "suikoden-ii-ensemble-specificity"
+          ],
+          "sourceIds": [
+            "suikoden-ii-1999-developer-interviews"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "white-mage-fashion-history-clovergirle",
+          "title": "The Fashion History of the White Mage",
+          "creator": "clovergirle",
+          "url": "https://www.youtube.com/watch?v=VqBzDNIgv4o",
+          "publishedAt": "2026-08-10",
+          "role": "primary",
+          "lineage": "Original video essay; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "VqBzDNIgv4o",
+          "accessedAt": "2026-09-03"
+        },
+        {
+          "sourceId": "ffxiv-yosuke-hayashi-item-designer-interview",
+          "title": "FFXIV Backstage Investigators (No. 11): Lead Item Designer Yosuke Hayashi",
+          "creator": "Square Enix, interviewing Yosuke Hayashi",
+          "url": "https://na.finalfantasyxiv.com/blog/003401.html",
+          "publishedAt": "2023-01-04",
+          "role": "primary",
+          "lineage": "Official Final Fantasy XIV developer interview about item planning, cross-team production, and quality assurance.",
+          "accessedAt": "2026-09-03"
+        },
+        {
+          "sourceId": "suikoden-ii-1999-developer-interviews",
+          "title": "Suikoden II — 1999 Developer Interviews",
+          "creator": "Yoshitaka Murayama, Miki Higashino, Akiyoshi Ohta, Fumi Ishikawa, and Jun Saito; translated by Shmuplations",
+          "url": "https://shmuplations.com/suikodenii/",
+          "publishedAt": "2022-10-29",
+          "role": "primary",
+          "lineage": "Fan translation of two contemporary developer interviews originally published in Dengeki PlayStation and the Gensou Suikoden II 108 Stars Character Guide in 1999.",
+          "accessedAt": "2026-09-03"
+        }
+      ]
+    },
+    {
+      "editionId": "2026-09-04",
+      "publicationDate": "2026-09-04",
+      "publishedAt": "2026-09-04T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-04",
+      "heroImage": "/images/save-point/save-point-2026-09-04.webp",
+      "featureLane": "final-fantasy-xiv",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy II makes conversation playable",
+          "game": "Final Fantasy II",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Interface and writing discussion only; no story outcomes",
+          "subjectKeys": [
+            "final-fantasy-ii-word-memory-system",
+            "final-fantasy-ii-keyword-dialogue",
+            "famicom-conversation-interface"
+          ],
+          "sourceIds": [
+            "ff2-kenji-terada-1988-interview"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "The loudest place is a problem of attention",
+          "game": "Final Fantasy XIV",
+          "sourceType": "video",
+          "spoilerLevel": "major",
+          "spoilerScope": "Shadowbringers areas, transformations, and the final main-scenario dungeon",
+          "subjectKeys": [
+            "ffxiv-shadowbringers-sound-hierarchy",
+            "ffxiv-job-acoustic-identity",
+            "ffxiv-amaurot-attention-mix"
+          ],
+          "sourceIds": [
+            "ffxiv-spawning-the-sounds-developer-diary",
+            "ffxiv-spawning-the-sounds-lodestone"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Skies of Arcadia moved the clouds, not the ship",
+          "game": "Skies of Arcadia",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "World-map engineering only; no story spoilers",
+          "subjectKeys": [
+            "skies-of-arcadia-relative-cloud-speed",
+            "skies-of-arcadia-airship-speed-perception",
+            "kenji-hiruta-world-map-trick"
+          ],
+          "sourceIds": [
+            "skies-of-arcadia-developer-interview-collection"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff2-kenji-terada-1988-interview",
+          "title": "Kenji Terada — 1988 Developer Interview",
+          "creator": "Kenji Terada and Masanobu Endou; translated by Shmuplations",
+          "url": "https://shmuplations.com/kenjiterada/",
+          "publishedAt": "2021-12-29",
+          "role": "primary",
+          "lineage": "Fan translation of a pre-release Famicom Tsūshin interview with Final Fantasy II scenario writer Kenji Terada, supplemented by Shmuplations editorial context.",
+          "accessedAt": "2026-09-04"
+        },
+        {
+          "sourceId": "ffxiv-spawning-the-sounds-developer-diary",
+          "title": "The Creation of FINAL FANTASY XIV: Shadowbringers — Episode Five: Spawning the Sounds",
+          "creator": "FINAL FANTASY XIV",
+          "url": "https://www.youtube.com/watch?v=1wx85Ri9HAI",
+          "publishedAt": "2020-03-26",
+          "role": "primary",
+          "lineage": "Official developer diary featuring Masayoshi Soken and Go Kinuya; full English caption transcript retrieved and reviewed.",
+          "videoId": "1wx85Ri9HAI",
+          "accessedAt": "2026-09-04"
+        },
+        {
+          "sourceId": "ffxiv-spawning-the-sounds-lodestone",
+          "title": "Developer Diaries Episode Five: Spawning the Sounds",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/ee477138ed5db3727f5552f4759eca9a56a683db",
+          "publishedAt": "2020-03-26",
+          "role": "primary",
+          "lineage": "Official Lodestone announcement identifying the episode's subject and featured developers.",
+          "accessedAt": "2026-09-04"
+        },
+        {
+          "sourceId": "skies-of-arcadia-developer-interview-collection",
+          "title": "Skies of Arcadia — Developer Interview Collection",
+          "creator": "Rieko Kodama, Shuntaro Tanaka, Kenji Hiruta, and others; translated and collected by Shmuplations",
+          "url": "https://shmuplations.com/skiesofarcadia/",
+          "publishedAt": "2022-01-09",
+          "role": "primary",
+          "lineage": "Fan-translated collection of 1999–2000 interviews and later developer comments, including Kenji Hiruta's 2019 first-person production account.",
+          "accessedAt": "2026-09-04"
+        }
+      ]
+    },
+    {
+      "editionId": "2026-09-05",
+      "publicationDate": "2026-09-05",
+      "publishedAt": "2026-09-05T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-05",
+      "heroImage": "/images/save-point/save-point-2026-09-05.webp",
+      "featureLane": "beyond-final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy IV had to invent time to think",
+          "game": "Final Fantasy IV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Battle-system development only; no story outcomes",
+          "subjectKeys": [
+            "final-fantasy-iv-atb-waiting-time",
+            "final-fantasy-iv-command-delays",
+            "final-fantasy-iv-reactive-enemy-counters"
+          ],
+          "sourceIds": [
+            "ff4-30th-anniversary-tokita-interview"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "A repair can become an old family routine",
+          "game": "Final Fantasy XIV",
+          "sourceType": "lore",
+          "spoilerLevel": "major",
+          "spoilerScope": "Dawntrail alliance-raid characters, Doomtrain aftermath, and the siblings' family history",
+          "subjectKeys": [
+            "ffxiv-an-old-routine-lumull-eyaney",
+            "ffxiv-matching-goggles-family-memory",
+            "ffxiv-treno-community-repair"
+          ],
+          "sourceIds": [
+            "ffxiv-tales-golden-sun-an-old-routine",
+            "ffxiv-tales-golden-sun-update-2026-09-04"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "The Judgment Ring makes a command answer to your hand",
+          "game": "Shadow Hearts",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Interface and early development discussion only; no story outcomes",
+          "subjectKeys": [
+            "shadow-hearts-judgment-ring-timing",
+            "shadow-hearts-visible-difficulty-interface",
+            "shadow-hearts-ring-shopping-lockpicking"
+          ],
+          "sourceIds": [
+            "shadow-hearts-earlybird-retrospective",
+            "shadow-hearts-machida-kato-interview"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff4-30th-anniversary-tokita-interview",
+          "title": "FINAL FANTASY IV 30th Anniversary Special Interview",
+          "creator": "Square Enix, interviewing Takashi Tokita",
+          "url": "https://na.finalfantasy.com/topics/296",
+          "publishedAt": "2021-07-19",
+          "role": "primary",
+          "lineage": "Official Square Enix anniversary interview with Final Fantasy IV lead designer and scenario writer Takashi Tokita.",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "ffxiv-tales-golden-sun-an-old-routine",
+          "title": "Tales under the Golden Sun: An Old Routine",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/special/tales_under_the_golden_sun/sidestory_06/",
+          "publishedAt": "2026-09-04",
+          "role": "primary",
+          "lineage": "Official sixth side story in the 2026 Tales under the Golden Sun series.",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "ffxiv-tales-golden-sun-update-2026-09-04",
+          "title": "Tales Under the Golden Sun Updated!",
+          "creator": "Square Enix",
+          "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/05f6f995c2147bc6c3f4ecc896cd56f5c4487db5",
+          "publishedAt": "2026-09-04",
+          "role": "primary",
+          "lineage": "Official Lodestone announcement identifying An Old Routine as the sixth story and warning that the series may contain main-scenario spoilers.",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "shadow-hearts-earlybird-retrospective",
+          "title": "Dark RPG That Pulls Off Humor and Tragedy | Shadow Hearts",
+          "creator": "Earlybird",
+          "url": "https://www.youtube.com/watch?v=IrUIzhQoNtE",
+          "publishedAt": "2024-02-24",
+          "role": "primary",
+          "lineage": "Original video retrospective; full English caption transcript retrieved and reviewed, including the development segment and final assessment.",
+          "videoId": "IrUIzhQoNtE",
+          "accessedAt": "2026-09-05"
+        },
+        {
+          "sourceId": "shadow-hearts-machida-kato-interview",
+          "title": "Shadow Hearts — Interview with Matsuzo Machida and Miyako Kato",
+          "creator": "Matsuzo Machida and Miyako Kato; English translation by Zaru_thustra",
+          "url": "https://www.zaruthustra.com/shadow-hearts-interview-with-the-creators/",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "English translation of an Italian interview with the series director-writer and character designer; the English page does not state a publication date.",
+          "accessedAt": "2026-09-05"
+        }
+      ]
+    },
+    {
+      "editionId": "2026-09-06",
+      "publicationDate": "2026-09-06",
+      "publishedAt": "2026-09-06T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-06",
+      "heroImage": "/images/save-point/save-point-2026-09-06.webp",
+      "featureLane": "final-fantasy-xiv",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy III made its black battlefield for Odin's blade",
+          "game": "Final Fantasy III",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Visual-effects and battle-screen development only; no story spoilers",
+          "subjectKeys": [
+            "final-fantasy-iii-zantetsuken-scanline-effect",
+            "final-fantasy-iii-black-battle-background",
+            "rad-racer-technique-reuse"
+          ],
+          "sourceIds": [
+            "ff3-30th-anniversary-tanaka-interview"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "Holminster Switch writes while the party walks",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "major",
+          "spoilerScope": "Shadowbringers' opening dungeon, including environmental events and transformations",
+          "subjectKeys": [
+            "ffxiv-holminster-switch-level-design",
+            "ffxiv-dungeon-real-time-storytelling",
+            "ffxiv-level-design-scene-authorship"
+          ],
+          "sourceIds": [
+            "ffxiv-arata-takahashi-level-design-interview"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Chrono Trigger's harmony can move without going home",
+          "game": "Chrono Trigger",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Music theory and soundtrack discussion only; no story spoilers",
+          "subjectKeys": [
+            "chrono-trigger-nonfunctional-harmony",
+            "chrono-trigger-two-chord-harmonic-fields",
+            "chrono-trigger-functional-nonfunctional-mixture"
+          ],
+          "sourceIds": [
+            "chrono-trigger-8bit-music-theory-nonfunctional-harmony",
+            "chrono-trigger-revival-disc-official"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff3-30th-anniversary-tanaka-interview",
+          "title": "FINAL FANTASY III 30th Anniversary Special Interview Vol. 1",
+          "creator": "Square Enix, interviewing Hiromichi Tanaka",
+          "url": "https://na.finalfantasy.com/topics/171",
+          "publishedAt": "2025-04-26",
+          "role": "primary",
+          "lineage": "Official Square Enix anniversary interview republished on a page dated April 26, 2025; the page notes that the article was originally published in 2020.",
+          "accessedAt": "2026-09-06"
+        },
+        {
+          "sourceId": "ffxiv-arata-takahashi-level-design-interview",
+          "title": "FFXIV Backstage Investigators (No. 2): Lead Level Designer Arata Takahashi",
+          "creator": "Square Enix, interviewing Arata Takahashi",
+          "url": "https://na.finalfantasyxiv.com/blog/003050.html",
+          "publishedAt": "2020-11-30",
+          "role": "primary",
+          "lineage": "Official interview with FFXIV lead level designer Arata Takahashi about dungeon, overworld, and attraction design.",
+          "accessedAt": "2026-09-06"
+        },
+        {
+          "sourceId": "chrono-trigger-8bit-music-theory-nonfunctional-harmony",
+          "title": "Nonfunctional Harmony in Chrono Trigger",
+          "creator": "8-bit Music Theory",
+          "url": "https://www.youtube.com/watch?v=5zGqN1ZOEJQ",
+          "publishedAt": "2017-02-21",
+          "role": "primary",
+          "lineage": "Original music-analysis video; full English auto-caption transcript retrieved and reviewed.",
+          "videoId": "5zGqN1ZOEJQ",
+          "accessedAt": "2026-09-06"
+        },
+        {
+          "sourceId": "chrono-trigger-revival-disc-official",
+          "title": "CHRONO TRIGGER Original Soundtrack Revival Disc",
+          "creator": "Square Enix Music",
+          "url": "https://www.jp.square-enix.com/music/sem/page/chrono/trigger_revival/index_en.html",
+          "publishedAt": "2019-07-10",
+          "role": "primary",
+          "lineage": "Official soundtrack release page documenting track names and composition credits.",
+          "accessedAt": "2026-09-06"
+        }
+      ]
+    }
+  ]
+}

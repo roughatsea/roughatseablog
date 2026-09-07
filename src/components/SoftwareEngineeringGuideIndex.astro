@@ -1,0 +1,427 @@
+---
+type GuideEntry = {
+  slug: string;
+  title: string;
+  aliases: string[];
+  definition: string;
+  lookFor: string;
+  tier: string;
+  tierLabel: string;
+  domain: string;
+  chapter: string;
+  sourceKey: string;
+  sourceLabel: string;
+};
+
+interface Props {
+  concepts: GuideEntry[];
+  domains: string[];
+  sources: Array<{ key: string; label: string }>;
+}
+
+const { concepts, domains, sources } = Astro.props;
+
+function searchable(value: string) {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+---
+
+<section class="guide-index" data-guide-index>
+  <div class="guide-controls" aria-label="Field guide filters">
+    <label class="search-control">
+      <span>Search by term, alias, or symptom</span>
+      <input
+        type="search"
+        name="q"
+        placeholder="Try “shotgun surgery,” “DI,” or “coordinated edits across many files”"
+        autocomplete="off"
+        data-guide-search
+      />
+    </label>
+
+    <div class="filter-grid">
+      <label>
+        <span>Domain</span>
+        <select name="domain" data-guide-filter="domain">
+          <option value="">All domains</option>
+          {domains.map((domain) => <option value={domain}>{domain}</option>)}
+        </select>
+      </label>
+
+      <label>
+        <span>Depth</span>
+        <select name="tier" data-guide-filter="tier">
+          <option value="">All depths</option>
+          <option value="CORE">Core vocabulary</option>
+          <option value="BROADER">Broader vocabulary</option>
+          <option value="SPECIALIZED">Specialized reference</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Lineage</span>
+        <select name="source" data-guide-filter="source">
+          <option value="">All lineages</option>
+          {sources.map((source) => <option value={source.key}>{source.label}</option>)}
+        </select>
+      </label>
+    </div>
+
+    <fieldset class="language-control" data-guide-language-control>
+      <legend>Code on concept pages</legend>
+      <div role="group" aria-label="Preferred code language">
+        <button type="button" data-language="csharp" aria-pressed="false">C#</button>
+        <button type="button" data-language="python" aria-pressed="false">Python</button>
+        <button type="button" data-language="both" aria-pressed="true">Show both</button>
+      </div>
+    </fieldset>
+
+    <div class="control-footer">
+      <p aria-live="polite" data-guide-count>{concepts.length} terms</p>
+      <button type="button" class="reset-button" data-guide-reset>Clear filters</button>
+    </div>
+  </div>
+
+  <div class="guide-results" data-guide-results>
+    {concepts.map((concept) => (
+      <article
+        class="guide-card"
+        data-guide-card
+        data-title={searchable(concept.title)}
+        data-aliases={searchable(concept.aliases.join(' '))}
+        data-symptom={searchable(concept.lookFor)}
+        data-definition={searchable(concept.definition)}
+        data-domain={concept.domain}
+        data-tier={concept.tier}
+        data-source={concept.sourceKey}
+      >
+        <h2><a href={`/guides/software-engineering/${concept.slug}/`}>{concept.title}</a></h2>
+        <p class="card-meta">
+          <span>{concept.chapter}</span>
+          <span>{concept.tierLabel.replace(' working vocabulary', '').replace(' professional vocabulary', '')}</span>
+        </p>
+        {concept.aliases.length > 0 && (
+          <p class="aliases"><strong>Also:</strong> {concept.aliases.join(' · ')}</p>
+        )}
+        <p class="recognition-label">Recognize it when</p>
+        <p class="recognition-text">{concept.lookFor}</p>
+      </article>
+    ))}
+  </div>
+
+  <p class="no-results" data-guide-empty hidden>
+    No term matched those filters. Try describing the code pressure in plainer language or clearing one filter.
+  </p>
+</section>
+
+<script is:inline>
+  const root = document.querySelector('[data-guide-index]');
+
+  if (root instanceof HTMLElement && root.dataset.ready !== 'true') {
+    root.dataset.ready = 'true';
+    const search = root.querySelector('[data-guide-search]');
+    const cards = [...root.querySelectorAll('[data-guide-card]')];
+    const filters = [...root.querySelectorAll('[data-guide-filter]')];
+    const count = root.querySelector('[data-guide-count]');
+    const empty = root.querySelector('[data-guide-empty]');
+    const reset = root.querySelector('[data-guide-reset]');
+    const languageButtons = [...root.querySelectorAll('[data-language]')];
+    const languageKey = 'roughatsea-field-guide-language';
+
+    const normalize = (value) =>
+      value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+    const safeLanguage = (value) => ['csharp', 'python', 'both'].includes(value) ? value : 'both';
+
+    const setLanguage = (value) => {
+      const language = safeLanguage(value);
+      document.documentElement.dataset.fieldGuideLanguage = language;
+      languageButtons.forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.language === language));
+      });
+      try {
+        localStorage.setItem(languageKey, language);
+      } catch {
+        // The preference remains active for this page when storage is unavailable.
+      }
+    };
+
+    const applyFilters = () => {
+      if (!(search instanceof HTMLInputElement)) return;
+      const query = normalize(search.value);
+      const selected = Object.fromEntries(
+        filters
+          .filter((filter) => filter instanceof HTMLSelectElement)
+          .map((filter) => [filter.dataset.guideFilter, filter.value]),
+      );
+      let shown = 0;
+
+      cards.forEach((card) => {
+        if (!(card instanceof HTMLElement)) return;
+        const searchableText = [
+          card.dataset.title,
+          card.dataset.aliases,
+          card.dataset.symptom,
+          card.dataset.definition,
+        ].join(' ');
+        const searchableWords = searchableText.split(/[^a-z0-9]+/).filter(Boolean);
+        const queryTerms = query.split(/[^a-z0-9]+/).filter(Boolean);
+        const queryMatches = !query || queryTerms.every((term) =>
+          searchableWords.includes(term) ||
+          (term.length >= 4 && searchableWords.some((word) => word.startsWith(term))),
+        );
+        const filterMatches =
+          (!selected.domain || card.dataset.domain === selected.domain) &&
+          (!selected.tier || card.dataset.tier === selected.tier) &&
+          (!selected.source || card.dataset.source === selected.source);
+        const visible = queryMatches && filterMatches;
+        card.hidden = !visible;
+        if (visible) shown += 1;
+      });
+
+      if (count) count.textContent = `${shown} ${shown === 1 ? 'term' : 'terms'}`;
+      if (empty instanceof HTMLElement) empty.hidden = shown !== 0;
+
+      const params = new URLSearchParams();
+      if (search.value.trim()) params.set('q', search.value.trim());
+      for (const [key, value] of Object.entries(selected)) {
+        if (value) params.set(key, value);
+      }
+      const nextUrl = `${window.location.pathname}${params.size ? `?${params}` : ''}`;
+      history.replaceState(null, '', nextUrl);
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    if (search instanceof HTMLInputElement) search.value = params.get('q') ?? '';
+    filters.forEach((filter) => {
+      if (filter instanceof HTMLSelectElement) {
+        filter.value = params.get(filter.dataset.guideFilter ?? '') ?? '';
+      }
+    });
+
+    let storedLanguage = 'both';
+    try {
+      storedLanguage = localStorage.getItem(languageKey) ?? 'both';
+    } catch {
+      // Use the default when storage is unavailable.
+    }
+    setLanguage(storedLanguage);
+
+    search?.addEventListener('input', applyFilters);
+    filters.forEach((filter) => filter.addEventListener('change', applyFilters));
+    languageButtons.forEach((button) => {
+      button.addEventListener('click', () => setLanguage(button.dataset.language ?? 'both'));
+    });
+    reset?.addEventListener('click', () => {
+      if (search instanceof HTMLInputElement) search.value = '';
+      filters.forEach((filter) => {
+        if (filter instanceof HTMLSelectElement) filter.value = '';
+      });
+      applyFilters();
+      search?.focus();
+    });
+
+    applyFilters();
+  }
+</script>
+
+<style>
+  .guide-index {
+    font-family: var(--font-sans);
+    margin: 2.5rem 50% 0;
+    transform: translateX(-50%);
+    width: min(1180px, calc(100vw - 3rem));
+  }
+
+  .guide-controls {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: var(--glass-shadow);
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  label > span,
+  legend {
+    color: var(--text-secondary);
+    display: block;
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.38rem;
+    text-transform: uppercase;
+  }
+
+  input,
+  select,
+  button {
+    color: var(--text-primary);
+    font: inherit;
+  }
+
+  input,
+  select {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    min-height: 2.8rem;
+    padding: 0.65rem 0.75rem;
+    width: 100%;
+  }
+
+  input:focus,
+  select:focus,
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .search-control input {
+    font-size: 1rem;
+  }
+
+  .filter-grid {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1rem;
+  }
+
+  .language-control {
+    border: 0;
+    margin-top: 1rem;
+    padding: 0;
+  }
+
+  .language-control div {
+    display: inline-flex;
+    gap: 0.35rem;
+  }
+
+  .language-control button,
+  .reset-button {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.42rem 0.75rem;
+  }
+
+  .language-control button[aria-pressed='true'] {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    color: var(--bg-color);
+  }
+
+  .control-footer {
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+  }
+
+  .control-footer p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .reset-button {
+    color: var(--text-secondary);
+  }
+
+  .guide-results {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1rem;
+  }
+
+  .guide-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1rem;
+  }
+
+  .guide-card[hidden] {
+    display: none;
+  }
+
+  .recognition-label {
+    color: var(--link-color);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    margin: 0.8rem 0 0.3rem;
+    text-transform: uppercase;
+  }
+
+  .recognition-text {
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: 0.93rem;
+    line-height: 1.55;
+    margin: 0 0 1rem;
+  }
+
+  .guide-card h2 {
+    font-size: 1.08rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .guide-card h2 a:hover {
+    color: var(--link-color);
+  }
+
+  .card-meta,
+  .aliases {
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    line-height: 1.45;
+    margin: 0.25rem 0;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .card-meta span {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.2rem 0.45rem;
+  }
+
+  .no-results {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .guide-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 680px) {
+    .guide-index { width: calc(100vw - 1.5rem); }
+    .filter-grid,
+    .guide-results { grid-template-columns: 1fr; }
+  }
+</style>

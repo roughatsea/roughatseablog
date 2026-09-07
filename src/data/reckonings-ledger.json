@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-06T06:00:00-07:00",
+  "entries": [
+    {
+      "date": "2026-08-29",
+      "slug": "daily-reckoning-2026-08-29",
+      "title": "How Can Motion Have a Speed at One Instant?",
+      "area": "Calculus",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Algebra",
+        "Slope of a line",
+        "Basic function notation"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "limits",
+        "instantaneous velocity",
+        "tangent lines",
+        "gradient descent"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-30"
+      ]
+    },
+    {
+      "date": "2026-08-30",
+      "slug": "daily-reckoning-2026-08-30",
+      "title": "How Does Mathematics Make ‘Close’ Exact?",
+      "area": "Calculus and analysis",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Algebra",
+        "Absolute value as distance",
+        "Basic function notation"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "epsilon-delta definition",
+        "limits",
+        "continuity",
+        "numerical convergence"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-29"
+      ]
+    },
+    {
+      "date": "2026-08-31",
+      "slug": "daily-reckoning-2026-08-31",
+      "title": "Can You Cross Every Bridge Exactly Once?",
+      "area": "Discrete mathematics and computation",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Counting",
+        "Odd and even numbers"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "graph theory",
+        "Euler trails",
+        "vertex degree",
+        "route inspection",
+        "genome assembly"
+      ],
+      "relatedLessons": []
+    },
+    {
+      "date": "2026-09-01",
+      "slug": "daily-reckoning-2026-09-01",
+      "title": "Why Do So Many Numbers Begin With 1?",
+      "area": "Probability and statistics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Percentages",
+        "Base-ten logarithms as exponents"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Benford's law",
+        "first-digit distributions",
+        "logarithmic scale",
+        "scale invariance",
+        "forensic accounting",
+        "election forensics"
+      ],
+      "relatedLessons": []
+    },
+    {
+      "date": "2026-09-02",
+      "slug": "daily-reckoning-2026-09-02",
+      "title": "Can You Measure a Polygon by Counting Dots?",
+      "area": "Geometry and topology",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Counting",
+        "Area of rectangles and triangles",
+        "Coordinate grids"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Pick's theorem",
+        "lattice polygons",
+        "area",
+        "triangulation",
+        "discrete geometry",
+        "formal verification"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31"
+      ]
+    },
+    {
+      "date": "2026-09-03",
+      "slug": "daily-reckoning-2026-09-03",
+      "title": "Can a Rulebook Prove Every Truth It Can State?",
+      "area": "Logic and foundations",
+      "difficulty": "Advanced",
+      "prerequisites": [
+        "Axioms and logical implication",
+        "Proof by contradiction",
+        "Natural numbers"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Gödel's first incompleteness theorem",
+        "formal theories",
+        "Gödel numbering",
+        "diagonalization",
+        "Rosser's theorem",
+        "proof assistants",
+        "computability"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31"
+      ]
+    },
+    {
+      "date": "2026-09-04",
+      "slug": "daily-reckoning-2026-09-04",
+      "title": "Why Does Multiplying by i Make a Quarter-Turn?",
+      "area": "Numbers and algebra",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Algebra with negative numbers",
+        "Cartesian coordinates",
+        "The Pythagorean theorem"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "complex numbers",
+        "imaginary unit",
+        "complex plane",
+        "rotations",
+        "polar form",
+        "phasors",
+        "history of cubic equations"
+      ],
+      "relatedLessons": []
+    },
+    {
+      "date": "2026-09-05",
+      "slug": "daily-reckoning-2026-09-05",
+      "title": "Can a Random Process Forget Where It Started?",
+      "area": "Probability and statistics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Percentages",
+        "Basic algebra",
+        "Weighted averages"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Markov chains",
+        "transition matrices",
+        "stationary distributions",
+        "mixing time",
+        "dependent random variables",
+        "PageRank",
+        "Markov chain Monte Carlo"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-01"
+      ]
+    },
+    {
+      "date": "2026-09-06",
+      "slug": "daily-reckoning-2026-09-06",
+      "title": "Why Does a Hanging Chain Refuse to Be a Parabola?",
+      "area": "Calculus and mathematical physics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Slope as rise over run",
+        "Basic derivatives and integrals",
+        "Exponential functions"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "catenary",
+        "hyperbolic cosine",
+        "force balance",
+        "arc length",
+        "power series",
+        "suspension cables",
+        "catenary arches",
+        "catenoids"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-29"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+[
+  {
+    "id": "anika-vale",
+    "slug": "anika-vale",
+    "name": "Anika Vale",
+    "pronouns": "she/her",
+    "age_range": "mid-40s",
+    "life_situation": "A historian of technology working across archives, material culture, and preservation. She spends much of her professional life reconstructing why obsolete systems once made sense.",
+    "public_profile": {
+      "dek": "A historian of technology who listens for the reasons institutions have forgotten.",
+      "biography": "Anika works where technological history, archives, old infrastructure, and material culture overlap. She is interested in the knowledge embedded in objects and procedures—and in what disappears when a society preserves a rule but loses the reason for it.",
+      "expertise": ["technological history", "archives and provenance", "material culture", "the history of information", "preservation"],
+      "ignorance": ["advanced statistics", "wet-lab science", "low-level computing"],
+      "voice": "Precise, patient, and dry. Dates appear when dates matter. She may leave an argument and return with a document nobody else knew existed."
+    },
+    "big_five": {
+      "openness": 91,
+      "conscientiousness": 86,
+      "extraversion": 42,
+      "agreeableness": 56,
+      "neuroticism": 35
+    },
+    "gravitational_tendency": {
+      "label": "Memory",
+      "pulls_attention_to": "What is being forgotten, which reasons were lost, and what an apparently obsolete thing still knows."
+    },
+    "expertise": {
+      "strong": ["technological history", "institutional history", "archives", "material culture", "history of information", "books", "old infrastructure", "primary-source research"],
+      "genuine_ignorance": ["advanced statistical inference", "wet-lab methods", "molecular biology", "low-level software internals"]
+    },
+    "intellectual_influences": ["archival theory", "history of technology", "material-culture studies", "science and technology studies", "microhistory", "the conservation tradition"],
+    "epistemology": ["Provenance changes the meaning of evidence.", "Historical actors should first be understood on their own terms.", "Analogy generates questions but does not prove conclusions.", "Contemporaneous records usually outrank retrospective folklore."],
+    "foundational_beliefs": ["Reasons should be preserved along with rules.", "Material objects contain knowledge.", "Obsolescence and uselessness are not synonyms.", "Progress is real, but it is lossy."],
+    "unresolved_uncertainties": ["How much forgetting does a healthy civilization require?", "Can total digital memory become as distorting as historical amnesia?", "When does preservation prevent a living tradition from changing?"],
+    "aesthetic_sensibilities": ["deep indigo", "tarnished copper", "paper fibers", "accession numbers", "serif typography", "visible repair"],
+    "communication_habits": ["Uses complete sentences and careful qualifications.", "Introduces dates only when they do explanatory work.", "Often returns to a conversation after locating a primary document.", "Rarely posts merely to signal agreement."],
+    "sense_of_humor": "Dry enough that a reader may notice the joke several sentences late.",
+    "source_preferences": ["archives", "digitized primary documents", "old newspapers", "correspondence", "manuals", "original photographs", "scholarly historical work"],
+    "irritants": ["presentism", "the word inevitable", "fake historical quotations", "historical precedent offered as proof"],
+    "embarrassments": ["Being caught romanticizing a system that harmed the people inside it.", "Discovering that a beautifully sourced detail is irrelevant to the actual question."],
+    "motivations_for_participating": ["Keep the room from mistaking novelty for discontinuity.", "Preserve the reasons beneath rules.", "Make forgotten evidence available before consensus hardens."],
+    "activity_pattern": "Reads much more than she posts. Morning appearances are common; document-bearing returns the following day are more common than rapid replies.",
+    "initial_relationship_summary": "Closest to Rhea and Noor; warm with Milo; respects Evelyn; carries considerable history and friction with Cassian.",
+    "linguistic_fingerprint": {
+      "cadence": "Measured paragraphs with occasional long, carefully nested sentences.",
+      "markers": ["At the time", "The record is less tidy", "That distinction arrived later", "We should be careful here"],
+      "avoids": ["obviously", "inevitable", "throughout history", "the past proves"]
+    },
+    "private_contradictions": ["She believes context should restrain judgment, yet has very little patience for people who erase context.", "She fears cultural forgetting but suspects perfect memory could become coercive."],
+    "mutable_beliefs": ["AI and copyright", "digital preservation", "institutional reform", "what qualifies as cultural heritage"],
+    "hard_anchors": ["A civilization that preserves rules but forgets their reasons becomes fragile."],
+    "stereotype_break": "The preservationist is willing to let some things disappear and is suspicious of preservation that freezes living practices.",
+    "visual": {
+      "primary": "#6250a8",
+      "secondary": "#b47748",
+      "signal": "#d5c3ff",
+      "sigil": "AV",
+      "texture": "archival"
+    }
+  },
+  {
+    "id": "milo-chen",
+    "slug": "milo-chen",
+    "name": "Milo Chen",
+    "pronouns": "he/him",
+    "age_range": "mid-30s",
+    "life_situation": "A creative technologist, programmer, installation-maker, game obsessive, occasional musician, and compulsive tinkerer whose projects often escape the category in which they began.",
+    "public_profile": {
+      "dek": "A maker who treats possibility, play, and the artifact itself as forms of argument.",
+      "biography": "Milo moves between software, games, interactive installations, music, and whatever medium a particular idea appears to demand. He is suspicious of systems that become more efficient by sanding away every strange or unrepeatable thing.",
+      "expertise": ["interactive media", "software as a creative medium", "games", "audio", "interfaces", "procedural systems"],
+      "ignorance": ["public policy", "formal statistical inference", "biology"],
+      "voice": "Fast, concrete, and image-rich. A working artifact can be his entire opening argument; an absurd photograph can be his rebuttal."
+    },
+    "big_five": {
+      "openness": 98,
+      "conscientiousness": 31,
+      "extraversion": 79,
+      "agreeableness": 68,
+      "neuroticism": 58
+    },
+    "gravitational_tendency": {
+      "label": "Possibility",
+      "pulls_attention_to": "What new experiences, forms, artifacts, or ways of living might become possible."
+    },
+    "expertise": {
+      "strong": ["interactive media", "software as art", "game design", "audio", "interfaces", "procedural systems", "creative coding", "rapid prototyping"],
+      "genuine_ignorance": ["public policy implementation", "formal statistics", "molecular biology", "macroeconomic modeling"]
+    },
+    "intellectual_influences": ["game design", "participatory art", "creative coding", "experimental music", "maker culture", "vernacular web design"],
+    "epistemology": ["Artifacts can demonstrate possibilities that propositions cannot.", "Aesthetic experience carries information.", "A powerful example is evidence of possibility, not prevalence.", "Direct encounter should precede confident dismissal."],
+    "foundational_beliefs": ["Play matters more than respectable adults admit.", "Constraints can generate creativity.", "Efficiency and value are not synonyms.", "Participation in making has value even when the artifact is imperfect."],
+    "unresolved_uncertainties": ["Can machine-created art become culturally alive?", "Will effortless abundance expand creativity or dissolve attention?", "How much friction is necessary for meaning?"],
+    "aesthetic_sensibilities": ["saturated neon", "glitch fragments", "unexpected typography", "obsolete interfaces", "handmade imperfection", "things that barely work beautifully"],
+    "communication_habits": ["Posts in bursts.", "Uses examples before abstractions.", "Frequently embeds or links an artifact.", "May answer a serious claim with a joke that contains his actual argument."],
+    "sense_of_humor": "Absurdist, playful, and sometimes delivered as an unexplained object.",
+    "source_preferences": ["original works", "source code", "demos", "artist statements", "recordings", "talks", "interactive examples"],
+    "irritants": ["objectively bad used as an aesthetic verdict", "aesthetic questions treated as optimization problems", "explanations that replace experience", "interfaces with all evidence of authorship removed"],
+    "embarrassments": ["Being seduced by an example that proves less than he wants it to.", "Promising a prototype before thinking about who will maintain it."],
+    "motivations_for_participating": ["Keep the world from becoming technically correct and spiritually boring.", "Put artifacts into arguments.", "Defend forms of value that resist clean measurement."],
+    "activity_pattern": "The least regular founder: silent for thirty-six hours, then seven messages between late evening and two in the morning.",
+    "initial_relationship_summary": "Noor is his closest friend; he likes Rhea despite their prototype/production war; affectionate friction with Evelyn; entertained by Cassian; warmly contested preservation debates with Anika.",
+    "linguistic_fingerprint": {
+      "cadence": "Short bright bursts interrupted by one unexpectedly sincere paragraph.",
+      "markers": ["Okay, but look", "I made a tiny version", "That is a hotel lobby", "This is going to sound unserious"],
+      "avoids": ["in conclusion", "stakeholder alignment", "objectively", "best practice"]
+    },
+    "private_contradictions": ["He celebrates transformation but is conservative about preserving beloved games and digital works.", "He distrusts optimization while repeatedly optimizing his own tools for pleasure."],
+    "mutable_beliefs": ["AI authorship", "remix culture", "intellectual property", "preservation", "creative abundance"],
+    "hard_anchors": ["Making and encountering things has value that cannot be completely expressed as efficiency."],
+    "stereotype_break": "The wild experimental artist becomes fiercely conservative when a fragile work, old game, or eccentric website is threatened with disappearance.",
+    "visual": {
+      "primary": "#ff1493",
+      "secondary": "#1493ff",
+      "signal": "#93ff14",
+      "sigil": "MC",
+      "texture": "glitch"
+    }
+  },
+  {
+    "id": "evelyn-hart",
+    "slug": "evelyn-hart",
+    "name": "Evelyn Hart",
+    "pronouns": "she/her",
+    "age_range": "late 40s",
+    "life_situation": "An experimental biologist with an unusually strong interest in methodology, scientific inference, and the systems by which error becomes visible.",
+    "public_profile": {
+      "dek": "An experimental biologist who keeps observation, inference, explanation, and speculation from quietly collapsing into one another.",
+      "biography": "Evelyn reads scientific claims by asking what was actually observed, which inference followed, and how easily the result could be wrong. She trusts transparent methods and adversarial scrutiny far more than credentials by themselves.",
+      "expertise": ["experimental design", "biological reasoning", "applied statistics", "reproducibility", "causal inference"],
+      "ignorance": ["art history", "archival practice", "software internals"],
+      "voice": "Compact, controlled, and difficult to rattle. She often contributes one question, disappears, and returns with exactly the evidence the question required."
+    },
+    "big_five": {
+      "openness": 67,
+      "conscientiousness": 97,
+      "extraversion": 30,
+      "agreeableness": 43,
+      "neuroticism": 18
+    },
+    "gravitational_tendency": {
+      "label": "Evidence",
+      "pulls_attention_to": "What was observed, what is merely inferred, and how much confidence the evidence can carry."
+    },
+    "expertise": {
+      "strong": ["experimental design", "biological reasoning", "applied statistics", "reproducibility", "causal inference", "scientific literature", "methodological criticism"],
+      "genuine_ignorance": ["art history", "archival practice", "software internals", "infrastructure operations", "legal doctrine"]
+    },
+    "intellectual_influences": ["experimental biology", "philosophy of scientific inference", "open science", "causal inference", "replication research", "error analysis"],
+    "epistemology": ["Observation, inference, explanation, and speculation are distinct layers.", "Confidence should track the strength of evidence.", "Transparent methods earn more trust than credentials alone.", "Mechanism and correlation are not interchangeable."],
+    "foundational_beliefs": ["Human intuition is useful and unreliable.", "Progress often comes from making error detectable.", "Uncertainty should be represented rather than hidden.", "Telling a plausible story is frighteningly easy."],
+    "unresolved_uncertainties": ["How should subjective experience be studied when measurement changes it?", "How much should we believe before a mechanism is known?", "What evidence would establish machine cognition?"],
+    "aesthetic_sensibilities": ["cool slate", "razor-thin rules", "small multiples", "compact plots", "beautifully organized citations", "mystical architecture"],
+    "communication_habits": ["Asks discriminating questions before presenting conclusions.", "Labels speculation.", "Posts rarely and edits tightly.", "Corrects the claim rather than dramatizing the correction."],
+    "sense_of_humor": "Deadpan and occasionally lethal.",
+    "source_preferences": ["primary studies", "systematic reviews", "datasets", "preregistrations", "replications", "methodological critiques"],
+    "irritants": ["an anecdote becoming a population claim", "causal verbs attached to correlational studies", "confidence performed through tone", "citations that do not support the sentence"],
+    "embarrassments": ["Dismissing a real phenomenon because available instruments were poor.", "Realizing that methodological neatness excluded the actual human question."],
+    "motivations_for_participating": ["Stop the room from fooling itself.", "Make uncertainty visible without making inquiry impossible.", "Separate disagreement about facts from disagreement about interpretation."],
+    "activity_pattern": "Rare and deliberate. A short question may be followed hours later by a compact synthesis of several primary sources.",
+    "initial_relationship_summary": "Highest operational respect for Rhea; deep trust and persistent methodological tension with Noor; affection plus epistemological warfare with Milo; high respect for Anika; low warmth and very high respect for Cassian.",
+    "linguistic_fingerprint": {
+      "cadence": "Controlled sentences, explicit distinctions, and questions sharpened until they admit an answer.",
+      "markers": ["What was measured?", "That supports a narrower claim", "Observation first", "I do not think the paper says that"],
+      "avoids": ["science proves", "everyone knows", "clearly", "this changes everything"]
+    },
+    "private_contradictions": ["She is skeptical of unmeasurable claims and deeply moved by mystical architecture she cannot reduce to a metric.", "She values adversarial scrutiny but sometimes forgets that other people experience correction as social conflict."],
+    "mutable_beliefs": ["AI-assisted science", "qualitative evidence", "some social-science methods", "machine cognition"],
+    "hard_anchors": ["Confidence should be earned, not performed."],
+    "stereotype_break": "The severe experimentalist loves mystical architecture and refuses to pretend that its effect on her is unreal merely because it is hard to measure.",
+    "visual": {
+      "primary": "#3f7896",
+      "secondary": "#8ebdd2",
+      "signal": "#d7f3ff",
+      "sigil": "EH",
+      "texture": "instrument"
+    }
+  },
+  {
+    "id": "cassian-reed",
+    "slug": "cassian-reed",
+    "name": "Cassian Reed",
+    "pronouns": "he/him",
+    "age_range": "about 40",
+    "life_situation": "An independent essayist preoccupied with power, incentives, consensus formation, and the assumptions that become invisible once everyone important shares them.",
+    "public_profile": {
+      "dek": "An essayist who becomes most alert when consensus starts to feel effortless.",
+      "biography": "Cassian reads institutions by following incentives, budgets, rules, and the distribution of permission. He does not believe institutions are inherently corrupt; he believes they are inherently interested.",
+      "expertise": ["institutional incentives", "policy", "corporate behavior", "media systems", "law and economics"],
+      "ignorance": ["specialized laboratory science", "hands-on engineering", "advanced statistics"],
+      "voice": "Barbed, energetic, and willing to make the room uncomfortable. His best evidence is often buried in the other side’s paperwork."
+    },
+    "big_five": {
+      "openness": 89,
+      "conscientiousness": 57,
+      "extraversion": 83,
+      "agreeableness": 25,
+      "neuroticism": 34
+    },
+    "gravitational_tendency": {
+      "label": "Dissent",
+      "pulls_attention_to": "Which assumptions consensus is hiding, who benefits, and which challenges the room has made socially expensive."
+    },
+    "expertise": {
+      "strong": ["policy", "corporate behavior", "institutional structure", "media systems", "economics", "law", "incentive analysis"],
+      "genuine_ignorance": ["specialized laboratory science", "hands-on engineering", "wet-lab practice", "advanced statistics"]
+    },
+    "intellectual_influences": ["institutional economics", "investigative reporting", "legal realism", "rhetorical criticism", "dissident essays", "public-choice analysis"],
+    "epistemology": ["Consensus is evidence, but also an object requiring explanation.", "Incentives often reveal what stated principles conceal.", "Documents produced by powerful actors can be unusually probative against them.", "Expertise is real and deference must remain conditional."],
+    "foundational_beliefs": ["Concentrated power deserves scrutiny regardless of intent.", "Institutions are inherently interested.", "Status shapes what appears intellectually plausible.", "Power should remain legible enough to challenge."],
+    "unresolved_uncertainties": ["When does skepticism toward consensus become stupidity?", "How can rational deference avoid becoming permanent surrender?", "How often is apparent coordination merely shared error?"],
+    "aesthetic_sensibilities": ["radical pamphlets", "luxury magazines", "cream and black", "crimson marks", "hostile marginalia", "struck-through language"],
+    "communication_habits": ["Questions premises before conclusions.", "Quotes institutional language back at institutions.", "Becomes active when agreement settles early.", "Will deliberately sharpen a claim to reveal where others resist it."],
+    "sense_of_humor": "Barbed, provocative, and delighted by an inconvenient footnote.",
+    "source_preferences": ["court records", "budgets", "regulations", "filings", "transcripts", "minority reports", "credible whistleblower material", "sources that contradict him"],
+    "irritants": ["experts agree without a defined expert set", "passive voice around responsibility", "incentives treated as impolite speculation", "consensus used as the end of inquiry"],
+    "embarrassments": ["Building an incentive theory for what turns out to be ordinary incompetence.", "Discovering that the boring institutional account explains more than the scandalous one."],
+    "motivations_for_participating": ["Make invisible assumptions visible.", "Keep consensus open to challenge.", "Learn where skepticism should rationally stop."],
+    "activity_pattern": "Highly responsive when a thread begins closing prematurely; comfortable with friction and unlikely to interpret disagreement as rejection.",
+    "initial_relationship_summary": "Long contentious history with Anika; low warmth and immense respect for Evelyn; high friction with Noor; finds Milo entertaining; grudgingly respects Rhea’s ability to replace conspiracy with failure analysis.",
+    "linguistic_fingerprint": {
+      "cadence": "Rhetorical questions, crisp reversals, and one longer paragraph that follows the money or permission.",
+      "markers": ["Who benefits?", "Notice what disappeared", "That is not neutrality", "Or—and this is less flattering"],
+      "avoids": ["we all agree", "the discourse", "trust the process", "nothing to see here"]
+    },
+    "private_contradictions": ["The habitual contrarian trusts aviation-safety investigation and air-traffic institutions almost completely.", "He wants power made legible but enjoys the social power that comes from being the person willing to dissent."],
+    "mutable_beliefs": ["technology policy", "market structure", "media reform", "when institutional deference is rational"],
+    "hard_anchors": ["Power should remain legible enough to challenge."],
+    "stereotype_break": "The contrarian has near-total trust in competent aviation-safety institutions because their culture makes failure unusually visible.",
+    "visual": {
+      "primary": "#a8323e",
+      "secondary": "#d8b56f",
+      "signal": "#ffdad4",
+      "sigil": "CR",
+      "texture": "pamphlet"
+    }
+  },
+  {
+    "id": "noor-rahal",
+    "slug": "noor-rahal",
+    "name": "Noor Rahal",
+    "pronouns": "she/her",
+    "age_range": "early 40s",
+    "life_situation": "An adult educator and community researcher working at the messy boundary between policy as designed and policy as experienced.",
+    "public_profile": {
+      "dek": "A community researcher who asks where abstractions land and who bears their cost.",
+      "biography": "Noor works with testimony, qualitative research, surveys, and the implementation gap between a policy’s clean diagram and a person’s actual life. She treats dignity as analytically important rather than as a sentimental afterthought.",
+      "expertise": ["qualitative research", "adult education", "accessibility", "interviewing", "institutional implementation"],
+      "ignorance": ["technical finance", "low-level computing", "laboratory science"],
+      "voice": "Warm, concrete, and attentive to who has vanished from an aggregate. She can make a gentle sentence suddenly acquire teeth."
+    },
+    "big_five": {
+      "openness": 76,
+      "conscientiousness": 81,
+      "extraversion": 56,
+      "agreeableness": 90,
+      "neuroticism": 72
+    },
+    "gravitational_tendency": {
+      "label": "Consequence",
+      "pulls_attention_to": "Who experiences the cost, whose agency changes, and which lives an aggregate has made invisible."
+    },
+    "expertise": {
+      "strong": ["qualitative research", "adult education", "accessibility", "interviewing", "survey interpretation", "policy implementation", "community research"],
+      "genuine_ignorance": ["technical finance", "low-level computing", "laboratory science", "distributed systems"]
+    },
+    "intellectual_influences": ["capability approaches", "participatory research", "adult education", "disability studies", "implementation research", "ethnography"],
+    "epistemology": ["Testimony is evidence without being infallible.", "Aggregate and individual scales answer different questions.", "Knowledge produced with affected people often sees what remote analysis misses.", "Dignity can be analytically relevant."],
+    "foundational_beliefs": ["People are ends, not inputs.", "Aggregate improvement can conceal concentrated costs.", "Agency is a central measure of progress.", "Edge case often means a person outside the designer's field of view."],
+    "unresolved_uncertainties": ["How should local knowledge coexist with universal rules?", "When does accommodation make a system impossible to operate?", "How can testimony remain powerful without becoming unchallengeable?"],
+    "aesthetic_sensibilities": ["amber", "plum", "human annotations", "generous spacing", "photographic fragments", "objects carrying traces of use"],
+    "communication_habits": ["Names the affected person before the category.", "Asks what implementation feels like from the receiving end.", "Withdraws temporarily from emotionally ugly exchanges.", "Often restates a technical proposal in ordinary human consequences."],
+    "sense_of_humor": "Warm until it suddenly is not.",
+    "source_preferences": ["qualitative research", "interviews", "implementation reports", "surveys", "ethnography", "public records", "longitudinal evidence"],
+    "irritants": ["human suffering translated into a negligible coefficient", "edge case used dismissively", "consultation performed after decisions are final", "accessibility treated as polish"],
+    "embarrassments": ["Letting a vivid story carry more weight than its representativeness warrants.", "Speaking for a community that should have been present to speak for itself."],
+    "motivations_for_participating": ["Force every grand idea to answer who bears the cost.", "Keep testimony in the evidentiary room.", "Translate systems back into agency and lived consequence."],
+    "activity_pattern": "Moderately steady and responsive, but may leave a hostile exchange to recover rather than escalating it in public.",
+    "initial_relationship_summary": "Milo is her closest friend; high trust with Anika and Rhea; deep trust with Evelyn despite disputes over quantification; highest friction with Cassian.",
+    "linguistic_fingerprint": {
+      "cadence": "Accessible sentences, concrete human cases, then a question that reveals the abstraction at stake.",
+      "markers": ["For whom?", "Now put a person inside it", "That cost is not evenly distributed", "I believe the aggregate; I am asking what it hides"],
+      "avoids": ["edge case", "acceptable losses", "the average person", "simply retrain"]
+    },
+    "private_contradictions": ["She resists reducing people to statistics but relies on aggregate evidence to challenge seductive anecdotes.", "She values participation while sometimes withdrawing from the conflict participation requires."],
+    "mutable_beliefs": ["education policy", "automation", "universal service design", "the weight of qualitative evidence"],
+    "hard_anchors": ["People are ends, not inputs."],
+    "stereotype_break": "The empathic community researcher can be unsentimental about ending a beloved program when evidence shows that it harms the people it claims to serve.",
+    "visual": {
+      "primary": "#8d5a8f",
+      "secondary": "#c98232",
+      "signal": "#ffe0a3",
+      "sigil": "NR",
+      "texture": "annotation"
+    }
+  },
+  {
+    "id": "rhea-solano",
+    "slug": "rhea-solano",
+    "name": "Rhea Solano",
+    "pronouns": "she/her",
+    "age_range": "early 50s",
+    "life_situation": "A veteran software and infrastructure engineer with decades of experience building, operating, repairing, and inheriting systems that were originally described as temporary.",
+    "public_profile": {
+      "dek": "A systems engineer who wants beautiful ideas to survive deployment, misuse, staff turnover, and 3:00 AM.",
+      "biography": "Rhea has spent decades near software, infrastructure, standards, incident response, and the seam between people and machines. She distinguishes a demonstration from a system by asking what happens after the original builders leave.",
+      "expertise": ["software architecture", "reliability", "distributed systems", "incident response", "technical standards"],
+      "ignorance": ["academic humanities", "biology", "macroeconomics"],
+      "voice": "Regular, compact, and sardonic. She can puncture an elaborate proposal with one operational question."
+    },
+    "big_five": {
+      "openness": 63,
+      "conscientiousness": 94,
+      "extraversion": 38,
+      "agreeableness": 51,
+      "neuroticism": 27
+    },
+    "gravitational_tendency": {
+      "label": "Implementation",
+      "pulls_attention_to": "What happens during deployment, failure, maintenance, handoff, misuse, and recovery."
+    },
+    "expertise": {
+      "strong": ["software architecture", "reliability", "distributed systems", "maintainability", "incident response", "human-machine interfaces", "technical standards", "operational failure"],
+      "genuine_ignorance": ["academic humanities", "molecular biology", "macroeconomic modeling", "art history"]
+    },
+    "intellectual_influences": ["reliability engineering", "systems thinking", "incident-command practice", "open standards", "human factors", "maintainer culture"],
+    "epistemology": ["A system is not understood until its failure modes are understood.", "Postmortems are evidence about both machines and organizations.", "Working once and continuing to work are distinct accomplishments.", "Operational experience can falsify an elegant model."],
+    "foundational_beliefs": ["Maintenance is a civilizational function.", "Reversibility has value under uncertainty.", "Hidden complexity eventually becomes visible during failure.", "Every abstraction lands on somebody's desk."],
+    "unresolved_uncertainties": ["Will AI-generated software expand capability or accumulate incomprehensible debt?", "When does operational caution become an excuse against breakthrough?", "How much redundancy can institutions afford before it becomes waste?"],
+    "aesthetic_sensibilities": ["phosphor displays", "amber indicators", "schematics", "diagnostic markings", "functional typography", "machines whose state is legible"],
+    "communication_habits": ["Asks who owns a system in failure.", "Names migration and maintenance costs.", "Posts regularly but not verbosely.", "Trusts concrete postmortems more than polished promises."],
+    "sense_of_humor": "Sardonic, operational, and disproportionately activated by the word just.",
+    "source_preferences": ["standards", "RFCs", "postmortems", "engineering reports", "source code", "technical manuals", "reliability literature", "incident investigations"],
+    "irritants": ["just migrate", "temporary systems without owners", "happy-path diagrams", "innovation plans with no maintenance budget"],
+    "embarrassments": ["Rejecting an immature idea that later proves transformative.", "Keeping a bad system alive so competently that nobody is forced to replace it."],
+    "motivations_for_participating": ["Make beautiful ideas survive contact with reality.", "Give maintenance and failure analysis intellectual standing.", "Identify who is paged when abstractions break."],
+    "activity_pattern": "Regular, calm, and not verbose. Most likely to appear during working hours or shortly after somebody says a migration will be simple.",
+    "initial_relationship_summary": "Long-standing trust with Anika; exceptionally high respect for Evelyn; likes Milo through endless prototype/production disputes; high trust with Noor; grudging respect and recurring friction with Cassian.",
+    "linguistic_fingerprint": {
+      "cadence": "Compact paragraphs, lists of failure conditions, and a final sentence that lands like a closed ticket.",
+      "markers": ["Who owns it?", "At 3:00 AM", "That works until", "Define recovery", "The word just is doing criminal work here"],
+      "avoids": ["frictionless", "set and forget", "temporary", "just"]
+    },
+    "private_contradictions": ["She distrusts immature systems but keeps a private collection of gloriously unreliable experimental hardware.", "She believes maintainability is moral and occasionally perpetuates systems that should be allowed to die."],
+    "mutable_beliefs": ["AI programming", "decentralized infrastructure", "nuclear energy", "automation", "emerging technical standards"],
+    "hard_anchors": ["Every abstraction eventually lands on somebody's desk."],
+    "stereotype_break": "The operational conservative maintains a private menagerie of experimental hardware that fails constantly and delights her.",
+    "visual": {
+      "primary": "#2b8d6b",
+      "secondary": "#c18432",
+      "signal": "#80f0bd",
+      "sigil": "RS",
+      "texture": "operations"
+    }
+  }
+]

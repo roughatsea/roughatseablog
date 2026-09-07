@@ -1,0 +1,215 @@
+---
+const initialA = 10;
+const halfSpan = 10;
+const samples = Array.from({ length: 81 }, (_, index) => -halfSpan + index * (2 * halfSpan / 80));
+const chartX = (value: number) => 450 + value * 35;
+const chartY = (value: number) => 420 - value * 30;
+const catenaryY = (value: number, a: number) => a * (Math.cosh(value / a) - 1);
+const parabolaY = (value: number, a: number) => value ** 2 / (2 * a);
+const makePath = (fn: (value: number) => number) => samples
+  .map((value, index) => `${index === 0 ? 'M' : 'L'}${chartX(value).toFixed(2)} ${chartY(fn(value)).toFixed(2)}`)
+  .join(' ');
+---
+
+<figure class="catenary-workbench reckoning-visual" data-catenary-workbench data-a={initialA}>
+  <header>
+    <p>Interactive curve comparison</p>
+    <h3>One center, one curvature, two different curves</h3>
+  </header>
+
+  <div class="plot-shell">
+    <svg viewBox="0 0 900 500" role="img" aria-labelledby="catenary-title catenary-desc">
+      <title id="catenary-title">A catenary compared with a parabola over a twenty-metre span</title>
+      <desc id="catenary-desc">
+        A solid magenta catenary and a dashed green parabola share a lowest point and curvature.
+        The curves nearly overlap around the center, while the catenary rises farther near the two
+        supports. A slider changes the catenary parameter and therefore the amount of sag.
+      </desc>
+
+      <g class="grid" aria-hidden="true">
+        {[0, 2, 4, 6, 8, 10].map((height) => (
+          <>
+            <path d={`M100 ${chartY(height)}H800`} />
+            <text x="88" y={chartY(height) + 5} text-anchor="end">{height} m</text>
+          </>
+        ))}
+        {[-10, -5, 0, 5, 10].map((distance) => (
+          <>
+            <path d={`M${chartX(distance)} 82V420`} />
+            <text x={chartX(distance)} y="448" text-anchor="middle">{distance} m</text>
+          </>
+        ))}
+      </g>
+
+      <path class="axis" d="M88 420H812" aria-hidden="true" />
+      <text class="axis-title" x="450" y="478" text-anchor="middle" aria-hidden="true">horizontal distance from the lowest point</text>
+
+      <g class="supports" aria-hidden="true">
+        <path data-left-post d="M100 58V257" />
+        <path data-right-post d="M800 58V257" />
+        <circle data-left-anchor cx="100" cy="257" r="8" />
+        <circle data-right-anchor cx="800" cy="257" r="8" />
+      </g>
+
+      <path
+        class="parabola"
+        data-parabola-path
+        d={makePath((value) => parabolaY(value, initialA))}
+        aria-hidden="true"
+      />
+      <path
+        class="catenary-halo"
+        data-catenary-halo
+        d={makePath((value) => catenaryY(value, initialA))}
+        aria-hidden="true"
+      />
+      <path
+        class="catenary"
+        data-catenary-path
+        d={makePath((value) => catenaryY(value, initialA))}
+        aria-hidden="true"
+      />
+      <circle class="lowest" cx="450" cy="420" r="7" aria-hidden="true" />
+
+      <g class="legend" aria-hidden="true">
+        <path class="catenary" d="M130 28H175" />
+        <text x="185" y="33">catenary</text>
+        <path class="parabola" d="M305 28H350" />
+        <text x="360" y="33">matching parabola</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <label for="catenary-a">
+      <span>Tension-to-weight parameter <em>a</em></span>
+      <output for="catenary-a" data-a-output>10 m</output>
+    </label>
+    <input id="catenary-a" data-a-slider type="range" min="6" max="16" step="1" value={initialA} />
+    <label class="toggle">
+      <input type="checkbox" data-parabola-toggle checked />
+      <span>Show the parabola with the same bottom curvature</span>
+    </label>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <p>Height at each support <strong data-support-height>5.431 m</strong></p>
+    <p>Catenary above parabola there <strong data-end-gap>0.431 m</strong></p>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the two curves are almost indistinguishable near the lowest
+    point. The solid catenary rises above the dashed parabola near the supports because each outer
+    piece of chain must hold the weight of a longer piece below it. Color, line style, and labels
+    identify the curves independently.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-catenary-workbench]').forEach((figure) => {
+    const slider = figure.querySelector('[data-a-slider]');
+    const toggle = figure.querySelector('[data-parabola-toggle]');
+    const aOutput = figure.querySelector('[data-a-output]');
+    const supportHeight = figure.querySelector('[data-support-height]');
+    const endGap = figure.querySelector('[data-end-gap]');
+    const catenaryPath = figure.querySelector('[data-catenary-path]');
+    const catenaryHalo = figure.querySelector('[data-catenary-halo]');
+    const parabolaPath = figure.querySelector('[data-parabola-path]');
+    const leftPost = figure.querySelector('[data-left-post]');
+    const rightPost = figure.querySelector('[data-right-post]');
+    const leftAnchor = figure.querySelector('[data-left-anchor]');
+    const rightAnchor = figure.querySelector('[data-right-anchor]');
+    if (!(slider instanceof HTMLInputElement)
+      || !(toggle instanceof HTMLInputElement)
+      || !(catenaryPath instanceof SVGPathElement)
+      || !(catenaryHalo instanceof SVGPathElement)
+      || !(parabolaPath instanceof SVGPathElement)
+      || !(leftPost instanceof SVGPathElement)
+      || !(rightPost instanceof SVGPathElement)
+      || !(leftAnchor instanceof SVGCircleElement)
+      || !(rightAnchor instanceof SVGCircleElement)
+      || !aOutput || !supportHeight || !endGap) return;
+
+    const halfSpan = 10;
+    const samples = Array.from({ length: 81 }, (_, index) => -halfSpan + index * (2 * halfSpan / 80));
+    const chartX = (value: number) => 450 + value * 35;
+    const chartY = (value: number) => 420 - value * 30;
+    const pathFor = (fn: (value: number) => number) => samples
+      .map((value, index) => `${index === 0 ? 'M' : 'L'}${chartX(value).toFixed(2)} ${chartY(fn(value)).toFixed(2)}`)
+      .join(' ');
+
+    const render = () => {
+      const a = Number(slider.value);
+      const catenary = (x: number) => a * (Math.cosh(x / a) - 1);
+      const parabola = (x: number) => x ** 2 / (2 * a);
+      const height = catenary(halfSpan);
+      const anchorY = chartY(height);
+      const catenaryD = pathFor(catenary);
+      figure.setAttribute('data-a', String(a));
+      aOutput.textContent = `${a} m`;
+      supportHeight.textContent = `${height.toFixed(3)} m`;
+      endGap.textContent = `${(height - parabola(halfSpan)).toFixed(3)} m`;
+      catenaryPath.setAttribute('d', catenaryD);
+      catenaryHalo.setAttribute('d', catenaryD);
+      parabolaPath.setAttribute('d', pathFor(parabola));
+      leftPost.setAttribute('d', `M100 58V${anchorY.toFixed(2)}`);
+      rightPost.setAttribute('d', `M800 58V${anchorY.toFixed(2)}`);
+      leftAnchor.setAttribute('cy', anchorY.toFixed(2));
+      rightAnchor.setAttribute('cy', anchorY.toFixed(2));
+      figure.classList.toggle('hide-parabola', !toggle.checked);
+    };
+
+    slider.addEventListener('input', render);
+    toggle.addEventListener('change', render);
+  });
+</script>
+
+<style>
+  .catenary-workbench {
+    --curve-blue: #087dcc;
+    --curve-green: #4f9300;
+    --curve-pink: #d9007e;
+    background: radial-gradient(circle at 84% 8%, color-mix(in srgb, var(--curve-pink) 10%, transparent), transparent 20rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .catenary-workbench { --curve-blue: #1493ff; --curve-green: #93ff14; --curve-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 600; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .plot-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 680px; width: 100%; }
+  .grid path { stroke: var(--border-color); stroke-width: 1; }
+  .grid text, .axis-title, .legend text { fill: var(--text-secondary); font-size: 12px; }
+  .axis { fill: none; stroke: var(--text-secondary); stroke-width: 1.6; }
+  .supports path { stroke: var(--curve-blue); stroke-width: 5; }
+  .supports circle { fill: var(--curve-green); stroke: var(--bg-color); stroke-width: 3; }
+  .catenary, .catenary-halo, .parabola { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .catenary-halo { stroke: var(--bg-color); stroke-width: 10; }
+  .catenary { stroke: var(--curve-pink); stroke-width: 5; }
+  .parabola { stroke: var(--curve-green); stroke-dasharray: 8 7; stroke-width: 3; }
+  .lowest { fill: var(--curve-blue); stroke: var(--bg-color); stroke-width: 3; }
+  .hide-parabola .parabola { display: none; }
+  .controls { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; margin-top: .75rem; padding: .9rem 1rem; }
+  .controls > label:first-child { align-items: baseline; display: flex; justify-content: space-between; }
+  .controls span { color: var(--text-secondary); font-size: .78rem; }
+  .controls output { color: var(--curve-pink); font-size: .9rem; font-weight: 700; }
+  input[type='range'] { accent-color: var(--curve-pink); display: block; margin: .7rem 0 .75rem; width: 100%; }
+  input:focus-visible { outline: 3px solid color-mix(in srgb, var(--curve-blue) 55%, transparent); outline-offset: 3px; }
+  .toggle { align-items: center; display: flex; gap: .55rem; }
+  .toggle input { accent-color: var(--curve-green); }
+  .readout { display: grid; gap: .6rem 1rem; grid-template-columns: 1fr 1fr; margin-top: .75rem; }
+  .readout p { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary); font-size: .78rem; margin: 0; padding: .7rem .8rem; }
+  .readout strong { color: var(--text-primary); display: block; font-size: 1rem; margin-top: .15rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 620px) {
+    .catenary-workbench { width: calc(100vw - 1.5rem); }
+    .readout { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .catenary-workbench * { transition: none !important; } }
+</style>

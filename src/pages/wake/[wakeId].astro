@@ -1,0 +1,296 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  wakeRecords,
+  formatWakeDate,
+  formatWakeDateTime,
+  labelWakeValue,
+  type WakeRecordView,
+  type WakeSource,
+} from '../../lib/wake';
+
+export function getStaticPaths() {
+  return wakeRecords.map((record) => ({
+    params: { wakeId: record.wakeId },
+    props: { record },
+  }));
+}
+
+const { record } = Astro.props as { record: WakeRecordView };
+const firstOrigin = record.origins[0];
+const sourcesByUrl = new Map<string, WakeSource>();
+for (const origin of record.origins) {
+  for (const source of origin.signal.sources) sourcesByUrl.set(source.url, source);
+}
+for (const observation of record.observations) {
+  for (const source of observation.sources) sourcesByUrl.set(source.url, source);
+}
+for (const correction of record.corrections) {
+  for (const source of correction.sources) sourcesByUrl.set(source.url, source);
+}
+const sources = Array.from(sourcesByUrl.values());
+---
+
+<BaseLayout title={record.title} description={record.dek}>
+  <article class="wake-record">
+    <header class="record-header">
+      <div class="meta-row">
+        <a href="/wake/">&larr; The Wake</a>
+        <span>First observed {formatWakeDate(record.firstObservedAt)}</span>
+      </div>
+      <p class="eyebrow">Active Wake record · Pilot</p>
+      <h1>{record.title}</h1>
+      <p class="dek">{record.dek}</p>
+
+      <div class="dimensions" aria-label="Current dimensions">
+        <div>
+          <span>Lifecycle</span>
+          <strong>{labelWakeValue(record.current.lifecycle)}</strong>
+        </div>
+        <div>
+          <span>Evidence</span>
+          <strong>{labelWakeValue(record.current.evidence)}</strong>
+        </div>
+        <div>
+          <span>Attention</span>
+          <strong>{labelWakeValue(record.current.attention)}</strong>
+        </div>
+        <div>
+          <span>Review cadence</span>
+          <strong>{labelWakeValue(record.current.cadence)}</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="current-state glass-panel" aria-labelledby="current-state-title">
+      <p class="eyebrow">Current reading</p>
+      <h2 id="current-state-title">Where the record stands</h2>
+      <p>{record.current.assessment}</p>
+      <dl>
+        <div>
+          <dt>Last updated</dt>
+          <dd>{formatWakeDateTime(record.current.updatedAt)}</dd>
+        </div>
+        <div>
+          <dt>Next dated review</dt>
+          <dd>{formatWakeDate(record.current.nextReviewAfter)}</dd>
+        </div>
+        <div>
+          <dt>Event trigger</dt>
+          <dd>{record.current.nextReviewTrigger}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <div class="record-grid">
+      <section aria-labelledby="point-zero-title">
+        <p class="eyebrow">Point zero</p>
+        <h2 id="point-zero-title">What was known when we noticed it</h2>
+        <p class="claim">{firstOrigin.signal.canonicalClaim}</p>
+
+        <h3>Supported at the time</h3>
+        <ul>
+          {firstOrigin.signal.knownFacts.map((fact) => <li>{fact}</li>)}
+        </ul>
+
+        <h3>Still uncertain</h3>
+        {firstOrigin.signal.uncertainties.length > 0 ? (
+          <ul>
+            {firstOrigin.signal.uncertainties.map((uncertainty) => <li>{uncertainty}</li>)}
+          </ul>
+        ) : (
+          <p>No uncertainty was separately recorded in the point-zero packet.</p>
+        )}
+
+        <p class="origin-link">
+          First recorded in <a href={`/soundings/${firstOrigin.packet.article.slug}/`}>{firstOrigin.packet.article.title}</a>.
+          The packet was captured as <strong>{firstOrigin.packet.capture.mode}</strong> evidence.
+        </p>
+      </section>
+
+      <aside class="tracking-panel glass-panel" aria-labelledby="tracking-title">
+        <p class="eyebrow">Why it remains in view</p>
+        <h2 id="tracking-title">The tracking case</h2>
+        <p>{record.whyTracked}</p>
+
+        <h3>Subjects and aliases</h3>
+        <p>{[record.canonicalSubject.name, ...record.canonicalSubject.aliases].join(' · ')}</p>
+
+        <h3>Tracking terms</h3>
+        <div class="term-list">
+          {record.trackingTerms.map((term) => <span>{term}</span>)}
+        </div>
+      </aside>
+    </div>
+
+    <section class="timeline-section" aria-labelledby="timeline-title">
+      <p class="eyebrow">Append-only history</p>
+      <h2 id="timeline-title">Observation timeline</h2>
+      <ol class="timeline">
+        {record.observations.map((observation, index) => (
+          <li class:list={{ material: observation.materialChange }}>
+            <div class="timeline-marker" aria-hidden="true">{index + 1}</div>
+            <div class="timeline-entry glass-panel">
+              <div class="timeline-meta">
+                <time datetime={observation.observedAt}>{formatWakeDateTime(observation.observedAt)}</time>
+                <span>{labelWakeValue(observation.kind)}</span>
+                {observation.materialChange && <strong>Material change</strong>}
+              </div>
+              <h3>{observation.headline}</h3>
+              <p>{observation.summary}</p>
+              <div class="observation-states">
+                <span>Lifecycle: {labelWakeValue(observation.lifecycle)}</span>
+                <span>Evidence: {labelWakeValue(observation.evidence)}</span>
+                <span>Attention: {labelWakeValue(observation.attention)}</span>
+              </div>
+              {observation.sources.length > 0 && (
+                <details>
+                  <summary>{observation.sources.length} source{observation.sources.length === 1 ? '' : 's'} attached</summary>
+                  <ul>
+                    {observation.sources.map((source) => (
+                      <li><a href={source.url}>{source.publisher}: {source.title}</a> <small>({source.role}; lineage {source.lineage})</small></li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <div class="questions-grid">
+      <section aria-labelledby="questions-title">
+        <p class="eyebrow">Unresolved</p>
+        <h2 id="questions-title">Open questions</h2>
+        {record.openQuestions.length > 0 ? (
+          <ol>
+            {record.openQuestions.map((question) => <li>{question}</li>)}
+          </ol>
+        ) : (
+          <p>The record currently has no open questions.</p>
+        )}
+      </section>
+
+      <section aria-labelledby="watch-title">
+        <p class="eyebrow">Future evidence</p>
+        <h2 id="watch-title">What would move the record</h2>
+        <div class="watch-list">
+          {record.watchFor.map((item) => (
+            <article class="glass-panel">
+              <h3>{item.description}</h3>
+              <p>{item.trigger}</p>
+              <small>{item.expectedWindow ?? 'No defensible date; event-triggered'}</small>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    {record.corrections.length > 0 && (
+      <section class="corrections" aria-labelledby="corrections-title">
+        <p class="eyebrow">Corrections</p>
+        <h2 id="corrections-title">What the record got wrong</h2>
+        {record.corrections.map((correction) => (
+          <article class="glass-panel">
+            <h3>{correction.correctionId}</h3>
+            <p>{correction.summary}</p>
+            <small>Recorded {formatWakeDateTime(correction.recordedAt)}</small>
+          </article>
+        ))}
+      </section>
+    )}
+
+    <section class="source-trail" aria-labelledby="sources-title">
+      <p class="eyebrow">Provenance</p>
+      <h2 id="sources-title">Source trail</h2>
+      <p class="source-note">
+        A lineage identifies sources that ultimately descend from the same paper, announcement,
+        interview, wire report, or other evidentiary ancestor. Repetition within one lineage is not
+        counted as independent corroboration.
+      </p>
+      <div class="source-list">
+        {sources.map((source) => (
+          <article class="glass-panel">
+            <p class="source-role">{labelWakeValue(source.role)}</p>
+            <h3><a href={source.url}>{source.title}</a></h3>
+            <p>{source.publisher}</p>
+            <small>Lineage: {source.lineage} · Accessed {formatWakeDate(source.accessedAt)}</small>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <footer class="record-footer">
+      <a href="/wake/">Browse all Wake records</a>
+      <a href="/wake/methodology/">Read the methodology</a>
+      <a href="/wake/data.json" download>Download the full JSON dataset</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  :global(main.container) { max-width: 1060px; }
+  .wake-record { padding-bottom: 5rem; }
+  .record-header { margin: 0 auto 2rem; max-width: 60rem; }
+  .meta-row { color: var(--text-secondary); display: flex; font-size: 0.78rem; gap: 1rem; justify-content: space-between; margin-bottom: 2rem; }
+  .meta-row a:hover { color: var(--link-color); }
+  .eyebrow { color: var(--link-color); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.14em; margin-bottom: 0.5rem; text-transform: uppercase; }
+  h1 { font-family: var(--font-serif); font-size: clamp(2.8rem, 8vw, 5.7rem); letter-spacing: -0.045em; line-height: 0.98; margin-bottom: 1rem; }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.8rem, 4vw, 2.7rem); letter-spacing: -0.025em; }
+  h3 { font-size: 0.95rem; margin-top: 1.25rem; }
+  .dek { color: var(--text-secondary); font-family: var(--font-serif); font-size: clamp(1.08rem, 2.4vw, 1.32rem); line-height: 1.7; max-width: 52rem; }
+  .dimensions { border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 2rem; }
+  .dimensions div { padding: 0.8rem 1rem 0.8rem 0; }
+  .dimensions span, dt { color: var(--text-secondary); display: block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .dimensions strong { font-size: 0.78rem; }
+  .current-state { border-radius: 16px; margin-bottom: 3.5rem; padding: clamp(1.3rem, 4vw, 2rem); }
+  .current-state > p:not(.eyebrow) { color: var(--text-secondary); font-family: var(--font-serif); font-size: 1.08rem; max-width: 52rem; }
+  dl { display: grid; gap: 1rem; grid-template-columns: 0.7fr 0.7fr 1.6fr; margin-top: 1.5rem; }
+  dd { font-size: 0.8rem; margin: 0.25rem 0 0; }
+  .record-grid, .questions-grid { display: grid; gap: clamp(1.5rem, 4vw, 3rem); grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr); margin-bottom: 4rem; }
+  .record-grid section, .questions-grid section { min-width: 0; }
+  .claim { border-left: 2px solid var(--link-color); font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.7; padding-left: 1rem; }
+  ul, ol { margin: 0.7rem 0 1rem 1.25rem; }
+  li { color: var(--text-secondary); margin-bottom: 0.55rem; padding-left: 0.25rem; }
+  .origin-link { color: var(--text-secondary); font-size: 0.78rem; margin-top: 1.5rem; }
+  .origin-link a, .source-trail a { color: var(--link-color); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+  .origin-link a:hover, .source-trail a:hover { text-decoration-color: currentColor; }
+  .tracking-panel { align-self: start; border-radius: 14px; padding: 1.35rem; }
+  .tracking-panel > p:not(.eyebrow) { color: var(--text-secondary); }
+  .term-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .term-list span { border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); font-size: 0.65rem; padding: 0.28rem 0.5rem; }
+  .timeline-section, .source-trail { margin-bottom: 4rem; }
+  .timeline { list-style: none; margin: 1.5rem 0 0; padding: 0; position: relative; }
+  .timeline::before { background: var(--border-color); bottom: 1rem; content: ''; left: 1rem; position: absolute; top: 1rem; width: 1px; }
+  .timeline > li { display: grid; gap: 1rem; grid-template-columns: 2rem minmax(0, 1fr); margin: 0 0 1rem; padding: 0; position: relative; }
+  .timeline-marker { align-items: center; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 50%; display: flex; font-size: 0.65rem; height: 2rem; justify-content: center; position: relative; width: 2rem; z-index: 1; }
+  .material .timeline-marker { border-color: var(--link-color); color: var(--link-color); }
+  .timeline-entry { border-radius: 14px; padding: 1.25rem; }
+  .timeline-entry h3 { font-family: var(--font-serif); font-size: 1.45rem; margin: 0.65rem 0; }
+  .timeline-entry > p { color: var(--text-secondary); }
+  .timeline-meta, .observation-states { align-items: center; display: flex; flex-wrap: wrap; gap: 0.45rem 0.8rem; }
+  .timeline-meta { color: var(--text-secondary); font-size: 0.65rem; }
+  .timeline-meta span, .timeline-meta strong { border: 1px solid var(--border-color); border-radius: 999px; font-size: 0.58rem; padding: 0.2rem 0.4rem; text-transform: uppercase; }
+  .timeline-meta strong { border-color: var(--link-color); color: var(--link-color); }
+  .observation-states { color: var(--text-secondary); font-size: 0.65rem; }
+  details { border-top: 1px solid var(--border-color); margin-top: 1rem; padding-top: 0.75rem; }
+  summary { color: var(--text-secondary); cursor: pointer; font-size: 0.72rem; }
+  details small { color: var(--text-secondary); }
+  .watch-list, .source-list { display: grid; gap: 0.75rem; }
+  .watch-list article, .source-list article, .corrections article { border-radius: 12px; padding: 1rem; }
+  .watch-list h3, .source-list h3 { margin: 0 0 0.45rem; }
+  .watch-list p, .source-list p { color: var(--text-secondary); font-size: 0.8rem; }
+  .watch-list small, .source-list small { color: var(--text-secondary); font-size: 0.65rem; }
+  .source-note { color: var(--text-secondary); max-width: 52rem; }
+  .source-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .source-role { color: var(--link-color) !important; font-size: 0.58rem !important; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 0.35rem !important; text-transform: uppercase; }
+  .corrections { margin-bottom: 4rem; }
+  .record-footer { border-top: 1px solid var(--border-color); display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; padding-top: 1.5rem; }
+  .record-footer a { color: var(--link-color); font-size: 0.75rem; }
+  @media (max-width: 760px) {
+    .dimensions { grid-template-columns: repeat(2, 1fr); }
+    .record-grid, .questions-grid, dl, .source-list { grid-template-columns: 1fr; }
+    .meta-row { align-items: flex-start; flex-direction: column; }
+  }
+</style>

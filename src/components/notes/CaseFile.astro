@@ -1,0 +1,158 @@
+---
+interface Props {
+  work: string;
+  author: string;
+  date: string;
+  outcome: string;
+  confidence: 'Confirmed' | 'Strongly supported' | 'Disputed' | 'Alleged';
+  intervention: string;
+  readable: string;
+}
+
+const { work, author, date, outcome, confidence, intervention, readable } = Astro.props;
+---
+
+<aside class="case-file" aria-label={`Case file for ${work}`}>
+  <div class="case-identity">
+    <p class="case-kicker">Case file</p>
+    <p class="case-title"><cite>{work}</cite></p>
+    <p class="case-byline">{author} · {date}</p>
+  </div>
+  <dl>
+    <div>
+      <dt>Outcome</dt>
+      <dd>{outcome}</dd>
+    </div>
+    <div>
+      <dt>Evidence</dt>
+      <dd><span class="confidence">{confidence}</span></dd>
+    </div>
+    <div>
+      <dt>Mechanism</dt>
+      <dd>{intervention}</dd>
+    </div>
+    <div>
+      <dt>Readable today?</dt>
+      <dd>{readable}</dd>
+    </div>
+  </dl>
+</aside>
+
+<style>
+  .case-file {
+    width: min(900px, calc(100vw - 2rem));
+    margin: 3.5rem 0 1.8rem 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: minmax(13rem, 0.85fr) minmax(0, 1.65fr);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--surface-color);
+    box-shadow: var(--glass-shadow);
+    font-family: var(--font-sans);
+  }
+
+  .case-identity {
+    padding: 1.35rem 1.5rem;
+    border-right: 1px solid var(--border-color);
+    background:
+      radial-gradient(circle at 0 0, rgba(255, 20, 147, 0.11), transparent 55%),
+      radial-gradient(circle at 100% 100%, rgba(20, 147, 255, 0.11), transparent 55%),
+      var(--bg-color);
+  }
+
+  .case-kicker {
+    margin: 0 0 0.45rem;
+    color: var(--text-secondary);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .case-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .case-byline {
+    margin: 0.5rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+  }
+
+  dl div {
+    padding: 1rem 1.15rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  dl div:nth-child(odd) {
+    border-right: 1px solid var(--border-color);
+  }
+
+  dl div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+
+  dt {
+    margin: 0 0 0.3rem;
+    color: var(--text-secondary);
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.45;
+  }
+
+  .confidence {
+    display: inline-block;
+    padding: 0.14rem 0.4rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--bg-color);
+  }
+
+  @media (max-width: 680px) {
+    .case-file {
+      grid-template-columns: 1fr;
+    }
+
+    .case-identity {
+      border-right: 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+  }
+
+  @media (max-width: 420px) {
+    dl {
+      grid-template-columns: 1fr;
+    }
+
+    dl div,
+    dl div:nth-child(odd),
+    dl div:nth-last-child(-n + 2) {
+      border-right: 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    dl div:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

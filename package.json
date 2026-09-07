@@ -4,10 +4,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build",
+    "dev": "npm run build:wake-exports && astro dev",
+    "build": "npm run validate:save-point && npm run validate:wake && npm run validate:dialogue && npm run build:wake-exports && astro check && astro build && node scripts/verify-dialogue-build.mjs",
     "preview": "astro preview",
     "check": "astro check",
+    "validate:save-point": "node scripts/validate-save-point.mjs",
+    "validate:wake": "node scripts/validate-wake-data.mjs && node scripts/validate-wake-records.mjs",
+    "validate:dialogue": "node scripts/validate-dialogue.mjs && node --test --test-concurrency=1 test/dialogue-phase2.test.mjs test/dialogue-phase3.test.mjs test/dialogue-phase3-deployment.test.mjs test/dialogue-phase3-qualification.test.mjs && node scripts/validate-dialogue-sea-trial.mjs",
+    "dialogue:tick": "node scripts/dialogue-tick.mjs",
+    "dialogue:benchmark": "node scripts/build-dialogue-benchmark.mjs",
+    "test:dialogue:phase2": "node --test --test-concurrency=1 test/dialogue-phase2.test.mjs",
+    "test:dialogue:phase3": "node --test --test-concurrency=1 test/dialogue-phase3.test.mjs test/dialogue-phase3-deployment.test.mjs test/dialogue-phase3-qualification.test.mjs",
+    "qualify:dialogue:phase3": "node scripts/qualify-dialogue-sea-trial.mjs",
+    "dialogue:sea-trial": "node scripts/dialogue-sea-trial.mjs",
+    "build:wake-exports": "node scripts/build-wake-exports.mjs",
     "test:fly": "node --test scripts/fly.test.mjs"
   },
   "dependencies": {
@@ -17,6 +27,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.2.0",
     "katex": "^0.18.4",
+    "maplibre-gl": "^6.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "rehype-katex": "^7.0.1",
@@ -28,6 +39,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@types/three": "^0.185.4",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "yaml": "^2.9.0"
   }
 }

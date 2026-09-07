@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A catenary separating from a parabola</title>
+  <desc id="desc">A luminous magenta chain hangs between cyan drafting towers over a dark maritime grid. A dashed green parabola nearly follows the chain at the center but separates near the supports.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020913"/>
+      <stop offset="0.58" stop-color="#061525"/>
+      <stop offset="1" stop-color="#071e32"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="65%" r="60%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".17"/>
+      <stop offset="1" stop-color="#1493ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="pinkGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="11" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="blueGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="minorGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1493ff" stroke-opacity=".07" stroke-width="1"/>
+    </pattern>
+    <pattern id="majorGrid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="200" fill="url(#minorGrid)"/>
+      <path d="M200 0H0V200" fill="none" stroke="#1493ff" stroke-opacity=".16" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <rect x="34" y="32" width="1532" height="836" rx="26" fill="url(#majorGrid)" stroke="#1493ff" stroke-opacity=".28" stroke-width="2"/>
+
+  <g fill="none" stroke="#1493ff" stroke-opacity=".24">
+    <circle cx="800" cy="650" r="185"/>
+    <circle cx="800" cy="650" r="310"/>
+    <path d="M74 650H1526M800 72V826" stroke-dasharray="4 12"/>
+    <path d="M94 126h118M1388 126h118M94 780h118M1388 780h118" stroke-width="3"/>
+  </g>
+
+  <g stroke="#1493ff" fill="none" filter="url(#blueGlow)">
+    <path d="M116 735V276h68v459M1416 735V276h68v459" stroke-width="7"/>
+    <path d="M100 735h100M1400 735h100M100 276h100M1400 276h100" stroke-width="10"/>
+    <circle cx="150" cy="320" r="16" fill="#1493ff" stroke="#d9f6ff" stroke-width="4"/>
+    <circle cx="1450" cy="320" r="16" fill="#1493ff" stroke="#d9f6ff" stroke-width="4"/>
+  </g>
+
+  <path d="M150 364L215 428L280 483L345 528L410 564L475 593L540 615L605 631L670 642L735 648L800 650L865 648L930 642L995 631L1060 615L1125 593L1190 564L1255 528L1320 483L1385 428L1450 364"
+        fill="none" stroke="#93ff14" stroke-width="7" stroke-dasharray="18 17" stroke-linecap="round" opacity=".9"/>
+
+  <path d="M150 320L215 390L280 444L345 498L410 537L475 573L540 602L605 623L670 638L735 647L800 650L865 647L930 638L995 623L1060 602L1125 573L1190 537L1255 498L1320 444L1385 390L1450 320"
+        fill="none" stroke="#ff1493" stroke-opacity=".32" stroke-width="31" stroke-linecap="round" filter="url(#pinkGlow)"/>
+  <path d="M150 320L215 390L280 444L345 498L410 537L475 573L540 602L605 623L670 638L735 647L800 650L865 647L930 638L995 623L1060 602L1125 573L1190 537L1255 498L1320 444L1385 390L1450 320"
+        fill="none" stroke="#ff1493" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g fill="#071524" stroke="#ff1493" stroke-width="5">
+    <circle cx="150" cy="320" r="12"/><circle cx="280" cy="444" r="12"/><circle cx="410" cy="537" r="12"/>
+    <circle cx="540" cy="602" r="12"/><circle cx="670" cy="638" r="12"/><circle cx="800" cy="650" r="12"/>
+    <circle cx="930" cy="638" r="12"/><circle cx="1060" cy="602" r="12"/><circle cx="1190" cy="537" r="12"/>
+    <circle cx="1320" cy="444" r="12"/><circle cx="1450" cy="320" r="12"/>
+  </g>
+
+  <path d="M800 650V768" stroke="#1493ff" stroke-width="4" stroke-dasharray="7 12"/>
+  <path d="m783 753 17 17 17-17" fill="none" stroke="#93ff14" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g fill="#1493ff" opacity=".5">
+    <circle cx="95" cy="92" r="4"/><circle cx="112" cy="92" r="4"/><circle cx="129" cy="92" r="4"/>
+    <circle cx="1471" cy="807" r="4"/><circle cx="1488" cy="807" r="4"/><circle cx="1505" cy="807" r="4"/>
+  </g>
+</svg>

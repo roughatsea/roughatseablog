@@ -1,0 +1,221 @@
+---
+title: "Why Do So Many Numbers Begin With 1?"
+description: "Benford’s law turns the unequal widths of logarithmic intervals into a surprising prediction about first digits—and a useful warning about suspicious data."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-01.svg"
+heroImageAlt: "Nine cyan and magenta chart compartments shrink from left to right on a dark maritime grid, with a green signal glowing inside the widest compartment."
+date: 2026-09-01
+publishedAt: 2026-09-01T06:00:00-07:00
+tags:
+  - daily-reckoning
+  - probability
+  - statistics
+  - benfords-law
+  - logarithms
+  - forensic-accounting
+  - visual-math
+  - history-of-mathematics
+area: "Probability and statistics"
+difficulty: "Intermediate"
+prerequisites:
+  - "Percentages"
+  - "Base-ten logarithms as exponents"
+readTimeMinutes: 9
+---
+
+import BenfordLogStrip from '../../components/reckonings/BenfordLogStrip.astro';
+import PowersOfTwoBenford from '../../components/reckonings/PowersOfTwoBenford.jsx';
+
+Open a large ledger of expenses and ignore every digit except the first nonzero one. The amount $1{,}842$ contributes a 1. The amount $0.073$ contributes a 7. If no minimum, maximum, or pricing rule favors particular digits, should 1 through 9 each appear about one-ninth of the time?
+
+Many datasets answer no. In data that follow **Benford’s law**, about 30.1 percent of values begin with 1, while only about 4.6 percent begin with 9. A first digit of 1 is roughly 6.6 times as common as a first digit of 9.
+
+The phrase “in data that follow Benford’s law” matters: the law describes certain datasets, not numbers in general. Human heights, telephone numbers, and prices fixed at $9.99 have their own constraints. The lesson is to recognize the logarithmic pattern and to know when the pattern has no right to appear.
+
+## First digits live on a logarithmic ruler
+
+Every positive number $x$ can be written in scientific notation as
+
+$$
+x=m\times 10^k,
+$$
+
+where $m$ is a number satisfying $1\le m<10$, and $k$ is an integer. The number $m$ is the **significand**. For example,
+
+$$
+73{,}000=7.3\times10^4,
+$$
+
+so the significand is $7.3$ and the first digit is 7. Multiplying by a power of 10 moves the decimal point but leaves the first digit unchanged.
+
+Let $D$ denote the first nonzero digit of a positive value. The event $D=d$ occurs when the significand lies from $d$ up to, but not including, $d+1$. On an ordinary number line, every interval
+
+$$
+[1,2),[2,3),\ldots,[9,10)
+$$
+
+has width 1. A base-ten logarithm changes those widths. The interval for digit $d$ becomes
+
+$$
+[\log_{10}d,\log_{10}(d+1)).
+$$
+
+The diagram below places all nine first-digit intervals inside one logarithmic decade. Each percentage is the width of its interval.
+
+<BenfordLogStrip />
+
+If values are spread uniformly across the logarithmic ruler, interval width becomes probability. Benford’s first-digit formula is therefore
+
+$$
+\Pr(D=d)
+=\log_{10}(d+1)-\log_{10}(d)
+=\log_{10}\!\left(1+\frac{1}{d}\right),
+$$
+
+where $d$ is one of the integers $1,2,\ldots,9$, and $\Pr(D=d)$ means “the probability that the first digit equals $d$.” The [National Institute of Standards and Technology gives the same definition](https://xlinux.nist.gov/dads/HTML/benfordslaw.html).
+
+For $d=1$,
+
+$$
+\Pr(D=1)=\log_{10}2\approx0.30103.
+$$
+
+For $d=9$,
+
+$$
+\Pr(D=9)=\log_{10}\!\left(\frac{10}{9}\right)\approx0.04576.
+$$
+
+The imbalance comes from geometry after a change of scale. No digit is lucky. The logarithmic interval assigned to 1 is wider.
+
+## Worked example: how many values begin with 1, 2, or 3?
+
+Suppose a suitable dataset contains 1,000 positive measurements. We want the expected number whose first digit is 1, 2, or 3.
+
+The three events occupy adjacent intervals, so add their probabilities:
+
+$$
+\begin{aligned}
+\Pr(D\le3)
+&=\log_{10}\!\left(\frac21\right)
+ +\log_{10}\!\left(\frac32\right)
+ +\log_{10}\!\left(\frac43\right)\\
+&=\log_{10}\!\left(\frac21\cdot\frac32\cdot\frac43\right)\\
+&=\log_{10}4\\
+&\approx0.60206.
+\end{aligned}
+$$
+
+The fractions telescope: the two 2s cancel, as do the two 3s. Multiply the probability by the number of measurements:
+
+$$
+1{,}000\times0.60206=602.06.
+$$
+
+We should expect about 602 of the 1,000 measurements to begin with 1, 2, or 3. An expected count is a long-run center, not a promise that one sample will contain exactly 602.
+
+## A sequence that keeps crossing powers of ten
+
+The powers of two—$1,2,4,8,16,32,64,128,\ldots$—repeatedly grow through the intervals $[1,10)$, $[10,100)$, $[100,1000)$, and beyond. Their first digits look irregular, but their logarithms advance by the fixed step $\log_{10}2$ and wrap around after each whole unit.
+
+The interactive chart below computes first digits from logarithms, so it can examine hundreds of powers without overflowing the browser’s ordinary number range. Increase the sample size, then multiply every term by a fixed factor. The striped bars show the observed frequencies; the dashed markers show Benford’s formula.
+
+<PowersOfTwoBenford client:load />
+
+Multiplying every value by 3.28 or 7.3 changes many individual first digits. For a long sequence, multiplication acts like rotating points around the logarithmic decade. The overall pattern remains close because the points are already spread around that cycle.
+
+## When should the law appear?
+
+A dataset follows Benford exactly when the fractional parts of its base-ten logarithms are uniformly distributed between 0 and 1. That sentence is a criterion, not an explanation for why a particular ledger, river table, or scientific database should satisfy it.
+
+One useful clue is **scale invariance**. Converting a collection of lengths from metres to feet multiplies every value by the same constant. If the collection spans molecules, people, buildings, and astronomical distances, changing units should not create a fundamentally different aggregate pattern of first digits. On the logarithmic ruler, unit conversion shifts every point by the same amount. A uniform spread is the only probability distribution on the cycle that remains unchanged under every possible shift.
+
+Theodore Hill’s 1995 paper, [“A Statistical Derivation of the Significant-Digit Law”](https://projecteuclid.org/journals/statistical-science/volume-10/issue-4/A-Statistical-Derivation-of-the-Significant-Digit-Law/10.1214/ss/1177009869.full), gives a different route. Under Hill’s model for randomly selecting probability distributions and then sampling from them, the combined significant digits approach Benford’s law as the number of distributions grows. Neither argument says that “large” or “natural” data must comply.
+
+Before applying the formula, ask how the values were made:
+
+- Measurements produced by several processes and spread across multiple powers of ten are plausible candidates.
+- Values with an imposed minimum or maximum may be poor candidates. Adult heights measured in centimetres cluster in a narrow interval.
+- Assigned numbers—telephone numbers, identification codes, invoice IDs—do not measure quantities at all.
+- Human-set prices, standard fees, and repeated transaction amounts can create deliberate spikes.
+
+Failure to match Benford can mean fraud, an error, a threshold, a business practice, the wrong statistical model, or ordinary sample noise. A digit test cannot decide among those causes by itself.
+
+## Try it yourself
+
+### Problem 1
+
+In a Benford-distributed dataset, what percentage of values begin with 7?
+
+<details>
+  <summary>Reveal the solution</summary>
+
+  Substitute $d=7$ into the formula:
+
+  $$
+  \begin{aligned}
+  \Pr(D=7)
+  &=\log_{10}\!\left(1+\frac17\right)\\
+  &=\log_{10}\!\left(\frac87\right)\\
+  &\approx0.05799.
+  \end{aligned}
+  $$
+
+  Multiplying by 100 converts the probability to about $5.8$ percent.
+</details>
+
+### Problem 2
+
+A collection of 2,500 measurements is known to follow Benford’s law. About how many measurements should begin with 1 or 2?
+
+<details>
+  <summary>Reveal the solution</summary>
+
+  The intervals for first digits 1 and 2 join to form $[1,3)$ on the significand scale. Their combined probability is
+
+  $$
+  \Pr(D\le2)=\log_{10}3\approx0.477121.
+  $$
+
+  Therefore,
+
+  $$
+  2{,}500\log_{10}3\approx1{,}192.803.
+  $$
+
+  The expected count is about $1{,}193$ measurements.
+</details>
+
+## A worn book, a forgotten paper, and a second name
+
+Simon Newcomb, a Canadian-American astronomer and mathematician, published the first known account in 1881. His two-page note begins from a material observation: the early pages of books containing logarithm tables wore out faster than the later pages. Before electronic calculators, people repeatedly opened those books to turn multiplication and division into addition and subtraction. The wear suggested that calculations involved numbers beginning with small digits more often than numbers beginning with large ones.
+
+Newcomb derived the logarithmic probabilities and published them in the [*American Journal of Mathematics*](https://www.jstor.org/stable/2369148). His paper attracted little continuing attention. Frank Benford, a physicist at General Electric, seems to have rediscovered the pattern independently. In 1938 he published [“The Law of Anomalous Numbers”](https://www.jstor.org/stable/984802), comparing 20,229 observations drawn from river areas, city populations, physical constants, newspaper statistics, and other sources.
+
+The law now carries Benford’s name, although Newcomb printed the formula fifty-seven years earlier. That history is less a lone-genius discovery than a change in evidence. Newcomb read a pattern from the physical wear left by anonymous users of a shared computational tool. Benford assembled enough heterogeneous data to make the pattern difficult to dismiss.
+
+## Useful alarm, dangerous verdict
+
+Auditors use digit frequencies to decide where closer examination may be worthwhile. Mark Nigrini’s [*Journal of Accountancy* guide](https://www.journalofaccountancy.com/issues/2022/sep/using-benfords-law-reveal-journal-entry-irregularities/) shows how spikes can expose fictitious entries, duplicated amounts, or ordinary business practices. The same guide repeatedly warns that deviations are indicators. Transaction records and supporting evidence must establish what happened.
+
+Benford screening also reaches beyond money. In 2024, researchers at the [National Institute of Standards and Technology](https://www.nist.gov/publications/benfords-law-atomic-spectra-and-opacity-databases) reported close Benford agreement in atomic-spectra and opacity databases and proposed the law as a way to flag database inconsistencies.
+
+Politics supplies the sharper warning. After the 2020 United States presidential election, social-media posts treated first-digit deviations in local vote totals as mathematical proof of fraud. Precinct vote counts often occupy a narrow range determined by precinct size and vote share, so they need not follow Benford’s first-digit law. A 2011 study in *Political Analysis* found Benford-based election diagnostics [problematic and potentially misleading](https://www.cambridge.org/core/journals/political-analysis/article/benfords-law-and-the-detection-of-election-fraud/3B1D64E822371C461AF3C61CE91AAF6D), while [Reuters documented the specific misuse in 2020](https://www.reuters.com/article/world/fact-check-deviation-from-benfords-law-does-not-prove-election-fraud-idUSKBN27Q3A9/).
+
+A formula can be computed correctly and applied to the wrong population. In forensic work, model choice is part of the evidence.
+
+## One idea to remember
+
+Benford’s law is the geometry of equal spacing on a logarithmic ruler: digit $d$ receives probability $\log_{10}(1+1/d)$. A mismatch can nominate records for investigation only after the data-generating process gives the formula a reason to apply.
+
+Useful next directions are **scale invariance**, which explains why unit changes lead to logarithms, and **forensic statistics**, which studies how anomaly screens can separate genuine evidence from false alarms.
+
+## Sources
+
+- Simon Newcomb, [“Note on the Frequency of Use of the Different Digits in Natural Numbers”](https://www.jstor.org/stable/2369148), *American Journal of Mathematics*, 1881.
+- Frank Benford, [“The Law of Anomalous Numbers”](https://www.jstor.org/stable/984802), *Proceedings of the American Philosophical Society*, 1938.
+- Paul E. Black, [“Benford’s law”](https://xlinux.nist.gov/dads/HTML/benfordslaw.html), National Institute of Standards and Technology Dictionary of Algorithms and Data Structures.
+- Theodore P. Hill, [“A Statistical Derivation of the Significant-Digit Law”](https://projecteuclid.org/journals/statistical-science/volume-10/issue-4/A-Statistical-Derivation-of-the-Significant-Digit-Law/10.1214/ss/1177009869.full), *Statistical Science*, 1995.
+- Mark J. Nigrini, [“Using Benford’s Law to Reveal Journal Entry Irregularities”](https://www.journalofaccountancy.com/issues/2022/sep/using-benfords-law-reveal-journal-entry-irregularities/), *Journal of Accountancy*, 2022.
+- Yuri Ralchenko and Jean-Christophe Pain, [“Benford’s Law in Atomic Spectra and Opacity Databases”](https://www.nist.gov/publications/benfords-law-atomic-spectra-and-opacity-databases), National Institute of Standards and Technology, 2024.
+- Joseph Deckert, Mikhail Myagkov, and Peter C. Ordeshook, [“Benford’s Law and the Detection of Election Fraud”](https://www.cambridge.org/core/journals/political-analysis/article/benfords-law-and-the-detection-of-election-fraud/3B1D64E822371C461AF3C61CE91AAF6D), *Political Analysis*, 2011.
+- Reuters, [“Deviation from Benford’s Law Does Not Prove Election Fraud”](https://www.reuters.com/article/world/fact-check-deviation-from-benfords-law-does-not-prove-election-fraud-idUSKBN27Q3A9/), November 10, 2020.

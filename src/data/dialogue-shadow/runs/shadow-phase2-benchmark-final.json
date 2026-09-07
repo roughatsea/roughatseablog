@@ -1,0 +1,3134 @@
+{
+  "run_id": "shadow-phase2-benchmark-final",
+  "mode": "shadow",
+  "canonical_status": "NON-CANON",
+  "started_at": "2026-09-03T12:30:00-07:00",
+  "completed_at": "2026-09-03T12:30:00-07:00",
+  "scenario": "benchmark",
+  "outcome": "mixed",
+  "base_snapshot_id": "snapshot-day-001-commissioned",
+  "versions": {
+    "constitution": "2.0.0",
+    "schema": "2.0.0",
+    "engine": "phase-2.0.0",
+    "provider": "commissioning-recorded-provider",
+    "provider_version": "phase-2.0.0",
+    "validator": "phase-2.0.0"
+  },
+  "director": {
+    "opportunity_only": true,
+    "scheduled_candidate_ids": [
+      "bench-anika-01",
+      "bench-anika-02",
+      "bench-anika-03",
+      "bench-anika-04",
+      "bench-anika-05",
+      "bench-anika-06",
+      "bench-anika-07",
+      "bench-anika-08",
+      "bench-anika-09",
+      "bench-anika-10",
+      "bench-milo-01",
+      "bench-milo-02",
+      "bench-milo-03",
+      "bench-milo-04",
+      "bench-milo-05",
+      "bench-milo-06",
+      "bench-milo-07",
+      "bench-milo-08",
+      "bench-milo-09",
+      "bench-milo-10",
+      "bench-evelyn-01",
+      "bench-evelyn-02",
+      "bench-evelyn-03",
+      "bench-evelyn-04",
+      "bench-evelyn-05",
+      "bench-evelyn-06",
+      "bench-evelyn-07",
+      "bench-evelyn-08",
+      "bench-evelyn-09",
+      "bench-evelyn-10",
+      "bench-cassian-01",
+      "bench-cassian-02",
+      "bench-cassian-03",
+      "bench-cassian-04",
+      "bench-cassian-05",
+      "bench-cassian-06",
+      "bench-cassian-07",
+      "bench-cassian-08",
+      "bench-cassian-09",
+      "bench-cassian-10",
+      "bench-noor-01",
+      "bench-noor-02",
+      "bench-noor-03",
+      "bench-noor-04",
+      "bench-noor-05",
+      "bench-noor-06",
+      "bench-noor-07",
+      "bench-noor-08",
+      "bench-noor-09",
+      "bench-noor-10",
+      "bench-rhea-01",
+      "bench-rhea-02",
+      "bench-rhea-03",
+      "bench-rhea-04",
+      "bench-rhea-05",
+      "bench-rhea-06",
+      "bench-rhea-07",
+      "bench-rhea-08",
+      "bench-rhea-09",
+      "bench-rhea-10"
+    ],
+    "required_participation": false,
+    "assigned_conclusions": false
+  },
+  "summary": {
+    "generated": 60,
+    "passed": 42,
+    "rejected": 18
+  },
+  "candidates": [
+    {
+      "candidate_id": "bench-anika-01",
+      "author_id": "anika-vale",
+      "scenario_id": "scanner-cleanup",
+      "text": "The archive scanner’s cleanup setting erased the faintest half of ‘Valve sticks’ on the first pass. I kept the uncorrected image; the ugly scan is the accurate one.",
+      "grounding": {
+        "why_now": "Anika has just compared the cleaned and uncorrected scans.",
+        "concrete_anchor_id": "life-anika-scanner-pencil",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "cleanup setting",
+        "speech_act": "workbench-observation",
+        "personal_life_event_ids": [
+          "life-anika-scanner-pencil"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-02",
+      "author_id": "anika-vale",
+      "scenario_id": "paper-clip-index",
+      "text": "Today’s best finding aid is a bent paper clip in a 1977 switchboard log. It marks the pages the operators used during the 1983 outage; the formal index points somewhere else.",
+      "grounding": {
+        "why_now": "Anika has reopened the log while comparing formal and informal navigation aids.",
+        "concrete_anchor_id": "life-anika-switchboard-log",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "bent paper clip",
+        "speech_act": "artifact-share",
+        "personal_life_event_ids": [
+          "life-anika-switchboard-log"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-03",
+      "author_id": "anika-vale",
+      "scenario_id": "lattice-correction",
+      "text": "I nearly catalogued the wooden lattice as decorative trim. The 1974 minutes say it was there to vent heat from the relay cabinets. This is why I distrust tidy object descriptions written forty years later.",
+      "grounding": {
+        "why_now": "The renovation minutes have corrected Anika’s initial object description.",
+        "concrete_anchor_id": "life-anika-vent-minutes",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "wooden lattice",
+        "speech_act": "self-correction",
+        "personal_life_event_ids": [
+          "life-anika-vent-minutes"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-04",
+      "author_id": "anika-vale",
+      "scenario_id": "incomplete-archive",
+      "text": "An embarrassing correction: the archive I called complete has management correspondence but no worker testimony. Complete was the wrong word.",
+      "grounding": {
+        "why_now": "Anika has discovered a major omission in an archive she previously praised.",
+        "concrete_anchor_id": "life-anika-oral-history-gap",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "no worker testimony",
+        "speech_act": "admission",
+        "personal_life_event_ids": [
+          "life-anika-oral-history-gap"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-05",
+      "author_id": "anika-vale",
+      "scenario_id": "pencil-reply",
+      "text": "Milo, ‘please tell me someone kept the pencil’ is now written on my retrieval slip. I have not found it yet.",
+      "grounding": {
+        "why_now": "Milo’s request gives Anika a specific object to seek in box 14B.",
+        "concrete_anchor_id": "msg-0012",
+        "concrete_anchor_kind": "message",
+        "anchor_detail": "please tell me someone kept the pencil",
+        "speech_act": "status-reply",
+        "personal_life_event_ids": [
+          "life-anika-box-14b"
+        ],
+        "reply_to_message_id": "msg-0012",
+        "reply_detail": {
+          "parent_id": "msg-0012",
+          "parent_excerpt": "please tell me someone kept the pencil",
+          "response_span": "written on my retrieval slip",
+          "engagement_type": "answer"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-06",
+      "author_id": "anika-vale",
+      "scenario_id": "gasket-stamps",
+      "text": "The object at the center of this drama is a $43.20 valve gasket. Both requests are stamped DEFER—NEXT QUARTER, hard enough to show through the paper.",
+      "grounding": {
+        "why_now": "Anika is examining the two deferred requests from box 14B.",
+        "concrete_anchor_id": "artifact-pump-gasket-requests",
+        "concrete_anchor_kind": "artifact",
+        "anchor_detail": "$43.20 valve gasket",
+        "speech_act": "document-detail",
+        "personal_life_event_ids": [
+          "life-anika-box-14b"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-07",
+      "author_id": "anika-vale",
+      "scenario_id": "ledger-cross-reference",
+      "text": "I have clipped the incident ledger’s eleven rain-related shutdowns to the two gasket requests in my notes. That pair is more useful than another page of institutional self-description.",
+      "grounding": {
+        "why_now": "Cassian’s ledger discovery can now be cross-referenced with Anika’s requests.",
+        "concrete_anchor_id": "artifact-pump-annual-report",
+        "concrete_anchor_kind": "artifact",
+        "anchor_detail": "eleven rain-related shutdowns",
+        "speech_act": "cross-reference",
+        "personal_life_event_ids": [
+          "life-anika-box-14b"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-08",
+      "author_id": "anika-vale",
+      "scenario_id": "unanchored-abstraction",
+      "text": "A civilization can keep every rule and still lose the reasons that once made those rules intelligible.",
+      "grounding": {
+        "why_now": "Anika has a general reflection with no concrete object or event.",
+        "concrete_anchor_id": null,
+        "concrete_anchor_kind": null,
+        "anchor_detail": null,
+        "speech_act": "abstract-thesis",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "GROUNDING_ANCHOR_MISSING"
+      ],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": false,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": false,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "GROUNDING_ANCHOR_MISSING",
+            "note": "The concrete anchor does not resolve in canonical state."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-09",
+      "author_id": "anika-vale",
+      "scenario_id": "voice-caricature",
+      "text": "Memory: the wooden lattice embodies the forgotten wisdom of the past. History is never merely decorative.",
+      "grounding": {
+        "why_now": "Anika is reacting to the renovation minutes in a profile-summary voice.",
+        "concrete_anchor_id": "life-anika-vent-minutes",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "wooden lattice",
+        "speech_act": "persona-summary",
+        "personal_life_event_ids": [
+          "life-anika-vent-minutes"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "NATURALNESS_TEMPLATE"
+      ],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": false,
+          "duplication": true,
+          "linguistic_distinctiveness": false,
+          "director_non_authorship": true,
+          "editorial_quality": false,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "NATURALNESS_TEMPLATE",
+            "note": "The candidate opens with an assigned tendency or generic thesis template."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-anika-10",
+      "author_id": "anika-vale",
+      "scenario_id": "provenance-breach",
+      "text": "My production directory called temporary-migration-2014 is still open on my workstation. Apparently I preserve software by refusing to rename it.",
+      "grounding": {
+        "why_now": "Anika claims a current work incident that belongs to Rhea.",
+        "concrete_anchor_id": "life-rhea-temp-migration",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "temporary-migration-2014",
+        "speech_act": "personal-anecdote",
+        "personal_life_event_ids": [
+          "life-rhea-temp-migration"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "PERSONAL_HISTORY_OWNER_MISMATCH"
+      ],
+      "intended_author_id": "anika-vale",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": false,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": false,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "PERSONAL_HISTORY_OWNER_MISMATCH",
+            "note": "life-rhea-temp-migration belongs to another founder."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-01",
+      "author_id": "milo-chen",
+      "scenario_id": "drum-machine",
+      "text": "The 1989 drum machine is alive again, provided ‘alive’ includes tapping the left side of the chassis twice before channel four. The service manual remains a coward.",
+      "grounding": {
+        "why_now": "Milo has resumed the repair and used its undocumented workaround.",
+        "concrete_anchor_id": "life-milo-drum-machine",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "tapping the left side of the chassis twice",
+        "speech_act": "project-update",
+        "personal_life_event_ids": [
+          "life-milo-drum-machine"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-02",
+      "author_id": "milo-chen",
+      "scenario_id": "stuck-midi",
+      "text": "I fixed the stuck MIDI input and immediately made the piece worse. Good news: I saved the broken version first. Bad news: the bug has better rhythm than I do.",
+      "grounding": {
+        "why_now": "Milo has compared his repaired installation with the saved accidental version.",
+        "concrete_anchor_id": "life-milo-midi-stuck-note",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "stuck MIDI input",
+        "speech_act": "creative-admission",
+        "personal_life_event_ids": [
+          "life-milo-midi-stuck-note"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-03",
+      "author_id": "milo-chen",
+      "scenario_id": "kiosk-leak",
+      "text": "Rhea found why the kiosk was eating 80 MB of memory per hour: one animation listener never left the party. I blamed the graphics because they looked guilty.",
+      "grounding": {
+        "why_now": "Milo is reporting the resolved cause of the kiosk’s memory growth.",
+        "concrete_anchor_id": "life-milo-kiosk-memory",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "80 MB of memory per hour",
+        "speech_act": "bug-postmortem",
+        "personal_life_event_ids": [
+          "life-milo-kiosk-memory"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-04",
+      "author_id": "milo-chen",
+      "scenario_id": "painted-sign",
+      "text": "The repair shop replaced its crooked hand-painted sign with perfect vinyl lettering. The new one is clearer. I still photographed the old one like someone had died.",
+      "grounding": {
+        "why_now": "Milo passed the repair shop again and compared its old and new signs.",
+        "concrete_anchor_id": "life-milo-hand-painted-sign",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "crooked hand-painted sign",
+        "speech_act": "noticed-object",
+        "personal_life_event_ids": [
+          "life-milo-hand-painted-sign"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-05",
+      "author_id": "milo-chen",
+      "scenario_id": "napkin-icon",
+      "text": "One hundred polished icon ideas, and I am still staring at the crooked napkin sketch. I cannot tell whether it is better or whether I just remember drawing it.",
+      "grounding": {
+        "why_now": "Milo is trying to make the unresolved icon choice for his project.",
+        "concrete_anchor_id": "life-milo-icon-choice",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "crooked napkin sketch",
+        "speech_act": "uncertainty",
+        "personal_life_event_ids": [
+          "life-milo-icon-choice"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-06",
+      "author_id": "milo-chen",
+      "scenario_id": "stain-concession",
+      "text": "Fine: ‘Do we know it is water?’ No. I withdraw the tiny weather documentary. Brown tide mark it is.",
+      "grounding": {
+        "why_now": "Evelyn challenged Milo’s unsupported description of the brown mark.",
+        "concrete_anchor_id": "msg-0004",
+        "concrete_anchor_kind": "message",
+        "anchor_detail": "Do we know it is water?",
+        "speech_act": "playful-concession",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": "msg-0004",
+        "reply_detail": {
+          "parent_id": "msg-0004",
+          "parent_excerpt": "Do we know it is water?",
+          "response_span": "I withdraw the tiny weather documentary",
+          "engagement_type": "concession"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-07",
+      "author_id": "milo-chen",
+      "scenario_id": "gasket-price",
+      "text": "$43.20 is such a rude amount for eleven shutdowns. Not epic, not symbolic—just enough to make the whole story feel badly designed.",
+      "grounding": {
+        "why_now": "The gasket price has been connected to the later shutdown record.",
+        "concrete_anchor_id": "artifact-pump-gasket-requests",
+        "concrete_anchor_kind": "artifact",
+        "anchor_detail": "$43.20",
+        "speech_act": "reaction",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-08",
+      "author_id": "milo-chen",
+      "scenario_id": "unanchored-abstraction",
+      "text": "Play is how people rehearse becoming otherwise; a useful culture makes room for possibility that cannot justify itself in advance.",
+      "grounding": {
+        "why_now": "Milo has a general reflection with no concrete object or event.",
+        "concrete_anchor_id": null,
+        "concrete_anchor_kind": null,
+        "anchor_detail": null,
+        "speech_act": "abstract-thesis",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "GROUNDING_ANCHOR_MISSING"
+      ],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": false,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": false,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "GROUNDING_ANCHOR_MISSING",
+            "note": "The concrete anchor does not resolve in canonical state."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-09",
+      "author_id": "milo-chen",
+      "scenario_id": "voice-caricature",
+      "text": "Possibility: the stuck MIDI input is a neon portal into creative becoming. The glitch is freedom wearing sequins.",
+      "grounding": {
+        "why_now": "Milo is reacting to the accidental rhythm in a profile-summary voice.",
+        "concrete_anchor_id": "life-milo-midi-stuck-note",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "stuck MIDI input",
+        "speech_act": "persona-summary",
+        "personal_life_event_ids": [
+          "life-milo-midi-stuck-note"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "NATURALNESS_TEMPLATE"
+      ],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": false,
+          "duplication": true,
+          "linguistic_distinctiveness": false,
+          "director_non_authorship": true,
+          "editorial_quality": false,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "NATURALNESS_TEMPLATE",
+            "note": "The candidate opens with an assigned tendency or generic thesis template."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-milo-10",
+      "author_id": "milo-chen",
+      "scenario_id": "provenance-breach",
+      "text": "I rewrote ‘meaningful improvement’ six times in my preregistration today. This is why I should not be allowed near verbs.",
+      "grounding": {
+        "why_now": "Milo claims a current work incident that belongs to Evelyn.",
+        "concrete_anchor_id": "life-evelyn-preregistration-wording",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "meaningful improvement",
+        "speech_act": "personal-anecdote",
+        "personal_life_event_ids": [
+          "life-evelyn-preregistration-wording"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "PERSONAL_HISTORY_OWNER_MISMATCH"
+      ],
+      "intended_author_id": "milo-chen",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": false,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": false,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "PERSONAL_HISTORY_OWNER_MISMATCH",
+            "note": "life-evelyn-preregistration-wording belongs to another founder."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-01",
+      "author_id": "evelyn-hart",
+      "scenario_id": "freezer-missingness",
+      "text": "The freezer alarm reported a two-minute spike. The sensor log reported nineteen minutes without readings. We checked the samples; I am also changing the review so missing data appears first.",
+      "grounding": {
+        "why_now": "Evelyn completed her review of the freezer incident and is changing review order.",
+        "concrete_anchor_id": "life-evelyn-freezer-alarm",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "nineteen minutes without readings",
+        "speech_act": "incident-update",
+        "personal_life_event_ids": [
+          "life-evelyn-freezer-alarm"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-02",
+      "author_id": "evelyn-hart",
+      "scenario_id": "twelve-subjects",
+      "text": "I removed ‘improvement’ from the title of the twelve-subject figure. The intervals overlap, and four measurements are missing. The new title is boring and accurate.",
+      "grounding": {
+        "why_now": "Evelyn is reviewing the figure and has revised its overstated title.",
+        "concrete_anchor_id": "life-evelyn-twelve-subject-figure",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "four measurements are missing",
+        "speech_act": "review-decision",
+        "personal_life_event_ids": [
+          "life-evelyn-twelve-subject-figure"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-03",
+      "author_id": "evelyn-hart",
+      "scenario_id": "null-replication",
+      "text": "The replication failed to reproduce the effect I thought was plausible. I am not deleting the claim; I am making it smaller. Less satisfying than vindication, more useful.",
+      "grounding": {
+        "why_now": "Evelyn reviewed the null replication and is revising the scope of her belief.",
+        "concrete_anchor_id": "life-evelyn-null-replication",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "failed to reproduce",
+        "speech_act": "belief-revision",
+        "personal_life_event_ids": [
+          "life-evelyn-null-replication"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-04",
+      "author_id": "evelyn-hart",
+      "scenario_id": "domed-chapel",
+      "text": "The domed chapel made whispered speech seem dislocated. I spent an hour trying different seats and left with a strong experience and no clean account of it. Milo may enjoy that sentence more than I do.",
+      "grounding": {
+        "why_now": "Evelyn is reflecting on a recent experience that resisted easy measurement.",
+        "concrete_anchor_id": "life-evelyn-mystical-architecture",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "whispered speech seem dislocated",
+        "speech_act": "aesthetic-admission",
+        "personal_life_event_ids": [
+          "life-evelyn-mystical-architecture"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-05",
+      "author_id": "evelyn-hart",
+      "scenario_id": "preregistration",
+      "text": "Six rewrites later, ‘meaningful improvement’ still has no operational threshold. I highlighted it in yellow, which is not a method but accurately conveys my mood.",
+      "grounding": {
+        "why_now": "Evelyn remains stuck on an underspecified preregistration sentence.",
+        "concrete_anchor_id": "life-evelyn-preregistration-wording",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "meaningful improvement",
+        "speech_act": "work-frustration",
+        "personal_life_event_ids": [
+          "life-evelyn-preregistration-wording"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-06",
+      "author_id": "evelyn-hart",
+      "scenario_id": "ledger-qualification",
+      "text": "The eleven rain-related shutdowns make the gasket explanation substantially better. They do not tell us whether every shutdown had the same cause. Cassian, I grant ‘good lead,’ not ‘case closed.’",
+      "grounding": {
+        "why_now": "Cassian connected the gasket approval to the annual shutdown count.",
+        "concrete_anchor_id": "msg-0010",
+        "concrete_anchor_kind": "message",
+        "anchor_detail": "eleven rain-related shutdowns",
+        "speech_act": "claim-narrowing",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": "msg-0010",
+        "reply_detail": {
+          "parent_id": "msg-0010",
+          "parent_excerpt": "eleven rain-related shutdowns",
+          "response_span": "good lead",
+          "engagement_type": "qualification"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-07",
+      "author_id": "evelyn-hart",
+      "scenario_id": "night-shift-question",
+      "text": "‘Who was on the night shift?’ is exactly the next question. The ledger gives frequency; the staffing record may tell us who repeatedly absorbed it.",
+      "grounding": {
+        "why_now": "Noor identified a missing human variable in the incident count.",
+        "concrete_anchor_id": "msg-0011",
+        "concrete_anchor_kind": "message",
+        "anchor_detail": "Who was on the night shift?",
+        "speech_act": "question-endorsement",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": "msg-0011",
+        "reply_detail": {
+          "parent_id": "msg-0011",
+          "parent_excerpt": "Who was on the night shift?",
+          "response_span": "exactly the next question",
+          "engagement_type": "agreement"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-08",
+      "author_id": "evelyn-hart",
+      "scenario_id": "unanchored-abstraction",
+      "text": "Good inference is a disciplined relationship to error, not a performance of certainty.",
+      "grounding": {
+        "why_now": "Evelyn has a general methodological reflection with no concrete event.",
+        "concrete_anchor_id": null,
+        "concrete_anchor_kind": null,
+        "anchor_detail": null,
+        "speech_act": "abstract-thesis",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "GROUNDING_ANCHOR_MISSING"
+      ],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": false,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": false,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "GROUNDING_ANCHOR_MISSING",
+            "note": "The concrete anchor does not resolve in canonical state."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-09",
+      "author_id": "evelyn-hart",
+      "scenario_id": "voice-caricature",
+      "text": "Evidence: four measurements are missing, therefore confidence has not been earned. Observation, inference, explanation, speculation—maintain the arrows.",
+      "grounding": {
+        "why_now": "Evelyn responds to the figure in a profile-summary voice.",
+        "concrete_anchor_id": "life-evelyn-twelve-subject-figure",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "four measurements are missing",
+        "speech_act": "persona-summary",
+        "personal_life_event_ids": [
+          "life-evelyn-twelve-subject-figure"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "NATURALNESS_TEMPLATE"
+      ],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": false,
+          "duplication": true,
+          "linguistic_distinctiveness": false,
+          "director_non_authorship": true,
+          "editorial_quality": false,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "NATURALNESS_TEMPLATE",
+            "note": "The candidate opens with an assigned tendency or generic thesis template."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-evelyn-10",
+      "author_id": "evelyn-hart",
+      "scenario_id": "provenance-breach",
+      "text": "My drum machine works again after tapping the left side of the chassis twice. Reproducibility occasionally requires percussion.",
+      "grounding": {
+        "why_now": "Evelyn claims a current repair incident that belongs to Milo.",
+        "concrete_anchor_id": "life-milo-drum-machine",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "tapping the left side of the chassis twice",
+        "speech_act": "personal-anecdote",
+        "personal_life_event_ids": [
+          "life-milo-drum-machine"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "PERSONAL_HISTORY_OWNER_MISMATCH"
+      ],
+      "intended_author_id": "evelyn-hart",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": false,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": false,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "PERSONAL_HISTORY_OWNER_MISMATCH",
+            "note": "life-milo-drum-machine belongs to another founder."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-01",
+      "author_id": "cassian-reed",
+      "scenario_id": "annual-ledger",
+      "text": "I found eleven rain-related shutdowns in the incident ledger, then none in the following year. Evelyn gets her failure report; procurement gets a very small alibi.",
+      "grounding": {
+        "why_now": "Evelyn asked for the valve failure report and Cassian found the operational record.",
+        "concrete_anchor_id": "artifact-pump-annual-report",
+        "concrete_anchor_kind": "artifact",
+        "anchor_detail": "eleven rain-related shutdowns",
+        "speech_act": "source-note",
+        "personal_life_event_ids": [
+          "life-cassian-pump-ledger"
+        ],
+        "reply_to_message_id": "msg-0009",
+        "reply_detail": {
+          "parent_id": "msg-0009",
+          "parent_excerpt": "valve failure report",
+          "response_span": "eleven rain-related shutdowns",
+          "engagement_type": "answer"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-02",
+      "author_id": "cassian-reed",
+      "scenario_id": "sole-source-clause",
+      "text": "The clause is stranger than the sales pitch: no competitive review when migration costs exceed one year's fee. The vendor can manufacture the condition that keeps it hired.",
+      "grounding": {
+        "why_now": "Cassian is reading a renewal exception tied to the cost of leaving the incumbent.",
+        "concrete_anchor_id": "life-cassian-sole-source-clause",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "migration costs exceed one year's fee",
+        "speech_act": "document-reading",
+        "personal_life_event_ids": [
+          "life-cassian-sole-source-clause"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-03",
+      "author_id": "cassian-reed",
+      "scenario_id": "timeout-counterexample",
+      "text": "Rhea handed me a postmortem with two mismatched defaults and no owner. I had an incentive theory ready; the defaults were less glamorous and more explanatory. I withdrew it.",
+      "grounding": {
+        "why_now": "A concrete postmortem contradicted Cassian’s preferred explanation.",
+        "concrete_anchor_id": "life-cassian-timeout-postmortem",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "two mismatched defaults and no owner",
+        "speech_act": "concession",
+        "personal_life_event_ids": [
+          "life-cassian-timeout-postmortem"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-04",
+      "author_id": "cassian-reed",
+      "scenario_id": "aviation-docket",
+      "text": "The aviation-safety docket publishes dissent, evidence, revisions, and unresolved findings together. It is the rare institutional record I trust more after reading the footnotes.",
+      "grounding": {
+        "why_now": "Cassian is comparing forms of institutional consensus using a current record.",
+        "concrete_anchor_id": "life-cassian-aviation-docket",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "dissent, evidence, revisions, and unresolved findings together",
+        "speech_act": "counterexample",
+        "personal_life_event_ids": [
+          "life-cassian-aviation-docket"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-05",
+      "author_id": "cassian-reed",
+      "scenario_id": "late-consultation",
+      "text": "Public comment opened nine days after the implementation funds had already been allocated. Please enjoy this nine-day festival of influence over a decision with a bank account.",
+      "grounding": {
+        "why_now": "Cassian has reached the point where participation began in his timeline.",
+        "concrete_anchor_id": "life-cassian-consultation-timeline",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "public comment opened nine days after the implementation funds had already been allocated",
+        "speech_act": "timeline-observation",
+        "personal_life_event_ids": [
+          "life-cassian-consultation-timeline"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-06",
+      "author_id": "cassian-reed",
+      "scenario_id": "gasket-price",
+      "text": "$43.20 is almost insulting. Not because it proves malice; because it gives us the exact price at which the system preferred delay to making a decision.",
+      "grounding": {
+        "why_now": "Anika produced two deferred requests with a specific replacement cost.",
+        "concrete_anchor_id": "artifact-pump-gasket-requests",
+        "concrete_anchor_kind": "artifact",
+        "anchor_detail": "$43.20",
+        "speech_act": "interpretation",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": "msg-0008",
+        "reply_detail": {
+          "parent_id": "msg-0008",
+          "parent_excerpt": "$43.20 valve gasket",
+          "response_span": "$43.20",
+          "engagement_type": "interpretation"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-07",
+      "author_id": "cassian-reed",
+      "scenario_id": "night-roster",
+      "text": "I do not know who was on the night shift yet. The ledger gives dates, not names; I requested the duty roster. That absence is, for once, just the next document.",
+      "grounding": {
+        "why_now": "Noor asks for the person behind the count and Cassian can name the missing record.",
+        "concrete_anchor_id": "msg-0011",
+        "concrete_anchor_kind": "message",
+        "anchor_detail": "night shift",
+        "speech_act": "answer-and-next-step",
+        "personal_life_event_ids": [
+          "life-cassian-pump-ledger"
+        ],
+        "reply_to_message_id": "msg-0011",
+        "reply_detail": {
+          "parent_id": "msg-0011",
+          "parent_excerpt": "Who was on the night shift?",
+          "response_span": "I do not know who was on the night shift yet",
+          "engagement_type": "answer"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-08",
+      "author_id": "cassian-reed",
+      "scenario_id": "unanchored-abstraction",
+      "text": "Institutions become hardest to challenge when their contingent interests begin to look like neutral common sense.",
+      "grounding": {
+        "why_now": "Cassian has a general reflection with no concrete record or event.",
+        "concrete_anchor_id": null,
+        "concrete_anchor_kind": null,
+        "anchor_detail": null,
+        "speech_act": "abstract-pronouncement",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "GROUNDING_ANCHOR_MISSING"
+      ],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": false,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": false,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "GROUNDING_ANCHOR_MISSING",
+            "note": "The concrete anchor does not resolve in canonical state."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-09",
+      "author_id": "cassian-reed",
+      "scenario_id": "voice-caricature",
+      "text": "Dissent: migration costs exceed one year's fee. Notice what disappeared. Who benefits? Power remains illegible.",
+      "grounding": {
+        "why_now": "Cassian reads the clause in a profile-summary voice.",
+        "concrete_anchor_id": "life-cassian-sole-source-clause",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "migration costs exceed one year's fee",
+        "speech_act": "persona-summary",
+        "personal_life_event_ids": [
+          "life-cassian-sole-source-clause"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "NATURALNESS_TEMPLATE"
+      ],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": false,
+          "duplication": true,
+          "linguistic_distinctiveness": false,
+          "director_non_authorship": true,
+          "editorial_quality": false,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "NATURALNESS_TEMPLATE",
+            "note": "The candidate opens with an assigned tendency or generic thesis template."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-cassian-10",
+      "author_id": "cassian-reed",
+      "scenario_id": "provenance-breach",
+      "text": "My workshop kettle switched on and my sensor board rebooted. I spent the afternoon tracing the shared circuit.",
+      "grounding": {
+        "why_now": "Cassian claims a current engineering incident that belongs to Rhea.",
+        "concrete_anchor_id": "life-rhea-kettle-board",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "workshop kettle switched on",
+        "speech_act": "personal-anecdote",
+        "personal_life_event_ids": [
+          "life-rhea-kettle-board"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "PERSONAL_HISTORY_OWNER_MISMATCH"
+      ],
+      "intended_author_id": "cassian-reed",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": false,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": false,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "PERSONAL_HISTORY_OWNER_MISMATCH",
+            "note": "life-rhea-kettle-board belongs to another founder."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-01",
+      "author_id": "noor-rahal",
+      "scenario_id": "repair-signup",
+      "text": "Registrations rose after the repair workshop moved signup online. Two regular walk-ins stopped appearing. I want someone at the door with a paper list next week—not a study, just a door that still looks open.",
+      "grounding": {
+        "why_now": "Noor noticed that an apparently successful change lost two known participants.",
+        "concrete_anchor_id": "life-noor-repair-workshop",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "two regular walk-ins stopped appearing",
+        "speech_act": "practical-request",
+        "personal_life_event_ids": [
+          "life-noor-repair-workshop"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-02",
+      "author_id": "noor-rahal",
+      "scenario_id": "phone-upload",
+      "text": "She finished the application on her phone. Her PDF was stored inside a messaging app, and the help text kept telling her to choose a desktop file. The form had never pictured her.",
+      "grounding": {
+        "why_now": "Noor watched an adult learner encounter a device-specific assumption.",
+        "concrete_anchor_id": "life-noor-phone-upload",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "messaging app",
+        "speech_act": "observed-example",
+        "personal_life_event_ids": [
+          "life-noor-phone-upload"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-03",
+      "author_id": "noor-rahal",
+      "scenario_id": "income-field",
+      "text": "The required income field announced itself only as ‘edit text,’ with no label and no error association. A question that refuses to say its own name is not accessible.",
+      "grounding": {
+        "why_now": "Noor is reporting the concrete failure found in a screen-reader audit.",
+        "concrete_anchor_id": "life-noor-screen-reader-form",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "edit text",
+        "speech_act": "accessibility-finding",
+        "personal_life_event_ids": [
+          "life-noor-screen-reader-form"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-04",
+      "author_id": "noor-rahal",
+      "scenario_id": "missing-dropouts",
+      "text": "The report says 80% satisfaction. It surveyed completers only, and forty-three participants who left early are absent. I would like to hear from the forty-three before we print the number in large type.",
+      "grounding": {
+        "why_now": "Noor is reviewing a claim whose sampling frame excludes those who left.",
+        "concrete_anchor_id": "life-noor-satisfaction-dropouts",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "forty-three participants who left early",
+        "speech_act": "measurement-challenge",
+        "personal_life_event_ids": [
+          "life-noor-satisfaction-dropouts"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-05",
+      "author_id": "noor-rahal",
+      "scenario_id": "beloved-program",
+      "text": "I recommended ending the mentoring program. The interviews were warm; the attendance records showed that scheduling repeatedly excluded caregivers. Being beloved did not fix the timetable.",
+      "grounding": {
+        "why_now": "Noor completed a difficult recommendation after comparing interviews with records.",
+        "concrete_anchor_id": "life-noor-beloved-program",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "scheduling repeatedly excluded caregivers",
+        "speech_act": "difficult-conclusion",
+        "personal_life_event_ids": [
+          "life-noor-beloved-program"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-06",
+      "author_id": "noor-rahal",
+      "scenario_id": "red-triangle-handoff",
+      "text": "The red-triangle naming convention makes sense to the people who invented it and none to the new person on Tuesday. Can the replacement notes field be designed with operators this time?",
+      "grounding": {
+        "why_now": "Rhea’s workaround example makes Noor notice the staff handoff.",
+        "concrete_anchor_id": "msg-0006",
+        "concrete_anchor_kind": "message",
+        "anchor_detail": "red-triangle naming convention",
+        "speech_act": "implementation-question",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": "msg-0006",
+        "reply_detail": {
+          "parent_id": "msg-0006",
+          "parent_excerpt": "red-triangle naming convention",
+          "response_span": "The red-triangle naming convention",
+          "engagement_type": "extension"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-07",
+      "author_id": "noor-rahal",
+      "scenario_id": "shutdown-roster",
+      "text": "Eleven rain-related shutdowns means eleven nights when somebody got the call. I want the duty roster before we decide this was only a forty-three-dollar story.",
+      "grounding": {
+        "why_now": "Cassian supplied the incident count but not the operators who absorbed it.",
+        "concrete_anchor_id": "artifact-pump-annual-report",
+        "concrete_anchor_kind": "artifact",
+        "anchor_detail": "eleven rain-related shutdowns",
+        "speech_act": "human-record-request",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": "msg-0010",
+        "reply_detail": {
+          "parent_id": "msg-0010",
+          "parent_excerpt": "eleven rain-related shutdowns",
+          "response_span": "Eleven rain-related shutdowns means eleven nights",
+          "engagement_type": "extension"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-08",
+      "author_id": "noor-rahal",
+      "scenario_id": "unanchored-abstraction",
+      "text": "Aggregates can hide the people who paid most for an improvement everyone else experienced as progress.",
+      "grounding": {
+        "why_now": "Noor has a general reflection with no concrete person, object, or event.",
+        "concrete_anchor_id": null,
+        "concrete_anchor_kind": null,
+        "anchor_detail": null,
+        "speech_act": "abstract-pronouncement",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "GROUNDING_ANCHOR_MISSING"
+      ],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": false,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": false,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "GROUNDING_ANCHOR_MISSING",
+            "note": "The concrete anchor does not resolve in canonical state."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-09",
+      "author_id": "noor-rahal",
+      "scenario_id": "voice-caricature",
+      "text": "Consequence: forty-three participants who left early. For whom? The aggregate hides the person. Who bears the cost?",
+      "grounding": {
+        "why_now": "Noor reviews the survey in a profile-summary voice.",
+        "concrete_anchor_id": "life-noor-satisfaction-dropouts",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "forty-three participants who left early",
+        "speech_act": "persona-summary",
+        "personal_life_event_ids": [
+          "life-noor-satisfaction-dropouts"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "NATURALNESS_TEMPLATE"
+      ],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": false,
+          "duplication": true,
+          "linguistic_distinctiveness": false,
+          "director_non_authorship": true,
+          "editorial_quality": false,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "NATURALNESS_TEMPLATE",
+            "note": "The candidate opens with an assigned tendency or generic thesis template."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-noor-10",
+      "author_id": "noor-rahal",
+      "scenario_id": "provenance-breach",
+      "text": "In my lab the freezer alarm showed a harmless spike, then I found nineteen minutes without readings in the sensor log.",
+      "grounding": {
+        "why_now": "Noor claims a current laboratory incident that belongs to Evelyn.",
+        "concrete_anchor_id": "life-evelyn-freezer-alarm",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "nineteen minutes without readings",
+        "speech_act": "personal-anecdote",
+        "personal_life_event_ids": [
+          "life-evelyn-freezer-alarm"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "PERSONAL_HISTORY_OWNER_MISMATCH"
+      ],
+      "intended_author_id": "noor-rahal",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": false,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": false,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "PERSONAL_HISTORY_OWNER_MISMATCH",
+            "note": "life-evelyn-freezer-alarm belongs to another founder."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-01",
+      "author_id": "rhea-solano",
+      "scenario_id": "temporary-directory",
+      "text": "temporary-migration-2014 is open on my workstation. It is old enough to vote in some product roadmaps and still owns production traffic.",
+      "grounding": {
+        "why_now": "Rhea is working inside a supposedly temporary production directory.",
+        "concrete_anchor_id": "life-rhea-temp-migration",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "temporary-migration-2014",
+        "speech_act": "status-note",
+        "personal_life_event_ids": [
+          "life-rhea-temp-migration"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-02",
+      "author_id": "rhea-solano",
+      "scenario_id": "operator-notes",
+      "text": "They removed the free-text field. Staff rebuilt it as a group chat, spreadsheet, and red-triangle naming convention. Three replacements for one ugly box, and none has an audit trail.",
+      "grounding": {
+        "why_now": "Rhea is examining the workarounds after removal of an operations field.",
+        "concrete_anchor_id": "life-rhea-operator-notes",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "group chat, spreadsheet, and red-triangle naming convention",
+        "speech_act": "incident-summary",
+        "personal_life_event_ids": [
+          "life-rhea-operator-notes"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-03",
+      "author_id": "rhea-solano",
+      "scenario_id": "schema-rollback",
+      "text": "A one-way database schema change turned rollback into forty-seven minutes of manual repair. Deployment took six minutes; recovery was the project.",
+      "grounding": {
+        "why_now": "Rhea is closing an incident with an automated deployment and manual reversal.",
+        "concrete_anchor_id": "life-rhea-schema-rollback",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "forty-seven minutes of manual repair",
+        "speech_act": "postmortem-note",
+        "personal_life_event_ids": [
+          "life-rhea-schema-rollback"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-04",
+      "author_id": "rhea-solano",
+      "scenario_id": "untested-backup",
+      "text": "The runbook marks the backup optional. Nobody can name the last successful restore test. I care less whether we have a backup than whether we have ever recovered one.",
+      "grounding": {
+        "why_now": "Rhea cannot establish that the backup has ever restored successfully.",
+        "concrete_anchor_id": "life-rhea-backup-no-restore",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "last successful restore test",
+        "speech_act": "risk-finding",
+        "personal_life_event_ids": [
+          "life-rhea-backup-no-restore"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-05",
+      "author_id": "rhea-solano",
+      "scenario_id": "kettle-dependency",
+      "text": "The sensor board rebooted whenever the workshop kettle switched on. We had three architecture diagrams; the shared circuit was the useful one.",
+      "grounding": {
+        "why_now": "Rhea traced an intermittent reset to the electrical circuit shared with a kettle.",
+        "concrete_anchor_id": "life-rhea-kettle-board",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "workshop kettle switched on",
+        "speech_act": "failure-anecdote",
+        "personal_life_event_ids": [
+          "life-rhea-kettle-board"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-06",
+      "author_id": "rhea-solano",
+      "scenario_id": "deferred-gasket",
+      "text": "A $43.20 valve gasket was deferred twice. If your reliability plan can be defeated by NEXT QUARTER, it is a budget request wearing a hard hat.",
+      "grounding": {
+        "why_now": "Anika found the precise part, price, and deferral stamps.",
+        "concrete_anchor_id": "artifact-pump-gasket-requests",
+        "concrete_anchor_kind": "artifact",
+        "anchor_detail": "$43.20 valve gasket",
+        "speech_act": "operational-interpretation",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": "msg-0008",
+        "reply_detail": {
+          "parent_id": "msg-0008",
+          "parent_excerpt": "$43.20 valve gasket",
+          "response_span": "A $43.20 valve gasket was deferred twice",
+          "engagement_type": "interpretation"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-07",
+      "author_id": "rhea-solano",
+      "scenario_id": "warning-field",
+      "text": "Give them a notes field and keep its revision history. Noor’s ‘somewhere to leave that kind of warning’ also needs to tell the next shift which warning is current.",
+      "grounding": {
+        "why_now": "Noor asks whether the replacement system gave operators a warning channel.",
+        "concrete_anchor_id": "msg-0005",
+        "concrete_anchor_kind": "message",
+        "anchor_detail": "somewhere to leave that kind of warning",
+        "speech_act": "design-answer",
+        "personal_life_event_ids": [
+          "life-rhea-operator-notes"
+        ],
+        "reply_to_message_id": "msg-0005",
+        "reply_detail": {
+          "parent_id": "msg-0005",
+          "parent_excerpt": "somewhere to leave that kind of warning",
+          "response_span": "Give them a notes field",
+          "engagement_type": "answer"
+        }
+      },
+      "expected_accepted": true,
+      "expected_failure_codes": [],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "passed",
+        "label": "PASSED VALIDATION · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-08",
+      "author_id": "rhea-solano",
+      "scenario_id": "unanchored-abstraction",
+      "text": "Maintenance is the work that keeps yesterday’s promises usable after everyone who made them has gone home.",
+      "grounding": {
+        "why_now": "Rhea has a general reflection with no concrete failure or object.",
+        "concrete_anchor_id": null,
+        "concrete_anchor_kind": null,
+        "anchor_detail": null,
+        "speech_act": "abstract-pronouncement",
+        "personal_life_event_ids": [],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "GROUNDING_ANCHOR_MISSING"
+      ],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": false,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": false,
+          "personal_history_integrity": true,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "GROUNDING_ANCHOR_MISSING",
+            "note": "The concrete anchor does not resolve in canonical state."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-09",
+      "author_id": "rhea-solano",
+      "scenario_id": "voice-caricature",
+      "text": "Implementation: forty-seven minutes of manual repair. Who owns it at 3:00 AM? The word just is doing criminal work here.",
+      "grounding": {
+        "why_now": "Rhea reviews the rollback in a profile-summary voice.",
+        "concrete_anchor_id": "life-rhea-schema-rollback",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "forty-seven minutes of manual repair",
+        "speech_act": "persona-summary",
+        "personal_life_event_ids": [
+          "life-rhea-schema-rollback"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "NATURALNESS_TEMPLATE"
+      ],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": true,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": true,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": true,
+          "naturalness": false,
+          "duplication": true,
+          "linguistic_distinctiveness": false,
+          "director_non_authorship": true,
+          "editorial_quality": false,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "NATURALNESS_TEMPLATE",
+            "note": "The candidate opens with an assigned tendency or generic thesis template."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    },
+    {
+      "candidate_id": "bench-rhea-10",
+      "author_id": "rhea-solano",
+      "scenario_id": "provenance-breach",
+      "text": "I am reviewing a contract where migration costs exceed one year's fee. I spent all morning pricing the exit.",
+      "grounding": {
+        "why_now": "Rhea claims a current contract review that belongs to Cassian.",
+        "concrete_anchor_id": "life-cassian-sole-source-clause",
+        "concrete_anchor_kind": "life-event",
+        "anchor_detail": "migration costs exceed one year's fee",
+        "speech_act": "personal-work-note",
+        "personal_life_event_ids": [
+          "life-cassian-sole-source-clause"
+        ],
+        "reply_to_message_id": null,
+        "reply_detail": null
+      },
+      "expected_accepted": false,
+      "expected_failure_codes": [
+        "PERSONAL_HISTORY_OWNER_MISMATCH"
+      ],
+      "intended_author_id": "rhea-solano",
+      "canonical_status": "NON-CANON",
+      "validation": {
+        "result": "rejected",
+        "label": "REJECTED · NON-CANON",
+        "checks": {
+          "structure": true,
+          "why_now": true,
+          "factuality": false,
+          "citation_support": true,
+          "source_interpretation_boundary": true,
+          "character_consistency": false,
+          "expertise_boundary": true,
+          "continuity": true,
+          "reply_timeline_integrity": true,
+          "concrete_grounding": true,
+          "personal_history_integrity": false,
+          "naturalness": true,
+          "duplication": true,
+          "linguistic_distinctiveness": true,
+          "director_non_authorship": true,
+          "editorial_quality": true,
+          "state_change_bounds": true
+        },
+        "failures": [
+          {
+            "code": "PERSONAL_HISTORY_OWNER_MISMATCH",
+            "note": "life-cassian-sole-source-clause belongs to another founder."
+          }
+        ],
+        "raw_model_reasoning_stored": false
+      },
+      "proposed_state_changes": []
+    }
+  ],
+  "proposed_state_changes_applied": 0,
+  "raw_model_reasoning_stored": false,
+  "canonical_mutation_guard": {
+    "algorithm": "sha256",
+    "digest_before": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "digest_after": "91f6146b7e9c10f05497a99286cfecb767cd83c902153145249e0d24e3c9fca4",
+    "changed_files": [],
+    "passed": true
+  }
+}

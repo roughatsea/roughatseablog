@@ -1,0 +1,123 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "biomedical-llm-writing-prevalence",
+  "title": "LLM-assisted writing in biomedical papers",
+  "dek": "A corpus-level estimate says language-model assistance is already widespread in biomedical publishing; revision and replication will show how much confidence that number deserves.",
+  "canonicalSubject": {
+    "name": "LLM-assisted writing in PubMed Central papers",
+    "kind": "research-estimate",
+    "aliases": [
+      "biomedical LLM writing prevalence",
+      "Holzwarth González-Márquez Kobak estimate"
+    ]
+  },
+  "topics": [
+    "artificial-intelligence",
+    "scientific-publishing",
+    "computational-linguistics",
+    "research-integrity"
+  ],
+  "geography": [
+    "Global"
+  ],
+  "trackingTerms": [
+    "arXiv 2608.10715",
+    "Most biomedical publications show signs of LLM-assisted writing",
+    "Holzwarth González-Márquez Kobak",
+    "PubMed Central LLM writing prevalence"
+  ],
+  "originSignalIds": [
+    "2026-08-31-biomedical-llm-writing-estimate"
+  ],
+  "firstObservedAt": "2026-08-31T05:00:00-07:00",
+  "admittedAt": "2026-09-06T07:24:00-07:00",
+  "whyTracked": "The estimate is consequential, method-dependent, and unusually easy to revisit through preprint revisions, peer review, independent replication, and policy responses.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "preliminary",
+    "attention": "unmeasured",
+    "assessment": "The public evidence remains a single preprint and reporting derived from it. The 89 percent figure is a corpus-level estimate of LLM-associated vocabulary, not a detector for individual papers, and no independent replication was found during admission review.",
+    "updatedAt": "2026-09-06T07:24:00-07:00",
+    "lastMaterialChangeAt": "2026-08-31T05:00:00-07:00",
+    "nextReviewAfter": "2026-10-01",
+    "nextReviewTrigger": "Review immediately for a revised preprint, peer-reviewed publication, independent replication, methodological critique, or a major publishing-policy change explicitly tied to prevalence evidence.",
+    "cadence": "monthly"
+  },
+  "openQuestions": [
+    "Will peer review or independent replication materially revise the estimated prevalence?",
+    "How much of the detected assistance is translation or editing rather than generation of scientific claims?",
+    "Can future estimators separate direct model use from human adoption or avoidance of model-associated vocabulary?"
+  ],
+  "watchFor": [
+    {
+      "description": "Peer-reviewed publication or revised preprint",
+      "expectedWindow": null,
+      "trigger": "The authors release a revised version, journal article, correction, or methodological response."
+    },
+    {
+      "description": "Independent replication on scholarly corpora",
+      "expectedWindow": null,
+      "trigger": "An independent group tests the estimator on PubMed Central or another large scholarly corpus."
+    },
+    {
+      "description": "Policy response tied to population-level evidence",
+      "expectedWindow": null,
+      "trigger": "A major publisher or research body cites prevalence evidence when changing LLM-use disclosure or authorship policy."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "biomedical-llm-writing-prevalence-2026-08-31-point-zero",
+      "observedAt": "2026-08-31T05:00:00-07:00",
+      "recordedAt": "2026-09-06T07:24:00-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "A preprint estimated that 89 percent of sampled PubMed Central papers published in December 2025 contained signs of LLM-assisted writing or editing somewhere in their full text, while emphasizing that the method cannot classify an individual paper.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-31-biomedical-llm-writing-estimate"
+      ],
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.10715",
+          "title": "Most biomedical publications show signs of LLM-assisted writing",
+          "publisher": "arXiv",
+          "publishedAt": "2026-08-11",
+          "accessedAt": "2026-08-31",
+          "role": "primary-research",
+          "lineage": "holzwarth-biomedical-llm-writing-preprint"
+        },
+        {
+          "url": "https://www.nature.com/articles/d41586-026-02551-z",
+          "title": "Staggering 90% of biomedical papers now show signs of AI help",
+          "publisher": "Nature",
+          "publishedAt": "2026-08-20",
+          "accessedAt": "2026-08-31",
+          "role": "independent-reporting",
+          "lineage": "holzwarth-biomedical-llm-writing-preprint"
+        }
+      ]
+    },
+    {
+      "observationId": "biomedical-llm-writing-prevalence-2026-09-06-admission",
+      "observedAt": "2026-09-06T07:24:00-07:00",
+      "recordedAt": "2026-09-06T07:24:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake",
+      "summary": "Admitted because a prominent quantitative estimate is still provisional and has clear paths to revision, replication, and policy consequence; the admission review found the arXiv record still at its initial public version.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-31-biomedical-llm-writing-estimate"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}

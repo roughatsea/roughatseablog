@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="686" viewBox="0 0 1600 686" role="img" aria-labelledby="title desc">
+  <title id="title">Part II: A Taxonomy of Suppression</title>
+  <desc id="desc">An archivist's desk sorts vanished books into destroyed, never published, mutilated, delayed, exiled, and pulped files.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#070706"/><stop offset=".55" stop-color="#17100d"/><stop offset="1" stop-color="#061720"/></linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dac39a"/><stop offset="1" stop-color="#856642"/></linearGradient>
+    <linearGradient id="gold"><stop stop-color="#efd4a4"/><stop offset=".5" stop-color="#a9783d"/><stop offset="1" stop-color="#e0bd82"/></linearGradient>
+    <pattern id="grain" width="63" height="63" patternUnits="userSpaceOnUse"><circle cx="8" cy="13" r="1" fill="#fff" opacity=".035"/><circle cx="42" cy="35" r="1.2" fill="#000" opacity=".16"/></pattern>
+    <filter id="shadow"><feDropShadow dx="0" dy="11" stdDeviation="13" flood-opacity=".75"/></filter>
+  </defs>
+  <rect width="1600" height="686" fill="url(#bg)"/><rect width="1600" height="686" fill="url(#grain)"/>
+  <path d="M0 510Q420 478 810 510t790-7v183H0Z" fill="#150d09"/>
+  <!-- file box -->
+  <g transform="translate(55 250)" filter="url(#shadow)">
+    <path d="M15 120h370l31 310H-15Z" fill="#442d1d" stroke="#8b623a" stroke-width="5"/>
+    <g font-family="Georgia,serif" font-size="19" font-weight="700" fill="#302014">
+      <g transform="translate(28 0)"><rect width="318" height="72" rx="5" fill="#bfa477" stroke="#5c3e25" stroke-width="3"/><text x="159" y="45" text-anchor="middle">DESTROYED</text></g>
+      <g transform="translate(18 48)"><rect width="338" height="72" rx="5" fill="#c8ae80" stroke="#5c3e25" stroke-width="3"/><text x="169" y="45" text-anchor="middle">NEVER PUBLISHED</text></g>
+      <g transform="translate(12 96)"><rect width="350" height="72" rx="5" fill="#bda174" stroke="#5c3e25" stroke-width="3"/><text x="175" y="45" text-anchor="middle">MUTILATED</text></g>
+      <g transform="translate(8 144)"><rect width="358" height="72" rx="5" fill="#c7ad80" stroke="#5c3e25" stroke-width="3"/><text x="179" y="45" text-anchor="middle">DELAYED</text></g>
+      <g transform="translate(2 192)"><rect width="370" height="72" rx="5" fill="#bca073" stroke="#5c3e25" stroke-width="3"/><text x="185" y="45" text-anchor="middle">EXILED</text></g>
+      <g transform="translate(-4 240)"><rect width="382" height="72" rx="5" fill="#c9af81" stroke="#5c3e25" stroke-width="3"/><text x="191" y="45" text-anchor="middle">PULPED</text></g>
+    </g>
+  </g>
+  <!-- redacted proof -->
+  <g transform="translate(1160 305) rotate(6)" filter="url(#shadow)">
+    <rect width="335" height="285" rx="5" fill="url(#paper)" stroke="#5a3b22" stroke-width="4"/>
+    <text x="167" y="39" text-anchor="middle" font-family="Georgia,serif" font-size="22" fill="#332116">PRINTER'S PROOF</text>
+    <text x="167" y="66" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" letter-spacing="2" fill="#702025">NOT FOR PUBLICATION</text>
+    <g fill="#17120f"><rect x="30" y="96" width="270" height="12"/><rect x="30" y="120" width="228" height="12"/><rect x="30" y="144" width="284" height="12"/><rect x="30" y="168" width="248" height="12"/><rect x="30" y="192" width="275" height="12"/></g>
+    <g transform="translate(96 221) rotate(-5)"><rect width="150" height="44" fill="none" stroke="#7a2024" stroke-width="4"/><text x="75" y="31" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="26" fill="#7a2024">WITHHELD</text></g>
+  </g>
+  <!-- pulp tray -->
+  <g transform="translate(1050 540)"><path d="M0 0h455l-30 125H26Z" fill="#39281c" stroke="#765335" stroke-width="4"/><g stroke="#b89a68" stroke-width="6" opacity=".62"><path d="M35 22l58 63M88 14l52 82M145 24l41 68M193 12l54 86M250 18l40 70M304 13l58 82M364 21l39 66"/></g><g transform="translate(168 42) rotate(-4)"><rect width="145" height="45" fill="#b89362" stroke="#6e1f22" stroke-width="3"/><text x="72" y="32" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="26" fill="#6e1f22">PULPED</text></g></g>
+  <!-- title -->
+  <g filter="url(#shadow)">
+    <rect x="390" y="72" width="805" height="402" rx="18" fill="#0b0a09" fill-opacity=".92" stroke="#8d683b" stroke-width="3"/>
+    <path d="M450 134h685M450 414h685" stroke="#a57a43" stroke-width="2" opacity=".76"/>
+    <text x="792" y="178" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="6" fill="#9d7543">PART II</text>
+    <text x="792" y="278" text-anchor="middle" font-family="Georgia,serif" font-size="76" fill="url(#gold)">A Taxonomy</text>
+    <text x="792" y="370" text-anchor="middle" font-family="Georgia,serif" font-size="76" fill="url(#gold)">of Suppression</text>
+  </g>
+  <text x="792" y="516" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-style="italic" fill="#c8ad80">A title can survive while one irreplaceable version vanishes.</text>
+  <circle cx="1030" cy="568" r="45" fill="#681e25" stroke="#ad604f" stroke-width="5"/><path d="M1006 568h48M1030 544v48" stroke="#d6a17d" stroke-width="5" opacity=".64"/>
+  <rect x="20" y="20" width="1560" height="646" rx="22" fill="none" stroke="#b8884b" stroke-width="2" opacity=".38"/>
+</svg>

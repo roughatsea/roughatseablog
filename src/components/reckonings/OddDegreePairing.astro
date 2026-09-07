@@ -1,0 +1,90 @@
+<figure class="pairing-diagram reckoning-visual">
+  <header>
+    <p>Why parity decides the route</p>
+    <h3>Arrivals and departures consume edges in pairs</h3>
+  </header>
+
+  <div class="pairing-shell">
+    <svg viewBox="0 0 900 420" role="img" aria-labelledby="pairing-title pairing-desc">
+      <title id="pairing-title">Five edges meeting one vertex, grouped into two enter-leave pairs with one edge left over</title>
+      <desc id="pairing-desc">
+        A central vertex has degree five. Four incident edges form two striped pairs, while a fifth magenta edge remains unpaired and must be used to start or end a trail.
+      </desc>
+      <defs>
+        <pattern id="pair-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" x2="0" y2="10" />
+        </pattern>
+      </defs>
+
+      <g class="edge-bundle">
+        <path class="paired one" d="M450 210L160 76" />
+        <path class="paired one" d="M450 210L116 184" />
+        <path class="paired two" d="M450 210L165 342" />
+        <path class="paired two" d="M450 210L558 382" />
+        <path class="unpaired" d="M450 210L790 116" />
+      </g>
+
+      <path class="pair-loop one" d="M151 62C67 87 54 173 105 203C160 235 228 179 209 112" />
+      <path class="pair-fill" d="M151 62C67 87 54 173 105 203C160 235 228 179 209 112" fill="url(#pair-hatch)" />
+      <path class="pair-loop two" d="M151 353C194 414 435 430 570 390" />
+
+      <circle class="central-vertex" cx="450" cy="210" r="42" />
+      <text class="degree" x="450" y="204" text-anchor="middle">degree</text>
+      <text class="degree-number" x="450" y="234" text-anchor="middle">5</text>
+
+      <text class="pair-label one" x="72" y="48">enter + leave</text>
+      <text class="pair-label two" x="282" y="397">enter + leave</text>
+      <text class="leftover-label" x="790" y="91" text-anchor="end">one edge left over</text>
+      <text class="endpoint-label" x="790" y="143" text-anchor="end">start or finish here</text>
+    </svg>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> every intermediate visit uses one edge to enter and one to leave.
+    An odd-degree vertex has one unpaired edge, so an open Euler trail can accommodate only two of
+    them: one at the start and one at the finish.
+  </figcaption>
+</figure>
+
+<style>
+  .pairing-diagram {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1060px, calc(100vw - 3rem));
+  }
+  header > p { color: var(--link-color); font-size: 0.67rem; font-weight: 600; letter-spacing: 0.12em; margin: 0 0 0.2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .pairing-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 660px; width: 100%; }
+  .edge-bundle path { fill: none; stroke-linecap: round; stroke-width: 10; }
+  .paired.one { stroke: #087dcc; }
+  :global([data-theme='dark']) .paired.one { stroke: #1493ff; }
+  .paired.two { stroke: #4f9300; }
+  :global([data-theme='dark']) .paired.two { stroke: #93ff14; }
+  .unpaired { stroke: #ff1493; stroke-dasharray: 11 8; }
+  .pair-loop { fill: none; stroke-width: 3; }
+  .pair-loop.one { stroke: #087dcc; }
+  :global([data-theme='dark']) .pair-loop.one { stroke: #1493ff; }
+  .pair-loop.two { stroke: #4f9300; }
+  :global([data-theme='dark']) .pair-loop.two { stroke: #93ff14; }
+  .pair-fill { opacity: 0.08; stroke: #087dcc; }
+  .central-vertex { fill: var(--surface-color); stroke: var(--text-primary); stroke-width: 4; }
+  text { fill: var(--text-secondary); font-size: 15px; }
+  .degree { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .degree-number { fill: var(--text-primary); font-size: 28px; font-weight: 700; }
+  .pair-label { font-weight: 700; }
+  .pair-label.one { fill: #087dcc; }
+  :global([data-theme='dark']) .pair-label.one { fill: #1493ff; }
+  .pair-label.two { fill: #4f9300; }
+  :global([data-theme='dark']) .pair-label.two { fill: #93ff14; }
+  .leftover-label { fill: #ff1493; font-weight: 700; }
+  .endpoint-label { fill: var(--text-secondary); font-size: 13px; }
+  figcaption { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-top: 0.85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 500px) { .pairing-diagram { width: calc(100vw - 1.5rem); } }
+</style>

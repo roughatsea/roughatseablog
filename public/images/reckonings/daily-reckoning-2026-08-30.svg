@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Epsilon and delta tolerance windows surrounding a point on a rising curve</title>
+  <desc id="desc">A luminous blue curve crosses nested green horizontal bands and magenta vertical corridors on a dark maritime plotting grid.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#031321" />
+      <stop offset="0.52" stop-color="#0a213a" />
+      <stop offset="1" stop-color="#130a27" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="46%" r="56%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity="0.24" />
+      <stop offset="0.52" stop-color="#ff1493" stop-opacity="0.09" />
+      <stop offset="1" stop-color="#020914" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="minor-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1493ff" stroke-opacity="0.085" stroke-width="1" />
+    </pattern>
+    <pattern id="major-grid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="200" fill="url(#minor-grid)" />
+      <path d="M200 0H0V200" fill="none" stroke="#1493ff" stroke-opacity="0.2" stroke-width="1.5" />
+    </pattern>
+    <pattern id="epsilon-hatch" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <path d="M0 0V24" stroke="#93ff14" stroke-opacity="0.22" stroke-width="3" />
+    </pattern>
+    <pattern id="delta-hatch" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M2 0V20" stroke="#ff1493" stroke-opacity="0.19" stroke-width="2" />
+    </pattern>
+    <filter id="blue-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="green-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <clipPath id="plot-clip"><rect x="92" y="74" width="1416" height="710" rx="24" /></clipPath>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#background)" />
+  <rect width="1600" height="900" fill="url(#glow)" />
+  <rect x="92" y="74" width="1416" height="710" rx="24" fill="#061426" fill-opacity="0.4" stroke="#1493ff" stroke-opacity="0.42" stroke-width="2" />
+
+  <g clip-path="url(#plot-clip)">
+    <rect x="92" y="74" width="1416" height="710" fill="url(#major-grid)" />
+
+    <rect x="92" y="348" width="1416" height="154" fill="#93ff14" fill-opacity="0.055" />
+    <rect x="92" y="348" width="1416" height="154" fill="url(#epsilon-hatch)" />
+    <path d="M92 348H1508M92 502H1508" fill="none" stroke="#93ff14" stroke-opacity="0.84" stroke-width="3" stroke-dasharray="16 12" />
+
+    <rect x="724" y="74" width="168" height="710" fill="#ff1493" fill-opacity="0.05" />
+    <rect x="724" y="74" width="168" height="710" fill="url(#delta-hatch)" />
+    <path d="M724 74V784M892 74V784" fill="none" stroke="#ff1493" stroke-opacity="0.86" stroke-width="3" stroke-dasharray="7 12" />
+
+    <rect x="586" y="286" width="444" height="278" rx="18" fill="none" stroke="#1493ff" stroke-opacity="0.18" stroke-width="2" />
+    <rect x="650" y="322" width="316" height="206" rx="14" fill="none" stroke="#ff1493" stroke-opacity="0.28" stroke-width="2" />
+    <rect x="708" y="355" width="200" height="140" rx="10" fill="none" stroke="#93ff14" stroke-opacity="0.34" stroke-width="2" />
+
+    <path d="M132 752C364 738 551 631 708 500C774 445 832 380 903 320C1040 205 1204 137 1480 108" fill="none" stroke="#1493ff" stroke-width="14" stroke-linecap="round" filter="url(#blue-glow)" />
+
+    <path d="M92 425H1508" stroke="#93ff14" stroke-opacity="0.5" stroke-width="2" />
+    <path d="M808 74V784" stroke="#ff1493" stroke-opacity="0.52" stroke-width="2" />
+    <circle cx="808" cy="425" r="22" fill="#061426" stroke="#93ff14" stroke-width="5" filter="url(#green-glow)" />
+    <circle cx="808" cy="425" r="7" fill="#1493ff" />
+
+    <circle cx="808" cy="425" r="72" fill="none" stroke="#93ff14" stroke-opacity="0.34" stroke-width="2" />
+    <circle cx="808" cy="425" r="142" fill="none" stroke="#93ff14" stroke-opacity="0.2" stroke-width="2" />
+    <path d="M808 246V604M629 425H987" stroke="#93ff14" stroke-opacity="0.38" stroke-width="2" />
+
+    <circle cx="856" cy="383" r="10" fill="#ff1493" filter="url(#pink-glow)" />
+    <path d="M856 383V425H808" fill="none" stroke="#ff1493" stroke-width="3" stroke-dasharray="6 7" />
+  </g>
+
+  <path d="M112 823C165 823 165 798 218 798s53 25 106 25 53-25 106-25 53 25 106 25 53-25 106-25 53 25 106 25 53-25 106-25 53 25 106 25 53-25 106-25 53 25 106 25 53-25 106-25 53 25 106 25 53-25 106-25 53 25 106 25" fill="none" stroke="#1493ff" stroke-opacity="0.52" stroke-width="3" />
+  <path d="M112 856C165 856 165 837 218 837s53 19 106 19 53-19 106-19 53 19 106 19 53-19 106-19 53 19 106 19 53-19 106-19 53 19 106 19 53-19 106-19 53 19 106 19 53-19 106-19 53 19 106 19 53-19 106-19 53 19 106 19" fill="none" stroke="#ff1493" stroke-opacity="0.34" stroke-width="2" />
+</svg>

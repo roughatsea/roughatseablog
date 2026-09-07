@@ -1,0 +1,114 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "coloratura-spatial-audio",
+  "title": "Coloratura and spatial-audio navigation",
+  "dek": "A game designed to be navigable without sight will eventually be tested by the players its design claims to serve.",
+  "canonicalSubject": {
+    "name": "Coloratura",
+    "kind": "video-game",
+    "aliases": [
+      "Coloratura PS5",
+      "Nakama Game Studio Coloratura"
+    ]
+  },
+  "topics": [
+    "video-games",
+    "accessibility",
+    "spatial-audio",
+    "game-design"
+  ],
+  "geography": [
+    "Global"
+  ],
+  "trackingTerms": [
+    "Coloratura game accessibility",
+    "Coloratura spatial audio",
+    "Nakama Game Studio Coloratura",
+    "Coloratura blind players review"
+  ],
+  "originSignalIds": [
+    "2026-08-30-coloratura-spatial-audio"
+  ],
+  "firstObservedAt": "2026-08-30T05:00:00-07:00",
+  "admittedAt": "2026-08-30T18:30:00-07:00",
+  "whyTracked": "The project makes specific, consequential accessibility claims whose real test arrives with a playable build and independent evaluation by blind players.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "first-party-only",
+    "attention": "unmeasured",
+    "assessment": "The design intentions are unusually concrete, but the public evidence remains first-party and pre-release. Practical accessibility is not yet established.",
+    "updatedAt": "2026-08-30T18:30:00-07:00",
+    "lastMaterialChangeAt": "2026-08-30T05:00:00-07:00",
+    "nextReviewAfter": "2026-12-01",
+    "nextReviewTrigger": "Review on a demo, release-date announcement, public launch, independent blind-player evaluation, or material accessibility patch.",
+    "cadence": "event-driven"
+  },
+  "openQuestions": [
+    "How will blind players evaluate navigation and comfort in the released game?",
+    "How dependent is the experience on headphones, spatial-audio hardware, or particular hearing profiles?",
+    "Will post-release feedback produce design changes?"
+  ],
+  "watchFor": [
+    {
+      "description": "A release date or playable public build",
+      "expectedWindow": "Unknown",
+      "trigger": "The developer announces a date, demo, beta, or launch."
+    },
+    {
+      "description": "Independent evaluation by blind players",
+      "expectedWindow": "At or after release",
+      "trigger": "Blind reviewers and accessibility specialists document the finished experience."
+    },
+    {
+      "description": "Post-release accessibility revisions",
+      "expectedWindow": "Within six months of release",
+      "trigger": "Patches or developer notes respond to player accessibility findings."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "coloratura-spatial-audio-2026-08-30-point-zero",
+      "observedAt": "2026-08-30T05:00:00-07:00",
+      "recordedAt": "2026-08-30T15:42:25-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "first-party-only",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "Nakama Game Studio described Coloratura as a free-moving 3D PlayStation 5 adventure designed to be navigable without sight through positional sound, objective audio, broad geometry, and blind playtesting.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-30-coloratura-spatial-audio"
+      ],
+      "sources": [
+        {
+          "url": "https://blog.playstation.com/2026/07/13/coloratura-designing-a-world-where-sound-is-the-only-guide/",
+          "title": "Coloratura: designing a world where sound is the only guide",
+          "publisher": "PlayStation Blog",
+          "publishedAt": "2026-07-13",
+          "accessedAt": "2026-08-30",
+          "role": "first-party",
+          "lineage": "coloratura-developer-design-account"
+        }
+      ]
+    },
+    {
+      "observationId": "coloratura-spatial-audio-2026-08-30-admission",
+      "observedAt": "2026-08-30T18:30:00-07:00",
+      "recordedAt": "2026-08-30T18:30:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "first-party-only",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake pilot",
+      "summary": "Admitted because the advertised accessibility design has a clearly identifiable future test and should not be judged only by promotional intent.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-30-coloratura-spatial-audio"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}

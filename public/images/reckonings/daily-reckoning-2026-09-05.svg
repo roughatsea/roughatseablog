@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Two probability courses converging across a nautical chart</title>
+  <desc id="desc">A magenta course and a lime course begin far apart on a dark oceanic blueprint, then converge toward the same cyan horizon through a chain of glowing waypoints.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020b16"/>
+      <stop offset=".55" stop-color="#061b2d"/>
+      <stop offset="1" stop-color="#020912"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="48%" r="55%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#1493ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="cyanGlow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="pinkGlow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#1493ff" stroke-opacity=".09" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <ellipse cx="810" cy="450" rx="670" ry="400" fill="url(#glow)"/>
+  <g fill="none" stroke="#1493ff" stroke-opacity=".15">
+    <path d="M80 154C330 92 505 186 716 135S1120 88 1515 176"/>
+    <path d="M44 735C270 680 470 790 700 730s453-82 845-8"/>
+    <circle cx="800" cy="450" r="355"/>
+    <circle cx="800" cy="450" r="270"/>
+    <path d="M800 72V828M422 450H1178"/>
+  </g>
+  <g stroke="#1493ff" stroke-opacity=".24" fill="none">
+    <path d="M120 450H1480" stroke-dasharray="15 18" stroke-width="3"/>
+    <path d="M130 425H1470M130 475H1470"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M155 155C320 236 418 344 560 397S840 443 1045 449 1320 450 1450 450" stroke="#ff1493" stroke-width="11" filter="url(#pinkGlow)"/>
+    <path d="M155 750C310 635 415 540 560 494S845 456 1045 451 1320 450 1450 450" stroke="#93ff14" stroke-width="10" stroke-dasharray="22 17" filter="url(#cyanGlow)"/>
+  </g>
+  <g fill="#061b2d" stroke-width="7">
+    <circle cx="155" cy="155" r="19" stroke="#ff1493"/>
+    <circle cx="560" cy="397" r="15" stroke="#ff1493"/>
+    <circle cx="1045" cy="449" r="13" stroke="#ff1493"/>
+    <circle cx="155" cy="750" r="19" stroke="#93ff14"/>
+    <circle cx="560" cy="494" r="15" stroke="#93ff14"/>
+    <circle cx="1045" cy="451" r="13" stroke="#93ff14"/>
+  </g>
+  <g fill="#1493ff" filter="url(#cyanGlow)">
+    <path d="M1450 430l20 20-20 20-20-20z"/>
+    <circle cx="800" cy="450" r="8"/>
+  </g>
+  <g stroke="#93ff14" stroke-opacity=".6" fill="none">
+    <path d="M251 715l-52 52m26-75-49 49"/>
+    <path d="M1200 420l54 54m-24-75 50 50"/>
+  </g>
+  <g stroke="#1493ff" fill="none" opacity=".65">
+    <circle cx="270" cy="450" r="62"/>
+    <path d="M270 374v152M194 450h152"/>
+    <path d="m270 374-9 22 9-7 9 7z" fill="#1493ff"/>
+  </g>
+  <rect x="34" y="34" width="1532" height="832" rx="28" fill="none" stroke="#1493ff" stroke-opacity=".2" stroke-width="2"/>
+</svg>

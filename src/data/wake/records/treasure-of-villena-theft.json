@@ -1,0 +1,167 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "treasure-of-villena-theft",
+  "title": "The theft of the Treasure of Villena",
+  "dek": "A four-minute museum raid turned one of Europe’s major Bronze Age hoards into a race between recovery, destruction, and the security lessons that follow.",
+  "canonicalSubject": {
+    "name": "Theft of the Treasure of Villena",
+    "kind": "cultural-heritage-theft",
+    "aliases": [
+      "Villena Museum heist",
+      "2026 Treasure of Villena robbery"
+    ]
+  },
+  "topics": [
+    "archaeology",
+    "museums",
+    "cultural-heritage",
+    "art-crime"
+  ],
+  "geography": [
+    "Villena",
+    "Alicante",
+    "Spain"
+  ],
+  "trackingTerms": [
+    "Treasure of Villena theft",
+    "Tesoro de Villena robo 2026",
+    "Villena Museum heist",
+    "MUVI Treasure of Villena recovery"
+  ],
+  "originSignalIds": [
+    "2026-08-31-treasure-of-villena-theft"
+  ],
+  "firstObservedAt": "2026-08-31T05:00:00-07:00",
+  "admittedAt": "2026-09-06T07:25:00-07:00",
+  "whyTracked": "The theft has a stable subject, an urgent recovery question, a risk of irreversible material destruction, and concrete law-enforcement and museum-security outcomes that can be followed.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "mixed",
+    "attention": "unmeasured",
+    "assessment": "No reviewed source reported recovery of the stolen hoard by September 6. Villena has unanimously created a municipal investigation commission to examine the museum’s security and prior decisions, turning the theft’s institutional aftermath into an observable second track.",
+    "updatedAt": "2026-09-06T07:26:00-07:00",
+    "lastMaterialChangeAt": "2026-09-06T07:26:00-07:00",
+    "nextReviewAfter": "2026-09-13",
+    "nextReviewTrigger": "Review immediately for a recovery, arrest, definitive stolen-object inventory, evidence that objects were altered or melted, findings from the municipal commission, or concrete museum-security changes.",
+    "cadence": "weekly"
+  },
+  "openQuestions": [
+    "Will investigators recover the stolen objects intact and identify those responsible?",
+    "What will the completed official inventory establish about exactly what was taken?",
+    "What will Villena’s investigation commission conclude about security and responsibility, and which changes will actually be implemented?"
+  ],
+  "watchFor": [
+    {
+      "description": "Recovery, arrests, charges, or a definitive stolen-object inventory",
+      "expectedWindow": null,
+      "trigger": "Spanish authorities publish recovery information, arrests, charges, or a completed inventory."
+    },
+    {
+      "description": "Condition and provenance of recovered objects",
+      "expectedWindow": null,
+      "trigger": "Any missing object is recovered and conservators report whether it remained intact or was altered."
+    },
+    {
+      "description": "Municipal findings and museum-security changes",
+      "expectedWindow": "After September 9, 2026",
+      "trigger": "The investigation commission reports findings or authorities implement security or display-policy changes linked to the theft."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "treasure-of-villena-theft-2026-08-31-point-zero",
+      "observedAt": "2026-08-31T05:00:00-07:00",
+      "recordedAt": "2026-09-06T07:25:00-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "Thieves removed most of the Treasure of Villena in a rapid August 27 museum raid. At the August 31 point zero, the exact inventory was still being settled and the reviewed public sources did not establish recovery.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-31-treasure-of-villena-theft"
+      ],
+      "sources": [
+        {
+          "url": "https://www.theguardian.com/culture/2026/aug/27/thieves-steal-bronze-age-treasure-of-villena-in-four-minute-heist",
+          "title": "Bronze age treasure stolen in four-minute Spanish museum heist",
+          "publisher": "The Guardian",
+          "publishedAt": "2026-08-27",
+          "accessedAt": "2026-08-31",
+          "role": "independent-reporting",
+          "lineage": "villena-officials-agency-reporting"
+        },
+        {
+          "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/Changing-targets-changing-tactics-museum-heists-report.pdf",
+          "title": "Changing tactics, changing targets: the evolving nature of museum heists",
+          "publisher": "Europol",
+          "publishedAt": "2026-08-24",
+          "accessedAt": "2026-08-31",
+          "role": "official-primary",
+          "lineage": "europol-museum-heists-spotlight-2026"
+        }
+      ]
+    },
+    {
+      "observationId": "treasure-of-villena-theft-2026-09-06-admission",
+      "observedAt": "2026-09-06T07:25:00-07:00",
+      "recordedAt": "2026-09-06T07:25:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake",
+      "summary": "Admitted because recovery, preservation, attribution, and the institutional response all have near-term evidence that can materially change the record.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-31-treasure-of-villena-theft"
+      ],
+      "sources": []
+    },
+    {
+      "observationId": "treasure-of-villena-theft-2026-09-06-security-review",
+      "observedAt": "2026-09-06T07:26:00-07:00",
+      "recordedAt": "2026-09-06T07:26:00-07:00",
+      "kind": "development",
+      "lifecycle": "emerging",
+      "evidence": "mixed",
+      "attention": "unmeasured",
+      "headline": "Villena opens a formal security review",
+      "summary": "The September 6 review found no public report of recovery. A September 2 extraordinary municipal session unanimously created an investigation commission to examine the museum project, security measures, and possible responsibilities; museum officials also said protocols would be reviewed.",
+      "materialChange": true,
+      "sourceSignalIds": [],
+      "sources": [
+        {
+          "url": "https://www.elespanol.com/alicante/20260902/villena-crea-comision-investigacion-robo-tesoro-analizar-fallos-seguridad-museo/1003744369765_0.amp.html",
+          "title": "Villena crea una comisión de investigación tras el robo del Tesoro para analizar los fallos de seguridad del museo",
+          "publisher": "El Español",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-06",
+          "role": "independent-reporting",
+          "lineage": "villena-municipal-investigation-commission"
+        },
+        {
+          "url": "https://cadenaser.com/comunitat-valenciana/2026/09/02/el-museo-de-villena-cumplia-todas-las-medidas-de-seguridad-y-seguira-adelante-radio-villena/?primarySection=%2Fradio-villena",
+          "title": "El Museo de Villena Cumplía todas las medidas de seguridad y seguirá adelante",
+          "publisher": "Cadena SER",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-06",
+          "role": "independent-reporting",
+          "lineage": "villena-municipal-investigation-commission"
+        },
+        {
+          "url": "https://www.euronews.com/culture/2026/08/31/europol-museum-theft-alert-reaches-spains-villena-a-day-after-historic-heist",
+          "title": "Europol museum theft alert reaches Spain's Villena a day after historic heist",
+          "publisher": "Euronews",
+          "publishedAt": "2026-08-31",
+          "accessedAt": "2026-09-06",
+          "role": "independent-reporting",
+          "lineage": "villena-investigation-follow-up"
+        }
+      ]
+    }
+  ],
+  "corrections": []
+}

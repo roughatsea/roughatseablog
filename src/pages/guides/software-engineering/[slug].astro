@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SoftwareEngineeringConcept from '../../../components/SoftwareEngineeringConcept.astro';
+import { guideConcepts } from '../../../data/software-engineering-guide.js';
+
+export function getStaticPaths() {
+  return guideConcepts.map((concept, index) => ({
+    params: { slug: concept.slug },
+    props: {
+      concept,
+      previous: index > 0
+        ? { slug: guideConcepts[index - 1].slug, title: guideConcepts[index - 1].title }
+        : undefined,
+      next: index < guideConcepts.length - 1
+        ? { slug: guideConcepts[index + 1].slug, title: guideConcepts[index + 1].title }
+        : undefined,
+    },
+  }));
+}
+
+const { concept, previous, next } = Astro.props;
+---
+
+<BaseLayout title={`${concept.title} — Software Engineering Field Guide`} description={concept.definition}>
+  <SoftwareEngineeringConcept concept={concept} previous={previous} next={next} />
+</BaseLayout>

@@ -1,0 +1,111 @@
+{
+  "$schema": "../wake-record.schema.json",
+  "schemaVersion": 1,
+  "wakeId": "cova-dones-roman-sanctuary",
+  "title": "The Roman sanctuary at Cova Dones",
+  "dek": "More than a hundred inscriptions entered the record before the goddess, the word MALACI, and the sanctuary’s social world had settled into an agreed interpretation.",
+  "canonicalSubject": {
+    "name": "Cova Dones Roman sanctuary",
+    "kind": "archaeological-site",
+    "aliases": [
+      "Cova Dones inscriptions",
+      "MALACI inscriptions",
+      "Cova Dones Domina"
+    ]
+  },
+  "topics": [
+    "archaeology",
+    "ancient-rome",
+    "religion",
+    "art"
+  ],
+  "geography": [
+    "Spain",
+    "Valencian Community"
+  ],
+  "trackingTerms": [
+    "Cova Dones Roman inscriptions",
+    "Cova Dones MALACI",
+    "Cova Dones Domina goddess",
+    "Cova Dones sanctuary"
+  ],
+  "originSignalIds": [
+    "2026-08-25-cova-dones-roman-inscriptions"
+  ],
+  "firstObservedAt": "2026-08-25T20:00:00-07:00",
+  "admittedAt": "2026-08-30T18:30:00-07:00",
+  "whyTracked": "The site has a stable identity, active conservation and epigraphic work, and central questions likely to sharpen through formal publication.",
+  "current": {
+    "lifecycle": "emerging",
+    "evidence": "preliminary",
+    "attention": "unmeasured",
+    "assessment": "The inscriptions and archaeological context are documented, but the deity, MALACI, chronology, relationship to water, and interpretation of women’s participation remain preliminary.",
+    "updatedAt": "2026-08-30T18:30:00-07:00",
+    "lastMaterialChangeAt": "2026-08-25T20:00:00-07:00",
+    "nextReviewAfter": "2026-12-01",
+    "nextReviewTrigger": "Review for a peer-reviewed paper, epigraphic catalog, revised readings, material analysis, or a new identification of the sanctuary or deity.",
+    "cadence": "quarterly"
+  },
+  "openQuestions": [
+    "What does MALACI denote?",
+    "Which deity or deities were worshipped in the chamber?",
+    "Will artifact and inscription analysis substantiate the proposed role of women and water?"
+  ],
+  "watchFor": [
+    {
+      "description": "Peer-reviewed publication or epigraphic catalog",
+      "expectedWindow": "Unknown",
+      "trigger": "The research team publishes inscriptions, readings, dating, or material analysis."
+    },
+    {
+      "description": "Revised identification of the sanctuary or deity",
+      "expectedWindow": "Unknown",
+      "trigger": "New evidence changes the Domina or MALACI interpretation."
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "cova-dones-roman-sanctuary-2026-08-25-point-zero",
+      "observedAt": "2026-08-25T20:00:00-07:00",
+      "recordedAt": "2026-08-30T15:42:25-07:00",
+      "kind": "point-zero",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Point-zero observation",
+      "summary": "Researchers documented at least 120 Latin inscriptions in Cova Dones and proposed that part of the cave served as an organized Roman-period sanctuary involving women.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-25-cova-dones-roman-inscriptions"
+      ],
+      "sources": [
+        {
+          "url": "https://web.ua.es/es/actualidad-universitaria/2026/julio2026/27-31/descubren-en-la-cova-dones-de-valencia-unas-120-inscripciones-latinas-de-epoca-romana.html",
+          "title": "120 Roman inscriptions discovered at Cova Dones",
+          "publisher": "University of Alicante",
+          "publishedAt": null,
+          "accessedAt": "2026-08-25",
+          "role": "institutional-reporting",
+          "lineage": "cova-dones-research-team-announcement"
+        }
+      ]
+    },
+    {
+      "observationId": "cova-dones-roman-sanctuary-2026-08-30-admission",
+      "observedAt": "2026-08-30T18:30:00-07:00",
+      "recordedAt": "2026-08-30T18:30:00-07:00",
+      "kind": "admission",
+      "lifecycle": "emerging",
+      "evidence": "preliminary",
+      "attention": "unmeasured",
+      "headline": "Admitted to The Wake pilot",
+      "summary": "Admitted because the first report preserves unusually consequential unknowns that later epigraphy and material analysis may resolve.",
+      "materialChange": false,
+      "sourceSignalIds": [
+        "2026-08-25-cova-dones-roman-inscriptions"
+      ],
+      "sources": []
+    }
+  ],
+  "corrections": []
+}

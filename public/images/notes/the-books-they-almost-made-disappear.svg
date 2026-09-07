@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">The books they almost made disappear</title>
+<desc id="desc">An illuminated book escapes a collapsing shelf into dark water while loose pages rise like signal flags.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050508"/><stop offset="0.55" stop-color="#111126"/><stop offset="1" stop-color="#04151b"/></linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop stop-color="#1493ff" stop-opacity=".65"/><stop offset=".5" stop-color="#ff1493" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <linearGradient id="book" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#93ff14"/><stop offset=".48" stop-color="#f4ffe5"/><stop offset="1" stop-color="#1493ff"/></linearGradient>
+  <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff1493"/><stop offset="1" stop-color="#1493ff"/></linearGradient>
+  <filter id="blur"><feGaussianBlur stdDeviation="30"/></filter>
+  <filter id="shadow"><feDropShadow dx="0" dy="22" stdDeviation="18" flood-color="#000" flood-opacity=".7"/></filter>
+  <pattern id="grain" width="90" height="90" patternUnits="userSpaceOnUse"><circle cx="10" cy="20" r="1" fill="#fff" opacity=".06"/><circle cx="72" cy="58" r="1.2" fill="#fff" opacity=".04"/><circle cx="44" cy="83" r=".8" fill="#fff" opacity=".05"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<ellipse cx="910" cy="420" rx="510" ry="430" fill="url(#glow)" filter="url(#blur)"/>
+<rect width="1600" height="900" fill="url(#grain)"/>
+<!-- drowned shelves -->
+<g opacity=".76">
+  <path d="M105 240h1040v70H105z" fill="#14141b" stroke="#303044" stroke-width="3"/>
+  <path d="M105 470h1040v70H105z" fill="#111118" stroke="#303044" stroke-width="3"/>
+  <path d="M105 700h1040v70H105z" fill="#0d0d13" stroke="#303044" stroke-width="3"/>
+  <path d="M155 180h35v590h-35zM1075 180h35v590h-35z" fill="#1c1c27"/>
+</g>
+<!-- books and missing spaces -->
+<g stroke="#3a3a4d" stroke-width="2">
+  <path d="M210 105h72v135h-72z" fill="#1b2530"/><path d="M289 125h52v115h-52z" fill="#28182b"/><path d="M348 82h86v158h-86z" fill="#172522"/>
+  <path d="M465 118h58v122h-58z" fill="#24212f"/><path d="M535 94h96v146h-96z" fill="#202635"/>
+  <path d="M715 110h56v130h-56z" fill="#281a24"/><path d="M780 70h70v170h-70z" fill="#15252a"/>
+  <path d="M870 126h65v114h-65z" fill="#212232"/><path d="M944 92h82v148h-82z" fill="#241b2a"/>
+  <path d="M215 330h84v140h-84z" fill="#241a2e"/><path d="M310 360h61v110h-61z" fill="#17272b"/><path d="M383 316h71v154h-71z" fill="#202332"/>
+  <path d="M625 348h70v122h-70z" fill="#19252b"/><path d="M705 300h94v170h-94z" fill="#271a29"/><path d="M810 336h55v134h-55z" fill="#1e2533"/>
+  <path d="M900 330h85v140h-85z" fill="#18252a"/><path d="M995 375h55v95h-55z" fill="#2a1a29"/>
+  <path d="M185 557h72v143h-72z" fill="#1a2630"/><path d="M268 585h55v115h-55z" fill="#2a1b2a"/><path d="M335 545h90v155h-90z" fill="#182824"/>
+  <path d="M448 575h54v125h-54z" fill="#232333"/><path d="M520 530h94v170h-94z" fill="#2a1a28"/>
+  <path d="M810 560h75v140h-75z" fill="#18252c"/><path d="M895 530h92v170h-92z" fill="#251a2c"/><path d="M1000 585h55v115h-55z" fill="#1c2631"/>
+</g>
+<!-- glowing void in shelf -->
+<rect x="646" y="70" width="52" height="170" rx="5" fill="#050508" stroke="url(#edge)" stroke-width="5"/>
+<rect x="649" y="73" width="46" height="164" rx="4" fill="#0a0a12"/>
+<path d="M671 78v155" stroke="#93ff14" stroke-opacity=".65" stroke-width="2"/>
+<!-- escape book -->
+<g transform="translate(1110 215) rotate(-10 180 220)">
+  <path d="M36 116Q180 65 322 116v310Q180 375 36 426z" fill="url(#book)" stroke="#f8fff0" stroke-width="5"/>
+  <path d="M180 88v306" stroke="#050508" stroke-width="9" opacity=".7"/>
+  <path d="M50 126q65-25 116-8v280q-64-12-116 7zM194 118q61-17 114 8v279q-54-18-114-7z" fill="#f6f5ea" opacity=".92"/>
+  <path d="M73 169h70M73 198h65M73 227h75M73 256h58M216 169h62M216 198h70M216 227h55M216 256h73" stroke="#15151b" stroke-width="7" stroke-linecap="round" opacity=".68"/>
+  <path d="M31 112Q180 50 329 112" fill="none" stroke="url(#edge)" stroke-width="12"/>
+</g>
+<!-- waterline and wake -->
+<path d="M0 674c115-47 188 43 302 0s196-45 310 0 206 44 320 0 197-46 311 0 202 41 357 0v226H0z" fill="#06171f" opacity=".88"/>
+<path d="M0 695c115-47 188 43 302 0s196-45 310 0 206 44 320 0 197-46 311 0 202 41 357 0" fill="none" stroke="#1493ff" stroke-width="6" opacity=".55"/>
+<path d="M0 755c140-40 218 30 360 0s215-31 356 0 227 35 368 0 252-28 516 8" fill="none" stroke="#93ff14" stroke-width="3" opacity=".35"/>
+<!-- loose pages -->
+<g fill="#f7f6ec" stroke="#1493ff" stroke-width="3" opacity=".92">
+  <path d="M1090 160l95-43 31 74-94 37z"/><path d="M1260 92l82-31 28 68-84 31z"/><path d="M1378 190l91-18 18 78-92 18z"/>
+  <path d="M1185 53l61-30 24 53-62 29z"/><path d="M1460 86l66-10 12 55-67 10z"/>
+</g>
+<g stroke="#17171d" stroke-width="4" stroke-linecap="round" opacity=".55"><path d="M1114 155l54-24M1122 177l57-25M1280 92l47-18M1288 113l48-18M1401 213l56-11M1406 235l58-12"/></g>
+</svg>

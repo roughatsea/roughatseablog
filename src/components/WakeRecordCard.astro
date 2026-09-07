@@ -1,0 +1,143 @@
+---
+import type { WakeRecordView } from '../lib/wake';
+import { formatWakeDate, labelWakeValue } from '../lib/wake';
+
+interface Props {
+  record: WakeRecordView;
+  changedInLatestRun?: boolean;
+}
+
+const { record, changedInLatestRun = false } = Astro.props;
+const latest = record.latestObservation;
+---
+
+<a
+  class="wake-card glass-panel hover-lift"
+  href={record.detailPath}
+  data-wake-card
+  data-title={`${record.title} ${record.canonicalSubject.aliases.join(' ')}`.toLowerCase()}
+  data-lifecycle={record.current.lifecycle}
+  data-topics={record.topics.join('|')}
+  data-updated={Date.parse(record.current.updatedAt)}
+  data-first-observed={Date.parse(record.firstObservedAt)}
+  data-changed={changedInLatestRun ? 'true' : 'false'}
+  data-unresolved={record.openQuestions.length > 0 ? 'true' : 'false'}
+>
+  <div class="card-topline">
+    <span class={`status status-${record.current.lifecycle}`}>{labelWakeValue(record.current.lifecycle)}</span>
+    {changedInLatestRun && <span class="changed">Changed in latest run</span>}
+  </div>
+
+  <h2>{record.title}</h2>
+  <p class="dek">{record.dek}</p>
+
+  <div class="dimensions" aria-label="Current record dimensions">
+    <span><small>Evidence</small>{labelWakeValue(record.current.evidence)}</span>
+    <span><small>Attention</small>{labelWakeValue(record.current.attention)}</span>
+    <span><small>Cadence</small>{labelWakeValue(record.current.cadence)}</span>
+  </div>
+
+  <p class="latest"><strong>{latest.headline}.</strong> {latest.summary}</p>
+
+  <div class="topics" aria-label="Topics">
+    {record.topics.slice(0, 4).map((topic) => <span>#{topic}</span>)}
+  </div>
+
+  <footer>
+    <span>{record.observations.length} observations</span>
+    <span>{record.openQuestions.length} open questions</span>
+    <span>Updated {formatWakeDate(record.current.updatedAt)}</span>
+  </footer>
+</a>
+
+<style>
+  .wake-card {
+    border-radius: 16px;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    overflow: hidden;
+    padding: clamp(1.2rem, 3vw, 1.65rem);
+    position: relative;
+  }
+  .wake-card::before {
+    background: linear-gradient(90deg, var(--link-color), transparent 68%);
+    content: '';
+    height: 2px;
+    inset: 0 0 auto;
+    opacity: 0.65;
+    position: absolute;
+  }
+  .wake-card:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 3px;
+  }
+  .card-topline,
+  footer,
+  .topics,
+  .dimensions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .card-topline { gap: 0.55rem; justify-content: space-between; }
+  .status,
+  .changed {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.28rem 0.55rem;
+    text-transform: uppercase;
+  }
+  .status { color: var(--link-color); }
+  .status-disputed { border-style: dashed; }
+  .changed { color: var(--text-secondary); font-weight: 600; }
+  h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.55rem, 3vw, 2.05rem);
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+  .dek,
+  .latest { color: var(--text-secondary); margin: 0; }
+  .dek { font-family: var(--font-serif); font-size: 1.02rem; line-height: 1.65; }
+  .latest { font-size: 0.86rem; line-height: 1.55; }
+  .latest strong { color: var(--text-primary); }
+  .dimensions {
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    gap: 0;
+    padding: 0.75rem 0;
+  }
+  .dimensions span {
+    color: var(--text-primary);
+    flex: 1 1 8rem;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    padding-right: 0.75rem;
+  }
+  .dimensions small {
+    color: var(--text-secondary);
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .topics { gap: 0.4rem; }
+  .topics span {
+    color: var(--text-secondary);
+    font-size: 0.68rem;
+  }
+  footer {
+    color: var(--text-secondary);
+    font-size: 0.66rem;
+    gap: 0.55rem 1rem;
+    margin-top: auto;
+    padding-top: 0.25rem;
+  }
+</style>
