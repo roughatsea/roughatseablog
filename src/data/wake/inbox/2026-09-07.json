@@ -1,0 +1,298 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-07",
+  "article": {
+    "slug": "morning-soundings-2026-09-07",
+    "title": "Morning Soundings: A System Is More Than One State",
+    "publishedAt": "2026-09-07T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-07.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-07T04:59:00-07:00",
+    "sourceStateAsOf": "2026-09-07",
+    "notes": "Captured during the publication run from sources accessed on September 7, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-07-live-cell-transcriptome-self-reporting",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "Living cells can mail out their transcriptomes",
+      "canonicalSubject": {
+        "name": "Live-cell transcriptomics with engineered virus-like particles",
+        "kind": "synthetic-biology-study",
+        "aliases": [
+          "cellular self-reporting",
+          "virus-like particle live-cell transcriptomics"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "transcriptomics",
+        "synthetic-biology",
+        "rna-sequencing",
+        "longitudinal-measurement"
+      ],
+      "geography": [
+        "Massachusetts",
+        "United States"
+      ],
+      "canonicalClaim": "A Cell paper reports an engineered virus-like-particle system that exports messenger RNA from living mammalian cell populations, allowing repeated transcriptome sampling without lysing the cells.",
+      "knownFacts": [
+        "The system uses an engineered retroviral structural protein to package cellular RNA into virus-like particles that bud into culture medium.",
+        "Repeated medium samples tracked gene-expression changes during inflammatory stimulation of primary-cell spheroids and multi-day differentiation of pluripotent stem cells.",
+        "Engineered particle components enabled distinct cell types in co-culture to be read separately.",
+        "The researchers followed endothelial-cell programs inside an enclosed microphysiological co-culture system."
+      ],
+      "uncertainties": [
+        "The reported method measures cell populations rather than following an individually identified cell.",
+        "The degree to which expressing and exporting virus-like particles perturbs different cell types requires application-specific validation.",
+        "Performance in additional primary tissues, disease models, and long-duration experiments remains to be established."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed Cell paper reports validation across multiple mammalian model systems; Broad and MIT institutional reporting supplies accessible method detail and states the current single-cell limitation."
+      },
+      "sources": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42679822/",
+          "title": "Live-cell transcriptomics with engineered virus-like particles",
+          "publisher": "Cell",
+          "publishedAt": "2026-09-01",
+          "accessedAt": "2026-09-07",
+          "role": "primary-research",
+          "lineage": "najia-borrajo-live-cell-transcriptomics-2026"
+        },
+        {
+          "url": "https://news.mit.edu/2026/new-method-allows-following-gene-activity-over-time-same-cells-0904",
+          "title": "New method allows scientists to follow gene activity over time in the same cells",
+          "publisher": "MIT News",
+          "publishedAt": "2026-09-04",
+          "accessedAt": "2026-09-07",
+          "role": "institutional-reporting",
+          "lineage": "najia-borrajo-live-cell-transcriptomics-2026"
+        }
+      ],
+      "openQuestions": [
+        "Can cellular self-reporting be resolved reliably at the level of one identified cell?",
+        "How much does sustained particle production alter the transcriptional dynamics being measured?",
+        "Which biological systems benefit most from repeated live-cell transcriptome sampling?"
+      ],
+      "watchFor": [
+        {
+          "description": "Single-cell longitudinal transcriptome reporting",
+          "expectedWindow": null,
+          "trigger": "A study demonstrates repeated transcriptome-wide sampling from individually tracked living cells."
+        },
+        {
+          "description": "Independent adoption in disease or drug-response models",
+          "expectedWindow": null,
+          "trigger": "An independent laboratory applies the method to a longitudinal biological question and quantifies perturbation from the reporter system."
+        }
+      ],
+      "trackingTerms": [
+        "Cell 10.1016 j.cell.2026.08.005",
+        "cellular self-reporting transcriptomics",
+        "virus-like particle RNA export",
+        "live-cell longitudinal transcriptome"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The method has clear follow-up milestones in single-cell resolution, perturbation measurement, and independent biological use."
+      },
+      "selectionReason": "The work changes transcriptomics from a sequence reconstructed across sacrificed samples into a repeated readout of living populations.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-07-multistable-knitted-textiles",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "A knitted surface can remember which way it moved",
+      "canonicalSubject": {
+        "name": "Multistable textiles fabricated by weft knitting",
+        "kind": "materials-mechanics-study",
+        "aliases": [
+          "knitting multistability",
+          "snap-through knitted fabric switches"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "textiles",
+        "mechanics",
+        "craft",
+        "wearable-technology",
+        "interactive-art"
+      ],
+      "geography": [
+        "Massachusetts",
+        "Montana",
+        "Texas",
+        "United States"
+      ],
+      "canonicalClaim": "An Advanced Functional Materials paper demonstrates weft-knitted shells whose residual stresses and stripe geometry produce snap-through behavior and multiple stable shapes, enabling soft conductive switches.",
+      "knownFacts": [
+        "Plating different yarns onto opposite faces of dense knitted sheets creates unequal residual stresses and three-dimensional curvature.",
+        "The researchers identified geometric conditions under which knitted shells snap between stable configurations.",
+        "Conductive yarn converted the mechanical transitions into electrical switches with haptic feedback.",
+        "Demonstrations included two wearable devices and one reconfigurable lamp."
+      ],
+      "uncertainties": [
+        "The prototypes do not establish durability through washing, repeated wear, or large numbers of snap cycles.",
+        "Manufacturing yield and cost at garment scale were not established by the reported demonstrations.",
+        "Performance will depend on yarn properties and knit geometry beyond the tested design space."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed paper describes the mechanics, models, and prototypes; Harvard's ArtLab reporting documents an adjacent artistic installation using the same research lineage."
+      },
+      "sources": [
+        {
+          "url": "https://advanced.onlinelibrary.wiley.com/doi/10.1002/adfm.76385",
+          "title": "Knitting Multistability",
+          "publisher": "Advanced Functional Materials",
+          "publishedAt": "2026-06-15",
+          "accessedAt": "2026-09-07",
+          "role": "primary-research",
+          "lineage": "mahadevan-knitting-multistability-2026"
+        },
+        {
+          "url": "https://seas.harvard.edu/news/fabric-holds-its-shape",
+          "title": "Fabric That Holds Its Shape",
+          "publisher": "Harvard John A. Paulson School of Engineering and Applied Sciences",
+          "publishedAt": "2026-02-26",
+          "accessedAt": "2026-09-07",
+          "role": "institutional-reporting",
+          "lineage": "mahadevan-knitting-multistability-2026"
+        }
+      ],
+      "openQuestions": [
+        "How stable are the mechanical states after washing, abrasion, and thousands of transitions?",
+        "Can design software translate a desired force response directly into a machine-knitting pattern?",
+        "Which applications benefit from a switch that combines visible form, touch, and electrical state?"
+      ],
+      "watchFor": [
+        {
+          "description": "Durability and manufacturability testing",
+          "expectedWindow": null,
+          "trigger": "A follow-up reports wash, wear, cycle-life, or industrial knitting results for multistable textiles."
+        },
+        {
+          "description": "Design automation for multistable knit geometry",
+          "expectedWindow": null,
+          "trigger": "A tool compiles a target mechanical response into a validated knit pattern."
+        }
+      ],
+      "trackingTerms": [
+        "Advanced Functional Materials 76385",
+        "Kausalya Mahadevan multistable knit",
+        "snap-through textile switch",
+        "Knitted Light and Responsive Textiles"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The research invites follow-up on durability, computational design, industrial fabrication, and real wearable use."
+      },
+      "selectionReason": "It treats textile craft as a mechanical design language capable of storing state in geometry and touch.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-07-saturn-south-polar-decagon",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "Saturn has begun drawing a decagon",
+      "canonicalSubject": {
+        "name": "Emerging decagonal wave around Saturn's south pole",
+        "kind": "planetary-atmosphere-finding",
+        "aliases": [
+          "Saturn south-polar decagon",
+          "ten-sided Saturn atmospheric wave"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "saturn",
+        "planetary-science",
+        "atmospheric-dynamics",
+        "longitudinal-observation",
+        "amateur-astronomy"
+      ],
+      "geography": [
+        "Saturn"
+      ],
+      "canonicalClaim": "A Science Advances study identifies a newly emerging ten-sided wave in a jet stream around Saturn's south pole, traced in Hubble observations to 2023 and first noticed in ground-based imagery by planetary observers.",
+      "knownFacts": [
+        "Ground-based images from 2024 and 2025 revealed an increasingly clear undulating band around Saturn's south pole.",
+        "Hubble archive analysis found subtler evidence of the feature reaching back to 2023.",
+        "Cassini observations from 2004 through 2017 showed no evidence of a comparable long-lived pattern.",
+        "The wave appears at slightly different positions in different wavelengths, consistent with a structure spanning multiple atmospheric layers."
+      ],
+      "uncertainties": [
+        "The physical mechanism that produced the decagonal wave has not been established.",
+        "It is unknown whether the feature will stabilize like Saturn's northern hexagon or disappear.",
+        "Its relationship to seasonal change and the deeper jet structure remains to be modeled."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed paper combines Hubble and ground-based observations; NASA's mission account documents the observational sequence, wavelength behavior, and unresolved formation mechanism."
+      },
+      "sources": [
+        {
+          "url": "https://www.science.org/doi/10.1126/sciadv.aee4251",
+          "title": "A decagon wave around Saturn's south pole",
+          "publisher": "Science Advances",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-07",
+          "role": "primary-research",
+          "lineage": "sanchez-lavega-saturn-decagon-2026"
+        },
+        {
+          "url": "https://science.nasa.gov/missions/hubble/nasas-hubble-tracks-new-decagon-encircling-saturns-south-pole/",
+          "title": "NASA's Hubble Tracks New Decagon Encircling Saturn's South Pole",
+          "publisher": "NASA",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-07",
+          "role": "official-primary",
+          "lineage": "sanchez-lavega-saturn-decagon-2026"
+        }
+      ],
+      "openQuestions": [
+        "What atmospheric instability selected a ten-sided wave at Saturn's south pole?",
+        "Will the decagon strengthen into a long-lived structure or disperse?",
+        "How does its vertical structure compare with the durable northern hexagon?"
+      ],
+      "watchFor": [
+        {
+          "description": "Continued evolution in annual Hubble observations",
+          "expectedWindow": "2026-2028",
+          "trigger": "New Hubble observations show the decagon strengthening, shifting, or dissolving."
+        },
+        {
+          "description": "Webb spectroscopy or atmospheric modeling",
+          "expectedWindow": null,
+          "trigger": "A study constrains the wave's vertical structure or identifies a plausible formation mechanism."
+        }
+      ],
+      "trackingTerms": [
+        "Science Advances aee4251",
+        "Saturn south pole decagon",
+        "Hubble OPAL Saturn ten-sided wave",
+        "Sanchez-Lavega decagon Saturn"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "Annual Hubble observations and planned modeling create concrete future tests of the wave's persistence and mechanism."
+      },
+      "selectionReason": "The discovery shows how repeated observation turns a planetary image into a record of atmospheric change and lets amateur and professional evidence reinforce each other.",
+      "reviewAfter": "2027-09-01",
+      "attentionSnapshot": null
+    }
+  ]
+}
