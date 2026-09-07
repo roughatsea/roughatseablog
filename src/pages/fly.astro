@@ -1,0 +1,22 @@
+---
+import FlyExperience from '../components/fly/FlyExperience';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101724" />
+    <meta name="description" content="A quiet voyage through endless alien worlds. Fly the canyons, climb into the stars, and share your journey." />
+    <title>Fly · Rough at Sea</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://www.roughatsea.com/fly" />
+  </head>
+  <body>
+    <FlyExperience client:only="react">
+      <div slot="fallback" style="height:100dvh;display:grid;place-items:center;background:#101724;color:#e7edf1;font:16px system-ui">Preparing your spacecraft…</div>
+    </FlyExperience>
+    <noscript>This flight needs JavaScript. Enable it, then reload to begin your journey.</noscript>
+  </body>
+</html>
