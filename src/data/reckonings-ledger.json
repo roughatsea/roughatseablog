@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-06T06:00:00-07:00",
+  "updatedAt": "2026-09-07T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -208,6 +208,31 @@
       ],
       "relatedLessons": [
         "daily-reckoning-2026-08-29"
+      ]
+    },
+    {
+      "date": "2026-09-07",
+      "slug": "daily-reckoning-2026-09-07",
+      "title": "Can One More Seat Make a State Lose Representation?",
+      "area": "Discrete mathematics and social choice",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Fractions and percentages",
+        "Rounding down to a whole number",
+        "Comparing fractional remainders"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "apportionment",
+        "Hamilton's method",
+        "largest-remainder method",
+        "Alabama paradox",
+        "house monotonicity",
+        "proportional representation",
+        "discrete allocation"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31"
       ]
     }
   ]

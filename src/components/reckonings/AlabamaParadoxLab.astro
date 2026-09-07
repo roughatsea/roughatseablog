@@ -1,0 +1,220 @@
+---
+const regions = [
+  { id: 'aster', name: 'Aster', population: 6, seats: 4, quota: '4 + 2/7', remainder: '2/7' },
+  { id: 'brine', name: 'Brine', population: 6, seats: 4, quota: '4 + 2/7', remainder: '2/7' },
+  { id: 'cairn', name: 'Cairn', population: 2, seats: 2, quota: '1 + 3/7', remainder: '3/7' },
+];
+---
+
+<figure class="apportionment-lab reckoning-visual" data-apportionment-lab data-house-size="10">
+  <header>
+    <p>Interactive apportionment</p>
+    <h3>Watch the leftover seat change hands</h3>
+  </header>
+
+  <fieldset class="house-switch">
+    <legend>Total seats to distribute</legend>
+    <label>
+      <input type="radio" name="house-size" value="10" checked data-house-choice />
+      <span>10 seats</span>
+    </label>
+    <label>
+      <input type="radio" name="house-size" value="11" data-house-choice />
+      <span>11 seats</span>
+    </label>
+  </fieldset>
+
+  <div class="region-grid" aria-live="polite">
+    {regions.map((region) => (
+      <section class={`region region-${region.id}`} data-region={region.id}>
+        <div class="region-heading">
+          <h4>{region.name}</h4>
+          <p>{region.population},000 people</p>
+        </div>
+
+        <div class="population-track" aria-hidden="true">
+          <span style={`--population: ${region.population};`}></span>
+        </div>
+
+        <dl>
+          <div>
+            <dt>Exact quota</dt>
+            <dd data-quota>{region.quota}</dd>
+          </div>
+          <div>
+            <dt>Remainder</dt>
+            <dd data-remainder>{region.remainder}</dd>
+          </div>
+        </dl>
+
+        <div class="seat-row" data-seat-row aria-label={`${region.seats} seats assigned to ${region.name}`}>
+          {Array.from({ length: 5 }, (_, index) => (
+            <span class:list={['seat', { filled: index < region.seats }]} aria-hidden="true"></span>
+          ))}
+        </div>
+        <p class="seat-total"><strong data-seat-total>{region.seats}</strong> seats</p>
+        <p class="bonus" data-bonus>{region.id === 'cairn' ? 'Receives the leftover seat' : 'No leftover seat'}</p>
+      </section>
+    ))}
+  </div>
+
+  <div class="remainder-race">
+    <h4>Fractional remainders</h4>
+    <div class="race-row" data-race="aster">
+      <span>Aster</span>
+      <div class="race-track"><i style="--remainder-width: 28.571%;"></i></div>
+      <strong>2/7</strong>
+    </div>
+    <div class="race-row" data-race="brine">
+      <span>Brine</span>
+      <div class="race-track"><i style="--remainder-width: 28.571%;"></i></div>
+      <strong>2/7</strong>
+    </div>
+    <div class="race-row winner" data-race="cairn">
+      <span>Cairn</span>
+      <div class="race-track"><i style="--remainder-width: 42.857%;"></i></div>
+      <strong>3/7</strong>
+    </div>
+    <p class="allocation-note" data-allocation-note>
+      Nine seats come from whole-number quotas. Cairn has the largest remainder, so Cairn receives the tenth seat.
+    </p>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> every exact quota rises when the total grows from 10 seats to
+    11. Cairn's remainder also rises, from <span>3/7</span> to <span>4/7</span>. Aster's and Brine's
+    remainders rise even faster and pass Cairn's, so the two new leftover seats go to them. Cairn
+    falls from two seats to one.
+  </figcaption>
+</figure>
+
+<script>
+  const scenarios = {
+    10: {
+      aster: { quota: '4 + 2/7', remainder: '2/7', width: 28.571, seats: 4, bonus: false },
+      brine: { quota: '4 + 2/7', remainder: '2/7', width: 28.571, seats: 4, bonus: false },
+      cairn: { quota: '1 + 3/7', remainder: '3/7', width: 42.857, seats: 2, bonus: true },
+      note: 'Nine seats come from whole-number quotas. Cairn has the largest remainder, so Cairn receives the tenth seat.',
+    },
+    11: {
+      aster: { quota: '4 + 5/7', remainder: '5/7', width: 71.429, seats: 5, bonus: true },
+      brine: { quota: '4 + 5/7', remainder: '5/7', width: 71.429, seats: 5, bonus: true },
+      cairn: { quota: '1 + 4/7', remainder: '4/7', width: 57.143, seats: 1, bonus: false },
+      note: 'Nine seats come from whole-number quotas. Aster and Brine have the two largest remainders, so they receive seats ten and eleven.',
+    },
+  } as const;
+
+  document.querySelectorAll('[data-apportionment-lab]').forEach((figure) => {
+    const choices = figure.querySelectorAll('[data-house-choice]');
+    const note = figure.querySelector('[data-allocation-note]');
+    const regionNames = { aster: 'Aster', brine: 'Brine', cairn: 'Cairn' } as const;
+
+    const render = (houseSize: 10 | 11) => {
+      const scenario = scenarios[houseSize];
+      figure.setAttribute('data-house-size', String(houseSize));
+
+      (Object.keys(scenario).filter((key) => key !== 'note') as Array<'aster' | 'brine' | 'cairn'>).forEach((id) => {
+        const values = scenario[id];
+        const region = figure.querySelector(`[data-region="${id}"]`);
+        const race = figure.querySelector(`[data-race="${id}"]`);
+        if (!region || !race) return;
+
+        const quota = region.querySelector('[data-quota]');
+        const remainder = region.querySelector('[data-remainder]');
+        const total = region.querySelector('[data-seat-total]');
+        const bonus = region.querySelector('[data-bonus]');
+        const seatRow = region.querySelector('[data-seat-row]');
+        const seats = region.querySelectorAll('.seat');
+        const raceBar = race.querySelector('i');
+        const raceValue = race.querySelector('strong');
+
+        if (quota) quota.textContent = values.quota;
+        if (remainder) remainder.textContent = values.remainder;
+        if (total) total.textContent = String(values.seats);
+        if (bonus) bonus.textContent = values.bonus ? 'Receives a leftover seat' : 'No leftover seat';
+        if (seatRow) seatRow.setAttribute('aria-label', `${values.seats} seats assigned to ${regionNames[id]}`);
+        seats.forEach((seat, index) => seat.classList.toggle('filled', index < values.seats));
+        if (raceBar instanceof HTMLElement) raceBar.style.setProperty('--remainder-width', `${values.width}%`);
+        if (raceValue) raceValue.textContent = values.remainder;
+        race.classList.toggle('winner', values.bonus);
+      });
+
+      if (note) note.textContent = scenario.note;
+    };
+
+    choices.forEach((choice) => {
+      choice.addEventListener('change', () => {
+        if (choice instanceof HTMLInputElement && choice.checked) {
+          render(Number(choice.value) as 10 | 11);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .apportionment-lab {
+    --aster: #087dcc;
+    --brine: #d9007e;
+    --cairn: #4f9300;
+    background: radial-gradient(circle at 88% 5%, color-mix(in srgb, var(--brine) 11%, transparent), transparent 18rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .apportionment-lab { --aster: #1493ff; --brine: #ff1493; --cairn: #93ff14; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 600; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .house-switch { border: 0; display: flex; gap: .6rem; margin: 0 0 1rem; padding: 0; }
+  .house-switch legend { color: var(--text-secondary); font-size: .72rem; margin-bottom: .45rem; }
+  .house-switch label { cursor: pointer; }
+  .house-switch input { height: 1px; opacity: 0; position: absolute; width: 1px; }
+  .house-switch span { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); display: block; font-size: .82rem; font-weight: 650; padding: .45rem .85rem; }
+  .house-switch input:checked + span { background: color-mix(in srgb, var(--aster) 12%, var(--bg-color)); border-color: var(--aster); color: var(--text-primary); }
+  .house-switch input:focus-visible + span { outline: 3px solid color-mix(in srgb, var(--aster) 48%, transparent); outline-offset: 3px; }
+  .region-grid { display: grid; gap: .75rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .region { --region-color: var(--aster); background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; min-width: 0; padding: .85rem; }
+  .region-brine { --region-color: var(--brine); }
+  .region-cairn { --region-color: var(--cairn); }
+  .region-heading { align-items: baseline; display: flex; gap: .5rem; justify-content: space-between; }
+  .region h4, .remainder-race h4 { color: var(--text-primary); font-size: .95rem; margin: 0; }
+  .region-heading p { color: var(--text-secondary); font-size: .68rem; margin: 0; }
+  .population-track { background: var(--surface-color); border-radius: 999px; height: .42rem; margin: .55rem 0 .8rem; overflow: hidden; }
+  .population-track span { background: var(--region-color); display: block; height: 100%; width: calc(var(--population) / 6 * 100%); }
+  dl { display: grid; gap: .3rem; grid-template-columns: 1fr 1fr; margin: 0; }
+  dl div { min-width: 0; }
+  dt { color: var(--text-secondary); font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
+  dd { color: var(--text-primary); font-size: .8rem; font-variant-numeric: tabular-nums; margin: .1rem 0 0; }
+  .seat-row { display: flex; gap: .28rem; margin-top: .85rem; min-height: 1.05rem; }
+  .seat { border: 2px solid var(--region-color); border-radius: 3px 3px 50% 50%; display: block; height: .95rem; opacity: .3; width: .95rem; }
+  .seat.filled { background: var(--region-color); opacity: 1; }
+  .seat-total { color: var(--text-secondary); font-size: .72rem; margin: .35rem 0 0; }
+  .seat-total strong { color: var(--region-color); font-size: 1rem; }
+  .bonus { color: var(--text-secondary); font-size: .65rem; margin: .25rem 0 0; min-height: 1.2em; }
+  .remainder-race { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; margin-top: .75rem; padding: .85rem; }
+  .remainder-race h4 { margin-bottom: .7rem; }
+  .race-row { align-items: center; display: grid; gap: .55rem; grid-template-columns: 3.2rem 1fr 2.4rem; margin: .42rem 0; }
+  .race-row > span, .race-row > strong { color: var(--text-secondary); font-size: .7rem; }
+  .race-row > strong { font-variant-numeric: tabular-nums; text-align: right; }
+  .race-track { background: var(--surface-color); border-radius: 999px; height: .7rem; overflow: hidden; }
+  .race-track i { background: var(--aster); border-radius: inherit; display: block; height: 100%; width: var(--remainder-width); }
+  [data-race='brine'] i { background: var(--brine); }
+  [data-race='cairn'] i { background: var(--cairn); }
+  .race-row.winner > span, .race-row.winner > strong { color: var(--text-primary); font-weight: 700; }
+  .race-row.winner .race-track { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+  .allocation-note { border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: .75rem; line-height: 1.5; margin: .8rem 0 0; padding-top: .7rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  figcaption span { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .seat, .race-track i { transition: background-color .16s ease, opacity .16s ease, width .22s ease; }
+  @media (max-width: 660px) {
+    .apportionment-lab { width: calc(100vw - 1.5rem); }
+    .region-grid { grid-template-columns: 1fr; }
+    .region-heading { justify-content: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) { .apportionment-lab * { transition: none !important; } }
+</style>

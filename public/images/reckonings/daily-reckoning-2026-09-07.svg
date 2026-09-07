@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A proportional allocation fractures when one more seat appears</title>
+  <desc id="desc">Three neon population currents cross a dark maritime drafting grid toward two rows of seat markers. In the longer row, the smallest green current reaches one fewer seat, illustrating the Alabama paradox.</desc>
+  <defs>
+    <radialGradient id="sea" cx="48%" cy="42%" r="74%">
+      <stop offset="0" stop-color="#102c44" />
+      <stop offset=".52" stop-color="#071728" />
+      <stop offset="1" stop-color="#030a13" />
+    </radialGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" fill="none" stroke="#67bdf0" stroke-opacity=".105" stroke-width="1" />
+    </pattern>
+    <pattern id="minor" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path d="M14 0H0V14" fill="none" stroke="#67bdf0" stroke-opacity=".035" stroke-width="1" />
+    </pattern>
+    <filter id="cyanGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="8" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="pinkGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="9" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="greenGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="10" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)" />
+  <rect x="42" y="42" width="1516" height="816" rx="24" fill="url(#minor)" stroke="#1493ff" stroke-opacity=".32" stroke-width="2" />
+  <rect x="42" y="42" width="1516" height="816" rx="24" fill="url(#grid)" />
+
+  <g fill="none" stroke="#4cb6ee" stroke-opacity=".35">
+    <circle cx="800" cy="450" r="360" stroke-dasharray="3 14" />
+    <circle cx="800" cy="450" r="287" stroke-dasharray="2 18" />
+    <path d="M116 450H1484M800 92V808" stroke-dasharray="7 13" />
+  </g>
+
+  <g opacity=".92">
+    <path d="M164 267C390 267 421 343 635 343S911 248 1129 267" fill="none" stroke="#1493ff" stroke-width="17" stroke-linecap="round" filter="url(#cyanGlow)" />
+    <path d="M164 450C390 450 421 484 635 484S911 410 1129 430" fill="none" stroke="#ff1493" stroke-width="17" stroke-linecap="round" filter="url(#pinkGlow)" />
+    <path d="M164 633C357 633 463 594 635 594S901 610 1129 598" fill="none" stroke="#93ff14" stroke-width="8" stroke-linecap="round" filter="url(#greenGlow)" />
+  </g>
+
+  <g fill="#06111f" stroke-width="6">
+    <circle cx="164" cy="267" r="37" stroke="#1493ff" />
+    <circle cx="164" cy="450" r="37" stroke="#ff1493" />
+    <circle cx="164" cy="633" r="23" stroke="#93ff14" />
+  </g>
+  <g fill="none" stroke-linecap="round" opacity=".8">
+    <path d="M119 323H305M119 342H305M119 361H257" stroke="#1493ff" stroke-width="3" />
+    <path d="M119 506H305M119 525H305M119 544H257" stroke="#ff1493" stroke-width="3" />
+    <path d="M119 681H247" stroke="#93ff14" stroke-width="3" />
+  </g>
+
+  <g transform="translate(1090 180)">
+    <path d="M0 0H362V236H0Z" fill="#06111f" fill-opacity=".76" stroke="#67bdf0" stroke-opacity=".28" stroke-width="2" />
+    <path d="M0 302H362V538H0Z" fill="#06111f" fill-opacity=".76" stroke="#67bdf0" stroke-opacity=".28" stroke-width="2" />
+
+    <g stroke-width="4">
+      <g fill="#1493ff" stroke="#9cd9ff" filter="url(#cyanGlow)">
+        <circle cx="45" cy="65" r="14" /><circle cx="103" cy="65" r="14" /><circle cx="161" cy="65" r="14" /><circle cx="219" cy="65" r="14" />
+        <circle cx="45" cy="367" r="14" /><circle cx="103" cy="367" r="14" /><circle cx="161" cy="367" r="14" /><circle cx="219" cy="367" r="14" /><circle cx="277" cy="367" r="14" />
+      </g>
+      <g fill="#ff1493" stroke="#ff9bd5" filter="url(#pinkGlow)">
+        <circle cx="45" cy="125" r="14" /><circle cx="103" cy="125" r="14" /><circle cx="161" cy="125" r="14" /><circle cx="219" cy="125" r="14" />
+        <circle cx="45" cy="427" r="14" /><circle cx="103" cy="427" r="14" /><circle cx="161" cy="427" r="14" /><circle cx="219" cy="427" r="14" /><circle cx="277" cy="427" r="14" />
+      </g>
+      <g fill="#93ff14" stroke="#d0ff99" filter="url(#greenGlow)">
+        <circle cx="74" cy="190" r="14" /><circle cx="132" cy="190" r="14" />
+        <circle cx="74" cy="492" r="14" />
+      </g>
+      <circle cx="132" cy="492" r="14" fill="none" stroke="#93ff14" stroke-dasharray="5 7" opacity=".4" />
+    </g>
+
+    <path d="M325 148v83m-18-18 18 18 18-18" fill="none" stroke="#f6fbff" stroke-opacity=".68" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <path d="M1068 598c-51 0-78-1-112-19-29-16-43-43-68-62" fill="none" stroke="#93ff14" stroke-opacity=".45" stroke-width="3" stroke-dasharray="8 12" />
+  <circle cx="883" cy="513" r="7" fill="#93ff14" filter="url(#greenGlow)" />
+</svg>

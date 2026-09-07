@@ -1,0 +1,225 @@
+---
+title: "Can One More Seat Make a State Lose Representation?"
+description: "The largest-remainder method turns fair fractional shares into whole seats—and can punish a state when the legislature grows."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-07.svg"
+heroImageAlt: "Three cyan, magenta, and green population currents cross a dark maritime drafting grid toward two arrays of seat markers; the larger array contains one fewer green marker, illustrating a loss caused by adding a seat."
+date: 2026-09-07
+publishedAt: 2026-09-07T06:00:00-07:00
+area: "Discrete mathematics and social choice"
+difficulty: "Intermediate"
+prerequisites:
+  - "Fractions and percentages"
+  - "Rounding down to a whole number"
+  - "Comparing fractional remainders"
+readTimeMinutes: 10
+tags:
+  - daily-reckoning
+  - discrete-mathematics
+  - social-choice
+  - apportionment
+  - alabama-paradox
+  - proportional-representation
+---
+
+import AlabamaParadoxLab from '../../components/reckonings/AlabamaParadoxLab.astro';
+
+Three regions must divide ten seats in a council. Aster has 6,000 people, Brine has 6,000, and Cairn has 2,000. Their populations are in the ratio $6:6:2$, so a proportional division gives the seats
+
+$$
+4.2857ldots,qquad 4.2857ldots,qquad 1.4286ldots.
+$$
+
+No person can occupy $0.4286$ of a council seat. Suppose the council rounds every share down, then gives the unassigned seat to the region with the largest fractional remainder. Aster receives four seats, Brine receives four, and Cairn receives two.
+
+Now enlarge the council from ten seats to eleven. Every region's proportional share increases. Yet the same rule awards five seats to Aster, five to Brine, and **one** to Cairn.
+
+Cairn loses a representative because the council gained one.
+
+This failure of ordinary expectations is called the **Alabama paradox**. The name comes from a calculation made after the United States census of 1880, but the paradox can occur whenever a fixed number of indivisible items must be divided proportionally.
+
+## A fair share meets a whole number
+
+The rule in the opening puzzle is known as the **largest-remainder method**. In the history of United States congressional apportionment, the same rule is usually called **Hamilton's method**.
+
+Here is the rule in symbols. Let
+
+- $n$ be the number of regions;
+- $p_i$ be the population of region $i$, where $i$ identifies one region from $1$ through $n$;
+- $P=p_1+p_2+\cdots+p_n$ be the total population; and
+- $H$ be the positive whole number of seats to distribute.
+
+Region $i$ has an exact proportional share, or **standard quota**, of
+
+$$
+q_i=H\frac{p_i}{P}.
+$$
+
+The floor symbol $\lfloor q_i\rfloor$ means “round $q_i$ down to the nearest whole number.” Hamilton's method proceeds in three steps:
+
+1. Give each region its lower quota $\lfloor q_i\rfloor$.
+2. Count the seats still unassigned:
+
+   $$
+   L=H-\sum_{i=1}^{n}\lfloor q_i\rfloor.
+   $$
+
+3. Give one additional seat to each of the $L$ regions with the largest fractional remainders $q_i-\lfloor q_i\rfloor$.
+
+The letter $L$ names the number of leftover seats. If two regions tie for the last one, the governing rules need a separate tie-breaker. No tie-breaker is needed in our example: Aster and Brine tie when two leftover seats are available.
+
+The interactive diagram below keeps the three populations fixed. Switch between ten and eleven seats, then compare both the seat markers and the remainder bars.
+
+<AlabamaParadoxLab />
+
+## Worked example: where Cairn's seat goes
+
+The total population is
+
+$$
+P=6{,}000+6{,}000+2{,}000=14{,}000.
+$$
+
+Because each population contains a factor of $1{,}000$, we can calculate with $6$, $6$, and $2$ without changing any proportions.
+
+### With ten seats
+
+Aster and Brine have the same quota:
+
+$$
+q_{\mathrm A}=q_{\mathrm B}=10\frac{6}{14}=\frac{30}{7}=4+\frac{2}{7}.
+$$
+
+Cairn's quota is
+
+$$
+q_{\mathrm C}=10\frac{2}{14}=\frac{10}{7}=1+\frac{3}{7}.
+$$
+
+Rounding down assigns $4+4+1=9$ seats. One seat remains. Cairn's remainder, $3/7$, exceeds Aster's and Brine's remainders of $2/7$, so Cairn receives the leftover seat:
+
+$$
+(4,4,2).
+$$
+
+### With eleven seats
+
+Recalculate every quota because the total number of seats has changed:
+
+$$
+q_{\mathrm A}=q_{\mathrm B}=11\frac{6}{14}=\frac{33}{7}=4+\frac{5}{7},
+$$
+
+and
+
+$$
+q_{\mathrm C}=11\frac{2}{14}=\frac{11}{7}=1+\frac{4}{7}.
+$$
+
+Rounding down still assigns only $4+4+1=9$ seats, so two seats remain. The two largest remainders are now Aster's and Brine's, both $5/7$. Those regions receive the two leftover seats:
+
+$$
+(5,5,1).
+$$
+
+Cairn's quota rose from $1+3/7$ to $1+4/7$. Cairn lost because the larger regions' fractional parts rose faster, from $2/7$ to $5/7$, and overtook Cairn's $4/7$ remainder. Hamilton's method reruns the remainder contest from scratch when $H$ changes; it does not preserve seats awarded in the previous contest.
+
+## Try another house size
+
+### Problem 1
+
+Use Hamilton's method to divide **nine** seats among Aster, Brine, and Cairn, whose populations remain in the ratio $6:6:2$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+The quotas are
+
+$$
+q_{\mathrm A}=q_{\mathrm B}=9\frac{6}{14}=\frac{27}{7}=3+\frac{6}{7},
+$$
+
+and
+
+$$
+q_{\mathrm C}=9\frac{2}{14}=\frac{9}{7}=1+\frac{2}{7}.
+$$
+
+The lower quotas assign $3+3+1=7$ seats. The two leftover seats go to Aster and Brine because each has remainder $6/7$, larger than Cairn's $2/7$. The result is
+
+$$
+(4,4,1).
+$$
+
+</details>
+
+### Problem 2
+
+Now divide **twelve** seats among the same regions. Does Cairn recover its second seat?
+
+<details>
+<summary>Reveal the solution</summary>
+
+Aster's and Brine's quotas are
+
+$$
+q_{\mathrm A}=q_{\mathrm B}=12\frac{6}{14}=\frac{36}{7}=5+\frac{1}{7}.
+$$
+
+Cairn's quota is
+
+$$
+q_{\mathrm C}=12\frac{2}{14}=\frac{12}{7}=1+\frac{5}{7}.
+$$
+
+The lower quotas assign $5+5+1=11$ seats. Cairn has the largest remainder, $5/7$, so Cairn receives the final seat. The allocation is
+
+$$
+(5,5,2).
+$$
+
+Yes. Cairn has one seat with nine seats available, two with ten, one with eleven, and two with twelve. More total seats do not produce a steady climb under Hamilton's method.
+
+</details>
+
+## The paradox came out of the census
+
+Apportionment was never a bloodless rounding exercise in the United States. The Constitution tied representation in the House of Representatives to a census, so a choice among rounding rules changed the political weight of entire states.
+
+The original constitutional formula was also built around slavery. Article I counted free persons and three-fifths of “all other Persons” when distributing representatives and direct taxes. That arrangement increased the representation of slaveholding states while denying enslaved people any political agency. Section 2 of the Fourteenth Amendment, ratified in 1868, replaced the original population rule with a count of whole persons and threatened reduced representation when a state denied voting rights to eligible male citizens. The [National Archives' constitutional texts](https://www.archives.gov/founding-docs/constitution-transcript) and [Fourteenth Amendment text](https://www.archives.gov/founding-docs/amendments-11-27) preserve both formulas.
+
+The largest-remainder method entered the dispute early. Alexander Hamilton supported an apportionment bill that used the approach after the 1790 census. On April 5, 1792, George Washington rejected that bill in the first presidential veto. Congress then passed a different calculation associated with Thomas Jefferson. The [National Archives' account of the first veto](https://prologue.blogs.archives.gov/2022/04/04/the-1790-census-and-the-first-veto/) shows cabinet members arguing not only about numerical equality but also about what the Constitution permitted.
+
+Congress later used the Vinton–Hamilton method for apportionments based on the censuses from 1850 through 1900, according to the Census Bureau's [historical survey of apportionment methods](https://www.census.gov/topics/public-sector/congressional-apportionment/about/historical-perspective.html).
+
+After the 1880 census, Census Office chief clerk C. W. Seaton calculated outcomes for House sizes from 275 through 350. The [University of Wisconsin's apportionment notes](https://people.math.wisc.edu/~jwrobbin/141dir/apportionment.html) record Seaton's finding: Alabama would receive eight seats in a 299-member House but only seven in a 300-member House. A [Congressional Research Service history](https://www.everycrsreport.com/reports/RL31074.html) records Alabama's quota rising from about $7.646$ to $7.671$ while the remainders of Illinois and Texas passed Alabama's remainder. The arithmetic did not merely look peculiar: a rounding rule was deciding which state gained a vote in Congress.
+
+The politics continued long after Alabama supplied the paradox's name. Following the 1920 census, lawmakers from rural states that stood to lose influence prevented any reapportionment at all. The [Census Bureau's legislative history](https://www.census.gov/about/history/historical-censuses-and-surveys/census-programs-surveys/decennial-census/legislation-1890-present.html) explains that the Reapportionment Act of 1929 later automated the process. In 1941 Congress adopted the method of equal proportions, also called the Huntington–Hill method, for future censuses.
+
+## Where the mathematics still matters
+
+The United States no longer uses Hamilton's method for the House. Under the present method, each state receives one seat first; priority values then assign seats 51 through 435. The Census Bureau provides the current [equal-proportions formula and procedure](https://www.census.gov/topics/public-sector/congressional-apportionment/about/computing.html).
+
+Largest-remainder rules remain part of electoral mathematics elsewhere. Party-list proportional-representation systems convert votes into whole seats, and some use a Hare quota followed by largest remainders. The [ACE Electoral Knowledge Network glossary](https://aceproject.org/ace-fr/topics/es/electoral-systems-glossary/mobile_browsing/onePag) defines both the quota and the allocation rule; International IDEA's [survey of open-list systems](https://www.idea.int/sites/default/files/publications/open-list-proportional-representation.pdf) documents concrete variants.
+
+The same arithmetic can appear outside elections. Imagine allocating a fixed number of indivisible clinic shifts among districts according to patient volume, or shared processors among research groups according to demand. Those examples are hypothetical, but the risk is real: if an organization uses largest remainders, expanding the resource pool can make one claimant lose a unit. Testing an allocation algorithm at several nearby totals can expose the behavior before policy turns it into a surprise.
+
+Mathematicians Michel Balinski and H. Peyton Young later studied which fairness requirements can coexist. Their 1974 [*Proceedings of the National Academy of Sciences* paper](https://www.pnas.org/doi/10.1073/pnas.71.11.4602) placed the congressional problem inside a broader theory of apportionment. One lesson from that theory is uncomfortable but useful: “proportional” does not identify a unique whole-number answer. A society must decide which failures it is prepared to tolerate, then encode that choice in a rule people can inspect.
+
+## One idea to remember
+
+Hamilton's method gives leftover seats to the largest fractional remainders. Adding a seat changes every remainder, so a previous winner can lose the new race—and lose a seat it already had.
+
+Continue with [Euler trails](/reckonings/daily-reckoning-2026-08-31/) for another case where an everyday civic problem becomes discrete mathematics. Then compare Hamilton's method with divisor methods, which assign new seats sequentially and avoid the Alabama paradox at the cost of different notions of proportional fairness.
+
+## Sources
+
+- United States Census Bureau, [“Historical Perspective”](https://www.census.gov/topics/public-sector/congressional-apportionment/about/historical-perspective.html), updated November 22, 2021.
+- United States Census Bureau, [“Computing Apportionment”](https://www.census.gov/topics/public-sector/congressional-apportionment/about/computing.html), updated November 22, 2021.
+- United States Census Bureau, [“Apportionment Legislation 1890–Present”](https://www.census.gov/about/history/historical-censuses-and-surveys/census-programs-surveys/decennial-census/legislation-1890-present.html), updated August 14, 2024.
+- National Archives, [“The 1790 Census and the First Veto”](https://prologue.blogs.archives.gov/2022/04/04/the-1790-census-and-the-first-veto/), April 4, 2022.
+- National Archives, [*The Constitution of the United States: A Transcription*](https://www.archives.gov/founding-docs/constitution-transcript) and [“Amendments 11–27”](https://www.archives.gov/founding-docs/amendments-11-27).
+- Royce Crocker, [*The House of Representatives Apportionment Formula: An Analysis of Proposals for Change and Their Impact on States*](https://www.everycrsreport.com/reports/RL31074.html), Congressional Research Service, August 10, 2001.
+- Joel Robbin, [“Apportionment”](https://people.math.wisc.edu/~jwrobbin/141dir/apportionment.html), University of Wisconsin–Madison mathematics course notes.
+- M. L. Balinski and H. Peyton Young, [“A New Method for Congressional Apportionment”](https://www.pnas.org/doi/10.1073/pnas.71.11.4602), *Proceedings of the National Academy of Sciences* 71, no. 11, 1974.
+- ACE Electoral Knowledge Network, [“Electoral Systems Glossary”](https://aceproject.org/ace-fr/topics/es/electoral-systems-glossary/mobile_browsing/onePag).
+- International IDEA, [*Open List Proportional Representation*](https://www.idea.int/sites/default/files/publications/open-list-proportional-representation.pdf), 2021.
