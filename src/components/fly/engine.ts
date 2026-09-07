@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { buildShip, disposeObject, Scenery } from './scenery';
 import { FlightAudio } from './audio';
+import { crossesGate } from './gate';
 import { FlightPerformance, type QualityMode } from './performance';
 import { avoidLandmarks } from './landmarks';
 import {
@@ -343,11 +344,12 @@ export class FlightEngine {
       this.createTrail();
       if (scenario === 'gate') {
         const goal = this.ringTargets.at(-1)!;
-        this.flight.x = goal.x;
-        this.flight.y = goal.y;
-        this.flight.z = goal.z + 180;
-        this.flight.pitch = 0;
-        this.flight.yaw = 0;
+        this.target.set(0, 0, 1).applyQuaternion(this.gate!.quaternion);
+        this.flight.x = goal.x - this.target.x * 180;
+        this.flight.y = goal.y - this.target.y * 180;
+        this.flight.z = goal.z - this.target.z * 180;
+        this.flight.pitch = Math.asin(this.target.y);
+        this.flight.yaw = Math.atan2(this.target.x, -this.target.z);
         this.ringIndex = 6;
         this.rings.children.slice(0, 6).forEach((ring) => {
           ring.visible = false;
@@ -553,16 +555,16 @@ export class FlightEngine {
         this.phaseTime = 0;
         this.clearTrail();
       } else if (this.ringTargets.length) {
-        this.position.set(f.x, f.y, f.z);
         const destination = this.ringTargets.at(-1)!;
+        this.target.set(0, 0, 1).applyQuaternion(this.gate!.quaternion);
         // Rings guide the trip; skipping one never prevents entry into the gate.
-        if (this.position.distanceTo(destination) < 440 && this.boosting) {
+        if (crossesGate(this.position, f, destination, this.target)) {
           this.phase = 'hyperspace';
           this.phaseTime = 0;
           this.prepareNextWorld();
         } else if (
           this.ringIndex < this.ringTargets.length - 1 &&
-          this.position.distanceTo(this.ringTargets[this.ringIndex]) < 330
+          this.position.set(f.x, f.y, f.z).distanceTo(this.ringTargets[this.ringIndex]) < 330
         ) {
           const passed = this.rings.children[this.ringIndex] as THREE.Mesh;
           passed.visible = false;

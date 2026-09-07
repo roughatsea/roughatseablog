@@ -7,7 +7,7 @@ It uses the existing static Vercel deployment; pushing `main` publishes it.
 ## Local use
 
 - `npm run dev`, then open `/fly` on the local server.
-- `npm run test:fly` runs 25 checks for generation, streaming, flight safety,
+- `npm run test:fly` runs 27 checks for generation, streaming, flight safety,
   repeated journeys, adaptive quality, spacecraft resources, and production UI.
 - `npm run build` runs Astro checks and builds the entire site.
 
@@ -90,7 +90,8 @@ unobstructed; it does not include a modeled cockpit interior.
 In development, append `&inspect` to a seeded URL to display frame rate, 95th
 percentile frame time, draw calls, triangle count, and worker/stream status. The
 preview buttons move to surface, orbit, gate, or arrival for testing the actual
-renderer and simulation. At the gate, hold Shift to exercise hyperspace. These
+renderer and simulation. Fly forward through the gate to enter hyperspace at any speed;
+reverse crossings and passes outside its opening do not trigger it. These
 controls and diagnostics are omitted from production builds and copied links.
 
 Check both `v=1` and `v=2`, both camera views, boost along the river, ascent through

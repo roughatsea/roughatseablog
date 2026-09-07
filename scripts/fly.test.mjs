@@ -10,6 +10,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const bundle = await build({
   stdin: {
     contents: `export * from './src/components/fly/world';
+      export * from './src/components/fly/gate';
       export * from './src/components/fly/engine';
       export * from './src/components/fly/scenery';
       export * from './src/components/fly/terrain';
@@ -553,7 +554,7 @@ test('cruise explores the surface indefinitely without departing automatically',
   cleanup(engine);
 });
 
-test('ascent, ring cruise, deliberate hyperspace, and arrival repeat across worlds', () => {
+test('ascent, ring cruise, automatic hyperspace, and arrival repeat across worlds', () => {
   const engine = simulation();
   for (let trip = 0; trip < 3; trip++) {
     engine.cruise = false;
@@ -567,10 +568,10 @@ test('ascent, ring cruise, deliberate hyperspace, and arrival repeat across worl
     engine.cruise = true;
     for (let i = 0; i < 18000 && engine.ringIndex < 6; i++) engine.simulate(1 / 60);
     assert.equal(engine.ringIndex, 6, 'cruise reaches the final ring');
-    assert.equal(engine.phase, 'orbit', 'the journey waits for deliberate boost');
-    engine.keys.add('ShiftLeft');
+    assert.equal(engine.phase, 'orbit', 'the gate must actually be crossed');
     for (let i = 0; i < 18000 && engine.phase === 'orbit'; i++) engine.simulate(1 / 60);
     assert.equal(engine.phase, 'hyperspace');
+    assert.equal(engine.boosting, false, 'cruise enters hyperspace without boost');
     engine.keys.clear();
     for (let i = 0; i < 420; i++) engine.simulate(1 / 60);
     assert.equal(engine.world.index, trip + 1);
@@ -608,12 +609,68 @@ test('skipped rings never lock the gate and descending from orbit stays on the s
   engine.flight.y = 5200;
   engine.simulate(1 / 60);
   const gate = engine.ringTargets.at(-1);
-  Object.assign(engine.flight, { x: gate.x, y: gate.y, z: gate.z });
-  engine.keys.add('ShiftLeft');
+  const normal = new Vector3(0, 0, 1).applyQuaternion(engine.gate.quaternion);
+  Object.assign(engine.flight, {
+    x: gate.x - normal.x,
+    y: gate.y - normal.y,
+    z: gate.z - normal.z,
+    yaw: Math.atan2(normal.x, -normal.z),
+    pitch: Math.asin(normal.y),
+  });
   engine.simulate(1 / 60);
   assert.equal(engine.phase, 'hyperspace');
   assert.equal(engine.ringIndex, 0);
   cleanup(engine);
+});
+
+test('gate crossings use the opening and forward direction over the full flight segment', () => {
+  const center = new Vector3(1200, 6000, -9000);
+  const normal = new Vector3(0.6, 0.4, -0.8).normalize();
+  const side = new Vector3(-normal.z, 0, normal.x).normalize();
+  const point = (along, offset = 0) =>
+    center.clone().addScaledVector(normal, along).addScaledVector(side, offset);
+  assert.equal(code.crossesGate(point(-1), point(1), center, normal), true);
+  assert.equal(
+    code.crossesGate(point(-1000, -1000), point(1000, 1000), center, normal),
+    true,
+    'a fast diagonal crossing tests the intersection, not the endpoints',
+  );
+  assert.equal(code.crossesGate(point(1), point(-1), center, normal), false);
+  assert.equal(code.crossesGate(point(-100), point(-1), center, normal), false);
+  assert.equal(code.crossesGate(point(-10, 321), point(10, 321), center, normal), true);
+  assert.equal(code.crossesGate(point(-10, 323), point(10, 323), center, normal), false);
+  assert.equal(code.crossesGate(point(-10), point(-10), center, normal), false);
+});
+
+test('boost cannot activate the gate from behind, beside it, or before crossing', () => {
+  for (const scenario of ['reverse', 'outside', 'approach']) {
+    const engine = simulation();
+    try {
+      engine.flight.y = 5600;
+      engine.simulate(1 / 60);
+      const center = engine.ringTargets.at(-1);
+      const normal = new Vector3(0, 0, 1).applyQuaternion(engine.gate.quaternion);
+      const side = new Vector3(-normal.z, 0, normal.x).normalize();
+      const direction = normal.clone().multiplyScalar(scenario === 'reverse' ? -1 : 1);
+      const start = center
+        .clone()
+        .addScaledVector(normal, scenario === 'reverse' ? 1 : scenario === 'approach' ? -100 : -1);
+      if (scenario === 'outside') start.addScaledVector(side, 325);
+      Object.assign(engine.flight, {
+        x: start.x,
+        y: start.y,
+        z: start.z,
+        yaw: Math.atan2(direction.x, -direction.z),
+        pitch: Math.asin(direction.y),
+        speed: 1000,
+      });
+      engine.keys.add('ShiftLeft');
+      engine.simulate(1 / 60);
+      assert.equal(engine.phase, 'orbit', scenario);
+    } finally {
+      cleanup(engine);
+    }
+  }
 });
 
 test('swept terrain clearance also protects the path between samples', () => {

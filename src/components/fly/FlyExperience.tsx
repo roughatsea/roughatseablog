@@ -359,7 +359,7 @@ export default function FlyExperience() {
                 {flight.targetBehind
                   ? 'Turn toward the trail'
                   : flight.progress >= 1
-                    ? 'Hold Shift through the gate'
+                    ? 'Fly through the gate'
                     : 'Follow the light'}
               </span>
               <small>{(flight.targetDistance / 1000).toFixed(1)} km</small>
@@ -383,7 +383,7 @@ export default function FlyExperience() {
               {flight.phase === 'surface'
                 ? 'Take your time. The stars can wait.'
                 : flight.phase === 'orbit'
-                  ? 'Follow the rings. Boost through the final gate.'
+                  ? 'Follow the rings. Fly through the final gate.'
                   : flight.phase === 'arrival'
                     ? 'A whole world below you.'
                     : 'An endless sky ahead.'}
@@ -528,7 +528,7 @@ export default function FlyExperience() {
               <>
                 <p>
                   Explore as long as you like. Climb above the clouds to find the ring trail, then
-                  hold boost as you pass through its final gate.
+                  fly forward through its final gate to enter hyperspace.
                 </p>
                 <dl className="control-guide">
                   <div>
