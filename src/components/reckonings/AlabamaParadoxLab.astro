@@ -132,7 +132,10 @@ const regions = [
         if (remainder) remainder.textContent = values.remainder;
         if (total) total.textContent = String(values.seats);
         if (bonus) bonus.textContent = values.bonus ? 'Receives a leftover seat' : 'No leftover seat';
-        if (seatRow) seatRow.setAttribute('aria-label', `${values.seats} seats assigned to ${regionNames[id]}`);
+        if (seatRow) {
+          const seatNoun = values.seats === 1 ? 'seat' : 'seats';
+          seatRow.setAttribute('aria-label', `${values.seats} ${seatNoun} assigned to ${regionNames[id]}`);
+        }
         seats.forEach((seat, index) => seat.classList.toggle('filled', index < values.seats));
         if (raceBar instanceof HTMLElement) raceBar.style.setProperty('--remainder-width', `${values.width}%`);
         if (raceValue) raceValue.textContent = values.remainder;
