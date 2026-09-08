@@ -202,7 +202,7 @@ const initialPoints = makeKoch(initialIteration)
       if (description) {
         description.textContent = iteration === 0
           ? 'One straight segment connects the two endpoints.'
-          : `The curve contains ${count} equal segments, each one ${denominator}th of the starting length.`;
+          : `The curve contains ${count} equal segments, each measuring 1/${denominator} of the starting length.`;
       }
     };
 
