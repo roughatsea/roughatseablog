@@ -69,6 +69,7 @@ export function qualificationArtifactPaths() {
     ...listFiles(path.join(projectRoot, 'automation'), (name) => /^dialogue-phase-3.*\.md$/.test(name)),
     ...listFiles(path.join(projectRoot, 'scripts', 'dialogue-engine'), (name) => /^sea-trial-.*\.mjs$/.test(name)),
     'scripts/dialogue-sea-trial.mjs',
+    'scripts/dialogue-role-request.mjs',
     'scripts/qualify-dialogue-sea-trial.mjs',
     'scripts/validate-dialogue-sea-trial.mjs',
     ...listFiles(path.join(projectRoot, 'test'), (name) => /^dialogue-phase3.*\.test\.mjs$/.test(name)),

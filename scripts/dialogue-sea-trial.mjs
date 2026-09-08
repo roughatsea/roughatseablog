@@ -25,6 +25,7 @@ import {
   writeLegExitReport,
 } from './dialogue-engine/sea-trial-ledger.mjs';
 import { scheduleForLeg } from './dialogue-engine/sea-trial-schedule.mjs';
+import { legDisplayStatus } from './dialogue-engine/sea-trial-handoff.mjs';
 
 function argumentsFor(argv) {
   const [command, ...rest] = argv;
@@ -86,7 +87,7 @@ async function status() {
     const next = replay.schedule[replay.records.length] ?? null;
     const haltPath = path.join(TRIAL_ROOT, leg, 'halt.json');
     return [leg, {
-      status: fs.existsSync(haltPath) ? 'halted' : replay.records.length === replay.schedule.length ? 'complete' : 'running',
+      status: legDisplayStatus({ halted: fs.existsSync(haltPath), completed: replay.records.length, required: replay.schedule.length }),
       completed: replay.records.length,
       required: replay.schedule.length,
       state_digest: replay.stateDigest,
@@ -96,6 +97,10 @@ async function status() {
       halt: fs.existsSync(haltPath) ? repositoryJson(haltPath) : null,
     }];
   }));
+  if (!legs.realtime.halt && (legs.accelerated.halt || !legs.accelerated.exit_report)) {
+    legs.realtime.status = 'blocked';
+    legs.realtime.blocked_reason = legs.accelerated.halt ? 'accelerated-halted' : 'accelerated-exit-required';
+  }
   const anyHalt = Object.values(legs).some((leg) => leg.status === 'halted');
   const finalExitExists = fs.existsSync(path.join(TRIAL_ROOT, 'exit-report.json'));
   const finalDeploymentExists = fs.existsSync(path.join(TRIAL_ROOT, 'final-deployment.json'));

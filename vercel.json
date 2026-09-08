@@ -7,7 +7,8 @@
     "deploymentEnabled": {
       "dialogue-phase-3-runtime": false,
       "dialogue-phase-3-runtime-v2": false,
-      "dialogue-phase-3-runtime-v3": false
+      "dialogue-phase-3-runtime-v3": false,
+      "dialogue-phase-3-runtime-v4": false
     }
   },
   "redirects": [

@@ -28,6 +28,7 @@ import {
 import { sha256 } from '../scripts/dialogue-engine/sea-trial-reducer.mjs';
 import { scheduleForLeg, validateFixedSchedule } from '../scripts/dialogue-engine/sea-trial-schedule.mjs';
 import { buildOpportunity } from '../scripts/dialogue-engine/sea-trial-orchestrator.mjs';
+import { createRoleHandoff, readRoleHandoff, fuelReceipt, legDisplayStatus } from '../scripts/dialogue-engine/sea-trial-handoff.mjs';
 import { validateSeaTrialCandidate, validateSeaTrialEnvelope, validateSeaTrialFuel } from '../scripts/dialogue-engine/sea-trial-validator.mjs';
 
 const world = readCanonicalWorld();
@@ -606,6 +607,60 @@ test('fixed schedules are exactly 120/30 and 28/7 with four Phoenix slots', () =
   }
 });
 
+test('role handoff rejects changed bytes and excludes operational secrets', () => {
+  const root = setupTrial();
+  const template = envelopeFor(root, { candidates: [validCandidate({ id: 'handoff' })] });
+  const claim = claimEnvelope(root, template, '2026-09-02T20:00:10.000Z');
+  const authorization = claim.allowed_call_intents[0];
+  const handoff = createRoleHandoff(authorization);
+  try {
+    const request = readRoleHandoff(handoff.file, handoff.sha256);
+    assert.deepEqual(request.role_packet, authorization.role_packet);
+    assert.match(request.instructions, /Create zero or one ordinary fictional happening/);
+    assert.doesNotMatch(request.instructions, /fuel_provider/);
+    assert.ok(!fs.readFileSync(handoff.file, 'utf8').includes(authorization.continuation_nonce));
+    const changed = structuredClone(authorization);
+    changed.role_packet.allowed_artifact_ids[0] += '-wrong';
+    assert.throws(() => createRoleHandoff(changed), /hash mismatch/);
+    fs.appendFileSync(handoff.file, ' ');
+    assert.throws(() => readRoleHandoff(handoff.file, handoff.sha256), /bytes changed/);
+  } finally {
+    fs.unlinkSync(handoff.file);
+    fs.rmdirSync(path.dirname(handoff.file));
+  }
+  const receipt = fuelReceipt(claim, { invocation_id: 'observed-life-test-id', wall_started_at: '2026-09-02T20:01:00Z', wall_completed_at: '2026-09-02T20:01:20Z' });
+  assert.equal(receipt.prompt_version, authorization.prompt_version);
+  assert.equal(receipt.role_packet_sha256, authorization.role_packet_sha256);
+  assert.equal(receipt.research.request_sha256, claim.allowed_call_intents[1].request_sha256);
+  prepareTick({ leg: template.leg, tickId: template.tick_id, deliveryId: template.delivery_id,
+    continuationNonce: authorization.continuation_nonce, fuel: template.fuel,
+    fuelProvider: receipt, root, unsafeTestRoot: true });
+});
+
+test('unstarted and blocked legs are never labelled running', () => {
+  assert.equal(legDisplayStatus({ halted: false, completed: 0, required: 28, prerequisitePassed: false }), 'blocked');
+  assert.equal(legDisplayStatus({ halted: false, completed: 0, required: 28 }), 'awaiting-first-tick');
+  assert.equal(legDisplayStatus({ halted: true, completed: 3, required: 120 }), 'halted');
+});
+
+test('a disposable four-tick day accepts messages and replays every journal boundary', () => {
+  const root = setupTrial();
+  const before = canonicalDigest().digest;
+  let accepted = 0;
+  for (let index = 0; index < 4; index += 1) {
+    const template = envelopeFor(root, { candidates: [validCandidate({ id: `day-proof-${index}` })] });
+    const { prepared } = beginJournalFlow(root, template);
+    const generated = recordJournalGeneration(root, template, prepared, { suffix: `day-proof-${index}` });
+    recordPassingAudits(root, prepared, generated);
+    const final = finalizeTick({ leg: template.leg, tickId: template.tick_id,
+      deliveryId: template.delivery_id, root, unsafeTestRoot: true });
+    accepted += final.run.summary.passed;
+    assert.equal(replayLeg({ leg: 'accelerated', root, unsafeTestRoot: true }).records.length, index + 1);
+  }
+  assert.ok(accepted > 0, 'Passing audits alone must not count as acceptance');
+  assert.equal(canonicalDigest().digest, before);
+});
+
 test('main reconciliation accepts only the frozen autonomous publisher paths', () => {
   const safe = validateSafeMainAdvancePaths([
     'src/content/save-point/save-point-2026-09-03.mdx',
@@ -635,7 +690,7 @@ test('runtime freezes canon, shadow base, stack, schedule, and behavior bundle o
   assert.equal(manifest.schedules.accelerated.length, 120);
   assert.equal(manifest.schedules.realtime.length, 28);
   assert.equal(manifest.canonical_digest.digest, canonicalDigest().digest);
-  assert.equal(manifest.git_transport.runtime_branch, 'dialogue-phase-3-runtime-v3');
+  assert.equal(manifest.git_transport.runtime_branch, 'dialogue-phase-3-runtime-v4');
   assert.equal(manifest.git_transport.production_branch, 'main');
   assert.equal(manifest.git_transport.initial_production_git_sha, gitSha);
   assert.throws(() => createRuntimeManifest({ gitSha: 'b'.repeat(40), root, unsafeTestRoot: true }), /different content/);

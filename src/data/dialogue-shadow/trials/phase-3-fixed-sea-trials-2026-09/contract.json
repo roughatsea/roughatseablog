@@ -39,8 +39,8 @@
     },
     "realtime": {
       "clock": "wall",
-      "start_date": "2026-09-06",
-      "end_date": "2026-09-12",
+      "start_date": "2026-09-12",
+      "end_date": "2026-09-18",
       "dates": 7,
       "ticks_per_date": 4,
       "required_ticks": 28,
@@ -85,7 +85,7 @@
   "build_command": "npm run build",
   "deployment_target": "roughatsea-vercel-production",
   "git_transport": {
-    "runtime_branch": "dialogue-phase-3-runtime-v3",
+    "runtime_branch": "dialogue-phase-3-runtime-v4",
     "production_branch": "main",
     "runtime_branch_deployments_enabled": false,
     "production_projection_points": [
@@ -98,6 +98,8 @@
     "src/content/save-point/**",
     "src/content/soundings/**",
     "src/content/reckonings/**",
+    "src/content/waifu/**",
+    "public/images/waifu/**",
     "public/images/save-point/**",
     "public/images/soundings/**",
     "public/images/reckonings/**",

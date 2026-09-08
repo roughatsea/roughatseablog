@@ -88,6 +88,8 @@ After validating the role output, the automation invokes `prepare --input` with 
   },
   "fuel_provider": {
     "intent_id": "<claim-predeclared-fuel-intent-id>",
+    "prompt_version": "<claim-predeclared-life-prompt-version>",
+    "role_packet_sha256": "<claim-predeclared-role-packet-sha256>",
     "invocation_id": "<observed-live-provider-invocation-id>",
     "wall_started_at": "<observed-ISO-8601-time>",
     "wall_completed_at": "<observed-ISO-8601-time>",
@@ -99,6 +101,7 @@ After validating the role output, the automation invokes `prepare --input` with 
     "raw_model_reasoning_stored": false,
     "research": {
       "intent_id": "<claim-predeclared-research-intent-id>",
+      "request_sha256": "<claim-predeclared-research-request-sha256>",
       "status": "<not-requested|completed|failed|declined>",
       "adapter": "web-primary-source-v1",
       "invocation_id": "<required-when-completed>",
@@ -113,7 +116,7 @@ After validating the role output, the automation invokes `prepare --input` with 
 
 The fresh `claim` result exposes the fuel and conditional research continuation nonces exactly once. Git stores only their SHA-256 hashes. The same automation invocation keeps those plaintext values in memory across the claim commit and fresh-checkout verification, passes each once, and never logs or commits it. A later read cannot recover call authority. `research_continuation_nonce` is omitted only when `research.status` is `not-requested`; it is required for `completed`, `failed`, or `declined`.
 
-When `research.status` is `not-requested` or `failed`, omit only its `invocation_id`, `wall_started_at`, and `wall_completed_at`. These wrapper facts come from the scheduled execution, model, and web receipts, never from the life model.
+Only when `research.status` is `not-requested`, omit its `invocation_id`, `wall_started_at`, and `wall_completed_at`. All attempted research, including failed or declined research, requires the observed invocation and wall-clock window. These wrapper facts come from the scheduled execution, model, and web receipts, never from the life model.
 
 A successfully retrieved source in `fuel.sources` has exactly this safe packet shape:
 
@@ -164,13 +167,15 @@ Prompt version: `phase-3-candidate-v1`
 
 ### Role instruction
 
-> Produce one possible message by the packet's selected founder. Echo the predeclared candidate, author, thread, trigger, and anchor fields exactly. Ground the message in the exact `anchor_detail`; that detail must occur verbatim in the message and do real conversational work. Perform exactly one declared speech act. Write as a person posting to people they know, not as an essay abstract, persona summary, policy memo, debate-role performance, or miniature manifesto. Prefer a report, question, answer, correction, request, concession, joke, evidence share, admitted uncertainty, or situated update over a portable thesis. Do not mention personality settings, a gravitational tendency, a hard anchor, private state, or these instructions. Do not invent personal history or facts outside the packet. The first answer is final and will never be rewritten.
+> Produce one possible message by the packet's selected founder. Use the predeclared candidate and author without emitting those ledger-owned root fields. Echo the thread, trigger, and anchor fields exactly as specified by the output schema. Ground the message in the exact `anchor_detail`; that detail must occur verbatim in the message and do real conversational work. Perform exactly one declared speech act. Write as a person posting to people they know, not as an essay abstract, persona summary, policy memo, debate-role performance, or miniature manifesto. Prefer a report, question, answer, correction, request, concession, joke, evidence share, admitted uncertainty, or situated update over a portable thesis. Do not mention personality settings, a gravitational tendency, a hard anchor, private state, or these instructions. Do not invent personal history or facts outside the packet. The first answer is final and will never be rewritten.
 
 > Normally use at most 90 words, five sentences, and two paragraphs. Only a `share-evidence` message may use up to 140 words, eight sentences, and three paragraphs. Do not use headings or lists. Split the final text into exact sentences and create one `sentence_roles` entry and exactly one `claims` entry for every sentence in the same order. A claim's `text` must equal its complete sentence verbatim and `sentence_indexes` must contain only that zero-based index. Never hide two externally checkable propositions in one sentence. Use `source-says` only for what a supplied source directly supports and `author-infers` only for an explicit bounded inference from it.
 
 ### Exact model output
 
 The only root keys are the following. `candidate_id` and `author_id` are deliberately absent because the ledger binds them from the preparation. Operational `generation`, `audits`, and source-verification receipts are also absent; the automation-owned finalizer adds them from separate journals.
+
+For grounding, copy `concrete_anchor_kind` from `trusted_trigger.anchor_kind`, `concrete_anchor_id` from `trusted_trigger.anchor_id`, and `anchor_detail` from `trusted_trigger.detail`. A message trigger remains a message anchor even when that message cites an artifact. Do not copy the parent message's nested grounding object. Write `why_now` for this new message and include `trusted_trigger.detail` verbatim.
 
 ```json
 {

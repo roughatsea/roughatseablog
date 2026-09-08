@@ -51,6 +51,8 @@ export const BEHAVIOR_BUNDLE_FILES = Object.freeze([
   'scripts/dialogue-engine/sea-trial-reducer.mjs',
   'scripts/dialogue-engine/sea-trial-ledger.mjs',
   'scripts/dialogue-engine/sea-trial-orchestrator.mjs',
+  'scripts/dialogue-engine/sea-trial-handoff.mjs',
+  'scripts/dialogue-role-request.mjs',
   'scripts/dialogue-sea-trial.mjs',
   'scripts/qualify-dialogue-sea-trial.mjs',
   'scripts/build-wake-exports.mjs',
