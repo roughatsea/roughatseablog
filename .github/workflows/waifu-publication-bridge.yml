@@ -1,0 +1,84 @@
+name: Waifu publication bridge
+
+on:
+  push:
+    branches:
+      - waifu-publication-staging
+    paths:
+      - '.waifu-publication-bridge/READY.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: waifu-publication-bridge
+  cancel-in-progress: false
+
+jobs:
+  build-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out staging payload
+        uses: actions/checkout@v4
+        with:
+          ref: waifu-publication-staging
+          path: staging
+          fetch-depth: 1
+
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: target
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: target/package-lock.json
+
+      - name: Reconstruct publication payload
+        run: node target/scripts/waifu-publication-bridge.mjs consume --staging staging --target target
+
+      - name: Reject unexpected changes
+        working-directory: target
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          unexpected="$(git status --porcelain | awk '{print $2}' | grep -Ev '^(src/content/waifu/|public/images/waifu/)' || true)"
+          if [[ -n "$unexpected" ]]; then
+            echo "Unexpected changed paths:"
+            echo "$unexpected"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        working-directory: target
+        run: npm ci
+
+      - name: Validate Waifu guardrails
+        working-directory: target
+        run: node scripts/validate-waifu.mjs
+
+      - name: Build production site
+        working-directory: target
+        run: npm run build
+
+      - name: Commit validated candidate
+        working-directory: target
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- src/content/waifu public/images/waifu
+          if git diff --cached --quiet; then
+            echo 'No publication changes were reconstructed.'
+            exit 1
+          fi
+          git commit -m 'Build validated Waifu publication candidate'
+          git push --force origin HEAD:refs/heads/waifu-publication-ready
+          echo "Candidate commit: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
