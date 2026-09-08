@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-const CHUNK_CHARS = 32 * 1024; // divisible by 4; ~24 KiB decoded per chunk
+const CHUNK_CHARS = 8 * 1024; // divisible by 4; ~6 KiB decoded per chunk
 const RUN_ID_RE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/;
 const SAFE_TARGETS = [
   /^src\/content\/waifu\/[A-Za-z0-9._/-]+\.mdx?$/,
