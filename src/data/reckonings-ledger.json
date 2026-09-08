@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-07T06:00:00-07:00",
+  "updatedAt": "2026-09-08T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -233,6 +233,31 @@
       ],
       "relatedLessons": [
         "daily-reckoning-2026-08-31"
+      ]
+    },
+    {
+      "date": "2026-09-08",
+      "slug": "daily-reckoning-2026-09-08",
+      "title": "How Can a Curve Have 1.26 Dimensions?",
+      "area": "Geometry and topology",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Exponents",
+        "Logarithms as inverse exponents",
+        "Length and area scaling"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "fractal dimension",
+        "similarity dimension",
+        "Koch curve",
+        "self-similarity",
+        "Hausdorff dimension",
+        "box-counting dimension",
+        "coastline paradox"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-02"
       ]
     }
   ]

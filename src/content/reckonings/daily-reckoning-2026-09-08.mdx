@@ -1,0 +1,243 @@
+---
+title: "How Can a Curve Have 1.26 Dimensions?"
+description: "The Koch curve is too crumpled to behave like a line and too sparse to fill a plane; its scaling law measures exactly how far it lies between them."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-08.svg"
+heroImageAlt: "A luminous recursive cyan coastline divides a dark sea from a magenta landmass; green measuring dividers and blueprint grid squares show that smaller rulers discover more coastline."
+date: 2026-09-08
+publishedAt: 2026-09-08T06:00:00-07:00
+area: "Geometry and topology"
+difficulty: "Intermediate"
+prerequisites:
+  - "Exponents"
+  - "Logarithms as inverse exponents"
+  - "Length and area scaling"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - geometry
+  - fractals
+  - fractal-dimension
+  - koch-curve
+  - self-similarity
+---
+
+import KochDimensionLab from '../../components/reckonings/KochDimensionLab.astro';
+
+Suppose two cartographers measure the same rocky coast. One walks a 100-kilometer measuring stick around a map. The other uses a 10-kilometer stick, following smaller coves and headlands that the longer stick skips. The second cartographer will usually report a longer coast.
+
+If a shorter ruler keeps finding more detail, what kind of quantity describes the coast's roughness?
+
+Ordinary length cannot do the whole job. A perfectly self-similar curve can gain length without bound as the ruler shrinks, even though the curve stays inside a finite patch of paper. **Fractal dimension** measures how quickly new detail appears as the scale changes.
+
+For one famous curve, that dimension is neither $1$ nor $2$:
+
+$$
+D=\frac{\log 4}{\log 3}\approx 1.26186.
+$$
+
+The number $D$ is greater than the dimension of a smooth line but less than the dimension of a filled region. To see where $1.26186$ comes from, we need a curve built by an exact rule.
+
+## A bump repeated without end
+
+Start with one straight segment. Divide the segment into three equal parts. Replace the middle third with the other two sides of an outward-pointing equilateral triangle. One segment has become four segments, and each new segment is one-third as long as the old one.
+
+Apply the same replacement to every segment, then apply it again to every new segment. The infinite limiting shape is the **Koch curve**. The interactive diagram below shows the first five finite stages. Choose a stage and watch the segment count and total length change.
+
+<KochDimensionLab />
+
+After $n$ replacement stages, the curve has
+
+$$
+N_n=4^n
+$$
+
+equal segments. The symbol $N_n$ names the number of segments at stage $n$. Each segment has length
+
+$$
+s_n=\left(\frac{1}{3}\right)^n
+$$
+
+times the starting length. The symbol $s_n$ names the scale of one segment relative to the original.
+
+Multiply count by segment length to get the stage's total length:
+
+$$
+L_n=N_n s_n=4^n\left(\frac{1}{3}\right)^n=\left(\frac{4}{3}\right)^n.
+$$
+
+Because $4/3$ is greater than $1$, the lengths $L_n$ grow without bound as $n$ increases. Yet every stage fits between the same two endpoints. The curve responds to magnification more aggressively than an ordinary one-dimensional path.
+
+## Dimension as a scaling exponent
+
+Take a line segment and shrink it to one-third of its original size. Three copies rebuild the full line. Take a square and shrink both its width and height to one-third. Nine copies rebuild the full square.
+
+The line and square follow one equation:
+
+$$
+N=\left(\frac{1}{r}\right)^D.
+$$
+
+Here $N$ is the number of smaller copies, $r$ is the scale factor of each copy, and $D$ is the **similarity dimension**. A scale factor of $r=1/3$ means that each copy has one-third of the original's linear size.
+
+For the line, $3=(1/(1/3))^1=3^1$. For the square, $9=3^2$. The exponent records how the number of pieces grows when linear scale shrinks.
+
+The Koch curve consists of four copies of itself, each scaled by $r=1/3$. Its scaling equation is therefore
+
+$$
+4=3^D.
+$$
+
+Take the logarithm of both sides. Any logarithm base works, provided the same base is used above and below:
+
+$$
+\begin{aligned}
+\log 4&=\log(3^D)\\
+&=D\log 3.
+\end{aligned}
+$$
+
+Divide by $\log 3$:
+
+$$
+D=\frac{\log 4}{\log 3}\approx 1.26186.
+$$
+
+The fractional result is not a claim that the Koch curve has “part of a direction.” The number describes scaling. Tripling the resolution makes a line require $3$ pieces, a square require $9$, and the Koch curve require $4$. Its demand for detail lies between theirs.
+
+## Worked example: stage four
+
+At stage $n=4$, the segment count is
+
+$$
+N_4=4^4=256.
+$$
+
+Each segment is
+
+$$
+s_4=\left(\frac{1}{3}\right)^4=\frac{1}{81}
+$$
+
+of the starting length. Multiplication gives the total length:
+
+$$
+\begin{aligned}
+L_4
+&=N_4s_4\\
+&=256\left(\frac{1}{81}\right)\\
+&=\frac{256}{81}\\
+&\approx3.16049.
+\end{aligned}
+$$
+
+Stage four is more than three times as long as the starting segment, although both shapes span the same horizontal distance.
+
+The segment count also recovers the dimension. The stage-four segments are scaled by $1/81$, so $81=3^4$ is the magnification factor. Then
+
+$$
+\frac{\log 256}{\log 81}
+=\frac{\log(4^4)}{\log(3^4)}
+=\frac{4\log4}{4\log3}
+=\frac{\log4}{\log3}.
+$$
+
+Using a later construction stage does not change the dimension because the same four-for-three scaling rule operates at every stage.
+
+## Try the scaling law
+
+### Problem 1
+
+A Sierpiński triangle consists of three copies of itself, each scaled to one-half the original width and height. Find its similarity dimension.
+
+<details>
+<summary>Reveal the solution</summary>
+
+For the Sierpiński triangle, $N=3$ and $r=1/2$. Substitute those values into the scaling equation:
+
+$$
+3=\left(\frac{1}{1/2}\right)^D=2^D.
+$$
+
+Take logarithms and solve for $D$:
+
+$$
+D=\frac{\log 3}{\log 2}\approx1.58496.
+$$
+
+The result lies between $1$ and $2$. The Sierpiński triangle spreads through the plane more densely than the Koch curve does, but it still leaves gaps at every scale.
+
+</details>
+
+### Problem 2
+
+Imagine a self-similar curve whose rule replaces each segment with five segments, each one-quarter as long. What is its similarity dimension? By what factor does its total length grow during one replacement?
+
+<details>
+<summary>Reveal the solution</summary>
+
+The curve has $N=5$ copies at scale $r=1/4$, so
+
+$$
+5=4^D.
+$$
+
+Taking logarithms gives
+
+$$
+D=\frac{\log5}{\log4}\approx1.16096.
+$$
+
+One replacement multiplies the segment count by $5$ and each segment's length by $1/4$. The total length is therefore multiplied by
+
+$$
+5\left(\frac14\right)=\frac54=1.25.
+$$
+
+</details>
+
+## One name hides several dimensions
+
+Similarity dimension works exactly for highly regular self-similar sets such as the Koch curve. It is not a universal plug-in formula for every rough object. Real coastlines do not reproduce one perfect shape at all scales, and their structure eventually stops at the sizes of rocks, grains, molecules, and atoms.
+
+Mathematicians use several rigorous notions of dimension. **Hausdorff dimension** asks how the cost of covering a set changes when the allowed covering pieces become tiny. **Box-counting dimension** places a grid over a set and tracks how the number of occupied boxes grows as the boxes shrink. These definitions agree with $\log4/\log3$ for the Koch curve. For more irregular sets, different definitions can produce different answers or fail to settle on one clean exponent.
+
+The gap between exact geometry and measured data matters whenever a dimension comes from observations. A reported coastline dimension describes scaling across a stated range of map resolutions. The number does not certify endless self-similarity in the physical world.
+
+## From mathematical monster to measurement tool
+
+Helge von Koch introduced his curve in a 1904 paper whose title translates as “On a Continuous Curve without Tangents, Constructible from Elementary Geometry.” Karl Weierstrass had already presented an algebraically defined continuous function with no tangent in 1872. Von Koch wanted a construction whose geometry made the strange behavior visible. The [University of St Andrews history of fractal geometry](https://mathshistory.st-andrews.ac.uk/HistTopics/fractals/) traces the curve to that dispute over mathematical “monsters”—objects that violated expectations formed from smooth curves.
+
+Felix Hausdorff supplied a much broader theory of size in 1918. His definition allowed dimension to take non-integer values, although the later vocabulary of fractals did not yet exist. Hausdorff's mathematical work and life cannot be separated neatly from twentieth-century German history. The Nazis forced him from his University of Bonn professorship because he was Jewish. In January 1942, after receiving an order that preceded deportation, Hausdorff, his wife Charlotte, and her sister Edith died by suicide. The [University of Bonn's Hausdorff biography](https://www.mathematics.uni-bonn.de/hcm/felix-hausdorff/about-felix-hausdorff) documents both his mathematics and the persecution that ended his life.
+
+A second path to fractal measurement began with war rather than pure geometry. British mathematician and Quaker pacifist Lewis Fry Richardson tried to test whether the length of a shared border was related to the likelihood of armed conflict. Governments reported incompatible lengths for the same borders, so Richardson studied how the measured length changed with the ruler size. His border work appeared posthumously in 1961 as “The Problem of Contiguity.” A [Peace Research Institute Oslo account of Richardson's legacy](https://www.prio.org/publications/12364) places that work inside his effort to study war quantitatively.
+
+Benoît Mandelbrot recognized what Richardson's measurements had to do with dimension. His 1967 *Science* paper [“How Long Is the Coast of Britain?”](https://www.science.org/doi/10.1126/science.156.3775.636) connected scale-dependent lengths, statistical self-similarity, and fractional dimension. Mandelbrot later coined the word *fractal* in 1975. International Business Machines (IBM) had hired him in 1958 to study bursts of noise in data-transmission lines, and the company's research environment gave him both unusual freedom and access to powerful computers. [IBM's history of Mandelbrot](https://www.ibm.com/history/benoit-mandelbrot) describes how computation helped turn results scattered across geometry, analysis, probability, and physics into a visible field.
+
+No single person discovered fractional dimension in one stroke. Von Koch built a curve, Hausdorff formalized a general dimension, Richardson found a measurement law while studying conflict, and Mandelbrot joined those strands into fractal geometry.
+
+## Where fractional dimension earns its keep
+
+**Mapping and remote sensing.** A map database must attach a scale to any quoted coastline length. Fractal dimension offers a separate roughness statistic: instead of pretending that one perimeter is final, an analyst can report how measured detail changes across available resolutions. National Aeronautics and Space Administration (NASA) researchers have also used fractal characteristics for classifying textures in remotely sensed images; a [NASA report on multiscale remote sensing](https://ntrs.nasa.gov/api/citations/19980237412/downloads/19980237412.pdf) discusses coastline and surface dimensions as scale-dependent measurements.
+
+**Compact antennas.** Engineers can fold a long conducting path into a small area by using repeated geometries such as a Hilbert curve. Repetition across scales can also support responses in multiple frequency bands. A [NASA technical report on antenna technologies](https://ntrs.nasa.gov/api/citations/20110000775/downloads/20110000775.pdf) describes folded Hilbert-curve antennas for compact, low-mass, multiband designs. The engineering advantage comes from the actual conductor geometry; merely calculating a fractional dimension does not design an antenna.
+
+**Medical images under investigation.** Researchers use box-counting and related methods to turn the irregularity of brain structures or tumors into quantitative features. A 2023 [study of fractal dimension in neuroimaging](https://pmc.ncbi.nlm.nih.gov/articles/PMC10390093/) tested several such features in magnetic resonance images from 42 people with gliomas. The authors described the results as promising and called for confirmation with larger datasets. Fractal dimension is a research feature, not a diagnosis by itself.
+
+## One idea to remember
+
+Dimension can measure scaling rather than directions. The Koch curve needs four pieces whenever a line at the same resolution needs three, so its dimension is the exponent that solves $4=3^D$: $D=\log4/\log3$.
+
+Continue with [Pick's theorem](/reckonings/daily-reckoning-2026-09-02/) for another way that measurement changes when geometry meets a grid. A deeper next step is the Hausdorff measure, which turns the covering idea into a rigorous definition that still works when exact self-similarity disappears.
+
+## Sources
+
+- Helge von Koch, [“Sur une courbe continue sans tangente, obtenue par une construction géométrique élémentaire”](https://dspace.bcu-iasi.ro/handle/123456789/43818), *Arkiv för matematik, astronomi och fysik* 1, 1904, pp. 681–702; digitized by the Mihai Eminescu Central University Library of Iași.
+- Holly Trochet, [“A History of Fractal Geometry”](https://mathshistory.st-andrews.ac.uk/HistTopics/fractals/), MacTutor History of Mathematics, University of St Andrews.
+- Felix Hausdorff Center for Mathematics, [“About Felix Hausdorff”](https://www.mathematics.uni-bonn.de/hcm/felix-hausdorff/about-felix-hausdorff), University of Bonn.
+- Lewis F. Richardson, “The Problem of Contiguity: An Appendix to *Statistics of Deadly Quarrels*,” *General Systems Yearbook* 6, 1961, pp. 139–187.
+- Nils Petter Gleditsch, [“Lewis Fry Richardson: A Pioneer Not Forgotten”](https://www.prio.org/publications/12364), Peace Research Institute Oslo, 2020.
+- Benoît Mandelbrot, [“How Long Is the Coast of Britain? Statistical Self-Similarity and Fractional Dimension”](https://www.science.org/doi/10.1126/science.156.3775.636), *Science* 156, no. 3775, May 5, 1967, pp. 636–638.
+- IBM, [“Benoît Mandelbrot”](https://www.ibm.com/history/benoit-mandelbrot) and [“Fractal Geometry”](https://www.ibm.com/history/fractal-geometry).
+- David A. Quattrochi and Michael F. Goodchild, eds., [*Scale in Remote Sensing and GIS*](https://ntrs.nasa.gov/api/citations/19980237412/downloads/19980237412.pdf), NASA Technical Reports Server, 1998.
+- NASA Glenn Research Center, [*Antenna Technologies for NASA Applications*](https://ntrs.nasa.gov/api/citations/20110000775/downloads/20110000775.pdf), 2010.
+- Divya Battalapalli et al., [“Fractal Dimension: Analyzing Its Potential as a Neuroimaging Biomarker”](https://pmc.ncbi.nlm.nih.gov/articles/PMC10390093/), *Neuroscience & Biobehavioral Reviews* 150, 2023.

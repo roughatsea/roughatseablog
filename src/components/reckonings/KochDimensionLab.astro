@@ -1,0 +1,358 @@
+---
+type Point = { x: number; y: number };
+
+const makeKoch = (iteration: number): Point[] => {
+  let points: Point[] = [{ x: 34, y: 178 }, { x: 766, y: 178 }];
+
+  for (let step = 0; step < iteration; step += 1) {
+    const next: Point[] = [];
+    for (let index = 0; index < points.length - 1; index += 1) {
+      const start = points[index];
+      const end = points[index + 1];
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const first = { x: start.x + dx / 3, y: start.y + dy / 3 };
+      const peak = {
+        x: start.x + dx / 2 + Math.sqrt(3) * dy / 6,
+        y: start.y + dy / 2 - Math.sqrt(3) * dx / 6,
+      };
+      const second = { x: start.x + 2 * dx / 3, y: start.y + 2 * dy / 3 };
+      next.push(start, first, peak, second);
+    }
+    next.push(points.at(-1)!);
+    points = next;
+  }
+
+  return points;
+};
+
+const initialIteration = 2;
+const initialPoints = makeKoch(initialIteration)
+  .map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`)
+  .join(' ');
+---
+
+<figure class="dimension-lab reckoning-visual" data-koch-lab data-iteration={initialIteration}>
+  <header>
+    <p>Interactive construction</p>
+    <h3>Replace every segment with four smaller ones</h3>
+  </header>
+
+  <div class="iteration-controls" role="group" aria-label="Koch curve construction stage">
+    {Array.from({ length: 5 }, (_, iteration) => (
+      <button
+        type="button"
+        class:list={{ active: iteration === initialIteration }}
+        aria-pressed={iteration === initialIteration ? 'true' : 'false'}
+        data-iteration-choice={iteration}
+      >
+        Stage {iteration}
+      </button>
+    ))}
+  </div>
+
+  <div class="curve-frame">
+    <svg
+      viewBox="0 0 800 230"
+      role="img"
+      aria-labelledby="koch-title koch-description"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="koch-title">Koch curve at construction stage two</title>
+      <desc id="koch-description">
+        A straight segment has been replaced twice. Sixteen equal small segments form a recursive
+        sequence of triangular peaks.
+      </desc>
+      <defs>
+        <pattern id="koch-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M40 0H0V40" fill="none" />
+        </pattern>
+        <filter id="koch-glow" x="-20%" y="-40%" width="140%" height="180%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+      <rect class="grid" width="800" height="230" fill="url(#koch-grid)" />
+      <line class="baseline" x1="34" y1="178" x2="766" y2="178" />
+      <polyline class="curve-glow" points={initialPoints} data-curve-points />
+      <polyline class="curve" points={initialPoints} data-curve-points />
+      <g class="endpoints" aria-hidden="true">
+        <circle cx="34" cy="178" r="4" />
+        <circle cx="766" cy="178" r="4" />
+      </g>
+    </svg>
+  </div>
+
+  <dl class="stage-facts" aria-live="polite">
+    <div>
+      <dt>Equal segments</dt>
+      <dd data-segments>16</dd>
+    </div>
+    <div>
+      <dt>Each segment</dt>
+      <dd data-scale>1/9 of the start</dd>
+    </div>
+    <div>
+      <dt>Total length</dt>
+      <dd data-length>16/9 = 1.778 times the start</dd>
+    </div>
+  </dl>
+
+  <div class="scaling-key" aria-label="Similarity-dimension comparison">
+    <section>
+      <svg viewBox="0 0 180 72" role="img" aria-label="A line divided into three equal pieces">
+        <path class="guide" d="M18 38H162" />
+        <path class="line-copy" d="M18 38H66M66 38h48M114 38h48" />
+        <circle cx="66" cy="38" r="2.5" /><circle cx="114" cy="38" r="2.5" />
+      </svg>
+      <p><strong>Line:</strong> 3 copies at scale 1/3</p>
+      <span>dimension 1</span>
+    </section>
+    <section>
+      <svg viewBox="0 0 180 72" role="img" aria-label="A square divided into nine equal squares">
+        <rect class="square" x="58" y="7" width="64" height="58" />
+        <path class="square-lines" d="M79.33 7v58M100.67 7v58M58 26.33h64M58 45.67h64" />
+      </svg>
+      <p><strong>Square:</strong> 9 copies at scale 1/3</p>
+      <span>dimension 2</span>
+    </section>
+    <section class="koch-key">
+      <svg viewBox="0 0 180 72" role="img" aria-label="A Koch generator made from four equal segments">
+        <path class="guide" d="M18 52H162" />
+        <path class="koch-copy" d="M18 52L66 52L90 10L114 52L162 52" />
+      </svg>
+      <p><strong>Koch curve:</strong> 4 copies at scale 1/3</p>
+      <span>dimension log 4 / log 3 ≈ 1.262</span>
+    </section>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> each stage preserves the same overall span while adding detail.
+    The number of equal segments grows by a factor of 4, their individual scale shrinks by a
+    factor of 3, and their combined length grows by a factor of 4/3. The comparison below the
+    curve shows why four one-third-scale copies correspond to a dimension between a line and a
+    square.
+  </figcaption>
+</figure>
+
+<script>
+  type KochPoint = { x: number; y: number };
+
+  const buildKoch = (iteration: number): KochPoint[] => {
+    let points: KochPoint[] = [{ x: 34, y: 178 }, { x: 766, y: 178 }];
+
+    for (let step = 0; step < iteration; step += 1) {
+      const next: KochPoint[] = [];
+      for (let index = 0; index < points.length - 1; index += 1) {
+        const start = points[index];
+        const end = points[index + 1];
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        next.push(
+          start,
+          { x: start.x + dx / 3, y: start.y + dy / 3 },
+          {
+            x: start.x + dx / 2 + Math.sqrt(3) * dy / 6,
+            y: start.y + dy / 2 - Math.sqrt(3) * dx / 6,
+          },
+          { x: start.x + 2 * dx / 3, y: start.y + 2 * dy / 3 },
+        );
+      }
+      next.push(points.at(-1)!);
+      points = next;
+    }
+
+    return points;
+  };
+
+  document.querySelectorAll('[data-koch-lab]').forEach((lab) => {
+    const buttons = lab.querySelectorAll<HTMLButtonElement>('[data-iteration-choice]');
+    const polylines = lab.querySelectorAll<SVGPolylineElement>('[data-curve-points]');
+    const title = lab.querySelector('#koch-title');
+    const description = lab.querySelector('#koch-description');
+    const segments = lab.querySelector('[data-segments]');
+    const scale = lab.querySelector('[data-scale]');
+    const length = lab.querySelector('[data-length]');
+
+    const render = (iteration: number) => {
+      const count = 4 ** iteration;
+      const denominator = 3 ** iteration;
+      const numerator = count;
+      const decimalLength = (4 / 3) ** iteration;
+      const points = buildKoch(iteration)
+        .map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`)
+        .join(' ');
+
+      lab.setAttribute('data-iteration', String(iteration));
+      polylines.forEach((polyline) => polyline.setAttribute('points', points));
+      buttons.forEach((button) => {
+        const selected = Number(button.dataset.iterationChoice) === iteration;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+
+      if (segments) segments.textContent = String(count);
+      if (scale) scale.textContent = iteration === 0 ? 'the full starting span' : `1/${denominator} of the start`;
+      if (length) {
+        length.textContent = iteration === 0
+          ? '1 times the start'
+          : `${numerator}/${denominator} = ${decimalLength.toFixed(3)} times the start`;
+      }
+      if (title) title.textContent = `Koch curve at construction stage ${iteration}`;
+      if (description) {
+        description.textContent = iteration === 0
+          ? 'One straight segment connects the two endpoints.'
+          : `The curve contains ${count} equal segments, each one ${denominator}th of the starting length.`;
+      }
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => render(Number(button.dataset.iterationChoice)));
+    });
+  });
+</script>
+
+<style>
+  .dimension-lab {
+    --cyan: #087dcc;
+    --magenta: #d9007e;
+    --green: #4f9300;
+    background:
+      radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--cyan) 12%, transparent), transparent 20rem),
+      var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .dimension-lab {
+    --cyan: #1493ff;
+    --magenta: #ff1493;
+    --green: #93ff14;
+  }
+  header > p {
+    color: var(--link-color);
+    font-size: .67rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    margin: 0 0 .2rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+  }
+  .iteration-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-bottom: .8rem;
+  }
+  button {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font: inherit;
+    font-size: .75rem;
+    font-weight: 650;
+    padding: .42rem .75rem;
+  }
+  button:hover { border-color: var(--cyan); color: var(--text-primary); }
+  button.active {
+    background: color-mix(in srgb, var(--cyan) 12%, var(--bg-color));
+    border-color: var(--cyan);
+    color: var(--text-primary);
+  }
+  button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--cyan) 48%, transparent);
+    outline-offset: 3px;
+  }
+  .curve-frame {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .curve-frame svg { display: block; height: auto; width: 100%; }
+  .grid path { stroke: color-mix(in srgb, var(--text-secondary) 16%, transparent); stroke-width: 1; }
+  .baseline { stroke: var(--text-secondary); stroke-dasharray: 5 7; stroke-width: 1; opacity: .55; }
+  .curve-glow, .curve {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .curve-glow { filter: url(#koch-glow); opacity: .32; stroke: var(--magenta); stroke-width: 8; }
+  .curve { stroke: var(--cyan); stroke-width: 3; }
+  .endpoints circle { fill: var(--green); stroke: var(--bg-color); stroke-width: 2; }
+  .stage-facts {
+    display: grid;
+    gap: .6rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: .7rem 0;
+  }
+  .stage-facts div {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    min-width: 0;
+    padding: .65rem .7rem;
+  }
+  dt {
+    color: var(--text-secondary);
+    font-size: .6rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  dd {
+    color: var(--text-primary);
+    font-size: .76rem;
+    font-variant-numeric: tabular-nums;
+    margin: .12rem 0 0;
+  }
+  .scaling-key {
+    display: grid;
+    gap: .6rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: .7rem;
+  }
+  .scaling-key section {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: .45rem .6rem .65rem;
+  }
+  .scaling-key svg { display: block; height: auto; width: 100%; }
+  .scaling-key p, .scaling-key span { font-size: .68rem; line-height: 1.4; margin: 0; }
+  .scaling-key p { color: var(--text-primary); }
+  .scaling-key span { color: var(--text-secondary); display: block; margin-top: .15rem; }
+  .guide { stroke: var(--text-secondary); stroke-dasharray: 3 5; stroke-width: 1; }
+  .line-copy { fill: none; stroke: var(--green); stroke-width: 4; }
+  .scaling-key circle { fill: var(--bg-color); stroke: var(--text-primary); }
+  .square { fill: color-mix(in srgb, var(--magenta) 11%, transparent); stroke: var(--magenta); stroke-width: 2; }
+  .square-lines { fill: none; stroke: var(--magenta); stroke-width: 1; }
+  .koch-copy { fill: none; stroke: var(--cyan); stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+  .koch-key { border-color: color-mix(in srgb, var(--cyan) 55%, var(--border-color)) !important; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 700px) {
+    .dimension-lab { width: calc(100vw - 1.5rem); }
+    .scaling-key { grid-template-columns: 1fr; }
+    .scaling-key section { display: grid; grid-template-columns: minmax(8rem, .8fr) 1fr; align-items: center; }
+    .scaling-key section span { grid-column: 2; }
+  }
+  @media (max-width: 520px) {
+    .stage-facts { grid-template-columns: 1fr; }
+    .scaling-key section { display: block; }
+    .iteration-controls { gap: .35rem; }
+    button { font-size: .7rem; padding-inline: .62rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dimension-lab * { transition: none !important; }
+  }
+</style>
