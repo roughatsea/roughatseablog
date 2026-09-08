@@ -118,6 +118,31 @@ const savePointsCollection = defineCollection({
   schema: savePointSchema,
 });
 
+const waifuSchema = articleSchema.extend({
+  edition: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  topic: z.string(),
+  domain: z.string(),
+  readTimeMinutes: z.number().int().positive(),
+  currentAffairs: z.boolean().default(false),
+  visualStyle: z.string(),
+  character: z.object({
+    name: z.string(),
+    age: z.number().int().min(25),
+    role: z.string(),
+    personality: z.string(),
+  }),
+  supportingImages: z.array(z.object({
+    src: z.string(),
+    alt: z.string(),
+    caption: z.string().optional(),
+  })).default([]),
+});
+
+const waifusCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/waifu" }),
+  schema: waifuSchema,
+});
+
 const linksCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/links" }),
   schema: articleSchema.extend({ url: z.string().url() }),
@@ -128,5 +153,6 @@ export const collections = {
   soundings: soundingsCollection,
   reckonings: reckoningsCollection,
   savePoints: savePointsCollection,
+  waifus: waifusCollection,
   links: linksCollection,
 };
