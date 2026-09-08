@@ -257,7 +257,7 @@ In particular:
 
 Before publishing:
 
-1. Run `npm run validate:waifu`.
+1. Run `node scripts/validate-waifu.mjs`.
 2. Run `npm run build`.
 3. Confirm the Waifu archive and the new edition build successfully.
 4. Confirm every referenced character artwork file exists at the expected path.
@@ -272,6 +272,11 @@ Before publishing:
     deployment. Verify that the actual intended images are being served, that
     supporting images retain their intrinsic shape, and that the page is not
     showing placeholders or old assets.
+
+The repository's `Waifu guardrails` GitHub Actions workflow independently runs
+the standalone validator and the full site build for Waifu-related changes. A
+failed Waifu guardrail check is a publication failure, not an invitation to
+weaken the checks.
 
 Only then report publication success.
 
