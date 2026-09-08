@@ -1,0 +1,35 @@
+name: Waifu guardrails
+
+on:
+  pull_request:
+    paths:
+      - 'src/content/waifu/**'
+      - 'public/images/waifu/**'
+      - 'src/pages/waifu/**'
+      - 'src/content.config.ts'
+      - 'scripts/validate-waifu.mjs'
+      - 'automation/daily-waifu.md'
+      - '.github/workflows/waifu-guardrails.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/waifu/**'
+      - 'public/images/waifu/**'
+      - 'src/pages/waifu/**'
+      - 'src/content.config.ts'
+      - 'scripts/validate-waifu.mjs'
+      - 'automation/daily-waifu.md'
+      - '.github/workflows/waifu-guardrails.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/validate-waifu.mjs
+      - run: npm run build
