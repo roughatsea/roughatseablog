@@ -966,6 +966,120 @@
           "accessedAt": "2026-09-07"
         }
       ]
+    },
+    {
+      "editionId": "2026-09-08",
+      "publicationDate": "2026-09-08",
+      "publishedAt": "2026-09-08T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-08",
+      "heroImage": "/images/save-point/save-point-2026-09-08.webp",
+      "featureLane": "final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy VI can grow a theme by moving one note",
+          "game": "Final Fantasy VI",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Music-theory discussion and the premise of the opera sequence only; no story outcomes",
+          "subjectKeys": [
+            "final-fantasy-vi-three-note-motif",
+            "final-fantasy-vi-minimal-melodic-variation",
+            "terra-celes-theme-structure"
+          ],
+          "sourceIds": [
+            "ff6-8bit-music-theory-melodic-ideas",
+            "uematsu-red-bull-2014-interview",
+            "ff6-pixel-remaster-official-soundtrack"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "A moss ball can outgrow its assignment",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Creature-concept and picture-book illustration discussion only; no story spoilers",
+          "subjectKeys": [
+            "ffxiv-koropokkur-concept-expression",
+            "ffxiv-minion-expression-with-limited-faces",
+            "ffxiv-character-concept-cross-team-pipeline"
+          ],
+          "sourceIds": [
+            "ffxiv-hiroyuki-nagamine-character-concept-interview"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Grandia made optimism something the player could touch",
+          "game": "Grandia",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Development philosophy, world interaction, and early-game structure only; no story outcomes",
+          "subjectKeys": [
+            "grandia-interactive-town-objects",
+            "grandia-optimism-through-world-interaction",
+            "grandia-optional-dialogue-and-dinner-scenes"
+          ],
+          "sourceIds": [
+            "grandia-1997-developer-interviews"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ff6-8bit-music-theory-melodic-ideas",
+          "title": "Final Fantasy VI Analysis Series PART 1: Development of Melodic Ideas",
+          "creator": "8-bit Music Theory",
+          "url": "https://www.youtube.com/watch?v=LBFD1Oqbhg0",
+          "publishedAt": "2018-09-30",
+          "role": "primary",
+          "lineage": "Original music-analysis video; full English auto-caption transcript retrieved and reviewed, including the analyses of Terra's Theme and Celes's Theme.",
+          "videoId": "LBFD1Oqbhg0",
+          "accessedAt": "2026-09-08"
+        },
+        {
+          "sourceId": "uematsu-red-bull-2014-interview",
+          "title": "Interview: Final Fantasy's Nobuo Uematsu",
+          "creator": "Nick Dwyer, interviewing Nobuo Uematsu",
+          "url": "https://daily.redbullmusicacademy.com/2014/10/nobuo-uematsu-interview/",
+          "publishedAt": "2014-10-02",
+          "role": "primary",
+          "lineage": "Direct interview in which Uematsu describes his lack of formal musical training and his early compositional practice.",
+          "accessedAt": "2026-09-08"
+        },
+        {
+          "sourceId": "ff6-pixel-remaster-official-soundtrack",
+          "title": "FINAL FANTASY VI Pixel Remaster Original Soundtrack",
+          "creator": "Square Enix Music",
+          "url": "https://www.jp.square-enix.com/music/sem/page/ff_pixelremaster_ost/ff6/en/",
+          "publishedAt": "2022-03-17",
+          "role": "primary",
+          "lineage": "Official soundtrack page identifying Nobuo Uematsu as original composer and listing Terra's Theme, Celes's Theme, and Aria di Mezzo Carattere among the modern arrangements.",
+          "accessedAt": "2026-09-08"
+        },
+        {
+          "sourceId": "ffxiv-hiroyuki-nagamine-character-concept-interview",
+          "title": "FFXIV Backstage Investigators (No. 5): Character Concept Artist Hiroyuki Nagamine",
+          "creator": "Square Enix, interviewing Hiroyuki Nagamine",
+          "url": "https://eu.finalfantasyxiv.com/blog/003135.html",
+          "publishedAt": "2021-04-30",
+          "role": "primary",
+          "lineage": "Official developer interview about the Koropokkur concept, monster-production collaboration, and illustrating limited-expression minions in a picture book.",
+          "accessedAt": "2026-09-08"
+        },
+        {
+          "sourceId": "grandia-1997-developer-interviews",
+          "title": "Grandia – 1997 Developer Interviews",
+          "creator": "Takeshi Miyaji and Hidenobu Takahashi; translated by shmuplations",
+          "url": "https://shmuplations.com/grandia/",
+          "publishedAt": "2021-12-28",
+          "role": "primary",
+          "lineage": "English translation of one pre-release and one post-release 1997 developer interview preserved from Japanese print sources.",
+          "accessedAt": "2026-09-08"
+        }
+      ]
     }
   ]
 }
