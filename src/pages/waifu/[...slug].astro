@@ -211,10 +211,13 @@ const formattedDate = waifu.data.date.toLocaleDateString('en-US', {
     margin: 2.6rem 0;
   }
   :global(.prose .waifu-inline-image img) {
+    aspect-ratio: 16 / 9;
     border: 1px solid var(--border-color);
     border-radius: 1rem;
     box-shadow: var(--glass-shadow);
     display: block;
+    height: auto;
+    object-fit: cover;
     width: 100%;
   }
   :global(.prose .waifu-inline-image figcaption) {
