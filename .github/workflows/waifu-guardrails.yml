@@ -8,8 +8,11 @@ on:
       - 'src/pages/waifu/**'
       - 'src/content.config.ts'
       - 'scripts/validate-waifu.mjs'
+      - 'scripts/waifu-publication-bridge.mjs'
       - 'automation/daily-waifu.md'
+      - 'automation/waifu-publication-bridge.md'
       - '.github/workflows/waifu-guardrails.yml'
+      - '.github/workflows/waifu-publication-bridge.yml'
   push:
     branches: [main]
     paths:
@@ -18,8 +21,11 @@ on:
       - 'src/pages/waifu/**'
       - 'src/content.config.ts'
       - 'scripts/validate-waifu.mjs'
+      - 'scripts/waifu-publication-bridge.mjs'
       - 'automation/daily-waifu.md'
+      - 'automation/waifu-publication-bridge.md'
       - '.github/workflows/waifu-guardrails.yml'
+      - '.github/workflows/waifu-publication-bridge.yml'
 
 jobs:
   validate:
@@ -31,5 +37,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node scripts/waifu-publication-bridge.mjs self-test
       - run: node scripts/validate-waifu.mjs
       - run: npm run build
