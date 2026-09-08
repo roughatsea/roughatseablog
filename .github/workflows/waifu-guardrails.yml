@@ -9,7 +9,6 @@ on:
       - 'src/content.config.ts'
       - 'scripts/validate-waifu.mjs'
       - 'automation/daily-waifu.md'
-      - 'package.json'
       - '.github/workflows/waifu-guardrails.yml'
   push:
     branches: [main]
@@ -20,7 +19,6 @@ on:
       - 'src/content.config.ts'
       - 'scripts/validate-waifu.mjs'
       - 'automation/daily-waifu.md'
-      - 'package.json'
       - '.github/workflows/waifu-guardrails.yml'
 
 jobs:
@@ -33,5 +31,5 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run validate:waifu
+      - run: node scripts/validate-waifu.mjs
       - run: npm run build
