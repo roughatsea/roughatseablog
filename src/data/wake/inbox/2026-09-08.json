@@ -1,0 +1,291 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-08",
+  "article": {
+    "slug": "morning-soundings-2026-09-08",
+    "title": "Morning Soundings: Every Network Needs a Carrier",
+    "publishedAt": "2026-09-08T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-08.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-08T05:09:18-07:00",
+    "sourceStateAsOf": "2026-09-08",
+    "notes": "Captured during the publication run from sources accessed on September 8, 2026."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-08-botswana-long-distance-copper-trade",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "Copper remembers routes that no map recorded",
+      "canonicalSubject": {
+        "name": "Isotopic provenance of copper and tin at east-central Botswana Iron Age sites",
+        "kind": "archaeometallurgy-study",
+        "aliases": [
+          "Bosutswe copper trade networks",
+          "Stephens Botswana copper and tin provenance study"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "archaeology",
+        "archaeometallurgy",
+        "trade-networks",
+        "african-history"
+      ],
+      "geography": [
+        "Botswana",
+        "South Africa",
+        "Zimbabwe",
+        "Zambia",
+        "Democratic Republic of the Congo"
+      ],
+      "canonicalClaim": "A peer-reviewed provenance study of 30 copper and bronze objects from three Iron Age sites in east-central Botswana finds copper from widely distributed southern African sources while sourced tin points to South Africa's Rooiberg valley.",
+      "knownFacts": [
+        "The study examined objects from Bosutswe, Khubu la Dintsa, and Lose using chemical composition, lead isotopes, and tin isotopes.",
+        "Copper sources included mines in four present-day countries, with some more than 950 kilometers from Bosutswe.",
+        "The sourced tin in bronze objects was associated with the Rooiberg valley in South Africa, about 360 kilometers from Bosutswe.",
+        "Tin from Rooiberg was found combined with copper from several sources."
+      ],
+      "uncertainties": [
+        "The tested objects do not reveal which people or institutions transported the metal.",
+        "The reasons nearby copper deposits contributed relatively little remain unresolved.",
+        "The sample of 30 objects may not represent every exchange route or period between approximately AD 800 and 1650."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed paper reports the provenance analysis; Phys.org provides an accessible account based on the paper and author interviews."
+      },
+      "sources": [
+        {
+          "url": "https://www.tandfonline.com/doi/full/10.1080/0067270X.2026.2715248",
+          "title": "Isotopic and chemical evidence for long-distance trade of copper and tin into east-central Botswana, c. cal. AD 800–1650",
+          "publisher": "Azania: Archaeological Research in Africa",
+          "publishedAt": "2026-08-12",
+          "accessedAt": "2026-09-08",
+          "role": "primary-research",
+          "lineage": "stephens-botswana-copper-tin-provenance-2026"
+        },
+        {
+          "url": "https://phys.org/news/2026-09-iron-age-botswana-site-sourced.html",
+          "title": "Iron Age Botswana site sourced copper across southern Africa—but tin from just one place",
+          "publisher": "Phys.org",
+          "publishedAt": "2026-09-04",
+          "accessedAt": "2026-09-08",
+          "role": "independent-reporting",
+          "lineage": "stephens-botswana-copper-tin-provenance-2026"
+        }
+      ],
+      "openQuestions": [
+        "Which social and political mechanisms carried metal among the identified source regions and east-central Botswana?",
+        "Why are several closer precolonial copper mines sparsely represented in the sampled artifacts?",
+        "Will a larger object sample preserve the same contrast between diverse copper sources and concentrated tin provenance?"
+      ],
+      "watchFor": [
+        {
+          "description": "Expanded provenance sampling",
+          "expectedWindow": null,
+          "trigger": "A follow-up analyzes additional metals from the three sites or neighboring settlements and revises the inferred exchange network."
+        },
+        {
+          "description": "Mechanisms of metal movement",
+          "expectedWindow": null,
+          "trigger": "New archaeological or historical evidence identifies how copper and tin moved across the reconstructed routes."
+        }
+      ],
+      "trackingTerms": [
+        "Azania 10.1080 0067270X.2026.2715248",
+        "Bosutswe copper isotope provenance",
+        "east-central Botswana tin trade Rooiberg",
+        "Jay Stephens Botswana archaeometallurgy"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "Additional isotope sampling can test the source pattern and may clarify how precolonial exchange routes were organized."
+      },
+      "selectionReason": "The material analysis reveals a large African exchange network without reducing it to the better-documented coastal trade in imported goods.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-08-arctic-through-ice-magnetic-modem",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "The Arctic modem uses a field seawater will carry",
+      "canonicalSubject": {
+        "name": "MIT Lincoln Laboratory Arctic magneto-inductive modem test",
+        "kind": "communications-prototype",
+        "aliases": [
+          "Operation Ice Camp 2026 through-ice communications",
+          "Havguard Arctic magneto-inductive modem"
+        ]
+      },
+      "signalType": "prototype-field-test",
+      "topics": [
+        "arctic",
+        "communications",
+        "sensors",
+        "ocean-engineering"
+      ],
+      "geography": [
+        "Utqiagvik",
+        "Alaska",
+        "United States",
+        "Arctic"
+      ],
+      "canonicalClaim": "MIT Lincoln Laboratory reports that an alpha magneto-inductive modem transmitted test data at about 1.2 kilobytes per second from beneath 3.6 feet of landfast Arctic lagoon ice to a receiver above it.",
+      "knownFacts": [
+        "The transmitter rode on a remotely operated vehicle below the ice while the receiver sat above it.",
+        "The team used vehicle navigation measurements and aerial drone imagery to estimate the data-transfer rate during the field test.",
+        "The 2026 campaign also deployed higher-fidelity geophones intended to distinguish vibrations in sea ice and under-ice sound sources.",
+        "Severe weather limited the planned geophone deployment to one quarter of the intended instruments."
+      ],
+      "uncertainties": [
+        "The reported test does not establish long-term reliability, operating range, or energy use for a deployed network.",
+        "The prototype result has not been independently evaluated in a peer-reviewed publication identified during this capture.",
+        "Performance may differ on drifting sea ice, at other thicknesses, and in other electromagnetic conditions."
+      ],
+      "evidence": {
+        "level": "first-party-only",
+        "notes": "MIT Lincoln Laboratory reports the prototype field test and operational conditions; no independent peer-reviewed validation was identified."
+      },
+      "sources": [
+        {
+          "url": "https://www.ll.mit.edu/news/researchers-tune-arctic-under-ice-sounds-and-test-through-ice-communication",
+          "title": "Researchers tune into Arctic under-ice sounds and test through-ice communication",
+          "publisher": "MIT Lincoln Laboratory",
+          "publishedAt": "2026-08-26",
+          "accessedAt": "2026-09-08",
+          "role": "institutional-reporting",
+          "lineage": "mit-lincoln-arctic-through-ice-modem-2026"
+        },
+        {
+          "url": "https://news.mit.edu/2026/researchers-tune-into-arctic-under-ice-sounds-test-through-ice-communication-0904",
+          "title": "Researchers tune into Arctic under-ice sounds and test through-ice communication",
+          "publisher": "MIT News",
+          "publishedAt": "2026-09-04",
+          "accessedAt": "2026-09-08",
+          "role": "institutional-reporting",
+          "lineage": "mit-lincoln-arctic-through-ice-modem-2026"
+        }
+      ],
+      "openQuestions": [
+        "What range, reliability, and power budget can the modem achieve in a sustained Arctic deployment?",
+        "How will performance change on drifting sea ice and in saltwater conditions beyond the landfast lagoon test?",
+        "Can deployable sensor nodes relay useful data through drones or satellites with fewer people on the ice?"
+      ],
+      "watchFor": [
+        {
+          "description": "Operation Ice Camp 2028 deployment",
+          "expectedWindow": "2028",
+          "trigger": "The team reports field results for air-droppable sensors or a more deployable through-ice modem at the next planned campaign."
+        },
+        {
+          "description": "Independent performance data",
+          "expectedWindow": null,
+          "trigger": "A technical publication reports range, reliability, power, or environmental tests for the magneto-inductive system."
+        }
+      ],
+      "trackingTerms": [
+        "MIT Lincoln Laboratory through-ice modem",
+        "Havguard magneto-inductive Arctic modem",
+        "Operation Ice Camp 2028 sensors",
+        "Arctic geophone distributed sensor network"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The team has named a 2028 field milestone and concrete performance questions that future technical reporting can resolve."
+      },
+      "selectionReason": "The prototype makes the physical medium and human retrieval cost part of communications design rather than treating connectivity as an abstraction.",
+      "reviewAfter": "2028-03-01",
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-08-ukraine-biodata-training-infrastructure",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "In wartime, expertise has to be carried too",
+      "canonicalSubject": {
+        "name": "Ukrainian Biological Data Science Summer School",
+        "kind": "scientific-capacity-program",
+        "aliases": [
+          "UBDS3",
+          "biological data science training in wartime Ukraine"
+        ]
+      },
+      "signalType": "peer-reviewed-comment",
+      "topics": [
+        "education",
+        "scientific-infrastructure",
+        "bioinformatics",
+        "wartime-resilience"
+      ],
+      "geography": [
+        "Uzhhorod",
+        "Ukraine"
+      ],
+      "canonicalClaim": "A Nature Genetics comment presents the Ukrainian Biological Data Science Summer School, held in Uzhhorod since 2023, as a model in which distributed computation, in-country teaching, and recursive mentorship preserve scientific capacity during war.",
+      "knownFacts": [
+        "The school has been held in person at Uzhhorod National University each year since 2023.",
+        "The program brings international faculty into Ukraine and offers bilingual instruction.",
+        "Participation is free, with travel, lodging, and meals covered according to institutional reporting.",
+        "The published model emphasizes cloud-based computation and returning participants who become teaching assistants and mentors."
+      ],
+      "uncertainties": [
+        "The article is a comment describing one program rather than a controlled comparison of capacity-building models.",
+        "Long-term outcomes for participants, research groups, and locally led publications have not yet been established in the sources reviewed.",
+        "The program's durability will depend on continued local leadership, security, funding, and international partnership."
+      ],
+      "evidence": {
+        "level": "first-party-only",
+        "notes": "The peer-reviewed Nature Genetics comment is authored by the program's participants and faculty consortium; its claims about model effectiveness should be read as experience-based institutional evidence."
+      },
+      "sources": [
+        {
+          "url": "https://www.nature.com/articles/s41588-026-02702-y",
+          "title": "Training as infrastructure for biological data science in wartime Ukraine",
+          "publisher": "Nature Genetics",
+          "publishedAt": "2026-09-07",
+          "accessedAt": "2026-09-08",
+          "role": "first-party",
+          "lineage": "oleksyk-ubds3-training-infrastructure-2026"
+        }
+      ],
+      "openQuestions": [
+        "How many former participants remain in Ukrainian research and progress into locally led projects or teaching roles?",
+        "Can recursive mentorship continue without permanent dependence on visiting international faculty?",
+        "Which parts of the model transfer successfully to other places facing war, disaster, or prolonged infrastructure failure?"
+      ],
+      "watchFor": [
+        {
+          "description": "Participant and mentorship outcomes",
+          "expectedWindow": null,
+          "trigger": "The program publishes longitudinal evidence on participant retention, teaching roles, research output, or career progression."
+        },
+        {
+          "description": "Independent adoption of the model",
+          "expectedWindow": null,
+          "trigger": "Another institution documents an adaptation of the distributed and recursive training design under systemic disruption."
+        }
+      ],
+      "trackingTerms": [
+        "Nature Genetics s41588-026-02702-y",
+        "Ukrainian Biological Data Science Summer School",
+        "UBDS3 Uzhhorod",
+        "training infrastructure wartime Ukraine genomics"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The program has repeat editions and concrete outcomes in mentorship, retention, and research capacity that can be assessed over time."
+      },
+      "selectionReason": "The project identifies mentorship as productive infrastructure and offers a specific design for carrying expertise when travel and institutions are under pressure.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    }
+  ]
+}
