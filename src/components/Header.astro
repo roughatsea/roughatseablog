@@ -13,31 +13,17 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
         <path d="M3 20c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5 5.2-5 10.4-5 5.2 5 10.4 5" />
         <path d="M3 29c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5 5.2-5 10.4-5 5.2 5 10.4 5" />
       </svg>
-      <span class="brand-copy">
-        <span class="logo">Rough at Sea</span>
-        <span class="brand-line">A logbook for curious waters</span>
-      </span>
+      <span class="brand-copy"><span class="logo">Rough at Sea</span><span class="brand-line">A logbook for curious waters</span></span>
     </a>
 
-    <button
-      id="menu-toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="primary-navigation-panel"
-      aria-label="Open menu"
-    >
-      <svg class="menu-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
-        <path d="M4 7h16M4 12h16M4 17h16" />
-      </svg>
-      <svg class="close-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
-        <path d="m6 6 12 12M18 6 6 18" />
-      </svg>
+    <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation-panel" aria-label="Open menu">
+      <svg class="menu-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      <svg class="close-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" /></svg>
     </button>
 
     <div class="header-actions" id="primary-navigation-panel">
       <nav aria-label="Primary navigation">
         <a class="home-link" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
-
         <details class:list={['nav-group', { 'is-current': isWriting }]}>
           <summary>Writing</summary>
           <div class="nav-menu">
@@ -45,7 +31,6 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
             <a href="/guides/software-engineering/" aria-current={pathname.startsWith('/guides/software-engineering/') ? 'page' : undefined}><strong>Field Guide</strong><span>Software engineering, made legible</span></a>
           </div>
         </details>
-
         <details class:list={['nav-group', { 'is-current': isDaily }]}>
           <summary>Daily</summary>
           <div class="nav-menu">
@@ -56,7 +41,6 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
             <a href="/wake/" aria-current={pathname.startsWith('/wake/') ? 'page' : undefined}><strong>The Wake</strong><span>What followed the signal</span></a>
           </div>
         </details>
-
         <details class:list={['nav-group', { 'is-current': isExplorations }]}>
           <summary>Explorations</summary>
           <div class="nav-menu">
@@ -67,8 +51,8 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
         <a href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>About</a>
       </nav>
       <button id="theme-toggle" aria-label="Toggle dark mode">
-        <svg class="sun-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        <svg class="moon-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="sun-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <span class="theme-toggle-text">Dark mode</span>
       </button>
     </div>
@@ -76,267 +60,102 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
 </header>
 
 <style>
-  header {
-    margin-bottom: 3rem;
-    padding: 0.8rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-content,
-  .header-actions,
-  .brand,
-  nav {
-    align-items: center;
-    display: flex;
-  }
-  .header-content {
-    justify-content: space-between;
-    max-width: 1120px;
-    position: relative;
-  }
-  .brand {
-    gap: 0.7rem;
-    min-width: 0;
-  }
-  .brand-mark {
-    color: var(--link-color);
-    flex: 0 0 auto;
-    height: 1.75rem;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-width: 2.5;
-    width: 2.65rem;
-  }
-  .brand-copy {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-  }
-  .logo {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-  .brand-line {
-    color: var(--text-secondary);
-    font-size: 0.62rem;
-    letter-spacing: 0.04em;
-    margin-top: 0.18rem;
-    text-transform: uppercase;
-  }
-  .header-actions {
-    gap: 0.8rem;
-  }
-  #menu-toggle {
-    align-items: center;
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    color: var(--text-primary);
-    cursor: pointer;
-    display: none;
-    height: 2.75rem;
-    justify-content: center;
-    padding: 0;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-    width: 2.75rem;
-  }
-  #menu-toggle:hover {
-    background-color: var(--bg-color);
-    border-color: var(--text-secondary);
-  }
-  #menu-toggle svg {
-    height: 1.25rem;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-width: 2;
-    width: 1.25rem;
-  }
-  #menu-toggle .close-icon,
-  #menu-toggle[aria-expanded='true'] .menu-icon {
-    display: none;
-  }
-  #menu-toggle[aria-expanded='true'] .close-icon {
-    display: block;
-  }
-  nav {
-    gap: 0.2rem;
-  }
-  nav a,
-  summary {
-    border-radius: 999px;
-    color: var(--text-secondary);
-    font-size: 0.82rem;
-    padding: 0.4rem 0.65rem;
-  }
-  nav a:hover,
-  nav a[aria-current='page'],
-  summary:hover,
-  .nav-group.is-current summary {
-    background: var(--bg-color);
-    color: var(--text-primary);
-  }
-  nav a[aria-current='page'] {
-    box-shadow: inset 0 0 0 1px var(--border-color);
-  }
-  .nav-group {
-    position: relative;
-  }
-  summary {
-    cursor: pointer;
-    list-style: none;
-  }
+  header { margin-bottom: 3rem; padding: .8rem 0; position: sticky; top: 0; z-index: 100; }
+  .header-content,.header-actions,.brand,nav { align-items: center; display: flex; }
+  .header-content { justify-content: space-between; max-width: 1120px; position: relative; }
+  .brand { gap: .7rem; min-width: 0; }
+  .brand-mark { color: var(--link-color); flex: 0 0 auto; height: 1.75rem; stroke: currentColor; stroke-linecap: round; stroke-width: 2.5; width: 2.65rem; }
+  .brand-copy { display: flex; flex-direction: column; line-height: 1.1; }
+  .logo { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600; }
+  .brand-line { color: var(--text-secondary); font-size: .62rem; letter-spacing: .04em; margin-top: .18rem; text-transform: uppercase; }
+  .header-actions { gap: .8rem; }
+  #menu-toggle { align-items: center; background: none; border: 1px solid var(--border-color); border-radius: 50%; color: var(--text-primary); cursor: pointer; display: none; height: 2.75rem; justify-content: center; padding: 0; width: 2.75rem; }
+  #menu-toggle svg { height: 1.25rem; stroke: currentColor; stroke-linecap: round; stroke-width: 2; width: 1.25rem; }
+  #menu-toggle .close-icon,#menu-toggle[aria-expanded='true'] .menu-icon { display: none; }
+  #menu-toggle[aria-expanded='true'] .close-icon { display: block; }
+  nav { gap: .2rem; }
+  nav a,summary { border-radius: 999px; color: var(--text-secondary); font-size: .82rem; padding: .4rem .65rem; }
+  nav a:hover,nav a[aria-current='page'],summary:hover,.nav-group.is-current summary { background: var(--bg-color); color: var(--text-primary); }
+  nav a[aria-current='page'] { box-shadow: inset 0 0 0 1px var(--border-color); }
+  .nav-group { position: relative; }
+  summary { cursor: pointer; list-style: none; }
   summary::-webkit-details-marker { display: none; }
-  summary::after {
-    content: '⌄';
-    display: inline-block;
-    font-size: 0.9em;
-    margin-left: 0.28rem;
-    transition: transform 0.15s ease;
-  }
+  summary::after { content: '⌄'; display: inline-block; font-size: .9em; margin-left: .28rem; }
   details[open] summary::after { transform: rotate(180deg); }
-  .nav-menu {
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: 0.9rem;
-    box-shadow: var(--glass-shadow);
-    display: grid;
-    gap: 0.15rem;
-    left: 0;
-    min-width: 15.5rem;
-    padding: 0.45rem;
-    position: absolute;
-    top: calc(100% + 0.55rem);
-    z-index: 10;
-  }
-  .nav-menu a {
-    border-radius: 0.65rem;
-    display: grid;
-    gap: 0.13rem;
-    padding: 0.55rem 0.65rem;
-  }
-  .nav-menu strong { color: var(--text-primary); font-size: 0.78rem; font-weight: 600; }
-  .nav-menu span { font-size: 0.68rem; line-height: 1.25; }
-  #theme-toggle {
-    align-items: center;
-    background: none;
-    border: none;
-    border-radius: 50%;
-    color: var(--text-primary);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem;
-    transition: background-color 0.2s ease;
-  }
-  #theme-toggle:hover {
-    background-color: var(--border-color);
-  }
-  .theme-toggle-text {
-    display: none;
-  }
-
+  .nav-menu { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: .9rem; box-shadow: var(--glass-shadow); display: grid; gap: .15rem; left: 0; min-width: 15.5rem; padding: .45rem; position: absolute; top: calc(100% + .55rem); z-index: 10; }
+  .nav-menu a { border-radius: .65rem; display: grid; gap: .13rem; padding: .55rem .65rem; }
+  .nav-menu strong { color: var(--text-primary); font-size: .78rem; font-weight: 600; }
+  .nav-menu span { font-size: .68rem; line-height: 1.25; }
+  #theme-toggle { align-items: center; background: none; border: none; border-radius: 50%; color: var(--text-primary); cursor: pointer; display: flex; justify-content: center; padding: .5rem; }
+  #theme-toggle svg { height: 20px; width: 20px; }
+  #theme-toggle:hover { background-color: var(--border-color); }
+  .theme-toggle-text { display: none; }
   :global([data-theme='dark']) .sun-icon { display: block; }
   :global([data-theme='dark']) .moon-icon { display: none; }
   :global(:root:not([data-theme='dark'])) .sun-icon { display: none; }
   :global(:root:not([data-theme='dark'])) .moon-icon { display: block; }
-
   @media (max-width: 980px) {
-    header {
-      margin-bottom: 2.25rem;
-    }
-    .brand-line {
-      display: none;
-    }
-    .brand-mark {
-      height: 1.45rem;
-      width: 2.2rem;
-    }
-    .logo {
-      font-size: 1.05rem;
-    }
-    #menu-toggle {
-      display: flex;
-      flex: 0 0 auto;
-    }
-    .header-actions {
-      align-items: stretch;
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      box-shadow: var(--glass-shadow);
-      display: none;
-      flex-direction: column;
-      gap: 0.45rem;
-      padding: 0.6rem;
-      position: absolute;
-      right: 0;
-      top: calc(100% + 0.75rem);
-      width: min(18rem, calc(100vw - 3rem));
-    }
-    .header-actions.is-open {
-      display: flex;
-    }
-    nav {
-      align-items: stretch;
-      flex-direction: column;
-      gap: 0.15rem;
-    }
-    nav a,
-    summary {
-      border-radius: 0.7rem;
-      font-size: 0.9rem;
-      padding: 0.65rem 0.8rem;
-    }
+    header { margin-bottom: 2.25rem; }
+    .brand-line { display: none; }
+    .brand-mark { height: 1.45rem; width: 2.2rem; }
+    .logo { font-size: 1.05rem; }
+    #menu-toggle { display: flex; flex: 0 0 auto; }
+    .header-actions { align-items: stretch; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 1rem; box-shadow: var(--glass-shadow); display: none; flex-direction: column; gap: .45rem; padding: .6rem; position: absolute; right: 0; top: calc(100% + .75rem); width: min(18rem, calc(100vw - 3rem)); }
+    .header-actions.is-open { display: flex; }
+    nav { align-items: stretch; flex-direction: column; gap: .15rem; }
+    nav a,summary { border-radius: .7rem; font-size: .9rem; padding: .65rem .8rem; }
     .nav-group { position: static; }
     summary { display: flex; justify-content: space-between; }
     summary::after { margin-left: auto; }
-    .nav-menu {
-      background: transparent;
-      border: 0;
-      box-shadow: none;
-      margin: 0.1rem 0 0.3rem;
-      min-width: 0;
-      padding: 0 0 0 0.65rem;
-      position: static;
-    }
-    .nav-menu a { padding: 0.55rem 0.65rem; }
-    #theme-toggle {
-      border-radius: 0.7rem;
-      border-top: 1px solid var(--border-color);
-      gap: 0.65rem;
-      justify-content: flex-start;
-      padding: 0.75rem 0.8rem 0.55rem;
-      width: 100%;
-    }
-    .theme-toggle-text {
-      display: inline;
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
-    }
+    .nav-menu { background: transparent; border: 0; box-shadow: none; margin: .1rem 0 .3rem; min-width: 0; padding: 0 0 0 .65rem; position: static; }
+    .nav-menu a { padding: .55rem .65rem; }
+    #theme-toggle { border-radius: .7rem; border-top: 1px solid var(--border-color); gap: .65rem; justify-content: flex-start; padding: .75rem .8rem .55rem; width: 100%; }
+    .theme-toggle-text { display: inline; font-family: var(--font-sans); font-size: .9rem; }
   }
-
-  @media (max-width: 390px) {
-    .brand-mark {
-      display: none;
-    }
-  }
+  @media (max-width: 390px) { .brand-mark { display: none; } }
 </style>
 
 <script>
   const menuToggle = document.getElementById('menu-toggle');
   const navigationPanel = document.getElementById('primary-navigation-panel');
-
   const setMenuOpen = (isOpen: boolean) => {
     menuToggle?.setAttribute('aria-expanded', String(isOpen));
     menuToggle?.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     navigationPanel?.classList.toggle('is-open', isOpen);
   };
-
-  menuToggle?.addEventListener('click', () => {
-    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-    setMenuOpen(!isOpen);
+  menuToggle?.addEventListener('click', () => setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true'));
+  navigationPanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Node)) return;
+    if (menuToggle?.contains(event.target) || navigationPanel?.contains(event.target)) return;
+    setMenuOpen(false);
   });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || menuToggle?.getAttribute('aria-expanded') !== 'true') return;
+    setMenuOpen(false);
+    menuToggle?.focus();
+  });
+  window.matchMedia('(min-width: 981px)').addEventListener('change', (event) => { if (event.matches) setMenuOpen(false); });
 
- 
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleText = themeToggle?.querySelector('.theme-toggle-text');
+  const syncThemeToggle = () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const nextTheme = isDark ? 'light' : 'dark';
+    themeToggle?.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
+    if (themeToggleText) themeToggleText.textContent = `${nextTheme[0].toUpperCase()}${nextTheme.slice(1)} mode`;
+  };
+  themeToggle?.addEventListener('click', () => {
+    const element = document.documentElement;
+    const isDark = element.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      element.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    } else {
+      element.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    syncThemeToggle();
+  });
+  syncThemeToggle();
+</script>
