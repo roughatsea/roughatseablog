@@ -118,22 +118,29 @@ const savePointsCollection = defineCollection({
   schema: savePointSchema,
 });
 
+const waifuArtworkSchema = z.string().regex(
+  /^\/images\/waifu\/[A-Za-z0-9._/-]+\.webp$/i,
+  'Waifu character artwork must be a WebP under /images/waifu/. SVG stand-ins are not allowed.',
+);
+
 const waifuSchema = articleSchema.extend({
+  heroImage: waifuArtworkSchema,
+  heroImageAlt: z.string().min(1),
   edition: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  topic: z.string(),
-  domain: z.string(),
+  topic: z.string().min(1),
+  domain: z.string().min(1),
   readTimeMinutes: z.number().int().positive(),
   currentAffairs: z.boolean().default(false),
-  visualStyle: z.string(),
+  visualStyle: z.string().min(1),
   character: z.object({
-    name: z.string(),
+    name: z.string().min(1),
     age: z.number().int().min(25),
-    role: z.string(),
-    personality: z.string(),
+    role: z.string().min(1),
+    personality: z.string().min(1),
   }),
   supportingImages: z.array(z.object({
-    src: z.string(),
-    alt: z.string(),
+    src: waifuArtworkSchema,
+    alt: z.string().min(1),
     caption: z.string().optional(),
   })).default([]),
 });
