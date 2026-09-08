@@ -1,0 +1,323 @@
+---
+const particleCount = 36;
+const particles = Array.from({ length: particleCount }, (_, index) => index);
+---
+
+<section class="entropy-lab" data-entropy-lab>
+  <div class="lab-heading">
+    <div>
+      <p class="lab-kicker">Toy model · 36 particles</p>
+      <h3>How many ways can the box look like this?</h3>
+    </div>
+    <div class="lab-controls">
+      <button type="button" data-run>Release particles</button>
+      <button type="button" data-reset>Reset</button>
+    </div>
+  </div>
+
+  <div class="box-wrap">
+    <svg class="particle-box" viewBox="0 0 760 340" role="img" aria-labelledby="entropy-lab-title entropy-lab-desc">
+      <title id="entropy-lab-title">A two-compartment box containing 36 particles</title>
+      <desc id="entropy-lab-desc">Particles begin on the left and can wander between the two halves. The statistics below count how many microscopic arrangements correspond to the current left-right split.</desc>
+      <rect x="6" y="6" width="748" height="328" rx="20" class="box" />
+      <line x1="380" y1="10" x2="380" y2="330" class="divider" />
+      <text x="42" y="48" class="side-label">LEFT</text>
+      <text x="718" y="48" text-anchor="end" class="side-label">RIGHT</text>
+      {particles.map((index) => {
+        const col = index % 6;
+        const row = Math.floor(index / 6);
+        return (
+          <circle
+            data-particle
+            data-index={index}
+            cx={58 + col * 49}
+            cy={77 + row * 43}
+            r="8"
+            class="particle"
+          />
+        );
+      })}
+    </svg>
+  </div>
+
+  <div class="balance" aria-hidden="true">
+    <span data-balance-left style="width:100%"></span>
+    <span data-balance-right style="width:0%"></span>
+  </div>
+
+  <dl class="lab-stats" aria-live="polite">
+    <div>
+      <dt>Left / right</dt>
+      <dd><span data-left-count>36</span> / <span data-right-count>0</span></dd>
+    </div>
+    <div>
+      <dt>Compatible microstates</dt>
+      <dd data-microstates>1</dd>
+    </div>
+    <div>
+      <dt>ln W</dt>
+      <dd data-logw>0.000</dd>
+    </div>
+  </dl>
+
+  <p class="lab-note">
+    This is a counting toy, not a molecular-dynamics simulation. Each dot can be on either side, so a
+    36/0 split has one compatible arrangement while an 18/18 split has 9,075,135,300. Real gases
+    contain vastly more particles, which makes the statistical preference for equilibrium overwhelming.
+  </p>
+</section>
+
+<style>
+  .entropy-lab {
+    background:
+      radial-gradient(circle at 14% 0%, color-mix(in srgb, #1493ff 12%, transparent), transparent 30%),
+      radial-gradient(circle at 90% 100%, color-mix(in srgb, #ff1493 10%, transparent), transparent 28%),
+      var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    margin: 2.4rem 0;
+    overflow: hidden;
+    padding: clamp(1rem, 3vw, 1.45rem);
+  }
+  .lab-heading {
+    align-items: end;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .lab-kicker {
+    color: #1493ff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.25rem;
+    text-transform: uppercase;
+  }
+  .lab-heading h3 {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    margin: 0;
+  }
+  .lab-controls {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 0.45rem;
+  }
+  .lab-controls button {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.5rem 0.75rem;
+  }
+  .lab-controls button:first-child {
+    background: var(--text-primary);
+    color: var(--bg-color);
+  }
+  .box-wrap {
+    overflow: hidden;
+  }
+  .particle-box {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+  .box {
+    fill: color-mix(in srgb, var(--bg-color) 72%, transparent);
+    stroke: var(--border-color);
+    stroke-width: 2;
+  }
+  .divider {
+    stroke: var(--border-color);
+    stroke-dasharray: 8 8;
+    stroke-width: 2;
+  }
+  .side-label {
+    fill: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .particle {
+    fill: #ff1493;
+    filter: drop-shadow(0 0 5px color-mix(in srgb, #ff1493 45%, transparent));
+    transition: cx 0.32s ease, cy 0.32s ease, fill 0.32s ease;
+  }
+  .particle[data-side='right'] {
+    fill: #1493ff;
+    filter: drop-shadow(0 0 5px color-mix(in srgb, #1493ff 45%, transparent));
+  }
+  .balance {
+    background: var(--border-color);
+    border-radius: 999px;
+    display: flex;
+    height: 0.42rem;
+    margin: 0.65rem 0 1rem;
+    overflow: hidden;
+  }
+  .balance span:first-child {
+    background: #ff1493;
+  }
+  .balance span:last-child {
+    background: #1493ff;
+  }
+  .balance span {
+    transition: width 0.28s ease;
+  }
+  .lab-stats {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: 0.8fr 1.4fr 0.8fr;
+    margin: 0;
+  }
+  .lab-stats div {
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.6rem;
+  }
+  .lab-stats dt {
+    color: var(--text-secondary);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lab-stats dd {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.9rem;
+    margin: 0.18rem 0 0;
+  }
+  .lab-note {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    line-height: 1.55;
+    margin: 1rem 0 0;
+  }
+  @media (max-width: 620px) {
+    .lab-heading {
+      align-items: start;
+      flex-direction: column;
+    }
+    .lab-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .particle,
+    .balance span {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-entropy-lab]');
+
+  if (root) {
+    const particles = Array.from(root.querySelectorAll<SVGCircleElement>('[data-particle]'));
+    const runButton = root.querySelector<HTMLButtonElement>('[data-run]');
+    const resetButton = root.querySelector<HTMLButtonElement>('[data-reset]');
+    const leftCount = root.querySelector<HTMLElement>('[data-left-count]');
+    const rightCount = root.querySelector<HTMLElement>('[data-right-count]');
+    const microstates = root.querySelector<HTMLElement>('[data-microstates]');
+    const logW = root.querySelector<HTMLElement>('[data-logw]');
+    const balanceLeft = root.querySelector<HTMLSpanElement>('[data-balance-left]');
+    const balanceRight = root.querySelector<HTMLSpanElement>('[data-balance-right]');
+
+    if (
+      runButton &&
+      resetButton &&
+      leftCount &&
+      rightCount &&
+      microstates &&
+      logW &&
+      balanceLeft &&
+      balanceRight
+    ) {
+      const sides: boolean[] = Array(particles.length).fill(false);
+      let timer: number | undefined;
+      let running = false;
+
+      const choose = (n: number, k: number): bigint => {
+        let r = 1n;
+        const m = Math.min(k, n - k);
+        for (let i = 1; i <= m; i += 1) {
+          r = (r * BigInt(n - m + i)) / BigInt(i);
+        }
+        return r;
+      };
+
+      const placeParticle = (particle: SVGCircleElement, index: number) => {
+        const right = sides[index];
+        const minX = right ? 410 : 32;
+        const maxX = right ? 728 : 350;
+        particle.setAttribute('cx', String(minX + Math.random() * (maxX - minX)));
+        particle.setAttribute('cy', String(64 + Math.random() * 244));
+        particle.setAttribute('data-side', right ? 'right' : 'left');
+      };
+
+      const render = () => {
+        particles.forEach(placeParticle);
+        const right = sides.filter(Boolean).length;
+        const left = particles.length - right;
+        const w = choose(particles.length, left);
+        const leftPercent = (left / particles.length) * 100;
+        leftCount.textContent = String(left);
+        rightCount.textContent = String(right);
+        microstates.textContent = new Intl.NumberFormat('en-US').format(w);
+        logW.textContent = Math.log(Number(w)).toFixed(3);
+        balanceLeft.style.width = `${leftPercent}%`;
+        balanceRight.style.width = `${100 - leftPercent}%`;
+      };
+
+      const step = () => {
+        sides.forEach((_, index) => {
+          if (Math.random() < 0.13) sides[index] = !sides[index];
+        });
+        render();
+      };
+
+      const stop = () => {
+        if (timer !== undefined) window.clearInterval(timer);
+        timer = undefined;
+        running = false;
+        runButton.textContent = 'Release particles';
+      };
+
+      runButton.addEventListener('click', () => {
+        if (running) {
+          stop();
+          return;
+        }
+        running = true;
+        runButton.textContent = 'Pause';
+        step();
+        timer = window.setInterval(step, 420);
+      });
+
+      resetButton.addEventListener('click', () => {
+        stop();
+        sides.fill(false);
+        particles.forEach((particle, index) => {
+          const col = index % 6;
+          const row = Math.floor(index / 6);
+          particle.setAttribute('cx', String(58 + col * 49));
+          particle.setAttribute('cy', String(77 + row * 43));
+          particle.setAttribute('data-side', 'left');
+        });
+        const w = choose(particles.length, particles.length);
+        leftCount.textContent = String(particles.length);
+        rightCount.textContent = '0';
+        microstates.textContent = new Intl.NumberFormat('en-US').format(w);
+        logW.textContent = '0.000';
+        balanceLeft.style.width = '100%';
+        balanceRight.style.width = '0%';
+      });
+    }
+  }
+</script>
