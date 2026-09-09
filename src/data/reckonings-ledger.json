@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-08T06:00:00-07:00",
+  "updatedAt": "2026-09-09T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -258,6 +258,34 @@
       ],
       "relatedLessons": [
         "daily-reckoning-2026-09-02"
+      ]
+    },
+    {
+      "date": "2026-09-09",
+      "slug": "daily-reckoning-2026-09-09",
+      "title": "How Can 7²²² Fit on a Clock?",
+      "area": "Numbers and algebra",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Whole-number division with remainders",
+        "Exponents",
+        "Factors and multiples"
+      ],
+      "miniSeries": {
+        "title": "Arithmetic Behind Secure Messages",
+        "part": 1,
+        "total": 3
+      },
+      "relatedTopics": [
+        "modular arithmetic",
+        "congruence",
+        "residue cycles",
+        "modular exponentiation",
+        "check digits",
+        "public-key cryptography"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31"
       ]
     }
   ]

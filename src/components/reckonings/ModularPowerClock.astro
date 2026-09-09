@@ -1,0 +1,446 @@
+---
+type Point = { x: number; y: number };
+
+const residues = Array.from({ length: 10 }, (_, value) => value);
+const pointFor = (value: number): Point => {
+  const angle = (-90 + value * 36) * Math.PI / 180;
+  return {
+    x: 300 + 156 * Math.cos(angle),
+    y: 190 + 156 * Math.sin(angle),
+  };
+};
+
+const initialBase = 7;
+const initialExponent = 6;
+const initialSequence = [1, 7, 9, 3, 1, 7, 9];
+const initialPath = initialSequence
+  .map((value) => {
+    const point = pointFor(value);
+    return `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
+  })
+  .join(' ');
+---
+
+<figure class="modular-lab reckoning-visual" data-modular-lab>
+  <header>
+    <p>Interactive remainder clock</p>
+    <h3>Watch powers wrap around ten possible endings</h3>
+  </header>
+
+  <div class="controls">
+    <fieldset>
+      <legend>Choose a base</legend>
+      <div class="base-buttons">
+        {[2, 3, 7, 9].map((base) => (
+          <button
+            type="button"
+            class:list={{ active: base === initialBase }}
+            aria-pressed={base === initialBase ? 'true' : 'false'}
+            data-base-choice={base}
+          >
+            Base {base}
+          </button>
+        ))}
+      </div>
+    </fieldset>
+
+    <label class="exponent-control">
+      <span>Exponent <output data-exponent-output>{initialExponent}</output></span>
+      <input
+        type="range"
+        min="0"
+        max="20"
+        step="1"
+        value={initialExponent}
+        data-exponent-input
+      />
+    </label>
+
+    <div class="step-buttons">
+      <button type="button" data-reset>Reset</button>
+      <button type="button" data-step>Next power</button>
+    </div>
+  </div>
+
+  <div class="clock-frame">
+    <svg
+      viewBox="0 0 600 380"
+      role="img"
+      aria-labelledby="modular-clock-title modular-clock-description"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="modular-clock-title">Powers of 7 modulo 10 through exponent 6</title>
+      <desc id="modular-clock-description">
+        The residues follow the path 1, 7, 9, 3, 1, 7, 9. The path returns to 1 after four
+        multiplications, then repeats.
+      </desc>
+      <defs>
+        <pattern id="modular-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+          <path d="M30 0H0V30" fill="none" />
+        </pattern>
+        <filter id="modular-glow" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <marker id="modular-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0L10 5L0 10Z" />
+        </marker>
+      </defs>
+
+      <rect class="grid" width="600" height="380" fill="url(#modular-grid)" />
+      <circle class="dial" cx="300" cy="190" r="156" />
+      <circle class="dial-inner" cx="300" cy="190" r="108" />
+      <polyline class="power-path-glow" points={initialPath} data-power-path />
+      <polyline class="power-path" points={initialPath} data-power-path />
+
+      {residues.map((residue) => {
+        const point = pointFor(residue);
+        return (
+          <g class:list={{ residue: true, active: residue === 9 }} data-residue-node={residue}>
+            <circle cx={point.x} cy={point.y} r="22" />
+            <text x={point.x} y={point.y + 1}>{residue}</text>
+          </g>
+        );
+      })}
+
+      <g class="center-readout" aria-hidden="true">
+        <text class="expression" x="300" y="177" data-clock-expression>7⁶</text>
+        <text class="remainder" x="300" y="216" data-clock-remainder>remainder 9</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="equation" aria-live="polite" data-equation>
+    7^6 ≡ 9 (mod 10)
+  </div>
+
+  <dl class="power-facts">
+    <div>
+      <dt>Current remainder</dt>
+      <dd data-current-remainder>9</dd>
+    </div>
+    <div>
+      <dt>Repeating cycle</dt>
+      <dd data-cycle>1 → 7 → 9 → 3</dd>
+    </div>
+  </dl>
+
+  <div class="sequence-wrap">
+    <p>Powers visited</p>
+    <ol data-sequence-list aria-label="Remainders from exponent zero to the selected exponent">
+      {initialSequence.map((residue, exponent) => (
+        <li><span>{initialBase}<sup>{exponent}</sup></span><strong>{residue}</strong></li>
+      ))}
+    </ol>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> multiplication does not move outward toward ever larger
+    integers. Every step lands on one of ten residue positions. For base 7, the path cycles
+    through 1, 7, 9, and 3, so exponents that differ by 4 land on the same position.
+  </figcaption>
+</figure>
+
+<script>
+  type ClockPoint = { x: number; y: number };
+
+  const superscripts: Record<string, string> = {
+    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
+  };
+
+  const toSuperscript = (value: number) => String(value)
+    .split('')
+    .map((digit) => superscripts[digit])
+    .join('');
+
+  const clockPoint = (value: number): ClockPoint => {
+    const angle = (-90 + value * 36) * Math.PI / 180;
+    return {
+      x: 300 + 156 * Math.cos(angle),
+      y: 190 + 156 * Math.sin(angle),
+    };
+  };
+
+  const remaindersThrough = (base: number, exponent: number) => {
+    const sequence = [1];
+    let residue = 1;
+    for (let power = 1; power <= exponent; power += 1) {
+      residue = (residue * base) % 10;
+      sequence.push(residue);
+    }
+    return sequence;
+  };
+
+  const repeatingCycle = (base: number) => {
+    const seen = new Map<number, number>();
+    const sequence: number[] = [];
+    let residue = 1;
+
+    while (!seen.has(residue)) {
+      seen.set(residue, sequence.length);
+      sequence.push(residue);
+      residue = (residue * base) % 10;
+    }
+
+    return sequence.slice(seen.get(residue));
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-modular-lab]').forEach((lab) => {
+    const baseButtons = lab.querySelectorAll<HTMLButtonElement>('[data-base-choice]');
+    const exponentInput = lab.querySelector<HTMLInputElement>('[data-exponent-input]');
+    const exponentOutput = lab.querySelector<HTMLOutputElement>('[data-exponent-output]');
+    const resetButton = lab.querySelector<HTMLButtonElement>('[data-reset]');
+    const stepButton = lab.querySelector<HTMLButtonElement>('[data-step]');
+    const paths = lab.querySelectorAll<SVGPolylineElement>('[data-power-path]');
+    const nodes = lab.querySelectorAll<SVGGElement>('[data-residue-node]');
+    const equation = lab.querySelector<HTMLElement>('[data-equation]');
+    const currentRemainder = lab.querySelector<HTMLElement>('[data-current-remainder]');
+    const cycle = lab.querySelector<HTMLElement>('[data-cycle]');
+    const sequenceList = lab.querySelector<HTMLOListElement>('[data-sequence-list]');
+    const clockExpression = lab.querySelector<SVGTextElement>('[data-clock-expression]');
+    const clockRemainder = lab.querySelector<SVGTextElement>('[data-clock-remainder]');
+    const title = lab.querySelector('#modular-clock-title');
+    const description = lab.querySelector('#modular-clock-description');
+
+    if (!exponentInput) return;
+    let base = 7;
+
+    const render = () => {
+      const exponent = Number(exponentInput.value);
+      const sequence = remaindersThrough(base, exponent);
+      const residue = sequence.at(-1) ?? 1;
+      const points = sequence
+        .map((value) => {
+          const point = clockPoint(value);
+          return `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
+        })
+        .join(' ');
+      const cycleValues = repeatingCycle(base);
+
+      baseButtons.forEach((button) => {
+        const selected = Number(button.dataset.baseChoice) === base;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      nodes.forEach((node) => {
+        node.classList.toggle('active', Number(node.dataset.residueNode) === residue);
+      });
+      paths.forEach((path) => path.setAttribute('points', points));
+
+      if (exponentOutput) exponentOutput.value = String(exponent);
+      if (equation) equation.textContent = `${base}^${exponent} ≡ ${residue} (mod 10)`;
+      if (currentRemainder) currentRemainder.textContent = String(residue);
+      if (cycle) cycle.textContent = cycleValues.join(' → ');
+      if (clockExpression) clockExpression.textContent = `${base}${toSuperscript(exponent)}`;
+      if (clockRemainder) clockRemainder.textContent = `remainder ${residue}`;
+      if (title) title.textContent = `Powers of ${base} modulo 10 through exponent ${exponent}`;
+      if (description) {
+        description.textContent = `The residues visited from exponent zero through ${exponent} are ${sequence.join(', ')}. The current remainder is ${residue}.`;
+      }
+      if (sequenceList) {
+        sequenceList.replaceChildren(...sequence.map((value, power) => {
+          const item = document.createElement('li');
+          const label = document.createElement('span');
+          const strong = document.createElement('strong');
+          label.textContent = `${base}^${power}`;
+          strong.textContent = String(value);
+          item.append(label, strong);
+          return item;
+        }));
+      }
+    };
+
+    baseButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        base = Number(button.dataset.baseChoice);
+        render();
+      });
+    });
+    exponentInput.addEventListener('input', render);
+    resetButton?.addEventListener('click', () => {
+      exponentInput.value = '0';
+      render();
+    });
+    stepButton?.addEventListener('click', () => {
+      const next = (Number(exponentInput.value) + 1) % 21;
+      exponentInput.value = String(next);
+      render();
+    });
+  });
+</script>
+
+<style>
+  .modular-lab {
+    --cyan: #087dcc;
+    --magenta: #d9007e;
+    --green: #4f9300;
+    background:
+      radial-gradient(circle at 78% 0%, color-mix(in srgb, var(--magenta) 10%, transparent), transparent 24rem),
+      var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(940px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .modular-lab {
+    --cyan: #1493ff;
+    --magenta: #ff1493;
+    --green: #93ff14;
+  }
+  header > p,
+  .sequence-wrap > p {
+    color: var(--link-color);
+    font-size: .67rem;
+    font-weight: 650;
+    letter-spacing: .12em;
+    margin: 0 0 .2rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+  }
+  .controls {
+    align-items: end;
+    display: grid;
+    gap: .8rem 1rem;
+    grid-template-columns: 1.2fr 1fr auto;
+    margin-bottom: .9rem;
+  }
+  fieldset { border: 0; margin: 0; min-width: 0; padding: 0; }
+  legend,
+  .exponent-control > span {
+    color: var(--text-secondary);
+    display: block;
+    font-size: .67rem;
+    font-weight: 650;
+    letter-spacing: .07em;
+    margin-bottom: .4rem;
+    text-transform: uppercase;
+  }
+  output { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .base-buttons,
+  .step-buttons { display: flex; flex-wrap: wrap; gap: .4rem; }
+  button {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font: inherit;
+    font-size: .73rem;
+    font-weight: 650;
+    padding: .42rem .68rem;
+  }
+  button:hover { border-color: var(--cyan); color: var(--text-primary); }
+  button.active {
+    background: color-mix(in srgb, var(--cyan) 12%, var(--bg-color));
+    border-color: var(--cyan);
+    color: var(--text-primary);
+  }
+  button:focus-visible,
+  input:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--cyan) 48%, transparent);
+    outline-offset: 3px;
+  }
+  .exponent-control input { accent-color: var(--magenta); display: block; width: 100%; }
+  .clock-frame {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .clock-frame svg { display: block; height: auto; width: 100%; }
+  .grid path { stroke: color-mix(in srgb, var(--text-secondary) 14%, transparent); stroke-width: 1; }
+  .dial { fill: none; stroke: color-mix(in srgb, var(--text-secondary) 48%, transparent); stroke-width: 2; }
+  .dial-inner { fill: none; stroke: color-mix(in srgb, var(--text-secondary) 22%, transparent); stroke-dasharray: 4 8; }
+  .power-path-glow,
+  .power-path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .power-path-glow { filter: url(#modular-glow); opacity: .28; stroke: var(--magenta); stroke-width: 13; }
+  .power-path {
+    marker-end: url(#modular-arrow);
+    stroke: var(--magenta);
+    stroke-width: 3;
+  }
+  #modular-arrow path { fill: var(--magenta); }
+  .residue circle { fill: var(--bg-color); stroke: var(--text-secondary); stroke-width: 1.5; }
+  .residue text {
+    dominant-baseline: middle;
+    fill: var(--text-primary);
+    font-size: 15px;
+    font-weight: 700;
+    text-anchor: middle;
+  }
+  .residue.active circle { fill: color-mix(in srgb, var(--green) 18%, var(--bg-color)); stroke: var(--green); stroke-width: 5; }
+  .residue.active text { fill: var(--green); }
+  .center-readout text { text-anchor: middle; }
+  .center-readout .expression { fill: var(--cyan); font-size: 31px; font-weight: 750; }
+  .center-readout .remainder { fill: var(--text-secondary); font-size: 13px; letter-spacing: .04em; }
+  .equation {
+    background: var(--bg-color);
+    border: 1px solid color-mix(in srgb, var(--cyan) 55%, var(--border-color));
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: clamp(.9rem, 2.5vw, 1.1rem);
+    margin-top: .7rem;
+    padding: .65rem .8rem;
+    text-align: center;
+  }
+  .power-facts {
+    display: grid;
+    gap: .6rem;
+    grid-template-columns: 1fr 2fr;
+    margin: .7rem 0;
+  }
+  .power-facts div {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: .65rem .75rem;
+  }
+  dt { color: var(--text-secondary); font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; }
+  dd { color: var(--text-primary); font-size: .78rem; font-variant-numeric: tabular-nums; margin: .12rem 0 0; }
+  .sequence-wrap { margin-top: .85rem; }
+  .sequence-wrap ol {
+    display: flex;
+    gap: .45rem;
+    list-style: none;
+    margin: .45rem 0 0;
+    overflow-x: auto;
+    padding: .2rem .05rem .55rem;
+  }
+  .sequence-wrap li {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    display: grid;
+    flex: 0 0 auto;
+    min-width: 3.2rem;
+    padding: .36rem .45rem;
+    text-align: center;
+  }
+  .sequence-wrap li span { color: var(--text-secondary); font-size: .61rem; }
+  .sequence-wrap li strong { color: var(--text-primary); font-size: .86rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 760px) {
+    .modular-lab { width: calc(100vw - 1.5rem); }
+    .controls { grid-template-columns: 1fr 1fr; }
+    .step-buttons { grid-column: 1 / -1; }
+  }
+  @media (max-width: 520px) {
+    .controls,
+    .power-facts { grid-template-columns: 1fr; }
+    .step-buttons { grid-column: auto; }
+    button { font-size: .69rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .modular-lab * { scroll-behavior: auto !important; transition: none !important; }
+  }
+</style>

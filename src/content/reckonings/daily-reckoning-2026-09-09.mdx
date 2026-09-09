@@ -1,0 +1,227 @@
+---
+title: "How Can 7²²² Fit on a Clock?"
+description: "Modular arithmetic discards whole laps, turning a 188-digit power into a four-step cycle."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-09.svg"
+heroImageAlt: "A neon ten-position remainder dial floats over a dark maritime drafting grid, with bright paths connecting the repeating power residues 1, 7, 9, and 3."
+date: 2026-09-09
+publishedAt: 2026-09-09T06:00:00-07:00
+area: "Numbers and algebra"
+difficulty: "Foundational"
+prerequisites:
+  - "Whole-number division with remainders"
+  - "Exponents"
+  - "Factors and multiples"
+readTimeMinutes: 9
+miniSeries:
+  title: "Arithmetic Behind Secure Messages"
+  part: 1
+  total: 3
+tags:
+  - daily-reckoning
+  - number-theory
+  - modular-arithmetic
+  - congruence
+  - remainders
+  - cryptography
+---
+
+import ModularPowerClock from '../../components/reckonings/ModularPowerClock.astro';
+
+The number $7^{222}$ has 188 decimal digits. Writing all of them would answer many questions nobody asked. Suppose we want only the final digit.
+
+A final digit is a remainder after division by $10$. The numbers $7$, $17$, and $2{,}847$ all leave remainder $7$ when divided by $10$, so they are interchangeable for this particular question. **Modular arithmetic** turns that deliberate loss of information into a system of calculation.
+
+The answer to our enormous-looking problem is $9$. We can reach it without ever handling a number larger than $63$.
+
+## When numbers differ by a whole number of laps
+
+Imagine ten marked positions arranged in a circle: $0,1,2,\ldots,9$. Moving forward $17$ positions ends at $7$ because the first $10$ moves complete a lap. Moving forward $2{,}847$ positions ends there too. Modular arithmetic forgets the completed laps and remembers the landing position.
+
+Here is the precise definition. Let $a$ and $b$ be integers, and let $n$ be a positive integer. We write
+
+$$
+a\equiv b\pmod n
+$$
+
+and say “$a$ is congruent to $b$ modulo $n$” when $n$ divides $a-b$. The statement “$n$ divides $a-b$” means that $a-b$ equals $n$ times some integer. Equivalently, $a$ and $b$ leave the same remainder when divided by $n$.
+
+For example,
+
+$$
+37\equiv7\pmod{10}
+$$
+
+because $37-7=30$, and $30$ is divisible by $10$. Congruence is not equality: $37$ and $7$ are different integers. They occupy the same position on a ten-position remainder clock.
+
+The interactive diagram below uses modulus $10$, so each highlighted position is a possible final digit. Choose a base, then move the exponent slider. The glowing path records each remainder produced by another multiplication.
+
+<ModularPowerClock />
+
+## Why throwing information away is safe
+
+Replacing $37$ by $7$ would ruin a calculation that needs the full value. It preserves any calculation that asks only for a remainder modulo $10$.
+
+More generally, suppose
+
+$$
+a\equiv b\pmod n
+\qquad\text{and}\qquad
+c\equiv d\pmod n,
+$$
+
+where $a,b,c,$ and $d$ are integers and $n$ is a positive integer. We may add or multiply the shorter representatives:
+
+$$
+a+c\equiv b+d\pmod n
+$$
+
+and
+
+$$
+ac\equiv bd\pmod n.
+$$
+
+The addition rule works because
+
+$$
+(a+c)-(b+d)=(a-b)+(c-d).
+$$
+
+Both differences on the right are multiples of $n$, so their sum is a multiple of $n$. For multiplication,
+
+$$
+ac-bd=a(c-d)+d(a-b).
+$$
+
+Again, each term on the right contains a multiple of $n$. This permission to reduce after every step prevents powers from becoming unmanageable.
+
+## Worked example: the last digit of $7^{222}$
+
+Start multiplying by $7$, keeping only each remainder modulo $10$:
+
+$$
+\begin{aligned}
+7^1&\equiv7\pmod{10},\\
+7^2&=49\equiv9\pmod{10},\\
+7^3&\equiv9\cdot7=63\equiv3\pmod{10},\\
+7^4&\equiv3\cdot7=21\equiv1\pmod{10}.
+\end{aligned}
+$$
+
+The fourth power returns to remainder $1$. Multiplying by $7$ once more must return to remainder $7$, then to $9$, then to $3$, then to $1$. The four-position cycle repeats because the next landing position depends only on the current remainder.
+
+Now divide the exponent $222$ by the cycle length $4$:
+
+$$
+222=4\cdot55+2.
+$$
+
+The exponent contains $55$ complete four-step cycles and two additional steps. Algebra says the same thing:
+
+$$
+\begin{aligned}
+7^{222}
+&=7^{4\cdot55+2}\\
+&=(7^4)^{55}7^2\\
+&\equiv1^{55}\cdot9\pmod{10}\\
+&\equiv9\pmod{10}.
+\end{aligned}
+$$
+
+Therefore the final digit of $7^{222}$ is $9$. The other 187 digits never enter the calculation.
+
+## Try two clocks
+
+### Problem 1
+
+One hundred days after a Wednesday, what day of the week will it be? Treat Wednesday as the starting day rather than day one.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Days of the week repeat modulo $7$. Divide $100$ by $7$:
+
+$$
+100=7\cdot14+2,
+$$
+
+so
+
+$$
+100\equiv2\pmod7.
+$$
+
+Move two weekdays forward from Wednesday: Thursday is one step and Friday is two. The date will fall on **Friday**.
+
+</details>
+
+### Problem 2
+
+Find the final two digits of $3^{20}$. A pair such as $01$ counts as two digits.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Final two digits are determined by the remainder modulo $100$. Repeated squaring keeps every intermediate value small:
+
+$$
+3^5=243\equiv43\pmod{100}.
+$$
+
+Square that remainder to reach the tenth power:
+
+$$
+3^{10}\equiv43^2=1849\equiv49\pmod{100}.
+$$
+
+Square once more:
+
+$$
+3^{20}\equiv49^2=2401\equiv1\pmod{100}.
+$$
+
+The remainder is $1$, so the final two digits are **01**.
+
+</details>
+
+## Remainders before the symbol $\equiv$
+
+People calculated with remainders long before anyone wrote the congruence symbol. A Chinese mathematical text known as the *Sunzi Suanjing* asks for an unknown number of objects that leaves $2$ when counted by threes, $3$ when counted by fives, and $2$ when counted by sevens. The smallest answer is $23$. The text gives a working method for such problems, the earliest surviving example of what Europeans later named the Chinese remainder theorem.
+
+The author and date of the *Sunzi Suanjing* are not securely known. Historians place its composition or compilation roughly between the third and fifth centuries CE, and surviving editions may contain layers from different periods. That uncertainty matters: “Sunzi” does not identify a documented lone discoverer in the modern biographical sense. Shen Kangsheng's [historical study of the Chinese remainder theorem](https://doi.org/10.1007/BF00357063) connects congruence problems in ancient China to calendar calculation, where several astronomical cycles had to be reconciled.
+
+Indian mathematician and astronomer Aryabhata developed another remainder-based procedure called the *kuṭṭaka*, or “pulverizer.” His *Aryabhatiya*, completed in 499, used the procedure to solve integer equations arising from planetary periods. Aryabhata worked at Kusumapura when the city was a capital of the Gupta Empire and a center in a communications network through which mathematical and astronomical work circulated across India and later into the Islamic world. The [University of St Andrews biography of Aryabhata](https://mathshistory.st-andrews.ac.uk/Biographies/Aryabhata_I/) documents both the astronomical motivation and that institutional setting.
+
+Carl Friedrich Gauss supplied the notation used today. His 1801 *Disquisitiones Arithmeticae* begins by defining congruent numbers and introduces $\equiv$ to emphasize an analogy with equality. Gauss did not invent division with remainders. He gathered results by earlier mathematicians, added major results of his own, and made congruence the organizing language of a systematic number theory.
+
+That reorganization depended partly on patronage. A stipend from the Duke of Brunswick-Wolfenbüttel allowed Gauss to attend the Collegium Carolinum and later to pursue research without taking a job; the duke continued the support while Gauss prepared his doctorate and book. The [MacTutor account of Gauss's education](https://mathshistory.st-andrews.ac.uk/Biographies/Gauss/) makes the material condition unusually visible: the mathematics that now feels elementary reached print because a talented young scholar had sustained institutional funding.
+
+## What a remainder can carry
+
+**Schedules.** Weekdays use modulus $7$; a 24-hour clock uses modulus $24$. Gear teeth, rotating encoders, repeating shifts, and circular buffers share the same structure. A remainder records position inside a cycle while discarding completed cycles.
+
+**Error detection.** An International Standard Book Number with ten characters, known as an ISBN-10, [chooses its final character so a weighted sum is divisible by $11$](https://www.ece.unb.ca/tervo/ee4253/isbn.shtml). For the valid ISBN $0$-$306$-$40615$-$2$,
+
+$$
+10(0)+9(3)+8(0)+7(6)+6(4)+5(0)+4(6)+3(1)+2(5)+1(2)=132,
+$$
+
+and $132\equiv0\pmod{11}$. Changing any one digit changes the remainder, so the check fails. The check character can be $X$, representing $10$, because modulus $11$ has eleven possible residues.
+
+**Public-key cryptography.** Modern cryptographic standards repeatedly raise large integers to powers and reduce the results modulo another large integer. The Internet Engineering Task Force's [RSA specification, RFC 8017](https://datatracker.ietf.org/doc/html/rfc8017#section-5.1), for example, defines its core encryption operation by $c=m^e\bmod n$, where $m$ represents a message, $e$ is a public exponent, $n$ is a public modulus, and $c$ is the encrypted representative. Modular arithmetic alone does not make RSA secure; the choice of $n$, the relation between public and private exponents, padding, and implementation details all matter. The next two lessons in this mini-series will build those missing pieces.
+
+## One idea to remember
+
+Modular arithmetic keeps the landing position and discards whole laps. Once $7^4$ returns to $1$ modulo $10$, every four additional factors of $7$ repeat the same final-digit pattern. For $7^{222}$, only the remainder of $222$ after division by $4$ matters.
+
+For another appearance of remainder arithmetic, revisit [Euler's bridge test](/reckonings/daily-reckoning-2026-08-31/): classifying a vertex degree as odd or even means recording that degree modulo $2$. Part two of *Arithmetic Behind Secure Messages* will explain why prime moduli force useful power cycles.
+
+## Sources
+
+- *Sunzi Suanjing*, remainder problem summarized in the [University of St Andrews MacTutor biography of Sun Zi](https://mathshistory.st-andrews.ac.uk/Biographies/Sun_Zi/).
+- Shen Kangsheng, [“Historical Development of the Chinese Remainder Theorem”](https://doi.org/10.1007/BF00357063), *Archive for History of Exact Sciences* 38, no. 4, 1988, pp. 285–305; [author manuscript hosted by Harvard Mathematics](https://people.math.harvard.edu/~knill/crt/lib/Kangsheng.pdf).
+- University of St Andrews MacTutor, [“Aryabhata the Elder”](https://mathshistory.st-andrews.ac.uk/Biographies/Aryabhata_I/).
+- Carl Friedrich Gauss, [*Disquisitiones Arithmeticae*](https://library.si.edu/digital-library/book/disquisitionesa00gaus), Leipzig, 1801; digitized by Smithsonian Libraries.
+- University of St Andrews MacTutor, [“Johann Carl Friedrich Gauss”](https://mathshistory.st-andrews.ac.uk/Biographies/Gauss/).
+- University of New Brunswick, [“Secrets of the ISBN: An Error Detection Method”](https://www.ece.unb.ca/tervo/ee4253/isbn.shtml), explaining the ISBN-10 weighted sum and modulus $11$ check.
+- Kathleen Moriarty et al., [RFC 8017: *PKCS #1: RSA Cryptography Specifications Version 2.2*](https://datatracker.ietf.org/doc/html/rfc8017), Internet Engineering Task Force, November 2016.

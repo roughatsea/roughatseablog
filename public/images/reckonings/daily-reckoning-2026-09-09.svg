@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">A ten-position remainder clock and the repeating powers of seven</title>
+  <desc id="description">A neon ten-position remainder dial floats over a dark maritime drafting grid. Bright paths connect the repeating power residues 1, 7, 9, and 3.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020812"/>
+      <stop offset="0.52" stop-color="#061829"/>
+      <stop offset="1" stop-color="#02070d"/>
+    </linearGradient>
+    <radialGradient id="haze" cx="50%" cy="45%" r="58%">
+      <stop offset="0" stop-color="#0c3a59" stop-opacity="0.66"/>
+      <stop offset="0.6" stop-color="#061829" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#02070d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="minor-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1493ff" stroke-opacity="0.075" stroke-width="1"/>
+    </pattern>
+    <pattern id="major-grid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M200 0H0V200" fill="none" stroke="#1493ff" stroke-opacity="0.12" stroke-width="1.5"/>
+    </pattern>
+    <filter id="blue-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="green-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1 1L11 6L1 11Z" fill="#ff1493"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#haze)"/>
+  <rect width="1600" height="900" fill="url(#minor-grid)"/>
+  <rect width="1600" height="900" fill="url(#major-grid)"/>
+
+  <g fill="none" stroke="#1493ff" stroke-opacity="0.12">
+    <path d="M-50 766C180 690 292 848 512 772S837 675 1052 756s355 40 598-58"/>
+    <path d="M-50 805C177 728 300 881 515 813s334-101 540-21 356 42 595-54"/>
+    <path d="M-50 844C176 766 306 914 520 854s336-104 539-26 355 45 591-51"/>
+    <path d="M-50 103C160 174 288 43 485 112s348 95 559 21 361-54 606 27"/>
+  </g>
+
+  <g transform="translate(800 450)" fill="none" stroke="#1493ff">
+    <circle r="326" stroke-opacity="0.12"/>
+    <circle r="280" stroke-opacity="0.5" stroke-width="2"/>
+    <circle r="218" stroke-opacity="0.18" stroke-dasharray="5 13"/>
+    <circle r="142" stroke-opacity="0.13"/>
+    <path d="M0-348V-314M0 314V348M-348 0H-314M314 0H348" stroke-opacity="0.55" stroke-width="2"/>
+    <path d="M-246-246L-222-222M222 222L246 246M246-246L222-222M-246 246L-222 222" stroke-opacity="0.25"/>
+  </g>
+
+  <g fill="none" stroke="#ff1493" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M964.6 223.5L533.7 536.5L635.4 223.5L1066.3 536.5L964.6 223.5" stroke-opacity="0.3" stroke-width="24" filter="url(#pink-glow)"/>
+    <path d="M964.6 223.5L533.7 536.5L635.4 223.5L1066.3 536.5L964.6 223.5" stroke-width="5" marker-mid="url(#arrow)" marker-end="url(#arrow)"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="25" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+    <g fill="#05111f" stroke="#4e708a" stroke-width="2">
+      <circle cx="800" cy="170" r="34"/><circle cx="1066.3" cy="363.5" r="34"/>
+      <circle cx="964.6" cy="676.5" r="34"/><circle cx="800" cy="730" r="34"/>
+      <circle cx="635.4" cy="676.5" r="34"/><circle cx="533.7" cy="363.5" r="34"/>
+    </g>
+    <g fill="#9bb8ca">
+      <text x="800" y="170">0</text><text x="1066.3" y="363.5">2</text>
+      <text x="964.6" y="676.5">4</text><text x="800" y="730">5</text>
+      <text x="635.4" y="676.5">6</text><text x="533.7" y="363.5">8</text>
+    </g>
+    <g fill="#07111c" stroke="#93ff14" stroke-width="4" filter="url(#green-glow)">
+      <circle cx="964.6" cy="223.5" r="39"/><circle cx="533.7" cy="536.5" r="39"/>
+      <circle cx="635.4" cy="223.5" r="39"/><circle cx="1066.3" cy="536.5" r="39"/>
+    </g>
+    <g fill="#93ff14">
+      <text x="964.6" y="223.5">1</text><text x="533.7" y="536.5">7</text>
+      <text x="635.4" y="223.5">9</text><text x="1066.3" y="536.5">3</text>
+    </g>
+  </g>
+
+  <g transform="translate(800 450)" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Consolas, monospace">
+    <circle r="105" fill="#030b15" stroke="#1493ff" stroke-width="2" stroke-opacity="0.8" filter="url(#blue-glow)"/>
+    <text y="-9" fill="#1493ff" font-size="54" font-weight="800">7²²²</text>
+    <text y="43" fill="#93ff14" font-size="31" font-weight="750">≡ 9</text>
+    <text y="76" fill="#87a9bd" font-size="16" letter-spacing="3">MOD 10</text>
+  </g>
+
+  <g fill="#1493ff" opacity="0.5">
+    <circle cx="130" cy="204" r="3"/><circle cx="1442" cy="188" r="3"/>
+    <circle cx="126" cy="654" r="3"/><circle cx="1458" cy="687" r="3"/>
+  </g>
+</svg>
