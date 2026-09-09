@@ -18,8 +18,7 @@ export default defineConfig({
       filter: (page) => {
         const normalized = page.replace(/\/$/, '');
         return !normalized.endsWith('/instagram')
-          && !normalized.endsWith('/waifu')
-          && !normalized.includes('/dialogue/chartroom');
+          && !normalized.endsWith('/waifu');
       },
     }),
   ],

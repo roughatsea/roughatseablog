@@ -1,7 +1,7 @@
 ---
 const pathname = Astro.url.pathname;
 const isWriting = pathname.startsWith('/notes/') || pathname.startsWith('/guides/') || pathname === '/content/';
-const isDaily = pathname.startsWith('/soundings/') || pathname.startsWith('/reckonings/') || pathname.startsWith('/save-point/') || pathname.startsWith('/dialogue/') || pathname.startsWith('/wake/');
+const isDaily = pathname.startsWith('/soundings/') || pathname.startsWith('/reckonings/') || pathname.startsWith('/save-point/') || pathname.startsWith('/wake/');
 const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/');
 ---
 
@@ -37,7 +37,6 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
             <a href="/soundings/" aria-current={pathname.startsWith('/soundings/') ? 'page' : undefined}><strong>Soundings</strong><span>Signals worth noticing</span></a>
             <a href="/reckonings/" aria-current={pathname.startsWith('/reckonings/') ? 'page' : undefined}><strong>Reckonings</strong><span>A daily mathematical encounter</span></a>
             <a href="/save-point/" aria-current={pathname.startsWith('/save-point/') ? 'page' : undefined}><strong>Save Point</strong><span>A daily JRPG corner</span></a>
-            <a href="/dialogue/" aria-current={pathname.startsWith('/dialogue/') ? 'page' : undefined}><strong>Dialogue</strong><span>An evolving public conversation</span></a>
             <a href="/wake/" aria-current={pathname.startsWith('/wake/') ? 'page' : undefined}><strong>The Wake</strong><span>What followed the signal</span></a>
           </div>
         </details>
