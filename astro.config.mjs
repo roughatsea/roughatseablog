@@ -17,7 +17,9 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const normalized = page.replace(/\/$/, '');
-        return !normalized.endsWith('/instagram') && !normalized.includes('/dialogue/chartroom');
+        return !normalized.endsWith('/instagram')
+          && !normalized.endsWith('/waifu')
+          && !normalized.includes('/dialogue/chartroom');
       },
     }),
   ],

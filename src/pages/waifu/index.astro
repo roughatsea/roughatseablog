@@ -1,0 +1,304 @@
+---
+import '../../styles/global.css';
+import waifus from '../../data/waifu.json';
+
+const portraits = [...waifus].sort((a, b) => b.date.localeCompare(a.date));
+
+for (const portrait of portraits) {
+  if (portrait.age < 25) {
+    throw new Error(`Waifu portraits must depict adults age 25+: ${portrait.name}`);
+  }
+}
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waifu · Rough at Sea</title>
+    <meta name="description" content="A quiet gallery of original fictional adult character art." />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="waifu-shell">
+      <header class="waifu-topbar">
+        <a class="waifu-brand" href="/" aria-label="Back to Rough at Sea">
+          <svg aria-hidden="true" viewBox="0 0 48 32" fill="none">
+            <path d="M3 11c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5S29 6 34.2 6s5.2 5 10.4 5" />
+            <path d="M3 20c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5 5.2-5 10.4-5 5.2 5 10.4 5" />
+            <path d="M3 29c5.2 0 5.2-5 10.4-5s5.2 5 10.4 5 5.2-5 10.4-5 5.2 5 10.4 5" />
+          </svg>
+          <span>Rough at Sea</span>
+        </a>
+        <button class="shuffle" id="shuffle" type="button" aria-label="Shuffle portraits">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" />
+          </svg>
+          <span>Shuffle</span>
+        </button>
+      </header>
+
+      <main>
+        <section class="waifu-feed" id="waifu-feed" aria-label="Waifu gallery">
+          {portraits.map((portrait, index) => (
+            <button
+              class="portrait"
+              type="button"
+              data-image={portrait.image}
+              data-alt={portrait.alt}
+              aria-label={`Open portrait of ${portrait.name}`}
+            >
+              <img
+                src={portrait.image}
+                alt={portrait.alt}
+                width="1600"
+                height="2000"
+                loading={index < 2 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchpriority={index === 0 ? 'high' : 'auto'}
+              />
+            </button>
+          ))}
+        </section>
+      </main>
+    </div>
+
+    <dialog class="viewer" id="viewer" aria-label="Portrait viewer">
+      <button class="viewer-close" id="viewer-close" type="button" aria-label="Close portrait">×</button>
+      <img id="viewer-image" alt="" />
+    </dialog>
+
+    <script>
+      const feed = document.getElementById('waifu-feed');
+      const shuffle = document.getElementById('shuffle');
+      const viewer = document.getElementById('viewer');
+      const viewerImage = document.getElementById('viewer-image');
+      const viewerClose = document.getElementById('viewer-close');
+
+      shuffle?.addEventListener('click', () => {
+        if (!feed) return;
+        const portraits = Array.from(feed.children);
+        for (let index = portraits.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [portraits[index], portraits[swapIndex]] = [portraits[swapIndex], portraits[index]];
+        }
+        portraits.forEach((portrait) => feed.appendChild(portrait));
+      });
+
+      feed?.addEventListener('click', (event) => {
+        if (!(event.target instanceof Element)) return;
+        const portrait = event.target.closest('.portrait');
+        if (!(portrait instanceof HTMLElement) || !(viewer instanceof HTMLDialogElement) || !(viewerImage instanceof HTMLImageElement)) return;
+        viewerImage.src = portrait.dataset.image ?? '';
+        viewerImage.alt = portrait.dataset.alt ?? '';
+        viewer.showModal();
+      });
+
+      viewerClose?.addEventListener('click', () => {
+        if (viewer instanceof HTMLDialogElement) viewer.close();
+      });
+
+      viewer?.addEventListener('click', (event) => {
+        if (event.target === viewer && viewer instanceof HTMLDialogElement) viewer.close();
+      });
+    </script>
+
+    <style>
+      :global(html) {
+        background: #07090d;
+        color-scheme: dark;
+      }
+
+      :global(body) {
+        background:
+          radial-gradient(circle at 50% -18rem, rgba(50, 145, 255, 0.1), transparent 38rem),
+          #07090d;
+        color: #f2f4f7;
+        min-height: 100vh;
+      }
+
+      .waifu-shell {
+        margin: 0 auto;
+        max-width: 1480px;
+        min-height: 100vh;
+      }
+
+      .waifu-topbar {
+        align-items: center;
+        background: linear-gradient(#07090df2 70%, #07090d00);
+        display: flex;
+        justify-content: space-between;
+        padding: 0.85rem 0.85rem 1.5rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .waifu-brand {
+        align-items: center;
+        color: #f5f7fa;
+        display: inline-flex;
+        font-family: var(--font-serif);
+        font-size: 1rem;
+        gap: 0.55rem;
+      }
+
+      .waifu-brand svg {
+        color: #77baff;
+        height: 1.3rem;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-width: 2.4;
+        width: 2rem;
+      }
+
+      .shuffle {
+        align-items: center;
+        background: transparent;
+        border: 0;
+        border-radius: 999px;
+        color: #b7c0cb;
+        cursor: pointer;
+        display: inline-flex;
+        font: 500 0.78rem/1 var(--font-sans);
+        gap: 0.4rem;
+        padding: 0.6rem 0.7rem;
+      }
+
+      .shuffle:hover,
+      .shuffle:focus-visible {
+        background: #ffffff0d;
+        color: #ffffff;
+        outline: none;
+      }
+
+      .shuffle svg {
+        height: 1rem;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
+        width: 1rem;
+      }
+
+      .waifu-feed {
+        display: grid;
+        gap: 0.45rem;
+        grid-template-columns: 1fr;
+        padding: 0 0.4rem 2rem;
+      }
+
+      .portrait {
+        aspect-ratio: 4 / 5;
+        background: #10141b;
+        border: 0;
+        border-radius: 0.75rem;
+        cursor: zoom-in;
+        display: block;
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+        width: 100%;
+      }
+
+      .portrait img {
+        display: block;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.001);
+        transition: transform 280ms ease, filter 280ms ease;
+        width: 100%;
+      }
+
+      .portrait:hover img,
+      .portrait:focus-visible img {
+        filter: brightness(1.035);
+        transform: scale(1.015);
+      }
+
+      .portrait:focus-visible {
+        outline: 2px solid #77baff;
+        outline-offset: 2px;
+      }
+
+      .viewer {
+        background: transparent;
+        border: 0;
+        height: 100dvh;
+        max-height: none;
+        max-width: none;
+        padding: 2.5rem 0.75rem 0.75rem;
+        width: 100vw;
+      }
+
+      .viewer::backdrop {
+        backdrop-filter: blur(18px);
+        background: rgba(0, 0, 0, 0.9);
+      }
+
+      .viewer img {
+        border-radius: 0.6rem;
+        display: block;
+        height: calc(100dvh - 3.25rem);
+        margin: 0 auto;
+        max-width: 100%;
+        object-fit: contain;
+        width: auto;
+      }
+
+      .viewer-close {
+        align-items: center;
+        background: rgba(10, 10, 12, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        font: 300 1.5rem/1 var(--font-sans);
+        height: 2rem;
+        justify-content: center;
+        padding: 0 0 0.1rem;
+        position: fixed;
+        right: 0.75rem;
+        top: 0.6rem;
+        width: 2rem;
+        z-index: 2;
+      }
+
+      @media (min-width: 680px) {
+        .waifu-topbar {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        .waifu-feed {
+          gap: 0.65rem;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          padding: 0 0.75rem 3rem;
+        }
+      }
+
+      @media (min-width: 1120px) {
+        .waifu-topbar {
+          padding-left: 1.25rem;
+          padding-right: 1.25rem;
+        }
+
+        .waifu-feed {
+          gap: 0.8rem;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .portrait img {
+          transition: none;
+        }
+      }
+    </style>
+  </body>
+</html>
