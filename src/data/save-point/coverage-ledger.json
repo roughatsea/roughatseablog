@@ -1080,6 +1080,120 @@
           "accessedAt": "2026-09-08"
         }
       ]
+    },
+    {
+      "editionId": "2026-09-09",
+      "publicationDate": "2026-09-09",
+      "publishedAt": "2026-09-09T02:00:00-07:00",
+      "articleSlug": "save-point-2026-09-09",
+      "heroImage": "/images/save-point/save-point-2026-09-09.webp",
+      "featureLane": "beyond-final-fantasy",
+      "revisitOf": null,
+      "sections": [
+        {
+          "lane": "final-fantasy",
+          "title": "Final Fantasy V makes its job system optional",
+          "game": "Final Fantasy V",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Battle-system design and development history only; no story spoilers",
+          "subjectKeys": [
+            "final-fantasy-v-default-job-completion",
+            "final-fantasy-v-job-choice-without-coercion",
+            "final-fantasy-v-boss-flexibility"
+          ],
+          "sourceIds": [
+            "ffv-1992-developer-interview"
+          ]
+        },
+        {
+          "lane": "final-fantasy-xiv",
+          "title": "The Lodestone once needed half a day to catch up",
+          "game": "Final Fantasy XIV",
+          "sourceType": "interview",
+          "spoilerLevel": "none",
+          "spoilerScope": "Web infrastructure and development history only; no story spoilers",
+          "subjectKeys": [
+            "ffxiv-lodestone-database-relay",
+            "ffxiv-character-data-synchronization-delay",
+            "ffxiv-job-guide-automation"
+          ],
+          "sourceIds": [
+            "ffxiv-hiroyuki-takachi-web-director-interview"
+          ]
+        },
+        {
+          "lane": "beyond-final-fantasy",
+          "title": "Paladin's Quest makes the battle menu physical",
+          "game": "Paladin's Quest",
+          "sourceType": "video",
+          "spoilerLevel": "none",
+          "spoilerScope": "Combat controls and equipment systems only; no story spoilers",
+          "subjectKeys": [
+            "paladins-quest-directional-battle-interface",
+            "paladins-quest-body-part-attacks",
+            "paladins-quest-input-action-distance"
+          ],
+          "sourceIds": [
+            "paladins-quest-mind-behind-media-ui-video",
+            "paladins-quest-snes-manual",
+            "lennus-ii-zack-wood-game-developer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "sourceId": "ffv-1992-developer-interview",
+          "title": "Final Fantasy V – 1992 Developer Interview",
+          "creator": "Hironobu Sakaguchi and the Final Fantasy V development team; translated by shmuplations",
+          "url": "https://shmuplations.com/ffv/",
+          "publishedAt": "2021-12-25",
+          "role": "primary",
+          "lineage": "English translation assembled from contemporary Japanese magazine interviews originally published in 1992.",
+          "accessedAt": "2026-09-09"
+        },
+        {
+          "sourceId": "ffxiv-hiroyuki-takachi-web-director-interview",
+          "title": "FFXIV Backstage Investigators (No. 3): Web Director Hiroyuki Takachi",
+          "creator": "Square Enix, interviewing Hiroyuki Takachi",
+          "url": "https://na.finalfantasyxiv.com/blog/003070.html",
+          "publishedAt": "2020-12-28",
+          "role": "primary",
+          "lineage": "Official developer interview about the Lodestone's game-data relay, character-page synchronization, and Job Guide automation.",
+          "accessedAt": "2026-09-09"
+        },
+        {
+          "sourceId": "paladins-quest-mind-behind-media-ui-video",
+          "title": "Why Are Most RPG Combat Menus So BORING?",
+          "creator": "Mind Behind Media",
+          "url": "https://www.youtube.com/watch?v=8uWvDk82v0A",
+          "publishedAt": "2026-06-23",
+          "role": "primary",
+          "lineage": "Original video essay; full English authored-or-unspecified caption transcript retrieved and reviewed.",
+          "videoId": "8uWvDk82v0A",
+          "accessedAt": "2026-09-09"
+        },
+        {
+          "sourceId": "paladins-quest-snes-manual",
+          "title": "Paladin's Quest (USA) instruction manual",
+          "creator": "Enix America Corporation",
+          "url": "https://archive.org/details/paladins-quest-usa",
+          "publishedAt": null,
+          "role": "primary",
+          "lineage": "Internet Archive scan and OCR of the North American Super NES instruction manual documenting battle controls and command flow.",
+          "accessedAt": "2026-09-09"
+        },
+        {
+          "sourceId": "lennus-ii-zack-wood-game-developer",
+          "title": "The World of Lennus II: An Improvement over Paladin's Quest?",
+          "creator": "Zack Wood",
+          "url": "https://www.gamedeveloper.com/design/the-world-of-lennus-ii-an-improvement-over-paladin-s-quest-",
+          "publishedAt": "2013-07-24",
+          "role": "context",
+          "lineage": "First-person critical analysis of Lennus II's body-part attacks, displayed attack values, controls, and relationship to Paladin's Quest.",
+          "accessedAt": "2026-09-09"
+        }
+      ]
     }
   ]
 }
