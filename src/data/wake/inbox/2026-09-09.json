@@ -1,0 +1,296 @@
+{
+  "$schema": "../wake-observation.schema.json",
+  "schemaVersion": 1,
+  "observationDate": "2026-09-09",
+  "article": {
+    "slug": "morning-soundings-2026-09-09",
+    "title": "Morning Soundings: Tension Wood, Food Bills, and Survivor Authority",
+    "publishedAt": "2026-09-09T05:00:00-07:00",
+    "path": "src/content/soundings/morning-soundings-2026-09-09.md"
+  },
+  "capture": {
+    "mode": "contemporaneous",
+    "capturedAt": "2026-09-09T05:14:42-07:00",
+    "sourceStateAsOf": "2026-09-09",
+    "notes": "Captured during the publication run from sources accessed on September 9, 2026, after checking the same-day Save Point edition and coverage ledger for overlap."
+  },
+  "signals": [
+    {
+      "signalId": "2026-09-09-poplar-proprioception-tension-wood",
+      "order": 1,
+      "sectionRole": "signal",
+      "headline": "A tree can straighten without knowing which way is up",
+      "canonicalSubject": {
+        "name": "Proprioception-driven tension wood formation in hybrid poplars",
+        "kind": "plant-biomechanics-study",
+        "aliases": [
+          "Caulus poplar proprioception study",
+          "autotropic straightening by tension wood"
+        ]
+      },
+      "signalType": "peer-reviewed-finding",
+      "topics": [
+        "plant-science",
+        "biomechanics",
+        "proprioception",
+        "control-systems"
+      ],
+      "geography": [
+        "France"
+      ],
+      "canonicalClaim": "A controlled experiment on young Populus tremula × alba stems found that curvature sensing redirected tension wood to the convex side and actively straightened stems when directional gravity and light cues were suppressed.",
+      "knownFacts": [
+        "The experiment used young hybrid poplars in spherical chambers with light arriving evenly from all directions.",
+        "A clinostat rotated bent stems to suspend useful gravitropic sensing after upward curvature had developed.",
+        "During subsequent straightening, tension wood formation stopped on the former upper side and appeared on the convex side.",
+        "The authors report a curvature-dependent control law balancing proprioceptive and gravitropic feedback."
+      ],
+      "uncertainties": [
+        "The cellular and molecular mechanism by which the stem senses its curvature remains unknown.",
+        "The study does not establish that the same tissue response operates identically across tree species and life stages.",
+        "The controlled chamber does not reproduce every mechanical and environmental load experienced by mature trees."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The peer-reviewed open-access paper reports the experimental setup, anatomical evidence, and control-law analysis; the INRAE release provides an accessible institutional account from the participating research organization."
+      },
+      "sources": [
+        {
+          "url": "https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.71238",
+          "title": "Proprioception drives tension wood formation for autotropic straightening and postural control in trees",
+          "publisher": "New Phytologist",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-09",
+          "role": "primary-research",
+          "lineage": "caulus-poplar-proprioception-2026"
+        },
+        {
+          "url": "https://www.inrae.fr/en/news/newly-discovered-role-tension-wood-muscle-trees-use-correct-their-posture",
+          "title": "A newly discovered role for tension wood: the muscle trees use to correct their posture",
+          "publisher": "INRAE",
+          "publishedAt": "2026-09-02",
+          "accessedAt": "2026-09-09",
+          "role": "institutional-reporting",
+          "lineage": "caulus-poplar-proprioception-2026"
+        }
+      ],
+      "openQuestions": [
+        "Which cells and molecular pathways convert stem curvature into redirected tension wood formation?",
+        "How widely does the measured control law generalize across tree species and mature stems?",
+        "How do wind, branch loading, damage, and changing light interact with proprioceptive feedback in the field?"
+      ],
+      "watchFor": [
+        {
+          "description": "Identification of the curvature sensor",
+          "expectedWindow": null,
+          "trigger": "A follow-up identifies or experimentally tests the cellular or molecular mechanism responsible for curvature sensing."
+        },
+        {
+          "description": "Cross-species replication",
+          "expectedWindow": null,
+          "trigger": "A study reproduces active tension-wood straightening under suppressed gravity and light cues in another woody species."
+        }
+      ],
+      "trackingTerms": [
+        "New Phytologist 10.1111 nph.71238",
+        "Caulus tension wood proprioception",
+        "Populus autotropic straightening clinostat",
+        "tree curvature sensing mechanism"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The result establishes a controllable phenomenon while leaving a specific molecular sensor and cross-species scope open to later evidence."
+      },
+      "selectionReason": "The experiment turns a familiar tree movement into a concrete feedback-control problem and reveals wood as both structure and actuator.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-09-income-resolved-resource-security-ensemble",
+      "order": 2,
+      "sectionRole": "signal",
+      "headline": "The regional average has no food bill",
+      "canonicalSubject": {
+        "name": "Income-resolved multisector resource security scenario ensemble",
+        "kind": "integrated-assessment-study",
+        "aliases": [
+          "Kim future resource security ensemble",
+          "GCAM income-decile resource burden study"
+        ]
+      },
+      "signalType": "peer-reviewed-modeling-study",
+      "topics": [
+        "resource-security",
+        "inequality",
+        "integrated-assessment",
+        "economics"
+      ],
+      "geography": [
+        "Global"
+      ],
+      "canonicalClaim": "An exploratory ensemble of 3,735 multisector scenarios found that projected food and residential-energy burdens can vary sharply across income deciles within the same modeled region, so regional averages conceal distributional risk.",
+      "knownFacts": [
+        "The study used version 7.1 of the Global Change Analysis Model across 32 geopolitical regions, 235 water basins, and 384 land-use regions.",
+        "The ensemble varied 12 factors and analyzed 3,735 scenarios through 2050.",
+        "For food and residential-energy burdens, each region was divided into ten equal-population income groups.",
+        "One modeled southern Africa outcome placed food burden at 49.6 percent of income for the poorest decile and 5.5 percent for the richest decile."
+      ],
+      "uncertainties": [
+        "The ensemble does not assign probabilities or identify one most likely future.",
+        "Its results depend on model structure, baseline data, and the range of assumptions selected by the researchers.",
+        "Income-resolved estimates inside large regions do not capture every local market, household strategy, or political intervention."
+      ],
+      "evidence": {
+        "level": "primary-supported",
+        "notes": "The open-access peer-reviewed paper documents the scenario design and burden estimates; MIT News provides an institutional explanation based on the paper and author interviews."
+      },
+      "sources": [
+        {
+          "url": "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2025EF007585",
+          "title": "Identifying Key Uncertainties and Drivers of Future Resource Security Outcomes Through a Multisector Scenario Ensemble",
+          "publisher": "Earth's Future",
+          "publishedAt": "2026-07-30",
+          "accessedAt": "2026-09-09",
+          "role": "primary-research",
+          "lineage": "kim-resource-security-ensemble-2026"
+        },
+        {
+          "url": "https://news.mit.edu/2026/study-predicts-large-disparities-access-food-water-energy-2050-0908",
+          "title": "Study predicts large disparities in access to food, water, and energy in 2050",
+          "publisher": "MIT News",
+          "publishedAt": "2026-09-08",
+          "accessedAt": "2026-09-09",
+          "role": "institutional-reporting",
+          "lineage": "kim-resource-security-ensemble-2026"
+        }
+      ],
+      "openQuestions": [
+        "Which model assumptions most strongly determine the distribution of food and energy burdens within each region?",
+        "How closely can income-decile burden estimates be validated against household-level observations?",
+        "Which policy interventions reduce burden for low-income groups without shifting insecurity into another resource system?"
+      ],
+      "watchFor": [
+        {
+          "description": "Regional validation studies",
+          "expectedWindow": null,
+          "trigger": "A follow-up compares the modeled income-specific burdens with household or subnational data in a named region."
+        },
+        {
+          "description": "Policy scenario applications",
+          "expectedWindow": null,
+          "trigger": "Researchers use the ensemble to test a specific food, energy, water, trade, or income policy across distributional groups."
+        }
+      ],
+      "trackingTerms": [
+        "Earth's Future 10.1029 2025EF007585",
+        "Gi Joo Kim resource security ensemble",
+        "GCAM 7.1 income deciles food burden",
+        "multisector scenario ensemble inequality 2050"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "passive",
+        "reason": "The study is worth preserving as a methodological reference, but it names no near-term milestone and future value depends on region-specific validation or application."
+      },
+      "selectionReason": "The study shows that aggregation is not neutral when the phenomenon of interest is household access rather than total resource supply.",
+      "reviewAfter": null,
+      "attentionSnapshot": null
+    },
+    {
+      "signalId": "2026-09-09-stolen-childhoods-survivor-led-exhibition",
+      "order": 3,
+      "sectionRole": "signal",
+      "headline": "The record changes when Survivors frame it",
+      "canonicalSubject": {
+        "name": "Stolen Childhoods exhibition about the Mohawk Institute",
+        "kind": "survivor-led-traveling-exhibition",
+        "aliases": [
+          "Survivors' Secretariat Stolen Childhoods",
+          "Mohawk Institute Survivor exhibition"
+        ]
+      },
+      "signalType": "exhibition-opening",
+      "topics": [
+        "indigenous-history",
+        "museums",
+        "residential-schools",
+        "survivor-testimony"
+      ],
+      "geography": [
+        "Brantford",
+        "Toronto",
+        "Ontario",
+        "Canada"
+      ],
+      "canonicalClaim": "The Survivor-created Stolen Childhoods exhibition opened at the Royal Ontario Museum on September 8, combining archival records, photographs, interviews, and sculpture with visitor provisions shaped around Indigenous Survivors.",
+      "knownFacts": [
+        "The exhibition was created by the Survivors' Secretariat with support from Know History and Museums Assistance Program funding.",
+        "Its materials include archival records, photographs, multimedia interviews, a seven-foot sculpture, and portraits of eight Survivors by Nadya Kwandibens.",
+        "ROM held a dedicated private viewing for Indigenous visitors, organizations, and Survivors before the public opening.",
+        "The installation includes a dedicated Indigenous reflection space with sacred medicines and is scheduled at ROM through October 1, 2026.",
+        "The Survivors' Secretariat also describes a mobile version intended for schools, events, and smaller institutions."
+      ],
+      "uncertainties": [
+        "The sources reviewed are from the exhibition's creators and host institution rather than independent critical assessment.",
+        "Future venues and the long-term preservation of the installation were not established during this capture.",
+        "An exhibition can broaden public knowledge but does not by itself resolve questions of records access, investigation, commemoration, or accountability."
+      ],
+      "evidence": {
+        "level": "first-party-only",
+        "notes": "The factual description comes from the Survivor-led creator and the Royal Ontario Museum as host; no independent exhibition review was identified at the time of capture."
+      },
+      "sources": [
+        {
+          "url": "https://survivorssecretariat.ca/stolen-childhoods-exhibition/",
+          "title": "Stolen Childhoods Exhibition",
+          "publisher": "Survivors' Secretariat",
+          "publishedAt": null,
+          "accessedAt": "2026-09-09",
+          "role": "first-party",
+          "lineage": "stolen-childhoods-exhibition-2026"
+        },
+        {
+          "url": "https://www.rom.on.ca/whats-on/exhibitions/stolen-childhoods",
+          "title": "Stolen Childhoods",
+          "publisher": "Royal Ontario Museum",
+          "publishedAt": null,
+          "accessedAt": "2026-09-09",
+          "role": "official-primary",
+          "lineage": "stolen-childhoods-exhibition-2026"
+        }
+      ],
+      "openQuestions": [
+        "Where will the traveling and mobile versions be shown after the ROM engagement?",
+        "How will Survivor authority over the material be maintained as the exhibition moves between institutions?",
+        "Will the exhibition's interviews and digital timeline remain publicly accessible after the physical installations close?"
+      ],
+      "watchFor": [
+        {
+          "description": "Next exhibition venues",
+          "expectedWindow": null,
+          "trigger": "The Survivors' Secretariat announces a new venue or tour schedule for Stolen Childhoods."
+        },
+        {
+          "description": "Post-ROM access and preservation",
+          "expectedWindow": null,
+          "trigger": "The creators announce a durable digital archive, educational release, or preservation plan for the exhibition materials."
+        }
+      ],
+      "trackingTerms": [
+        "Survivors Secretariat Stolen Childhoods",
+        "Mohawk Institute exhibition tour",
+        "Stolen Childhoods Royal Ontario Museum",
+        "Nadya Kwandibens Mohawk Institute Survivor portraits"
+      ],
+      "existingWakeId": null,
+      "disposition": {
+        "status": "active-candidate",
+        "reason": "The exhibition is explicitly designed to travel, with future venues and the stewardship of Survivor-authored materials observable over time."
+      },
+      "selectionReason": "The exhibition makes authorship part of historical method by allowing Survivors to determine how institutional records and lived testimony meet the public.",
+      "reviewAfter": "2026-10-02",
+      "attentionSnapshot": null
+    }
+  ]
+}
