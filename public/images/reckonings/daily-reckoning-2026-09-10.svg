@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">Multiplication by three rearranges the nonzero residues modulo seven</title>
+  <desc id="description">Two columns of residues from one through six glow over a dark maritime drafting grid. Six crossing paths connect each source to its product by three modulo seven, reaching every output exactly once.</desc>
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020811"/>
+      <stop offset="0.52" stop-color="#061727"/>
+      <stop offset="1" stop-color="#02070d"/>
+    </linearGradient>
+    <radialGradient id="cyanBloom" cx="0" cy="0" r="1" gradientTransform="translate(390 420) rotate(4) scale(660 520)">
+      <stop stop-color="#087dcc" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#087dcc" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="magentaBloom" cx="0" cy="0" r="1" gradientTransform="translate(1230 430) rotate(180) scale(620 500)">
+      <stop stop-color="#d9007e" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#d9007e" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="minorGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#0d3550" stroke-width="1" opacity=".4"/>
+    </pattern>
+    <pattern id="majorGrid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M200 0H0V200" fill="none" stroke="#17628c" stroke-width="1.4" opacity=".32"/>
+    </pattern>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowCyan" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0L12 6L0 12Z" fill="#6bd7ff"/>
+    </marker>
+    <marker id="arrowMagenta" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0L12 6L0 12Z" fill="#ff72bd"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ocean)"/>
+  <rect width="1600" height="900" fill="url(#cyanBloom)"/>
+  <rect width="1600" height="900" fill="url(#magentaBloom)"/>
+  <rect width="1600" height="900" fill="url(#minorGrid)"/>
+  <rect width="1600" height="900" fill="url(#majorGrid)"/>
+
+  <g fill="none" stroke="#1d5370" opacity=".35">
+    <path d="M0 744C185 684 300 812 496 752s303-38 479 20 389 29 625-61"/>
+    <path d="M0 787C185 727 300 855 496 795s303-38 479 20 389 29 625-61"/>
+    <path d="M0 830C185 770 300 898 496 838s303-38 479 20 389 29 625-61"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18" letter-spacing="4" fill="#7898aa">
+    <text x="370" y="112" text-anchor="middle">NONZERO RESIDUES</text>
+    <text x="1230" y="112" text-anchor="middle">PRODUCTS MODULO 7</text>
+  </g>
+
+  <g fill="none" stroke-width="5" opacity=".22" filter="url(#glow)">
+    <path d="M430 190C700 190 900 430 1170 430" stroke="#6bd7ff"/>
+    <path d="M430 286C700 286 900 718 1170 718" stroke="#ff72bd"/>
+    <path d="M430 382C700 382 900 286 1170 286" stroke="#6bd7ff"/>
+    <path d="M430 478C700 478 900 622 1170 622" stroke="#ff72bd"/>
+    <path d="M430 574C700 574 900 190 1170 190" stroke="#6bd7ff"/>
+    <path d="M430 670C700 670 900 526 1170 526" stroke="#ff72bd"/>
+  </g>
+  <g fill="none" stroke-width="3.5" filter="url(#softGlow)">
+    <path d="M430 190C700 190 900 430 1170 430" stroke="#6bd7ff" marker-end="url(#arrowCyan)"/>
+    <path d="M430 286C700 286 900 718 1170 718" stroke="#ff72bd" marker-end="url(#arrowMagenta)"/>
+    <path d="M430 382C700 382 900 286 1170 286" stroke="#6bd7ff" marker-end="url(#arrowCyan)"/>
+    <path d="M430 478C700 478 900 622 1170 622" stroke="#ff72bd" marker-end="url(#arrowMagenta)"/>
+    <path d="M430 574C700 574 900 190 1170 190" stroke="#6bd7ff" marker-end="url(#arrowCyan)"/>
+    <path d="M430 670C700 670 900 526 1170 526" stroke="#ff72bd" marker-end="url(#arrowMagenta)"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="31" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+    <g fill="#071a2a" stroke="#6bd7ff" stroke-width="3" filter="url(#softGlow)">
+      <circle cx="370" cy="190" r="46"/><circle cx="370" cy="286" r="46"/>
+      <circle cx="370" cy="382" r="46"/><circle cx="370" cy="478" r="46"/>
+      <circle cx="370" cy="574" r="46"/><circle cx="370" cy="670" r="46"/>
+    </g>
+    <g fill="#f2fbff">
+      <text x="370" y="190">1</text><text x="370" y="286">2</text>
+      <text x="370" y="382">3</text><text x="370" y="478">4</text>
+      <text x="370" y="574">5</text><text x="370" y="670">6</text>
+    </g>
+    <g fill="#071a2a" stroke="#93ff14" stroke-width="3" filter="url(#softGlow)">
+      <circle cx="1230" cy="190" r="46"/><circle cx="1230" cy="286" r="46"/>
+      <circle cx="1230" cy="382" r="46"/><circle cx="1230" cy="478" r="46"/>
+      <circle cx="1230" cy="574" r="46"/><circle cx="1230" cy="670" r="46"/>
+    </g>
+    <g fill="#f2fbff">
+      <text x="1230" y="190">1</text><text x="1230" y="286">2</text>
+      <text x="1230" y="382">3</text><text x="1230" y="478">4</text>
+      <text x="1230" y="574">5</text><text x="1230" y="670">6</text>
+    </g>
+  </g>
+
+  <g transform="translate(800 450)">
+    <circle r="84" fill="#06111f" stroke="#315c73" stroke-width="2"/>
+    <circle r="70" fill="none" stroke="#1493ff" stroke-width="1" stroke-dasharray="5 8" opacity=".75"/>
+    <text y="-7" fill="#f3f9ff" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="31" font-weight="700" text-anchor="middle">×3</text>
+    <text y="31" fill="#93ff14" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18" letter-spacing="2" text-anchor="middle">MOD 7</text>
+  </g>
+
+  <g fill="none" stroke="#5a849b" opacity=".55">
+    <path d="M92 90h84M92 90v84M1508 90h-84M1508 90v84M92 810h84M92 810v-84M1508 810h-84M1508 810v-84" stroke-width="2"/>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-09T06:00:00-07:00",
+  "updatedAt": "2026-09-10T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -285,7 +285,36 @@
         "public-key cryptography"
       ],
       "relatedLessons": [
-        "daily-reckoning-2026-08-31"
+        "daily-reckoning-2026-08-31",
+        "daily-reckoning-2026-09-10"
+      ]
+    },
+    {
+      "date": "2026-09-10",
+      "slug": "daily-reckoning-2026-09-10",
+      "title": "Why Does a Prime Make Giant Powers Loop?",
+      "area": "Numbers and algebra",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Modular arithmetic and congruence",
+        "Prime numbers",
+        "Products and exponents"
+      ],
+      "miniSeries": {
+        "title": "Arithmetic Behind Secure Messages",
+        "part": 2,
+        "total": 3
+      },
+      "relatedTopics": [
+        "Fermat's little theorem",
+        "prime moduli",
+        "residue permutations",
+        "modular inverses",
+        "probable-prime testing",
+        "public-key cryptography"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-09"
       ]
     }
   ]

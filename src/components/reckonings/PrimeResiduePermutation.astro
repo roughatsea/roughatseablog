@@ -1,0 +1,437 @@
+---
+const initialPrime = 7;
+const initialMultiplier = 3;
+const initialResidues = Array.from({ length: initialPrime - 1 }, (_, index) => index + 1);
+const initialOutputs = initialResidues.map((residue) => (residue * initialMultiplier) % initialPrime);
+const rowY = (residue: number, prime: number) => 64 + (residue - 1) * (392 / (prime - 2));
+---
+
+<figure class="prime-lab reckoning-visual" data-prime-lab>
+  <header>
+    <p>Interactive residue map</p>
+    <h3>Multiply every nonzero remainder by the same number</h3>
+  </header>
+
+  <div class="controls">
+    <fieldset>
+      <legend>Choose a prime modulus</legend>
+      <div class="prime-buttons">
+        {[5, 7, 11].map((prime) => (
+          <button
+            type="button"
+            class:list={{ active: prime === initialPrime }}
+            aria-pressed={prime === initialPrime ? 'true' : 'false'}
+            data-prime-choice={prime}
+          >
+            Mod {prime}
+          </button>
+        ))}
+      </div>
+    </fieldset>
+
+    <label class="multiplier-control">
+      <span>Multiplier <output data-multiplier-output>{initialMultiplier}</output></span>
+      <input
+        type="range"
+        min="1"
+        max={initialPrime - 1}
+        step="1"
+        value={initialMultiplier}
+        data-multiplier-input
+      />
+    </label>
+  </div>
+
+  <div class="map-frame">
+    <svg
+      viewBox="0 0 680 520"
+      role="img"
+      aria-labelledby="prime-map-title prime-map-description"
+      preserveAspectRatio="xMidYMid meet"
+      data-map-svg
+    >
+      <title id="prime-map-title">Multiplication by 3 modulo 7</title>
+      <desc id="prime-map-description">
+        Six arrows map the source residues 1 through 6 to the output residues 3, 6, 2, 5,
+        1, and 4. Each output receives exactly one arrow.
+      </desc>
+      <defs>
+        <pattern id="prime-map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+          <path d="M32 0H0V32" fill="none" />
+        </pattern>
+        <filter id="prime-map-glow" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <marker id="prime-map-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0L10 5L0 10Z" />
+        </marker>
+      </defs>
+
+      <rect class="grid" width="680" height="520" fill="url(#prime-map-grid)" />
+      <text class="column-label" x="130" y="34">SOURCE x</text>
+      <text class="column-label" x="550" y="34">OUTPUT 3x mod 7</text>
+
+      <g data-mapping-lines>
+        {initialResidues.map((source, index) => {
+          const output = initialOutputs[index];
+          return (
+            <g class="mapping-line">
+              <line
+                class="line-glow"
+                x1="164"
+                y1={rowY(source, initialPrime)}
+                x2="516"
+                y2={rowY(output, initialPrime)}
+              />
+              <line
+                x1="164"
+                y1={rowY(source, initialPrime)}
+                x2="516"
+                y2={rowY(output, initialPrime)}
+                marker-end="url(#prime-map-arrow)"
+              />
+            </g>
+          );
+        })}
+      </g>
+
+      <g data-source-nodes>
+        {initialResidues.map((residue) => (
+          <g class="residue source-residue" transform={`translate(130 ${rowY(residue, initialPrime)})`}>
+            <circle r="28" />
+            <text y="1">{residue}</text>
+          </g>
+        ))}
+      </g>
+
+      <g data-output-nodes>
+        {initialResidues.map((residue) => (
+          <g class="residue output-residue" transform={`translate(550 ${rowY(residue, initialPrime)})`}>
+            <circle r="28" />
+            <text y="1">{residue}</text>
+          </g>
+        ))}
+      </g>
+    </svg>
+  </div>
+
+  <p class="equation" aria-live="polite" data-equation>
+    ×3 sends 1, 2, 3, 4, 5, 6 to 3, 6, 2, 5, 1, 4 modulo 7.
+  </p>
+
+  <dl class="map-facts">
+    <div>
+      <dt>Repeated outputs</dt>
+      <dd data-collisions>0</dd>
+    </div>
+    <div>
+      <dt>Landings on zero</dt>
+      <dd data-zero-landings>0</dd>
+    </div>
+    <div>
+      <dt>Power consequence</dt>
+      <dd data-power-consequence>3⁶ ≡ 1 (mod 7)</dd>
+    </div>
+  </dl>
+
+  <ol class="text-map" data-text-map aria-label="Residue mappings">
+    {initialResidues.map((source, index) => <li>{source} → {initialOutputs[index]}</li>)}
+  </ol>
+
+  <figcaption>
+    <strong>What to notice:</strong> every output circle receives one arrow. For each available
+    multiplier, multiplication changes the order of the nonzero residues, but it neither duplicates
+    a residue nor sends one to zero. Choose another prime or multiplier to test the claim.
+  </figcaption>
+</figure>
+
+<script>
+  const svgNamespace = 'http://www.w3.org/2000/svg';
+  const superscripts: Record<string, string> = {
+    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
+  };
+
+  const toSuperscript = (value: number) => String(value)
+    .split('')
+    .map((digit) => superscripts[digit])
+    .join('');
+
+  const yFor = (residue: number, prime: number) =>
+    64 + (residue - 1) * (392 / (prime - 2));
+
+  document.querySelectorAll<HTMLElement>('[data-prime-lab]').forEach((lab) => {
+    const primeButtons = lab.querySelectorAll<HTMLButtonElement>('[data-prime-choice]');
+    const multiplierInput = lab.querySelector<HTMLInputElement>('[data-multiplier-input]');
+    const multiplierOutput = lab.querySelector<HTMLOutputElement>('[data-multiplier-output]');
+    const mappingLines = lab.querySelector<SVGGElement>('[data-mapping-lines]');
+    const sourceNodes = lab.querySelector<SVGGElement>('[data-source-nodes]');
+    const outputNodes = lab.querySelector<SVGGElement>('[data-output-nodes]');
+    const equation = lab.querySelector<HTMLElement>('[data-equation]');
+    const collisions = lab.querySelector<HTMLElement>('[data-collisions]');
+    const zeroLandings = lab.querySelector<HTMLElement>('[data-zero-landings]');
+    const powerConsequence = lab.querySelector<HTMLElement>('[data-power-consequence]');
+    const textMap = lab.querySelector<HTMLOListElement>('[data-text-map]');
+    const title = lab.querySelector('#prime-map-title');
+    const description = lab.querySelector('#prime-map-description');
+    const columnLabels = lab.querySelectorAll<SVGTextElement>('.column-label');
+
+    if (!multiplierInput || !mappingLines || !sourceNodes || !outputNodes) return;
+    let prime = 7;
+
+    const makeResidueNode = (residue: number, kind: 'source' | 'output') => {
+      const group = document.createElementNS(svgNamespace, 'g');
+      group.setAttribute('class', `residue ${kind}-residue`);
+      group.setAttribute('transform', `translate(${kind === 'source' ? 130 : 550} ${yFor(residue, prime)})`);
+      const circle = document.createElementNS(svgNamespace, 'circle');
+      circle.setAttribute('r', '28');
+      const label = document.createElementNS(svgNamespace, 'text');
+      label.setAttribute('y', '1');
+      label.textContent = String(residue);
+      group.append(circle, label);
+      return group;
+    };
+
+    const makeMappingLine = (source: number, output: number) => {
+      const group = document.createElementNS(svgNamespace, 'g');
+      group.setAttribute('class', 'mapping-line');
+      const glow = document.createElementNS(svgNamespace, 'line');
+      const line = document.createElementNS(svgNamespace, 'line');
+      const attributes = {
+        x1: '164', y1: String(yFor(source, prime)),
+        x2: '516', y2: String(yFor(output, prime)),
+      };
+      Object.entries(attributes).forEach(([name, value]) => {
+        glow.setAttribute(name, value);
+        line.setAttribute(name, value);
+      });
+      glow.setAttribute('class', 'line-glow');
+      line.setAttribute('marker-end', 'url(#prime-map-arrow)');
+      group.append(glow, line);
+      return group;
+    };
+
+    const render = () => {
+      const multiplier = Number(multiplierInput.value);
+      const residues = Array.from({ length: prime - 1 }, (_, index) => index + 1);
+      const outputs = residues.map((residue) => (residue * multiplier) % prime);
+      const repeatedCount = outputs.length - new Set(outputs).size;
+      const zeroCount = outputs.filter((output) => output === 0).length;
+
+      primeButtons.forEach((button) => {
+        const selected = Number(button.dataset.primeChoice) === prime;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      if (multiplierOutput) multiplierOutput.value = String(multiplier);
+      if (columnLabels[1]) columnLabels[1].textContent = `OUTPUT ${multiplier}x mod ${prime}`;
+
+      sourceNodes.replaceChildren(...residues.map((residue) => makeResidueNode(residue, 'source')));
+      outputNodes.replaceChildren(...residues.map((residue) => makeResidueNode(residue, 'output')));
+      mappingLines.replaceChildren(...residues.map((source, index) => makeMappingLine(source, outputs[index])));
+
+      if (equation) {
+        equation.textContent = `×${multiplier} sends ${residues.join(', ')} to ${outputs.join(', ')} modulo ${prime}.`;
+      }
+      if (collisions) collisions.textContent = String(repeatedCount);
+      if (zeroLandings) zeroLandings.textContent = String(zeroCount);
+      if (powerConsequence) {
+        powerConsequence.textContent = `${multiplier}${toSuperscript(prime - 1)} ≡ 1 (mod ${prime})`;
+      }
+      if (textMap) {
+        textMap.replaceChildren(...residues.map((source, index) => {
+          const item = document.createElement('li');
+          item.textContent = `${source} → ${outputs[index]}`;
+          return item;
+        }));
+      }
+      if (title) title.textContent = `Multiplication by ${multiplier} modulo ${prime}`;
+      if (description) {
+        description.textContent = `${residues.length} arrows map source residues ${residues.join(', ')} to output residues ${outputs.join(', ')}. Each output receives exactly one arrow.`;
+      }
+    };
+
+    primeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        prime = Number(button.dataset.primeChoice);
+        multiplierInput.max = String(prime - 1);
+        multiplierInput.value = String(Math.min(Number(multiplierInput.value), prime - 1));
+        render();
+      });
+    });
+    multiplierInput.addEventListener('input', render);
+  });
+</script>
+
+<style>
+  .prime-lab {
+    --cyan: #087dcc;
+    --magenta: #d9007e;
+    --green: #4f9300;
+    background:
+      radial-gradient(circle at 75% 0%, color-mix(in srgb, var(--magenta) 10%, transparent), transparent 24rem),
+      var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(940px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .prime-lab {
+    --cyan: #1493ff;
+    --magenta: #ff1493;
+    --green: #93ff14;
+  }
+  header > p {
+    color: var(--link-color);
+    font-size: .67rem;
+    font-weight: 650;
+    letter-spacing: .12em;
+    margin: 0 0 .2rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+  }
+  .controls {
+    align-items: end;
+    display: grid;
+    gap: .8rem 1rem;
+    grid-template-columns: 1.2fr 1fr;
+    margin-bottom: .9rem;
+  }
+  fieldset { border: 0; margin: 0; min-width: 0; padding: 0; }
+  legend,
+  .multiplier-control > span {
+    color: var(--text-secondary);
+    display: block;
+    font-size: .67rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    margin-bottom: .45rem;
+    text-transform: uppercase;
+  }
+  .prime-buttons { display: flex; flex-wrap: wrap; gap: .45rem; }
+  button {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    font-size: .78rem;
+    padding: .42rem .7rem;
+  }
+  button.active,
+  button:hover,
+  button:focus-visible {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--cyan) 40%, transparent);
+    color: var(--link-color);
+    outline: none;
+  }
+  .multiplier-control { min-width: 0; }
+  .multiplier-control input { accent-color: var(--magenta); width: 100%; }
+  .map-frame {
+    background: #06111f;
+    border: 1px solid color-mix(in srgb, var(--cyan) 25%, transparent);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  svg { display: block; height: auto; width: 100%; }
+  .grid { stroke: #0d3351; stroke-width: .7; }
+  .column-label {
+    fill: #8ba4b7;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-anchor: middle;
+  }
+  .mapping-line line {
+    fill: none;
+    marker-end: url(#prime-map-arrow);
+    stroke: #6bd7ff;
+    stroke-width: 2;
+  }
+  .mapping-line:nth-child(even) line { stroke: #ff72bd; }
+  .mapping-line .line-glow {
+    filter: url(#prime-map-glow);
+    opacity: .26;
+    stroke-width: 7;
+  }
+  :global(#prime-map-arrow path) { fill: #bfeeff; }
+  .residue circle { fill: #071a2a; stroke-width: 2; }
+  .source-residue circle { stroke: #6bd7ff; }
+  .output-residue circle { stroke: #9fff72; }
+  .residue text {
+    fill: #f3f9ff;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 18px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+  .equation {
+    background: var(--background-color);
+    border-left: 3px solid var(--magenta);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: clamp(.72rem, 2.1vw, .9rem);
+    margin: .9rem 0;
+    overflow-x: auto;
+    padding: .7rem .8rem;
+    white-space: nowrap;
+  }
+  .map-facts {
+    display: grid;
+    gap: .65rem;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 0 .9rem;
+  }
+  .map-facts div {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    padding: .65rem .75rem;
+  }
+  dt {
+    color: var(--text-secondary);
+    font-size: .61rem;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  dd { font-size: .82rem; margin: .18rem 0 0; }
+  .text-map {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem .8rem;
+    list-style: none;
+    margin: 0 0 .9rem !important;
+    padding: 0;
+  }
+  .text-map li {
+    color: var(--text-secondary);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: .76rem;
+    margin: 0;
+    padding: 0;
+  }
+  figcaption {
+    color: var(--text-secondary);
+    font-size: .8rem;
+    line-height: 1.55;
+  }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 620px) {
+    .controls { grid-template-columns: 1fr; }
+    .map-facts { grid-template-columns: 1fr 1fr; }
+    .map-facts div:last-child { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mapping-line line { transition: x1 .16s ease, y1 .16s ease, x2 .16s ease, y2 .16s ease; }
+  }
+</style>

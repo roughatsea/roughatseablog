@@ -1,0 +1,246 @@
+---
+title: "Why Does a Prime Make Giant Powers Loop?"
+description: "Fermat’s little theorem turns multiplication modulo a prime into a collision-free rearrangement—and reduces 2¹⁰⁰⁰ to one small remainder."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-10.svg"
+heroImageAlt: "Two columns of residues from 1 through 6 glow over a dark maritime drafting grid, joined by six crossing paths that show multiplication by 3 modulo 7 rearranging every residue exactly once."
+date: 2026-09-10
+publishedAt: 2026-09-10T06:00:00-07:00
+area: "Numbers and algebra"
+difficulty: "Intermediate"
+prerequisites:
+  - "Modular arithmetic and congruence"
+  - "Prime numbers"
+  - "Products and exponents"
+readTimeMinutes: 9
+miniSeries:
+  title: "Arithmetic Behind Secure Messages"
+  part: 2
+  total: 3
+tags:
+  - daily-reckoning
+  - number-theory
+  - fermats-little-theorem
+  - prime-numbers
+  - modular-arithmetic
+  - modular-inverses
+  - cryptography
+---
+
+import PrimeResiduePermutation from '../../components/reckonings/PrimeResiduePermutation.astro';
+
+The number $2^{1000}$ has 302 decimal digits. What remainder does that number leave after division by $13$?
+
+One route is to calculate all 302 digits and divide. A theorem about prime numbers reaches the answer using $2^4=16$ instead. The theorem works because multiplication by a nonzero remainder modulo a prime cannot make two different remainders collide.
+
+This lesson continues yesterday’s [introduction to modular arithmetic](/reckonings/daily-reckoning-2026-09-09/). Congruence notation such as $29\equiv3\pmod{13}$ says that $29$ and $3$ leave the same remainder after division by $13$.
+
+## Six passengers, six seats
+
+Start with the six nonzero remainders modulo $7$:
+
+$$
+1,2,3,4,5,6.
+$$
+
+Multiply each remainder by $3$, then keep only the remainder after division by $7$:
+
+$$
+3,6,2,5,1,4.
+$$
+
+Every number from $1$ through $6$ appears once in the second list. Multiplication by $3$ changed the seating order without losing a passenger or putting two passengers in one seat.
+
+The diagram below draws every assignment from the first list to the second. Change the prime modulus or the multiplier. The lines cross in different places, but each output circle still receives exactly one arrow.
+
+<PrimeResiduePermutation />
+
+Why are collisions impossible? Suppose two source remainders $r$ and $s$ land together after multiplication by $3$. In symbols,
+
+$$
+3r\equiv3s\pmod7.
+$$
+
+The congruence says that $7$ divides $3(r-s)$. Because $7$ is prime and does not divide $3$, Euclid’s lemma says that $7$ must divide $r-s$. Both $r$ and $s$ lie between $1$ and $6$, so the only possible multiple of $7$ for $r-s$ is $0$. Therefore $r=s$: the allegedly different sources were the same source.
+
+No source can land on $0$, either. If $3r\equiv0\pmod7$, then $7$ divides $3r$. The prime $7$ divides neither $3$ nor any $r$ from $1$ through $6$, so that landing is impossible.
+
+We now have six distinct outputs, and all six are chosen from the six nonzero remainders. The outputs must therefore be a rearrangement of $1,2,3,4,5,6$.
+
+## The loop guaranteed by a prime
+
+The same reasoning works for every prime modulus. **Fermat’s little theorem** states:
+
+> Let $p$ be a prime number, and let $a$ be an integer that $p$ does not divide. Then
+>
+> $$
+> a^{p-1}\equiv1\pmod p.
+> $$
+
+The exponent $p-1$ counts the nonzero remainders modulo $p$. To prove the theorem, multiply those remainders by $a$:
+
+$$
+a,2a,3a,\ldots,(p-1)a.
+$$
+
+The collision argument used for $3$ and $7$ shows that these products, after reduction modulo $p$, are a rearrangement of
+
+$$
+1,2,3,\ldots,p-1.
+$$
+
+Rearranging factors does not change their product, so
+
+$$
+\begin{aligned}
+(a\cdot1)(a\cdot2)\cdots(a\cdot(p-1))
+&\equiv1\cdot2\cdots(p-1)\pmod p,\\
+a^{p-1}(p-1)!&\equiv(p-1)!\pmod p.
+\end{aligned}
+$$
+
+The symbol $(p-1)!$ means $1\cdot2\cdots(p-1)$. None of those factors is divisible by $p$, so their product has a multiplicative inverse modulo $p$. Multiplying both sides by that inverse legally cancels $(p-1)!$ and leaves
+
+$$
+a^{p-1}\equiv1\pmod p.
+$$
+
+For $a=3$ and $p=7$, the proof says $3^6\equiv1\pmod7$. Six more factors of $3$ will always return a power to the same remainder. The shortest cycle may be smaller than $p-1$, but $p-1$ is a guaranteed return time.
+
+## Worked example: $2^{1000}$ modulo $13$
+
+The modulus $13$ is prime, and $13$ does not divide $2$. Fermat’s little theorem gives
+
+$$
+2^{12}\equiv1\pmod{13}.
+$$
+
+Next, divide the exponent $1000$ by $12$:
+
+$$
+1000=12\cdot83+4.
+$$
+
+Rewrite the power using that quotient and remainder:
+
+$$
+\begin{aligned}
+2^{1000}
+&=2^{12\cdot83+4}\\
+&=(2^{12})^{83}2^4\\
+&\equiv1^{83}\cdot16\pmod{13}\\
+&\equiv3\pmod{13}.
+\end{aligned}
+$$
+
+Therefore the 302-digit number $2^{1000}$ leaves remainder **3** after division by $13$.
+
+## Try the prime shortcut
+
+### Problem 1
+
+Find the remainder when $5^{2026}$ is divided by $11$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+The number $11$ is prime, and $11$ does not divide $5$, so
+
+$$
+5^{10}\equiv1\pmod{11}.
+$$
+
+Reduce the exponent:
+
+$$
+2026=10\cdot202+6.
+$$
+
+Therefore
+
+$$
+5^{2026}\equiv5^6\pmod{11}.
+$$
+
+Compute the sixth power in small steps:
+
+$$
+\begin{aligned}
+5^2&=25\equiv3\pmod{11},\\
+5^4&\equiv3^2=9\pmod{11},\\
+5^6&=5^4\cdot5^2\equiv9\cdot3=27\equiv5\pmod{11}.
+\end{aligned}
+$$
+
+The remainder is **5**.
+
+</details>
+
+### Problem 2
+
+Find a multiplicative inverse of $3$ modulo $7$. In other words, find a number $b$ for which $3b\equiv1\pmod7$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Fermat’s little theorem gives
+
+$$
+3^6\equiv1\pmod7.
+$$
+
+Write $3^6$ as $3\cdot3^5$:
+
+$$
+3\cdot3^5\equiv1\pmod7.
+$$
+
+Therefore $3^5$ is an inverse of $3$. Reduce it modulo $7$:
+
+$$
+3^5=243=7\cdot34+5,
+$$
+
+so $3^5\equiv5\pmod7$. A direct check confirms the result:
+
+$$
+3\cdot5=15\equiv1\pmod7.
+$$
+
+One multiplicative inverse is **5**.
+
+</details>
+
+## A theorem passed by letter, then proved by an academy mathematician
+
+Pierre de Fermat stated the result in [an October 1640 letter to Bernard Frénicle de Bessy](https://books.google.com/books/about/%C5%92uvres_de_Fermat_Correspondance.html?id=ji98WJZxhTcC), one of the few correspondents who shared Fermat’s interest in number theory. Fermat did not include a proof. The omission fit his usual mathematical practice: Fermat posed results and challenges in private correspondence far more readily than he prepared finished publications.
+
+That habit was tied to Fermat’s working life. He was a lawyer and government official who [purchased an office as a councillor in the Parlement of Toulouse](https://mathshistory.st-andrews.ac.uk/Biographies/Fermat/) by 1631. His mathematical network ran through letters among figures such as Pierre de Carcavi and Marin Mersenne. A civil war known as the Fronde, official duties, and a plague that nearly killed Fermat later interrupted those exchanges. The theorem emerged from an elite European correspondence network rather than from a university post or a mathematical journal.
+
+Leonhard Euler wrote the first published proof in 1736. The St Petersburg Academy’s proceedings printed it in 1741 under the title *A Proof of Certain Theorems Regarding Prime Numbers*. The [Euler Archive’s record of the paper](https://scholarlycommons.pacific.edu/euler-works/54/) identifies it as the first proof and dates both composition and publication.
+
+Euler’s institutional position differed from Fermat’s. Euler joined the [St Petersburg Academy of Sciences](https://mathshistory.st-andrews.ac.uk/Biographies/Euler/) in 1727, became a full academy member in 1730, and took its senior mathematics chair in 1733. The academy supplied salary, colleagues, publication machinery, and state projects ranging from cartography to shipbuilding. Fermat’s correspondence allowed the claim to travel; the academy system gave Euler’s proof a durable printed home.
+
+The rearrangement proof in this lesson is not Euler’s 1736 argument. Euler’s paper instead advances through successive bases and mathematical induction.
+
+## Where the prime loop is used
+
+**Modular division.** Ordinary division is not available for every remainder system. Fermat’s little theorem constructs inverses modulo a prime: $a^{p-2}$ is an inverse of $a$ because $a\cdot a^{p-2}=a^{p-1}\equiv1\pmod p$. Computer algebra, coding theory, and cryptographic algorithms use these inverses to solve modular equations.
+
+**Primality screening.** If a candidate integer $n$ and a test base $a$ satisfy $a^{n-1}\not\equiv1\pmod n$, then $n$ is certainly composite. Passing the test does not prove that $n$ is prime; some composite numbers imitate prime behavior for one base, and Carmichael numbers do so for every base coprime to them. Current standards therefore use stronger checks. The U.S. National Institute of Standards and Technology’s [Digital Signature Standard, FIPS 186-5](https://csrc.nist.gov/pubs/fips/186-5/final), specifies Miller–Rabin and Lucas probable-prime tests when generating primes for certain digital-signature and Rivest–Shamir–Adleman (RSA) keys.
+
+**Public-key cryptography.** The prime-number case developed here is one ingredient in the arithmetic behind RSA. The Internet Engineering Task Force’s [RSA specification](https://datatracker.ietf.org/doc/html/rfc8017#section-5.1) defines encryption and decryption primitives using modular powers. Fermat’s theorem alone does not explain why the private exponent reverses the public exponent when the modulus is a product of primes. Part three will supply Euler’s broader theorem and work through that reversal with small numbers.
+
+## One idea to remember
+
+Multiplication by a nonzero remainder modulo a prime can only rearrange the nonzero remainders. Multiplying the whole rearrangement together forces $a^{p-1}\equiv1\pmod p$, which turns enormous exponents into manageable ones.
+
+Continue with [modular arithmetic and repeating residue cycles](/reckonings/daily-reckoning-2026-09-09/), or return to [why multiplying by $i$ makes a quarter-turn](/reckonings/daily-reckoning-2026-09-04/) for another example of multiplication acting as a transformation. Part three of *Arithmetic Behind Secure Messages* will replace the prime modulus with the composite modulus used by RSA.
+
+## Sources
+
+- Pierre de Fermat, [*Œuvres de Fermat, volume 2: Correspondance*](https://books.google.com/books/about/%C5%92uvres_de_Fermat_Correspondance.html?id=ji98WJZxhTcC), edited by Paul Tannery and Charles Henry, 1894, containing Fermat’s 1640 correspondence with Bernard Frénicle de Bessy.
+- University of St Andrews MacTutor, [“Pierre de Fermat”](https://mathshistory.st-andrews.ac.uk/Biographies/Fermat/), for Fermat’s legal career, correspondence network, interruptions during the Fronde and plague, and publication habits.
+- Leonhard Euler, [*Theorematum quorundam ad numeros primos spectantium demonstratio*](https://scholarlycommons.pacific.edu/euler-works/54/) (*A Proof of Certain Theorems Regarding Prime Numbers*), written 1736 and published in the St Petersburg Academy proceedings in 1741; catalogued by the Euler Archive at the University of the Pacific.
+- University of St Andrews MacTutor, [“Leonhard Euler”](https://mathshistory.st-andrews.ac.uk/Biographies/Euler/), for Euler’s appointments and working conditions at the St Petersburg Academy of Sciences.
+- National Institute of Standards and Technology, [FIPS 186-5: *Digital Signature Standard*](https://doi.org/10.6028/NIST.FIPS.186-5), February 2023, especially Appendices B.3 and C on probable-prime generation and testing.
+- Kathleen Moriarty et al., [RFC 8017: *PKCS #1: RSA Cryptography Specifications Version 2.2*](https://datatracker.ietf.org/doc/html/rfc8017), Internet Engineering Task Force, November 2016.
