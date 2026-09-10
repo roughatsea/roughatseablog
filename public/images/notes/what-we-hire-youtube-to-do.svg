@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">One game. Three different reasons to watch.</title>
+  <desc id="desc">Three example viewer jobs: beat this boss, understand this story, and have company. They call for a guide, an essay, and a playthrough respectively.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101d32"/><stop offset="1" stop-color="#09121f"/></linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g fill="none" stroke="#23415b" stroke-width="2" opacity=".5">
+    <path d="M0 740 Q200 650 400 740 T800 740 T1200 740 T1600 740"/>
+    <path d="M0 780 Q200 690 400 780 T800 780 T1200 780 T1600 780"/>
+    <path d="M0 820 Q200 730 400 820 T800 820 T1200 820 T1600 820"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="100" y="115" fill="#71dccd" font-size="25" letter-spacing="5">ROUGH AT SEA / VIEWER JOBS</text>
+    <text x="100" y="215" fill="#f2eee4" font-size="66" font-weight="700">One game.</text>
+    <text x="100" y="295" fill="#f2eee4" font-size="66" font-weight="700">Three reasons to press play.</text>
+    <g transform="translate(100 365)">
+      <rect width="440" height="355" rx="20" fill="#142c38" stroke="#64d9c0" stroke-width="2"/>
+      <text x="32" y="65" fill="#64d9c0" font-size="25" letter-spacing="3">01 / MAKE PROGRESS</text>
+      <text x="32" y="143" fill="#f2eee4" font-size="42" font-weight="700">Help me beat</text>
+      <text x="32" y="199" fill="#f2eee4" font-size="42" font-weight="700">this boss.</text>
+      <path d="M32 247 H408" stroke="#64d9c0" opacity=".4"/>
+      <text x="32" y="302" fill="#bad4d1" font-size="30">A practical guide</text>
+    </g>
+    <g transform="translate(580 365)">
+      <rect width="440" height="355" rx="20" fill="#272438" stroke="#bc9fe9" stroke-width="2"/>
+      <text x="32" y="65" fill="#bc9fe9" font-size="25" letter-spacing="3">02 / FIND MEANING</text>
+      <text x="32" y="143" fill="#f2eee4" font-size="42" font-weight="700">Help me grasp</text>
+      <text x="32" y="199" fill="#f2eee4" font-size="42" font-weight="700">this story.</text>
+      <path d="M32 247 H408" stroke="#bc9fe9" opacity=".4"/>
+      <text x="32" y="302" fill="#d0c5e2" font-size="30">A thoughtful essay</text>
+    </g>
+    <g transform="translate(1060 365)">
+      <rect width="440" height="355" rx="20" fill="#302a29" stroke="#efb273" stroke-width="2"/>
+      <text x="32" y="65" fill="#efb273" font-size="25" letter-spacing="3">03 / HAVE COMPANY</text>
+      <text x="32" y="143" fill="#f2eee4" font-size="42" font-weight="700">Spend some</text>
+      <text x="32" y="199" fill="#f2eee4" font-size="42" font-weight="700">time with me.</text>
+      <path d="M32 247 H408" stroke="#efb273" opacity=".4"/>
+      <text x="32" y="302" fill="#dfcabb" font-size="30">A relaxed playthrough</text>
+    </g>
+    <text x="100" y="817" fill="#aebcc9" font-size="28">The subject stays the same. The promised experience changes.</text>
+  </g>
+</svg>
