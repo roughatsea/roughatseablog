@@ -1,0 +1,130 @@
+{
+  "experimentDate": "2026-09-10",
+  "publishedAt": "2026-09-10T13:43:51-07:00",
+  "articlePath": "src/content/notes/ad-astra-pedes-in-terram-singularity.md",
+  "articleUrl": "https://www.roughatsea.com/notes/ad-astra-pedes-in-terram-singularity/",
+  "agents": [
+    {
+      "name": "Ad Astra",
+      "startingPosition": "The full September 2036 proposition is likely."
+    },
+    {
+      "name": "Pedes in Terram",
+      "startingPosition": "The full September 2036 proposition is unlikely; a singularity might never occur."
+    }
+  ],
+  "separatePersistentAgentContexts": true,
+  "sameInheritedModel": true,
+  "modelOverridesUsed": false,
+  "initialResearchMayOverlap": true,
+  "debateSequential": true,
+  "outcomePrescribed": false,
+  "speakingTurnsSubstantivelyRewrittenByModerator": false,
+  "probabilitiesAreSubjectivePersonaJudgments": true,
+  "singleRunWithoutCalibratedForecastingClaims": true,
+  "contributions": [
+    {
+      "sequence": 1,
+      "speaker": "Ad Astra",
+      "heading": "1. Ad Astra opens",
+      "priorContributionsRead": [],
+      "sha256OfBodyWithOneTrailingNewline": "8bcfe2fdb3a0f37b79bfa817c057a8ed2730e66e1fcbcc582ac71185346816e3",
+      "wordCountIncludingCitationLabels": 415,
+      "sources": [
+        "https://metr.org/blog/2026-1-29-time-horizon-1-1/",
+        "https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/",
+        "https://arxiv.org/abs/2403.05812",
+        "https://metr.org/blog/2026-02-24-uplift-update/"
+      ],
+      "subjectiveProbabilityOfFullProposition": 0.7
+    },
+    {
+      "sequence": 2,
+      "speaker": "Pedes in Terram",
+      "heading": "2. Pedes in Terram replies",
+      "priorContributionsRead": [
+        1
+      ],
+      "sha256OfBodyWithOneTrailingNewline": "6d420ce50d6491367d2b8db66c4fb916377f088f2145f356d3115e3125c4379a",
+      "wordCountIncludingCitationLabels": 405,
+      "sources": [
+        "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/",
+        "https://metr.org/notes/2026-08-14-llm-contribution-to-discoveries/"
+      ],
+      "subjectiveProbabilityOfFullProposition": 0.35,
+      "subjectiveProbabilityOfNever": 0.15
+    },
+    {
+      "sequence": 3,
+      "speaker": "Ad Astra",
+      "heading": "3. Ad Astra reconsiders",
+      "priorContributionsRead": [
+        1,
+        2
+      ],
+      "sha256OfBodyWithOneTrailingNewline": "3d9345d2a8b8188d87a11f85180436d17fd9c9f52a878f295c57063e8cd9b49a",
+      "wordCountIncludingCitationLabels": 419,
+      "sources": [
+        "https://metr.org/notes/2026-08-14-llm-contribution-to-discoveries/",
+        "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/",
+        "https://arxiv.org/abs/2502.18864"
+      ],
+      "subjectiveProbabilityOfFullProposition": 0.65
+    },
+    {
+      "sequence": 4,
+      "speaker": "Pedes in Terram",
+      "heading": "4. Pedes in Terram is persuaded on one point",
+      "priorContributionsRead": [
+        1,
+        2,
+        3
+      ],
+      "sha256OfBodyWithOneTrailingNewline": "0bd9b29890cf89f79a6675a25da6e7c2bed5d4b27284c2aeea43661c785ea64e",
+      "wordCountIncludingCitationLabels": 431,
+      "sources": [
+        "https://arxiv.org/abs/2502.18864"
+      ],
+      "subjectiveProbabilityOfFullProposition": 0.4,
+      "subjectiveProbabilityOfNever": 0.1
+    },
+    {
+      "sequence": 5,
+      "speaker": "Ad Astra",
+      "heading": "5. Ad Astra gives its final assessment",
+      "priorContributionsRead": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "sha256OfBodyWithOneTrailingNewline": "aa9bec2e92856bd538bfcedb5eab0826ac93c4c6e3488b15376e437577091c33",
+      "wordCountIncludingCitationLabels": 412,
+      "sources": [],
+      "subjectiveProbabilityOfFullProposition": 0.65,
+      "conditionalForecast": {
+        "hypotheticalEvidenceDate": "2029-09",
+        "condition": "AI research accelerates markedly while informative, adequately resourced biomedical and materials research panels remain flat.",
+        "subjectiveProbabilityOfFullProposition": 0.45,
+        "isCurrentForecast": false
+      }
+    },
+    {
+      "sequence": 6,
+      "speaker": "Pedes in Terram",
+      "heading": "6. Pedes in Terram closes",
+      "priorContributionsRead": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "sha256OfBodyWithOneTrailingNewline": "dbf0a3cec16b0ef43b30a8147f87c066dd6c137458c4c5d0b99c91334713ff6f",
+      "wordCountIncludingCitationLabels": 410,
+      "sources": [],
+      "subjectiveProbabilityOfFullProposition": 0.4,
+      "subjectiveProbabilityOfNever": 0.1
+    }
+  ]
+}
