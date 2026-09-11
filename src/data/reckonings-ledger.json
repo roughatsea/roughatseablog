@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T06:00:00-07:00",
+  "updatedAt": "2026-09-11T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -314,7 +314,39 @@
         "public-key cryptography"
       ],
       "relatedLessons": [
-        "daily-reckoning-2026-09-09"
+        "daily-reckoning-2026-09-09",
+        "daily-reckoning-2026-09-11"
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "slug": "daily-reckoning-2026-09-11",
+      "title": "How Can One Exponent Lock a Message and Another Unlock It?",
+      "area": "Numbers and algebra",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Modular arithmetic and congruence",
+        "Prime numbers",
+        "Fermat’s little theorem",
+        "Greatest common divisors"
+      ],
+      "miniSeries": {
+        "title": "Arithmetic Behind Secure Messages",
+        "part": 3,
+        "total": 3
+      },
+      "relatedTopics": [
+        "Euler's theorem",
+        "Euler's totient function",
+        "RSA",
+        "modular inverses",
+        "public-key cryptography",
+        "Chinese remainder theorem",
+        "post-quantum cryptography"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-09",
+        "daily-reckoning-2026-09-10"
       ]
     }
   ]

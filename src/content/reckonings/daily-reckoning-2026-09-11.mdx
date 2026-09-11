@@ -1,0 +1,267 @@
+---
+title: "How Can One Exponent Lock a Message and Another Unlock It?"
+description: "Euler’s theorem explains the arithmetic hinge inside RSA: choose two exponents whose product is one full modular cycle plus one step."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-11.svg"
+heroImageAlt: "A blue route carries the number 12 through a circular public gate marked e equals 3 and modulus 55 to the number 23; a pink return route passes through a private gate marked d equals 27 and arrives back at 12 over a dark maritime blueprint grid."
+date: 2026-09-11
+publishedAt: 2026-09-11T06:00:00-07:00
+area: "Numbers and algebra"
+difficulty: "Intermediate"
+prerequisites:
+  - "Modular arithmetic and congruence"
+  - "Prime numbers"
+  - "Fermat’s little theorem"
+  - "Greatest common divisors"
+readTimeMinutes: 10
+miniSeries:
+  title: "Arithmetic Behind Secure Messages"
+  part: 3
+  total: 3
+tags:
+  - daily-reckoning
+  - number-theory
+  - eulers-theorem
+  - euler-totient-function
+  - modular-arithmetic
+  - rsa
+  - cryptography
+---
+
+import RsaRoundTrip from '../../components/reckonings/RsaRoundTrip.astro';
+
+Can you publish a rule that anyone may use to scramble a message, yet keep a different rule that reverses the scrambling?
+
+The Rivest–Shamir–Adleman cryptosystem, usually called **RSA**, answers yes with two exponents. A public exponent sends a message around a modular clock. A private exponent completes enough additional laps to return the message to its starting point. The lock and the key are both powers.
+
+This lesson finishes the three-part *Arithmetic Behind Secure Messages* series. [Part one](/reckonings/daily-reckoning-2026-09-09/) introduced modular clocks. [Part two](/reckonings/daily-reckoning-2026-09-10/) used Fermat’s little theorem to guarantee a loop when the modulus is prime. RSA needs a composite modulus, so one more counting function enters the story.
+
+## Count the numbers that can multiply backward
+
+Two positive integers are **coprime** when their greatest common divisor is $1$. For example, $8$ and $15$ are coprime even though neither number is prime. The only positive integer dividing both is $1$.
+
+Euler’s totient function counts the positive integers below a chosen modulus that are coprime to it. The notation is
+
+$$
+\varphi(n)=\#\{k:1\le k<n\text{ and }\gcd(k,n)=1\}.
+$$
+
+Here $n$ is a positive integer, $k$ ranges over the integers from $1$ through $n-1$, $\gcd(k,n)$ is the greatest common divisor of $k$ and $n$, and the symbol $\#$ means “the number of members in the set.”
+
+For $n=10$, the eligible integers are
+
+$$
+1,3,7,9,
+$$
+
+so $\varphi(10)=4$.
+
+When $p$ and $q$ are two different primes, the product $n=pq$ has a useful count:
+
+$$
+\varphi(pq)=(p-1)(q-1).
+$$
+
+To see why, inspect the integers from $1$ through $pq$. There are $pq$ integers in total. Exactly $q$ of them are multiples of $p$, and exactly $p$ are multiples of $q$. The number $pq$ appeared in both rejected groups, so add it back once after subtracting twice:
+
+$$
+pq-q-p+1=(p-1)(q-1).
+$$
+
+Every integer left by that count is coprime to $pq$.
+
+## Euler extends the prime loop
+
+**Euler’s theorem** states:
+
+> Let $n$ be a positive integer, and let $a$ be an integer with $\gcd(a,n)=1$. Then
+>
+> $$
+> a^{\varphi(n)}\equiv1\pmod n.
+> $$
+
+The theorem says that raising a number coprime to $n$ to the power $\varphi(n)$ completes a modular loop.
+
+A modern proof extends the rearrangement used in part two. List every nonzero remainder that is coprime to $n$. Multiplication by $a$ cannot create a collision among those remainders, and each product remains coprime to $n$. Multiplication by $a$ therefore rearranges the $\varphi(n)$ entries.
+
+Let $P$ be the product of every entry in the original list. Multiplying each entry by $a$ inserts $\varphi(n)$ factors of $a$, while rearrangement leaves the product congruent to $P$. Thus
+
+$$
+a^{\varphi(n)}P\equiv P\pmod n.
+$$
+
+Every factor of $P$ is coprime to $n$, so $P$ has a multiplicative inverse modulo $n$. Multiply both sides by that inverse to cancel $P$ and obtain $a^{\varphi(n)}\equiv1\pmod n$.
+
+Fermat’s little theorem is the prime case. If $n=p$ is prime, every integer from $1$ through $p-1$ is coprime to $p$, so $\varphi(p)=p-1$.
+
+## Build a lock from two small primes
+
+Real RSA keys use enormous integers and carefully specified encoding rules. The following numbers are deliberately tiny so every operation can be inspected.
+
+Choose two primes:
+
+$$
+p=5,\qquad q=11.
+$$
+
+Their product is the modulus
+
+$$
+n=pq=55,
+$$
+
+and the totient count is
+
+$$
+\varphi(55)=(5-1)(11-1)=4\cdot10=40.
+$$
+
+Choose the public exponent $e=3$. Next, choose a private exponent $d$ so that $ed$ leaves remainder $1$ after division by $40$. The value $d=27$ works because
+
+$$
+ed=3\cdot27=81=2\cdot40+1.
+$$
+
+The public key is the pair $(e,n)=(3,55)$. The private exponent is $d=27$.
+
+Represent a message by an integer $m$ from $0$ through $54$. Encryption produces a ciphertext $c$ by
+
+$$
+c\equiv m^e\pmod n.
+$$
+
+Decryption raises that ciphertext to the private exponent:
+
+$$
+c^d\equiv(m^e)^d=m^{ed}=m^{2\varphi(55)+1}\pmod{55}.
+$$
+
+If $m$ is coprime to $55$, Euler’s theorem gives $m^{40}\equiv1\pmod{55}$. Therefore
+
+$$
+m^{81}=m^{2\cdot40+1}\equiv1^2m\equiv m\pmod{55}.
+$$
+
+The extra “plus one” in $81=2\cdot40+1$ is the whole trick. Eighty powers make two complete loops; the final power restores the original message.
+
+The diagram below runs this toy system. Move the message slider and watch both exponentiations. The fact cards identify whether Euler’s theorem supplies the shortest proof for the selected message.
+
+<RsaRoundTrip />
+
+## Worked example: lock and recover 12
+
+Take $m=12$. Because $\gcd(12,55)=1$, Euler’s theorem applies.
+
+Encrypt by cubing $12$ modulo $55$:
+
+$$
+\begin{aligned}
+12^2&=144=2\cdot55+34,\\
+12^3&\equiv34\cdot12=408=7\cdot55+23\pmod{55}.
+\end{aligned}
+$$
+
+The ciphertext is $c=23$.
+
+Now decrypt by computing $23^{27}$ modulo $55$. Repeated squaring keeps the numbers small:
+
+$$
+\begin{aligned}
+23^2&=529=9\cdot55+34,\\
+23^4&\equiv34^2=1156=21\cdot55+1\equiv1\pmod{55}.
+\end{aligned}
+$$
+
+Write $27=4\cdot6+3$. Then
+
+$$
+\begin{aligned}
+23^{27}
+&=(23^4)^6\cdot23^3\\
+&\equiv1^6\cdot(23\cdot23^2)\pmod{55}\\
+&\equiv23\cdot34=782=14\cdot55+12\pmod{55}.
+\end{aligned}
+$$
+
+Decryption recovers $12$.
+
+### What if the message shares a factor with 55?
+
+Euler’s theorem requires $\gcd(m,55)=1$, but the toy RSA round trip also succeeds for $m=5$, $11$, and the other non-coprime messages. Prove the claim separately modulo $5$ and modulo $11$. If a prime divides $m$, then both $m^{81}$ and $m$ are $0$ modulo that prime. If the prime does not divide $m$, Fermat’s little theorem reduces the exponent. The two prime-by-prime conclusions combine to give $m^{81}\equiv m\pmod{55}$. This last combination is an instance of the Chinese remainder theorem.
+
+## Try the arithmetic hinge
+
+### Problem 1
+
+Let $p=7$ and $q=11$. Find $n=pq$ and $\varphi(n)$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+The modulus is
+
+$$
+n=pq=7\cdot11=77.
+$$
+
+Because $7$ and $11$ are different primes,
+
+$$
+\varphi(77)=(7-1)(11-1)=6\cdot10=60.
+$$
+
+Therefore $n=77$ and $\varphi(n)=60$.
+
+</details>
+
+### Problem 2
+
+For the modulus $77$ from Problem 1, suppose the public exponent is $e=7$. Find a positive integer $d<60$ such that $ed\equiv1\pmod{60}$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+We need $7d$ to be one more than a multiple of $60$. Try multiples of $60$ until adding $1$ produces a multiple of $7$:
+
+$$
+60\cdot5+1=301=7\cdot43.
+$$
+
+Thus
+
+$$
+7\cdot43\equiv1\pmod{60}.
+$$
+
+One valid private exponent is $d=43$.
+
+</details>
+
+## From an academy theorem to public and secret cryptography
+
+Leonhard Euler developed the composite-modulus theorem over many years. The Euler Archive dates *Theoremata arithmetica nova methodo demonstrata* to 1758 and its publication in the St Petersburg Academy’s journal to 1763. [The archive record](https://scholarlycommons.pacific.edu/euler-works/271/) also notes presentations to the Berlin Academy in 1758 and the St Petersburg Academy in 1759. Euler’s route from Fermat’s prime theorem to a count of integers coprime to a composite modulus supplied the mathematical cycle used here.
+
+Two centuries later, electronic communication created a different problem: how could people exchange encrypted messages without first transporting a shared secret key? Ronald Rivest, Adi Shamir, and Leonard Adleman answered with the system now named from their initials. Their [1978 paper](https://people.csail.mit.edu/rivest/Rsapaper.pdf) explicitly targets electronic mail and electronic funds transfer, defines encryption and decryption as modular powers, and proves the round trip for a modulus made from two primes. The paper also records support from the U.S. National Science Foundation and Office of Naval Research. A theorem that grew inside eighteenth-century European academies became infrastructure research shaped by twentieth-century computer networks, commerce, and military funding.
+
+The public history has a classified parallel. James Ellis and Clifford Cocks developed comparable public-key ideas at Britain’s Government Communications Headquarters; Cocks produced an RSA-like construction in 1973. The intelligence agency kept the work secret, and it did not shape the open development of RSA. GCHQ disclosed the earlier work in 1997. Steven Levy’s detailed [history of the episode](https://www.wired.com/1999/04/crypto/) shows how classification delayed both recognition and public use. The same mathematical possibility emerged in two institutions, but secrecy determined which discovery could circulate, be tested, and become a standard.
+
+## What the toy lock leaves out
+
+**Encryption and signatures.** The current Internet Engineering Task Force specification, [RFC 8017](https://www.rfc-editor.org/rfc/rfc8017), defines RSA primitives for encryption, decryption, signing, and verification. It also defines encoding schemes such as Optimal Asymmetric Encryption Padding (OAEP) and Probabilistic Signature Scheme (PSS). Raw textbook RSA—the deterministic calculation in this lesson—is not a safe encryption protocol.
+
+**The trapdoor.** Multiplying the secret primes $p$ and $q$ is easy. Recovering them from a suitably large public modulus $n=pq$ is believed to be hard for conventional computers. Anyone who knows the factorization can compute $\varphi(n)$ and derive the private exponent. Euler’s theorem explains why decryption works; the presumed difficulty of factorization helps explain why the private exponent can remain private.
+
+**Future pressure.** A sufficiently capable quantum computer would threaten RSA and other current public-key systems. This is not a claim that such a machine exists today. The U.S. National Institute of Standards and Technology [finalized its first post-quantum standards in August 2024](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards) and urged organizations to begin migrating. The arithmetic in RSA remains beautiful even as security engineering prepares to rely on different hard problems.
+
+## One idea to remember
+
+Choose exponents $e$ and $d$ so that $ed$ is a whole number of Euler cycles plus $1$. The cycles disappear modulo $n$; the extra $1$ returns the message.
+
+Revisit [the modular clock](/reckonings/daily-reckoning-2026-09-09/) or [the prime rearrangement behind Fermat’s little theorem](/reckonings/daily-reckoning-2026-09-10/). A natural next step is the Chinese remainder theorem, which explains how separate conclusions modulo two primes combine into one conclusion modulo their product.
+
+## Sources
+
+- Leonhard Euler, [*Theoremata arithmetica nova methodo demonstrata*](https://scholarlycommons.pacific.edu/euler-works/271/) (*Demonstration of a New Method in the Theory of Arithmetic*), written 1758 and published 1763; catalogued by the Euler Archive at the University of the Pacific.
+- Ronald L. Rivest, Adi Shamir, and Leonard Adleman, [“A Method for Obtaining Digital Signatures and Public-Key Cryptosystems”](https://people.csail.mit.edu/rivest/Rsapaper.pdf), *Communications of the ACM*, February 1978.
+- Steven Levy, [“The Open Secret”](https://www.wired.com/1999/04/crypto/), *Wired*, April 1999, on the classified public-key work of James Ellis, Clifford Cocks, and Malcolm Williamson at Government Communications Headquarters.
+- Kathleen Moriarty et al., [RFC 8017: *PKCS #1: RSA Cryptography Specifications Version 2.2*](https://www.rfc-editor.org/rfc/rfc8017), Internet Engineering Task Force, November 2016.
+- National Institute of Standards and Technology, [“NIST Releases First 3 Finalized Post-Quantum Encryption Standards”](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards), August 13, 2024; updated August 29, 2025.

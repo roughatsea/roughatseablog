@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A modular encryption round trip drawn as two luminous harbor gates</title>
+  <desc id="desc">A blue path carries 12 through a public exponent gate to 23, then a pink path carries 23 through a private exponent gate back to 12, all over a dark maritime blueprint grid.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020914"/>
+      <stop offset="0.55" stop-color="#071a2b"/>
+      <stop offset="1" stop-color="#040b16"/>
+    </linearGradient>
+    <radialGradient id="haloBlue">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#1493ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="haloPink">
+      <stop offset="0" stop-color="#ff1493" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#ff1493" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#1493ff" stroke-opacity=".085" stroke-width="1"/>
+      <circle cx="0" cy="0" r="2" fill="#1493ff" fill-opacity=".18"/>
+    </pattern>
+    <filter id="glowBlue" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowPink" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0l10 5-10 5z" fill="#1493ff"/>
+    </marker>
+    <marker id="arrowPink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0l10 5-10 5z" fill="#ff1493"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <ellipse cx="485" cy="444" rx="330" ry="320" fill="url(#haloBlue)"/>
+  <ellipse cx="1115" cy="444" rx="330" ry="320" fill="url(#haloPink)"/>
+
+  <g fill="none" stroke="#55758c" stroke-opacity=".3">
+    <path d="M80 742c135-45 235-45 370 0s235 45 370 0 235-45 370 0 235 45 330 7"/>
+    <path d="M80 776c135-45 235-45 370 0s235 45 370 0 235-45 370 0 235 45 330 7"/>
+    <path d="M800 75v750M145 450h1310" stroke-dasharray="8 16"/>
+    <circle cx="800" cy="450" r="355"/>
+  </g>
+
+  <g transform="translate(470 450)">
+    <circle r="208" fill="#04121f" stroke="#1493ff" stroke-width="3"/>
+    <circle r="172" fill="none" stroke="#1493ff" stroke-opacity=".45" stroke-width="2" stroke-dasharray="9 14"/>
+    <circle r="130" fill="none" stroke="#93ff14" stroke-opacity=".55"/>
+    <g stroke="#1493ff" stroke-width="3">
+      <path d="M0-208v-30M104-180l15-26M180-104l26-15M208 0h30M180 104l26 15M104 180l15 26M0 208v30M-104 180l-15 26M-180 104l-26 15M-208 0h-30M-180-104l-26-15M-104-180l-15-26"/>
+    </g>
+    <path d="M-82 18h164v104H-82zM-50 18v-35a50 50 0 01100 0v35" fill="none" stroke="#93ff14" stroke-width="7" filter="url(#glowBlue)"/>
+    <text x="0" y="-54" text-anchor="middle" fill="#8daabd" font-family="ui-monospace, monospace" font-size="25" letter-spacing="4">e = 3</text>
+    <text x="0" y="88" text-anchor="middle" fill="#f4fbff" font-family="ui-monospace, monospace" font-size="58">mod 55</text>
+  </g>
+
+  <g transform="translate(1130 450)">
+    <circle r="208" fill="#08101e" stroke="#ff1493" stroke-width="3"/>
+    <circle r="172" fill="none" stroke="#ff1493" stroke-opacity=".45" stroke-width="2" stroke-dasharray="9 14"/>
+    <circle r="130" fill="none" stroke="#1493ff" stroke-opacity=".55"/>
+    <g stroke="#ff1493" stroke-width="3">
+      <path d="M0-208v-30M104-180l15-26M180-104l26-15M208 0h30M180 104l26 15M104 180l15 26M0 208v30M-104 180l-15 26M-180 104l-26 15M-208 0h-30M-180-104l-26-15M-104-180l-15-26"/>
+    </g>
+    <path d="M-82 18h164v104H-82zM-50 18v-35a50 50 0 01100 0v35" fill="none" stroke="#1493ff" stroke-width="7" filter="url(#glowPink)"/>
+    <text x="0" y="-54" text-anchor="middle" fill="#b4a0b6" font-family="ui-monospace, monospace" font-size="25" letter-spacing="4">d = 27</text>
+    <text x="0" y="88" text-anchor="middle" fill="#f4fbff" font-family="ui-monospace, monospace" font-size="58">mod 55</text>
+  </g>
+
+  <path d="M114 230C260 120 380 140 470 202" fill="none" stroke="#1493ff" stroke-width="6" marker-end="url(#arrowBlue)" filter="url(#glowBlue)"/>
+  <path d="M630 228C795 122 970 128 1080 225" fill="none" stroke="#93ff14" stroke-width="6" marker-end="url(#arrowBlue)" filter="url(#glowBlue)"/>
+  <path d="M1272 644C1350 710 1410 710 1450 684" fill="none" stroke="#ff1493" stroke-width="6" marker-end="url(#arrowPink)" filter="url(#glowPink)"/>
+
+  <g font-family="ui-monospace, monospace" text-anchor="middle">
+    <circle cx="115" cy="230" r="55" fill="#04131f" stroke="#1493ff" stroke-width="3"/>
+    <text x="115" y="246" fill="#fff" font-size="48">12</text>
+    <circle cx="800" cy="170" r="55" fill="#071720" stroke="#93ff14" stroke-width="3"/>
+    <text x="800" y="186" fill="#fff" font-size="48">23</text>
+    <circle cx="1485" cy="658" r="55" fill="#100a17" stroke="#ff1493" stroke-width="3"/>
+    <text x="1485" y="674" fill="#fff" font-size="48">12</text>
+    <text x="800" y="846" fill="#718a9b" font-size="20" letter-spacing="7">φ(55) = 40 · 3 × 27 = 2 × 40 + 1</text>
+  </g>
+</svg>

@@ -1,0 +1,359 @@
+---
+const initialMessage = 12;
+const initialCiphertext = 23;
+---
+
+<figure class="rsa-lab reckoning-visual" data-rsa-lab>
+  <div class="lab-header">
+    <div>
+      <p class="kicker">Toy RSA workbench</p>
+      <h3>One public turn, one private return</h3>
+    </div>
+    <p class="key-note"><span>Public</span> (<var>e</var>, <var>n</var>) = (3, 55) · <span>Private</span> <var>d</var> = 27</p>
+  </div>
+
+  <label class="message-control">
+    <span>Message <output data-message-output>{initialMessage}</output></span>
+    <input
+      type="range"
+      min="0"
+      max="54"
+      value={initialMessage}
+      step="1"
+      aria-label="Message represented by an integer from 0 through 54"
+      data-message-input
+    />
+    <span class="range-ends" aria-hidden="true"><span>0</span><span>54</span></span>
+  </label>
+
+  <div class="pipeline" aria-hidden="true">
+    <div class="number-node message-node">
+      <span>message</span>
+      <strong data-message-node>{initialMessage}</strong>
+    </div>
+    <div class="gate public-gate">
+      <span>public gate</span>
+      <strong>cube</strong>
+      <small>mod 55</small>
+    </div>
+    <div class="number-node cipher-node">
+      <span>ciphertext</span>
+      <strong data-cipher-node>{initialCiphertext}</strong>
+    </div>
+    <div class="gate private-gate">
+      <span>private gate</span>
+      <strong>power 27</strong>
+      <small>mod 55</small>
+    </div>
+    <div class="number-node return-node">
+      <span>recovered</span>
+      <strong data-return-node>{initialMessage}</strong>
+    </div>
+  </div>
+
+  <p class="equation" aria-live="polite" data-equation>
+    12³ ≡ 23 (mod 55), then 23²⁷ ≡ 12 (mod 55).
+  </p>
+
+  <dl class="facts">
+    <div>
+      <dt>Greatest common divisor</dt>
+      <dd data-gcd>gcd(12, 55) = 1</dd>
+    </div>
+    <div>
+      <dt>Shortest proof available</dt>
+      <dd data-proof-route>Euler’s theorem</dd>
+    </div>
+    <div>
+      <dt>Round trip</dt>
+      <dd data-round-trip>12 → 23 → 12</dd>
+    </div>
+  </dl>
+
+  <figcaption>
+    Choose any integer from 0 through 54. The public exponent 3 changes the message;
+    the private exponent 27 returns it. Messages sharing a factor with 55 still return,
+    but they require the prime-by-prime argument explained below.
+  </figcaption>
+</figure>
+
+<script>
+  const gcd = (left: number, right: number) => {
+    let a = Math.abs(left);
+    let b = Math.abs(right);
+    while (b !== 0) {
+      const next = a % b;
+      a = b;
+      b = next;
+    }
+    return a;
+  };
+
+  const powerMod = (base: number, exponent: number, modulus: number) => {
+    let result = 1;
+    let factor = base % modulus;
+    let power = exponent;
+    while (power > 0) {
+      if (power % 2 === 1) result = (result * factor) % modulus;
+      factor = (factor * factor) % modulus;
+      power = Math.floor(power / 2);
+    }
+    return result;
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-rsa-lab]').forEach((lab) => {
+    const input = lab.querySelector<HTMLInputElement>('[data-message-input]');
+    const output = lab.querySelector<HTMLOutputElement>('[data-message-output]');
+    const messageNode = lab.querySelector<HTMLElement>('[data-message-node]');
+    const cipherNode = lab.querySelector<HTMLElement>('[data-cipher-node]');
+    const returnNode = lab.querySelector<HTMLElement>('[data-return-node]');
+    const equation = lab.querySelector<HTMLElement>('[data-equation]');
+    const gcdFact = lab.querySelector<HTMLElement>('[data-gcd]');
+    const proofRoute = lab.querySelector<HTMLElement>('[data-proof-route]');
+    const roundTrip = lab.querySelector<HTMLElement>('[data-round-trip]');
+
+    if (!input || !output || !messageNode || !cipherNode || !returnNode || !equation || !gcdFact || !proofRoute || !roundTrip) return;
+
+    const update = () => {
+      const message = Number(input.value);
+      const ciphertext = powerMod(message, 3, 55);
+      const recovered = powerMod(ciphertext, 27, 55);
+      const divisor = gcd(message, 55);
+
+      output.value = String(message);
+      messageNode.textContent = String(message);
+      cipherNode.textContent = String(ciphertext);
+      returnNode.textContent = String(recovered);
+      equation.textContent = `${message}³ ≡ ${ciphertext} (mod 55), then ${ciphertext}²⁷ ≡ ${recovered} (mod 55).`;
+      gcdFact.textContent = `gcd(${message}, 55) = ${divisor}`;
+      proofRoute.textContent = divisor === 1 ? 'Euler’s theorem' : 'Prime-by-prime argument';
+      roundTrip.textContent = `${message} → ${ciphertext} → ${recovered}`;
+      lab.dataset.proof = divisor === 1 ? 'euler' : 'prime-by-prime';
+    };
+
+    input.addEventListener('input', update);
+    update();
+  });
+</script>
+
+<style>
+  .rsa-lab {
+    background:
+      linear-gradient(rgba(20, 147, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20, 147, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(145deg, #071522, #0b1c2d);
+    background-size: 28px 28px, 28px 28px, auto;
+    border: 1px solid color-mix(in srgb, var(--border-color) 70%, #1493ff);
+    border-radius: 14px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    color: #eaf6ff;
+    margin: 2rem 50% 2.4rem;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 2rem));
+  }
+
+  .lab-header {
+    align-items: end;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .kicker {
+    color: #93ff14;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.25rem;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    color: #f7fbff;
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 3vw, 1.65rem);
+    margin: 0;
+  }
+
+  .key-note {
+    color: #b8cad8;
+    font-size: 0.75rem;
+    margin: 0;
+    text-align: right;
+  }
+
+  .key-note span:first-child { color: #1493ff; }
+  .key-note span:last-child { color: #ff1493; }
+
+  .message-control {
+    display: block;
+    margin: 1.4rem 0 1.7rem;
+  }
+
+  .message-control > span:first-child {
+    display: flex;
+    font-size: 0.8rem;
+    font-weight: 650;
+    justify-content: space-between;
+    letter-spacing: 0.04em;
+  }
+
+  output { color: #93ff14; font-variant-numeric: tabular-nums; }
+
+  input[type='range'] {
+    accent-color: #93ff14;
+    cursor: pointer;
+    margin: 0.6rem 0 0;
+    width: 100%;
+  }
+
+  input[type='range']:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+
+  .range-ends {
+    color: #7991a2;
+    display: flex;
+    font-size: 0.66rem;
+    justify-content: space-between;
+  }
+
+  .pipeline {
+    align-items: center;
+    display: grid;
+    gap: clamp(0.35rem, 1.5vw, 1rem);
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    position: relative;
+  }
+
+  .pipeline::before {
+    background: linear-gradient(90deg, #1493ff, #93ff14 48%, #ff1493);
+    content: '';
+    height: 2px;
+    left: 8%;
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    z-index: 0;
+  }
+
+  .number-node,
+  .gate {
+    align-items: center;
+    aspect-ratio: 1;
+    background: #07131f;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+  }
+
+  .number-node {
+    border: 2px solid #1493ff;
+    box-shadow: 0 0 24px rgba(20, 147, 255, 0.2), inset 0 0 20px rgba(20, 147, 255, 0.1);
+    max-width: 132px;
+    width: 100%;
+  }
+
+  .cipher-node { border-color: #93ff14; }
+  .return-node { border-color: #ff1493; }
+
+  .number-node span,
+  .gate span {
+    color: #90a8b8;
+    font-size: clamp(0.53rem, 1.4vw, 0.68rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .number-node strong {
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: clamp(1.35rem, 4vw, 2.2rem);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gate {
+    border: 1px dashed #527186;
+    border-radius: 10px;
+    height: clamp(72px, 12vw, 100px);
+    transform: rotate(45deg);
+    width: clamp(72px, 12vw, 100px);
+  }
+
+  .gate > * { transform: rotate(-45deg); }
+
+  .gate strong {
+    color: #eaf6ff;
+    font-family: var(--font-mono);
+    font-size: clamp(0.65rem, 1.6vw, 0.85rem);
+    margin: 0.12rem 0;
+  }
+
+  .gate small { color: #708b9c; font-size: 0.6rem; }
+  .public-gate { box-shadow: inset 0 0 20px rgba(20, 147, 255, 0.12); }
+  .private-gate { box-shadow: inset 0 0 20px rgba(255, 20, 147, 0.12); }
+
+  .equation {
+    color: #eaf6ff;
+    font-family: var(--font-mono);
+    font-size: clamp(0.75rem, 2vw, 0.95rem);
+    margin: 1.5rem 0 1rem;
+    text-align: center;
+  }
+
+  .facts {
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+  }
+
+  .facts div {
+    background: rgba(3, 12, 20, 0.55);
+    border: 1px solid rgba(126, 172, 201, 0.2);
+    border-radius: 8px;
+    padding: 0.65rem 0.75rem;
+  }
+
+  dt {
+    color: #7892a4;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    color: #f7fbff;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    margin: 0.2rem 0 0;
+  }
+
+  figcaption {
+    color: #a9bdcb;
+    font-size: 0.76rem;
+    line-height: 1.55;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 680px) {
+    .lab-header { align-items: start; flex-direction: column; }
+    .key-note { text-align: left; }
+    .pipeline { grid-template-columns: 1fr auto 1fr; row-gap: 1rem; }
+    .private-gate { grid-column: 2; grid-row: 2; }
+    .return-node { grid-column: 3; grid-row: 2; }
+    .pipeline::before { display: none; }
+    .facts { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .number-node strong { transition: color 160ms ease, transform 160ms ease; }
+    .rsa-lab[data-proof='prime-by-prime'] .message-node strong { color: #ffcf5a; }
+  }
+</style>
