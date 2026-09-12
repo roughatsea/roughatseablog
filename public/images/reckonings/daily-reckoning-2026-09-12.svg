@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Three luminous coastal stations joined by a 120-degree junction</title>
+  <desc id="desc">Three stations labeled A, B, and C form an equilateral triangle on a dark maritime blueprint. Cyan, lime, and magenta routes meet at one white junction, with three arcs marking equal 120-degree angles.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020812" />
+      <stop offset=".55" stop-color="#071a2a" />
+      <stop offset="1" stop-color="#030b16" />
+    </linearGradient>
+    <radialGradient id="center-halo">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".22" />
+      <stop offset=".35" stop-color="#93ff14" stop-opacity=".12" />
+      <stop offset="1" stop-color="#1493ff" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#1493ff" stroke-opacity=".08" />
+      <circle r="1.8" fill="#1493ff" fill-opacity=".2" />
+    </pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="11" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="soft-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)" />
+  <rect width="1600" height="900" fill="url(#grid)" />
+  <circle cx="800" cy="497.927" r="360" fill="url(#center-halo)" />
+
+  <g fill="none" stroke="#5f8298" stroke-opacity=".24">
+    <path d="M-30 765c190-74 332-74 522 0s332 74 522 0 332-74 616 8" />
+    <path d="M-30 807c190-74 332-74 522 0s332 74 522 0 332-74 616 8" />
+    <path d="M-30 849c190-74 332-74 522 0s332 74 522 0 332-74 616 8" />
+    <circle cx="800" cy="497.927" r="315" stroke-dasharray="9 17" />
+    <path d="M800 70v760M150 680h1300" stroke-dasharray="7 15" />
+  </g>
+
+  <path d="M450 700L1150 700L800 93.782Z" fill="#1493ff" fill-opacity=".025" stroke="#688ba0" stroke-opacity=".35" stroke-width="2" stroke-dasharray="12 18" />
+
+  <g fill="none" stroke-linecap="round" stroke-width="11" filter="url(#glow)">
+    <path d="M800 497.927L450 700" stroke="#93ff14" />
+    <path d="M800 497.927L1150 700" stroke="#1493ff" />
+    <path d="M800 497.927L800 93.782" stroke="#ff1493" />
+  </g>
+
+  <g fill="none" stroke="#ffffff" stroke-opacity=".72" stroke-width="3">
+    <path d="M748.038 527.927A60 60 0 0 0 851.962 527.927" />
+    <path d="M851.962 527.927A60 60 0 0 0 800 437.927" />
+    <path d="M800 437.927A60 60 0 0 0 748.038 527.927" />
+  </g>
+
+  <g fill="#bcd0dc" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22" text-anchor="middle">
+    <text x="800" y="577">120°</text>
+    <text x="869" y="475">120°</text>
+    <text x="731" y="475">120°</text>
+  </g>
+
+  <g filter="url(#soft-glow)">
+    <circle cx="800" cy="497.927" r="31" fill="#05121d" stroke="#ffffff" stroke-width="4" />
+    <circle cx="800" cy="497.927" r="8" fill="#ffffff" />
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="700" text-anchor="middle">
+    <g transform="translate(450 700)">
+      <circle r="70" fill="#061521" stroke="#93ff14" stroke-width="4" filter="url(#soft-glow)" />
+      <path d="M-27 20h54V-5L0-29-27-5zM-36 20h72" fill="none" stroke="#dfffb7" stroke-width="5" />
+      <text y="112" fill="#dfffb7" font-size="34">A</text>
+    </g>
+    <g transform="translate(1150 700)">
+      <circle r="70" fill="#061521" stroke="#1493ff" stroke-width="4" filter="url(#soft-glow)" />
+      <path d="M-27 20h54V-5L0-29-27-5zM-36 20h72" fill="none" stroke="#c8e8ff" stroke-width="5" />
+      <text y="112" fill="#c8e8ff" font-size="34">B</text>
+    </g>
+    <g transform="translate(800 93.782)">
+      <circle r="70" fill="#08101e" stroke="#ff1493" stroke-width="4" filter="url(#soft-glow)" />
+      <path d="M-27 20h54V-5L0-29-27-5zM-36 20h72" fill="none" stroke="#ffc4e4" stroke-width="5" />
+      <text y="112" fill="#ffc4e4" font-size="34">C</text>
+    </g>
+  </g>
+
+  <g fill="#7390a3" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" letter-spacing="5">
+    <text x="85" y="82">TOTAL LENGTH</text>
+    <text x="85" y="119" fill="#dceef8" font-size="27">6√3</text>
+    <text x="1515" y="82" text-anchor="end">EQUAL TENSION</text>
+    <text x="1515" y="119" fill="#dceef8" font-size="27" text-anchor="end">u₁ + u₂ + u₃ = 0</text>
+  </g>
+</svg>

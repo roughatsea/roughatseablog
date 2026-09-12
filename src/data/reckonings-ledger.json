@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-11T06:00:00-07:00",
+  "updatedAt": "2026-09-12T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -64,7 +64,9 @@
         "route inspection",
         "genome assembly"
       ],
-      "relatedLessons": []
+      "relatedLessons": [
+        "daily-reckoning-2026-09-12"
+      ]
     },
     {
       "date": "2026-09-01",
@@ -207,7 +209,8 @@
         "catenoids"
       ],
       "relatedLessons": [
-        "daily-reckoning-2026-08-29"
+        "daily-reckoning-2026-08-29",
+        "daily-reckoning-2026-09-12"
       ]
     },
     {
@@ -347,6 +350,34 @@
       "relatedLessons": [
         "daily-reckoning-2026-09-09",
         "daily-reckoning-2026-09-10"
+      ]
+    },
+    {
+      "date": "2026-09-12",
+      "slug": "daily-reckoning-2026-09-12",
+      "title": "Why Do the Shortest Three Roads Meet at 120°?",
+      "area": "Geometry and optimization",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "The distance formula",
+        "Square roots",
+        "Vectors and dot products",
+        "Cosine of an angle"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Fermat-Torricelli point",
+        "Steiner trees",
+        "geometric median",
+        "vector equilibrium",
+        "network design",
+        "facility location",
+        "VLSI routing",
+        "soap films"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31",
+        "daily-reckoning-2026-09-06"
       ]
     }
   ]

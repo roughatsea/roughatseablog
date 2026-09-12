@@ -1,0 +1,317 @@
+---
+const rootThree = Math.sqrt(3);
+---
+
+<figure class="junction-lab reckoning-visual" data-junction-lab>
+  <div class="lab-heading">
+    <div>
+      <p class="kicker">Three-town route finder</p>
+      <h3>Move the shared junction</h3>
+    </div>
+    <button type="button" data-reset>Reset to the 120° point</button>
+  </div>
+
+  <div class="lab-grid">
+    <svg
+      viewBox="0 0 720 520"
+      role="img"
+      aria-labelledby="junction-title junction-desc"
+      data-map
+    >
+      <title id="junction-title">Three towns joined to one movable junction</title>
+      <desc id="junction-desc">
+        An equilateral triangle contains three road segments from its vertices to a movable
+        interior junction. The controls change the junction coordinates, while the total road
+        length and the three meeting angles update below.
+      </desc>
+      <defs>
+        <pattern id="junction-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M40 0H0V40" fill="none" stroke="currentColor" stroke-opacity=".08" />
+        </pattern>
+        <filter id="junction-glow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="7" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+
+      <rect width="720" height="520" class="map-background" />
+      <rect width="720" height="520" fill="url(#junction-grid)" class="map-grid" />
+      <path d="M120 440L600 440L360 24.308Z" class="triangle-outline" />
+
+      <g class="roads">
+        <line x1="120" y1="440" x2="360" y2="301.436" data-road-a />
+        <line x1="600" y1="440" x2="360" y2="301.436" data-road-b />
+        <line x1="360" y1="24.308" x2="360" y2="301.436" data-road-c />
+      </g>
+
+      <g class="towns">
+        <circle cx="120" cy="440" r="23" />
+        <circle cx="600" cy="440" r="23" />
+        <circle cx="360" cy="24.308" r="23" />
+        <text x="120" y="449">A</text>
+        <text x="600" y="449">B</text>
+        <text x="360" y="33">C</text>
+      </g>
+
+      <g class="ideal-mark" aria-hidden="true">
+        <circle cx="360" cy="301.436" r="43" />
+        <path d="M360 248v18M360 337v18M307 301.436h18M395 301.436h18" />
+      </g>
+
+      <g class="junction" data-junction transform="translate(360 301.436)">
+        <circle r="17" />
+        <circle r="5" />
+      </g>
+    </svg>
+
+    <div class="controls">
+      <label>
+        <span>Horizontal coordinate <output data-x-output>0.00</output></span>
+        <input
+          type="range"
+          min="-2.5"
+          max="2.5"
+          value="0"
+          step="0.01"
+          aria-label="Horizontal coordinate of the road junction"
+          data-x-input
+        />
+      </label>
+      <label>
+        <span>Height above AB <output data-y-output>{rootThree.toFixed(3)}</output></span>
+        <input
+          type="range"
+          min="0.25"
+          max="4.9"
+          value={rootThree}
+          step="0.01"
+          aria-label="Height of the road junction above side AB"
+          data-y-input
+        />
+      </label>
+      <p class="control-note">
+        Coordinates use the six-unit side <span>AB</span>. Arrow keys adjust a focused slider.
+      </p>
+    </div>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div>
+      <span>Total road</span>
+      <strong data-total>10.392 units</strong>
+    </div>
+    <div>
+      <span>Angles at the junction</span>
+      <strong data-angles>120.0° · 120.0° · 120.0°</strong>
+    </div>
+    <div>
+      <span>Compared with the minimum</span>
+      <strong data-difference>At the minimum</strong>
+    </div>
+  </div>
+
+  <figcaption>
+    Towns A, B, and C form an equilateral triangle with side length 6. The faint ring marks the
+    minimizing junction. Any movement away from that point increases the sum of the three road
+    lengths; at the minimum, every pair of roads meets at 120°.
+  </figcaption>
+</figure>
+
+<script>
+  const clamp = (value: number, low: number, high: number) => Math.min(high, Math.max(low, value));
+
+  const angleBetween = (first: { x: number; y: number }, second: { x: number; y: number }) => {
+    const dot = first.x * second.x + first.y * second.y;
+    const firstLength = Math.hypot(first.x, first.y);
+    const secondLength = Math.hypot(second.x, second.y);
+    const cosine = clamp(dot / (firstLength * secondLength), -1, 1);
+    return Math.acos(cosine) * 180 / Math.PI;
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-junction-lab]').forEach((lab) => {
+    const xInput = lab.querySelector<HTMLInputElement>('[data-x-input]');
+    const yInput = lab.querySelector<HTMLInputElement>('[data-y-input]');
+    const xOutput = lab.querySelector<HTMLOutputElement>('[data-x-output]');
+    const yOutput = lab.querySelector<HTMLOutputElement>('[data-y-output]');
+    const junction = lab.querySelector<SVGGElement>('[data-junction]');
+    const roads = ['a', 'b', 'c'].map((name) => lab.querySelector<SVGLineElement>('[data-road-' + name + ']'));
+    const totalOutput = lab.querySelector<HTMLElement>('[data-total]');
+    const anglesOutput = lab.querySelector<HTMLElement>('[data-angles]');
+    const differenceOutput = lab.querySelector<HTMLElement>('[data-difference]');
+    const reset = lab.querySelector<HTMLButtonElement>('[data-reset]');
+
+    if (!xInput || !yInput || !xOutput || !yOutput || !junction || roads.some((road) => !road) || !totalOutput || !anglesOutput || !differenceOutput || !reset) return;
+
+    const towns = [
+      { x: -3, y: 0 },
+      { x: 3, y: 0 },
+      { x: 0, y: 3 * Math.sqrt(3) },
+    ];
+    const best = 6 * Math.sqrt(3);
+
+    const update = () => {
+      const x = Number(xInput.value);
+      const y = Number(yInput.value);
+      const svgX = 360 + 80 * x;
+      const svgY = 440 - 80 * y;
+      const vectors = towns.map((town) => ({ x: town.x - x, y: town.y - y }));
+      const lengths = vectors.map((vector) => Math.hypot(vector.x, vector.y));
+      const total = lengths.reduce((sum, length) => sum + length, 0);
+      const angles = [
+        angleBetween(vectors[0], vectors[1]),
+        angleBetween(vectors[1], vectors[2]),
+        angleBetween(vectors[2], vectors[0]),
+      ];
+      const difference = Math.max(0, total - best);
+
+      xOutput.value = x.toFixed(2);
+      yOutput.value = y.toFixed(3);
+      junction.setAttribute('transform', 'translate(' + svgX + ' ' + svgY + ')');
+      roads.forEach((road) => {
+        road?.setAttribute('x2', String(svgX));
+        road?.setAttribute('y2', String(svgY));
+      });
+      totalOutput.textContent = total.toFixed(3) + ' units';
+      anglesOutput.textContent = angles.map((angle) => angle.toFixed(1) + '°').join(' · ');
+      differenceOutput.textContent = difference < 0.0005 ? 'At the minimum' : '+' + difference.toFixed(3) + ' units';
+      lab.dataset.minimum = difference < 0.0005 ? 'true' : 'false';
+    };
+
+    xInput.addEventListener('input', update);
+    yInput.addEventListener('input', update);
+    reset.addEventListener('click', () => {
+      xInput.value = '0';
+      yInput.value = String(Math.sqrt(3));
+      update();
+    });
+    update();
+  });
+</script>
+
+<style>
+  .junction-lab {
+    background:
+      linear-gradient(rgba(20, 147, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20, 147, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(145deg, #061421, #0a1a2a);
+    background-size: 28px 28px, 28px 28px, auto;
+    border: 1px solid color-mix(in srgb, var(--border-color) 70%, #1493ff);
+    border-radius: 14px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    color: #eaf6ff;
+    margin: 2rem 50% 2.4rem;
+    padding: clamp(1rem, 3vw, 1.65rem);
+    transform: translateX(-50%);
+    width: min(1040px, calc(100vw - 2rem));
+  }
+
+  .lab-heading {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .kicker {
+    color: #93ff14;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.22rem;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    color: #f7fbff;
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0;
+  }
+
+  button {
+    background: rgba(147, 255, 20, 0.08);
+    border: 1px solid rgba(147, 255, 20, 0.58);
+    border-radius: 999px;
+    color: #dfffb8;
+    cursor: pointer;
+    font: 650 0.72rem/1 var(--font-sans);
+    padding: 0.68rem 0.9rem;
+  }
+
+  button:hover { background: rgba(147, 255, 20, 0.15); }
+  button:focus-visible,
+  input:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+  .lab-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(1rem, 3vw, 2rem);
+    grid-template-columns: minmax(0, 1.55fr) minmax(210px, .75fr);
+  }
+
+  svg {
+    border: 1px solid rgba(101, 164, 203, 0.22);
+    border-radius: 10px;
+    color: #1493ff;
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
+  .map-background { fill: #04101b; }
+  .map-grid { color: #1493ff; }
+  .triangle-outline { fill: rgba(20, 147, 255, 0.035); stroke: #4c7088; stroke-dasharray: 7 11; }
+  .roads line { stroke: #93ff14; stroke-linecap: round; stroke-width: 6; }
+  .roads line:nth-child(2) { stroke: #1493ff; }
+  .roads line:nth-child(3) { stroke: #ff1493; }
+  .towns circle { fill: #071a28; stroke: #dceefa; stroke-width: 2; }
+  .towns text { fill: #fff; font: 700 24px ui-monospace, monospace; text-anchor: middle; }
+  .ideal-mark circle,
+  .ideal-mark path { fill: none; stroke: #fff; stroke-dasharray: 4 7; stroke-opacity: .3; }
+  .junction circle:first-child { fill: #07131f; stroke: #fff; stroke-width: 3; filter: url(#junction-glow); }
+  .junction circle:last-child { fill: #fff; }
+
+  .controls label { display: block; margin-bottom: 1.35rem; }
+  .controls label > span {
+    display: flex;
+    font-size: 0.74rem;
+    justify-content: space-between;
+    letter-spacing: .03em;
+  }
+  output { color: #93ff14; font-family: var(--font-mono); }
+  input[type='range'] { accent-color: #93ff14; cursor: pointer; margin-top: .65rem; width: 100%; }
+  .control-note { color: #89a1b2; font-size: .69rem; line-height: 1.5; margin: 0; }
+  .control-note span { color: #dfeef8; font-family: var(--font-mono); }
+
+  .readout {
+    display: grid;
+    gap: .65rem;
+    grid-template-columns: .8fr 1.2fr 1fr;
+    margin-top: 1rem;
+  }
+  .readout div { background: rgba(3, 12, 20, .58); border: 1px solid rgba(126, 172, 201, .2); border-radius: 8px; padding: .68rem .75rem; }
+  .readout span { color: #7892a4; display: block; font-size: .57rem; letter-spacing: .08em; text-transform: uppercase; }
+  .readout strong { color: #f7fbff; display: block; font-family: var(--font-mono); font-size: .73rem; margin-top: .22rem; }
+  .junction-lab[data-minimum='true'] [data-difference] { color: #93ff14; }
+
+  figcaption { color: #a9bdcb; font-size: .76rem; line-height: 1.55; margin-top: 1rem; }
+
+  @media (max-width: 720px) {
+    .lab-heading { align-items: flex-start; flex-direction: column; }
+    .lab-grid { grid-template-columns: 1fr; }
+    .controls { display: grid; gap: .2rem 1rem; grid-template-columns: 1fr 1fr; }
+    .control-note { grid-column: 1 / -1; }
+    .readout { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 430px) {
+    .controls { grid-template-columns: 1fr; }
+    .control-note { grid-column: auto; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .junction,
+    .roads line { transition: 140ms ease; }
+  }
+</style>

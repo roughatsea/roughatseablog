@@ -1,0 +1,247 @@
+---
+title: "Why Do the Shortest Three Roads Meet at 120°?"
+description: "A shared junction can connect three towns with less road than any two town-to-town links—and equal angles reveal where to put it."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-12.svg"
+heroImageAlt: "Three coastal stations labeled A, B, and C form an equilateral triangle on a dark maritime blueprint. Lime, blue, and pink routes meet at one white junction, where three arcs mark equal 120-degree angles."
+date: 2026-09-12
+publishedAt: 2026-09-12T06:00:00-07:00
+area: "Geometry and optimization"
+difficulty: "Intermediate"
+prerequisites:
+  - "The distance formula"
+  - "Square roots"
+  - "Vectors and dot products"
+  - "Cosine of an angle"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - geometry
+  - optimization
+  - fermat-torricelli-point
+  - steiner-trees
+  - vectors
+  - network-design
+---
+
+import SteinerJunction from '../../components/reckonings/SteinerJunction.astro';
+
+Three towns occupy the corners of an equilateral triangle. You may build straight roads anywhere, including through an empty point between the towns. What connected road network uses the least pavement?
+
+Building two sides of the triangle works. If each side is $6$ kilometers long, that plan requires $12$ kilometers of road. A shorter plan sends one road from each town to a shared interior junction. The three roads meet at $120^\circ$ angles and have a combined length of only
+
+$$
+6\sqrt{3}\approx 10.392\text{ kilometers}.
+$$
+
+The interior junction saves about $1.608$ kilometers, or $13.4\%$, in this idealized geometry.
+
+## Search for the junction
+
+The interactive diagram below fixes three towns at the corners of an equilateral triangle with side length $6$. Its two sliders move a proposed junction. The readout recomputes the sum of the three road lengths and the angles between them.
+
+<SteinerJunction />
+
+The total increases in every direction away from the faint target ring. The angle readout reaches $120^\circ,120^\circ,120^\circ$ at the target. Equal angles are a consequence of balance, not a decorative feature of the picture.
+
+## Three equal pulls must cancel
+
+Imagine a small ring at the road junction. Attach three strings to the ring, pass one string toward each town, and pull every string with the same tension. The ring can remain at rest only when the three pulls cancel.
+
+Two opposite pulls would cancel along a straight line. Three equal pulls need a different arrangement: rotate each direction by $120^\circ$. The first two pulls then combine into a vector with the same length as the third pull and the opposite direction.
+
+Write $A$, $B$, and $C$ for the town locations and $P$ for a proposed junction. Define the total road length
+
+$$
+L(P)=\lVert P-A\rVert+\lVert P-B\rVert+\lVert P-C\rVert,
+$$
+
+where $\lVert P-A\rVert$ means the ordinary straight-line distance from $P$ to $A$, and the other two terms have the same meaning for towns $B$ and $C$.
+
+Suppose $P$ is different from every town. Moving $P$ a tiny distance changes each term according to the unit vector along its road. At a minimum inside the triangle, the three first-order changes must cancel. If $\mathbf{u}_A$, $\mathbf{u}_B$, and $\mathbf{u}_C$ are unit vectors pointing from $P$ toward the three towns, then the balance condition is
+
+$$
+\mathbf{u}_A+\mathbf{u}_B+\mathbf{u}_C=\mathbf{0}.
+$$
+
+The bold zero $\mathbf{0}$ is the vector with no length or direction. For three unit vectors in a plane, the displayed equation forces every pair to form an angle of $120^\circ$.
+
+Here is one quick derivation. Move $\mathbf{u}_C$ to the other side:
+
+$$
+\mathbf{u}_A+\mathbf{u}_B=-\mathbf{u}_C.
+$$
+
+Both sides have length $1$. Let $\theta$ be the angle from $\mathbf{u}_A$ to $\mathbf{u}_B$. Squaring the length of the left side gives
+
+$$
+\begin{aligned}
+1
+&=\lVert\mathbf{u}_A+\mathbf{u}_B\rVert^2\\
+&=\lVert\mathbf{u}_A\rVert^2+\lVert\mathbf{u}_B\rVert^2
+  +2\mathbf{u}_A\mathbin{\boldsymbol\cdot}\mathbf{u}_B\\
+&=1+1+2\cos\theta.
+\end{aligned}
+$$
+
+The dot symbol $\boldsymbol\cdot$ denotes the vector dot product. Because both vectors have length $1$, their dot product equals $\cos\theta$. Rearranging the last equation gives
+
+$$
+\cos\theta=-\frac12,
+$$
+
+so $\theta=120^\circ$. The same calculation applies to the other two pairs.
+
+## Worked example: an equilateral triangle of side 6
+
+Place the towns at
+
+$$
+A=(-3,0),\qquad B=(3,0),\qquad C=(0,3\sqrt3).
+$$
+
+The base $AB$ has length $6$. The height from $AB$ to $C$ is $3\sqrt3$, so all three sides have length $6$.
+
+Symmetry puts the minimizing junction on the vertical line through $C$ and the midpoint of $AB$. The $120^\circ$ balance occurs at
+
+$$
+S=(0,\sqrt3).
+$$
+
+Compute the distance from $S$ to $A$ without skipping the square-root step:
+
+$$
+\begin{aligned}
+\lVert S-A\rVert
+&=\sqrt{(0-(-3))^2+(\sqrt3-0)^2}\\
+&=\sqrt{3^2+(\sqrt3)^2}\\
+&=\sqrt{9+3}\\
+&=\sqrt{12}=2\sqrt3.
+\end{aligned}
+$$
+
+Symmetry gives $\lVert S-B\rVert=2\sqrt3$. The vertical distance to $C$ is
+
+$$
+\lVert S-C\rVert=3\sqrt3-\sqrt3=2\sqrt3.
+$$
+
+Therefore the three-road network has total length
+
+$$
+L(S)=2\sqrt3+2\sqrt3+2\sqrt3=6\sqrt3\approx10.392.
+$$
+
+We can verify the angles directly. The unit vectors from $S$ toward $A$, $B$, and $C$ are
+
+$$
+\mathbf{u}_A=\left(-\frac{\sqrt3}{2},-\frac12\right),\quad
+\mathbf{u}_B=\left(\frac{\sqrt3}{2},-\frac12\right),\quad
+\mathbf{u}_C=(0,1).
+$$
+
+Their sum is $\mathbf{0}$. Each pair has dot product $-\tfrac12$, which confirms three $120^\circ$ angles.
+
+The function $L(P)$ is convex: a straight movement between two proposed junctions cannot create a hidden lower valley between them. Because the three towns are not collinear, the minimizing point is unique. The balanced point $S$ is therefore the global minimum; no better junction is hiding elsewhere in the triangle.
+
+## The 120-degree exception
+
+For any triangle whose three angles are smaller than $120^\circ$, the minimizing junction lies inside the triangle and its three roads meet at $120^\circ$. This location is called the **Fermat–Torricelli point**.
+
+If one corner of the triangle already has an angle of at least $120^\circ$, no interior junction can improve the network. The minimizing point is that wide-angle corner, and the two roads from that corner to the other towns are shortest. The rule includes the boundary case: a $120^\circ$ corner can serve as the collapsed three-way junction.
+
+A **Steiner tree** connects specified locations, called terminals, with the least total edge length and permits extra junctions called Steiner points. For exactly three terminals in the Euclidean plane, the Fermat–Torricelli construction supplies the Steiner tree: use the interior $120^\circ$ point when every triangle angle is smaller than $120^\circ$; otherwise use the wide-angle vertex.
+
+## Try two checks
+
+### Problem 1
+
+Three towns form an equilateral triangle with side length $10$ kilometers. Compare the length of a connected network made from two triangle sides with the length of the three-road network through the Fermat–Torricelli point.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Two sides require
+
+$$
+10+10=20\text{ kilometers}.
+$$
+
+In an equilateral triangle, each road from a vertex to the central Fermat–Torricelli point has length $10/\sqrt3$. The three roads total
+
+$$
+3\left(\frac{10}{\sqrt3}\right)
+=\frac{30}{\sqrt3}
+=10\sqrt3
+\approx17.321\text{ kilometers}.
+$$
+
+The shared junction saves
+
+$$
+20-10\sqrt3\approx2.679\text{ kilometers}.
+$$
+
+</details>
+
+### Problem 2
+
+Let
+
+$$
+\mathbf{v}_1=(1,0),\quad
+\mathbf{v}_2=\left(-\frac12,\frac{\sqrt3}{2}\right),\quad
+\mathbf{v}_3=\left(-\frac12,-\frac{\sqrt3}{2}\right).
+$$
+
+Show that the three vectors balance, then calculate the angle between $\mathbf{v}_1$ and $\mathbf{v}_2$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Add the horizontal and vertical coordinates separately:
+
+$$
+\mathbf{v}_1+\mathbf{v}_2+\mathbf{v}_3
+=\left(1-\frac12-\frac12,\;0+\frac{\sqrt3}{2}-\frac{\sqrt3}{2}\right)
+=(0,0).
+$$
+
+Each vector has length $1$. Their first dot product is
+
+$$
+\mathbf{v}_1\mathbin{\boldsymbol\cdot}\mathbf{v}_2
+=(1)\left(-\frac12\right)+(0)\left(\frac{\sqrt3}{2}\right)
+=-\frac12.
+$$
+
+Thus $\cos\theta=-\tfrac12$, so the angle $\theta$ between $\mathbf{v}_1$ and $\mathbf{v}_2$ is $120^\circ$.
+
+</details>
+
+## A problem passed through several hands
+
+The historical record does not support a lone-genius story. The [*Encyclopedia of Mathematics* account](https://encyclopediaofmath.org/wiki/Fermat-Torricelli_problem) traces the problem through a chain of correspondence and constructions. René Descartes asked Pierre de Fermat in 1638 to study curves whose distances from four fixed points have a constant sum. Fermat then posed the three-point minimum problem in 1643. Evangelista Torricelli found the first solution, using a property of ellipses. Bonaventura Cavalieri, Vincenzo Viviani, Thomas Simpson, and Henri Lebesgue later supplied other ruler-and-compass constructions.
+
+That chain is the cultural context worth preserving. Seventeenth-century mathematics moved through questions sent between individuals, followed by solutions and refinements that acquired several names. No documented military or political program is needed to explain this discovery. Even the later label **Steiner tree** is historically awkward: the same encyclopedia notes that Carl Friedrich Gauss asked a four-town minimum-network question in 1836 and that attributing the wider subject to Jakob Steiner is not well justified. The names remember only part of the traffic.
+
+## Where shared junctions appear
+
+**Facility location.** Operations researchers generalize the Fermat–Torricelli problem by assigning weights to destinations. A warehouse serving ten times as much demand as another destination exerts ten times the pull in the weighted sum being minimized. The resulting single-facility location model minimizes a weighted sum of distances. Roads, land prices, capacity, and geography make real siting problems less clean than the plane, but the force-balance idea survives inside the larger models.
+
+**Chip design.** A 2020 [survey in *IEEE Access*](https://doi.org/10.1109/ACCESS.2020.2986138) describes Steiner trees as a basic model for estimating and reducing interconnect wire length during very-large-scale integration (VLSI) layout. Actual chip wires usually follow permitted layer directions and must respect congestion, timing, power, and obstacles, so the Euclidean $120^\circ$ rule is not copied literally. The useful inheritance is permission to introduce shared junctions instead of connecting every pin only to another pin.
+
+**Soap films as physical solvers.** Surface tension also seeks less area. In a two-plate experiment, pins represent terminals and soap films form connecting patterns. Prasun Dutta, S. Pratik Khastgir, and Anushree Roy [reported both Steiner and spanning-tree configurations](https://doi.org/10.1119/1.3247982) in a six-pin apparatus. Soap does not guarantee the globally shortest pattern every time—the experiment can settle into a longer local minimum—but it makes the geometry of equal tension visible.
+
+**Speculative use.** Future three-dimensional fabrication or reconfigurable optical hardware might allow junctions to occupy freer geometries than present chip layers permit. A generalized Steiner calculation could then reduce material or signal path length. That possibility is an engineering hypothesis, not an existing deployment described by the sources here.
+
+## One idea to remember
+
+The shortest shared junction for three equal connections is a balance point: three unit pulls add to zero, so the roads separate by $120^\circ$.
+
+For another meeting of geometry and networks, revisit [Euler’s bridge problem](/reckonings/daily-reckoning-2026-08-31/). For another physical shape determined by force balance, see [the catenary](/reckonings/daily-reckoning-2026-09-06/). A natural next question is what happens with four or more towns, when several competing Steiner-tree topologies may exist.
+
+## Sources
+
+- *Encyclopedia of Mathematics*, [“Fermat–Torricelli problem”](https://encyclopediaofmath.org/wiki/Fermat-Torricelli_problem), including the 1638 and 1643 chronology, the equilibrium characterization, location-science connection, and historical cautions about the Steiner name.
+- Hao Tang, Genggeng Liu, Xiaohua Chen, and Naixue Xiong, [“A Survey on Steiner Tree Construction and Global Routing for VLSI Design”](https://doi.org/10.1109/ACCESS.2020.2986138), *IEEE Access* 8 (2020), 68593–68622.
+- Prasun Dutta, S. Pratik Khastgir, and Anushree Roy, [“Steiner trees and spanning trees in six-pin soap films”](https://doi.org/10.1119/1.3247982), *American Journal of Physics* 78 (2010), 215–221; [open preprint](https://arxiv.org/abs/0806.1340).
