@@ -81,8 +81,8 @@ const rootThree = Math.sqrt(3);
         <span>Height above AB <output data-y-output>{rootThree.toFixed(3)}</output></span>
         <input
           type="range"
-          min="0.25"
-          max="4.9"
+          min={rootThree - 1.48}
+          max={rootThree + 3.17}
           value={rootThree}
           step="0.01"
           aria-label="Height of the road junction above side AB"
