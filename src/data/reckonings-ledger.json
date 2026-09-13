@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-12T06:00:00-07:00",
+  "updatedAt": "2026-09-13T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -183,7 +183,8 @@
         "Markov chain Monte Carlo"
       ],
       "relatedLessons": [
-        "daily-reckoning-2026-09-01"
+        "daily-reckoning-2026-09-01",
+        "daily-reckoning-2026-09-13"
       ]
     },
     {
@@ -378,6 +379,32 @@
       "relatedLessons": [
         "daily-reckoning-2026-08-31",
         "daily-reckoning-2026-09-06"
+      ]
+    },
+    {
+      "date": "2026-09-13",
+      "slug": "daily-reckoning-2026-09-13",
+      "title": "How Can a 99%-Sensitive Test Give Mostly False Alarms?",
+      "area": "Probability and statistics",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Percentages",
+        "Fractions",
+        "The probability of one event given another"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Bayes' theorem",
+        "conditional probability",
+        "base rates",
+        "sensitivity",
+        "specificity",
+        "positive predictive value",
+        "diagnostic testing",
+        "Bayesian search theory"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-05"
       ]
     }
   ]

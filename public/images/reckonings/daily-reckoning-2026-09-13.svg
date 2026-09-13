@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A rare condition flowing through a diagnostic test</title>
+  <desc id="desc">One green true-positive stream and five pink false-positive streams converge into a positive-result pool, illustrating a one-in-six positive predictive value.</desc>
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#030b14"/>
+      <stop offset=".55" stop-color="#071a2a"/>
+      <stop offset="1" stop-color="#02070e"/>
+    </linearGradient>
+    <radialGradient id="signal" cx="50%" cy="48%" r="55%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#1493ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#1493ff" stroke-opacity=".09"/>
+    </pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="9" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#93ff14"/>
+    </marker>
+    <marker id="arrow-pink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#ff1493"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#night)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <ellipse cx="1000" cy="440" rx="560" ry="420" fill="url(#signal)"/>
+
+  <g fill="none" stroke="#1493ff" stroke-opacity=".2">
+    <path d="M0 760C180 710 310 825 500 770S825 720 990 785s350 50 610-20"/>
+    <path d="M0 800C190 750 330 860 525 812S835 760 1015 820s355 45 585-5"/>
+    <path d="M0 840C200 795 350 890 545 852S850 810 1040 862s360 28 560-5"/>
+  </g>
+
+  <g transform="translate(150 190)">
+    <rect width="410" height="460" rx="18" fill="#06111f" stroke="#1493ff" stroke-opacity=".5"/>
+    <text x="36" y="58" fill="#8fcbff" font-family="ui-monospace, monospace" font-size="22" letter-spacing="5">PRIOR 1%</text>
+    <text x="36" y="94" fill="#f7fbff" font-family="ui-sans-serif, sans-serif" font-size="18" opacity=".68">100 of 10,000 have the condition</text>
+    <g transform="translate(37 133)">
+      <g fill="#1493ff" fill-opacity=".18" stroke="#1493ff" stroke-opacity=".32">
+        <rect x="0" y="0" width="28" height="28" rx="3"/><rect x="36" y="0" width="28" height="28" rx="3"/><rect x="72" y="0" width="28" height="28" rx="3"/><rect x="108" y="0" width="28" height="28" rx="3"/><rect x="144" y="0" width="28" height="28" rx="3"/><rect x="180" y="0" width="28" height="28" rx="3"/><rect x="216" y="0" width="28" height="28" rx="3"/><rect x="252" y="0" width="28" height="28" rx="3"/><rect x="288" y="0" width="28" height="28" rx="3"/><rect x="324" y="0" width="28" height="28" rx="3"/>
+        <rect x="0" y="36" width="28" height="28" rx="3"/><rect x="36" y="36" width="28" height="28" rx="3"/><rect x="72" y="36" width="28" height="28" rx="3"/><rect x="108" y="36" width="28" height="28" rx="3"/><rect x="144" y="36" width="28" height="28" rx="3"/><rect x="180" y="36" width="28" height="28" rx="3"/><rect x="216" y="36" width="28" height="28" rx="3"/><rect x="252" y="36" width="28" height="28" rx="3"/><rect x="288" y="36" width="28" height="28" rx="3"/><rect x="324" y="36" width="28" height="28" rx="3"/>
+        <rect x="0" y="72" width="28" height="28" rx="3"/><rect x="36" y="72" width="28" height="28" rx="3"/><rect x="72" y="72" width="28" height="28" rx="3"/><rect x="108" y="72" width="28" height="28" rx="3"/><rect x="144" y="72" width="28" height="28" rx="3"/><rect x="180" y="72" width="28" height="28" rx="3"/><rect x="216" y="72" width="28" height="28" rx="3"/><rect x="252" y="72" width="28" height="28" rx="3"/><rect x="288" y="72" width="28" height="28" rx="3"/><rect x="324" y="72" width="28" height="28" rx="3"/>
+        <rect x="0" y="108" width="28" height="28" rx="3"/><rect x="36" y="108" width="28" height="28" rx="3"/><rect x="72" y="108" width="28" height="28" rx="3"/><rect x="108" y="108" width="28" height="28" rx="3"/><rect x="144" y="108" width="28" height="28" rx="3"/><rect x="180" y="108" width="28" height="28" rx="3"/><rect x="216" y="108" width="28" height="28" rx="3"/><rect x="252" y="108" width="28" height="28" rx="3"/><rect x="288" y="108" width="28" height="28" rx="3"/><rect x="324" y="108" width="28" height="28" rx="3"/>
+        <rect x="0" y="144" width="28" height="28" rx="3"/><rect x="36" y="144" width="28" height="28" rx="3"/><rect x="72" y="144" width="28" height="28" rx="3"/><rect x="108" y="144" width="28" height="28" rx="3"/><rect x="144" y="144" width="28" height="28" rx="3"/><rect x="180" y="144" width="28" height="28" rx="3"/><rect x="216" y="144" width="28" height="28" rx="3"/><rect x="252" y="144" width="28" height="28" rx="3"/><rect x="288" y="144" width="28" height="28" rx="3"/><rect x="324" y="144" width="28" height="28" rx="3"/>
+        <rect x="0" y="180" width="28" height="28" rx="3"/><rect x="36" y="180" width="28" height="28" rx="3"/><rect x="72" y="180" width="28" height="28" rx="3"/><rect x="108" y="180" width="28" height="28" rx="3"/><rect x="144" y="180" width="28" height="28" rx="3"/><rect x="180" y="180" width="28" height="28" rx="3"/><rect x="216" y="180" width="28" height="28" rx="3"/><rect x="252" y="180" width="28" height="28" rx="3"/><rect x="288" y="180" width="28" height="28" rx="3"/><rect x="324" y="180" width="28" height="28" rx="3"/>
+        <rect x="0" y="216" width="28" height="28" rx="3"/><rect x="36" y="216" width="28" height="28" rx="3"/><rect x="72" y="216" width="28" height="28" rx="3"/><rect x="108" y="216" width="28" height="28" rx="3"/><rect x="144" y="216" width="28" height="28" rx="3"/><rect x="180" y="216" width="28" height="28" rx="3"/><rect x="216" y="216" width="28" height="28" rx="3"/><rect x="252" y="216" width="28" height="28" rx="3"/><rect x="288" y="216" width="28" height="28" rx="3"/><rect x="324" y="216" width="28" height="28" rx="3"/>
+        <rect x="0" y="252" width="28" height="28" rx="3"/><rect x="36" y="252" width="28" height="28" rx="3"/><rect x="72" y="252" width="28" height="28" rx="3"/><rect x="108" y="252" width="28" height="28" rx="3"/><rect x="144" y="252" width="28" height="28" rx="3"/><rect x="180" y="252" width="28" height="28" rx="3"/><rect x="216" y="252" width="28" height="28" rx="3"/><rect x="252" y="252" width="28" height="28" rx="3"/><rect x="288" y="252" width="28" height="28" rx="3"/><rect x="324" y="252" width="28" height="28" rx="3"/>
+        <rect x="0" y="288" width="28" height="28" rx="3"/><rect x="36" y="288" width="28" height="28" rx="3"/><rect x="72" y="288" width="28" height="28" rx="3"/><rect x="108" y="288" width="28" height="28" rx="3"/><rect x="144" y="288" width="28" height="28" rx="3"/><rect x="180" y="288" width="28" height="28" rx="3"/><rect x="216" y="288" width="28" height="28" rx="3"/><rect x="252" y="288" width="28" height="28" rx="3"/><rect x="288" y="288" width="28" height="28" rx="3"/><rect x="324" y="288" width="28" height="28" rx="3"/>
+        <rect x="0" y="324" width="28" height="28" rx="3"/><rect x="36" y="324" width="28" height="28" rx="3"/><rect x="72" y="324" width="28" height="28" rx="3"/><rect x="108" y="324" width="28" height="28" rx="3"/><rect x="144" y="324" width="28" height="28" rx="3"/><rect x="180" y="324" width="28" height="28" rx="3"/><rect x="216" y="324" width="28" height="28" rx="3"/><rect x="252" y="324" width="28" height="28" rx="3"/><rect x="288" y="324" width="28" height="28" rx="3"/>
+      </g>
+      <rect x="324" y="324" width="28" height="28" rx="3" fill="#93ff14" stroke="#d8ffac" filter="url(#glow)"/>
+    </g>
+  </g>
+
+  <path d="M600 335C735 315 770 276 902 275" fill="none" stroke="#93ff14" stroke-width="8" marker-end="url(#arrow-green)" filter="url(#glow)"/>
+  <path d="M600 535C735 555 770 594 902 595" fill="none" stroke="#ff1493" stroke-width="28" marker-end="url(#arrow-pink)" opacity=".9" filter="url(#glow)"/>
+  <text x="665" y="285" fill="#93ff14" font-family="ui-monospace, monospace" font-size="21" letter-spacing="3">TRUE + 99</text>
+  <text x="650" y="650" fill="#ff78bb" font-family="ui-monospace, monospace" font-size="21" letter-spacing="3">FALSE + 495</text>
+
+  <g transform="translate(930 180)">
+    <rect width="510" height="500" rx="22" fill="#06111f" stroke="#f7fbff" stroke-opacity=".28"/>
+    <text x="255" y="66" text-anchor="middle" fill="#8fcbff" font-family="ui-monospace, monospace" font-size="21" letter-spacing="5">POSITIVE RESULTS</text>
+    <g transform="translate(105 120)" filter="url(#glow)">
+      <circle cx="55" cy="55" r="48" fill="#93ff14"/>
+      <circle cx="175" cy="55" r="48" fill="#ff1493"/>
+      <circle cx="295" cy="55" r="48" fill="#ff1493"/>
+      <circle cx="55" cy="175" r="48" fill="#ff1493"/>
+      <circle cx="175" cy="175" r="48" fill="#ff1493"/>
+      <circle cx="295" cy="175" r="48" fill="#ff1493"/>
+      <circle cx="55" cy="55" r="13" fill="#06111f"/>
+      <path d="M145 85L205 25M265 85L325 25M25 205L85 145M145 205L205 145M265 205L325 145" stroke="#06111f" stroke-width="8"/>
+    </g>
+    <path d="M82 382H428" stroke="#1493ff" stroke-opacity=".45"/>
+    <text x="255" y="430" text-anchor="middle" fill="#f7fbff" font-family="ui-serif, Georgia, serif" font-size="64">1 / 6</text>
+    <text x="255" y="466" text-anchor="middle" fill="#93ff14" font-family="ui-monospace, monospace" font-size="18" letter-spacing="4">TRUE POSITIVE</text>
+  </g>
+
+  <g font-family="ui-monospace, monospace" font-size="16" fill="#8fcbff" opacity=".68">
+    <text x="150" y="724">SENSITIVITY 99%</text>
+    <text x="150" y="754">SPECIFICITY 95%</text>
+    <text x="930" y="735">99 / (99 + 495) = 16.7%</text>
+  </g>
+</svg>

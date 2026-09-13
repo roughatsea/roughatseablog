@@ -1,0 +1,321 @@
+<figure class="bayes-lab reckoning-visual" data-bayes-lab>
+  <div class="lab-heading">
+    <div>
+      <p class="kicker">10,000-person test bench</p>
+      <h3>Change how rare the condition is</h3>
+    </div>
+    <button type="button" data-reset>Reset to 1%</button>
+  </div>
+
+  <div class="lab-grid">
+    <div class="canvas-shell">
+      <canvas
+        width="700"
+        height="700"
+        role="img"
+        aria-labelledby="bayes-grid-title bayes-grid-desc"
+        data-grid
+      ></canvas>
+      <span id="bayes-grid-title" class="sr-only">Expected test results among 10,000 people</span>
+      <span id="bayes-grid-desc" class="sr-only" data-grid-desc>
+        At one percent prevalence, the top row represents 100 people with the condition: 99
+        test positive and one tests negative. The remaining 99 rows represent 9,900 people
+        without the condition: 495 test positive and 9,405 test negative.
+      </span>
+      <noscript>
+        <p class="fallback">
+          At 1% prevalence, 99 true positives and 495 false positives appear among 10,000
+          people. The positive predictive value is 16.7%.
+        </p>
+      </noscript>
+    </div>
+
+    <div class="controls">
+      <label>
+        <span>Prevalence <output data-prevalence-output>1%</output></span>
+        <input
+          type="range"
+          min="1"
+          max="20"
+          value="1"
+          step="1"
+          aria-label="Percentage of people who have the condition"
+          data-prevalence-input
+        />
+      </label>
+      <p class="control-note">
+        The imagined test keeps 99% sensitivity and 95% specificity. Arrow keys adjust a
+        focused slider.
+      </p>
+
+      <div class="legend" aria-label="Grid symbol legend">
+        <span><i class="swatch true-positive">•</i> True positive</span>
+        <span><i class="swatch false-negative">×</i> False negative</span>
+        <span><i class="swatch false-positive">/</i> False positive</span>
+        <span><i class="swatch true-negative">□</i> True negative</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div>
+      <span>Have the condition</span>
+      <strong data-affected>100</strong>
+    </div>
+    <div>
+      <span>True positives</span>
+      <strong data-true-positive>99</strong>
+    </div>
+    <div>
+      <span>False positives</span>
+      <strong data-false-positive>495</strong>
+    </div>
+    <div class="answer">
+      <span>Among positive results</span>
+      <strong data-ppv>1 in 6 is a true positive · 16.7%</strong>
+    </div>
+  </div>
+
+  <figcaption>
+    Each row represents 100 people. Rows above the bright divider contain people who have the
+    condition; rows below it contain people who do not. At 1% prevalence, five columns of false
+    positives outweigh the single row of true positives.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-bayes-lab]').forEach((lab) => {
+    const canvas = lab.querySelector<HTMLCanvasElement>('[data-grid]');
+    const context = canvas?.getContext('2d');
+    const input = lab.querySelector<HTMLInputElement>('[data-prevalence-input]');
+    const prevalenceOutput = lab.querySelector<HTMLOutputElement>('[data-prevalence-output]');
+    const affectedOutput = lab.querySelector<HTMLElement>('[data-affected]');
+    const truePositiveOutput = lab.querySelector<HTMLElement>('[data-true-positive]');
+    const falsePositiveOutput = lab.querySelector<HTMLElement>('[data-false-positive]');
+    const ppvOutput = lab.querySelector<HTMLElement>('[data-ppv]');
+    const description = lab.querySelector<HTMLElement>('[data-grid-desc]');
+    const reset = lab.querySelector<HTMLButtonElement>('[data-reset]');
+
+    if (!canvas || !context || !input || !prevalenceOutput || !affectedOutput || !truePositiveOutput || !falsePositiveOutput || !ppvOutput || !description || !reset) return;
+
+    const size = 7;
+    const drawCell = (column: number, row: number, category: string) => {
+      const x = column * size;
+      const y = row * size;
+
+      if (category === 'tp') {
+        context.fillStyle = '#93ff14';
+        context.fillRect(x + 1, y + 1, 5, 5);
+        context.fillStyle = '#06111f';
+        context.fillRect(x + 3, y + 3, 1, 1);
+      } else if (category === 'fn') {
+        context.fillStyle = '#ffd166';
+        context.fillRect(x + 1, y + 1, 5, 5);
+        context.strokeStyle = '#06111f';
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(x + 2, y + 2);
+        context.lineTo(x + 5, y + 5);
+        context.moveTo(x + 5, y + 2);
+        context.lineTo(x + 2, y + 5);
+        context.stroke();
+      } else if (category === 'fp') {
+        context.fillStyle = '#ff1493';
+        context.fillRect(x + 1, y + 1, 5, 5);
+        context.strokeStyle = '#06111f';
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(x + 2, y + 5);
+        context.lineTo(x + 5, y + 2);
+        context.stroke();
+      } else {
+        context.strokeStyle = 'rgba(20,147,255,.42)';
+        context.lineWidth = 1;
+        context.strokeRect(x + 1.5, y + 1.5, 4, 4);
+      }
+    };
+
+    const update = () => {
+      const prevalence = Number(input.value);
+      const affected = prevalence * 100;
+      const truePositive = prevalence * 99;
+      const falseNegative = prevalence;
+      const unaffected = 10000 - affected;
+      const falsePositive = 500 - prevalence * 5;
+      const trueNegative = unaffected - falsePositive;
+      const positiveResults = truePositive + falsePositive;
+      const ppv = truePositive / positiveResults;
+
+      context.fillStyle = '#06111f';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let row = 0; row < 100; row += 1) {
+        const affectedRow = row < prevalence;
+        for (let column = 0; column < 100; column += 1) {
+          const category = affectedRow
+            ? (column < 99 ? 'tp' : 'fn')
+            : (column < 5 ? 'fp' : 'tn');
+          drawCell(column, row, category);
+        }
+      }
+
+      context.strokeStyle = '#f7fbff';
+      context.lineWidth = 3;
+      context.beginPath();
+      context.moveTo(0, prevalence * size);
+      context.lineTo(canvas.width, prevalence * size);
+      context.stroke();
+
+      prevalenceOutput.value = prevalence + '%';
+      affectedOutput.textContent = affected.toLocaleString('en-US');
+      truePositiveOutput.textContent = truePositive.toLocaleString('en-US');
+      falsePositiveOutput.textContent = falsePositive.toLocaleString('en-US');
+      ppvOutput.textContent = (prevalence === 1 ? '1 in 6 is a true positive · ' : '') + (ppv * 100).toFixed(1) + '%';
+      description.textContent = 'At ' + prevalence + ' percent prevalence, ' + truePositive.toLocaleString('en-US') +
+        ' people with the condition test positive and ' + falseNegative.toLocaleString('en-US') +
+        ' test negative. Among people without the condition, ' + falsePositive.toLocaleString('en-US') +
+        ' test positive and ' + trueNegative.toLocaleString('en-US') + ' test negative.';
+    };
+
+    input.addEventListener('input', update);
+    reset.addEventListener('click', () => {
+      input.value = '1';
+      update();
+    });
+    update();
+  });
+</script>
+
+<style>
+  .bayes-lab {
+    background: #071522;
+    border: 1px solid rgba(20, 147, 255, .34);
+    border-radius: 14px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, .24);
+    color: #f7fbff;
+    margin: 2rem 50%;
+    overflow: hidden;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 2rem));
+  }
+  .lab-heading {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  .kicker {
+    color: #1493ff;
+    font-family: var(--font-sans);
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    margin: 0 0 .25rem;
+    text-transform: uppercase;
+  }
+  h3 { color: #f7fbff; margin: 0; }
+  button {
+    background: transparent;
+    border: 1px solid rgba(147, 255, 20, .62);
+    border-radius: 999px;
+    color: #93ff14;
+    cursor: pointer;
+    font: 600 .78rem var(--font-sans);
+    padding: .55rem .9rem;
+  }
+  button:hover { background: rgba(147, 255, 20, .1); }
+  button:focus-visible, input:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .lab-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(1.2rem, 4vw, 2.4rem);
+    grid-template-columns: minmax(0, 1.25fr) minmax(230px, .75fr);
+  }
+  .canvas-shell {
+    aspect-ratio: 1;
+    background: #06111f;
+    border: 1px solid rgba(247, 251, 255, .14);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  canvas { display: block; height: 100%; width: 100%; }
+  .controls label span {
+    align-items: baseline;
+    display: flex;
+    font: 600 .84rem var(--font-sans);
+    justify-content: space-between;
+  }
+  output { color: #93ff14; font-family: var(--font-mono); font-size: 1.1rem; }
+  input[type='range'] { accent-color: #93ff14; cursor: pointer; margin-top: .75rem; width: 100%; }
+  .control-note {
+    color: rgba(247, 251, 255, .68);
+    font: .76rem/1.45 var(--font-sans);
+    margin: .65rem 0 1.25rem;
+  }
+  .legend { display: grid; gap: .55rem; }
+  .legend span { align-items: center; display: flex; font: .76rem var(--font-sans); gap: .55rem; }
+  .swatch {
+    align-items: center;
+    border-radius: 3px;
+    color: #06111f;
+    display: inline-flex;
+    font-style: normal;
+    font-weight: 900;
+    height: 1rem;
+    justify-content: center;
+    width: 1rem;
+  }
+  .true-positive { background: #93ff14; }
+  .false-negative { background: #ffd166; }
+  .false-positive { background: #ff1493; }
+  .true-negative { background: rgba(20, 147, 255, .3); color: #8fcbff; }
+  .readout {
+    display: grid;
+    gap: .65rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1.25rem;
+  }
+  .readout div {
+    background: rgba(255, 255, 255, .035);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 8px;
+    padding: .7rem .8rem;
+  }
+  .readout .answer { grid-column: 1 / -1; }
+  .readout span {
+    color: rgba(247, 251, 255, .64);
+    display: block;
+    font: .65rem var(--font-sans);
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  .readout strong { display: block; font: 700 1rem/1.35 var(--font-sans); margin-top: .2rem; }
+  .readout .answer strong { color: #93ff14; font-size: 1.18rem; }
+  figcaption {
+    color: rgba(247, 251, 255, .68);
+    font: .78rem/1.5 var(--font-sans);
+    margin-top: 1rem;
+  }
+  .fallback { color: #f7fbff; padding: 1rem; }
+  .sr-only {
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+  @media (max-width: 720px) {
+    .lab-grid { grid-template-columns: 1fr; }
+    .canvas-shell { margin: 0 auto; max-width: 520px; width: 100%; }
+    .legend { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 500px) {
+    .lab-heading { align-items: flex-start; flex-direction: column; }
+    .readout { grid-template-columns: 1fr 1fr; }
+    .readout .answer { grid-column: 1 / -1; }
+  }
+</style>

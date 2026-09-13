@@ -1,0 +1,251 @@
+---
+title: "How Can a 99%-Sensitive Test Give Mostly False Alarms?"
+description: "A positive result reverses the question a test was designed to answer—and the condition's rarity can dominate the answer."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-13.svg"
+heroImageAlt: "A dark maritime probability chart routes a narrow green true-positive stream and a broad pink false-positive stream into a pool of six positive results: one green and five pink."
+date: 2026-09-13
+publishedAt: 2026-09-13T06:00:00-07:00
+area: "Probability and statistics"
+difficulty: "Foundational"
+prerequisites:
+  - "Percentages"
+  - "Fractions"
+  - "The probability of one event given another"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - probability
+  - bayes-theorem
+  - conditional-probability
+  - diagnostic-testing
+  - base-rates
+  - predictive-value
+---
+
+import BayesTestGrid from '../../components/reckonings/BayesTestGrid.astro';
+
+Imagine a screening test with **99% sensitivity**. Among people who truly have the condition, the test correctly flags 99 out of every 100. You receive a positive result.
+
+Does that mean there is a 99% chance you have the condition?
+
+No. For one plausible set of numbers, the chance is only **one in six**.
+
+This lesson uses an invented test—not a recommendation about any real assay—to isolate the mathematics. The test has 99% sensitivity, 95% specificity, and is used in a population where 1% of people have the condition. **Specificity** is the percentage of people without the condition who correctly test negative. A specificity of 95% also means that 5% of people without the condition receive false positive results.
+
+## Count people before manipulating symbols
+
+The interactive grid below represents 10,000 people. Each row contains 100 people, so one row equals one percentage point of prevalence. **Prevalence** means the percentage of this population that has the condition before anyone's test result is known.
+
+<BayesTestGrid />
+
+At 1% prevalence, only the first row contains people who have the condition. Nearly that whole row becomes true positives. The five pink columns below it are false positives drawn from the much larger group without the condition. A small error rate applied to 9,900 people can outweigh an excellent detection rate applied to 100 people.
+
+Move the prevalence slider. The sensitivity and specificity do not change, but the meaning of a positive result changes substantially. The population being tested supplies information before the assay does.
+
+## Two questions that sound alike
+
+Let $D$ denote the event that a person has the condition, and let $+$ denote the event that the person receives a positive test result.
+
+Sensitivity answers this question:
+
+$$
+P(+\mid D)=0.99.
+$$
+
+The vertical bar in $P(+\mid D)$ means “given that.” The expression says: among people known to have the condition, what fraction test positive?
+
+After receiving a positive result, however, the patient wants the probability in the other direction:
+
+$$
+P(D\mid +).
+$$
+
+That expression asks: among people known to have tested positive, what fraction have the condition? Reversing the order around the vertical bar changes the group being counted. In general,
+
+$$
+P(+\mid D)\ne P(D\mid +).
+$$
+
+The second probability is called the **positive predictive value** in diagnostic testing. The [National Library of Medicine's diagnostic-testing overview](https://www.ncbi.nlm.nih.gov/books/NBK557491/) defines it as the number of true positives divided by all positive results and notes that prevalence affects predictive values.
+
+## Bayes' theorem turns the question around
+
+For this two-outcome testing problem, Bayes' theorem gives
+
+$$
+P(D\mid +)
+=
+\frac{P(+\mid D)P(D)}
+{P(+\mid D)P(D)+P(+\mid \neg D)P(\neg D)}.
+$$
+
+Every symbol has a concrete role:
+
+- $P(D)$ is the prevalence, or prior probability of the condition.
+- $P(\neg D)$ is the probability of not having the condition. The symbol $\neg$ means “not.”
+- $P(+\mid D)$ is the sensitivity.
+- $P(+\mid \neg D)$ is the false positive rate, equal to one minus the specificity.
+- $P(D\mid +)$ is the positive predictive value we want.
+
+The numerator counts the probability of being both affected and positive. The denominator counts every route to a positive result: a true positive route plus a false positive route.
+
+## Worked example: 10,000 tests
+
+Begin with the 1% prevalence rather than the positive result.
+
+**Step 1: Divide the population by condition status.**
+
+Among 10,000 people, 1% have the condition:
+
+$$
+10{,}000\times0.01=100.
+$$
+
+The remaining number without the condition is
+
+$$
+10{,}000-100=9{,}900.
+$$
+
+**Step 2: Apply the 99% sensitivity only to the 100 affected people.**
+
+The number of true positives is
+
+$$
+100\times0.99=99.
+$$
+
+One affected person receives a false negative result.
+
+**Step 3: Apply the 95% specificity only to the 9,900 unaffected people.**
+
+A 95% specificity leaves a 5% false positive rate. The number of false positives is
+
+$$
+9{,}900\times0.05=495.
+$$
+
+**Step 4: Look only at positive results.**
+
+There are $99$ true positives and $495$ false positives, for a total of
+
+$$
+99+495=594
+$$
+
+positive results. Therefore
+
+$$
+P(D\mid +)
+=\frac{99}{594}
+=\frac16
+\approx16.7\%.
+$$
+
+The 99% sensitivity was not misleading; it answered a different conditional question. The surprise comes from neglecting the **base rate**, another name for the 1% prevalence known before the result.
+
+The same arithmetic fits directly into Bayes' theorem:
+
+$$
+\begin{aligned}
+P(D\mid +)
+&=\frac{(0.99)(0.01)}{(0.99)(0.01)+(0.05)(0.99)}\\
+&=\frac{0.0099}{0.0099+0.0495}\\
+&=\frac{0.0099}{0.0594}\\
+&=\frac16.
+\end{aligned}
+$$
+
+The two appearances of $0.99$ in the first line have different meanings: the first is sensitivity, while the second is $P(\neg D)=1-0.01$, the fraction of the population without the condition.
+
+## Try two variations
+
+### Problem 1
+
+Keep the same 99% sensitivity and 95% specificity, but suppose prevalence rises to 10%. Among 10,000 people, what is the positive predictive value?
+
+<details>
+<summary>Reveal the solution</summary>
+
+At 10% prevalence, $1{,}000$ people have the condition and $9{,}000$ do not.
+
+The number of true positives is
+
+$$
+1{,}000\times0.99=990.
+$$
+
+The number of false positives is
+
+$$
+9{,}000\times0.05=450.
+$$
+
+There are $990+450=1{,}440$ positive results. The positive predictive value is
+
+$$
+\frac{990}{1{,}440}=0.6875=68.75\%.
+$$
+
+The test characteristics stayed fixed. Raising the prevalence from 1% to 10% raised the positive predictive value from 16.7% to 68.75%.
+
+</details>
+
+### Problem 2
+
+Return to 1% prevalence and 99% sensitivity. What specificity is needed for exactly half of all positive results to be true positives?
+
+<details>
+<summary>Reveal the solution</summary>
+
+Among 10,000 people, the test produces $99$ true positives. For true positives to make up exactly half of positive results, the number of false positives must also be $99$.
+
+The false positive rate must therefore be
+
+$$
+\frac{99}{9{,}900}=0.01=1\%.
+$$
+
+Specificity is one minus the false positive rate:
+
+$$
+1-0.01=0.99=99\%.
+$$
+
+At 1% prevalence, raising specificity from 95% to 99% raises the positive predictive value from one sixth to one half.
+
+</details>
+
+## A theorem published by a second author
+
+Thomas Bayes did not publish the work now attached to his name. Bayes, an English Presbyterian minister, died in 1761. Richard Price found an unpublished probability manuscript among Bayes' papers, edited it, wrote an introduction, and communicated it to the Royal Society. The resulting [1763 paper in *Philosophical Transactions*](https://doi.org/10.1098/rstl.1763.0053) asked how observed successes and failures should change an estimate of an unknown chance.
+
+Price's role complicates the familiar eponym. He supplied more than clerical delivery, and his introduction attached a theological purpose to the calculation: recurring order, Price argued, gave reason to infer stable causes and ultimately an intelligent cause. That claim belongs to Price's introduction; surviving evidence does not establish it as Bayes' own reason for doing the mathematics.
+
+Price also belonged to the political life of eighteenth-century Britain. The [Stanford Encyclopedia of Philosophy](https://plato.stanford.edu/archives/sum2022/entries/richard-price/) describes him as a dissenting minister who campaigned against penalties on religious nonconformists and supported the American and French revolutions. Edmund Burke attacked Price's defense of the French Revolution; Thomas Paine and Mary Wollstonecraft answered Burke. The 1763 probability paper concerns induction, not those political campaigns, but the person who brought it into print was not an apolitical courier.
+
+Pierre-Simon Laplace appears to have developed inverse probability without knowing Bayes' paper, although the surviving evidence does not settle that point. His [first major paper on the subject appeared in 1774](https://www.jstor.org/stable/2245475). Laplace later used probabilistic inference on population data, including birth ratios and estimates of France's population. The [*Encyclopedia of Mathematics* account of Laplace](https://encyclopediaofmath.org/wiki/Laplace%2C_Pierre-Simon_Marquis_de) notes that his work helped show how methods used for physical phenomena could also be applied to the social world. Bayes supplied an early solution; Price preserved and framed it; Laplace turned the idea into a sustained program.
+
+## What changes outside the example
+
+**Clinical testing.** Sensitivity, specificity, predictive value, specimen selection, and the reference standard all matter. The U.S. Food and Drug Administration's [guidance on diagnostic-test studies](https://www.fda.gov/media/71147/download) recommends reporting paired accuracy measures with confidence intervals and warns that study populations and benchmarks affect interpretation. A screening result can change a probability without settling a diagnosis. Real clinical decisions require the actual test's validation data and the patient's circumstances, not the invented numbers in this lesson.
+
+**Search and rescue.** A search team can begin with a probability map for a missing vessel, then lower the probability assigned to a region after searching it without success and redistribute probability elsewhere. The Society for Industrial and Applied Mathematics describes Bayesian search theory as the analytic core of the U.S. Coast Guard's [Search and Rescue Optimal Planning System](https://www.siam.org/publications/siam-news/articles/bayesian-search-for-missing-aircraft-ships-and-people/). A failed search does not prove an area is empty because detection is imperfect—the same conditional-probability reversal appears in a different uniform.
+
+**Classification systems.** Spam filters and other probabilistic classifiers combine an initial rate with evidence from features. A rare category can still attract many false alarms when a system processes an enormous unaffected population. Modern systems may be much more complicated than the two-branch calculation above, but calibration still asks whether a reported probability matches observed frequencies.
+
+## One idea to remember
+
+A test result cannot be interpreted from sensitivity alone. Bayes' theorem counts both paths to the observed result, and the larger population can make a small false positive rate dominate.
+
+For another lesson about changing probabilities, revisit [Markov chains and their long-run behavior](/reckonings/daily-reckoning-2026-09-05/). A useful next step is to replace one positive result with a sequence of independent results and ask when multiplying evidence is justified.
+
+## Sources
+
+- Thomas Bayes and Richard Price, [“An Essay towards Solving a Problem in the Doctrine of Chances”](https://doi.org/10.1098/rstl.1763.0053), *Philosophical Transactions of the Royal Society of London* 53 (1763), 370–418; [public-domain scan](https://archive.org/details/philtrans09948070).
+- [“Richard Price”](https://plato.stanford.edu/archives/sum2022/entries/richard-price/), *Stanford Encyclopedia of Philosophy*, on Price's religious, political, actuarial, and philosophical work.
+- [“Laplace, Pierre-Simon Marquis de”](https://encyclopediaofmath.org/wiki/Laplace%2C_Pierre-Simon_Marquis_de), *Encyclopedia of Mathematics*, on inverse probability and population statistics.
+- Stephen M. Stigler, [“Laplace's 1774 Memoir on Inverse Probability”](https://www.jstor.org/stable/2245475), *Statistical Science* 1, no. 3 (1986), 359–363.
+- Jacob Shreffler and Martin R. Huecker, [“Diagnostic Testing Accuracy: Sensitivity, Specificity, Predictive Values and Likelihood Ratios”](https://www.ncbi.nlm.nih.gov/books/NBK557491/), *StatPearls*, updated March 6, 2023.
+- U.S. Food and Drug Administration, [*Statistical Guidance on Reporting Results from Studies Evaluating Diagnostic Tests*](https://www.fda.gov/media/71147/download), 2007.
+- J. Van Gurley and Lawrence D. Stone, [“Bayesian Search for Missing Aircraft, Ships, and People”](https://www.siam.org/publications/siam-news/articles/bayesian-search-for-missing-aircraft-ships-and-people/), *SIAM News*, November 1, 2016.
