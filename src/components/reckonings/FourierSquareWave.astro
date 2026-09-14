@@ -1,0 +1,366 @@
+---
+const initialTerms = 3;
+const pointCount = 481;
+const left = 70;
+const right = 830;
+const midY = 205;
+const amplitude = 112;
+
+const xToSvg = (x: number) => left + ((x + Math.PI) / (2 * Math.PI)) * (right - left);
+const yToSvg = (y: number) => midY - amplitude * y;
+const partialSum = (x: number, terms: number) => {
+  let total = 0;
+  for (let k = 0; k < terms; k += 1) {
+    const harmonic = 2 * k + 1;
+    total += Math.sin(harmonic * x) / harmonic;
+  }
+  return 4 * total / Math.PI;
+};
+const makePath = (terms: number) => Array.from({ length: pointCount }, (_, index) => {
+  const x = -Math.PI + (2 * Math.PI * index) / (pointCount - 1);
+  const command = index === 0 ? 'M' : 'L';
+  return `${command}${xToSvg(x).toFixed(2)} ${yToSvg(partialSum(x, terms)).toFixed(2)}`;
+}).join(' ');
+
+const initialPath = makePath(initialTerms);
+const initialMidpoint = partialSum(Math.PI / 2, initialTerms);
+const harmonics = Array.from({ length: 15 }, (_, index) => {
+  const n = 2 * index + 1;
+  return { index, n, coefficient: 4 / (Math.PI * n) };
+});
+---
+
+<figure class="fourier-lab reckoning-visual" data-fourier-lab data-terms={initialTerms}>
+  <header class="lab-heading">
+    <div>
+      <p class="kicker">Harmonic builder</p>
+      <h3>Add smooth waves and watch corners appear</h3>
+    </div>
+    <button type="button" data-reset>Reset to 3 harmonics</button>
+  </header>
+
+  <label class="term-control">
+    <span>
+      Odd harmonics included
+      <output data-term-output>{initialTerms}</output>
+    </span>
+    <input
+      type="range"
+      min="1"
+      max="15"
+      step="1"
+      value={initialTerms}
+      aria-label="Number of odd harmonics in the Fourier sum"
+      data-term-input
+    />
+  </label>
+
+  <div class="plot-shell">
+    <svg
+      viewBox="0 0 900 410"
+      role="img"
+      aria-labelledby="fourier-plot-title fourier-plot-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="fourier-plot-title">Three-harmonic Fourier approximation to a square wave</title>
+      <desc id="fourier-plot-desc">
+        A dashed square wave switches between minus one and one. A solid curve made from the
+        first three odd sine harmonics rounds the corners and overshoots near each jump.
+      </desc>
+      <defs>
+        <pattern id="fourier-grid" width="47.5" height="56" patternUnits="userSpaceOnUse">
+          <path d="M47.5 0H0V56" fill="none" />
+        </pattern>
+        <filter id="fourier-glow" x="-10%" y="-25%" width="120%" height="150%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+      <rect class="plot-background" width="900" height="410" />
+      <rect class="grid" x="70" y="37" width="760" height="336" fill="url(#fourier-grid)" />
+      <g class="axes" aria-hidden="true">
+        <line x1="70" y1={midY} x2="830" y2={midY} />
+        <line x1="450" y1="37" x2="450" y2="373" />
+        <line x1="70" y1={yToSvg(1)} x2="830" y2={yToSvg(1)} class="level" />
+        <line x1="70" y1={yToSvg(-1)} x2="830" y2={yToSvg(-1)} class="level" />
+      </g>
+      <path class="target" d={`M70 ${yToSvg(-1)} H450 M450 ${yToSvg(1)} H830`} />
+      <path class="sum-glow" d={initialPath} data-sum-path />
+      <path class="sum" d={initialPath} data-sum-path />
+      <g class="jump-points" aria-hidden="true">
+        <circle cx="450" cy={yToSvg(-1)} r="5" />
+        <circle cx="450" cy={yToSvg(1)} r="5" />
+        <circle class="midpoint" cx="450" cy={midY} r="5" />
+      </g>
+      <g class="labels" aria-hidden="true">
+        <text x="70" y="397">−π</text>
+        <text x="450" y="397">0</text>
+        <text x="830" y="397">π</text>
+        <text x="54" y={yToSvg(1) + 5}>1</text>
+        <text x="48" y={yToSvg(-1) + 5}>−1</text>
+      </g>
+      <g class="legend" aria-hidden="true">
+        <line class="legend-target" x1="92" y1="61" x2="137" y2="61" />
+        <text x="146" y="66">square-wave target</text>
+        <line class="legend-sum" x1="315" y1="61" x2="360" y2="61" />
+        <text x="369" y="66">Fourier partial sum</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div>
+      <span>Terms used</span>
+      <strong data-count>{initialTerms} odd harmonics</strong>
+    </div>
+    <div>
+      <span>Highest frequency</span>
+      <strong data-highest>5 × fundamental</strong>
+    </div>
+    <div>
+      <span>Value at x = π/2</span>
+      <strong data-midpoint>{initialMidpoint.toFixed(3)}</strong>
+    </div>
+  </div>
+
+  <section class="spectrum" aria-labelledby="spectrum-heading">
+    <div class="spectrum-heading">
+      <h4 id="spectrum-heading">The recipe uses only odd harmonics</h4>
+      <p>Bar height is the coefficient <span>4 / (πn)</span>.</p>
+    </div>
+    <svg viewBox="0 0 840 225" role="img" aria-labelledby="spectrum-title spectrum-desc">
+      <title id="spectrum-title">Fourier coefficients for the first fifteen odd harmonics</title>
+      <desc id="spectrum-desc">
+        Fifteen bars decrease in height as the harmonic number increases. The first three bars
+        are active because the plot currently uses harmonics one, three, and five.
+      </desc>
+      <line class="spectrum-axis" x1="38" y1="176" x2="812" y2="176" />
+      {harmonics.map(({ index, n, coefficient }) => {
+        const x = 48 + index * 50.5;
+        const height = coefficient * 102;
+        return (
+          <g class:list={{ bar: true, active: index < initialTerms }} data-harmonic-index={index}>
+            <rect x={x} y={176 - height} width="25" height={height} rx="3" />
+            <text x={x + 12.5} y="200">{n}</text>
+          </g>
+        );
+      })}
+      <text class="axis-title" x="425" y="220">harmonic number n</text>
+    </svg>
+  </section>
+
+  <figcaption>
+    <strong>What to notice:</strong> each added bar contributes a faster, smaller sine wave.
+    Their sum becomes flatter between the jumps and steeper near them. The narrow overshoot by
+    each jump does not disappear; it crowds into a thinner region. The dashed target and solid
+    approximation use line style as well as color so the comparison remains readable without
+    color.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-fourier-lab]').forEach((lab) => {
+    const input = lab.querySelector<HTMLInputElement>('[data-term-input]');
+    const output = lab.querySelector<HTMLOutputElement>('[data-term-output]');
+    const paths = lab.querySelectorAll<SVGPathElement>('[data-sum-path]');
+    const count = lab.querySelector<HTMLElement>('[data-count]');
+    const highest = lab.querySelector<HTMLElement>('[data-highest]');
+    const midpoint = lab.querySelector<HTMLElement>('[data-midpoint]');
+    const title = lab.querySelector('#fourier-plot-title');
+    const description = lab.querySelector('#fourier-plot-desc');
+    const spectrumDescription = lab.querySelector('#spectrum-desc');
+    const bars = lab.querySelectorAll<SVGGElement>('[data-harmonic-index]');
+    const reset = lab.querySelector<HTMLButtonElement>('[data-reset]');
+
+    if (!input || !output || !count || !highest || !midpoint || !reset) return;
+
+    const sum = (x: number, terms: number) => {
+      let total = 0;
+      for (let k = 0; k < terms; k += 1) {
+        const harmonic = 2 * k + 1;
+        total += Math.sin(harmonic * x) / harmonic;
+      }
+      return 4 * total / Math.PI;
+    };
+
+    const plotPath = (terms: number) => {
+      const pieces: string[] = [];
+      for (let index = 0; index < 481; index += 1) {
+        const x = -Math.PI + (2 * Math.PI * index) / 480;
+        const svgX = 70 + ((x + Math.PI) / (2 * Math.PI)) * 760;
+        const svgY = 205 - 112 * sum(x, terms);
+        pieces.push((index === 0 ? 'M' : 'L') + svgX.toFixed(2) + ' ' + svgY.toFixed(2));
+      }
+      return pieces.join(' ');
+    };
+
+    const update = () => {
+      const terms = Number(input.value);
+      const lastHarmonic = 2 * terms - 1;
+      const path = plotPath(terms);
+      paths.forEach((element) => element.setAttribute('d', path));
+      output.value = String(terms);
+      count.textContent = terms === 1 ? '1 odd harmonic' : terms + ' odd harmonics';
+      highest.textContent = lastHarmonic + ' × fundamental';
+      midpoint.textContent = sum(Math.PI / 2, terms).toFixed(3);
+      bars.forEach((bar) => {
+        const active = Number(bar.dataset.harmonicIndex) < terms;
+        bar.classList.toggle('active', active);
+      });
+      lab.dataset.terms = String(terms);
+      if (title) title.textContent = terms + '-harmonic Fourier approximation to a square wave';
+      if (description) {
+        description.textContent = 'A dashed square wave switches between minus one and one. A solid curve made from the first ' + terms + ' odd sine harmonics rounds the corners and overshoots near each jump.';
+      }
+      if (spectrumDescription) {
+        spectrumDescription.textContent = 'Fifteen bars decrease in height as the harmonic number increases. The first ' + terms + ' bars are active because the plot includes those odd harmonics.';
+      }
+    };
+
+    input.addEventListener('input', update);
+    reset.addEventListener('click', () => {
+      input.value = '3';
+      update();
+    });
+    update();
+  });
+</script>
+
+<style>
+  .fourier-lab {
+    --cyan: #1493ff;
+    --magenta: #ff1493;
+    --green: #93ff14;
+    background:
+      radial-gradient(circle at 14% 0%, rgba(20, 147, 255, .13), transparent 23rem),
+      linear-gradient(145deg, #061421, #091a29);
+    border: 1px solid color-mix(in srgb, var(--border-color) 70%, var(--cyan));
+    border-radius: 14px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .24);
+    color: #eaf6ff;
+    font-family: var(--font-sans);
+    margin: 2.2rem 50% 2.5rem;
+    padding: clamp(1rem, 3vw, 1.65rem);
+    transform: translateX(-50%);
+    width: min(1040px, calc(100vw - 2rem));
+  }
+  .lab-heading {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .kicker {
+    color: var(--green);
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    margin: 0 0 .22rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    color: #f7fbff;
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0;
+  }
+  button {
+    background: rgba(147, 255, 20, .08);
+    border: 1px solid rgba(147, 255, 20, .58);
+    border-radius: 999px;
+    color: #dfffb8;
+    cursor: pointer;
+    font: 650 .72rem/1 var(--font-sans);
+    padding: .68rem .9rem;
+  }
+  button:hover { background: rgba(147, 255, 20, .15); }
+  button:focus-visible,
+  input:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .term-control {
+    background: rgba(3, 12, 20, .55);
+    border: 1px solid rgba(126, 172, 201, .2);
+    border-radius: 9px;
+    display: block;
+    margin-bottom: .9rem;
+    padding: .7rem .85rem;
+  }
+  .term-control span {
+    display: flex;
+    font-size: .74rem;
+    justify-content: space-between;
+  }
+  output { color: var(--green); font-family: var(--font-mono); }
+  input[type='range'] { accent-color: var(--green); cursor: pointer; margin-top: .6rem; width: 100%; }
+  .plot-shell {
+    background: #04101b;
+    border: 1px solid rgba(101, 164, 203, .22);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .plot-shell svg { display: block; height: auto; width: 100%; }
+  .plot-background { fill: #04101b; }
+  .grid path { stroke: rgba(98, 169, 213, .12); stroke-width: 1; }
+  .axes line { stroke: #5e7b8f; stroke-width: 1; }
+  .axes .level { stroke-dasharray: 3 8; stroke-opacity: .52; }
+  .target { fill: none; stroke: var(--cyan); stroke-dasharray: 10 7; stroke-width: 4; }
+  .sum,
+  .sum-glow { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .sum-glow { filter: url(#fourier-glow); opacity: .28; stroke: var(--magenta); stroke-width: 10; }
+  .sum { stroke: var(--magenta); stroke-width: 3.2; }
+  .jump-points circle { fill: #04101b; stroke: var(--cyan); stroke-width: 2; }
+  .jump-points .midpoint { fill: var(--magenta); stroke: #04101b; }
+  .labels text,
+  .legend text { fill: #a9bdcb; font: 15px ui-monospace, monospace; }
+  .labels text { text-anchor: middle; }
+  .legend-target { stroke: var(--cyan); stroke-dasharray: 7 5; stroke-width: 3; }
+  .legend-sum { stroke: var(--magenta); stroke-width: 3; }
+  .readout {
+    display: grid;
+    gap: .65rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: .75rem;
+  }
+  .readout div {
+    background: rgba(3, 12, 20, .58);
+    border: 1px solid rgba(126, 172, 201, .2);
+    border-radius: 8px;
+    padding: .68rem .75rem;
+  }
+  .readout span { color: #7892a4; display: block; font-size: .57rem; letter-spacing: .08em; text-transform: uppercase; }
+  .readout strong { color: #f7fbff; display: block; font-family: var(--font-mono); font-size: .75rem; margin-top: .22rem; }
+  .spectrum {
+    background: rgba(3, 12, 20, .44);
+    border: 1px solid rgba(126, 172, 201, .2);
+    border-radius: 9px;
+    margin-top: .75rem;
+    padding: .75rem .85rem .3rem;
+  }
+  .spectrum-heading { align-items: baseline; display: flex; gap: 1rem; justify-content: space-between; }
+  .spectrum h4 { color: #f7fbff; font-size: .82rem; margin: 0; }
+  .spectrum p { color: #89a1b2; font-size: .68rem; margin: 0; }
+  .spectrum p span { color: var(--green); font-family: var(--font-mono); }
+  .spectrum svg { display: block; height: auto; width: 100%; }
+  .spectrum-axis { stroke: #5e7b8f; }
+  .bar rect { fill: none; stroke: #587184; stroke-width: 1; }
+  .bar text { fill: #6f8797; font: 12px ui-monospace, monospace; text-anchor: middle; }
+  .bar.active rect { fill: rgba(147, 255, 20, .7); stroke: var(--green); }
+  .bar.active text { fill: #e7ffd0; }
+  .axis-title { fill: #7892a4; font: 11px ui-monospace, monospace; text-anchor: middle; }
+  figcaption { color: #a9bdcb; font-size: .78rem; line-height: 1.58; margin-top: .9rem; }
+  figcaption strong { color: #f7fbff; }
+  @media (max-width: 700px) {
+    .lab-heading { align-items: flex-start; flex-direction: column; }
+    .readout { grid-template-columns: 1fr; }
+    .spectrum-heading { align-items: flex-start; flex-direction: column; gap: .2rem; }
+  }
+  @media (max-width: 500px) {
+    .fourier-lab { width: calc(100vw - 1rem); }
+    .legend { display: none; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .sum,
+    .sum-glow,
+    .bar rect { transition: 140ms ease; }
+  }
+</style>

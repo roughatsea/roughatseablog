@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-13T06:00:00-07:00",
+  "updatedAt": "2026-09-14T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -43,7 +43,8 @@
         "numerical convergence"
       ],
       "relatedLessons": [
-        "daily-reckoning-2026-08-29"
+        "daily-reckoning-2026-08-29",
+        "daily-reckoning-2026-09-14"
       ]
     },
     {
@@ -211,7 +212,8 @@
       ],
       "relatedLessons": [
         "daily-reckoning-2026-08-29",
-        "daily-reckoning-2026-09-12"
+        "daily-reckoning-2026-09-12",
+        "daily-reckoning-2026-09-14"
       ]
     },
     {
@@ -405,6 +407,33 @@
       ],
       "relatedLessons": [
         "daily-reckoning-2026-09-05"
+      ]
+    },
+    {
+      "date": "2026-09-14",
+      "slug": "daily-reckoning-2026-09-14",
+      "title": "How Can Smooth Waves Build a Square Wave?",
+      "area": "Analysis and signal processing",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Sine and cosine graphs",
+        "Radian measure",
+        "Definite integrals as signed area"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Fourier series",
+        "square waves",
+        "odd harmonics",
+        "Fourier coefficients",
+        "Gibbs phenomenon",
+        "heat equation",
+        "signal processing",
+        "magnetic resonance imaging"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-30",
+        "daily-reckoning-2026-09-06"
       ]
     }
   ]

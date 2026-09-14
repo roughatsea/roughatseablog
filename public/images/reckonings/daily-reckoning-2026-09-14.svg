@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Odd sine harmonics assembling a square wave</title>
+  <desc id="desc">Three cyan and green sine waves flow from separate instrument channels into a luminous summing ring, then emerge as a magenta waveform with broad plateaus and steep sides on a dark maritime blueprint grid.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020b13"/>
+      <stop offset=".52" stop-color="#071a2a"/>
+      <stop offset="1" stop-color="#03101b"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="70%" cy="50%" r="55%">
+      <stop offset="0" stop-color="#ff1493" stop-opacity=".18"/>
+      <stop offset=".52" stop-color="#1493ff" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#03101b" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="small-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1493ff" stroke-opacity=".065"/>
+    </pattern>
+    <pattern id="large-grid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M200 0H0V200" fill="none" stroke="#1493ff" stroke-opacity=".11" stroke-width="1.5"/>
+    </pattern>
+    <filter id="blue-glow" x="-30%" y="-60%" width="160%" height="220%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-15%" y="-30%" width="130%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M1 1L10 6L1 11Z" fill="#93ff14"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#halo)"/>
+  <rect width="1600" height="900" fill="url(#small-grid)"/>
+  <rect width="1600" height="900" fill="url(#large-grid)"/>
+
+  <path d="M0 765C205 718 359 829 555 775C746 722 910 789 1089 756C1281 721 1412 746 1600 703V900H0Z" fill="#020912" opacity=".76"/>
+  <path d="M0 765C205 718 359 829 555 775C746 722 910 789 1089 756C1281 721 1412 746 1600 703" fill="none" stroke="#1493ff" stroke-opacity=".18" stroke-width="3"/>
+
+  <g opacity=".9">
+    <rect x="76" y="112" width="480" height="174" rx="18" fill="#03101b" stroke="#3f6d89" stroke-opacity=".55"/>
+    <rect x="76" y="363" width="480" height="174" rx="18" fill="#03101b" stroke="#3f6d89" stroke-opacity=".55"/>
+    <rect x="76" y="614" width="480" height="174" rx="18" fill="#03101b" stroke="#3f6d89" stroke-opacity=".55"/>
+    <path d="M116 199H516M116 450H516M116 701H516" stroke="#68859a" stroke-opacity=".45" stroke-dasharray="5 10"/>
+    <path d="M116 199C149 116 183 116 216 199S283 282 316 199S383 116 416 199S483 282 516 199" fill="none" stroke="#1493ff" stroke-width="7" filter="url(#blue-glow)"/>
+    <path d="M116 450C127 411 138 411 149 450S171 489 182 450S204 411 215 450S237 489 248 450S270 411 281 450S303 489 314 450S336 411 347 450S369 489 380 450S402 411 413 450S435 489 446 450S468 411 479 450S501 489 512 450" fill="none" stroke="#93ff14" stroke-width="5" filter="url(#blue-glow)"/>
+    <path d="M116 701C123 676 130 676 137 701S151 726 158 701S172 676 179 701S193 726 200 701S214 676 221 701S235 726 242 701S256 676 263 701S277 726 284 701S298 676 305 701S319 726 326 701S340 676 347 701S361 726 368 701S382 676 389 701S403 726 410 701S424 676 431 701S445 726 452 701S466 676 473 701S487 726 494 701S508 676 515 701" fill="none" stroke="#ffcf33" stroke-width="4" filter="url(#blue-glow)"/>
+    <g fill="#d8eaf5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="28" font-weight="700">
+      <text x="101" y="154">n = 1</text>
+      <text x="101" y="405">n = 3</text>
+      <text x="101" y="656">n = 5</text>
+    </g>
+    <g fill="#7898ad" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="21">
+      <text x="457" y="154">4/π</text>
+      <text x="434" y="405">4/(3π)</text>
+      <text x="434" y="656">4/(5π)</text>
+    </g>
+  </g>
+
+  <g fill="none" stroke="#93ff14" stroke-width="4" stroke-opacity=".74" marker-end="url(#arrow)">
+    <path d="M556 199C630 199 621 359 684 413"/>
+    <path d="M556 450H671"/>
+    <path d="M556 701C630 701 621 541 684 487"/>
+  </g>
+  <circle cx="708" cy="450" r="70" fill="#061421" stroke="#eaf6ff" stroke-width="3" filter="url(#blue-glow)"/>
+  <circle cx="708" cy="450" r="55" fill="none" stroke="#1493ff" stroke-opacity=".48" stroke-dasharray="6 9"/>
+  <path d="M678 450H738M708 420V480" stroke="#93ff14" stroke-width="8" stroke-linecap="round"/>
+
+  <g>
+    <rect x="760" y="169" width="720" height="562" rx="24" fill="#020b13" fill-opacity=".64" stroke="#527d98" stroke-opacity=".55"/>
+    <path d="M760 450H1480M1120 169V731" stroke="#58788e" stroke-opacity=".38"/>
+    <path d="M760 575H1120M1120 325H1480" fill="none" stroke="#1493ff" stroke-width="5" stroke-dasharray="12 12" opacity=".68"/>
+    <path d="M760.0 450.0 L767.5 481.0 L775.0 510.5 L782.5 537.0 L790.0 559.5 L797.5 577.0 L805.0 589.3 L812.5 596.4 L820.0 598.5 L827.5 596.7 L835.0 591.7 L842.5 585.0 L850.0 577.5 L857.5 570.6 L865.0 565.0 L872.5 561.5 L880.0 560.3 L887.5 561.4 L895.0 564.6 L902.5 569.2 L910.0 574.5 L917.5 579.7 L925.0 584.0 L932.5 586.9 L940.0 587.9 L947.5 586.9 L955.0 584.0 L962.5 579.7 L970.0 574.5 L977.5 569.2 L985.0 564.6 L992.5 561.4 L1000.0 560.3 L1007.5 561.5 L1015.0 565.0 L1022.5 570.6 L1030.0 577.5 L1037.5 585.0 L1045.0 591.7 L1052.5 596.7 L1060.0 598.5 L1067.5 596.4 L1075.0 589.3 L1082.5 577.0 L1090.0 559.5 L1097.5 537.0 L1105.0 510.5 L1112.5 481.0 L1120.0 450.0 L1127.5 419.0 L1135.0 389.5 L1142.5 363.0 L1150.0 340.5 L1157.5 323.0 L1165.0 310.7 L1172.5 303.6 L1180.0 301.5 L1187.5 303.3 L1195.0 308.3 L1202.5 315.0 L1210.0 322.5 L1217.5 329.4 L1225.0 335.0 L1232.5 338.5 L1240.0 339.7 L1247.5 338.6 L1255.0 335.4 L1262.5 330.8 L1270.0 325.5 L1277.5 320.3 L1285.0 316.0 L1292.5 313.1 L1300.0 312.1 L1307.5 313.1 L1315.0 316.0 L1322.5 320.3 L1330.0 325.5 L1337.5 330.8 L1345.0 335.4 L1352.5 338.6 L1360.0 339.7 L1367.5 338.5 L1375.0 335.0 L1382.5 329.4 L1390.0 322.5 L1397.5 315.0 L1405.0 308.3 L1412.5 303.3 L1420.0 301.5 L1427.5 303.6 L1435.0 310.7 L1442.5 323.0 L1450.0 340.5 L1457.5 363.0 L1465.0 389.5 L1472.5 419.0 L1480.0 450.0" fill="none" stroke="#ff1493" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#pink-glow)"/>
+    <g fill="#eaf6ff" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22">
+      <text x="797" y="217">−π</text>
+      <text x="1108" y="217">0</text>
+      <text x="1432" y="217">π</text>
+    </g>
+    <g transform="translate(782 688)">
+      <line x1="0" y1="0" x2="60" y2="0" stroke="#1493ff" stroke-width="4" stroke-dasharray="9 7"/>
+      <circle cx="91" cy="0" r="5" fill="#ff1493"/>
+      <line x1="112" y1="0" x2="172" y2="0" stroke="#ff1493" stroke-width="5"/>
+    </g>
+  </g>
+
+  <g fill="none" stroke="#eaf6ff" stroke-opacity=".16">
+    <circle cx="708" cy="450" r="95"/>
+    <circle cx="708" cy="450" r="112" stroke-dasharray="3 12"/>
+    <path d="M708 320V252M708 648V580"/>
+  </g>
+</svg>
