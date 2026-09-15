@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MetabolismLab from '../components/metabolism/MetabolismLab';
+---
+<BaseLayout title="Metabolism Lab" description="An interactive laboratory for food intake, body fat, and weight change. Compare eating and activity scenarios with a transparent dynamic model.">
+  <noscript><p class="ml-nojs">JavaScript is required to run the simulator and update its controls. The example shown is static; the methodology and source links remain readable.</p></noscript>
+  <MetabolismLab client:load />
+</BaseLayout>

@@ -11,7 +11,8 @@
     "validate:save-point": "node scripts/validate-save-point.mjs",
     "validate:wake": "node scripts/validate-wake-data.mjs && node scripts/validate-wake-records.mjs",
     "build:wake-exports": "node scripts/build-wake-exports.mjs",
-    "test:fly": "node --test scripts/fly.test.mjs"
+    "test:fly": "node --test scripts/fly.test.mjs",
+    "test:metabolism": "node --test scripts/metabolism.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
