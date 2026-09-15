@@ -117,12 +117,19 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
 <script>
   const menuToggle = document.getElementById('menu-toggle');
   const navigationPanel = document.getElementById('primary-navigation-panel');
+  const navGroups = navigationPanel?.querySelectorAll<HTMLDetailsElement>('details.nav-group');
   const setMenuOpen = (isOpen: boolean) => {
     menuToggle?.setAttribute('aria-expanded', String(isOpen));
     menuToggle?.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     navigationPanel?.classList.toggle('is-open', isOpen);
   };
   menuToggle?.addEventListener('click', () => setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true'));
+  navGroups?.forEach((group) => group.addEventListener('toggle', () => {
+    if (!group.open) return;
+    navGroups.forEach((otherGroup) => {
+      if (otherGroup !== group) otherGroup.open = false;
+    });
+  }));
   navigationPanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Node)) return;
