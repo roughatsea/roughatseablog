@@ -1,0 +1,46 @@
+name: Microcosm verification
+on:
+  push:
+    paths:
+      - 'src/components/microcosm/**'
+      - 'src/pages/microcosm.astro'
+      - 'scripts/microcosm*'
+      - '.github/workflows/microcosm.yml'
+  pull_request:
+    paths:
+      - 'src/components/microcosm/**'
+      - 'src/pages/microcosm.astro'
+      - 'scripts/microcosm*'
+      - '.github/workflows/microcosm.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node --test scripts/microcosm.test.mjs
+      - run: npm run build
+      - name: Install isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/microcosm-browser" playwright@1.57.0
+          "$RUNNER_TEMP/microcosm-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Verify the built application
+        env:
+          MICRO_BROWSER_MODULE: ${{ runner.temp }}/microcosm-browser/node_modules/playwright/index.mjs
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4321 > /tmp/microcosm-preview.log 2>&1 &
+          for i in $(seq 1 45); do curl -fsS http://127.0.0.1:4321/microcosm/ >/dev/null && break; sleep 1; done
+          node scripts/microcosm.browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: microcosm-verification
+          path: artifacts/microcosm
+          if-no-files-found: ignore

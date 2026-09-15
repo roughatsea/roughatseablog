@@ -1,0 +1,28 @@
+---
+import { renderShell } from '../components/microcosm/shell.js';
+import '../components/microcosm/microcosm.css';
+const title = 'Microcosm — An evolving world inside a red blood cell | Rough at Sea';
+const description = 'Explore an interactive 3D red blood cell, reveal its membrane skeleton and hemoglobin, and follow nine source-linked discoveries. One cell is only the beginning.';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#090e19" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.roughatsea.com/microcosm/" />
+    <link rel="canonical" href="https://www.roughatsea.com/microcosm/" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Fragment set:html={renderShell()} />
+    <script>
+      import { mountMicrocosm } from '../components/microcosm/experience.js';
+      mountMicrocosm();
+    </script>
+  </body>
+</html>

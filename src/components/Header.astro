@@ -2,7 +2,7 @@
 const pathname = Astro.url.pathname;
 const isWriting = pathname.startsWith('/notes/') || pathname.startsWith('/guides/') || pathname === '/content/';
 const isDaily = pathname.startsWith('/soundings/') || pathname.startsWith('/reckonings/') || pathname.startsWith('/save-point/') || pathname.startsWith('/wake/');
-const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/');
+const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/') || pathname === '/microcosm' || pathname.startsWith('/microcosm/');
 ---
 
 <header class="glass-panel">
@@ -45,6 +45,7 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
           <div class="nav-menu">
             <a href="/atlas/" aria-current={pathname.startsWith('/atlas/') ? 'page' : undefined}><strong>Atlas</strong><span>An interactive world atlas</span></a>
             <a href="/fly" aria-current={pathname === '/fly' || pathname.startsWith('/fly/') ? 'page' : undefined}><strong>Fly</strong><span>A quiet journey through alien worlds</span></a>
+            <a href="/microcosm/" aria-current={pathname === '/microcosm' || pathname.startsWith('/microcosm/') ? 'page' : undefined}><strong>Microcosm</strong><span>An evolving world inside a cell</span></a>
           </div>
         </details>
         <a href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>About</a>
