@@ -75,8 +75,8 @@ const formattedDate = date.toLocaleDateString('en-US', {
   .card-image {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     background: var(--bg-color);
   }
   .card-content {
@@ -172,6 +172,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
       aspect-ratio: auto;
       height: 100%;
       min-height: 14rem;
+      object-fit: cover;
     }
 
     .card-content {
