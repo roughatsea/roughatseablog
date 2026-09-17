@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-14T06:00:00-07:00",
+  "updatedAt": "2026-09-17T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -160,7 +160,9 @@
         "phasors",
         "history of cubic equations"
       ],
-      "relatedLessons": []
+      "relatedLessons": [
+        "daily-reckoning-2026-09-17"
+      ]
     },
     {
       "date": "2026-09-05",
@@ -352,7 +354,8 @@
       ],
       "relatedLessons": [
         "daily-reckoning-2026-09-09",
-        "daily-reckoning-2026-09-10"
+        "daily-reckoning-2026-09-10",
+        "daily-reckoning-2026-09-17"
       ]
     },
     {
@@ -434,6 +437,33 @@
       "relatedLessons": [
         "daily-reckoning-2026-08-30",
         "daily-reckoning-2026-09-06"
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "slug": "daily-reckoning-2026-09-17",
+      "title": "Why Is There No Quintic Formula?",
+      "area": "Numbers and algebra",
+      "difficulty": "Advanced",
+      "prerequisites": [
+        "The quadratic formula",
+        "Square roots and nested radicals",
+        "Composition of reversible operations"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Abel-Ruffini theorem",
+        "Galois theory",
+        "Galois groups",
+        "solvability by radicals",
+        "permutation groups",
+        "finite fields",
+        "Reed-Solomon codes",
+        "Advanced Encryption Standard"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-04",
+        "daily-reckoning-2026-09-11"
       ]
     }
   ]

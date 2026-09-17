@@ -1,0 +1,276 @@
+---
+title: "Why Is There No Quintic Formula?"
+description: "Equations of degree five exposed a limit of algebraic formulas—and turned the permutations of roots into a new kind of mathematics."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-17.svg"
+heroImageAlt: "Five luminous root points form a pentagon on a dark maritime blueprint. Cyan and magenta permutation paths cross between them, while a green radical scaffold arriving from the left fractures before reaching the complete web."
+date: 2026-09-17
+publishedAt: 2026-09-17T06:00:00-07:00
+area: "Numbers and algebra"
+difficulty: "Advanced"
+prerequisites:
+  - "The quadratic formula"
+  - "Square roots and nested radicals"
+  - "Composition of reversible operations"
+readTimeMinutes: 10
+tags:
+  - daily-reckoning
+  - algebra
+  - polynomial-equations
+  - galois-theory
+  - group-theory
+  - quintic
+  - finite-fields
+  - history-of-mathematics
+---
+
+import GaloisRootSymmetry from '../../components/reckonings/GaloisRootSymmetry.astro';
+
+The quadratic formula solves every equation
+
+$$
+ax^2+bx+c=0
+$$
+
+using the coefficients $a$, $b$, and $c$, the four arithmetic operations, and a square root. Mathematicians eventually found longer formulas for cubic and quartic equations. A natural pattern seems to be forming: work harder, accept a more elaborate nest of roots, and solve the next degree.
+
+Then degree five refuses.
+
+There is no formula built from addition, subtraction, multiplication, division, and roots that solves every quintic equation
+
+$$
+ax^5+bx^4+cx^3+dx^2+ex+f=0.
+$$
+
+The obstruction is not a shortage of ingenuity. The general quintic contains root symmetries that no finite tower of radicals can reproduce.
+
+## What “no formula” means
+
+A **radical expression** starts with a polynomial's coefficients and applies the four arithmetic operations together with $n$th roots such as $\sqrt{\phantom{x}}$, $\sqrt[3]{\phantom{x}}$, and $\sqrt[7]{\phantom{x}}$. Nested roots are allowed. The quadratic formula is a radical expression because
+
+$$
+x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
+$$
+
+uses only those operations.
+
+The [Abel–Ruffini theorem](https://www.nationalacademies.org/read/11540/chapter/11) says that no radical expression solves the **general** polynomial of degree five or higher. The word *general* matters. Some particular quintics are easy: $x^5-32=0$ has the real solution $x=2$, and all five complex roots can also be written with radicals. The theorem says that one radical recipe cannot accept arbitrary quintic coefficients and return their roots.
+
+Niels Henrik Abel proved that impossibility. Évariste Galois found a sharper question: given one particular polynomial, what property decides whether its roots can be written with radicals?
+
+## Stop staring at the formula; watch the roots move
+
+Consider the quartic equation
+
+$$
+x^4-10x^2+1=0.
+$$
+
+Its four roots are
+
+$$
+\sqrt3+\sqrt2,\quad
+\sqrt3-\sqrt2,\quad
+-\sqrt3+\sqrt2,\quad
+-\sqrt3-\sqrt2.
+$$
+
+Changing the sign of $\sqrt2$ swaps the roots in pairs. Changing the sign of $\sqrt3$ makes a different pair of swaps. Neither change alters any rational number, and both changes respect addition and multiplication.
+
+The interactive number line below keeps the four root positions fixed. Each colored token starts on one root. Use either sign-flip button to send every token to the root obtained by changing that square-root sign.
+
+<GaloisRootSymmetry />
+
+Press the two sign flips in either order. Both routes produce the same final permutation. These symmetries **commute**: applying transformation $A$ and then transformation $B$ gives the same result as applying $B$ and then $A$.
+
+The four possible operations—flip neither sign, flip only $\sqrt2$, flip only $\sqrt3$, or flip both—form a group. A **group** is a collection of reversible operations that can be composed associatively, contains a do-nothing operation, and stays inside the collection when operations are combined. Here, every operation is its own inverse because performing the same sign flip twice restores the original signs.
+
+## The precise bridge from roots to groups
+
+Let $f(x)$ be a polynomial whose coefficients are rational numbers. Write $K$ for the smallest number system containing the rational numbers and every root of $f$. Mathematicians call $K$ the **splitting field** of $f$ over the rational numbers.
+
+The **Galois group**
+
+$$
+\operatorname{Gal}(K/\mathbb{Q})
+$$
+
+is the group of all reversible maps from $K$ to itself that preserve addition, preserve multiplication, and leave every rational number fixed. The symbol $\mathbb{Q}$ denotes the rational numbers. Because each map preserves polynomial arithmetic, it must send a root of $f$ to another root of $f$. The maps therefore act as permutations of the roots.
+
+Galois theory gives the exact criterion:
+
+> A polynomial over the rational numbers can be solved by radicals if and only if its Galois group is a **solvable group**.
+
+“Solvable” has a technical meaning here. A finite group $G$ is solvable when there is a chain
+
+$$
+G=G_0\triangleright G_1\triangleright\cdots\triangleright G_m=\{e\}
+$$
+
+in which every $G_{i+1}$ is a normal subgroup of $G_i$, and every quotient group $G_i/G_{i+1}$ is abelian. The symbol $e$ is the do-nothing operation. A subgroup is **normal** when it is stable under conjugation by operations in the larger group; a group is **abelian** when its operations commute. In less compressed language, a solvable group can be dismantled into layers whose remaining operations commute.
+
+Taking an $n$th root adds a controlled, cyclic layer of symmetry. A finite tower of radical operations can therefore build only a solvable symmetry group. The quartic in the interactive diagram has four commuting symmetries, so its group is already abelian and hence solvable.
+
+The general quintic, whose coefficients are independent symbols, has the full symmetric group $S_5$: all $5!=120$ permutations of five roots are possible. Inside $S_5$ sits the alternating group $A_5$, made from the $60$ even permutations. The group $A_5$ is non-abelian and has no nontrivial proper normal subgroup. That indivisible, noncommuting layer prevents $S_5$ from being solvable. Radical formulas cannot encode it.
+
+This paragraph is a window into the proof, not the entire proof of the Abel–Ruffini theorem. A full proof constructs the correspondence between intermediate number systems and subgroups, then proves exactly how adjoining radicals changes the group. James Milne's freely available [*Fields and Galois Theory*](https://www.jmilne.org/math/CourseNotes/FT.pdf) supplies that machinery and proves the radical criterion.
+
+## Worked example: expose the quartic's radicals
+
+Solve
+
+$$
+x^4-10x^2+1=0
+$$
+
+without using a memorized quartic formula.
+
+Only even powers of $x$ appear, so define $y=x^2$. The quartic becomes a quadratic:
+
+$$
+y^2-10y+1=0.
+$$
+
+Apply the quadratic formula:
+
+$$
+\begin{aligned}
+y
+&=\frac{10\pm\sqrt{(-10)^2-4(1)(1)}}{2}\\
+&=\frac{10\pm\sqrt{100-4}}{2}\\
+&=\frac{10\pm\sqrt{96}}{2}\\
+&=\frac{10\pm4\sqrt6}{2}\\
+&=5\pm2\sqrt6.
+\end{aligned}
+$$
+
+The two values are perfect squares inside the number system containing $\sqrt2$ and $\sqrt3$:
+
+$$
+(\sqrt3+\sqrt2)^2=3+2\sqrt6+2=5+2\sqrt6,
+$$
+
+and
+
+$$
+(\sqrt3-\sqrt2)^2=3-2\sqrt6+2=5-2\sqrt6.
+$$
+
+Because $y=x^2$, each value of $y$ gives two signs for $x$:
+
+$$
+x=\pm(\sqrt3+\sqrt2)
+\qquad\text{or}\qquad
+x=\pm(\sqrt3-\sqrt2).
+$$
+
+Those are exactly the four roots in the diagram. The calculation also explains why independently changing the signs of $\sqrt2$ and $\sqrt3$ permutes the roots without creating a new number outside the same system.
+
+## Try two checks
+
+### Problem 1
+
+Verify directly that $x=\sqrt3+\sqrt2$ satisfies $x^4-10x^2+1=0$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+First square the proposed root:
+
+$$
+x^2=(\sqrt3+\sqrt2)^2=5+2\sqrt6.
+$$
+
+Square once more:
+
+$$
+\begin{aligned}
+x^4
+&=(5+2\sqrt6)^2\\
+&=25+20\sqrt6+24\\
+&=49+20\sqrt6.
+\end{aligned}
+$$
+
+Now substitute both powers:
+
+$$
+\begin{aligned}
+x^4-10x^2+1
+&=(49+20\sqrt6)-10(5+2\sqrt6)+1\\
+&=49+20\sqrt6-50-20\sqrt6+1\\
+&=0.
+\end{aligned}
+$$
+
+Therefore $\sqrt3+\sqrt2$ is a root.
+
+</details>
+
+### Problem 2
+
+In the interactive diagram, start with $r_1=\sqrt3+\sqrt2$. Flip the sign of $\sqrt2$, then flip the sign of $\sqrt3$. Where does $r_1$ land? What happens if the two flips are reversed?
+
+<details>
+<summary>Reveal the solution</summary>
+
+Flipping $\sqrt2$ first gives
+
+$$
+\sqrt3+\sqrt2\longmapsto\sqrt3-\sqrt2.
+$$
+
+Flipping $\sqrt3$ next gives
+
+$$
+\sqrt3-\sqrt2\longmapsto-\sqrt3-\sqrt2=r_4.
+$$
+
+Reverse the order. Flipping $\sqrt3$ first gives
+
+$$
+\sqrt3+\sqrt2\longmapsto-\sqrt3+\sqrt2,
+$$
+
+and flipping $\sqrt2$ next again gives
+
+$$
+-\sqrt3+\sqrt2\longmapsto-\sqrt3-\sqrt2=r_4.
+$$
+
+The two operations commute, so both orders send $r_1$ to $r_4$.
+
+</details>
+
+## Several discoveries, one violent political life
+
+The failure of a general quintic formula was not Galois' discovery alone. Paolo Ruffini published an attempted impossibility proof in 1799; later mathematicians found gaps, although Ruffini had identified much of the right terrain. Abel produced a rigorous proof in 1824. The [National Academies' historical account](https://www.nationalacademies.org/read/11540/chapter/11) describes how Abel's argument closed the search for a universal radical formula.
+
+Galois changed the question during the final years of the Bourbon Restoration and the first years of Louis-Philippe's July Monarchy. The University of St Andrews' [biography of Galois](https://mathshistory.st-andrews.ac.uk/Biographies/Galois/) records that he was an ardent republican, tried twice to enter the politically active École Polytechnique, and was locked inside the École Normale while students elsewhere joined the July Revolution of 1830. A newspaper attack on the school's director led to Galois' expulsion. He joined a republican artillery unit of the National Guard; the monarchy abolished that unit, and Galois was later arrested twice and imprisoned.
+
+Political institutions constrained Galois' life, while scientific institutions controlled the route his mathematics took toward publication. A memoir sent to the Paris Academy in 1830 disappeared after Fourier, the Academy's secretary, died. Poisson rejected a later version as insufficiently developed while Galois was in prison. Galois died in 1832 after a duel whose cause remains disputed. The popular story that he invented group theory in one frantic night before the duel is exaggerated; he had developed and submitted the central ideas earlier. Joseph Liouville recognized the work in 1843 and published Galois' papers in 1846.
+
+Politics did not cause the radical criterion. Political commitments, institutional rejection, imprisonment, and an early death did affect Galois' opportunity to explain the criterion and see it accepted.
+
+## Where the descendants operate
+
+**Computer algebra.** Software can compute information about a polynomial's Galois group and use the group to decide whether a radical solution exists. The answer can be “no” before a program wastes time searching for a formula that cannot exist. The algorithmic problem is tractable enough that Susan Landau's [work on solvability by radicals](https://www.cs.cmu.edu/~glmiller/Publications/Papers/Landau_SolvableByRadicals.pdf) gives a polynomial-time decision method over the rational numbers.
+
+**Error-correcting codes.** Finite fields are number systems with finitely many elements; they are also called Galois fields. Reed–Solomon codes evaluate and reconstruct polynomials over finite fields so that damaged data can be recovered. The National Aeronautics and Space Administration's [Reed–Solomon tutorial](https://ntrs.nasa.gov/citations/19900019023) develops the field arithmetic used by the encoder and decoder. The application belongs to the field-theoretic descendants of Galois' work, although it does not solve quintic equations.
+
+**Encryption.** The Advanced Encryption Standard (AES) treats every byte as one of the $256$ elements of the finite field $\operatorname{GF}(2^8)$, where the letters $\operatorname{GF}$ abbreviate *Galois field*. The [National Institute of Standards and Technology specification](https://doi.org/10.6028/NIST.FIPS.197-upd1) defines byte multiplication and multiplicative inverses in that field. AES uses finite-field structure for exact, reversible transformations; again, the connection is the algebra of fields rather than a hidden quintic formula.
+
+## One idea to remember
+
+The quintic did not defeat algebra. It forced algebra to change its object of attention. Instead of demanding a formula for each root, Galois studied every root-permutation that preserves the equation—and found that the structure of those symmetries decides whether radicals can work.
+
+For a gentler encounter with algebra as motion, revisit [why multiplying by $i$ makes a quarter-turn](/reckonings/daily-reckoning-2026-09-04/). A natural next step is to study a noncommuting pair of permutations and watch why order begins to matter.
+
+## Sources
+
+- J. S. Milne, [*Fields and Galois Theory*](https://www.jmilne.org/math/CourseNotes/FT.pdf), version 5.10, 2022, especially the theorem relating solvability by radicals to solvable Galois groups.
+- John Derbyshire, [“The Assault on the Quintic”](https://www.nationalacademies.org/read/11540/chapter/11), in *Unknown Quantity: A Real and Imaginary History of Algebra*, Joseph Henry Press, 2006.
+- University of St Andrews, [“Évariste Galois (1811–1832)”](https://mathshistory.st-andrews.ac.uk/Biographies/Galois/), MacTutor History of Mathematics, on Galois' mathematics, republican activity, imprisonment, duel, and posthumous publication.
+- Joseph Liouville, [introduction to the mathematical works of Évariste Galois](https://doi.org/10.22237/jmasm/1162355460), originally published in 1846; English translation by T. W. Hungerford, 2006.
+- Susan Landau, [“Solvability by Radicals Is in Polynomial Time”](https://www.cs.cmu.edu/~glmiller/Publications/Papers/Landau_SolvableByRadicals.pdf), *Journal of Computer and System Sciences* 30, no. 2 (1985), 179–208.
+- William A. Geisel, [*Tutorial on Reed–Solomon Error Correction Coding*](https://ntrs.nasa.gov/citations/19900019023), NASA Technical Memorandum 102162, 1990.
+- National Institute of Standards and Technology, [*Advanced Encryption Standard (AES)*](https://doi.org/10.6028/NIST.FIPS.197-upd1), FIPS 197, updated May 9, 2023.

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Five algebraic roots linked by noncommuting symmetries</title>
+  <desc id="desc">Five luminous root points form a pentagon on a dark maritime blueprint. Cyan and magenta permutation paths cross between them, while a green radical scaffold arriving from the left fractures before reaching the complete web.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#030a14" />
+      <stop offset="0.52" stop-color="#071a2b" />
+      <stop offset="1" stop-color="#06101c" />
+    </linearGradient>
+    <radialGradient id="haze" cx="72%" cy="48%" r="48%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".2" />
+      <stop offset=".55" stop-color="#ff1493" stop-opacity=".06" />
+      <stop offset="1" stop-color="#06101c" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="minorGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#55dbff" stroke-opacity=".055" stroke-width="1" />
+    </pattern>
+    <pattern id="majorGrid" width="160" height="160" patternUnits="userSpaceOnUse">
+      <rect width="160" height="160" fill="url(#minorGrid)" />
+      <path d="M160 0H0V160" fill="none" stroke="#55dbff" stroke-opacity=".12" stroke-width="1.2" />
+    </pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5 0 10Z" fill="#55dbff" />
+    </marker>
+    <marker id="arrowPink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5 0 10Z" fill="#ff1493" />
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)" />
+  <rect width="1600" height="900" fill="url(#majorGrid)" />
+  <rect width="1600" height="900" fill="url(#haze)" />
+
+  <g fill="none" stroke="#55dbff" stroke-opacity=".12">
+    <circle cx="1220" cy="450" r="332" />
+    <circle cx="1220" cy="450" r="270" stroke-dasharray="8 14" />
+    <circle cx="1220" cy="450" r="190" />
+    <path d="M880 450H1560M1220 110V790" />
+    <path d="M985 215L1455 685M1455 215L985 685" stroke-dasharray="5 12" />
+  </g>
+
+  <g transform="translate(115 184)" fill="none">
+    <path d="M0 303h108l53-166 82 355 76-274h282" stroke="#93ff14" stroke-opacity=".18" stroke-width="34" filter="url(#glow)" />
+    <path d="M0 303h108l53-166 82 355 76-274h204" stroke="#93ff14" stroke-width="8" stroke-linejoin="round" />
+    <path d="M533 218h25M574 218h19M612 218h12" stroke="#93ff14" stroke-width="8" stroke-linecap="round" />
+    <path d="M539 187l22 64M583 187l20 64M621 190l14 48" stroke="#ffca3a" stroke-width="3" stroke-dasharray="7 7" />
+    <g stroke="#55dbff" stroke-width="2" stroke-opacity=".55">
+      <circle cx="116" cy="303" r="17" />
+      <circle cx="162" cy="137" r="17" />
+      <circle cx="243" cy="492" r="17" />
+      <circle cx="319" cy="218" r="17" />
+    </g>
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1220 158C1470 225 1518 510 1352 668C1180 830 902 688 930 456C952 274 1080 160 1220 158Z" stroke="#55dbff" stroke-opacity=".24" stroke-width="20" filter="url(#glow)" />
+    <path d="M1220 158C1470 225 1518 510 1352 668C1180 830 902 688 930 456C952 274 1080 160 1220 158Z" stroke="#55dbff" stroke-width="5" marker-end="url(#arrowCyan)" />
+    <path d="M1220 158C1155 392 1145 575 1352 668C1430 475 1248 402 947 360C1002 603 1134 620 1450 360C1200 336 1016 385 1088 686" stroke="#ff1493" stroke-opacity=".22" stroke-width="22" filter="url(#glow)" />
+    <path d="M1220 158C1155 392 1145 575 1352 668C1430 475 1248 402 947 360C1002 603 1134 620 1450 360C1200 336 1016 385 1088 686" stroke="#ff1493" stroke-width="5" marker-end="url(#arrowPink)" />
+  </g>
+
+  <g filter="url(#softGlow)">
+    <g transform="translate(1220 158)"><circle r="34" fill="#06111f" stroke="#ff1493" stroke-width="6" /><circle r="10" fill="#ff1493" /></g>
+    <g transform="translate(1450 360)"><circle r="34" fill="#06111f" stroke="#55dbff" stroke-width="6" /><circle r="10" fill="#55dbff" /></g>
+    <g transform="translate(1352 668)"><circle r="34" fill="#06111f" stroke="#93ff14" stroke-width="6" /><circle r="10" fill="#93ff14" /></g>
+    <g transform="translate(1088 686)"><circle r="34" fill="#06111f" stroke="#ffca3a" stroke-width="6" /><circle r="10" fill="#ffca3a" /></g>
+    <g transform="translate(947 360)"><circle r="34" fill="#06111f" stroke="#b388ff" stroke-width="6" /><circle r="10" fill="#b388ff" /></g>
+  </g>
+
+  <g fill="#dff7ff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="28" text-anchor="middle">
+    <text x="1220" y="113">r₁</text>
+    <text x="1504" y="366">r₂</text>
+    <text x="1391" y="727">r₃</text>
+    <text x="1046" y="745">r₄</text>
+    <text x="891" y="366">r₅</text>
+  </g>
+
+  <g opacity=".45" fill="none" stroke="#e8f7ff">
+    <path d="M90 92H1510M90 808H1510" stroke-dasharray="2 16" />
+    <path d="M86 92v54M1514 92v54M86 754v54M1514 754v54" />
+  </g>
+</svg>
