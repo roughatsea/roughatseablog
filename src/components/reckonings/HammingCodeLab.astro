@@ -1,0 +1,312 @@
+---
+const initialBits = [0, 1, 1, 0, 0, 1, 1];
+const addresses = ['001', '010', '011', '100', '101', '110', '111'];
+const checks = [
+  { weight: 1, label: 'Check 1', positions: [1, 3, 5, 7] },
+  { weight: 2, label: 'Check 2', positions: [2, 3, 6, 7] },
+  { weight: 4, label: 'Check 4', positions: [4, 5, 6, 7] },
+];
+---
+
+<figure class="hamming-lab reckoning-visual" data-hamming-lab>
+  <header>
+    <p>Interactive error-correcting code</p>
+    <h3>Flip one bit, then let three parity checks find it</h3>
+  </header>
+
+  <div class="bits" role="group" aria-label="Seven-bit codeword">
+    {initialBits.map((bit, index) => (
+      <button
+        type="button"
+        class:list={{ bit: true, parity: [0, 1, 3].includes(index) }}
+        data-bit={index + 1}
+        aria-label={`Position ${index + 1}, address ${addresses[index]}, value ${bit}`}
+        aria-pressed="false"
+      >
+        <span class="position">position {index + 1}</span>
+        <strong data-bit-value>{bit}</strong>
+        <span class="address">{addresses[index]}</span>
+        <span class="kind">{[0, 1, 3].includes(index) ? 'parity' : 'data'}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="check-grid" aria-label="Parity-check results">
+    {checks.map((check) => (
+      <div class="check-row" data-check={check.weight}>
+        <div class="check-name">
+          <strong>{check.label}</strong>
+          <span>positions {check.positions.join(', ')}</span>
+        </div>
+        <div class="check-track" aria-hidden="true">
+          {initialBits.map((_, index) => (
+            <span class:list={{ watched: check.positions.includes(index + 1) }}>{index + 1}</span>
+          ))}
+        </div>
+        <output data-check-result>0 · passes</output>
+      </div>
+    ))}
+  </div>
+
+  <div class="decoder">
+    <div>
+      <span>Syndrome, read as check 4 · check 2 · check 1</span>
+      <strong data-syndrome>000₂ = 0</strong>
+    </div>
+    <p data-diagnosis aria-live="polite">All three checks pass. The codeword is clean.</p>
+    <button type="button" data-repair disabled>Repair the indicated bit</button>
+    <button type="button" class="quiet" data-reset disabled>Send clean codeword</button>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> each position's small three-digit label says which parity
+    checks watch that position. Flip position 6, whose label is 110, and checks 4 and 2 fail
+    while check 1 passes. The syndrome is therefore 110 in base two, which is 6.
+  </figcaption>
+</figure>
+
+<script>
+  const cleanWord = [0, 1, 1, 0, 0, 1, 1];
+  const checkPositions: Record<number, number[]> = {
+    1: [1, 3, 5, 7],
+    2: [2, 3, 6, 7],
+    4: [4, 5, 6, 7],
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-hamming-lab]').forEach((lab) => {
+    const bitButtons = Array.from(lab.querySelectorAll<HTMLButtonElement>('[data-bit]'));
+    const checkRows = Array.from(lab.querySelectorAll<HTMLElement>('[data-check]'));
+    const syndrome = lab.querySelector<HTMLElement>('[data-syndrome]');
+    const diagnosis = lab.querySelector<HTMLElement>('[data-diagnosis]');
+    const repair = lab.querySelector<HTMLButtonElement>('[data-repair]');
+    const reset = lab.querySelector<HTMLButtonElement>('[data-reset]');
+    let flippedPosition = 0;
+
+    const bits = () => cleanWord.map((value, index) =>
+      index + 1 === flippedPosition ? 1 - value : value
+    );
+
+    const render = () => {
+      const currentBits = bits();
+      let syndromeValue = 0;
+
+      bitButtons.forEach((button, index) => {
+        const value = currentBits[index];
+        const flipped = index + 1 === flippedPosition;
+        const valueNode = button.querySelector<HTMLElement>('[data-bit-value]');
+        if (valueNode) valueNode.textContent = String(value);
+        button.classList.toggle('flipped', flipped);
+        button.setAttribute('aria-pressed', String(flipped));
+        button.setAttribute(
+          'aria-label',
+          `Position ${index + 1}, address ${button.querySelector('.address')?.textContent}, value ${value}${flipped ? ', flipped' : ''}`
+        );
+      });
+
+      checkRows.forEach((row) => {
+        const weight = Number(row.dataset.check);
+        const parity = checkPositions[weight]
+          .map((position) => currentBits[position - 1])
+          .reduce((total, value) => total ^ value, 0);
+        syndromeValue += weight * parity;
+        row.classList.toggle('failed', parity === 1);
+        const output = row.querySelector<HTMLOutputElement>('[data-check-result]');
+        if (output) output.value = parity === 1 ? '1 · fails' : '0 · passes';
+      });
+
+      const binary = syndromeValue.toString(2).padStart(3, '0');
+      if (syndrome) syndrome.textContent = `${binary}₂ = ${syndromeValue}`;
+      if (diagnosis) {
+        diagnosis.textContent = syndromeValue === 0
+          ? 'All three checks pass. The codeword is clean.'
+          : `The failed checks point to position ${syndromeValue}.`;
+      }
+      if (repair) repair.disabled = syndromeValue === 0;
+      if (reset) reset.disabled = flippedPosition === 0;
+    };
+
+    bitButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const position = Number(button.dataset.bit);
+        flippedPosition = flippedPosition === position ? 0 : position;
+        render();
+      });
+    });
+    repair?.addEventListener('click', () => {
+      flippedPosition = 0;
+      render();
+    });
+    reset?.addEventListener('click', () => {
+      flippedPosition = 0;
+      render();
+    });
+  });
+</script>
+
+<style>
+  .hamming-lab {
+    --cyan: #087dcc;
+    --magenta: #d9007e;
+    --green: #4f9300;
+    background:
+      radial-gradient(circle at 82% 0%, color-mix(in srgb, var(--cyan) 10%, transparent), transparent 24rem),
+      var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(940px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .hamming-lab {
+    --cyan: #1493ff;
+    --magenta: #ff1493;
+    --green: #93ff14;
+  }
+  header > p {
+    color: var(--link-color);
+    font-size: .67rem;
+    font-weight: 650;
+    letter-spacing: .12em;
+    margin: 0 0 .2rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0 0 1.2rem;
+  }
+  .bits {
+    display: grid;
+    gap: .55rem;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .bit {
+    align-items: center;
+    background: color-mix(in srgb, var(--cyan) 6%, var(--surface-color));
+    border: 1px solid color-mix(in srgb, var(--cyan) 42%, var(--border-color));
+    border-radius: 8px;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    min-width: 0;
+    padding: .65rem .2rem .55rem;
+  }
+  .bit:hover,
+  .bit:focus-visible { border-color: var(--cyan); }
+  .bit.parity { border-style: dashed; }
+  .bit.flipped {
+    background: color-mix(in srgb, var(--magenta) 12%, var(--surface-color));
+    border-color: var(--magenta);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--magenta) 18%, transparent);
+  }
+  .bit .position,
+  .bit .kind {
+    color: var(--text-secondary);
+    font-size: clamp(.48rem, 1.4vw, .62rem);
+    letter-spacing: .04em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .bit strong {
+    font-family: var(--font-mono);
+    font-size: clamp(1.45rem, 4vw, 2rem);
+    line-height: 1;
+  }
+  .bit .address {
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: .72rem;
+  }
+  .check-grid {
+    border-block: 1px solid var(--border-color);
+    display: grid;
+    gap: .65rem;
+    margin: 1rem 0;
+    padding: 1rem 0;
+  }
+  .check-row {
+    align-items: center;
+    display: grid;
+    gap: .75rem;
+    grid-template-columns: 7.5rem 1fr 6rem;
+  }
+  .check-name { display: flex; flex-direction: column; }
+  .check-name strong { font-size: .8rem; }
+  .check-name span { color: var(--text-secondary); font-size: .62rem; }
+  .check-track {
+    display: grid;
+    gap: .25rem;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .check-track span {
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: .62rem;
+    padding: .16rem 0;
+    text-align: center;
+  }
+  .check-track .watched {
+    background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--cyan) 15%, transparent) 0 4px, transparent 4px 8px);
+    border-color: var(--cyan);
+    color: var(--text-color);
+  }
+  .check-row output {
+    color: var(--green);
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    text-align: right;
+  }
+  .check-row.failed output { color: var(--magenta); font-weight: 700; }
+  .decoder {
+    align-items: center;
+    display: grid;
+    gap: .65rem 1rem;
+    grid-template-columns: 1fr auto auto;
+  }
+  .decoder > div { display: flex; flex-direction: column; }
+  .decoder > div span { color: var(--text-secondary); font-size: .65rem; }
+  .decoder > div strong { color: var(--cyan); font-family: var(--font-mono); font-size: 1.2rem; }
+  .decoder p { font-size: .78rem; grid-column: 1; margin: 0; }
+  .decoder button {
+    background: var(--link-color);
+    border: 1px solid var(--link-color);
+    border-radius: 6px;
+    color: var(--surface-color);
+    cursor: pointer;
+    font: 650 .72rem var(--font-sans);
+    grid-row: 1 / span 2;
+    padding: .55rem .72rem;
+  }
+  .decoder button.quiet {
+    background: transparent;
+    color: var(--text-color);
+    grid-column: 3;
+  }
+  .decoder button:disabled { cursor: not-allowed; opacity: .42; }
+  figcaption {
+    color: var(--text-secondary);
+    font-size: .78rem;
+    line-height: 1.55;
+    margin-top: 1.1rem;
+  }
+  @media (max-width: 700px) {
+    .bits { gap: .25rem; }
+    .bit { padding-inline: .05rem; }
+    .bit .position { font-size: .48rem; }
+    .check-row { grid-template-columns: 5rem 1fr; }
+    .check-row output { grid-column: 2; text-align: left; }
+    .decoder { grid-template-columns: 1fr 1fr; }
+    .decoder p { grid-column: 1 / -1; }
+    .decoder button,
+    .decoder button.quiet { grid-column: auto; grid-row: auto; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .bit { transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease; }
+  }
+</style>

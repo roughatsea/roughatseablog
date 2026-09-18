@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-17T06:00:00-07:00",
+  "updatedAt": "2026-09-18T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -464,6 +464,33 @@
       "relatedLessons": [
         "daily-reckoning-2026-09-04",
         "daily-reckoning-2026-09-11"
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "slug": "daily-reckoning-2026-09-18",
+      "title": "How Can Seven Bits Repair One Broken Bit?",
+      "area": "Discrete mathematics and computation",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Binary digits",
+        "Even and odd numbers",
+        "Powers of two"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Hamming code",
+        "error-correcting codes",
+        "parity checks",
+        "binary arithmetic",
+        "syndromes",
+        "Hamming distance",
+        "SECDED memory",
+        "coding theory"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31",
+        "daily-reckoning-2026-09-10"
       ]
     }
   ]

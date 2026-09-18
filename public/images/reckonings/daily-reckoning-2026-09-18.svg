@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">A damaged seven-bit signal located by overlapping parity checks</title>
+  <desc id="description">Seven luminous binary nodes cross a dark maritime blueprint. Three cyan, green, and magenta parity routes overlap the nodes, and their combined 110 signal points to a fractured sixth bit.</desc>
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020912"/>
+      <stop offset=".5" stop-color="#061a29"/>
+      <stop offset="1" stop-color="#030711"/>
+    </linearGradient>
+    <radialGradient id="mist" cx="72%" cy="38%" r="65%">
+      <stop offset="0" stop-color="#0f4b68" stop-opacity=".34"/>
+      <stop offset=".58" stop-color="#071722" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#020812" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#1d5870" stroke-opacity=".22" stroke-width="1"/>
+      <path d="M25 0V50M0 25H50" fill="none" stroke="#1d5870" stroke-opacity=".09" stroke-width="1"/>
+    </pattern>
+    <pattern id="waves" width="180" height="36" patternUnits="userSpaceOnUse">
+      <path d="M0 19C30 4 60 4 90 19s60 15 90 0" fill="none" stroke="#1881a0" stroke-opacity=".12" stroke-width="2"/>
+    </pattern>
+    <filter id="cyan-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="magenta-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#ff258f"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ocean)"/>
+  <rect width="1600" height="900" fill="url(#mist)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <rect y="575" width="1600" height="325" fill="url(#waves)"/>
+
+  <g fill="none" stroke-linecap="round">
+    <path d="M160 610C330 245 705 178 1436 322" stroke="#159fff" stroke-opacity=".18" stroke-width="54"/>
+    <path d="M160 610C330 245 705 178 1436 322" stroke="#159fff" stroke-width="4" filter="url(#cyan-glow)"/>
+    <path d="M182 655C510 775 1005 755 1430 432" stroke="#93ff14" stroke-opacity=".15" stroke-width="46"/>
+    <path d="M182 655C510 775 1005 755 1430 432" stroke="#93ff14" stroke-width="4" filter="url(#cyan-glow)"/>
+    <path d="M220 292C555 107 1154 148 1398 654" stroke="#ff1493" stroke-opacity=".14" stroke-width="42"/>
+    <path d="M220 292C555 107 1154 148 1398 654" stroke="#ff1493" stroke-width="4" filter="url(#magenta-glow)"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">
+    <g transform="translate(225 508)">
+      <circle r="66" fill="#061d2c" stroke="#159fff" stroke-width="4"/>
+      <circle r="48" fill="none" stroke="#159fff" stroke-opacity=".32" stroke-dasharray="4 8"/>
+      <text y="13" fill="#e9fbff" font-size="42" font-weight="700">0</text>
+      <text y="96" fill="#82cbe9" font-size="20">001</text>
+    </g>
+    <g transform="translate(420 410)">
+      <circle r="66" fill="#061d2c" stroke="#93ff14" stroke-width="4"/>
+      <circle r="48" fill="none" stroke="#93ff14" stroke-opacity=".3" stroke-dasharray="4 8"/>
+      <text y="13" fill="#e9fbff" font-size="42" font-weight="700">1</text>
+      <text y="96" fill="#a6d97a" font-size="20">010</text>
+    </g>
+    <g transform="translate(615 516)">
+      <circle r="66" fill="#061d2c" stroke="#159fff" stroke-width="4"/>
+      <circle r="48" fill="none" stroke="#159fff" stroke-opacity=".32" stroke-dasharray="4 8"/>
+      <text y="13" fill="#e9fbff" font-size="42" font-weight="700">1</text>
+      <text y="96" fill="#82cbe9" font-size="20">011</text>
+    </g>
+    <g transform="translate(810 390)">
+      <circle r="66" fill="#061d2c" stroke="#ff1493" stroke-width="4"/>
+      <circle r="48" fill="none" stroke="#ff1493" stroke-opacity=".3" stroke-dasharray="4 8"/>
+      <text y="13" fill="#e9fbff" font-size="42" font-weight="700">0</text>
+      <text y="96" fill="#f37fb4" font-size="20">100</text>
+    </g>
+    <g transform="translate(1005 526)">
+      <circle r="66" fill="#061d2c" stroke="#159fff" stroke-width="4"/>
+      <circle r="48" fill="none" stroke="#159fff" stroke-opacity=".32" stroke-dasharray="4 8"/>
+      <text y="13" fill="#e9fbff" font-size="42" font-weight="700">0</text>
+      <text y="96" fill="#82cbe9" font-size="20">101</text>
+    </g>
+    <g transform="translate(1200 404)" filter="url(#magenta-glow)">
+      <circle r="74" fill="#270b20" stroke="#ff258f" stroke-width="6"/>
+      <path d="M-13-65L5-31-12-8 13 11-5 35 16 67" fill="none" stroke="#ff96c7" stroke-width="5"/>
+      <text x="-29" y="13" fill="#fff1f8" font-size="42" font-weight="700">0</text>
+      <text y="106" fill="#ff84bd" font-size="23">110</text>
+    </g>
+    <g transform="translate(1395 518)">
+      <circle r="66" fill="#061d2c" stroke="#159fff" stroke-width="4"/>
+      <circle r="48" fill="none" stroke="#159fff" stroke-opacity=".32" stroke-dasharray="4 8"/>
+      <text y="13" fill="#e9fbff" font-size="42" font-weight="700">1</text>
+      <text y="96" fill="#82cbe9" font-size="20">111</text>
+    </g>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <path d="M1042 118H1200V284" fill="none" stroke="#ff258f" stroke-width="4" marker-end="url(#arrow)" filter="url(#magenta-glow)"/>
+    <rect x="916" y="70" width="256" height="102" rx="14" fill="#071521" stroke="#ff258f" stroke-width="2"/>
+    <text x="950" y="113" fill="#8ba7b5" font-size="18" letter-spacing="3">SYNDROME</text>
+    <text x="950" y="151" fill="#fff1f8" font-size="34" font-weight="700">1 1 0₂ → 6</text>
+  </g>
+
+  <g fill="none" stroke="#8cdcff" stroke-opacity=".25">
+    <path d="M72 118H540M72 138H402"/>
+    <path d="M1260 760H1528M1340 780H1528"/>
+    <circle cx="96" cy="118" r="8"/>
+    <circle cx="1504" cy="760" r="8"/>
+  </g>
+</svg>

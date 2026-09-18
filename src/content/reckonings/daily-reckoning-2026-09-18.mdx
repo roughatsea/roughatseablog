@@ -1,0 +1,258 @@
+---
+title: "How Can Seven Bits Repair One Broken Bit?"
+description: "Three overlapping parity checks do more than notice a flipped bit: their pattern names the exact position to repair."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-18.svg"
+heroImageAlt: "Seven luminous binary nodes cross a dark maritime blueprint. Three overlapping parity routes converge on a fractured sixth node, while a precise 110 base-two signal points to the damaged position."
+date: 2026-09-18
+publishedAt: 2026-09-18T06:00:00-07:00
+area: "Discrete mathematics and computation"
+difficulty: "Intermediate"
+prerequisites:
+  - "Binary digits"
+  - "Even and odd numbers"
+  - "Powers of two"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - discrete-mathematics
+  - coding-theory
+  - hamming-code
+  - parity
+  - binary
+  - error-correction
+  - computer-memory
+  - history-of-mathematics
+---
+
+import HammingCodeLab from '../../components/reckonings/HammingCodeLab.astro';
+
+A machine sends four binary digits:
+
+$$
+1011.
+$$
+
+During storage or transmission, one digit flips. A $1$ becomes $0$, or a $0$ becomes $1$. If the receiver sees only the damaged four digits, the receiver cannot know which digit changed—or even whether anything changed.
+
+Add three carefully chosen digits before sending, however, and the seven-digit block can repair any one flipped digit by itself. The extra digits do not copy the message. They answer three overlapping yes-or-no questions whose combined answer identifies the damaged position.
+
+## Three questions can name eight outcomes
+
+A single **parity bit** records whether a group contains an even or odd number of $1$s. Under the even-parity convention, the parity bit is chosen so that the entire group contains an even number of $1$s. If one digit in the group flips, the group's parity changes from even to odd.
+
+One parity check can say only “pass” or “fail.” Three checks can produce
+
+$$
+2^3=8
+$$
+
+different patterns. That is exactly enough for eight possibilities: no error, or an error in one of seven positions.
+
+The **Hamming $(7,4)$ code** turns four data bits into a seven-bit codeword. Positions $1$, $2$, and $4$ hold parity bits. Positions $3$, $5$, $6$, and $7$ hold the four data bits. The three parity checks cover these positions:
+
+$$
+\begin{aligned}
+\text{check 1: }&1,3,5,7,\\
+\text{check 2: }&2,3,6,7,\\
+\text{check 4: }&4,5,6,7.
+\end{aligned}
+$$
+
+The check numbers $1$, $2$, and $4$ are powers of two. Write every position from $1$ through $7$ in three-digit binary form:
+
+$$
+1=001_2,\ 2=010_2,\ 3=011_2,\ldots,\ 7=111_2.
+$$
+
+The binary label tells you which checks watch that position. Position $6$ has label $110_2$, so checks $4$ and $2$ watch it, while check $1$ does not.
+
+The interactive diagram below begins with the valid codeword $0110011$. Select any position to flip its bit. The diagram keeps to Hamming's promise that at most one position is damaged at a time.
+
+<HammingCodeLab />
+
+The three check results form a **syndrome**. Read the results in the order check $4$, check $2$, check $1$. A passing check contributes $0$ and a failing check contributes $1$. The syndrome $110_2$ is the binary representation of $6$, so it names position $6$.
+
+## The rule in one matrix
+
+Let
+
+$$
+\mathbf r=(r_1,r_2,r_3,r_4,r_5,r_6,r_7)
+$$
+
+be the seven received bits, where $r_j$ is the bit in position $j$. Addition is performed modulo $2$, so $1+1=0$. Equivalently, addition is the exclusive-or operation, written $\oplus$.
+
+The parity-check matrix is
+
+$$
+H=
+\begin{pmatrix}
+1&0&1&0&1&0&1\\
+0&1&1&0&0&1&1\\
+0&0&0&1&1&1&1
+\end{pmatrix}.
+$$
+
+The first row marks the positions watched by check $1$; the second marks check $2$; the third marks check $4$. The **syndrome vector** is
+
+$$
+\mathbf s=H\mathbf r^{\mathsf T}\pmod 2.
+$$
+
+Here, $\mathbf r^{\mathsf T}$ means the received row of bits written as a column. Each column of $H$ is the three-digit binary label of its position, read from bottom to top when the syndrome is displayed as $s_4s_2s_1$. If bit $j$ alone flips, the syndrome becomes column $j$ of $H$. The location is built into the matrix.
+
+## Worked example: encode, damage, repair
+
+Encode the data word $1011$. Put its digits into positions $3$, $5$, $6$, and $7$:
+
+$$
+\begin{array}{c|ccccccc}
+\text{position}&1&2&3&4&5&6&7\\
+\hline
+\text{value}&p_1&p_2&1&p_4&0&1&1
+\end{array}
+$$
+
+The symbols $p_1$, $p_2$, and $p_4$ denote the parity bits.
+
+For check $1$, the data bits in positions $3$, $5$, and $7$ are $1$, $0$, and $1$. They already contain two $1$s, so choose $p_1=0$:
+
+$$
+p_1\oplus1\oplus0\oplus1=0.
+$$
+
+For check $2$, the data bits in positions $3$, $6$, and $7$ are all $1$. Three is odd, so choose $p_2=1$ to make the total even:
+
+$$
+p_2\oplus1\oplus1\oplus1=1\oplus1\oplus1\oplus1=0.
+$$
+
+For check $4$, positions $5$, $6$, and $7$ contain $0$, $1$, and $1$. Two $1$s are already even, so $p_4=0$:
+
+$$
+p_4\oplus0\oplus1\oplus1=0.
+$$
+
+The complete codeword is therefore
+
+$$
+0110011.
+$$
+
+Suppose position $6$ flips from $1$ to $0$. The receiver gets
+
+$$
+0110001.
+$$
+
+Now evaluate all three checks:
+
+$$
+\begin{aligned}
+s_1&=r_1\oplus r_3\oplus r_5\oplus r_7
+    =0\oplus1\oplus0\oplus1=0,\\
+s_2&=r_2\oplus r_3\oplus r_6\oplus r_7
+    =1\oplus1\oplus0\oplus1=1,\\
+s_4&=r_4\oplus r_5\oplus r_6\oplus r_7
+    =0\oplus0\oplus0\oplus1=1.
+\end{aligned}
+$$
+
+Thus
+
+$$
+(s_4s_2s_1)_2=(110)_2=6.
+$$
+
+Flip position $6$ back to $1$. The repaired codeword is $0110011$, and its data positions once again read $1011$.
+
+## Try two transmissions
+
+### Problem 1
+
+Encode the data word $1101$ by placing its digits in positions $3$, $5$, $6$, and $7$. Use even parity. What seven-bit codeword do you obtain?
+
+<details>
+<summary>Reveal the solution</summary>
+
+Start with
+
+$$
+\begin{array}{c|ccccccc}
+\text{position}&1&2&3&4&5&6&7\\
+\hline
+\text{value}&p_1&p_2&1&p_4&1&0&1.
+\end{array}
+$$
+
+Check $1$ sees positions $3$, $5$, and $7$, which contain three $1$s. Set $p_1=1$ to make the total even.
+
+Check $2$ sees data values $1$, $0$, and $1$ in positions $3$, $6$, and $7$. Two $1$s are even, so $p_2=0$.
+
+Check $4$ sees data values $1$, $0$, and $1$ in positions $5$, $6$, and $7$. Again the total is even, so $p_4=0$.
+
+The codeword is
+
+$$
+1010101.
+$$
+
+</details>
+
+### Problem 2
+
+The codeword from Problem 1 is sent, but the receiver gets $1010001$. Find the syndrome and repair the error.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Compute the three checks:
+
+$$
+\begin{aligned}
+s_1&=1\oplus1\oplus0\oplus1=1,\\
+s_2&=0\oplus1\oplus0\oplus1=0,\\
+s_4&=0\oplus0\oplus0\oplus1=1.
+\end{aligned}
+$$
+
+The syndrome is
+
+$$
+(s_4s_2s_1)_2=(101)_2=5.
+$$
+
+Position $5$ is wrong. Flip its $0$ back to $1$ to recover $1010101$.
+
+</details>
+
+## A lost weekend becomes a new subject
+
+Richard Hamming arrived at Bell Telephone Laboratories in 1946 after running computing machines for the Manhattan Project at Los Alamos. The wartime work did not dictate the code, but it placed Hamming among a postwar movement of mathematicians who treated reliable large-scale computation as a serious research problem.
+
+At Bell Labs in 1947, Hamming left a calculation running over a weekend. An error stopped the machine, and he returned on Monday to find no useful result. The University of St Andrews' [biography of Hamming](https://mathshistory.st-andrews.ac.uk/Biographies/Hamming/) records the question that followed: if a machine could detect an error, why could it not locate and correct the error?
+
+Hamming was not working in isolation. He shared Bell Labs' mathematical research environment with Claude Shannon and John Tukey. Shannon's 1948 paper [“A Mathematical Theory of Communication”](https://doi.org/10.1002/j.1538-7305.1948.tb01338.x) established a general theory of communication through noisy channels. Hamming attacked one constructive part of that larger problem: how a finite pattern of redundant symbols could correct mistakes efficiently.
+
+Hamming's [“Error Detecting and Error Correcting Codes”](https://doi.org/10.1002/j.1538-7305.1950.tb00463.x) appeared in the *Bell System Technical Journal* in April 1950. The paper defined the distance between two binary words as the number of positions where they differ, now called **Hamming distance**. Valid Hamming $(7,4)$ codewords are at least three flips apart. A received word one flip from a valid codeword therefore has one unambiguous nearest codeword.
+
+## What the guarantee does—and does not—cover
+
+Distance three guarantees correction of any one-bit error. The same distance can instead guarantee detection of any two-bit error, because two flips cannot turn one valid codeword into another. A basic Hamming decoder cannot reliably do both jobs at once: two flipped bits can produce a syndrome that impersonates a one-bit error at a third position.
+
+Adding one overall parity bit creates an **extended Hamming code** with distance four. That version supports single-error correction and double-error detection, usually abbreviated **SECDED**. Infineon's [documentation for static random-access memory](https://community.infineon.com/t5/Knowledge-Base-Articles/Error-Correcting-Code-to-Detect-and-Correct-Single-Bit-Errors/ta-p/258070) describes how error-correcting circuitry stores parity alongside each data word and repairs a single-bit fault as the word is read.
+
+The seven-bit code in this lesson is small enough to inspect by hand. Practical memory systems use wider codewords and hardware designed around the same ideas. Communications systems also add structured redundancy, although modern channels often use stronger descendants such as Bose–Chaudhuri–Hocquenghem, Reed–Solomon, low-density parity-check, or polar codes when many errors or long blocks must be handled.
+
+## One idea to remember
+
+Redundancy can carry an address. Hamming's three parity bits do more than announce that a bit changed: the pattern of failed checks is the binary number of the position to repair.
+
+A useful next step is to derive why $r$ parity bits support a Hamming code of length $2^r-1$, or to study Hamming distance as a geometry of binary words. For another compact binary cycle, revisit [why a prime makes giant powers loop](/reckonings/daily-reckoning-2026-09-10/).
+
+## Sources
+
+- Richard W. Hamming, [“Error Detecting and Error Correcting Codes”](https://doi.org/10.1002/j.1538-7305.1950.tb00463.x), *Bell System Technical Journal* 29, no. 2 (April 1950), 147–160.
+- Claude E. Shannon, [“A Mathematical Theory of Communication”](https://doi.org/10.1002/j.1538-7305.1948.tb01338.x), *Bell System Technical Journal* 27 (July and October 1948), 379–423 and 623–656.
+- J. J. O'Connor and E. F. Robertson, [“Richard Wesley Hamming”](https://mathshistory.st-andrews.ac.uk/Biographies/Hamming/), MacTutor History of Mathematics, University of St Andrews, updated January 2012.
+- Infineon Technologies, [“Error Correcting Code to Detect and Correct Single-Bit Errors”](https://community.infineon.com/t5/Knowledge-Base-Articles/Error-Correcting-Code-to-Detect-and-Correct-Single-Bit-Errors/ta-p/258070), updated April 21, 2025, on Hamming-code circuitry in static random-access memory.
