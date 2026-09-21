@@ -1,0 +1,241 @@
+---
+const initialDice = 4;
+
+function exactCounts(dice: number) {
+  let counts = [1];
+  for (let roll = 0; roll < dice; roll += 1) {
+    const next = Array(counts.length + 6).fill(0);
+    counts.forEach((count, sum) => {
+      for (let face = 1; face <= 6; face += 1) next[sum + face] += count;
+    });
+    counts = next;
+  }
+  return counts.map((count, sum) => ({ count, sum })).filter(({ count }) => count > 0);
+}
+
+const initial = exactCounts(initialDice);
+const plot = { left: 82, right: 858, top: 45, bottom: 355 };
+const x = (mean: number) => plot.left + ((mean - 1) / 5) * (plot.right - plot.left);
+const y = (density: number) => plot.bottom - (density / 0.72) * (plot.bottom - plot.top);
+const initialBarWidth = ((plot.right - plot.left) / 5 / initialDice) * 0.82;
+const initialBars = initial.map(({ count, sum }) => {
+  const probability = count / 6 ** initialDice;
+  const density = probability * initialDice;
+  const mean = sum / initialDice;
+  return {
+    x: x(mean) - initialBarWidth / 2,
+    y: y(density),
+    width: initialBarWidth,
+    height: plot.bottom - y(density),
+  };
+});
+---
+
+<figure class="clt-lab reckoning-visual" data-clt-lab data-dice="4">
+  <header>
+    <p>Exact distribution explorer</p>
+    <h3>Average more dice; watch the shape change</h3>
+  </header>
+
+  <div class="controls" aria-label="Choose how many dice are averaged">
+    {[1, 2, 4, 8].map((dice) => (
+      <button type="button" class:list={{ active: dice === initialDice }} data-dice-button={dice} aria-pressed={dice === initialDice ? 'true' : 'false'}>
+        {dice} {dice === 1 ? 'die' : 'dice'}
+      </button>
+    ))}
+  </div>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 940 450" role="img" aria-labelledby="clt-title clt-desc">
+      <title id="clt-title">Exact distribution of the average of four fair dice</title>
+      <desc id="clt-desc">
+        Bars give the exact probabilities for every possible average of four fair dice. A smooth dashed normal curve is overlaid for comparison. The bars cluster around three point five and form a rounded mound.
+      </desc>
+
+      <g class="grid" aria-hidden="true">
+        {[0, .2, .4, .6].map((density) => (
+          <g>
+            <path d={`M${plot.left} ${y(density)}H${plot.right}`} />
+            <text x="68" y={y(density) + 5} text-anchor="end">{density.toFixed(1)}</text>
+          </g>
+        ))}
+      </g>
+
+      <g class="axes" aria-hidden="true">
+        <path d={`M${plot.left} ${plot.top}V${plot.bottom}H${plot.right}`} />
+        {[1, 2, 3, 3.5, 4, 5, 6].map((value) => (
+          <g>
+            <path d={`M${x(value)} ${plot.bottom}v7`} />
+            <text x={x(value)} y="380" text-anchor="middle">{value}</text>
+          </g>
+        ))}
+        <text class="axis-title" x="470" y="423" text-anchor="middle">sample average</text>
+        <text class="axis-title y-title" x="20" y="205" text-anchor="middle">probability density</text>
+      </g>
+
+      <path class="center-line" d={`M${x(3.5)} ${plot.top}V${plot.bottom}`} aria-hidden="true" />
+      <g class="bars" data-bars aria-hidden="true">
+        {initialBars.map((bar) => <rect x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx="2" />)}
+      </g>
+      <path class="normal-curve" data-normal-curve aria-hidden="true" />
+      <g class="legend" aria-hidden="true">
+        <rect x="608" y="60" width="18" height="12" rx="2" />
+        <text x="635" y="71">exact outcomes</text>
+        <path d="M608 88h22" />
+        <text x="635" y="92">normal approximation</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div>
+      <span>Average of</span>
+      <strong data-dice-count>4 dice</strong>
+    </div>
+    <div>
+      <span>Center</span>
+      <strong>3.500</strong>
+    </div>
+    <div>
+      <span>Standard error</span>
+      <strong data-standard-error>0.854</strong>
+    </div>
+    <div>
+      <span>Exact outcomes counted</span>
+      <strong data-outcome-count>1,296</strong>
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> one die has a flat distribution. Averaging independent dice keeps the center at 3.5, narrows the spread, and rounds the exact bars toward the dashed normal curve. Each bar's area, not only its height, is proportional to probability.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-clt-lab]').forEach((figure) => {
+    const svg = figure.querySelector('svg');
+    const bars = figure.querySelector('[data-bars]');
+    const curve = figure.querySelector('[data-normal-curve]');
+    const title = figure.querySelector('#clt-title');
+    const desc = figure.querySelector('#clt-desc');
+    const diceCount = figure.querySelector('[data-dice-count]');
+    const standardError = figure.querySelector('[data-standard-error]');
+    const outcomeCount = figure.querySelector('[data-outcome-count]');
+    if (!(svg instanceof SVGSVGElement) || !(bars instanceof SVGGElement) || !(curve instanceof SVGPathElement) || !title || !desc || !diceCount || !standardError || !outcomeCount) return;
+
+    const namespace = 'http://www.w3.org/2000/svg';
+    const left = 82;
+    const right = 858;
+    const top = 45;
+    const bottom = 355;
+    const chartX = (mean: number) => left + ((mean - 1) / 5) * (right - left);
+    const chartY = (density: number) => bottom - (density / 0.72) * (bottom - top);
+
+    const exactCounts = (dice: number) => {
+      let counts = [1];
+      for (let roll = 0; roll < dice; roll += 1) {
+        const next = Array(counts.length + 6).fill(0);
+        counts.forEach((count, sum) => {
+          for (let face = 1; face <= 6; face += 1) next[sum + face] += count;
+        });
+        counts = next;
+      }
+      return counts.map((count, sum) => ({ count, sum })).filter(({ count }) => count > 0);
+    };
+
+    const render = (dice: number) => {
+      const counts = exactCounts(dice);
+      const total = 6 ** dice;
+      const width = ((right - left) / 5 / dice) * 0.82;
+      bars.replaceChildren();
+
+      counts.forEach(({ count, sum }) => {
+        const probability = count / total;
+        const density = probability * dice;
+        const mean = sum / dice;
+        const rect = document.createElementNS(namespace, 'rect');
+        rect.setAttribute('x', String(chartX(mean) - width / 2));
+        rect.setAttribute('y', String(chartY(density)));
+        rect.setAttribute('width', String(width));
+        rect.setAttribute('height', String(bottom - chartY(density)));
+        rect.setAttribute('rx', '2');
+        bars.append(rect);
+      });
+
+      const sigma = Math.sqrt(35 / 12 / dice);
+      const curvePoints = Array.from({ length: 181 }, (_, index) => {
+        const mean = 1 + (index / 180) * 5;
+        const density = Math.exp(-0.5 * ((mean - 3.5) / sigma) ** 2) / (sigma * Math.sqrt(2 * Math.PI));
+        return `${index === 0 ? 'M' : 'L'}${chartX(mean).toFixed(2)} ${chartY(density).toFixed(2)}`;
+      });
+      curve.setAttribute('d', curvePoints.join(' '));
+
+      figure.setAttribute('data-dice', String(dice));
+      figure.querySelectorAll('[data-dice-button]').forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        const active = Number(button.dataset.diceButton) === dice;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      diceCount.textContent = `${dice} ${dice === 1 ? 'die' : 'dice'}`;
+      standardError.textContent = Math.sqrt(35 / 12 / dice).toFixed(3);
+      outcomeCount.textContent = total.toLocaleString('en-US');
+      title.textContent = `Exact distribution of the average of ${dice} fair ${dice === 1 ? 'die' : 'dice'}`;
+      desc.textContent = dice === 1
+        ? 'Six equal bars show the flat distribution of one fair die. A dashed normal curve does not match the flat bars.'
+        : `Bars give the exact probabilities for every possible average of ${dice} fair dice. A dashed normal curve is overlaid for comparison. The bars cluster around three point five and become more bell-shaped.`;
+    };
+
+    figure.querySelectorAll('[data-dice-button]').forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      button.addEventListener('click', () => render(Number(button.dataset.diceButton)));
+    });
+
+    render(4);
+  });
+</script>
+
+<style>
+  .clt-lab {
+    --clt-blue: #087dcc;
+    --clt-green: #4f9300;
+    --clt-pink: #d9007e;
+    background: radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--clt-pink) 12%, transparent), transparent 21rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .clt-lab { --clt-blue: #1493ff; --clt-green: #93ff14; --clt-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .75rem; }
+  .controls button { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: .8rem; font-weight: 700; padding: .5rem .82rem; }
+  .controls button.active { background: var(--clt-blue); border-color: var(--clt-blue); color: #fff; }
+  .controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--clt-green) 65%, transparent); outline-offset: 2px; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 700px; width: 100%; }
+  .grid path { stroke: var(--border-color); stroke-width: 1; }
+  .grid text, .axes text, .legend text { fill: var(--text-secondary); font-size: 12px; }
+  .axes path { fill: none; stroke: var(--text-secondary); stroke-width: 1.5; }
+  .axis-title { font-weight: 700; letter-spacing: .04em; }
+  .y-title { transform: rotate(-90deg); transform-box: fill-box; transform-origin: center; }
+  .center-line { stroke: var(--clt-green); stroke-dasharray: 3 6; stroke-width: 2; }
+  .bars rect, .legend rect { fill: color-mix(in srgb, var(--clt-blue) 70%, var(--clt-pink)); stroke: var(--clt-blue); stroke-width: 1; }
+  .normal-curve, .legend path { fill: none; stroke: var(--clt-pink); stroke-dasharray: 8 6; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+  .readout { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; display: grid; gap: .75rem; grid-template-columns: repeat(4, 1fr); margin-top: .75rem; padding: .9rem 1rem; }
+  .readout div { display: grid; gap: .18rem; }
+  .readout span { color: var(--text-secondary); font-size: .64rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .readout strong { color: var(--text-primary); font-size: .88rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 720px) {
+    .clt-lab { width: calc(100vw - 1.5rem); }
+    .readout { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 430px) { .readout { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .clt-lab * { transition: none !important; } }
+</style>

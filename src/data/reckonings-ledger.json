@@ -492,6 +492,33 @@
         "daily-reckoning-2026-08-31",
         "daily-reckoning-2026-09-10"
       ]
+    },
+    {
+      "date": "2026-09-21",
+      "slug": "daily-reckoning-2026-09-21",
+      "title": "Why Do Averages Keep Drawing Bell Curves?",
+      "area": "Probability and statistics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Arithmetic mean",
+        "Basic probability",
+        "Standard deviation as a measure of spread"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "central limit theorem",
+        "normal distribution",
+        "sample means",
+        "sampling distributions",
+        "standard error",
+        "convolution",
+        "de Moivre-Laplace theorem",
+        "statistical inference"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-05",
+        "daily-reckoning-2026-09-13"
+      ]
     }
   ]
 }
