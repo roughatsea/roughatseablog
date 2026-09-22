@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Cantor's diagonal escapes an infinite binary list</title>
+  <desc id="desc">A luminous diagonal cuts across an endless dark blueprint table of zeros and ones. Along the diagonal, cyan digits flip into magenta digits that stream beyond the table's boundary.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020712"/>
+      <stop offset="0.5" stop-color="#07192a"/>
+      <stop offset="1" stop-color="#02050d"/>
+    </linearGradient>
+    <radialGradient id="wake" cx="70%" cy="47%" r="54%">
+      <stop offset="0" stop-color="#ff1493" stop-opacity="0.17"/>
+      <stop offset="0.48" stop-color="#1493ff" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="#02050d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="minor" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1493ff" stroke-opacity="0.07"/>
+    </pattern>
+    <pattern id="major" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="200" fill="url(#minor)"/>
+      <path d="M200 0H0V200" fill="none" stroke="#1493ff" stroke-opacity="0.14" stroke-width="2"/>
+    </pattern>
+    <filter id="cyan-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="11" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="escape" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1493ff"/>
+      <stop offset="0.52" stop-color="#ff1493"/>
+      <stop offset="1" stop-color="#93ff14"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#wake)"/>
+  <rect x="48" y="48" width="1504" height="804" rx="22" fill="url(#major)" stroke="#1493ff" stroke-opacity="0.25" stroke-width="2"/>
+
+  <g fill="none" stroke="#1493ff" stroke-opacity="0.18" stroke-width="2">
+    <path d="M70 720c164-74 294 73 458 0s294 73 458 0 294 73 544-14"/>
+    <path d="M70 762c164-74 294 73 458 0s294 73 458 0 294 73 544-14"/>
+    <path d="M70 804c164-74 294 73 458 0s294 73 458 0 294 73 544-14"/>
+  </g>
+
+  <g transform="translate(190 115)">
+    <rect x="0" y="0" width="950" height="620" rx="20" fill="#04101d" fill-opacity="0.88" stroke="#1493ff" stroke-opacity="0.42" stroke-width="3"/>
+    <g fill="none" stroke="#d9f5ff" stroke-opacity="0.16" stroke-width="2">
+      <path d="M140 0v620M275 0v620M410 0v620M545 0v620M680 0v620M815 0v620"/>
+      <path d="M0 88h950M0 176h950M0 264h950M0 352h950M0 440h950M0 528h950"/>
+    </g>
+
+    <g fill="#d9f5ff" fill-opacity="0.58" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="46" text-anchor="middle">
+      <g transform="translate(75 61)"><text>0</text><text x="135">1</text><text x="270">0</text><text x="405">0</text><text x="540">1</text><text x="675">1</text><text x="810">0</text></g>
+      <g transform="translate(75 149)"><text>1</text><text x="135">1</text><text x="270">0</text><text x="405">1</text><text x="540">0</text><text x="675">0</text><text x="810">1</text></g>
+      <g transform="translate(75 237)"><text>0</text><text x="135">0</text><text x="270">0</text><text x="405">1</text><text x="540">1</text><text x="675">0</text><text x="810">0</text></g>
+      <g transform="translate(75 325)"><text>1</text><text x="135">0</text><text x="270">1</text><text x="405">1</text><text x="540">0</text><text x="675">1</text><text x="810">1</text></g>
+      <g transform="translate(75 413)"><text>0</text><text x="135">1</text><text x="270">1</text><text x="405">0</text><text x="540">0</text><text x="675">1</text><text x="810">0</text></g>
+      <g transform="translate(75 501)"><text>1</text><text x="135">0</text><text x="270">0</text><text x="405">1</text><text x="540">1</text><text x="675">0</text><text x="810">1</text></g>
+      <g transform="translate(75 589)"><text>0</text><text x="135">1</text><text x="270">1</text><text x="405">0</text><text x="540">1</text><text x="675">0</text><text x="810">1</text></g>
+    </g>
+
+    <path d="M75 61L210 149 345 237 480 325 615 413 750 501 885 589" fill="none" stroke="#1493ff" stroke-opacity="0.38" stroke-width="28" stroke-linecap="round" filter="url(#cyan-glow)"/>
+    <path d="M75 61L210 149 345 237 480 325 615 413 750 501 885 589" fill="none" stroke="#93ff14" stroke-width="4" stroke-dasharray="10 12" stroke-linecap="round"/>
+    <g fill="#1493ff" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="50" font-weight="700" text-anchor="middle" filter="url(#cyan-glow)">
+      <text x="75" y="61">0</text><text x="210" y="149">1</text><text x="345" y="237">0</text><text x="480" y="325">1</text><text x="615" y="413">0</text><text x="750" y="501">0</text><text x="885" y="589">1</text>
+    </g>
+  </g>
+
+  <path d="M1085 166C1195 210 1250 294 1265 384s-9 185 56 254c53 56 120 64 209 71" fill="none" stroke="#ff1493" stroke-opacity="0.22" stroke-width="42" stroke-linecap="round" filter="url(#pink-glow)"/>
+  <path d="M1085 166C1195 210 1250 294 1265 384s-9 185 56 254c53 56 120 64 209 71" fill="none" stroke="url(#escape)" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#ff1493" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="62" font-weight="750" text-anchor="middle" filter="url(#pink-glow)">
+    <text x="1162" y="226">1</text><text x="1229" y="315">0</text><text x="1261" y="420">1</text><text x="1260" y="530">0</text><text x="1310" y="638">1</text><text x="1426" y="706">1</text>
+  </g>
+  <g fill="#93ff14">
+    <circle cx="1085" cy="166" r="8"/><circle cx="1530" cy="709" r="8"/>
+  </g>
+
+  <g fill="none" stroke="#d9f5ff" stroke-opacity="0.14" stroke-width="2">
+    <circle cx="1268" cy="438" r="292"/><circle cx="1268" cy="438" r="326"/>
+    <path d="M1268 93v690M923 438h690"/>
+  </g>
+</svg>

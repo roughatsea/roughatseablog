@@ -1,0 +1,230 @@
+---
+title: "Can You List Every Infinite String of Zeros and Ones?"
+description: "Assume every endless binary sequence has been numbered. One diagonal walk then constructs a sequence that the list must have missed."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-22.svg"
+heroImageAlt: "A luminous diagonal cuts across an endless dark blueprint table of zeros and ones. Along the diagonal, cyan digits flip into magenta digits that stream beyond the table's boundary."
+date: 2026-09-22
+publishedAt: 2026-09-22T06:00:00-07:00
+area: "Logic and foundations"
+difficulty: "Intermediate"
+prerequisites:
+  - "Sets and functions"
+  - "One-to-one correspondence"
+  - "Proof by contradiction"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - set-theory
+  - infinity
+  - cantor
+  - diagonal-argument
+  - uncountability
+  - computability
+  - history-of-mathematics
+---
+
+import DiagonalEscapeLab from '../../components/reckonings/DiagonalEscapeLab.astro';
+
+Suppose someone claims to have numbered every endless sequence made from $0$s and $1$s:
+
+$$
+s_1, s_2, s_3,\ldots
+$$
+
+You cannot inspect the whole list. Each row is infinite, and there are infinitely many rows. Yet one precise construction can prove that the list is incomplete.
+
+The construction does not search for a gap. It manufactures a new sequence designed to disagree with row $1$, row $2$, row $3$, and every later row.
+
+## Escape along the diagonal
+
+The diagram below shows the first six rows and first six positions of an imagined list. Move through its four stages. The highlighted diagonal takes one bit from each row; flipping those bits produces the escape sequence.
+
+<DiagonalEscapeLab />
+
+The six-row display is only a window into an infinite argument. If the proposed list continues through every positive integer, the diagonal rule continues with it. Row $10{,}000$ is defeated at bit $10{,}000$.
+
+## The claim, stated precisely
+
+Let $B$ be the set of all infinite binary sequences. An element of $B$ has the form
+
+$$
+(b_1,b_2,b_3,\ldots),\qquad b_j\in\{0,1\}.
+$$
+
+Here, $b_j$ is the bit in position $j$. A set is **countable** if its elements can be placed in a finite list or in a list indexed by the positive integers $1,2,3,\ldots$. Equivalently, an infinite set is countable when there is a one-to-one correspondence between that set and the positive integers.
+
+**Cantor's diagonal claim:** the set $B$ is uncountable. No sequence
+
+$$
+s_1,s_2,s_3,\ldots
+$$
+
+can contain every element of $B$.
+
+To prove the claim, assume the opposite. Suppose a complete list exists. Write the bit in row $i$ and position $j$ as $s_{ij}$, so row $i$ is
+
+$$
+s_i=(s_{i1},s_{i2},s_{i3},\ldots).
+$$
+
+Now define a new infinite sequence
+
+$$
+d=(d_1,d_2,d_3,\ldots)
+$$
+
+by the rule
+
+$$
+d_i=1-s_{ii}.
+$$
+
+The symbol $s_{ii}$ means the bit where row $i$ meets position $i$: a diagonal entry. Because each bit is either $0$ or $1$, subtracting it from $1$ flips it.
+
+For every positive integer $i$,
+
+$$
+d_i\ne s_{ii}.
+$$
+
+Therefore $d$ differs from $s_i$ in at least position $i$. It follows that
+
+$$
+d\ne s_i
+$$
+
+for every row $i$. The supposedly complete list omits $d$, contradicting the assumption that the list contains every infinite binary sequence. Thus $B$ is uncountable.
+
+The proof does not depend on the entries chosen for the proposed list. Give the list any order and any rows; the same rule builds a sequence outside it.
+
+## Worked example: defeating six named rows
+
+Consider the visible prefixes
+
+$$
+\begin{array}{c|cccccc}
+&1&2&3&4&5&6\\
+\hline
+s_1&0&1&0&0&1&1\\
+s_2&1&1&0&1&0&0\\
+s_3&0&0&0&1&1&0\\
+s_4&1&0&1&1&0&1\\
+s_5&0&1&1&0&0&1\\
+s_6&1&0&0&1&1&0
+\end{array}
+$$
+
+Read the diagonal from upper left to lower right:
+
+$$
+(s_{11},s_{22},s_{33},s_{44},s_{55},s_{66})=(0,1,0,1,0,0).
+$$
+
+Flip every diagonal bit:
+
+$$
+(d_1,d_2,d_3,d_4,d_5,d_6)=(1,0,1,0,1,1).
+$$
+
+Now compare deliberately, not visually:
+
+1. $d$ differs from $s_1$ at bit $1$: $1\ne0$.
+2. $d$ differs from $s_2$ at bit $2$: $0\ne1$.
+3. $d$ differs from $s_3$ at bit $3$: $1\ne0$.
+4. $d$ differs from $s_4$ at bit $4$: $0\ne1$.
+5. $d$ differs from $s_5$ at bit $5$: $1\ne0$.
+6. $d$ differs from $s_6$ at bit $6$: $1\ne0$.
+
+The displayed prefix already rules out the six displayed rows. In the full proof, the same comparison rules out every row of the infinite list.
+
+## Why finite strings behave differently
+
+Every **finite** binary string can be listed. Group the strings by length, then use dictionary order within each group:
+
+$$
+\varepsilon;\quad 0,1;\quad 00,01,10,11;\quad 000,001,010,\ldots
+$$
+
+The symbol $\varepsilon$ denotes the empty string, whose length is zero. Every finite string has some finite length $n$, so it appears in the finite block containing all $2^n$ strings of length $n$.
+
+Infinite sequences have no final length block. The diagonal construction exploits one new position for each proposed row. “Made from only two symbols” does not imply “countable.”
+
+## Try the diagonal rule
+
+### Problem 1
+
+An imagined list begins with these four rows:
+
+$$
+\begin{array}{c|cccc}
+&1&2&3&4\\
+\hline
+s_1&0&1&1&0\\
+s_2&1&1&0&0\\
+s_3&1&0&1&0\\
+s_4&0&1&1&1
+\end{array}
+$$
+
+Find the first four bits of the diagonal escape sequence $d$. State which position proves that $d$ differs from each displayed row.
+
+<details>
+<summary>Reveal the solution</summary>
+
+The diagonal is
+
+$$
+(s_{11},s_{22},s_{33},s_{44})=(0,1,1,1).
+$$
+
+Flip those four bits:
+
+$$
+(d_1,d_2,d_3,d_4)=(1,0,0,0).
+$$
+
+The first bit separates $d$ from $s_1$, the second bit separates $d$ from $s_2$, the third bit separates $d$ from $s_3$, and the fourth bit separates $d$ from $s_4$.
+
+</details>
+
+### Problem 2
+
+Explain why the set of all computer programs written in a fixed programming language is countable, even when programs may be arbitrarily long.
+
+<details>
+<summary>Reveal the solution</summary>
+
+A program is a finite string over a finite alphabet of characters. List every one-character string, then every two-character string, then every three-character string, continuing by length. Discard strings that are not syntactically valid programs.
+
+Removing invalid strings leaves a list that still contains every valid program. Therefore the set of programs in the language is countable.
+
+</details>
+
+## From trigonometric series to different infinities
+
+Georg Cantor did not begin by trying to rank infinities. At the University of Halle, Eduard Heine asked him to study when a function has a unique representation as a trigonometric series. Exceptional sets of points forced Cantor to decide when two infinite collections should count as the same size. The [University of St Andrews biography of Cantor](https://mathshistory.st-andrews.ac.uk/Biographies/Cantor/) traces that path from analysis into set theory.
+
+In 1873 Cantor showed that the rational and algebraic numbers are countable. His 1874 paper gave his first proof that the real numbers are not countable. The short diagonal proof came later, in the 1891 paper [*Über eine elementare Frage der Mannigfaltigkeitslehre*](https://gdz.sub.uni-goettingen.de/id/PPN37721857X_0001?tify=%7B%22pages%22%3A%5B77%5D%7D) (“On an elementary question of the theory of manifolds”). Cantor phrased the argument with two-valued functions—the same structure as infinite binary sequences.
+
+The surrounding mathematical culture was not uniformly welcoming. Leopold Kronecker rejected Cantor's treatment of completed infinities, and his editorial influence delayed Cantor's 1877 work on dimension until Richard Dedekind intervened. Cantor nevertheless helped found the German Mathematical Society in 1890 and chaired its first meeting in Halle in 1891. The dispute was not only personal: it exposed a divide over which infinite objects mathematics was entitled to treat as completed wholes.
+
+## What the diagonal unlocks
+
+Each infinite binary sequence identifies a subset of the positive integers: include $i$ in the subset exactly when bit $i$ equals $1$. The lesson's proof therefore shows that the **power set** of the positive integers—the set of all their subsets—is larger than the positive integers themselves. Cantor's general theorem goes further: for every set $A$, its power set $\mathcal P(A)$ has strictly greater cardinality than $A$.
+
+The contrast with programs has a sharp consequence. Programs are finite strings, so there are only countably many programs. Infinite binary sequences are uncountable. Most infinite binary sequences therefore cannot be produced, bit by bit, by any program. This is a counting statement, not a practical complaint about slow computers.
+
+A close relative of diagonal reasoning also marks the limits of automated analysis. In his 1936 paper [“On Computable Numbers, with an Application to the Entscheidungsproblem”](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf), Alan Turing encoded machines and showed that no general procedure can settle every question of whether a machine will continue computing. Modern tools can prove termination for many particular programs, but no sound algorithm can decide termination correctly for every possible program and input.
+
+## One idea to remember
+
+To defeat a purported complete list, do not search it. Build one object whose $i$th feature is chosen to disagree with the $i$th entry. One disagreement per row is enough to escape them all.
+
+To continue, compare this construction with [Gödel's limits on formal proof](/reckonings/daily-reckoning-2026-09-03/) or study Cantor's theorem for arbitrary power sets.
+
+## Sources
+
+- Georg Cantor, [*Über eine elementare Frage der Mannigfaltigkeitslehre*](https://gdz.sub.uni-goettingen.de/id/PPN37721857X_0001?tify=%7B%22pages%22%3A%5B77%5D%7D), *Jahresbericht der Deutschen Mathematiker-Vereinigung*, volume 1, 1891, pages 75–78.
+- J. J. O'Connor and E. F. Robertson, [“Georg Ferdinand Ludwig Philipp Cantor”](https://mathshistory.st-andrews.ac.uk/Biographies/Cantor/), MacTutor History of Mathematics, University of St Andrews, updated October 1998.
+- José Ferreirós, [“The Early Development of Set Theory”](https://plato.stanford.edu/entries/settheory-early/), *Stanford Encyclopedia of Philosophy*, substantive revision December 3, 2025.
+- A. M. Turing, [“On Computable Numbers, with an Application to the Entscheidungsproblem”](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf), *Proceedings of the London Mathematical Society*, series 2, volume 42, 1937, pages 230–265; received May 28, 1936.

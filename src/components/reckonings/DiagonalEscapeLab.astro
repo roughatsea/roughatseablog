@@ -1,0 +1,166 @@
+---
+const rows = [
+  [0, 1, 0, 0, 1, 1],
+  [1, 1, 0, 1, 0, 0],
+  [0, 0, 0, 1, 1, 0],
+  [1, 0, 1, 1, 0, 1],
+  [0, 1, 1, 0, 0, 1],
+  [1, 0, 0, 1, 1, 0],
+];
+const diagonal = rows.map((row, index) => row[index]);
+const escape = diagonal.map((bit) => 1 - bit);
+---
+
+<figure class="diagonal-lab reckoning-visual" data-diagonal-lab data-step="0">
+  <header>
+    <p>Step-through proof</p>
+    <h3>Build the sequence that the list cannot contain</h3>
+  </header>
+
+  <div class="stage" aria-live="polite">
+    <p data-stage-copy><strong>Step 1:</strong> Pretend these rows begin a complete list of every infinite binary sequence.</p>
+  </div>
+
+  <div class="table-shell">
+    <table aria-label="Six rows of an imagined infinite list of binary sequences">
+      <thead>
+        <tr>
+          <th scope="col">row</th>
+          {rows[0].map((_, index) => <th scope="col">bit {index + 1}</th>)}
+          <th scope="col" aria-label="the sequence continues">…</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, rowIndex) => (
+          <tr data-row={rowIndex + 1}>
+            <th scope="row">s<sub>{rowIndex + 1}</sub></th>
+            {row.map((bit, columnIndex) => (
+              <td class:list={{ diagonal: rowIndex === columnIndex }} data-diagonal={rowIndex === columnIndex ? '' : undefined}>{bit}</td>
+            ))}
+            <td>…</td>
+          </tr>
+        ))}
+      </tbody>
+      <tfoot>
+        <tr class="escape-row" data-escape-row>
+          <th scope="row">d</th>
+          {escape.map((bit, index) => <td data-escape-bit={index + 1}>{bit}</td>)}
+          <td>…</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="comparison" data-comparison aria-label="How the new sequence differs from each displayed row">
+    {rows.map((_, index) => (
+      <div data-match={index + 1}>
+        <span>d vs. s<sub>{index + 1}</sub></span>
+        <strong>differs at bit {index + 1}</strong>
+      </div>
+    ))}
+  </div>
+
+  <div class="controls">
+    <button type="button" data-previous disabled>Previous</button>
+    <span data-step-count>Step 1 of 4</span>
+    <button type="button" data-next>Show the diagonal</button>
+    <button type="button" class="quiet" data-reset>Reset</button>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the six visible rows are only examples. In the imagined infinite table, the constructed row <em>d</em> has its <em>i</em>th bit chosen to disagree with row <em>i</em>, so every row is ruled out at a named position. The finite display illustrates the rule; the proof uses every natural-numbered row.
+  </figcaption>
+</figure>
+
+<script>
+  const stageText = [
+    '<strong>Step 1:</strong> Pretend these rows begin a complete list of every infinite binary sequence.',
+    '<strong>Step 2:</strong> Read the diagonal entries: row 1 bit 1, row 2 bit 2, and so on.',
+    '<strong>Step 3:</strong> Flip each diagonal bit. The resulting sequence is <em>d</em>.',
+    '<strong>Step 4:</strong> Compare <em>d</em> with row <em>i</em>. They differ at bit <em>i</em>, so <em>d</em> occurs nowhere on the list.',
+  ];
+  const nextLabels = ['Show the diagonal', 'Flip the bits', 'Compare every row', 'Proof complete'];
+
+  document.querySelectorAll<HTMLElement>('[data-diagonal-lab]').forEach((lab) => {
+    const copy = lab.querySelector<HTMLElement>('[data-stage-copy]');
+    const count = lab.querySelector<HTMLElement>('[data-step-count]');
+    const previous = lab.querySelector<HTMLButtonElement>('[data-previous]');
+    const next = lab.querySelector<HTMLButtonElement>('[data-next]');
+    const reset = lab.querySelector<HTMLButtonElement>('[data-reset]');
+    let step = 0;
+
+    const render = () => {
+      lab.dataset.step = String(step);
+      if (copy) copy.innerHTML = stageText[step];
+      if (count) count.textContent = `Step ${step + 1} of 4`;
+      if (previous) previous.disabled = step === 0;
+      if (next) {
+        next.disabled = step === 3;
+        next.textContent = nextLabels[step];
+      }
+    };
+
+    previous?.addEventListener('click', () => { step = Math.max(0, step - 1); render(); });
+    next?.addEventListener('click', () => { step = Math.min(3, step + 1); render(); });
+    reset?.addEventListener('click', () => { step = 0; render(); });
+    render();
+  });
+</script>
+
+<style>
+  .diagonal-lab {
+    --cyan: #087dcc;
+    --magenta: #d9007e;
+    --green: #4f9300;
+    background: radial-gradient(circle at 88% 0%, color-mix(in srgb, var(--magenta) 11%, transparent), transparent 22rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(940px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .diagonal-lab { --cyan: #1493ff; --magenta: #ff1493; --green: #93ff14; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .stage { background: color-mix(in srgb, var(--cyan) 7%, var(--bg-color)); border: 1px solid color-mix(in srgb, var(--cyan) 35%, var(--border-color)); border-radius: 8px; margin-bottom: .85rem; padding: .8rem 1rem; }
+  .stage p { color: var(--text-secondary); font-size: .88rem; margin: 0; }
+  .stage strong { color: var(--text-primary); }
+  .table-shell { border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  table { border-collapse: collapse; font-family: var(--font-mono); min-width: 650px; table-layout: fixed; width: 100%; }
+  th, td { border: 1px solid var(--border-color); height: 2.65rem; padding: .3rem; text-align: center; }
+  thead th { background: var(--bg-color); color: var(--text-secondary); font-family: var(--font-sans); font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; }
+  tbody th, tfoot th { background: var(--bg-color); color: var(--text-secondary); font-weight: 700; }
+  td { color: var(--text-primary); font-size: 1rem; }
+  td.diagonal { position: relative; }
+  .diagonal-lab[data-step='1'] td.diagonal,
+  .diagonal-lab[data-step='2'] td.diagonal,
+  .diagonal-lab[data-step='3'] td.diagonal { background: color-mix(in srgb, var(--cyan) 18%, var(--surface-color)); box-shadow: inset 0 0 0 2px var(--cyan); color: var(--cyan); font-weight: 800; }
+  .escape-row { opacity: 0; }
+  .diagonal-lab[data-step='2'] .escape-row,
+  .diagonal-lab[data-step='3'] .escape-row { opacity: 1; }
+  .escape-row th, .escape-row td { background: color-mix(in srgb, var(--magenta) 13%, var(--surface-color)); border-color: color-mix(in srgb, var(--magenta) 55%, var(--border-color)); color: var(--magenta); font-weight: 800; }
+  .comparison { display: grid; gap: .45rem; grid-template-columns: repeat(3, 1fr); margin-top: .85rem; opacity: 0; }
+  .diagonal-lab[data-step='3'] .comparison { opacity: 1; }
+  .comparison div { background: var(--bg-color); border: 1px solid color-mix(in srgb, var(--green) 45%, var(--border-color)); border-radius: 7px; display: grid; gap: .12rem; padding: .55rem .65rem; }
+  .comparison span { color: var(--text-secondary); font-size: .66rem; }
+  .comparison strong { color: var(--green); font-size: .72rem; }
+  .controls { align-items: center; display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .9rem; }
+  .controls button { background: var(--cyan); border: 1px solid var(--cyan); border-radius: 999px; color: #fff; cursor: pointer; font: inherit; font-size: .77rem; font-weight: 700; padding: .52rem .82rem; }
+  .controls button.quiet { background: transparent; color: var(--text-secondary); }
+  .controls button:disabled { cursor: default; opacity: .42; }
+  .controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--green) 65%, transparent); outline-offset: 2px; }
+  .controls span { color: var(--text-secondary); font-size: .7rem; margin-inline: auto .2rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .9rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 720px) {
+    .diagonal-lab { width: calc(100vw - 1.5rem); }
+    .comparison { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 430px) {
+    .comparison { grid-template-columns: 1fr; }
+    .controls span { margin-inline: 0; order: -1; width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .diagonal-lab * { transition: none !important; } }
+</style>

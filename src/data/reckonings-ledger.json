@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-18T06:00:00-07:00",
+  "updatedAt": "2026-09-22T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -518,6 +518,33 @@
       "relatedLessons": [
         "daily-reckoning-2026-09-05",
         "daily-reckoning-2026-09-13"
+      ]
+    },
+    {
+      "date": "2026-09-22",
+      "slug": "daily-reckoning-2026-09-22",
+      "title": "Can You List Every Infinite String of Zeros and Ones?",
+      "area": "Logic and foundations",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Sets and functions",
+        "One-to-one correspondence",
+        "Proof by contradiction"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Cantor's diagonal argument",
+        "countability",
+        "uncountability",
+        "infinite binary sequences",
+        "power sets",
+        "cardinality",
+        "computability",
+        "halting problem"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-03",
+        "daily-reckoning-2026-09-18"
       ]
     }
   ]
