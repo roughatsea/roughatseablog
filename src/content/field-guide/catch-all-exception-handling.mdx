@@ -1,0 +1,116 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Catch-all Exception Handling
+description: "A catch-all becomes dangerous when it converts unrelated failures into the same apparently successful result."
+prerequisites: "Functions, exceptions, and try/catch or try/except."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Counts.Read(() => \"12\") == 12); Check.That(Counts.Read(() => throw new System.IO.IOException(\"offline\")) == 0);","revised":"Check.That(Counts.Read(() => \"12\") == 12); Check.That(Counts.Read(() => \"bad\") == null); bool escaped = false; try { Counts.Read(() => throw new System.IO.IOException(\"offline\")); } catch (System.IO.IOException) { escaped = true; } Check.That(escaped);"},"python":{"original":"assert read_count(lambda: '12') == 12\ndef fail():\n    raise OSError('offline')\nassert read_count(fail) == 0","revised":"assert read_count(lambda: '12') == 12\nassert read_count(lambda: 'bad') is None\ndef fail():\n    raise OSError('offline')\ntry:\n    read_count(fail)\nexcept OSError:\n    pass\nelse:\n    raise AssertionError('I/O failure hidden')"}};
+
+**Catch-all exception handling** catches a broad class of failures. The smell appears when code treats all of those failures as something it knows how to recover from—often by returning a default that looks like success. [1](#source-1)
+
+Suppose an inventory display reads a count as text. Zero items, malformed text, and an unavailable storage device are three different situations. Returning zero for all three makes the display confidently wrong.
+
+## Original version: every problem becomes zero
+
+The examples receive a function that supplies text, allowing us to show the error handling without a real file or server.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Counts
+{
+    public static int Read(Func<string> readText)
+    {
+        try
+        {
+            return int.Parse(readText());
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+    }
+}
+```
+
+The catch covers both retrieving the text and parsing it. An `IOException` from `readText` becomes the same zero as a genuine `"0"` result.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def read_count(read_text):
+    try:
+        return int(read_text())
+    except Exception:
+        return 0
+```
+
+The handler covers both retrieving the text and parsing it. An `OSError` from `read_text` becomes the same zero as a genuine `"0"` result. `Exception` does not include every possible Python exception, but it is still much broader than the expected parsing failure.
+
+</section>
+
+## Revised version: handle only the condition you understand
+
+Here the chosen contract is: return a count for valid integer text, return an absent value for malformed text, and let retrieval failures reach a caller that can report them.
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Counts
+{
+    public static int? Read(Func<string> readText)
+    {
+        string text = readText();
+        if (int.TryParse(text, out int count))
+        {
+            return count;
+        }
+        return null;
+    }
+}
+```
+
+```csharp group=revised role=run
+int? count = Counts.Read(() => "not a number");
+Console.WriteLine(count.HasValue ? count.Value.ToString() : "Invalid count");
+```
+
+`readText` is outside any catch. `TryParse` handles the expected conversion failure without hiding failures in the text supplier. Values outside C#'s integer range also produce an absent result.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def read_count(read_text):
+    text = read_text()
+    try:
+        return int(text)
+    except ValueError:
+        return None
+```
+
+```python group=revised role=run
+count = read_count(lambda: "not a number")
+print("Invalid count" if count is None else count)
+```
+
+`read_text` is outside the handler. Only a `ValueError` from integer conversion becomes `None`. A broken supplier returning an inappropriate object is not silently treated as valid text. Python integers do not have the same fixed range as C# integers.
+
+</section>
+
+## Broad catches have legitimate homes
+
+A request boundary or worker loop may need a broad handler so one failed operation does not terminate the whole process. That handler should record the failure, choose an honest failure result, and preserve cancellation and cleanup requirements. It should not report that the failed operation succeeded.
+
+This revision changes the error contract intentionally: callers must handle an absent count, and retrieval failures can now propagate. It is a correction, not a behavior-preserving refactoring.
+
+Ask of every catch: **which failure do we expect, what recovery are we performing, and what information would a caller lose?** Catching an exception is not itself recovery.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Best practices for exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions), on recovery, specific handling, and exception preservation.
+2. [Python — Errors and exceptions](https://docs.python.org/3/tutorial/errors.html), on matching handlers and propagating unhandled exceptions.

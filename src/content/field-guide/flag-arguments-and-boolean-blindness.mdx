@@ -1,0 +1,117 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Flag Arguments and Boolean Blindness
+description: "A flag argument makes a function choose between operations. A bare true or false often hides which operation a caller intended."
+prerequisites: "Functions, arguments, and Boolean values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Labels.Make(\"Mira\", true) == \"Welcome back, Mira!\"); Check.That(Labels.Make(\"Mira\", false) == \"Welcome, Mira!\");","revised":"Check.That(Labels.ReturningPlayer(\"Mira\") == \"Welcome back, Mira!\"); Check.That(Labels.NewPlayer(\"Mira\") == \"Welcome, Mira!\");"},"python":{"original":"assert make_label('Mira', True) == 'Welcome back, Mira!'\nassert make_label('Mira', False) == 'Welcome, Mira!'","revised":"assert returning_player_label('Mira') == 'Welcome back, Mira!'\nassert new_player_label('Mira') == 'Welcome, Mira!'"}};
+
+A **flag argument** tells a function which operation to perform. When that argument is a Boolean, a call containing only `true` or `false` may conceal the caller's intention. **Boolean blindness** describes that loss of meaning at the call site. [1](#source-1)
+
+Consider a game that greets new and returning players differently. A function can handle both greetings, but its callers should not have to remember what an unexplained Boolean stands for.
+
+## Original version: what does true mean?
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Labels
+{
+    public static string Make(string name, bool returning)
+    {
+        if (returning)
+        {
+            return "Welcome back, " + name + "!";
+        }
+        return "Welcome, " + name + "!";
+    }
+}
+```
+
+```csharp group=original role=run
+Console.WriteLine(Labels.Make("Mira", true));
+```
+
+The function body is straightforward. The call is not: `true` could plausibly mean returning, premium, online, or something else. Reading the parameter declaration supplies the missing meaning, but that requires leaving the call.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def make_label(name, returning):
+    if returning:
+        return "Welcome back, " + name + "!"
+    return "Welcome, " + name + "!"
+```
+
+```python group=original role=run
+print(make_label("Mira", True))
+```
+
+The function body is straightforward. The call is not: `True` could plausibly mean returning, premium, online, or something else. Reading the parameter declaration supplies the missing meaning, but that requires leaving the call.
+
+</section>
+
+## Refactored version: name the choice
+
+Give each greeting an explicit name. These are alternative declarations, replacing the original function rather than adding another step to its execution.
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Labels
+{
+    public static string NewPlayer(string name)
+    {
+        return "Welcome, " + name + "!";
+    }
+
+    public static string ReturningPlayer(string name)
+    {
+        return "Welcome back, " + name + "!";
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(Labels.ReturningPlayer("Mira"));
+```
+
+`ReturningPlayer` communicates the choice before you open its implementation. It returns exactly the greeting previously selected by `Make("Mira", true)`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def new_player_label(name):
+    return "Welcome, " + name + "!"
+
+
+def returning_player_label(name):
+    return "Welcome back, " + name + "!"
+```
+
+```python group=revised role=run
+print(returning_player_label("Mira"))
+```
+
+`returning_player_label` communicates the choice before you open its implementation. It returns exactly the greeting previously selected by `make_label("Mira", True)`.
+
+</section>
+
+The improvement is at the call site, not in the amount of code. We now have two small functions instead of one conditional function.
+
+## When a Boolean is the right value
+
+A Boolean that represents actual data is not automatically a flag smell. Passing the checked state of a checkbox into a setting can be entirely natural. Splitting that operation into two calls may just force every caller to write the same conditional.
+
+A named argument can also be enough: `returning: true` in C#, or `returning=True` in Python, makes the original call more readable. If many call sites already possess a variable named `isReturningPlayer`, retaining one function might be simpler.
+
+Investigate when the Boolean selects substantially different operations, especially when several flags create combinations no one can explain. Do not replace every Boolean with an elaborate class hierarchy. Choose the smallest API whose calls say what they do.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Flag Argument](https://martinfowler.com/bliki/FlagArgument.html), including explicit methods, named intent, and cases where retaining a Boolean is reasonable.

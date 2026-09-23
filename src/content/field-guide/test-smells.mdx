@@ -1,0 +1,118 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Test Smells
+description: "Test smells are clues that tests are hard to trust, understand, or maintain, even when they currently pass."
+prerequisites: "Functions, collections, and assertions."
+---
+
+export const checks = {"csharp":{"original":"Tests.AddItem(); bool failed = false; try { Tests.NewCartIsEmpty(); } catch (Exception) { failed = true; } Check.That(failed);","revised":"Tests.AddItem(); Tests.NewCartIsEmpty(); Tests.NewCartIsEmpty(); Tests.AddItem();"},"python":{"original":"test_add_item()\ntry:\n    test_new_cart_is_empty()\nexcept AssertionError:\n    pass\nelse:\n    raise AssertionError('shared-state defect not reproduced')","revised":"test_add_item()\ntest_new_cart_is_empty()\ntest_new_cart_is_empty()\ntest_add_item()"}};
+
+**Test smells** are clues that tests may be unreliable, confusing, or unnecessarily expensive to maintain. Examples include unexplained setup, dependence on test order, waiting for arbitrary time intervals, and assertions that break whenever implementation details change. A smell is a reason to investigate, not proof that a test is worthless. [1](#source-1)
+
+## Original version: two passing tests that fail together
+
+These small test functions use ordinary assertions rather than a particular test framework. One adds an item. Another checks that a new cart starts empty. Both accidentally use the same list.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Tests
+{
+    private static readonly List<string> cart = new List<string>();
+
+    public static void AddItem()
+    {
+        cart.Add("Potion");
+        if (!cart.Contains("Potion")) throw new Exception("Item missing.");
+    }
+
+    public static void NewCartIsEmpty()
+    {
+        if (cart.Count != 0) throw new Exception("Cart was not empty.");
+    }
+}
+```
+
+`AddItem` leaves a potion in the static list. Running `NewCartIsEmpty` afterward fails, even though the cart implementation has not changed. The second test never constructed a new cart at all.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+cart = []
+
+
+def test_add_item():
+    cart.append("Potion")
+    assert "Potion" in cart
+
+
+def test_new_cart_is_empty():
+    assert cart == []
+```
+
+`test_add_item` leaves a potion in the module-level list. Running the empty-cart test afterward fails. Running that test first succeeds. Test order has become an undocumented input.
+
+</section>
+
+## Revised version: each test owns its starting state
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Tests
+{
+    public static void AddItem()
+    {
+        var cart = new List<string>();
+        cart.Add("Potion");
+        if (!cart.SequenceEqual(new[] { "Potion" }))
+        {
+            throw new Exception("Unexpected cart contents.");
+        }
+    }
+
+    public static void NewCartIsEmpty()
+    {
+        var cart = new List<string>();
+        if (cart.Count != 0) throw new Exception("Cart was not empty.");
+    }
+}
+```
+
+Each method creates its own list. The item test checks the whole expected contents, not merely whether one item happens to be present. These two tests can run in either order without changing one another's state.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def test_add_item():
+    cart = []
+    cart.append("Potion")
+    assert cart == ["Potion"]
+
+
+def test_new_cart_is_empty():
+    cart = []
+    assert cart == []
+```
+
+Each function constructs its own list. The first checks the exact expected contents. The second really does examine a newly constructed cart. They no longer depend on execution order.
+
+</section>
+
+## Make a failure explain something
+
+Independent setup is one part of useful testing. A failing test should also identify the behavior that mattered. Prefer a name such as “rejects a second reward claim” to “test method 3,” and make expected values visible rather than hiding them in a large fixture.
+
+Avoid tests that reproduce the implementation's arithmetic to calculate their expected answer: the same mistake can appear on both sides of the assertion. Use concrete known outcomes and boundary cases. Assert internal calls only when those interactions are themselves important—for example, that a payment is not submitted twice.
+
+Shared expensive infrastructure can be appropriate in integration tests, but each test still needs controlled data and cleanup. For asynchronous work, wait for an observable condition with a bound rather than sleeping and hoping the operation has finished.
+
+The example tests only lists; it does not establish coverage of a real cart. Its purpose is to make test-order dependence visible, then remove it without changing the behavior under test.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Unit testing best practices](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices), on readable, isolated, repeatable tests and avoiding logic in tests.

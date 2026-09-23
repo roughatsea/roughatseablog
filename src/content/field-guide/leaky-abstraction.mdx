@@ -1,0 +1,159 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Leaky Abstraction
+description: "An abstraction leaks when callers must understand details it was supposed to hide in order to use it correctly."
+prerequisites: "Functions, objects, return values, and exceptions."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new CustomerDirectory(new VendorDirectory()).GetName(7) == \"Mira\"); bool failed = false; try { new CustomerDirectory(new VendorDirectory()).GetName(8); } catch (KeyNotFoundException) { failed = true; } Check.That(failed);","revised":"var directory = new CustomerDirectory(new VendorDirectory()); Check.That(directory.FindName(7) == \"Mira\"); Check.That(directory.FindName(8) == null);"},"python":{"original":"directory = CustomerDirectory(VendorDirectory())\nassert directory.get_name(7) == 'Mira'\ntry:\n    directory.get_name(8)\nexcept KeyError:\n    pass\nelse:\n    raise AssertionError('missing value unexpectedly found')","revised":"directory = CustomerDirectory(VendorDirectory())\nassert directory.find_name(7) == 'Mira'\nassert directory.find_name(8) is None"}};
+
+An **abstraction** lets you use a capability without dealing with every implementation detail. It is **leaky** when those supposedly hidden details become necessary to use the capability correctly. [1](#source-1)
+
+A customer directory might promise to find a customer's name. If its callers must catch a storage library's exception for an ordinary missing customer, they have learned something about storage that the directory was meant to hide.
+
+## Original version: a wrapper preserves the surprise
+
+The following in-memory stand-in represents a vendor library. It returns a name for customer 7 and throws for an unknown identifier. There is no database or network in this example.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class VendorDirectory
+{
+    private readonly Dictionary<int, string> names =
+        new Dictionary<int, string> { { 7, "Mira" } };
+
+    public string Read(int id)
+    {
+        return names[id];
+    }
+}
+
+public sealed class CustomerDirectory
+{
+    private readonly VendorDirectory vendor;
+
+    public CustomerDirectory(VendorDirectory vendor)
+    {
+        this.vendor = vendor;
+    }
+
+    public string GetName(int id)
+    {
+        return vendor.Read(id);
+    }
+}
+```
+
+`GetName(8)` exposes the dictionary's `KeyNotFoundException`. The extra class has not established what a missing customer means. Every caller must either know this implementation detail or be surprised by it.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class VendorDirectory:
+    def __init__(self):
+        self._names = {7: "Mira"}
+
+    def read(self, customer_id):
+        return self._names[customer_id]
+
+
+class CustomerDirectory:
+    def __init__(self, vendor):
+        self._vendor = vendor
+
+    def get_name(self, customer_id):
+        return self._vendor.read(customer_id)
+```
+
+`get_name(8)` exposes the dictionary's `KeyError`. The extra class has not established what a missing customer means. Every caller must either know this implementation detail or be surprised by it.
+
+</section>
+
+## Revised version: define the missing-customer result
+
+Keep the same vendor implementation. Change the directory's public contract: a missing name is an absent result, not a vendor exception.
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class VendorDirectory
+{
+    private readonly Dictionary<int, string> names =
+        new Dictionary<int, string> { { 7, "Mira" } };
+
+    public string Read(int id) { return names[id]; }
+}
+
+public sealed class CustomerDirectory
+{
+    private readonly VendorDirectory vendor;
+
+    public CustomerDirectory(VendorDirectory vendor)
+    {
+        this.vendor = vendor;
+    }
+
+    public string? FindName(int id)
+    {
+        try { return vendor.Read(id); }
+        catch (KeyNotFoundException) { return null; }
+    }
+}
+```
+
+```csharp group=revised role=run
+var directory = new CustomerDirectory(new VendorDirectory());
+Console.WriteLine(directory.FindName(8) ?? "Customer not found");
+```
+
+The caller handles `null`, the absence documented by `FindName`. Only the known missing-key exception is translated; an unrelated failure is not relabeled as a missing customer.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class VendorDirectory:
+    def __init__(self):
+        self._names = {7: "Mira"}
+
+    def read(self, customer_id):
+        return self._names[customer_id]
+
+
+class CustomerDirectory:
+    def __init__(self, vendor):
+        self._vendor = vendor
+
+    def find_name(self, customer_id):
+        try:
+            return self._vendor.read(customer_id)
+        except KeyError:
+            return None
+```
+
+```python group=revised role=run
+directory = CustomerDirectory(VendorDirectory())
+name = directory.find_name(8)
+print("Customer not found" if name is None else name)
+```
+
+The caller handles `None`, the absence documented by `find_name`. Only the known missing-key exception is translated; an unrelated failure is not relabeled as a missing customer.
+
+</section>
+
+## Hide details, not reality
+
+This deliberately changes the public error contract. Existing callers catching the old exception need migration and tests. With a real library, translate only the exception whose documented meaning is exactly “not found.” A broad catch could turn an outage into a false claim that no customer exists.
+
+An abstraction cannot make all physical constraints disappear. A remote directory can be slow or unavailable. A database query can be expensive. Good interfaces describe consequential limits instead of promising that remote access behaves exactly like reading memory.
+
+The diagnostic question is concrete: **which implementation fact must callers know, and should it be part of the documented contract or handled inside the abstraction?** Adding another wrapper without answering that question adds distance, not clarity.
+
+## Sources
+
+1. <span id="source-1"></span>[Joel Spolsky — The Law of Leaky Abstractions](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/), on implementation details that reappear at an abstraction's surface.
+2. [Microsoft — Best practices for exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions), on handling failures deliberately rather than swallowing them.

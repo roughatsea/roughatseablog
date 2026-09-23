@@ -1,0 +1,145 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Temporal Coupling
+description: "Temporal coupling means operations must happen in a particular order, but the interface makes that ordering easy to overlook."
+prerequisites: "Objects, constructors, methods, and exceptions."
+---
+
+export const checks = {"csharp":{"original":"var badge = new Badge(); bool failed = false; try { badge.Render(); } catch (InvalidOperationException) { failed = true; } Check.That(failed); badge.SetName(\"Mira\"); Check.That(badge.Render() == \"Player: Mira\");","revised":"Check.That(new Badge(\"Mira\").Render() == \"Player: Mira\"); bool failed = false; try { new Badge(\" \" ); } catch (ArgumentException) { failed = true; } Check.That(failed);"},"python":{"original":"badge = Badge()\ntry:\n    badge.render()\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('uninitialized rendering accepted')\nbadge.set_name('Mira')\nassert badge.render() == 'Player: Mira'","revised":"assert Badge('Mira').render() == 'Player: Mira'\ntry:\n    Badge(' ')\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('blank name accepted')"}};
+
+**Temporal coupling** means that operations must occur in a particular order. It becomes a design problem when callers can easily perform them in the wrong order and the interface does little to help. [1](#source-1)
+
+A common example is “construct the object, remember to initialize it, and only then use it.” The instruction may live in a comment while the compiler happily accepts a call that skips initialization.
+
+## Original version: a badge exists before it is usable
+
+A player badge needs a name before it can render its label.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Badge
+{
+    private string? name;
+
+    public void SetName(string name)
+    {
+        this.name = name;
+    }
+
+    public string Render()
+    {
+        if (name == null)
+        {
+            throw new InvalidOperationException("Set the name first.");
+        }
+        return "Player: " + name;
+    }
+}
+```
+
+```csharp group=original role=run
+Badge badge = new Badge();
+badge.SetName("Mira");
+Console.WriteLine(badge.Render());
+```
+
+This call sequence works. Removing `SetName` makes `Render` throw. The object exists in both cases, but only one sequence leaves it ready to use.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Badge:
+    def __init__(self):
+        self._name = None
+
+    def set_name(self, name):
+        self._name = name
+
+    def render(self):
+        if self._name is None:
+            raise RuntimeError("Set the name first.")
+        return "Player: " + self._name
+```
+
+```python group=original role=run
+badge = Badge()
+badge.set_name("Mira")
+print(badge.render())
+```
+
+This call sequence works. Removing `set_name` makes `render` raise an exception. The object exists in both cases, but only one sequence leaves it ready to use.
+
+</section>
+
+## Revised version: construction establishes readiness
+
+Make the required name part of construction. Here we also reject blank names, an intentional validation improvement rather than a behavior-preserving refactoring.
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Badge
+{
+    private readonly string name;
+
+    public Badge(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A badge needs a name.");
+        }
+        this.name = name;
+    }
+
+    public string Render()
+    {
+        return "Player: " + name;
+    }
+}
+```
+
+```csharp group=revised role=run
+Badge badge = new Badge("Mira");
+Console.WriteLine(badge.Render());
+```
+
+There is no successful construction that leaves `name` unset. `Render` no longer needs to remind the caller of a missing initialization call.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Badge:
+    def __init__(self, name):
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("A badge needs a name.")
+        self._name = name
+
+    def render(self):
+        return "Player: " + self._name
+```
+
+```python group=revised role=run
+badge = Badge("Mira")
+print(badge.render())
+```
+
+Successful construction establishes a usable name. Ordinary callers do not need to remember an extra initialization step. This is not protection against code deliberately modifying `_name` afterward.
+
+</section>
+
+## Some order is unavoidable
+
+You cannot read a response before sending a request. A file must be opened before it is read. The objective is not to eliminate time, but to make required sequences difficult to misuse.
+
+For expensive or asynchronous initialization, a factory can return an object only after preparation succeeds. For a longer process, separate types or explicit states can distinguish a draft from a submitted record. Resource-management constructs can pair opening and closing even when errors occur.
+
+The badge needs none of that machinery. One constructor argument is enough. Look for the smallest change that turns “remember to do this first” into a requirement the API makes visible.
+
+## Sources
+
+1. <span id="source-1"></span>[Mark Seemann — Temporal coupling and dependency injection](https://blog.ploeh.dk/2011/05/24/DesignSmellTemporalCoupling/), describing initialization-order dependencies and construction-time requirements.

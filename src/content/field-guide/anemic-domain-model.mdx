@@ -1,0 +1,138 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Anemic Domain Model
+description: "An anemic domain model stores business data in objects while the rules governing that data live elsewhere."
+prerequisites: "Classes, fields, methods, and basic validation."
+---
+
+export const checks = {"csharp":{"original":"var quest = new QuestData { Complete = true }; Check.That(Rewards.Claim(quest) == 100); quest.Claimed = false; Check.That(Rewards.Claim(quest) == 100);","revised":"var quest = new Quest(); bool failed = false; try { quest.ClaimReward(); } catch (InvalidOperationException) { failed = true; } Check.That(failed); quest.Complete(); Check.That(quest.ClaimReward() == 100); failed = false; try { quest.ClaimReward(); } catch (InvalidOperationException) { failed = true; } Check.That(failed);"},"python":{"original":"quest = QuestData()\nquest.complete = True\nassert claim(quest) == 100\nquest.claimed = False\nassert claim(quest) == 100","revised":"quest = Quest()\ntry:\n    quest.claim_reward()\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('incomplete quest rewarded')\nquest.complete()\nassert quest.claim_reward() == 100\ntry:\n    quest.claim_reward()\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('reward claimed twice')"}};
+
+An **anemic domain model** stores business data in objects while the rules governing that data live in separate procedural code. The concern is not simply that an object has properties. It is that an application pays for a model of business objects without using those objects to organize and protect its business behavior. [1](#source-1)
+
+## Original version: every caller can undo the rule
+
+A completed quest awards 100 coins, once. The reward service checks that rule, but the data object allows anyone to change the facts it relies on.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class QuestData
+{
+    public bool Complete { get; set; }
+    public bool Claimed { get; set; }
+}
+
+public static class Rewards
+{
+    public static int Claim(QuestData quest)
+    {
+        if (!quest.Complete || quest.Claimed)
+        {
+            throw new InvalidOperationException("Reward unavailable.");
+        }
+        quest.Claimed = true;
+        return 100;
+    }
+}
+```
+
+```csharp group=original role=run
+var quest = new QuestData { Complete = true };
+Console.WriteLine(Rewards.Claim(quest));
+quest.Claimed = false;
+Console.WriteLine(Rewards.Claim(quest)); // Another 100
+```
+
+The service checked correctly. The public setter let a caller erase the evidence of the first claim. Other services can introduce the same problem without ever calling `Rewards`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class QuestData:
+    def __init__(self):
+        self.complete = False
+        self.claimed = False
+
+
+def claim(quest):
+    if not quest.complete or quest.claimed:
+        raise RuntimeError("Reward unavailable.")
+    quest.claimed = True
+    return 100
+```
+
+```python group=original role=run
+quest = QuestData()
+quest.complete = True
+print(claim(quest))
+quest.claimed = False
+print(claim(quest))  # Another 100
+```
+
+The function checked correctly. The data object's unrestricted public attributes let a caller erase the first claim. Each caller must remember which edits are legitimate.
+
+</section>
+
+## Revised version: ask the quest to perform a valid operation
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Quest
+{
+    private bool complete;
+    private bool claimed;
+
+    public void Complete() { complete = true; }
+
+    public int ClaimReward()
+    {
+        if (!complete || claimed)
+        {
+            throw new InvalidOperationException("Reward unavailable.");
+        }
+        claimed = true;
+        return 100;
+    }
+}
+```
+
+`ClaimReward` checks and changes the quest's own state. There is no public setter that resets `claimed`. A caller completes a quest and requests a reward rather than manipulating the claim flag.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Quest:
+    def __init__(self):
+        self._complete = False
+        self._claimed = False
+
+    def complete(self):
+        self._complete = True
+
+    def claim_reward(self):
+        if not self._complete or self._claimed:
+            raise RuntimeError("Reward unavailable.")
+        self._claimed = True
+        return 100
+```
+
+The public operations now express completion and claiming. The underscore attributes mark internal state by convention; Python does not stop a determined caller from assigning `_claimed` directly.
+
+</section>
+
+## The object is not the whole application
+
+This example protects a single in-memory object used sequentially. It does not solve concurrent claims against different copies, persistence failures, or cheating by an untrusted client. A real authoritative service needs the corresponding database and transaction rules.
+
+The application can still load the quest, call its operation, and save the result. That coordinating code need not contain the quest's eligibility calculation.
+
+Plain data objects remain appropriate for messages, query results, serialization, and many simple applications. Functional code can also keep data separate while expressing rules through well-designed functions. Do not add methods ceremonially. Use a behavior-bearing model when it gives meaningful rules a clear home and makes valid changes easier to express than invalid ones.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Anemic Domain Model](https://martinfowler.com/bliki/AnemicDomainModel.html), including the distinction between domain behavior, application coordination, and simpler alternatives.

@@ -1,0 +1,131 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Hidden Global State
+description: "Hidden global state is shared, changeable data that a function reads without receiving it as an argument or declared dependency."
+prerequisites: "Functions, variables, and objects."
+---
+
+export const checks = {"csharp":{"original":"Settings.Prefix = \"Hi\"; Check.That(Greeting.For(\"Mira\") == \"Hi, Mira\"); Settings.Prefix = \"Hello\"; Check.That(Greeting.For(\"Mira\") == \"Hello, Mira\");","revised":"var first = new Greeting(\"Hi\"); var second = new Greeting(\"Hello\"); Check.That(first.For(\"Mira\") == \"Hi, Mira\"); Check.That(second.For(\"Mira\") == \"Hello, Mira\"); Check.That(first.For(\"Mira\") == \"Hi, Mira\");"},"python":{"original":"prefix = 'Hi'\nassert greeting('Mira') == 'Hi, Mira'\nprefix = 'Hello'\nassert greeting('Mira') == 'Hello, Mira'","revised":"first = Greeting('Hi')\nsecond = Greeting('Hello')\nassert first.for_player('Mira') == 'Hi, Mira'\nassert second.for_player('Mira') == 'Hello, Mira'\nassert first.for_player('Mira') == 'Hi, Mira'"}};
+
+**Hidden global state** is shared, changeable data that a function uses without receiving it as an argument or an explicit dependency. A call can produce a different answer because unrelated code changed that data earlier.
+
+The word *hidden* does not mean the variable is impossible to find. It means the dependency is absent from the call or the object's construction. A reader has to discover it by inspecting the implementation. Supplying dependencies explicitly is one way to remove that surprise. [1](#source-1)
+
+## Original version: one setting changes every greeting
+
+A small game has a configurable greeting prefix. Two screens want different wording, but both read one shared setting.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Settings
+{
+    public static string Prefix = "Hello";
+}
+
+public static class Greeting
+{
+    public static string For(string name)
+    {
+        return Settings.Prefix + ", " + name;
+    }
+}
+```
+
+```csharp group=original role=run
+Settings.Prefix = "Welcome";
+Console.WriteLine(Greeting.For("Mira")); // Welcome, Mira
+Settings.Prefix = "Ahoy";
+Console.WriteLine(Greeting.For("Mira")); // Ahoy, Mira
+```
+
+`For` receives the same name twice, but it reads a different `Settings.Prefix`. Any code allowed to assign that static field can alter future greetings. A test that forgets to restore the field can affect another test.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+prefix = "Hello"
+
+
+def greeting(name):
+    return prefix + ", " + name
+```
+
+```python group=original role=run
+prefix = "Welcome"
+print(greeting("Mira"))  # Welcome, Mira
+prefix = "Ahoy"
+print(greeting("Mira"))  # Ahoy, Mira
+```
+
+`greeting` receives the same name twice, but reads a different module-level `prefix`. Code assigning that variable alters future greetings. A test that forgets to restore it can affect another test.
+
+</section>
+
+## Revised version: each greeting receives its own setting
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Greeting
+{
+    private readonly string prefix;
+
+    public Greeting(string prefix)
+    {
+        this.prefix = prefix;
+    }
+
+    public string For(string name)
+    {
+        return prefix + ", " + name;
+    }
+}
+```
+
+```csharp group=revised role=run
+Greeting lobby = new Greeting("Welcome");
+Greeting harbor = new Greeting("Ahoy");
+Console.WriteLine(lobby.For("Mira"));
+Console.WriteLine(harbor.For("Mira"));
+```
+
+Each object stores the prefix supplied to its constructor. Creating `harbor` does not change `lobby`. The string field cannot be reassigned after construction.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Greeting:
+    def __init__(self, prefix):
+        self._prefix = prefix
+
+    def for_player(self, name):
+        return self._prefix + ", " + name
+```
+
+```python group=revised role=run
+lobby = Greeting("Welcome")
+harbor = Greeting("Ahoy")
+print(lobby.for_player("Mira"))
+print(harbor.for_player("Mira"))
+```
+
+Each object stores the prefix supplied to its constructor. Creating `harbor` does not change `lobby`. Python still permits deliberate assignment to `_prefix`; the underscore is a convention, not enforced immutability.
+
+</section>
+
+## Make the lifetime decision explicit
+
+The two designs differ intentionally: the original observes later global edits, while the revision keeps a per-object setting. If live configuration changes are required, inject a configuration provider and document that behavior instead of freezing a value accidentally.
+
+Not all global data is troublesome. An immutable lookup table has no mutation history to discover. A process-wide service can be legitimate too, but its lifetime does not excuse making dependencies invisible.
+
+Start with the practical symptom: a test passes alone and fails after another test, or two screens cannot choose different settings. Find the shared writes. Then decide whether the value should be an argument, an object-owned setting, or an explicitly shared service.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Dependency injection guidelines](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/guidelines), on stateful static members, service lifetimes, and explicit dependencies.

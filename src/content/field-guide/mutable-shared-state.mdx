@@ -1,0 +1,128 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Mutable Shared State
+description: "Mutable shared state is data that more than one part of a program can change. A change through one reference can surprise code using another."
+prerequisites: "Objects, lists, references, and assignment."
+---
+
+export const checks = {"csharp":{"original":"var input = new List<string> { \"Mira\" }; var party = new Party(input); input.Clear(); Check.That(party.Names.Count == 0);","revised":"var input = new List<string> { \"Mira\" }; var party = new Party(input); input.Clear(); Check.That(party.Names.SequenceEqual(new[] { \"Mira\" })); var copy = party.Names; copy[0] = \"Other\"; Check.That(party.Names[0] == \"Mira\");"},"python":{"original":"names = ['Mira']\nparty = Party(names)\nnames.clear()\nassert party.names == []","revised":"names = ['Mira']\nparty = Party(names)\nnames.clear()\nassert party.names == ('Mira',)\nassert Party([]).names == ()"}};
+
+**Mutable shared state** is data that more than one part of a program can change. Two variables may refer to the same list or object, so a change through one variable is visible through the other. This can surprise even a single-threaded program; threads introduce additional risks. [1](#source-1)
+
+Suppose a party roster receives a list of player names. Does the party keep that exact list, or keep the names as they were when the party was created? Those are different promises.
+
+## Original version: both owners have the same list
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Party
+{
+    public List<string> Names { get; }
+
+    public Party(List<string> names)
+    {
+        Names = names;
+    }
+}
+```
+
+```csharp group=original role=run
+List<string> names = new List<string> { "Mira", "Sol" };
+Party party = new Party(names);
+names.Clear();
+Console.WriteLine(party.Names.Count); // 0
+```
+
+`Names = names` copies a reference, not the list contents. Clearing `names` therefore empties the party's roster. A get-only property prevents assigning a different list through that property; it does not make the existing list immutable.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Party:
+    def __init__(self, names):
+        self.names = names
+```
+
+```python group=original role=run
+names = ["Mira", "Sol"]
+party = Party(names)
+names.clear()
+print(len(party.names))  # 0
+```
+
+`self.names = names` stores a reference to the existing list. It does not copy the contents. Clearing `names` therefore empties the party's roster too.
+
+</section>
+
+## Revised version: keep an independent roster
+
+For this example, the intended rule is that constructing a party captures its initial names. Later edits to the input list must not change that roster.
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Party
+{
+    private readonly string[] names;
+
+    public Party(IEnumerable<string> names)
+    {
+        this.names = names.ToArray();
+    }
+
+    public string[] Names
+    {
+        get { return (string[])names.Clone(); }
+    }
+}
+```
+
+```csharp group=revised role=run
+List<string> names = new List<string> { "Mira", "Sol" };
+Party party = new Party(names);
+names.Clear();
+Console.WriteLine(party.Names.Length); // 2
+```
+
+The constructor copies the names into an array. The property also returns a copy, so callers cannot edit the stored array. Both directions matter: copying on input alone would still leave a problem if the property exposed the internal array.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Party:
+    def __init__(self, names):
+        self._names = tuple(names)
+
+    @property
+    def names(self):
+        return self._names
+```
+
+```python group=revised role=run
+names = ["Mira", "Sol"]
+party = Party(names)
+names.clear()
+print(len(party.names))  # 2
+```
+
+The constructor captures the names in a tuple. Callers cannot append to that tuple or replace its elements. Returning it does not expose a mutable list. Deliberately reassigning the private-by-convention `_names` attribute remains possible in Python.
+
+</section>
+
+## Copies are not a universal solution
+
+These are strings, which cannot themselves be mutated. If the collection held mutable player objects, copying the collection would still share the player objects. That is a shallow copy, not an independent copy of an entire object graph.
+
+The revision also intentionally changes the sharing behavior. If callers depend on a live roster, use controlled add/remove operations or an explicitly shared model rather than silently substituting a snapshot.
+
+For concurrent access, assigning a clear owner, using immutable messages, or protecting a complete operation with synchronization may be appropriate. A copy does not make unrelated shared state thread-safe. First decide who owns each change; then choose a mechanism that enforces that decision.
+
+## Sources
+
+1. <span id="source-1"></span>[Python — Assignment and copies](https://docs.python.org/3/library/copy.html), explaining shared references and shallow versus deep copying.
+2. [Microsoft — Reference types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types), explaining multiple references to the same object.
