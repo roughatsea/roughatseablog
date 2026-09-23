@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { guideConcepts } from '../data/software-engineering-guide.js';
 
 type GuideLink = { slug: string; title: string };
 interface Props {
@@ -14,7 +15,11 @@ interface Props {
   previous?: GuideLink;
   next?: GuideLink;
 }
-const { frontmatter, published = false, previous, next } = Astro.props;
+const { frontmatter } = Astro.props;
+const position = guideConcepts.findIndex((concept) => Astro.url.pathname.replace(/\/$/, '') === `/guides/software-engineering/${concept.slug}`);
+const published = Astro.props.published ?? position >= 0;
+const previous = Astro.props.previous ?? (position > 0 ? guideConcepts[position - 1] : undefined);
+const next = Astro.props.next ?? (position >= 0 && position < guideConcepts.length - 1 ? guideConcepts[position + 1] : undefined);
 const reviewRoot = frontmatter.reviewRoot ?? '/guides/software-engineering/pilot/';
 const reviewLabel = frontmatter.reviewLabel ?? 'Approved pilot articles';
 ---
