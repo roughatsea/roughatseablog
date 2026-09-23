@@ -1,0 +1,114 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Extract Superclass
+description: "Create a common base class for existing classes that share a genuine contract and implementation."
+prerequisites: "Classes, inheritance, constructors, and shared behavior."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new ImageAsset(\"Map\").Label() == \"Asset: Map\"); Check.That(new AudioAsset(\"Theme\").Label() == \"Asset: Theme\");","revised":"Asset image = new ImageAsset(\"Map\"); Asset audio = new AudioAsset(\"Theme\"); Check.That(image.Label() == \"Asset: Map\" && audio.Label() == \"Asset: Theme\");"},"python":{"original":"assert ImageAsset('Map').label() == 'Asset: Map'\nassert AudioAsset('Theme').label() == 'Asset: Theme'","revised":"assert ImageAsset('Map').label() == 'Asset: Map'\nassert AudioAsset('Theme').label() == 'Asset: Theme'"}};
+
+**Extract Superclass** creates a common base class for existing classes that share a genuine contract and implementation. Common fields and methods move into that base, while specialized features remain in the original classes. [1](#source-1)
+
+## Original version: two asset types repeat their common identity
+
+An editor manages image and audio assets. Both have a name and use the same browser label.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class ImageAsset
+{
+    private readonly string name;
+    public ImageAsset(string name) { this.name = name; }
+    public string Label() { return "Asset: " + name; }
+}
+public sealed class AudioAsset
+{
+    private readonly string name;
+    public AudioAsset(string name) { this.name = name; }
+    public string Label() { return "Asset: " + name; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class ImageAsset:
+    def __init__(self, name):
+        self._name = name
+
+    def label(self):
+        return "Asset: " + self._name
+
+
+class AudioAsset:
+    def __init__(self, name):
+        self._name = name
+
+    def label(self):
+        return "Asset: " + self._name
+```
+
+</section>
+
+The duplicated code represents the same editor concept: a named asset that can supply a label. That shared meaning matters more than the similar syntax.
+
+## Refactored version: make the asset contract explicit
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class Asset
+{
+    private readonly string name;
+    protected Asset(string name) { this.name = name; }
+    public string Label() { return "Asset: " + name; }
+}
+public sealed class ImageAsset : Asset
+{
+    public ImageAsset(string name) : base(name) { }
+}
+public sealed class AudioAsset : Asset
+{
+    public AudioAsset(string name) : base(name) { }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Asset:
+    def __init__(self, name):
+        self._name = name
+
+    def label(self):
+        return "Asset: " + self._name
+
+
+class ImageAsset(Asset):
+    pass
+
+
+class AudioAsset(Asset):
+    pass
+```
+
+</section>
+
+Both types inherit one initialization and labeling implementation. A browser can work with the common asset capability without knowing whether it is displaying an image or audio item.
+
+## Similar code does not always imply a shared parent
+
+If two classes merely happen to format strings similarly, a helper function may be sufficient. If they share a capability but not implementation, an interface can express that contract without imposing shared storage or a base constructor.
+
+A base class also creates coupling: changes to common initialization or behavior can affect all subclasses. Keep image-specific decoding and audio-specific playback out of the shared base unless every asset truly supports the same contract.
+
+The example omits those specialized features to isolate the extraction itself. In a production hierarchy, verify that inherited behavior remains valid for every subtype and that existing callers retain their expected results.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Extract Superclass](https://refactoring.com/catalog/extractSuperclass.html).

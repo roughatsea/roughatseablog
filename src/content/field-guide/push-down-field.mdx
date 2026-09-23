@@ -1,0 +1,101 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Push Down Field
+description: "Move a field out of a base class when it belongs only to some subclasses."
+prerequisites: "Inheritance, fields, and subclass-specific data."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Mage().Mana == 10 && new Warrior().Mana == 10);","revised":"Check.That(new Mage().Mana == 10); Check.That(new Warrior().Name == \"character\");"},"python":{"original":"assert Mage().mana == 10 and Warrior().mana == 10","revised":"assert Mage().mana == 10\nassert not hasattr(Warrior(), 'mana')"}};
+
+**Push Down Field** moves a field from a base class into the subclasses where it belongs. It removes irrelevant state from other subtypes and makes the data model more honest. [1](#source-1)
+
+## Original version: every character has mana
+
+In this particular game, mages spend mana and warriors do not. The base class nevertheless gives both a mana value.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public abstract class Character
+{
+    public string Name { get; } = "character";
+    public int Mana { get; set; } = 10;
+}
+public sealed class Mage : Character { }
+public sealed class Warrior : Character { }
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Character:
+    def __init__(self):
+        self.name = "character"
+        self.mana = 10
+
+
+class Mage(Character):
+    pass
+
+
+class Warrior(Character):
+    pass
+```
+
+</section>
+
+The warrior carries a field that has no defined role. Other code may reasonably assume that a public mana value means every character can participate in mana-related operations.
+
+## Revised version: only the mage stores mana
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class Character
+{
+    public string Name { get; } = "character";
+}
+public sealed class Mage : Character
+{
+    public int Mana { get; set; } = 10;
+}
+public sealed class Warrior : Character { }
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Character:
+    def __init__(self):
+        self.name = "character"
+
+
+class Mage(Character):
+    def __init__(self):
+        super().__init__()
+        self.mana = 10
+
+
+class Warrior(Character):
+    pass
+```
+
+</section>
+
+The mage's initial value remains ten. A warrior now contains only the common character state shown here.
+
+## Move the behavior that needs the field too
+
+If base-class methods still read mana, moving only the field leaves those methods with a missing dependency. Move the relevant methods to a suitable capability, introduce a focused interface, or reconsider the hierarchy.
+
+This change removes an observable property from warriors and from the base type. Inspect serialization, saved-game formats, bindings, and clients typed as the base class before adopting it. Preserving mage behavior does not make every old access compatible.
+
+If many independent capabilities can appear on characters, composition may avoid an expanding inheritance tree: a character can have a mana component without being forced into a single rigid category. Push Down Field is useful when the existing hierarchy accurately expresses the distinction, not when it merely postpones a larger modeling problem.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Push Down Field](https://refactoring.com/catalog/pushDownField.html).

@@ -1,0 +1,98 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Extract Subclass
+description: "Create a subclass when a meaningful subset of instances needs specialized behavior that does not belong to every instance of the original class."
+prerequisites: "Inheritance, overriding, and constructors."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Notice(\"Ready\", false).Render() == \"Ready\"); Check.That(new Notice(\"Fire\", true).Render() == \"URGENT: Fire\");","revised":"Check.That(new Notice(\"Ready\").Render() == \"Ready\"); Check.That(new UrgentNotice(\"Fire\").Render() == \"URGENT: Fire\");"},"python":{"original":"assert Notice('Ready', False).render() == 'Ready'\nassert Notice('Fire', True).render() == 'URGENT: Fire'","revised":"assert Notice('Ready').render() == 'Ready'\nassert UrgentNotice('Fire').render() == 'URGENT: Fire'"}};
+
+**Extract Subclass** creates a specialized subtype for a meaningful subset of instances. Behavior specific to that subset moves out of the general class. The new subtype must still make sense wherever the original contract is expected. [1](#source-1)
+
+## Original version: a flag selects special notice behavior
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Notice
+{
+    private readonly string message;
+    private readonly bool urgent;
+    public Notice(string message, bool urgent)
+    {
+        this.message = message;
+        this.urgent = urgent;
+    }
+    public string Render() { return urgent ? "URGENT: " + message : message; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Notice:
+    def __init__(self, message, urgent):
+        self._message = message
+        self._urgent = urgent
+
+    def render(self):
+        return "URGENT: " + self._message if self._urgent else self._message
+```
+
+</section>
+
+The distinction is stored inside every notice. A richer urgent notice might also require different delivery or acknowledgement behavior.
+
+## Refactored version: ordinary and urgent notices share a contract
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public class Notice
+{
+    protected string Message { get; }
+    public Notice(string message) { Message = message; }
+    public virtual string Render() { return Message; }
+}
+public sealed class UrgentNotice : Notice
+{
+    public UrgentNotice(string message) : base(message) { }
+    public override string Render() { return "URGENT: " + Message; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Notice:
+    def __init__(self, message):
+        self._message = message
+
+    def render(self):
+        return self._message
+
+
+class UrgentNotice(Notice):
+    def render(self):
+        return "URGENT: " + self._message
+```
+
+</section>
+
+The caller chooses the specialized class at construction. Calling the same rendering operation still returns the appropriate text, without a flag check in the general implementation.
+
+## Do not extract a subtype for every data variation
+
+For this one prefix, a field or formatting function may be simpler. A subclass earns its place when the specialization has coherent behavior and a stable “is a” relationship—not merely because two instances contain different data.
+
+If urgency can change on the same notice, a replaceable behavior object may be more suitable than a fixed subclass. If urgency and delivery channel vary independently, multiplying subclasses for every combination can become unwieldy.
+
+Migrate constructors and verify old outcomes before adding new specialization behavior. The subtype should not unexpectedly reject valid inputs, change required side effects, or otherwise break the caller's original expectations.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Type Code with Subclasses](https://refactoring.com/catalog/replaceTypeCodeWithSubclasses.html), which includes Extract Subclass in the catalog's earlier terminology.

@@ -1,0 +1,119 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Delegation with Inheritance
+description: "Replace repetitive forwarding with inheritance only when the delegating object genuinely supports the delegate's entire public contract."
+prerequisites: "Composition, inheritance, and substitutability."
+---
+
+export const checks = {"csharp":{"original":"var document = new PrintableDocument(\"Guide\", 12); Check.That(document.Name == \"Guide\" && document.LineCount == 12 && document.Summary() == \"Guide: 12 lines\");","revised":"var document = new PrintableDocument(\"Guide\", 12); Check.That(document.Name == \"Guide\" && document.LineCount == 12 && document.Summary() == \"Guide: 12 lines\");"},"python":{"original":"document = PrintableDocument('Guide', 12)\nassert document.name == 'Guide' and document.line_count == 12\nassert document.summary() == 'Guide: 12 lines'","revised":"document = PrintableDocument('Guide', 12)\nassert document.name == 'Guide' and document.line_count == 12\nassert document.summary() == 'Guide: 12 lines'"}};
+
+**Replace Delegation with Inheritance** makes a forwarding class inherit the behavior it previously obtained from a contained object. It can remove repetitive wrappers, but it is appropriate only when the new subtype genuinely supports the base class's entire public contract. [1](#source-1)
+
+## Original version: a printable document forwards every document property
+
+The contained document is created privately for this wrapper; it is not shared with another owner.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public class Document
+{
+    public string Name { get; }
+    public int LineCount { get; }
+    public Document(string name, int lineCount) { Name = name; LineCount = lineCount; }
+}
+public sealed class PrintableDocument
+{
+    private readonly Document document;
+    public PrintableDocument(string name, int lineCount)
+    {
+        document = new Document(name, lineCount);
+    }
+    public string Name { get { return document.Name; } }
+    public int LineCount { get { return document.LineCount; } }
+    public string Summary() { return Name + ": " + LineCount + " lines"; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Document:
+    def __init__(self, name, line_count):
+        self.name = name
+        self.line_count = line_count
+
+
+class PrintableDocument:
+    def __init__(self, name, line_count):
+        self._document = Document(name, line_count)
+
+    @property
+    def name(self):
+        return self._document.name
+
+    @property
+    def line_count(self):
+        return self._document.line_count
+
+    def summary(self):
+        return self.name + ": " + str(self.line_count) + " lines"
+```
+
+</section>
+
+The wrapper supports all shown document data and adds a summary. Its forwarding properties contain no independent rule.
+
+## Revised version: inherit the document contract
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public class Document
+{
+    public string Name { get; }
+    public int LineCount { get; }
+    public Document(string name, int lineCount) { Name = name; LineCount = lineCount; }
+}
+public sealed class PrintableDocument : Document
+{
+    public PrintableDocument(string name, int lineCount) : base(name, lineCount) { }
+    public string Summary() { return Name + ": " + LineCount + " lines"; }
+}
+```
+
+The same public reads and summary remain, and the object is now usable as a `Document`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Document:
+    def __init__(self, name, line_count):
+        self.name = name
+        self.line_count = line_count
+
+
+class PrintableDocument(Document):
+    def summary(self):
+        return self.name + ": " + str(self.line_count) + " lines"
+```
+
+The subclass inherits initialization and attributes. Unlike the old wrapper's getter-only properties, those attributes are now ordinarily writable. That access difference is real and must be accepted or explicitly constrained in a production migration.
+
+</section>
+
+## Fewer forwarding methods are not enough reason
+
+Inheritance exposes present and future base-class operations and couples the subtype to base implementation decisions. It also prevents independently replacing the contained implementation as ordinary composition allows.
+
+Do not apply this move when the delegate is shared, has a separate identity or lifecycle, or supports operations the wrapper intentionally hides. Those are strong reasons to retain composition.
+
+The examples preserve the shown reads and summary, but do not claim identical reflection, type identity, mutation access, or serialization behavior. Inheritance is justified by substitutability, not by the convenience of deleting a few wrapper methods.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Delegation with Inheritance](https://refactoring.com/catalog/replaceDelegationWithInheritance.html).

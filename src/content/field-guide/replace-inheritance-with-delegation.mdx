@@ -1,0 +1,109 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Inheritance with Delegation
+description: "Store and use a helper object instead of inheriting its entire public interface when the relationship is use rather than substitutable identity."
+prerequisites: "Inheritance, composition, lists, and public APIs."
+---
+
+export const checks = {"csharp":{"original":"var history = new History(); history.Save(\"one\"); history.Save(\"two\"); Check.That(history.Undo() == \"two\" && history.Count == 1);","revised":"var history = new History(); history.Save(\"one\"); history.Save(\"two\"); Check.That(history.Undo() == \"two\" && history.Count == 1);"},"python":{"original":"history = History()\nhistory.save('one')\nhistory.save('two')\nassert history.undo() == 'two' and len(history) == 1","revised":"history = History()\nhistory.save('one')\nhistory.save('two')\nassert history.undo() == 'two' and history.count == 1"}};
+
+**Replace Inheritance with Delegation** makes a class hold a helper object instead of inheriting from it. The class exposes only the operations it intends to support and forwards the necessary work to the helper. [1](#source-1)
+
+## Original version: undo history is accidentally a general-purpose list
+
+A history should save an action and undo the most recently saved action. Inheriting a list reuses storage, but exposes far more operations than that contract needs.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class History : List<string>
+{
+    public void Save(string action) { Add(action); }
+    public string Undo()
+    {
+        if (Count == 0) throw new InvalidOperationException("History is empty.");
+        string action = this[Count - 1];
+        RemoveAt(Count - 1);
+        return action;
+    }
+}
+```
+
+A caller can also insert an item in the middle, reorder entries, or remove an arbitrary action through inherited list methods. The class cannot express “only use save and undo” through this public interface.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class History(list):
+    def save(self, action):
+        self.append(action)
+
+    def undo(self):
+        if not self:
+            raise RuntimeError("History is empty.")
+        return self.pop()
+```
+
+Every list mutation is inherited, including indexed assignment and deletion. Reusing list implementation also claimed the whole list interface.
+
+</section>
+
+## Revised version: history has a list
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class History
+{
+    private readonly List<string> actions = new List<string>();
+    public int Count { get { return actions.Count; } }
+    public void Save(string action) { actions.Add(action); }
+    public string Undo()
+    {
+        if (actions.Count == 0) throw new InvalidOperationException("History is empty.");
+        string action = actions[actions.Count - 1];
+        actions.RemoveAt(actions.Count - 1);
+        return action;
+    }
+}
+```
+
+The list is an implementation detail. Save, undo, and count remain available without exposing arbitrary list editing.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class History:
+    def __init__(self):
+        self._actions = []
+
+    @property
+    def count(self):
+        return len(self._actions)
+
+    def save(self, action):
+        self._actions.append(action)
+
+    def undo(self):
+        if not self._actions:
+            raise RuntimeError("History is empty.")
+        return self._actions.pop()
+```
+
+The public API now expresses the history's intended operations. `_actions` is internal by convention, not inaccessible to deliberately intrusive Python code.
+
+</section>
+
+## Removing inherited behavior is not invisible to every caller
+
+Save and undo retain their results, but code that treated a history as a general list must migrate. That is the point of narrowing the contract, not evidence that the old and new types are substitutable everywhere.
+
+Use delegation when a class needs another component's implementation but cannot honestly support its whole public meaning. Inheritance remains appropriate for genuine subtypes that honor the base contract. The preference for composition is a design judgment, not a ban on every superclass.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Superclass with Delegate](https://refactoring.com/catalog/replaceSuperclassWithDelegate.html), the modern name for this move.

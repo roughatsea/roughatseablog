@@ -1,0 +1,132 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Extract Interface
+description: "Name the operations a caller needs in a separate interface so the caller does not have to depend on one concrete implementation."
+prerequisites: "Classes, methods, and constructor parameters."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Reader(new MemoryText(\"Harbor\")).Show() == \"Harbor\");","revised":"Check.That(new Reader(new MemoryText(\"Harbor\")).Show() == \"Harbor\"); Check.That(new Reader(new EmptyText()).Show() == \"\");"},"python":{"original":"assert Reader(MemoryText('Harbor')).show() == 'Harbor'","revised":"assert Reader(MemoryText('Harbor')).show() == 'Harbor'\nassert Reader(EmptyText()).show() == ''"}};
+
+**Extract Interface** gives a caller's required operations a separate name and contract. The caller can then depend on that capability rather than on one concrete class. An implementation still has to supply the actual behavior. [1](#source-1)
+
+## Original version: the reader asks for a particular storage class
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class MemoryText
+{
+    private readonly string text;
+    public MemoryText(string text) { this.text = text; }
+    public string Read() { return text; }
+}
+public sealed class Reader
+{
+    private readonly MemoryText source;
+    public Reader(MemoryText source) { this.source = source; }
+    public string Show() { return source.Read(); }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class MemoryText:
+    def __init__(self, text):
+        self._text = text
+
+    def read(self):
+        return self._text
+
+
+class Reader:
+    def __init__(self, source: MemoryText):
+        self._source = source
+
+    def show(self):
+        return self._source.read()
+```
+
+</section>
+
+The reader needs text, not necessarily the particular in-memory implementation. Python's annotation documents a concrete type but does not enforce it at runtime.
+
+## Refactored version: name the text-reading capability
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public interface ITextSource
+{
+    string Read();
+}
+public sealed class MemoryText : ITextSource
+{
+    private readonly string text;
+    public MemoryText(string text) { this.text = text; }
+    public string Read() { return text; }
+}
+public sealed class EmptyText : ITextSource
+{
+    public string Read() { return ""; }
+}
+public sealed class Reader
+{
+    private readonly ITextSource source;
+    public Reader(ITextSource source) { this.source = source; }
+    public string Show() { return source.Read(); }
+}
+```
+
+The reader accepts `ITextSource`. Both shown implementations honor the promise to return a string, including the empty-string case.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+from typing import Protocol
+
+
+class TextSource(Protocol):
+    def read(self) -> str:
+        ...
+
+
+class MemoryText:
+    def __init__(self, text):
+        self._text = text
+
+    def read(self) -> str:
+        return self._text
+
+
+class EmptyText:
+    def read(self) -> str:
+        return ""
+
+
+class Reader:
+    def __init__(self, source: TextSource):
+        self._source = source
+
+    def show(self):
+        return self._source.read()
+```
+
+The protocol documents the expected shape for readers and static tools. Implementations need not inherit from it to be compatible. Runtime calls still rely on the supplied object providing the method.
+
+</section>
+
+## Extract a contract, not a photocopy
+
+An interface need not reproduce every public method of the original class. Include what the client needs, and describe relevant semantics: missing data, errors, ownership, and whether repeated calls can differ.
+
+The old in-memory result remains unchanged; the empty implementation demonstrates substitution, not a requirement to create several classes for every interface. A single implementation can justify an interface when it protects a real boundary or supports controlled tests. Conversely, an interface with no useful boundary can add needless navigation.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Changes for the second edition of Refactoring](https://martinfowler.com/articles/refactoring-2nd-changes.html), documenting Extract Interface in the original catalog.
+2. [Python — Protocols](https://docs.python.org/3/library/typing.html#typing.Protocol) and [Microsoft — Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces).

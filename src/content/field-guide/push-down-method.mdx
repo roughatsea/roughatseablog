@@ -1,0 +1,98 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Push Down Method
+description: "Move a method from a base class into the subclasses for which the operation actually makes sense."
+prerequisites: "Inheritance, public methods, and subtype contracts."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Printer().Print() == \"printed\");","revised":"Check.That(new Printer().Print() == \"printed\"); Check.That(new Scanner().Name == \"device\");"},"python":{"original":"assert Printer().print_page() == 'printed'","revised":"assert Printer().print_page() == 'printed'\nassert not hasattr(Scanner(), 'print_page')"}};
+
+**Push Down Method** moves a method from a base class into the subclasses that actually need it. The base class stops promising a capability that does not belong to every subtype. [1](#source-1)
+
+## Original version: even the scanner inherits printing
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public abstract class Device
+{
+    public string Name { get; } = "device";
+    public string Print() { return "printed"; }
+}
+public sealed class Printer : Device { }
+public sealed class Scanner : Device { }
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Device:
+    name = "device"
+
+    def print_page(self):
+        return "printed"
+
+
+class Printer(Device):
+    pass
+
+
+class Scanner(Device):
+    pass
+```
+
+</section>
+
+These return strings as teaching stand-ins rather than controlling hardware. The structural mistake is visible anyway: every device exposes printing, including a scanner that has no such capability in this model.
+
+## Revised version: printing belongs to printers
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class Device
+{
+    public string Name { get; } = "device";
+}
+public sealed class Printer : Device
+{
+    public string Print() { return "printed"; }
+}
+public sealed class Scanner : Device { }
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Device:
+    name = "device"
+
+
+class Printer(Device):
+    def print_page(self):
+        return "printed"
+
+
+class Scanner(Device):
+    pass
+```
+
+</section>
+
+Printer calls still return the same result. The scanner no longer advertises the irrelevant operation. Common device data remains in the base class.
+
+## Removing a false promise is still an API change
+
+A caller that accepted any `Device` and called printing will no longer compile in C#, and a Python caller making the same assumption may fail at runtime. Change that caller to require the actual printing capability, perhaps through a focused interface, rather than reintroducing type checks everywhere.
+
+If several subclasses share the operation, a more specific intermediate base class or composed helper may be useful. Duplicating the method into many unrelated subclasses can signal that inheritance is the wrong way to organize the capability.
+
+The domain decides what makes sense. Some physical devices both print and scan; this particular model defines separate capabilities. Do not infer software contracts solely from a familiar noun or preserve an inappropriate base method just to reuse its implementation.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Push Down Method](https://refactoring.com/catalog/pushDownMethod.html).
