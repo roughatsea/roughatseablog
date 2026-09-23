@@ -1,0 +1,44 @@
+name: Field guide publication checks
+on:
+  pull_request:
+    paths:
+      - 'src/pages/guides/software-engineering/**'
+      - 'src/layouts/FieldGuidePilotLayout.astro'
+      - 'scripts/test-field-guide*.py'
+      - '.github/workflows/field-guide*.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: npm ci
+      - run: python scripts/test-field-guide-pilots.py --require-dotnet
+      - name: Check the next batch when present
+        run: |
+          if [ -f scripts/test-field-guide-solid.py ]; then
+            python scripts/test-field-guide-solid.py --require-dotnet
+          fi
+      - run: npm run build
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/test-field-guide-rendering.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: field-guide-rendering
+          path: verification/field-guide
+          if-no-files-found: ignore
