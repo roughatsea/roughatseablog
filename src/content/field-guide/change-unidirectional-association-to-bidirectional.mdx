@@ -1,0 +1,126 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Change Unidirectional Association to Bidirectional
+description: "Add a reverse reference when two related objects need to navigate to each other, and give one operation responsibility for keeping both directions consistent."
+prerequisites: "Objects, references, collections, and ownership."
+---
+
+export const checks = {"csharp":{"original":"var team = new Team(); team.Add(new Member(\"Mira\")); Check.That(team.Members.Count == 1);","revised":"var a = new Team(); var b = new Team(); var m = a.Add(\"Mira\"); Check.That(ReferenceEquals(m.Team, a) && a.Members.Count == 1 && b.Members.Count == 0);"},"python":{"original":"team = Team()\nteam.add(Member('Mira'))\nassert len(team.members) == 1","revised":"a = Team()\nb = Team()\nm = a.add('Mira')\nassert m.team is a and len(a.members) == 1 and len(b.members) == 0"}};
+
+**Change Unidirectional Association to Bidirectional** adds a reverse reference between related objects. If a team knows its members, a bidirectional association lets each member also know the team. Both references describe the same relationship and must agree. [1](#source-1)
+
+## Original version: navigation works in one direction
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Member
+{
+    public string Name { get; }
+    public Member(string name) { Name = name; }
+}
+
+public sealed class Team
+{
+    public List<Member> Members { get; } = new List<Member>();
+    public void Add(Member member) { Members.Add(member); }
+}
+```
+
+A caller with a team can find its members. A caller holding only a member cannot identify its team without searching elsewhere.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Member:
+    def __init__(self, name):
+        self.name = name
+
+
+class Team:
+    def __init__(self):
+        self.members = []
+
+    def add(self, member):
+        self.members.append(member)
+```
+
+The team stores members, but members contain no reference back to it.
+
+</section>
+
+## Revised version: establish both directions together
+
+For this small model, a member is created as part of one team and never transfers. That restriction keeps the example focused; transfers would require another operation that updates both teams.
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Member
+{
+    public string Name { get; }
+    public Team Team { get; }
+    internal Member(string name, Team team) { Name = name; Team = team; }
+}
+
+public sealed class Team
+{
+    private readonly List<Member> members = new List<Member>();
+    public IReadOnlyList<Member> Members { get { return members.AsReadOnly(); } }
+    public Member Add(string name)
+    {
+        var member = new Member(name, this);
+        members.Add(member);
+        return member;
+    }
+}
+```
+
+`Add` constructs the reverse reference and records the member in the collection. Ordinary external callers cannot change `Member.Team` or mutate the read-only list. The internal constructor still relies on code within the assembly respecting the creation rule.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Member:
+    def __init__(self, name, team):
+        self.name = name
+        self._team = team
+
+    @property
+    def team(self):
+        return self._team
+
+
+class Team:
+    def __init__(self):
+        self._members = []
+
+    @property
+    def members(self):
+        return tuple(self._members)
+
+    def add(self, name):
+        member = Member(name, self)
+        self._members.append(member)
+        return member
+```
+
+`add` performs both parts of the relationship. Callers are expected to create members through it; Python does not prohibit directly calling `Member` or assigning its internal attributes.
+
+</section>
+
+## A second reference creates a second maintenance obligation
+
+The new navigation is useful when a member-oriented operation genuinely needs the team. It also increases coupling and introduces a consistency rule: membership must be represented in both places.
+
+For existing objects, populate reverse references from the authoritative relationship rather than guessing. For removal or transfer, update both directions in one controlled operation. Be careful with recursive notifications, serialization cycles, and changes to object lifetimes.
+
+The revised constructor API differs from the original because it makes team-owned creation explicit. It is not a drop-in change for callers that create unassigned members or put one member on several teams. Choose cardinality and lifecycle rules before selecting the representation.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Changes for the second edition of Refactoring](https://martinfowler.com/articles/refactoring-2nd-changes.html), documenting this first-edition refactoring and its inverse.

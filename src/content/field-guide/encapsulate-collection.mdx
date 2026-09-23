@@ -1,0 +1,110 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Encapsulate Collection
+description: "Keep a collection under its owner's control by exposing safe reads and explicit operations for adding and removing items."
+prerequisites: "Lists, references, methods, and collection mutation."
+---
+
+export const checks = {"csharp":{"original":"var party = new Party(); party.Names.Add(\"Mira\"); party.Names.Clear(); Check.That(party.Names.Count == 0);","revised":"var party = new Party(); party.Add(\"Mira\"); var copy = party.Names; copy[0] = \"Sol\"; Check.That(party.Names[0] == \"Mira\"); Check.That(party.Remove(\"Mira\") && party.Names.Length == 0);"},"python":{"original":"party = Party()\nparty.names.append('Mira')\nparty.names.clear()\nassert party.names == []","revised":"party = Party()\nparty.add('Mira')\nassert party.names == ('Mira',)\nassert party.remove('Mira')\nassert not party.remove('missing')\nassert party.names == ()"}};
+
+**Encapsulate Collection** keeps a collection under its owner's control. Callers can inspect its contents, but changes go through named operations such as add or remove rather than through a leaked mutable list. [1](#source-1)
+
+## Original version: everyone can change the roster
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Party
+{
+    public List<string> Names { get; } = new List<string>();
+}
+```
+
+A get-only property prevents assigning a different list through the property. It does not prevent `party.Names.Clear()` from emptying the existing one.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Party:
+    def __init__(self):
+        self.names = []
+```
+
+The list is directly exposed. Callers can append, remove, reorder, or clear it without the party knowing which operation they intended.
+
+</section>
+
+## Refactored version: inspect a snapshot, request a change
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Party
+{
+    private readonly List<string> names = new List<string>();
+    public string[] Names { get { return names.ToArray(); } }
+    public void Add(string name) { names.Add(name); }
+    public bool Remove(string name) { return names.Remove(name); }
+}
+```
+
+```csharp group=revised role=run
+var party = new Party();
+party.Add("Mira");
+string[] snapshot = party.Names;
+snapshot[0] = "Sol";
+Console.WriteLine(party.Names[0]); // Mira
+```
+
+The returned array is a copy. Editing it does not alter the stored roster. `Add` and `Remove` are the explicit mutation paths.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Party:
+    def __init__(self):
+        self._names = []
+
+    @property
+    def names(self):
+        return tuple(self._names)
+
+    def add(self, name):
+        self._names.append(name)
+
+    def remove(self, name):
+        try:
+            self._names.remove(name)
+            return True
+        except ValueError:
+            return False
+```
+
+```python group=revised role=run
+party = Party()
+party.add("Mira")
+snapshot = party.names
+party.add("Sol")
+print(snapshot)     # ('Mira',)
+print(party.names)  # ('Mira', 'Sol')
+```
+
+The tuple is a snapshot, not a live view. Later additions change the party, not the previously returned tuple. The underscored list remains internal by convention.
+
+</section>
+
+## Specify the collection's behavior
+
+These examples retain insertion order and allow duplicates. Removing a name removes its first occurrence. They do not silently introduce a set or a uniqueness rule while changing the API.
+
+A read-only live view is another valid choice, but it differs from a snapshot: its contents can change when the owner changes. Pick the behavior callers need and document it. Copies cost memory, and copying a collection of mutable objects does not copy the objects themselves.
+
+Migrate callers that previously mutated the list to the new operations. Then any new capacity rule, event notification, or validation has one place to live. Encapsulation makes those rules possible; it does not mean they have already been implemented.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Encapsulate Collection](https://refactoring.com/catalog/encapsulateCollection.html).

@@ -1,0 +1,92 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Encapsulate Field
+description: "Encapsulate Field replaces direct access to stored data with an explicit access API, creating a place to control future reads and writes."
+prerequisites: "Fields, properties, getters, and setters."
+---
+
+export const checks = {"csharp":{"original":"var player = new Player(); player.Score = 12; Check.That(player.Score == 12);","revised":"var player = new Player(); player.Score = 12; Check.That(player.Score == 12); player.Score = -1; Check.That(player.Score == -1);"},"python":{"original":"player = Player()\nplayer.score = 12\nassert player.score == 12","revised":"player = Player()\nplayer.score = 12\nassert player.score == 12\nplayer.score = -1\nassert player.score == -1"}};
+
+**Encapsulate Field** replaces direct access to stored data with an explicit access API, usually a property or getter and setter. This gives the owner a place to control access while callers depend less directly on the storage representation. [1](#source-1)
+
+## Original version: callers read and write storage directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Player
+{
+    public int Score;
+}
+```
+
+A caller assigns `player.Score = 12`. `Score` is a public field; reads and writes go directly to that field.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Player:
+    def __init__(self):
+        self.score = 0
+```
+
+The instance attribute is public. Any caller can assign a new score without passing through player-owned logic.
+
+</section>
+
+## Refactored version: put an accessor in the path
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Player
+{
+    private int score;
+    public int Score
+    {
+        get { return score; }
+        set { score = value; }
+    }
+}
+```
+
+The ordinary call still looks like `player.Score = 12`, but it now uses the property's setter. The expanded declaration makes the backing field visible; an auto-property is also suitable when no custom accessor behavior is needed.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Player:
+    def __init__(self):
+        self._score = 0
+
+    @property
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self, value):
+        self._score = value
+```
+
+A caller still writes `player.score = 12`. The property now routes that assignment through the setter. `_score` is the backing attribute, internal by convention.
+
+</section>
+
+## Accessors are an opportunity, not an automatic guarantee
+
+These setters intentionally accept exactly what the old fields accepted. They do not reject negative scores, send notifications, or add synchronization. Those could be useful changes, but each alters behavior and needs its own tests and explanation.
+
+Nor is this complete information hiding: the public API still exposes a freely writable score. An operation such as `AwardPoints` might better express the permitted action, but that is a further design decision.
+
+For a public C# library, replacing a field with a property can break binary compatibility, reflection, and `ref` uses even if ordinary source assignments look unchanged. Inspect those consumers before publishing the change.
+
+Use encapsulation to establish meaningful control or prepare a representation change. Do not assume a trivial getter and setter have made arbitrary mutation safe merely because the backing field is private.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Encapsulate Variable](https://refactoring.com/catalog/encapsulateVariable.html), the broader refactoring that includes Encapsulate Field.
+2. [Microsoft — Properties](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties) and [Python — property](https://docs.python.org/3/library/functions.html#property), for the accessor mechanisms.

@@ -1,0 +1,91 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Magic Number with Symbolic Constant
+description: "Give an unexplained literal a name that states the rule or quantity it represents, without changing the value."
+prerequisites: "Constants, conditions, and arithmetic."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Shipping.Fee(49) == 5 && Shipping.Fee(50) == 0);","revised":"Check.That(Shipping.Fee(49) == 5 && Shipping.Fee(50) == 0);"},"python":{"original":"assert shipping_fee(49) == 5 and shipping_fee(50) == 0","revised":"assert shipping_fee(49) == 5 and shipping_fee(50) == 0"}};
+
+**Replace Magic Number with Symbolic Constant** gives an unexplained number a name that states its meaning. The number stays the same; readers no longer have to infer which rule it represents. The broader name **Replace Magic Literal** also covers strings and other literal values. [1](#source-1)
+
+## Original version: why fifty?
+
+A shop charges five coins for shipping unless an order reaches fifty coins.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Shipping
+{
+    public static int Fee(int subtotal)
+    {
+        return subtotal >= 50 ? 0 : 5;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def shipping_fee(subtotal):
+    return 0 if subtotal >= 50 else 5
+```
+
+</section>
+
+The example is understandable after the preceding sentence, but the source code itself does not name the threshold or the standard fee. Another literal 50 elsewhere might represent the same rule—or an unrelated limit.
+
+## Refactored version: name the rules
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Shipping
+{
+    private const int FreeShippingThreshold = 50;
+    private const int StandardShippingFee = 5;
+
+    public static int Fee(int subtotal)
+    {
+        return subtotal >= FreeShippingThreshold ? 0 : StandardShippingFee;
+    }
+}
+```
+
+`FreeShippingThreshold` explains the comparison. The fee remains five below fifty and zero at or above it.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+FREE_SHIPPING_THRESHOLD = 50
+STANDARD_SHIPPING_FEE = 5
+
+
+def shipping_fee(subtotal):
+    if subtotal >= FREE_SHIPPING_THRESHOLD:
+        return 0
+    return STANDARD_SHIPPING_FEE
+```
+
+Uppercase names express Python's constant convention; the language does not prohibit reassignment. The two rule names clarify why the values appear here.
+
+</section>
+
+## Name meaning, not digits
+
+`FIFTY = 50` does not explain the rule. `FREE_SHIPPING_THRESHOLD` does. Likewise, replacing every zero with `ZERO` makes code noisier without adding information.
+
+Do not combine unrelated equal numbers into one constant. A fifty-item page size and a fifty-coin shipping threshold should be able to change independently. Consolidate repeated literals only when they represent the same knowledge.
+
+Also distinguish a source-code constant from a configurable business setting. If operations must adjust a threshold without redeployment, configuration may be appropriate, with validation and clear ownership. Naming the literal is a small refactoring; moving it into runtime configuration is a broader design change.
+
+The useful test remains a boundary comparison: an order of 49 pays five, and an order of 50 pays zero. A clearer name should not quietly move that boundary.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Magic Literal](https://refactoring.com/catalog/replaceMagicLiteral.html).

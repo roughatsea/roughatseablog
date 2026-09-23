@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Change Bidirectional Association to Unidirectional
+description: "Remove a reverse reference that no longer serves a real operation, leaving only the direction of navigation the application needs."
+prerequisites: "Objects, references, and collections."
+---
+
+export const checks = {"csharp":{"original":"var album = new Album(); var track = album.Add(\"Harbor\"); Check.That(track.Album == album && album.Tracks[0].Title == \"Harbor\");","revised":"var album = new Album(); album.Add(\"Harbor\"); Check.That(album.Tracks[0].Title == \"Harbor\");"},"python":{"original":"album = Album()\ntrack = album.add('Harbor')\nassert track.album is album and album.tracks[0].title == 'Harbor'","revised":"album = Album()\nalbum.add('Harbor')\nassert album.tracks[0].title == 'Harbor'"}};
+
+**Change Bidirectional Association to Unidirectional** removes an unnecessary direction of navigation between objects. One object can still contain or reference another without the second object knowing its way back. [1](#source-1)
+
+## Original version: each track knows its album
+
+A small export tool reads albums and their tracks. No export operation starts with a track and asks for its album, but the objects maintain that reverse reference anyway.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Track
+{
+    public string Title { get; }
+    public Album Album { get; }
+    public Track(string title, Album album) { Title = title; Album = album; }
+}
+
+public sealed class Album
+{
+    public List<Track> Tracks { get; } = new List<Track>();
+    public Track Add(string title)
+    {
+        var track = new Track(title, this);
+        Tracks.Add(track);
+        return track;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Track:
+    def __init__(self, title, album):
+        self.title = title
+        self.album = album
+
+
+class Album:
+    def __init__(self):
+        self.tracks = []
+
+    def add(self, title):
+        track = Track(title, self)
+        self.tracks.append(track)
+        return track
+```
+
+</section>
+
+The album refers to its tracks, and every track refers back. A track cannot even be constructed without supplying an album, despite the track's export data consisting only of a title.
+
+## Refactored version: keep only the navigation that is used
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Track
+{
+    public string Title { get; }
+    public Track(string title) { Title = title; }
+}
+
+public sealed class Album
+{
+    public List<Track> Tracks { get; } = new List<Track>();
+    public Track Add(string title)
+    {
+        var track = new Track(title);
+        Tracks.Add(track);
+        return track;
+    }
+}
+```
+
+Album-to-track traversal and titles remain unchanged. `Track` no longer depends on the `Album` type.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Track:
+    def __init__(self, title):
+        self.title = title
+
+
+class Album:
+    def __init__(self):
+        self.tracks = []
+
+    def add(self, title):
+        track = Track(title)
+        self.tracks.append(track)
+        return track
+```
+
+The exporter can still iterate over `album.tracks`. An individual track is simpler to construct and use outside an album.
+
+</section>
+
+## Verify that “unused” really means unused
+
+Search callers before removing the reverse property. Serialization, ORM mappings, templates, and reflection may use it even when ordinary method calls do not. The refactoring preserves the operations that never needed reverse navigation; it necessarily removes an API for those that did.
+
+If one rare operation needs the parent, passing it explicitly may be sufficient. Repeated expensive searches for a parent can instead be evidence that the reverse association should remain.
+
+This example deliberately leaves the track list mutable, as it was originally. Encapsulating that collection is a separate change. Removing a reverse reference does not automatically enforce ownership or prevent a track from appearing in multiple albums.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Changes for the second edition of Refactoring](https://martinfowler.com/articles/refactoring-2nd-changes.html), documenting the original association-refactoring pair.

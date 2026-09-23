@@ -1,0 +1,117 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Change Reference to Value
+description: "Change Reference to Value treats an object as a value described by its contents, replacing it when those contents change rather than mutating shared identity."
+prerequisites: "Objects, references, immutability, and equality."
+---
+
+export const checks = {"csharp":{"original":"var address = new Address(\"Dock 4\"); var saved = address; address.Street = \"Dock 9\"; Check.That(saved.Street == \"Dock 9\");","revised":"var address = new Address(\"Dock 4\"); var saved = address; address = new Address(\"Dock 9\"); Check.That(saved.Street == \"Dock 4\"); Check.That(saved == new Address(\"Dock 4\"));"},"python":{"original":"address = Address('Dock 4')\nsaved = address\naddress.street = 'Dock 9'\nassert saved.street == 'Dock 9'","revised":"address = Address('Dock 4')\nsaved = address\naddress = Address('Dock 9')\nassert saved.street == 'Dock 4'\nassert saved == Address('Dock 4')"}};
+
+**Change Reference to Value** treats an object as a value described by its contents rather than as a unique, shared identity. Updates create replacement values instead of changing an object that other code may still hold. Equality should compare the relevant contents. [1](#source-1)
+
+A useful question is: do we care **which particular object** this is, or **what information it contains**?
+
+## Original version: editing an address changes an older reference
+
+A delivery address is simplified to one street string. A saved reference and a current reference both point at one mutable address.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Address
+{
+    public string Street { get; set; }
+    public Address(string street) { Street = street; }
+}
+```
+
+```csharp group=original role=run
+Address current = new Address("Dock 4");
+Address saved = current;
+current.Street = "Dock 9";
+Console.WriteLine(saved.Street); // Dock 9
+```
+
+Assigning `saved = current` did not preserve the old street. Both variables still refer to the object whose property was changed.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Address:
+    def __init__(self, street):
+        self.street = street
+```
+
+```python group=original role=run
+current = Address("Dock 4")
+saved = current
+current.street = "Dock 9"
+print(saved.street)  # Dock 9
+```
+
+The assignment copied a reference. It did not create an independent saved address.
+
+</section>
+
+## Revised version: replace the value
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed record Address
+{
+    public string Street { get; }
+    public Address(string street) { Street = street; }
+}
+```
+
+```csharp group=revised role=run
+Address current = new Address("Dock 4");
+Address saved = current;
+current = new Address("Dock 9");
+Console.WriteLine(saved.Street);                // Dock 4
+Console.WriteLine(saved == new Address("Dock 4")); // True
+```
+
+The get-only string cannot be changed through the public API. Assigning a new address to `current` leaves `saved` unchanged. A C# record supplies value equality, so separately constructed addresses with the same street compare equal. This is a semantic choice, not merely shorter class syntax. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Address:
+    street: str
+```
+
+```python group=revised role=run
+current = Address("Dock 4")
+saved = current
+current = Address("Dock 9")
+print(saved.street)                  # Dock 4
+print(saved == Address("Dock 4"))    # True
+```
+
+The frozen dataclass prevents ordinary field assignment and compares instances by their fields. The street itself is an immutable string. A frozen dataclass containing a mutable list would not make that list immutable. [3](#source-3)
+
+</section>
+
+## Preserve values where history matters
+
+The revision intentionally stops updates from propagating through old references. That is useful for snapshots, coordinates, amounts, and other values without independent identity. It is not automatically correct for a live customer record that several views must edit together.
+
+Define all fields that contribute to equality, remove or replace mutating operations, and inspect callers that use reference identity. Persisted records and caches may also rely on identity in ways the class declaration does not reveal.
+
+Both revised examples still use reference-based objects at the language-runtime level. The refactoring concerns their application semantics: immutable contents and value equality, not necessarily stack allocation or C# value types.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Change Reference to Value](https://refactoring.com/catalog/changeReferenceToValue.html).
+2. <span id="source-2"></span>[Microsoft — Records](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records), including value equality and immutability limitations.
+3. <span id="source-3"></span>[Python — dataclasses](https://docs.python.org/3/library/dataclasses.html).

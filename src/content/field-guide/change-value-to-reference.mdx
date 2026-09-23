@@ -1,0 +1,153 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Change Value to Reference
+description: "Change Value to Reference makes objects representing the same real-world identity share one authoritative instance instead of carrying independent copies."
+prerequisites: "Objects, references, dictionaries, and identity."
+---
+
+export const checks = {"csharp":{"original":"var a = new Ticket(new Customer(7, \"Mira\")); var b = new Ticket(new Customer(7, \"Mira\")); a.Customer.Name = \"Mira Sol\"; Check.That(b.Customer.Name == \"Mira\");","revised":"var customers = new Customers(); var a = new Ticket(customers.Get(7)); var b = new Ticket(customers.Get(7)); Check.That(ReferenceEquals(a.Customer, b.Customer)); a.Customer.Name = \"Mira Sol\"; Check.That(b.Customer.Name == \"Mira Sol\");"},"python":{"original":"a = Ticket(Customer(7, 'Mira'))\nb = Ticket(Customer(7, 'Mira'))\na.customer.name = 'Mira Sol'\nassert b.customer.name == 'Mira'","revised":"customers = Customers()\na = Ticket(customers.get(7))\nb = Ticket(customers.get(7))\nassert a.customer is b.customer\na.customer.name = 'Mira Sol'\nassert b.customer.name == 'Mira Sol'"}};
+
+**Change Value to Reference** makes objects representing the same identity share one authoritative instance instead of carrying independent copies. A customer with identifier 7 should not become two different current customers merely because that customer bought two tickets. [1](#source-1)
+
+Here, *value* and *reference* describe how the application treats identity. This is not an instruction to replace a C# `struct` with a `class`; every customer below is already a class instance.
+
+## Original version: two copies of the same customer
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Customer
+{
+    public int Id { get; }
+    public string Name { get; set; }
+    public Customer(int id, string name) { Id = id; Name = name; }
+}
+
+public sealed class Ticket
+{
+    public Customer Customer { get; }
+    public Ticket(Customer customer) { Customer = customer; }
+}
+```
+
+```csharp group=original role=run
+var first = new Ticket(new Customer(7, "Mira"));
+var second = new Ticket(new Customer(7, "Mira"));
+first.Customer.Name = "Mira Sol";
+Console.WriteLine(second.Customer.Name); // Mira
+```
+
+Both instances say their identifier is 7, but they are separate mutable objects. Correcting the first name does not correct the second.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Customer:
+    def __init__(self, customer_id, name):
+        self.id = customer_id
+        self.name = name
+
+
+class Ticket:
+    def __init__(self, customer):
+        self.customer = customer
+```
+
+```python group=original role=run
+first = Ticket(Customer(7, "Mira"))
+second = Ticket(Customer(7, "Mira"))
+first.customer.name = "Mira Sol"
+print(second.customer.name)  # Mira
+```
+
+Matching identifiers do not automatically make the two objects share changes. They remain independent instances.
+
+</section>
+
+## Revised version: obtain the existing customer
+
+A small directory owns one customer instance per identifier. Tickets ask that directory for the customer instead of constructing another copy.
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Customer
+{
+    public int Id { get; }
+    public string Name { get; set; }
+    public Customer(int id, string name) { Id = id; Name = name; }
+}
+
+public sealed class Customers
+{
+    private readonly Dictionary<int, Customer> entries =
+        new Dictionary<int, Customer> { { 7, new Customer(7, "Mira") } };
+    public Customer Get(int id) { return entries[id]; }
+}
+
+public sealed class Ticket
+{
+    public Customer Customer { get; }
+    public Ticket(Customer customer) { Customer = customer; }
+}
+```
+
+```csharp group=revised role=run
+var customers = new Customers();
+var first = new Ticket(customers.Get(7));
+var second = new Ticket(customers.Get(7));
+first.Customer.Name = "Mira Sol";
+Console.WriteLine(second.Customer.Name); // Mira Sol
+```
+
+The two ticket properties point to the same object. There is now one in-memory name to update within this directory's lifetime.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Customer:
+    def __init__(self, customer_id, name):
+        self.id = customer_id
+        self.name = name
+
+
+class Customers:
+    def __init__(self):
+        self._entries = {7: Customer(7, "Mira")}
+
+    def get(self, customer_id):
+        return self._entries[customer_id]
+
+
+class Ticket:
+    def __init__(self, customer):
+        self.customer = customer
+```
+
+```python group=revised role=run
+customers = Customers()
+first = Ticket(customers.get(7))
+second = Ticket(customers.get(7))
+first.customer.name = "Mira Sol"
+print(second.customer.name)  # Mira Sol
+```
+
+Both lookups return the same instance. Changing its name is visible through either ticket.
+
+</section>
+
+## Decide whether sharing is actually the requirement
+
+A current customer record often has identity. A historical ticket's printed passenger name may instead need to remain a snapshot. Sharing the current record would be wrong for that second requirement.
+
+The example intentionally changes how later edits propagate. Before making this move in real code, identify which consumers require a live identity and which require a saved value. Reconcile conflicting copies and choose who may update the authoritative instance.
+
+This directory is local, not a global singleton or a distributed consistency solution. Another process can still hold a different copy. Database transactions, cache invalidation, concurrent access, and object lifetime require their own decisions. Sharing removes one kind of duplication while introducing a responsibility to manage shared state deliberately.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Change Value to Reference](https://refactoring.com/catalog/changeValueToReference.html).
