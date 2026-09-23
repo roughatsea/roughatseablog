@@ -2,26 +2,21 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SoftwareEngineeringGuideIndex from '../../../components/SoftwareEngineeringGuideIndex.astro';
 import { guideDomains, guideIndex, guideSources } from '../../../data/software-engineering-guide.js';
-const revisedDescriptions: Record<string, string> = {
-  'open-closed-principle': 'Add a new behavior without rewriting the existing code that uses it. Follow a checkout as an employee discount is added.',
-  'switch-statements': 'Repeated checks for the same kind of object can make one new case require changes in several places. Compare membership rules before and after refactoring.',
-  'deadlocks-and-lock-discipline': 'Two or more operations cannot continue because each is waiting for something another holds. Follow two workers and see how a shared lock order prevents their deadlock.',
-  'single-responsibility-principle': 'Keep code that changes for the same reason together, and separate code that changes for unrelated reasons. Compare a quest reward calculation with its announcement.',
-  'liskov-substitution-principle': 'An implementation must keep the promises made by its base type or interface. Follow a discount that unexpectedly rejects a valid purchase.',
-  'interface-segregation-principle': 'Code should not have to depend on operations it does not need. Give a directory screen lookup access without making editing part of its required interface.',
-  'dependency-inversion-principle': 'Business rules should depend on interfaces that express what they need, rather than on the details that provide it. Separate an inventory rule from message delivery.',
-};
-const concepts = guideIndex.map((concept) => revisedDescriptions[concept.slug]
-  ? { ...concept, definition: revisedDescriptions[concept.slug], lookFor: revisedDescriptions[concept.slug] }
-  : concept);
+import { revisedArticles } from '../../../data/field-guide-revisions';
+const concepts = guideIndex.map((concept) => {
+  const article = revisedArticles[concept.slug]?.frontmatter;
+  return article ? { ...concept, title: article.title, definition: article.description, lookFor: article.description } : concept;
+});
+const revisedCount = concepts.filter((concept) => revisedArticles[concept.slug]).length;
 ---
 <BaseLayout title="Software Engineering Field Guide" description="Understand software-engineering terms through concrete explanations, C# and Python examples, and practical trade-offs.">
   <article class="guide-introduction">
     <nav aria-label="Breadcrumb"><a href="/">← Rough at Sea</a></nav>
-    <p class="eyebrow">Searchable companion reference</p>
+    <p class="eyebrow">A working vocabulary</p>
     <h1>Software Engineering Field Guide</h1>
-    <p class="lede">Search for a name you heard, an alias you half remember, or a problem you can see but cannot yet name. Each result opens a focused page with C# and Python examples.</p>
-    <p>This guide contains {guideIndex.length} terms. All five SOLID principles, Switch Statements, and Deadlock now use the revised teaching format. The remaining entries are being rewritten.</p>
+    <p class="lede">Start with a name you heard or a problem you have met in code. Each article explains the idea, makes it visible in an example, and considers when a different approach would be simpler.</p>
+    <p>Browse {concepts.length} terms or search by name and topic. Examples are available in C# and Python; your language choice follows you between articles.</p>
+    {revisedCount < concepts.length && <p>{revisedCount} articles have been rewritten. The remaining {concepts.length - revisedCount} entries still use the earlier format.</p>}
     <p>For the personal argument behind the guide, read <a href="/notes/the-working-vocabulary-of-software-engineering/">The Working Vocabulary of Software Engineering</a>.</p>
   </article>
   <SoftwareEngineeringGuideIndex concepts={concepts} domains={guideDomains} sources={guideSources} />

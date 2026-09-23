@@ -1,0 +1,170 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Behavior-Preserving Change
+description: "A behavior-preserving change leaves the results and effects that callers rely on unchanged. The code may look different; its promises do not."
+prerequisites: "Functions, conditionals, comparisons, and basic tests."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Shipping.Fee(49) == 5); Check.That(Shipping.Fee(50) == 0); Check.That(Shipping.Fee(51) == 0);","mistake":"Check.That(Shipping.Fee(49) == 5); Check.That(Shipping.Fee(50) == 5); Check.That(Shipping.Fee(51) == 0);","corrected":"foreach (int amount in new int[] {0, 1, 49, 50, 51, 100}) Check.That(Shipping.Fee(amount) == (amount >= 50 ? 0 : 5));"},"python":{"original":"assert [shipping_fee(x) for x in [49, 50, 51]] == [5, 0, 0]","mistake":"assert [shipping_fee(x) for x in [49, 50, 51]] == [5, 5, 0]","corrected":"assert [shipping_fee(x) for x in [0, 1, 49, 50, 51, 100]] == [5, 5, 5, 0, 0, 0]"}};
+
+A **behavior-preserving change** leaves the results and effects that callers rely on unchanged. The code may look different; its promises do not. This is the condition that makes a structural edit a refactoring rather than a change in functionality. [1](#source-1)
+
+It is easy to agree with that sentence and still miss one character that breaks it.
+
+## The purchase right on the boundary
+
+Suppose a fictional shop charges five tokens for shipping, except on purchases of **50 tokens or more**, which ship free. Subtotals in this example are nonnegative whole numbers.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Shipping
+{
+    public static int Fee(int subtotal)
+    {
+        int fee = 5;
+        if (subtotal >= 50)
+        {
+            fee = 0;
+        }
+        return fee;
+    }
+}
+```
+
+```csharp group=original role=run
+Console.WriteLine(Shipping.Fee(50)); // 0
+```
+
+`Fee` begins with a charge of 5 and changes it to zero when `subtotal >= 50`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def shipping_fee(subtotal):
+    fee = 5
+    if subtotal >= 50:
+        fee = 0
+    return fee
+```
+
+```python group=original role=run
+print(shipping_fee(50))  # 0
+```
+
+`shipping_fee` begins with a charge of 5 and changes it to zero when `subtotal >= 50`.
+
+</section>
+
+A developer removes the temporary variable and returns each answer immediately. But the comparison changes accidentally.
+
+### A shorter version with a bug
+
+<section data-pilot-language="csharp">
+
+```csharp group=mistake role=types
+public static class Shipping
+{
+    public static int Fee(int subtotal)
+    {
+        if (subtotal > 50)
+        {
+            return 0;
+        }
+        return 5;
+    }
+}
+```
+
+```csharp group=mistake role=run
+Console.WriteLine(Shipping.Fee(50)); // 5: wrong at the boundary
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=mistake role=types
+def shipping_fee(subtotal):
+    if subtotal > 50:
+        return 0
+    return 5
+```
+
+```python group=mistake role=run
+print(shipping_fee(50))  # 5: wrong at the boundary
+```
+
+</section>
+
+Purchases of 20 and 100 still work. A test suite containing only those examples would miss the regression. The original promise included a purchase of exactly 50; the shorter version quietly removed it.
+
+## Check the boundary, not just a convenient example
+
+| Subtotal | Required shipping fee | Why test it? |
+|---|---:|---|
+| 49 | 5 | Immediately below the threshold |
+| 50 | 0 | Exactly at the threshold |
+| 51 | 0 | Immediately above the threshold |
+
+The correction restores `>=`. It keeps the early returns, which were not the problem.
+
+<section data-pilot-language="csharp">
+
+```csharp group=corrected role=types
+public static class Shipping
+{
+    public static int Fee(int subtotal)
+    {
+        if (subtotal >= 50)
+        {
+            return 0;
+        }
+        return 5;
+    }
+}
+```
+
+```csharp group=corrected role=run
+Console.WriteLine(Shipping.Fee(49)); // 5
+Console.WriteLine(Shipping.Fee(50)); // 0
+Console.WriteLine(Shipping.Fee(51)); // 0
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=corrected role=types
+def shipping_fee(subtotal):
+    if subtotal >= 50:
+        return 0
+    return 5
+```
+
+```python group=corrected role=run
+print(shipping_fee(49))  # 5
+print(shipping_fee(50))  # 0
+print(shipping_fee(51))  # 0
+```
+
+</section>
+
+## “Behavior” includes more than return values
+
+The example returns a number, so its promise is small. Other functions also write files, send messages, update balances, or throw particular exceptions. Returning the same value after sending two emails instead of one would not preserve behavior.
+
+Decide which observations matter before editing. For an email operation, a useful test could check the recipient, message, and number of sends. For a file reader, it could check what happens when the file does not exist. A function that reads an input twice may also behave differently when the input changes between reads.
+
+Tests protect the observations they actually make. They do not make every untested detail safe to change. Small edits and a clear account of the original behavior still matter.
+
+There is no rule against intentionally changing behavior. A new free-shipping threshold might be a perfectly reasonable requirement. Just name that as a rule change, update its tests deliberately, and keep it separate from the edit that merely reorganizes the code.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Refactoring](https://refactoring.com/), on preserving observable behavior. The threshold example is an original demonstration of a regression.
+2. [Microsoft — Unit-testing best practices](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices), on tests that clearly express expected behavior.

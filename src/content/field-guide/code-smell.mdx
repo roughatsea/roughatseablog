@@ -1,0 +1,142 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Code Smell
+description: "A code smell is a noticeable feature of code that suggests a design problem worth investigating. It is a clue, not a verdict."
+prerequisites: "Functions, Boolean expressions, and return values."
+---
+
+export const checks = {"csharp":{"before":"foreach (bool paid in new[] {false, true}) foreach (bool cancelled in new[] {false, true}) foreach (int count in new[] {0, 1, 3}) { bool expected = paid && count > 0 && !cancelled; Check.That(Shipping.ShouldQueue(paid, count, cancelled) == expected); Check.That(Shipping.Label(paid, count, cancelled) == (expected ? \"Ready\" : \"Hold\")); }","after":"foreach (bool paid in new[] {false, true}) foreach (bool cancelled in new[] {false, true}) foreach (int count in new[] {0, 1, 3}) { bool expected = paid && count > 0 && !cancelled; Check.That(Shipping.ShouldQueue(paid, count, cancelled) == expected); Check.That(Shipping.Label(paid, count, cancelled) == (expected ? \"Ready\" : \"Hold\")); }"},"python":{"before":"for paid in [False, True]:\n    for cancelled in [False, True]:\n        for count in [0, 1, 3]:\n            expected = paid and count > 0 and not cancelled\n            assert should_queue(paid, count, cancelled) == expected\n            assert shipping_label(paid, count, cancelled) == ('Ready' if expected else 'Hold')","after":"for paid in [False, True]:\n    for cancelled in [False, True]:\n        for count in [0, 1, 3]:\n            expected = paid and count > 0 and not cancelled\n            assert should_queue(paid, count, cancelled) == expected\n            assert shipping_label(paid, count, cancelled) == ('Ready' if expected else 'Hold')"}};
+
+A **code smell** is a noticeable feature of code that suggests a design problem worth investigating. A long method, a repeated calculation, or a class full of unrelated operations might be a smell. None of those observations proves that the program is wrong. [1](#source-1)
+
+Think of “this smells” as the beginning of a question: **what difficulty is this code causing?** Without that question, the term becomes a fancy way of saying “I would have written it differently.”
+
+## Two copies of one shipping rule
+
+A shop ships an order when it is paid, contains at least one item, and has not been cancelled. One function displays a status label. Another decides whether to queue the order for shipping.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Shipping
+{
+    public static string Label(bool paid, int itemCount, bool cancelled)
+    {
+        if (paid && itemCount > 0 && !cancelled)
+        {
+            return "Ready";
+        }
+        return "Hold";
+    }
+
+    public static bool ShouldQueue(bool paid, int itemCount, bool cancelled)
+    {
+        return paid && itemCount > 0 && !cancelled;
+    }
+}
+```
+
+```csharp group=before role=run
+Console.WriteLine(Shipping.Label(true, 2, false));       // Ready
+Console.WriteLine(Shipping.ShouldQueue(true, 2, false)); // True
+```
+
+The same expression appears in `Label` and `ShouldQueue`. That repetition is the clue. Both methods need the same answer to “may this order ship?”
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def shipping_label(paid, item_count, cancelled):
+    if paid and item_count > 0 and not cancelled:
+        return "Ready"
+    return "Hold"
+
+
+def should_queue(paid, item_count, cancelled):
+    return paid and item_count > 0 and not cancelled
+```
+
+```python group=before role=run
+print(shipping_label(True, 2, False))  # Ready
+print(should_queue(True, 2, False))    # True
+```
+
+The same expression appears in `shipping_label` and `should_queue`. That repetition is the clue. Both functions need the same answer to “may this order ship?”
+
+</section>
+
+Now suppose orders awaiting an age check must be held. There are two expressions to update. Forget one, and the screen could say “Ready” while the queue refuses the order—or the queue could send an order the screen correctly says to hold.
+
+That is the concrete concern. The problem is not the existence of a Boolean expression; it is having two separately maintained copies of one decision.
+
+### One possible correction
+
+We can give the decision a name and let both functions ask for it. For now, keep the existing rule unchanged; adding an age check would be a separate feature change.
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class Shipping
+{
+    public static bool CanShip(bool paid, int itemCount, bool cancelled)
+    {
+        return paid && itemCount > 0 && !cancelled;
+    }
+
+    public static string Label(bool paid, int itemCount, bool cancelled)
+    {
+        if (CanShip(paid, itemCount, cancelled))
+        {
+            return "Ready";
+        }
+        return "Hold";
+    }
+
+    public static bool ShouldQueue(bool paid, int itemCount, bool cancelled)
+    {
+        return CanShip(paid, itemCount, cancelled);
+    }
+}
+```
+
+`CanShip` now contains the condition. The other methods still produce the same labels and queue decisions, but a change to eligibility has one place to go.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def can_ship(paid, item_count, cancelled):
+    return paid and item_count > 0 and not cancelled
+
+
+def shipping_label(paid, item_count, cancelled):
+    if can_ship(paid, item_count, cancelled):
+        return "Ready"
+    return "Hold"
+
+
+def should_queue(paid, item_count, cancelled):
+    return can_ship(paid, item_count, cancelled)
+```
+
+`can_ship` now contains the condition. The other functions still produce the same labels and queue decisions, but a change to eligibility has one place to go.
+
+</section>
+
+## A clue still needs interpretation
+
+The repeated rule gives us a reason for this extraction. A condition used once, already obvious, and unlikely to change might be clearer left where it is.
+
+The same distinction applies to other smells. A long function might be one coherent algorithm. A short function might combine three unrelated jobs. A class containing only data might be a perfectly good message passed between programs. Investigate what the shape means in its actual setting.
+
+In a review, “these two copies can disagree when we change shipping eligibility” is useful feedback. “This violates a smell” is not. The first statement identifies a failure you can discuss, test, and prevent; the second merely invokes a label.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Code Smell](https://martinfowler.com/bliki/CodeSmell.html), on visible clues that require further investigation.
+2. [Martin Fowler — Extract Function](https://refactoring.com/catalog/extractFunction.html), the correction used in this original shipping example.
