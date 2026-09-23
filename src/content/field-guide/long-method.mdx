@@ -1,0 +1,168 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Long Method
+description: "A method becomes troublesome when a reader must keep several separate jobs and their details in mind at once. Its length is a clue; mixed responsibilities are often the real problem."
+prerequisites: "Functions, loops, conditionals, and return values."
+---
+
+export const checks = {"csharp":{"before":"Check.That(OrderSummary.Build(new[] {20, 30}, false) == \"Total: 53 tokens\"); Check.That(OrderSummary.Build(new[] {20, 30}, true) == \"Total: 58 tokens\"); Check.That(OrderSummary.Build(Array.Empty<int>(), false) == \"Total: 3 tokens\");","after":"Check.That(OrderSummary.Build(new[] {20, 30}, false) == \"Total: 53 tokens\"); Check.That(OrderSummary.Build(new[] {20, 30}, true) == \"Total: 58 tokens\"); Check.That(OrderSummary.Build(Array.Empty<int>(), false) == \"Total: 3 tokens\");"},"python":{"before":"assert order_summary([20, 30], False) == 'Total: 53 tokens'\nassert order_summary([20, 30], True) == 'Total: 58 tokens'\nassert order_summary([], False) == 'Total: 3 tokens'","after":"assert order_summary([20, 30], False) == 'Total: 53 tokens'\nassert order_summary([20, 30], True) == 'Total: 58 tokens'\nassert order_summary([], False) == 'Total: 3 tokens'"}};
+
+A **Long Method** is a method whose amount of code makes its purpose and internal steps difficult to follow. It often contains several jobs: a calculation, a decision, some formatting, and perhaps a database update. Length is a clue to investigate, not a universal limit on how many lines a method may have. [1](#source-1)
+
+A useful question is: **can I understand the main operation without holding every detail of every step in my head?**
+
+## Three jobs inside an order summary
+
+Consider a fictional shop that uses whole tokens. A summary adds item prices, chooses a shipping fee, and formats the result. Standard shipping costs three tokens and express shipping costs eight. This function quotes a shipping charge even for an empty list; changing that rule would be a separate task. Totals fit in a C# integer.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class OrderSummary
+{
+    public static string Build(int[] prices, bool express)
+    {
+        int subtotal = 0;
+        foreach (int price in prices)
+        {
+            subtotal += price;
+        }
+
+        int shipping;
+        if (express)
+        {
+            shipping = 8;
+        }
+        else
+        {
+            shipping = 3;
+        }
+
+        int total = subtotal + shipping;
+        return $"Total: {total} tokens";
+    }
+}
+```
+
+`Build` makes a reader switch from addition to shipping rules to text. Its local variables are small enough to follow here, but this arrangement gets harder to navigate as each job grows.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def order_summary(prices, express):
+    subtotal = 0
+    for price in prices:
+        subtotal += price
+
+    if express:
+        shipping = 8
+    else:
+        shipping = 3
+
+    total = subtotal + shipping
+    return f"Total: {total} tokens"
+```
+
+`order_summary` makes a reader switch from addition to shipping rules to text. Its local variables are small enough to follow here, but this arrangement gets harder to navigate as each job grows.
+
+</section>
+
+### Refactored version: give each step a name
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class OrderSummary
+{
+    public static string Build(int[] prices, bool express)
+    {
+        int subtotal = CalculateSubtotal(prices);
+        int total = subtotal + ShippingFee(express);
+        return FormatTotal(total);
+    }
+
+    private static int CalculateSubtotal(int[] prices)
+    {
+        int subtotal = 0;
+        foreach (int price in prices)
+        {
+            subtotal += price;
+        }
+        return subtotal;
+    }
+
+    private static int ShippingFee(bool express)
+    {
+        if (express) return 8;
+        return 3;
+    }
+
+    private static string FormatTotal(int total)
+    {
+        return $"Total: {total} tokens";
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(OrderSummary.Build(new[] {20, 30}, true));
+// Total: 58 tokens
+```
+
+`Build` now tells us the sequence without also containing the loop and shipping branches. Someone changing shipping can go to `ShippingFee`; someone changing the wording can go to `FormatTotal`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def calculate_subtotal(prices):
+    subtotal = 0
+    for price in prices:
+        subtotal += price
+    return subtotal
+
+
+def shipping_fee(express):
+    if express:
+        return 8
+    return 3
+
+
+def format_total(total):
+    return f"Total: {total} tokens"
+
+
+def order_summary(prices, express):
+    subtotal = calculate_subtotal(prices)
+    total = subtotal + shipping_fee(express)
+    return format_total(total)
+```
+
+```python group=after role=run
+print(order_summary([20, 30], True))
+# Total: 58 tokens
+```
+
+`order_summary` now tells us the sequence without also containing the loop and shipping branches. Someone changing shipping can go to `shipping_fee`; someone changing the wording can go to `format_total`.
+
+</section>
+
+The correction uses **Extract Function**, also called **Extract Method**. It adds lines overall, but reduces the number of details needed to understand the main operation. [2](#source-2)
+
+## Do the names earn the extra navigation?
+
+For this small example, either version could be reasonable. The extraction becomes more valuable when the three jobs grow or change independently. If a helper name merely says “perform step two,” the reader still has to open it to learn anything; little has been gained.
+
+Look for recognizable calculations, decisions, or tasks—not arbitrary groups of five lines. A long parser with one coherent algorithm may be easier to read as one method than as a dozen fragments sharing awkward parameters.
+
+Compare the same inputs before and after extraction. Moving a calculation should not silently change a shipping rule, reorder important side effects, or introduce another read of changing data. A smaller main method is useful only when its meaning stays trustworthy.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Code Smell](https://martinfowler.com/bliki/CodeSmell.html), including the qualification that a long method is not automatically a problem.
+2. <span id="source-2"></span>[Martin Fowler — Extract Function](https://refactoring.com/catalog/extractFunction.html). The order-summary example is original.

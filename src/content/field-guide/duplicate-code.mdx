@@ -1,0 +1,131 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Duplicate Code
+description: "Duplicate Code repeats the same implementation or rule in several places, making a later correction easy to apply inconsistently. Extract shared meaning, not merely similar characters."
+prerequisites: "Functions, string methods, and comparisons."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Tags.CreateKey(\" Sea\") == \"sea\"); Check.That(Tags.Matches(\" SEA\", \"sea\")); Check.That(!Tags.Matches(\"sea\", \"sky\"));","after":"Check.That(Tags.CreateKey(\" Sea\") == \"sea\"); Check.That(Tags.Matches(\" SEA\", \"sea\")); Check.That(!Tags.Matches(\"sea\", \"sky\")); Check.That(Tags.CreateKey(\"\") == \"\");"},"python":{"before":"assert create_key(' Sea ') == 'sea'\nassert tags_match(' SEA', 'sea ')\nassert not tags_match('sea', 'sky')","after":"assert create_key(' Sea ') == 'sea'\nassert tags_match(' SEA', 'sea ')\nassert not tags_match('sea', 'sky')\nassert create_key('') == ''"}};
+
+**Duplicate Code** repeats the same implementation or rule in several places. A correction or new requirement must then be applied to every copy, and the copies can drift apart.
+
+The useful distinction is between **shared meaning** and **accidental similarity**. Two expressions that implement one tag-normalization rule should agree. Two unrelated fees that both happen to be five should not necessarily share code. [1](#source-1)
+
+## Three copies of the same normalization
+
+Suppose a small tag system treats surrounding whitespace and ASCII letter case as irrelevant. Creating a tag key and comparing tags both need that normalization. The example accepts non-null strings; it deliberately does not implement a complete international text-normalization policy.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Tags
+{
+    public static string CreateKey(string tag)
+    {
+        return tag.Trim().ToLowerInvariant();
+    }
+
+    public static bool Matches(string first, string second)
+    {
+        return first.Trim().ToLowerInvariant()
+            == second.Trim().ToLowerInvariant();
+    }
+}
+```
+
+The trimming and lowercasing sequence appears three times. A new rule—such as also handling a particular separator—would need to reach each occurrence.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def create_key(tag):
+    return tag.strip().lower()
+
+
+def tags_match(first, second):
+    return first.strip().lower() == second.strip().lower()
+```
+
+The stripping and lowercasing sequence appears three times. A new rule—such as also handling a particular separator—would need to reach each occurrence.
+
+</section>
+
+### Refactored version: one normalization function
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class Tags
+{
+    private static string Normalize(string tag)
+    {
+        return tag.Trim().ToLowerInvariant();
+    }
+
+    public static string CreateKey(string tag)
+    {
+        return Normalize(tag);
+    }
+
+    public static bool Matches(string first, string second)
+    {
+        return Normalize(first) == Normalize(second);
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(Tags.CreateKey(" Sea "));        // sea
+Console.WriteLine(Tags.Matches(" SEA", "sea ")); // True
+```
+
+`Normalize` owns the rule. `CreateKey` and `Matches` still express different public tasks, but neither maintains another copy of the steps.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def normalize_tag(tag):
+    return tag.strip().lower()
+
+
+def create_key(tag):
+    return normalize_tag(tag)
+
+
+def tags_match(first, second):
+    return normalize_tag(first) == normalize_tag(second)
+```
+
+```python group=after role=run
+print(create_key(" Sea "))        # sea
+print(tags_match(" SEA", "sea ")) # True
+```
+
+`normalize_tag` owns the rule. `create_key` and `tags_match` still express different public tasks, but neither maintains another copy of the steps.
+
+</section>
+
+## Keep the behavior you started with
+
+The extraction leaves the normalization unchanged. An empty string still becomes an empty key. If empty tags should be rejected, add that requirement and its tests separately rather than hiding it inside an apparent cleanup.
+
+The C# and Python operations are not a promise of identical behavior for every Unicode string. Real international identifiers need an explicitly chosen normalization and comparison policy. Here, ASCII tags keep the shared rule small enough to inspect directly.
+
+## When not to extract
+
+Suppose a user-name search and a tag search both currently trim and lowercase their inputs. That might be one reusable rule—or the first coincidence before their requirements diverge. A user name might preserve meaningful spaces while a tag key might reject them. Understand those promises before forcing them through one helper.
+
+If a supposed shared function acquires flags such as “except for users” and “use the old behavior for imports,” reconsider whether it represents one concept at all.
+
+Extract code because the copies must stay consistent, not because a text search found matching lines. The refactoring then gives a future correction one reliable place to go.
+
+## Sources
+
+1. <span id="source-1"></span>[Andy Hunt and Dave Thomas — Pragmatic Programmer tips, DRY](https://pragprog.com/tips/).
+2. [Martin Fowler — Extract Function](https://refactoring.com/catalog/extractFunction.html). The tag-normalization example is original.

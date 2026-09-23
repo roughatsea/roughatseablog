@@ -1,0 +1,107 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Dead Code
+description: "Dead Code cannot contribute to the running program: an unreachable branch, an unused local, or an obsolete function with no remaining callers. Remove it after verifying that it truly has no role."
+prerequisites: "Functions, variables, access modifiers, and basic call tracing."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Rewards.ForWin(3) == 30); Check.That(Rewards.ForWin(0) == 0);","after":"Check.That(Rewards.ForWin(3) == 30); Check.That(Rewards.ForWin(0) == 0);"},"python":{"before":"assert reward_for_win(3) == 30\nassert reward_for_win(0) == 0","after":"assert reward_for_win(3) == 30\nassert reward_for_win(0) == 0\nassert 'old_reward' not in globals()"}};
+
+**Dead Code** cannot contribute to the running program. It may be an unreachable branch, an unused local variable, or an obsolete function with no remaining callers. Leaving it nearby makes readers spend time determining whether it still matters. [1](#source-1)
+
+The correction sounds easy—delete it—but the important work is verifying that it really is unused.
+
+## The reward formula nobody calls
+
+Suppose the following is the complete reward module for a small example. Winning awards ten tokens per level. An older five-token formula remains in a helper that the module no longer calls. Levels are nonnegative integers with results in range.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Rewards
+{
+    public static int ForWin(int level)
+    {
+        return level * 10;
+    }
+
+    private static int OldReward(int level)
+    {
+        return level * 5;
+    }
+}
+```
+
+`ForWin` does not call `OldReward`, and no other method exists in this example. The private helper contributes nothing to its public result.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def reward_for_win(level):
+    return level * 10
+
+
+def old_reward(level):
+    return level * 5
+```
+
+The example calls only `reward_for_win`; nothing calls or imports `old_reward`. In a real Python package, another module could import that function, so looking at this file alone would not establish that it is unused.
+
+</section>
+
+### Revised version: remove the obsolete helper
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class Rewards
+{
+    public static int ForWin(int level)
+    {
+        return level * 10;
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(Rewards.ForWin(3)); // 30
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def reward_for_win(level):
+    return level * 10
+```
+
+```python group=after role=run
+print(reward_for_win(3))  # 30
+```
+
+</section>
+
+The active calculation did not change. A reader now finds one formula, not two competing versions and a question about which one applies.
+
+## Search beyond ordinary call sites
+
+In an actual application, a method might be invoked through reflection, configuration, serialization, a framework convention, or a plug-in. A scheduled job might run rarely. A public API might have callers outside the repository. “Find references” is evidence, but not always the whole answer.
+
+Check those entry points, build and run the relevant tests, and examine configuration before deleting uncertain code. Runtime coverage can show that a test run did not exercise something; it cannot prove that no real workload ever will.
+
+An apparently unused expression may also have side effects. Removing a variable whose assigned value is ignored is not the same as safely removing the function call that produced it. Determine whether that call writes, registers, logs, or otherwise affects the program.
+
+## Keep history in version control
+
+Commenting out the old helper preserves the same reading burden in a different color. Version control can retain its history while the active file presents only the code that belongs to the current program.
+
+Do not confuse dead code with a supported fallback or an intentionally dormant feature. A fallback still has a role even if your last test did not use it. The useful question is not “have I seen this execute?” but **“what supported path can reach it, and do we still need that path?”**
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Remove Dead Code](https://refactoring.com/catalog/removeDeadCode.html). The reward example is original; its whole-module assumption is explicit.

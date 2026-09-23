@@ -1,0 +1,140 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Middle Man
+description: "A Middle Man mostly forwards calls to another object without adding a useful responsibility or protecting a meaningful boundary. Removing it can make the real work easier to find."
+prerequisites: "Objects, constructor arguments, and dictionaries."
+---
+
+export const checks = {"csharp":{"before":"var manager = new TagManager(new TagStore()); Check.That(manager.Get(\"sea\") == \"Ocean\"); Check.That(manager.Get(\"missing\") == \"Unknown\");","after":"var store = new TagStore(); Check.That(store.Get(\"sea\") == \"Ocean\"); Check.That(store.Get(\"missing\") == \"Unknown\");"},"python":{"before":"manager = TagManager(TagStore())\nassert manager.get('sea') == 'Ocean'\nassert manager.get('missing') == 'Unknown'","after":"store = TagStore()\nassert store.get('sea') == 'Ocean'\nassert store.get('missing') == 'Unknown'"}};
+
+A **Middle Man** mostly forwards calls to another object without adding a useful responsibility or protecting a meaningful boundary. A reader opens one method only to be sent to another method with the same job.
+
+Forwarding is not inherently wasteful. The smell appears when the extra object no longer buys a simpler contract, isolation from change, or behavior of its own. **Remove Middle Man** is the refactoring that lets callers reach the useful object directly. [1](#source-1)
+
+## A manager that only repeats Get
+
+Suppose a tiny in-memory tag store returns a display label for a key. A manager class has been added, but it performs no validation, caching, authorization, or translation. It just repeats the store's operation.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class TagStore
+{
+    private readonly Dictionary<string, string> labels =
+        new Dictionary<string, string> { ["sea"] = "Ocean" };
+
+    public string Get(string key)
+    {
+        return labels.GetValueOrDefault(key, "Unknown");
+    }
+}
+
+public sealed class TagManager
+{
+    private readonly TagStore store;
+
+    public TagManager(TagStore store) { this.store = store; }
+
+    public string Get(string key)
+    {
+        return store.Get(key);
+    }
+}
+```
+
+```csharp group=before role=run
+TagManager manager = new TagManager(new TagStore());
+Console.WriteLine(manager.Get("sea")); // Ocean
+```
+
+The caller constructs both objects, and `TagManager.Get` contributes only another hop to `TagStore.Get`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class TagStore:
+    def __init__(self):
+        self.labels = {"sea": "Ocean"}
+
+    def get(self, key):
+        return self.labels.get(key, "Unknown")
+
+
+class TagManager:
+    def __init__(self, store):
+        self.store = store
+
+    def get(self, key):
+        return self.store.get(key)
+```
+
+```python group=before role=run
+manager = TagManager(TagStore())
+print(manager.get("sea"))  # Ocean
+```
+
+The caller constructs both objects, and `TagManager.get` contributes only another hop to `TagStore.get`.
+
+</section>
+
+### Refactored version: use the store directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class TagStore
+{
+    private readonly Dictionary<string, string> labels =
+        new Dictionary<string, string> { ["sea"] = "Ocean" };
+
+    public string Get(string key)
+    {
+        return labels.GetValueOrDefault(key, "Unknown");
+    }
+}
+```
+
+```csharp group=after role=run
+TagStore store = new TagStore();
+Console.WriteLine(store.Get("sea")); // Ocean
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class TagStore:
+    def __init__(self):
+        self.labels = {"sea": "Ocean"}
+
+    def get(self, key):
+        return self.labels.get(key, "Unknown")
+```
+
+```python group=after role=run
+store = TagStore()
+print(store.get("sea"))  # Ocean
+```
+
+</section>
+
+The store's behavior is unchanged. The caller now names the object that actually performs the lookup. A missing key still returns `Unknown`.
+
+## A facade may look similar and still be useful
+
+A facade can deliberately present a small, stable API over a complicated subsystem. A wrapper can also enforce permissions, translate errors, or hide a vendor-specific type. Such a class can remain valuable even when many methods are short.
+
+Before removing a forwarding layer, ask what dependencies it prevents callers from acquiring. If it is the public contract that lets you replace a library later, deleting it may trade a small inconvenience for widespread coupling.
+
+This example assumes the manager has no independent users or compatibility obligations beyond the callers being updated. A published API cannot be removed solely because its implementation is currently simple.
+
+The tension with Message Chains is useful: too little forwarding can expose internals; too much can create an object full of relay methods. Choose the amount of indirection that explains and protects a real responsibility.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Remove Middle Man](https://refactoring.com/catalog/removeMiddleMan.html), the inverse of Hide Delegate. The tag-store example is original.

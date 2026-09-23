@@ -1,0 +1,199 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Parallel Inheritance Hierarchies
+description: "Parallel Inheritance Hierarchies occur when adding a subclass to one family repeatedly requires adding a matching subclass to another family. Composition may remove the duplicated classification."
+prerequisites: "Base classes, overriding methods, constructors, and decimal division."
+---
+
+export const checks = {"csharp":{"before":"Check.That(new BicycleTrip().Hours(40) == 2m); Check.That(new TrainTrip().Hours(40) == 0.4m);","after":"Check.That(new Trip(new Bicycle()).Hours(40) == 2m); Check.That(new Trip(new Train()).Hours(40) == 0.4m); Check.That(new Trip(new Boat()).Hours(40) == 0.8m);"},"python":{"before":"assert BicycleTrip().hours(40) == 2\nassert TrainTrip().hours(40) == 0.4","after":"assert Trip(Bicycle()).hours(40) == 2\nassert Trip(Train()).hours(40) == 0.4\nassert Trip(Boat()).hours(40) == 0.8"}};
+
+**Parallel Inheritance Hierarchies** occur when adding a subclass to one family repeatedly requires adding a matching subclass to another. The second hierarchy may be repeating a classification that the first already expresses.
+
+A useful question is: **does the second subclass contribute genuinely different behavior, or merely choose its matching partner?** When it only chooses a partner, composition can often replace the duplication. [1](#source-1)
+
+## Every vehicle needs its own trip class
+
+Consider a toy journey calculator. Each vehicle supplies a fixed speed, and a trip calculates hours as distance divided by that speed. These are invented constant speeds, not real travel estimates; there are no stops or changing conditions.
+
+### Original version: two families grow together
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public abstract class Vehicle
+{
+    public abstract decimal Speed { get; }
+}
+
+public sealed class Bicycle : Vehicle
+{
+    public override decimal Speed { get { return 20m; } }
+}
+
+public sealed class Train : Vehicle
+{
+    public override decimal Speed { get { return 100m; } }
+}
+
+public abstract class Journey
+{
+    public abstract decimal Hours(decimal distance);
+}
+
+public sealed class BicycleTrip : Journey
+{
+    public override decimal Hours(decimal distance)
+    {
+        return distance / new Bicycle().Speed;
+    }
+}
+
+public sealed class TrainTrip : Journey
+{
+    public override decimal Hours(decimal distance)
+    {
+        return distance / new Train().Speed;
+    }
+}
+```
+
+`BicycleTrip` and `TrainTrip` use the same formula. Their only meaningful difference is which vehicle they construct. Adding a boat would require a `Boat` and another nearly identical trip class.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class Vehicle:
+    def speed(self):
+        raise NotImplementedError
+
+
+class Bicycle(Vehicle):
+    def speed(self):
+        return 20
+
+
+class Train(Vehicle):
+    def speed(self):
+        return 100
+
+
+class Journey:
+    def hours(self, distance):
+        raise NotImplementedError
+
+
+class BicycleTrip(Journey):
+    def hours(self, distance):
+        return distance / Bicycle().speed()
+
+
+class TrainTrip(Journey):
+    def hours(self, distance):
+        return distance / Train().speed()
+```
+
+`BicycleTrip` and `TrainTrip` use the same formula. Their only meaningful difference is which vehicle they construct. Adding a boat would require a `Boat` and another nearly identical trip class.
+
+</section>
+
+### Refactored version: a trip has a vehicle
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public abstract class Vehicle
+{
+    public abstract decimal Speed { get; }
+}
+
+public sealed class Bicycle : Vehicle
+{
+    public override decimal Speed { get { return 20m; } }
+}
+
+public sealed class Train : Vehicle
+{
+    public override decimal Speed { get { return 100m; } }
+}
+
+public sealed class Boat : Vehicle
+{
+    public override decimal Speed { get { return 50m; } }
+}
+
+public sealed class Trip
+{
+    private readonly Vehicle vehicle;
+
+    public Trip(Vehicle vehicle) { this.vehicle = vehicle; }
+
+    public decimal Hours(decimal distance)
+    {
+        return distance / vehicle.Speed;
+    }
+}
+```
+
+```csharp group=after role=run
+Trip trip = new Trip(new Boat());
+Console.WriteLine(trip.Hours(40)); // 0.8
+```
+
+`Trip` contains a vehicle reference and one calculation. Adding `Boat` does not require a `BoatTrip`. The original bicycle and train calculations still produce the same results through the new caller arrangement.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class Vehicle:
+    def speed(self):
+        raise NotImplementedError
+
+
+class Bicycle(Vehicle):
+    def speed(self):
+        return 20
+
+
+class Train(Vehicle):
+    def speed(self):
+        return 100
+
+
+class Boat(Vehicle):
+    def speed(self):
+        return 50
+
+
+class Trip:
+    def __init__(self, vehicle):
+        self.vehicle = vehicle
+
+    def hours(self, distance):
+        return distance / self.vehicle.speed()
+```
+
+```python group=after role=run
+trip = Trip(Boat())
+print(trip.hours(40))  # 0.8
+```
+
+`Trip` contains a vehicle reference and one calculation. Adding `Boat` does not require a `BoatTrip`. The original bicycle and train calculations still produce the same results through the new caller arrangement.
+
+</section>
+
+## Notice the limit of the lesson
+
+For these fixed speeds, even the vehicle subclasses might be unnecessary: a vehicle value containing a speed could suffice. We retain the first family to make the redundant second family easy to see. The example assumes positive vehicle speeds and nonnegative distances.
+
+Two hierarchies are not automatically wrong. A new data type may genuinely require a new serializer, editor, or platform-specific implementation. Those pieces perform different work; their matching names alone do not establish waste.
+
+Look for repeated classes that contain the same behavior and differ only in the partner they select. Passing that partner to one reusable class can let the families evolve independently—or eliminate a family that never had its own reason to exist.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Parallel Inheritance Hierarcharchies” in the first-edition code-smells discussion.
+2. [Martin Fowler — Replace Subclass with Delegate](https://refactoring.com/catalog/replaceSubclassWithDelegate.html), for the related move from subclass selection to contained objects. The journey example is original.

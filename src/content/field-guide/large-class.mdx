@@ -1,0 +1,183 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Large Class
+description: "A Large Class has accumulated enough data and responsibilities that it is difficult to understand or change. Groups of members serving different purposes often reveal where to split it."
+prerequisites: "Classes, fields, constructors, and methods."
+---
+
+export const checks = {"csharp":{"before":"var club = new ClubManager(); club.AddScore(30); club.AddScore(20); club.SetAnnouncement(\"Friday tournament\"); Check.That(club.BestScore() == 30); Check.That(club.RenderAnnouncement() == \"Notice: Friday tournament\");","after":"var scores = new Scoreboard(); var board = new Noticeboard(); scores.Add(30); scores.Add(20); board.SetText(\"Friday tournament\"); Check.That(scores.Best() == 30); Check.That(board.Render() == \"Notice: Friday tournament\"); Check.That(new Scoreboard().Best() == 0);"},"python":{"before":"club = ClubManager()\nclub.add_score(30)\nclub.add_score(20)\nclub.set_announcement('Friday tournament')\nassert club.best_score() == 30\nassert club.render_announcement() == 'Notice: Friday tournament'","after":"scores = Scoreboard()\nboard = Noticeboard()\nscores.add(30)\nscores.add(20)\nboard.set_text('Friday tournament')\nassert scores.best() == 30\nassert board.render() == 'Notice: Friday tournament'\nassert Scoreboard().best() == 0"}};
+
+A **Large Class** has accumulated enough data, methods, and responsibilities that it is difficult to understand or change. One useful clue is that its members fall into separate groups: these methods use these fields, while those methods use entirely different fields.
+
+The name is not a numerical rule. A short class can mix unrelated jobs, and a long class can still serve one coherent purpose. Investigate the responsibilities before deciding that a file has crossed an arbitrary line count. [1](#source-1)
+
+## The club manager that manages everything
+
+Imagine a game club application. Its tournament organizer maintains scores. Its communications volunteer maintains an announcement. Both features have gradually collected inside a class named `ClubManager`.
+
+This compressed example makes the two groups visible. Scores are nonnegative whole numbers; an empty scoreboard reports zero.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class ClubManager
+{
+    private readonly List<int> scores = new List<int>();
+    private string announcement = "";
+
+    public void AddScore(int score)
+    {
+        scores.Add(score);
+    }
+
+    public int BestScore()
+    {
+        return scores.Count == 0 ? 0 : scores.Max();
+    }
+
+    public void SetAnnouncement(string text)
+    {
+        announcement = text;
+    }
+
+    public string RenderAnnouncement()
+    {
+        return "Notice: " + announcement;
+    }
+}
+```
+
+`AddScore` and `BestScore` use `scores`. `SetAnnouncement` and `RenderAnnouncement` use `announcement`. The score calculation never needs the announcement text.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class ClubManager:
+    def __init__(self):
+        self.scores = []
+        self.announcement = ""
+
+    def add_score(self, score):
+        self.scores.append(score)
+
+    def best_score(self):
+        return max(self.scores, default=0)
+
+    def set_announcement(self, text):
+        self.announcement = text
+
+    def render_announcement(self):
+        return "Notice: " + self.announcement
+```
+
+`add_score` and `best_score` use `scores`. `set_announcement` and `render_announcement` use `announcement`. The score calculation never needs the announcement text.
+
+</section>
+
+A change to tie-breaking rules and a change to announcement formatting now reopen the same class for unrelated reasons. As each feature grows, the name “manager” does less and less to explain what is inside.
+
+### Refactored version: extract the two concepts
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class Scoreboard
+{
+    private readonly List<int> scores = new List<int>();
+
+    public void Add(int score)
+    {
+        scores.Add(score);
+    }
+
+    public int Best()
+    {
+        return scores.Count == 0 ? 0 : scores.Max();
+    }
+}
+
+public sealed class Noticeboard
+{
+    private string text = "";
+
+    public void SetText(string text)
+    {
+        this.text = text;
+    }
+
+    public string Render()
+    {
+        return "Notice: " + text;
+    }
+}
+```
+
+```csharp group=after role=run
+Scoreboard scores = new Scoreboard();
+scores.Add(30);
+Noticeboard notices = new Noticeboard();
+notices.SetText("Friday tournament");
+Console.WriteLine(scores.Best());    // 30
+Console.WriteLine(notices.Render()); // Notice: Friday tournament
+```
+
+The caller now holds a `Scoreboard` and a `Noticeboard`. The behavior is the same, but each class gives its related data and methods a specific name.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class Scoreboard:
+    def __init__(self):
+        self.scores = []
+
+    def add(self, score):
+        self.scores.append(score)
+
+    def best(self):
+        return max(self.scores, default=0)
+
+
+class Noticeboard:
+    def __init__(self):
+        self.text = ""
+
+    def set_text(self, text):
+        self.text = text
+
+    def render(self):
+        return "Notice: " + self.text
+```
+
+```python group=after role=run
+scores = Scoreboard()
+scores.add(30)
+notices = Noticeboard()
+notices.set_text("Friday tournament")
+print(scores.best())     # 30
+print(notices.render())  # Notice: Friday tournament
+```
+
+The caller now holds a `Scoreboard` and a `Noticeboard`. The behavior is the same, but each class gives its related data and methods a specific name.
+
+</section>
+
+This is an **Extract Class** refactoring. In an established public API, a temporary forwarding method can preserve old calls while their consumers migrate. The example shows the updated caller explicitly rather than implying that its method names remained unchanged. [2](#source-2)
+
+## What not to split
+
+A screen may legitimately coordinate both objects. That does not mean it should absorb their score arithmetic and text-formatting rules. Coordination and ownership of every detail are different things.
+
+Conversely, splitting a class into several files does not help if the pieces still inspect one another's internal fields and must change together for every request. Look for a separation that lets a programmer understand and test a real responsibility independently.
+
+The goal is not a collection of tiny classes. It is a collection of classes whose names tell the truth about their work.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Code Smell](https://martinfowler.com/bliki/CodeSmell.html), on investigating a visible clue rather than treating it as proof.
+2. <span id="source-2"></span>[Martin Fowler — Extract Class](https://refactoring.com/catalog/extractClass.html). The club example is original.

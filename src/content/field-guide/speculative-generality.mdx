@@ -1,0 +1,135 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Speculative Generality
+description: "Speculative Generality adds abstractions, options, and extension points for capabilities nobody currently needs. The flexibility has a cost even while it remains unused."
+prerequisites: "Classes, interfaces or compatible methods, dictionaries, and constructor arguments."
+---
+
+export const checks = {"csharp":{"before":"Check.That(new GreetingService().Greet(\"Ada\", \"en\") == \"Hello, Ada\");","after":"Check.That(new GreetingService().Greet(\"Ada\") == \"Hello, Ada\"); Check.That(new GreetingService().Greet(\"Mira\") == \"Hello, Mira\");"},"python":{"before":"assert GreetingService().greet('Ada', 'en') == 'Hello, Ada'","after":"assert GreetingService().greet('Ada') == 'Hello, Ada'\nassert GreetingService().greet('Mira') == 'Hello, Mira'"}};
+
+**Speculative Generality** adds abstractions, options, and extension points for capabilities nobody currently needs. A program designed for imaginary variations can become harder to understand than the actual task requires.
+
+The generality may become useful someday. The smell is paying its maintenance and reading costs before there is enough reason to believe this particular design will be needed. [1](#source-1)
+
+## A language registry containing one language
+
+Suppose a small internal demo needs an English greeting. All of its callers request English, and its requirements include no language plug-ins or translations. Nevertheless, a provider interface and a registry have been built around the one greeting.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public interface IGreetingProvider
+{
+    string Greet(string name);
+}
+
+public sealed class EnglishGreeting : IGreetingProvider
+{
+    public string Greet(string name)
+    {
+        return "Hello, " + name;
+    }
+}
+
+public sealed class GreetingService
+{
+    private readonly Dictionary<string, IGreetingProvider> providers =
+        new Dictionary<string, IGreetingProvider>
+        {
+            ["en"] = new EnglishGreeting()
+        };
+
+    public string Greet(string name, string language)
+    {
+        return providers[language].Greet(name);
+    }
+}
+```
+
+```csharp group=before role=run
+Console.WriteLine(new GreetingService().Greet("Ada", "en"));
+// Hello, Ada
+```
+
+The caller supplies a language code even though only one works. To understand the greeting, a reader follows the service, the dictionary, the interface, and the provider.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class EnglishGreeting:
+    def greet(self, name):
+        return "Hello, " + name
+
+
+class GreetingService:
+    def __init__(self):
+        self.providers = {"en": EnglishGreeting()}
+
+    def greet(self, name, language):
+        return self.providers[language].greet(name)
+```
+
+```python group=before role=run
+print(GreetingService().greet("Ada", "en"))
+# Hello, Ada
+```
+
+The caller supplies a language code even though only one works. To understand the greeting, a reader follows the service, the dictionary, and the provider.
+
+</section>
+
+### Revised version: implement the supported requirement directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class GreetingService
+{
+    public string Greet(string name)
+    {
+        return "Hello, " + name;
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(new GreetingService().Greet("Ada")); // Hello, Ada
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class GreetingService:
+    def greet(self, name):
+        return "Hello, " + name
+```
+
+```python group=after role=run
+print(GreetingService().greet("Ada"))  # Hello, Ada
+```
+
+</section>
+
+The supported English greeting is unchanged. The caller no longer passes a constant choice. A function could be even simpler than the remaining service class; retaining the class here keeps the removal easy to compare.
+
+Removing a public parameter changes the API. This example assumes we control and update all its callers. If external users depend on the original signature, a compatibility wrapper or a versioned migration may be needed; do not call the signatures interchangeable.
+
+## Generality that is not speculative
+
+An interface with one implementation can still serve a real purpose: hiding an external service, making nondeterministic behavior testable, or defining a boundary used by another team. The number of implementations alone does not tell us whether it is unnecessary.
+
+Likewise, a product with an actual localization requirement needs a design for that requirement. The example's assumptions would then be different, and simply deleting the language mechanism would not solve the real task.
+
+Look for unused configuration switches, empty hooks, abstract classes with no meaningful variations, or generic parameters that never vary. Ask what current requirement each one serves.
+
+The guiding principle is YAGNI—You Aren't Gonna Need It—not as a prediction that no future feature will arrive, but as a reason to defer unnecessary commitments until their shape is clearer.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — YAGNI](https://martinfowler.com/bliki/Yagni.html), distinguishing speculative capabilities from maintaining code that is easy to change. The greeting example is original.

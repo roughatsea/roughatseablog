@@ -1,0 +1,154 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Message Chains
+description: "A Message Chain makes a caller navigate through several objects to reach the information or operation it needs. The caller can become coupled to the internal route rather than the useful answer."
+prerequisites: "Objects that contain other objects, properties, and method calls."
+---
+
+export const checks = {"csharp":{"before":"var customer = new Customer(new Office(new Address(\"Tucson\"))); Check.That(Shipping.CityFor(customer) == \"Tucson\");","after":"var customer = new Customer(new Office(new Address(\"Tucson\"))); Check.That(Shipping.CityFor(customer) == \"Tucson\"); Check.That(customer.DeliveryCity() == \"Tucson\");"},"python":{"before":"customer = Customer(Office(Address('Tucson')))\nassert delivery_city(customer) == 'Tucson'","after":"customer = Customer(Office(Address('Tucson')))\nassert delivery_city(customer) == 'Tucson'\nassert customer.delivery_city() == 'Tucson'"}};
+
+A **Message Chain** makes a caller navigate through several objects to reach what it needs. An expression such as `customer.Office.Address.City` teaches the caller not just how to obtain a delivery city, but how the customer happens to be organized internally.
+
+If that route changes, every caller following it may need an edit. A focused operation can hide the route while preserving the useful answer. This correction is often called **Hide Delegate**. [1](#source-1)
+
+## The shipping code takes a tour of the customer
+
+A customer in this small example receives deliveries at an office address. Every object in the chain exists; missing addresses and alternate destinations are outside the example.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed record Address(string City);
+public sealed record Office(Address Address);
+public sealed record Customer(Office Office);
+
+public static class Shipping
+{
+    public static string CityFor(Customer customer)
+    {
+        return customer.Office.Address.City;
+    }
+}
+```
+
+C# records give these simple objects constructors and properties. `Shipping.CityFor` knows that a customer contains an office, which contains an address, which contains the city.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+from dataclasses import dataclass
+
+
+@dataclass
+class Address:
+    city: str
+
+
+@dataclass
+class Office:
+    address: Address
+
+
+@dataclass
+class Customer:
+    office: Office
+
+
+def delivery_city(customer):
+    return customer.office.address.city
+```
+
+The dataclasses provide constructors for these small data objects. `delivery_city` knows that a customer contains an office, which contains an address, which contains the city.
+
+</section>
+
+### Refactored version: ask the customer for its delivery city
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed record Address(string City);
+public sealed record Office(Address Address);
+
+public sealed record Customer(Office Office)
+{
+    public string DeliveryCity()
+    {
+        return Office.Address.City;
+    }
+}
+
+public static class Shipping
+{
+    public static string CityFor(Customer customer)
+    {
+        return customer.DeliveryCity();
+    }
+}
+```
+
+```csharp group=after role=run
+Customer customer = new Customer(new Office(new Address("Tucson")));
+Console.WriteLine(Shipping.CityFor(customer)); // Tucson
+```
+
+`Shipping` now asks for `DeliveryCity`. The route through the office remains inside `Customer`, where a future choice between office and home delivery can be decided without teaching every shipping caller the route.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+from dataclasses import dataclass
+
+
+@dataclass
+class Address:
+    city: str
+
+
+@dataclass
+class Office:
+    address: Address
+
+
+@dataclass
+class Customer:
+    office: Office
+
+    def delivery_city(self):
+        return self.office.address.city
+
+
+def delivery_city(customer):
+    return customer.delivery_city()
+```
+
+```python group=after role=run
+customer = Customer(Office(Address("Tucson")))
+print(delivery_city(customer))  # Tucson
+```
+
+The outside function now asks the customer for `delivery_city`. The route through the office remains inside `Customer`, where a future choice between office and home delivery can be decided without teaching every shipping caller the route.
+
+</section>
+
+## The chain did not disappear by magic
+
+Some code still has to know where the address lives. We moved that knowledge to a place responsible for answering the delivery question. A method named merely `GetNextObject` would not have accomplished the same thing; it would still make callers navigate the structure themselves.
+
+Do not create a forwarding method for every possible field. A customer with hundreds of pass-through methods can become a Middle Man with little purpose beyond hiding other objects. Prefer operations that correspond to what clients actually need.
+
+## Dots are not the smell
+
+A fluent builder or collection pipeline may intentionally chain operations through a documented public API. The problem is not a punctuation count. It is having callers depend on an internal object route that is not part of the capability they need.
+
+For a transparent data document whose structure is the intended contract, direct navigation may be entirely reasonable. Use this smell to examine ownership and change costs, not to forbid every multi-step expression.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Hide Delegate](https://refactoring.com/catalog/hideDelegate.html). The delivery-city example is original.

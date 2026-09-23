@@ -1,0 +1,132 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Temporary Field
+description: "A Temporary Field stores a value on an object even though that value is meaningful only during one operation. Working variables are often better kept local to that operation."
+prerequisites: "The difference between an object's fields and a method's local variables."
+---
+
+export const checks = {"csharp":{"before":"var calculator = new QuoteCalculator(); Check.That(calculator.Calculate(new[] {10, 20}) == 33); Check.That(calculator.Calculate(new[] {100}) == 110); Check.That(calculator.Calculate(Array.Empty<int>()) == 0);","after":"var calculator = new QuoteCalculator(); Check.That(calculator.Calculate(new[] {10, 20}) == 33); Check.That(calculator.Calculate(new[] {100}) == 110); Check.That(calculator.Calculate(Array.Empty<int>()) == 0);"},"python":{"before":"calculator = QuoteCalculator()\nassert calculator.calculate([10, 20]) == 33\nassert calculator.calculate([100]) == 110\nassert calculator.calculate([]) == 0","after":"calculator = QuoteCalculator()\nassert calculator.calculate([10, 20]) == 33\nassert calculator.calculate([100]) == 110\nassert calculator.calculate([]) == 0"}};
+
+A **Temporary Field** stores a value on an object even though that value is meaningful only during one operation. The object carries working state that is empty before the operation or stale after it.
+
+A field is useful when the object needs to remember something between calls. A local variable is often better when only the current call needs the value. [1](#source-1)
+
+## A calculator that remembers yesterday's subtotal
+
+Suppose a fictional marketplace adds a surcharge of ten percent, rounded down to whole tokens. A quote calculator sums prices and calculates the charge. The example accepts nonnegative integer prices with totals small enough to fit in a C# integer.
+
+### Original version: working values live on the object
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class QuoteCalculator
+{
+    private int subtotal;
+    private int surcharge;
+
+    public int Calculate(int[] prices)
+    {
+        subtotal = 0;
+        foreach (int price in prices)
+        {
+            subtotal += price;
+        }
+        surcharge = subtotal / 10;
+        return subtotal + surcharge;
+    }
+}
+```
+
+`subtotal` and `surcharge` are fields. They remain stored after `Calculate` returns, even though no later operation needs the previous quote's intermediate values.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class QuoteCalculator:
+    def __init__(self):
+        self.subtotal = 0
+        self.surcharge = 0
+
+    def calculate(self, prices):
+        self.subtotal = 0
+        for price in prices:
+            self.subtotal += price
+        self.surcharge = self.subtotal // 10
+        return self.subtotal + self.surcharge
+```
+
+`subtotal` and `surcharge` are instance attributes. They remain stored after `calculate` returns, even though no later operation needs the previous quote's intermediate values. Here they are implementation details, not a promised API for retrieving quote history.
+
+</section>
+
+The original calculation works for ordinary sequential calls. The concern is unnecessary shared working state. If two calls could overlap on the same object, one could reset the subtotal while the other is still using it. Merely resetting a field at the start of a method does not make that field local to the call.
+
+### Refactored version: keep each call's values local
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class QuoteCalculator
+{
+    public int Calculate(int[] prices)
+    {
+        int subtotal = 0;
+        foreach (int price in prices)
+        {
+            subtotal += price;
+        }
+        int surcharge = subtotal / 10;
+        return subtotal + surcharge;
+    }
+}
+```
+
+```csharp group=after role=run
+QuoteCalculator calculator = new QuoteCalculator();
+Console.WriteLine(calculator.Calculate(new[] {10, 20})); // 33
+Console.WriteLine(calculator.Calculate(new[] {100}));    // 110
+```
+
+Each invocation has its own `subtotal` and `surcharge`. The calculator no longer stores either result between calls, and the arithmetic remains unchanged.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class QuoteCalculator:
+    def calculate(self, prices):
+        subtotal = 0
+        for price in prices:
+            subtotal += price
+        surcharge = subtotal // 10
+        return subtotal + surcharge
+```
+
+```python group=after role=run
+calculator = QuoteCalculator()
+print(calculator.calculate([10, 20]))  # 33
+print(calculator.calculate([100]))    # 110
+```
+
+Each invocation has its own `subtotal` and `surcharge`. The calculator no longer stores either result between calls, and the arithmetic remains unchanged.
+
+</section>
+
+With no persistent state left, a standalone function or static method could be simpler still. That is a separate design choice; moving the working values already removes the unnecessary dependency between calls.
+
+## A cache is a different promise
+
+An object may intentionally remember the last quote or cache an expensive result. Such state has a purpose after the calculation finishes. It needs an explicit policy for when it is valid and when it is replaced; it should not be confused with incidental working variables.
+
+If a calculation genuinely needs many intermediate values shared among helper methods, a short-lived calculation object can own them for one invocation. The important part is making their lifetime match the operation, rather than leaving them on a long-lived service.
+
+Removing these two fields does not make every possible use thread-safe. Callers could still mutate a shared input collection, and later methods could introduce other shared state. The correction removes the particular shared working state shown in the original code.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Temporary Field” in the code-smells discussion.
+2. [Microsoft — Variables](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/variables), for the distinction between instance fields and local variables. The quote example is original.

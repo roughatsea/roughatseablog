@@ -1,0 +1,191 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Refused Bequest
+description: "Refused Bequest describes a subclass that inherits operations or state it does not need or cannot sensibly support. The inheritance relationship may be the wrong one."
+prerequisites: "Inheritance, method overrides, and exceptions."
+---
+
+export const checks = {"csharp":{"before":"Document document = new ReadOnlyDocument(\"Original\"); Check.That(document.Read() == \"Original\"); bool rejected=false; try { document.Save(\"Revised\"); } catch (NotSupportedException) { rejected=true; } Check.That(rejected && document.Read() == \"Original\");","after":"IReadableDocument view = new ReadOnlyDocument(\"Original\"); Check.That(view.Read() == \"Original\"); IEditableDocument edit = new EditableDocument(\"Original\"); edit.Save(\"Revised\"); Check.That(edit.Read() == \"Revised\"); Check.That(view is not IEditableDocument);"},"python":{"before":"document = ReadOnlyDocument('Original')\nassert document.read() == 'Original'\ntry:\n    document.save('Revised')\nexcept NotImplementedError:\n    pass\nelse:\n    raise AssertionError('expected unsupported operation')\nassert document.read() == 'Original'","after":"view = ReadOnlyDocument('Original')\nassert view.read() == 'Original'\nassert not hasattr(view, 'save')\nedit = EditableDocument('Original')\nedit.save('Revised')\nassert edit.read() == 'Revised'"}};
+
+**Refused Bequest** describes a subclass that inherits operations or state it does not need or cannot sensibly support. A “bequest” is an inheritance; the name is a metaphor for a class rejecting part of what its base class gave it.
+
+The clue may be an override that throws “not supported,” an irrelevant inherited method, or callers that must avoid certain operations for one subclass. The remedy is to reconsider the relationship, not merely hide the awkward method. [1](#source-1)
+
+## A read-only document inherits Save
+
+Suppose `Document` represents editable text held in memory. It promises that a caller can read the text and replace it. A developer derives a read-only class from it to reuse the reading code.
+
+### Original version: the subclass rejects an inherited operation
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public class Document
+{
+    protected string text;
+
+    public Document(string text)
+    {
+        this.text = text;
+    }
+
+    public string Read()
+    {
+        return text;
+    }
+
+    public virtual void Save(string replacement)
+    {
+        text = replacement;
+    }
+}
+
+public sealed class ReadOnlyDocument : Document
+{
+    public ReadOnlyDocument(string text) : base(text) { }
+
+    public override void Save(string replacement)
+    {
+        throw new NotSupportedException("This document is read-only.");
+    }
+}
+```
+
+```csharp group=before role=run
+Document document = new ReadOnlyDocument("Original");
+try
+{
+    document.Save("Revised");
+}
+catch (NotSupportedException error)
+{
+    Console.WriteLine(error.Message); // This document is read-only.
+}
+```
+
+The variable is a `Document`, so `Save` is available. But the particular subclass cannot keep the editing promise. Code receiving a document would need to know which subclass it has before safely treating every document as editable.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class Document:
+    def __init__(self, text):
+        self.text = text
+
+    def read(self):
+        return self.text
+
+    def save(self, replacement):
+        self.text = replacement
+
+
+class ReadOnlyDocument(Document):
+    def save(self, replacement):
+        raise NotImplementedError("This document is read-only.")
+```
+
+```python group=before role=run
+document = ReadOnlyDocument("Original")
+try:
+    document.save("Revised")
+except NotImplementedError as error:
+    print(error)  # This document is read-only.
+```
+
+`ReadOnlyDocument` inherits the editable class's shape but rejects its saving operation. A caller expecting an ordinary editable `Document` can no longer use that promise without an exception for the subclass.
+
+</section>
+
+### Revised version: promise only the supported capabilities
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public interface IReadableDocument
+{
+    string Read();
+}
+
+public interface IEditableDocument : IReadableDocument
+{
+    void Save(string replacement);
+}
+
+public sealed class ReadOnlyDocument : IReadableDocument
+{
+    private readonly string text;
+
+    public ReadOnlyDocument(string text) { this.text = text; }
+    public string Read() { return text; }
+}
+
+public sealed class EditableDocument : IEditableDocument
+{
+    private string text;
+
+    public EditableDocument(string text) { this.text = text; }
+    public string Read() { return text; }
+    public void Save(string replacement) { text = replacement; }
+}
+```
+
+```csharp group=after role=run
+IReadableDocument view = new ReadOnlyDocument("Original");
+Console.WriteLine(view.Read()); // Original
+IEditableDocument draft = new EditableDocument("Original");
+draft.Save("Revised");
+Console.WriteLine(draft.Read()); // Revised
+```
+
+A reading client can accept `IReadableDocument`. Editing code must ask for `IEditableDocument`; a read-only document cannot be supplied as that interface. The class no longer inherits a public operation that it must reject.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class ReadOnlyDocument:
+    def __init__(self, text):
+        self._text = text
+
+    def read(self):
+        return self._text
+
+
+class EditableDocument:
+    def __init__(self, text):
+        self._text = text
+
+    def read(self):
+        return self._text
+
+    def save(self, replacement):
+        self._text = replacement
+```
+
+```python group=after role=run
+view = ReadOnlyDocument("Original")
+print(view.read())  # Original
+draft = EditableDocument("Original")
+draft.save("Revised")
+print(draft.read())  # Revised
+```
+
+Reading code can use either object's `read` method. Editing code needs an object that also supports `save`. Python does not turn this convention into a compile-time restriction without additional type declarations and checking. `_text` is still an implementation convention, not a security boundary.
+
+</section>
+
+## The public promise is the important part
+
+This example also violates the Liskov Substitution Principle: the subclass rejects behavior that the base class promised. Not every unused protected helper is such a violation. A subclass may inherit incidental implementation it does not need while still keeping every public promise.
+
+The revised API deliberately changes which types accept saving. Callers must migrate accordingly; this is not a claim that every original call remains valid. Forcing a false hierarchy to remain merely to reuse a few reading lines would preserve the deeper problem.
+
+If substantial reading logic is shared, extract that implementation into an object both document types can use. Share the useful work without requiring either class to claim a capability it does not possess.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Refused Bequest” in the code-smells discussion.
+2. [Microsoft — Inheritance](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/inheritance), for inherited and overridden members. The in-memory document example is original.

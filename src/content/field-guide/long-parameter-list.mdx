@@ -1,0 +1,161 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Long Parameter List
+description: "A Long Parameter List makes a caller supply so many separate values that their order, relationships, and meaning become difficult to verify."
+prerequisites: "Function arguments, constructors, and simple classes."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Tickets.Price(2, 10, 3, true, false) == 23); Check.That(Tickets.Price(2, 10, 3, false, true) == 15);","after":"Check.That(Tickets.Price(2, new TicketTerms(10, 3, true, false)) == 23); Check.That(Tickets.Price(2, new TicketTerms(10, 3, false, true)) == 15);"},"python":{"before":"assert ticket_price(2, 10, 3, True, False) == 23\nassert ticket_price(2, 10, 3, False, True) == 15","after":"assert ticket_price(2, TicketTerms(10, 3, True, False)) == 23\nassert ticket_price(2, TicketTerms(10, 3, False, True)) == 15"}};
+
+A **Long Parameter List** makes a caller supply so many separate values that their order, relationships, and meaning become difficult to verify. Several values with the same type—and especially several Booleans—can make a call unreadable even before the list becomes very long.
+
+One possible correction is to group values that form a real concept into a **parameter object**: an object passed as an argument. The object should explain the relationship, not merely hide the number of parameters. [1](#source-1)
+
+## What do these two Booleans mean?
+
+Suppose a fictional club sells tickets using whole tokens. A purchase may include a booking fee and may qualify for a five-token member discount. The discount cannot make the price negative. Inputs in this example are nonnegative integers whose arithmetic fits in a C# integer.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Tickets
+{
+    public static int Price(int quantity, int unitPrice, int bookingFee,
+                            bool includeFee, bool memberDiscount)
+    {
+        int total = quantity * unitPrice;
+        if (includeFee) total += bookingFee;
+        if (memberDiscount) total = Math.Max(0, total - 5);
+        return total;
+    }
+}
+```
+
+```csharp group=before role=run
+Console.WriteLine(Tickets.Price(2, 10, 3, true, false)); // 23
+```
+
+Without opening `Price`, a reader cannot tell whether `true` enables a fee, a discount, insurance, or something else. The numbers also need their positions remembered.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def ticket_price(quantity, unit_price, booking_fee,
+                 include_fee, member_discount):
+    total = quantity * unit_price
+    if include_fee:
+        total += booking_fee
+    if member_discount:
+        total = max(0, total - 5)
+    return total
+```
+
+```python group=before role=run
+print(ticket_price(2, 10, 3, True, False))  # 23
+```
+
+Without opening `ticket_price`, a reader cannot tell whether `True` enables a fee, a discount, insurance, or something else. The numbers also need their positions remembered.
+
+</section>
+
+## Group the terms that travel together
+
+Suppose a venue applies the same unit price, fee, and discount settings to several purchases. Those values form the ticket terms; quantity varies per purchase.
+
+### Refactored version
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class TicketTerms
+{
+    public int UnitPrice { get; }
+    public int BookingFee { get; }
+    public bool IncludeFee { get; }
+    public bool MemberDiscount { get; }
+
+    public TicketTerms(int unitPrice, int bookingFee,
+                       bool includeFee, bool memberDiscount)
+    {
+        UnitPrice = unitPrice;
+        BookingFee = bookingFee;
+        IncludeFee = includeFee;
+        MemberDiscount = memberDiscount;
+    }
+}
+
+public static class Tickets
+{
+    public static int Price(int quantity, TicketTerms terms)
+    {
+        int total = quantity * terms.UnitPrice;
+        if (terms.IncludeFee) total += terms.BookingFee;
+        if (terms.MemberDiscount) total = Math.Max(0, total - 5);
+        return total;
+    }
+}
+```
+
+```csharp group=after role=run
+TicketTerms terms = new TicketTerms(
+    unitPrice: 10, bookingFee: 3,
+    includeFee: true, memberDiscount: false);
+Console.WriteLine(Tickets.Price(2, terms)); // 23
+```
+
+`Price` now receives the quantity and the ticket terms. Named constructor arguments also make the individual settings readable at the point where the terms are created.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class TicketTerms:
+    unit_price: int
+    booking_fee: int
+    include_fee: bool
+    member_discount: bool
+
+
+def ticket_price(quantity, terms):
+    total = quantity * terms.unit_price
+    if terms.include_fee:
+        total += terms.booking_fee
+    if terms.member_discount:
+        total = max(0, total - 5)
+    return total
+```
+
+```python group=after role=run
+terms = TicketTerms(
+    unit_price=10, booking_fee=3,
+    include_fee=True, member_discount=False)
+print(ticket_price(2, terms))  # 23
+```
+
+`ticket_price` now receives the quantity and the ticket terms. Keyword arguments also make the individual settings readable at the point where the terms are created.
+
+</section>
+
+## Notice where the complexity went
+
+There are still four values to provide when creating ticket terms. The refactoring did not make those decisions disappear. It named and grouped them so callers can pass the same coherent set through several operations.
+
+For a one-off call, named or keyword arguments on the original function might be the simpler improvement. If the values do not travel together elsewhere and do not form a meaningful concept, a parameter object may only move the long list into a constructor.
+
+Also consider whether Boolean choices deserve clearer operations of their own. Grouping an ambiguous collection of flags inside a generic object named `Options` does not automatically explain their combinations.
+
+The useful question is: **which values belong together, and can the call express that relationship?** Count the parameters only after understanding what they mean.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Introduce Parameter Object](https://refactoring.com/catalog/introduceParameterObject.html).
+2. [Microsoft — Named and optional arguments](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/named-and-optional-arguments). The ticket example and comparison are original.

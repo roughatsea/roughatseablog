@@ -1,0 +1,168 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Alternative Classes with Different Interfaces
+description: "Two classes provide the same useful capability but expose different operations, forcing callers to remember which kind they received. A common interface or adapter can remove that distinction."
+prerequisites: "Objects, method calls, interfaces, and basic type checks."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Screen.Show(new LocalText()) == \"Text: Harbor\"); Check.That(Screen.Show(new LegacyText()) == \"Text: Tide\");","after":"Check.That(Screen.Show(new LocalText()) == \"Text: Harbor\"); Check.That(Screen.Show(new LegacyTextAdapter(new LegacyText())) == \"Text: Tide\");"},"python":{"before":"assert show_text(LocalText()) == 'Text: Harbor'\nassert show_text(LegacyText()) == 'Text: Tide'","after":"assert show_text(LocalText()) == 'Text: Harbor'\nassert show_text(LegacyTextAdapter(LegacyText())) == 'Text: Tide'"}};
+
+**Alternative Classes with Different Interfaces** describes classes that provide the same useful capability through different method names or argument arrangements. Callers then need special handling for each class even when the task is the same.
+
+The solution may be a rename when you own both classes, or an **adapter** when you cannot change one of them. An adapter presents the operation the caller expects and translates it into the existing component's operation. [1](#source-1)
+
+## Read versus GetContent
+
+Suppose a screen displays text. A class written for the application exposes `Read`; an older library exposes `GetContent`. The sample objects return fixed text so we can focus on the interfaces rather than file or network errors.
+
+### Original version: every caller distinguishes the classes
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class LocalText
+{
+    public string Read() { return "Harbor"; }
+}
+
+public sealed class LegacyText
+{
+    public string GetContent() { return "Tide"; }
+}
+
+public static class Screen
+{
+    public static string Show(object source)
+    {
+        if (source is LocalText local)
+            return "Text: " + local.Read();
+        if (source is LegacyText legacy)
+            return "Text: " + legacy.GetContent();
+        throw new ArgumentException("Unknown text source.", nameof(source));
+    }
+}
+```
+
+`Screen.Show` asks which class it received before it can ask for text. Another caller would need to repeat that distinction.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class LocalText:
+    def read(self):
+        return "Harbor"
+
+
+class LegacyText:
+    def get_content(self):
+        return "Tide"
+
+
+def show_text(source):
+    if isinstance(source, LocalText):
+        return "Text: " + source.read()
+    if isinstance(source, LegacyText):
+        return "Text: " + source.get_content()
+    raise ValueError("unknown text source")
+```
+
+`show_text` asks which class it received before it can ask for text. Another caller would need to repeat that distinction.
+
+</section>
+
+### Refactored version: give the caller one operation
+
+Assume we control `LocalText`, but the older library must remain unchanged. We can make local text implement the expected interface and put an adapter around the legacy object.
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public interface ITextSource
+{
+    string Read();
+}
+
+public sealed class LocalText : ITextSource
+{
+    public string Read() { return "Harbor"; }
+}
+
+public sealed class LegacyText
+{
+    public string GetContent() { return "Tide"; }
+}
+
+public sealed class LegacyTextAdapter : ITextSource
+{
+    private readonly LegacyText legacy;
+
+    public LegacyTextAdapter(LegacyText legacy) { this.legacy = legacy; }
+    public string Read() { return legacy.GetContent(); }
+}
+
+public static class Screen
+{
+    public static string Show(ITextSource source)
+    {
+        return "Text: " + source.Read();
+    }
+}
+```
+
+```csharp group=after role=run
+ITextSource source = new LegacyTextAdapter(new LegacyText());
+Console.WriteLine(Screen.Show(source)); // Text: Tide
+```
+
+`LegacyTextAdapter.Read` performs the translation. `Screen.Show` no longer checks the concrete type; both supported inputs have the `Read` operation it needs. A legacy object must now be wrapped before being passed to the screen.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class LocalText:
+    def read(self):
+        return "Harbor"
+
+
+class LegacyText:
+    def get_content(self):
+        return "Tide"
+
+
+class LegacyTextAdapter:
+    def __init__(self, legacy):
+        self.legacy = legacy
+
+    def read(self):
+        return self.legacy.get_content()
+
+
+def show_text(source):
+    return "Text: " + source.read()
+```
+
+```python group=after role=run
+source = LegacyTextAdapter(LegacyText())
+print(show_text(source))  # Text: Tide
+```
+
+`LegacyTextAdapter.read` performs the translation. `show_text` no longer checks the concrete type; both supported inputs have the `read` operation it needs. A legacy object must now be wrapped before being passed to the screen.
+
+</section>
+
+## Similar names are not enough
+
+Before unifying two real APIs, compare their promises. Do they return text in the same encoding? Does one consume a stream while the other leaves it open? Can one return missing data while the other raises an error? An adapter may need to translate those differences, not merely rename a method.
+
+If the operations actually mean different things, separate interfaces may be correct. Two methods returning strings are not automatically interchangeable.
+
+When you own both implementations and they make the same promise, renaming a method may be simpler than introducing a permanent adapter. The goal is to stop callers from managing an irrelevant difference, using the smallest honest correction.
+
+## Sources
+
+1. <span id="source-1"></span>Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides, *Design Patterns*, Adapter chapter.
+2. [Martin Fowler — Change Function Declaration](https://refactoring.com/catalog/changeFunctionDeclaration.html), including renaming an operation when its definition is under your control.
