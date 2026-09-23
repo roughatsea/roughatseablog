@@ -1,0 +1,96 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Change Function Declaration
+description: "Change a function's name or parameters to make its public contract clearer, then migrate callers without accidentally changing their meaning."
+prerequisites: "Function declarations, parameters, arguments, and units."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Motion.Get(2, 10) == 5);","revised":"Check.That(Motion.MetersPerSecond(10, 2) == 5); Check.That(Motion.MetersPerSecond(0, 2) == 0);"},"python":{"original":"assert get(2, 10) == 5","revised":"assert meters_per_second(10, 2) == 5\nassert meters_per_second(0, 2) == 0"}};
+
+**Change Function Declaration** changes a function's name, parameters, or both. It includes smaller refactorings such as Rename Method, Add Parameter, and Remove Parameter. The declaration is what callers see first, so improving it can clarify many lines of code at once. [1](#source-1)
+
+## Original version: an ambiguous name and argument order
+
+A movement calculation returns whole meters per second. For this example, elapsed time is positive and distance is an exact multiple of time.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Motion
+{
+    public static int Get(int seconds, int meters)
+    {
+        return meters / seconds;
+    }
+}
+```
+
+```csharp group=original role=run
+Console.WriteLine(Motion.Get(2, 10)); // 5
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def get(seconds, meters):
+    return meters // seconds
+```
+
+```python group=original role=run
+print(get(2, 10))  # 5
+```
+
+</section>
+
+The call says little about the returned quantity. Both arguments are integers, so reversing them would remain valid syntax while calculating something different.
+
+## Refactored version: name the result and align the inputs
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Motion
+{
+    public static int MetersPerSecond(int meters, int seconds)
+    {
+        return meters / seconds;
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(Motion.MetersPerSecond(meters: 10, seconds: 2)); // 5
+```
+
+The operation now names its output unit. The parameters follow the calculation's distance-then-time order, and the updated caller uses named arguments to make their meanings unmistakable.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def meters_per_second(meters, seconds):
+    return meters // seconds
+```
+
+```python group=revised role=run
+print(meters_per_second(meters=10, seconds=2))  # 5
+```
+
+The new name and named arguments remove the old guessing. The division and its result remain unchanged because the caller was migrated correctly.
+
+</section>
+
+## Change both sides of the contract
+
+A declaration and its callers must agree. Renaming the function while forgetting to reorder an old positional call can produce a plausible but wrong answer that the compiler will not catch when both arguments have the same type.
+
+For a widely used API, introduce the new declaration and make the old operation forward to it temporarily. Migrate consumers, then remove the compatibility entry point when it is safe. Also inspect callbacks, reflection, and external clients that a local symbol search may miss.
+
+This example retains integer division and the same input assumptions. Changing the return type to a fractional speed, validating zero time, or changing rounding would be additional contract changes. A clearer signature should help reveal those decisions, not smuggle them into a mechanical rename.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Change Function Declaration](https://refactoring.com/catalog/changeFunctionDeclaration.html).

@@ -1,0 +1,86 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Rename Variable
+description: "Change a variable's name so it communicates the value's meaning, units, or role without changing the value itself."
+prerequisites: "Variables, arithmetic, and scope."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Timers.Label(125) == \"2 minutes\"); Check.That(Timers.Label(59) == \"0 minutes\");","revised":"Check.That(Timers.Label(125) == \"2 minutes\"); Check.That(Timers.Label(59) == \"0 minutes\");"},"python":{"original":"assert label(125) == '2 minutes'\nassert label(59) == '0 minutes'","revised":"assert label(125) == '2 minutes'\nassert label(59) == '0 minutes'"}};
+
+**Rename Variable** changes a variable's name so its meaning is easier to understand. The stored value and calculation stay the same. A good name can explain a unit, a domain concept, or a role that the old name left implicit. [1](#source-1)
+
+## Original version: two letters carry the calculation
+
+A timer displays completed whole minutes from a nonnegative elapsed-second count. Fractional minutes are intentionally omitted.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Timers
+{
+    public static string Label(int s)
+    {
+        int m = s / 60;
+        return m + " minutes";
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def label(s):
+    m = s // 60
+    return str(m) + " minutes"
+```
+
+</section>
+
+The arithmetic suggests what the letters mean, but a reader has to reconstruct the units. In a longer method, `s` and `m` would be harder to keep straight.
+
+## Refactored version: the names explain the conversion
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Timers
+{
+    public static string Label(int elapsedSeconds)
+    {
+        int completedMinutes = elapsedSeconds / 60;
+        return completedMinutes + " minutes";
+    }
+}
+```
+
+`elapsedSeconds` identifies the input unit. `completedMinutes` explains why integer division is appropriate: the label reports completed minutes, not a rounded estimate.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def label(elapsed_seconds):
+    completed_minutes = elapsed_seconds // 60
+    return str(completed_minutes) + " minutes"
+```
+
+The same division now states its purpose through the names. `label(125)` still returns `2 minutes` and `label(59)` still returns `0 minutes`.
+
+</section>
+
+## Rename the symbol, not every matching piece of text
+
+Use a symbol-aware editor where possible. An unrestricted replacement can alter another variable with the same name, quoted data, or unrelated documentation. Check nested scopes and shadowed names.
+
+A local-variable rename usually has a small compatibility surface. A parameter rename can affect callers using named arguments, as both languages permit here. A public field or serialized property can have still more consumers. Inspect those uses rather than assuming that every name is purely internal.
+
+Short names remain useful in familiar, tiny scopes: an index `i` in a three-line loop may be clear. Longer is not automatically better. Prefer the shortest name that carries the information readers actually need, and avoid embedding an outdated implementation detail in it.
+
+The example changes no arithmetic. If a clearer name reveals that the calculation is wrong, fix that behavior separately instead of disguising a logic change as a rename.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Rename Variable](https://refactoring.com/catalog/renameVariable.html).

@@ -1,0 +1,108 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Encapsulate Variable
+description: "Put reads and writes of a variable behind named operations so its owner can control access and change its representation."
+prerequisites: "Variables, assignment, functions, and shared state."
+---
+
+export const checks = {"csharp":{"original":"Preferences.Volume = 30; Check.That(Preferences.Volume == 30);","revised":"Preferences.SetVolume(30); Check.That(Preferences.GetVolume() == 30); Preferences.SetVolume(70); Check.That(Preferences.GetVolume() == 70);"},"python":{"original":"volume = 30\nassert volume == 30","revised":"set_volume(30)\nassert get_volume() == 30\nset_volume(70)\nassert get_volume() == 70"}};
+
+**Encapsulate Variable** puts reads and writes of a variable behind named operations. Callers ask for the value or request an update instead of accessing the storage directly. That creates a place to control access and later change how the value is represented. [1](#source-1)
+
+## Original version: any caller can assign the shared setting
+
+A small application stores its volume as a shared integer. The examples deliberately keep that shared lifetime so we can distinguish encapsulation from removing global state.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Preferences
+{
+    public static int Volume = 50;
+}
+```
+
+```csharp group=original role=run
+Preferences.Volume = 30;
+Console.WriteLine(Preferences.Volume);
+```
+
+There is no preference-owned operation between the caller and the assignment. Finding every write requires finding every use of the field.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+volume = 50
+```
+
+```python group=original role=run
+volume = 30
+print(volume)
+```
+
+In a module, other code can assign the exported variable directly. The representation and its access points are the same thing.
+
+</section>
+
+## Refactored version: give access an explicit API
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Preferences
+{
+    private static int volume = 50;
+
+    public static int GetVolume() { return volume; }
+    public static void SetVolume(int value) { volume = value; }
+}
+```
+
+```csharp group=revised role=run
+Preferences.SetVolume(30);
+Console.WriteLine(Preferences.GetVolume());
+```
+
+The private field is now reached through two operations. A property could offer similar access control while retaining assignment syntax; the explicit methods make the access paths easy to see.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+_volume = 50
+
+
+def get_volume():
+    return _volume
+
+
+def set_volume(value):
+    global _volume
+    _volume = value
+```
+
+```python group=revised role=run
+set_volume(30)
+print(get_volume())
+```
+
+`global` makes the setter update the module variable rather than create a local one. The underscore marks internal storage by convention; Python still permits a caller to bypass that convention deliberately.
+
+</section>
+
+## What has—and has not—improved
+
+The value still begins at fifty, and setting it to thirty still returns thirty on the next read. There is no new range validation. Rejecting values outside zero through one hundred could be useful, but that would change the contract and deserves a separate decision.
+
+The setting is also still shared. Accessor functions do not remove hidden dependencies, make concurrent updates safe, or provide per-user settings. An injected preferences object may be the right next step when those concerns matter.
+
+If a variable holds a mutable collection, returning the collection directly may expose the same uncontrolled mutation through another path. Encapsulate Collection addresses that additional problem.
+
+Use this refactoring when controlling access or preparing a representation change is valuable. Two forwarding functions are an opportunity to establish a boundary, not proof that a good boundary already exists.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Encapsulate Variable](https://refactoring.com/catalog/encapsulateVariable.html).

@@ -1,0 +1,92 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Move Statements to Callers
+description: "Move work out of a shared function when that work belongs to individual callers rather than to the shared operation."
+prerequisites: "Functions, callers, and responsibility boundaries."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Names.Chat(\" Mira \") == \"Mira!\"); Check.That(Names.Badge(\" Mira \") == \"Mira!\");","revised":"Check.That(Names.Chat(\" Mira \") == \"Mira!\"); Check.That(Names.Badge(\" Mira \") == \"Mira!\");"},"python":{"original":"assert chat_name(' Mira ') == 'Mira!'\nassert badge_name(' Mira ') == 'Mira!'","revised":"assert chat_name(' Mira ') == 'Mira!'\nassert badge_name(' Mira ') == 'Mira!'"}};
+
+**Move Statements to Callers** moves work out of a shared function when the work belongs to the callers instead. Some duplication may reappear deliberately: two callers are now free to make different decisions instead of being forced to share an unrelated policy. [1](#source-1)
+
+## Original version: cleaning a name also chooses its punctuation
+
+A name helper trims whitespace and adds an exclamation mark. Both a chat greeting and a badge use it. Inputs are non-null strings.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Names
+{
+    private static string Prepare(string name) { return name.Trim() + "!"; }
+    public static string Chat(string name) { return Prepare(name); }
+    public static string Badge(string name) { return Prepare(name); }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def _prepare(name):
+    return name.strip() + "!"
+
+
+def chat_name(name):
+    return _prepare(name)
+
+
+def badge_name(name):
+    return _prepare(name)
+```
+
+</section>
+
+Trimming is a shared data-cleaning rule. Punctuation is a presentation choice that the chat and badge may need to change independently.
+
+## Refactored version: callers own the punctuation
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Names
+{
+    private static string Prepare(string name) { return name.Trim(); }
+    public static string Chat(string name) { return Prepare(name) + "!"; }
+    public static string Badge(string name) { return Prepare(name) + "!"; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def _prepare(name):
+    return name.strip()
+
+
+def chat_name(name):
+    return _prepare(name) + "!"
+
+
+def badge_name(name):
+    return _prepare(name) + "!"
+```
+
+</section>
+
+Both callers still return `Mira!` for `" Mira "`. This first step changes ownership, not output. A later requirement can remove punctuation from badges by changing only the badge function; that would be the separate behavior change the refactoring prepares for.
+
+## Duplication can be more honest than the wrong shared rule
+
+The exclamation mark now appears twice. That is acceptable if each occurrence belongs to an independently changing presentation decision. Keeping one copy solely to satisfy a literal “never repeat text” rule would couple unrelated requirements.
+
+Before moving work, inspect all callers and preserve its execution order. A database write or authorization check should not be moved outward casually: callers might omit it, duplicate it, or perform it too late.
+
+Move only the caller-specific part. The shared cleaning function remains because whitespace normalization is still one rule. Inlining the entire helper would be a different decision and could reintroduce duplication that genuinely should stay synchronized.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Move Statements to Callers](https://refactoring.com/catalog/moveStatementsToCallers.html).

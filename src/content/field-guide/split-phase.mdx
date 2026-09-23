@@ -1,0 +1,118 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Split Phase
+description: "Separate an operation into stages that work with different kinds of information, passing a clear intermediate result from one stage to the next."
+prerequisites: "Functions, parsing, records or data classes, and return values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Tiles.Area(\"3:4\") == 12);","revised":"Check.That(Tiles.Area(\"3:4\") == 12); Check.That(Tiles.CalculateArea(new Dimensions(3, 4)) == 12);"},"python":{"original":"assert area('3:4') == 12","revised":"assert area('3:4') == 12\nassert calculate_area(Dimensions(3, 4)) == 12"}};
+
+**Split Phase** separates stages that work with different kinds of information. One stage produces a clear intermediate result; the next operates on that result rather than repeating the first stage's concerns. Parsing text and calculating with parsed values is a common example. [1](#source-1)
+
+## Original version: text handling and geometry share one operation
+
+A tiny input format describes a tile rectangle as `width:height`. This lesson assumes exactly two valid nonnegative integers, small enough for the multiplication. It is not a complete parser for untrusted input.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Tiles
+{
+    public static int Area(string text)
+    {
+        string[] parts = text.Split(':');
+        int width = int.Parse(parts[0]);
+        int height = int.Parse(parts[1]);
+        return width * height;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def area(text):
+    parts = text.split(":")
+    width = int(parts[0])
+    height = int(parts[1])
+    return width * height
+```
+
+</section>
+
+A caller with already numeric dimensions still has to manufacture a string to use this operation. The text format and the calculation are tied together.
+
+## Refactored version: parsing produces dimensions
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed record Dimensions(int Width, int Height);
+public static class Tiles
+{
+    public static Dimensions Parse(string text)
+    {
+        string[] parts = text.Split(':');
+        return new Dimensions(int.Parse(parts[0]), int.Parse(parts[1]));
+    }
+
+    public static int CalculateArea(Dimensions dimensions)
+    {
+        return dimensions.Width * dimensions.Height;
+    }
+
+    public static int Area(string text)
+    {
+        Dimensions dimensions = Parse(text);
+        return CalculateArea(dimensions);
+    }
+}
+```
+
+`Parse` understands colons and integer text. `CalculateArea` understands dimensions. `Area` preserves the original public entry point by connecting the two stages.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Dimensions:
+    width: int
+    height: int
+
+
+def parse(text):
+    parts = text.split(":")
+    return Dimensions(int(parts[0]), int(parts[1]))
+
+
+def calculate_area(dimensions):
+    return dimensions.width * dimensions.height
+
+
+def area(text):
+    dimensions = parse(text)
+    return calculate_area(dimensions)
+```
+
+The frozen data class gives the intermediate result a name. Numeric callers can use `calculate_area` directly without knowing the text format.
+
+</section>
+
+## Choose an intermediate result that actually separates the work
+
+Passing the original string plus several parser internals would leave the second stage dependent on the first. Passing `Dimensions` gives the calculation exactly the information it needs.
+
+The example retains the original parsing behavior rather than adding new validation. A real input boundary should define missing fields, extra fields, numeric limits, and errors deliberately. Those decisions can live in the parsing stage without making area calculation parse text.
+
+Not every three-line function needs two phases and a record. The split becomes valuable when the stages change independently, require different tests, or are reused separately. It also makes an important distinction visible: converting a representation is different work from applying a rule to the represented data.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Split Phase](https://refactoring.com/catalog/splitPhase.html).

@@ -1,0 +1,92 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Slide Statements
+description: "Move related statements next to each other when their dependencies and side effects allow the order to change safely."
+prerequisites: "Local variables, statement order, and side effects."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Orders.Label(\" Mira \", 3, 20, 5) == \"Mira: 55\");","revised":"Check.That(Orders.Label(\" Mira \", 3, 20, 5) == \"Mira: 55\");"},"python":{"original":"assert label(' Mira ', 3, 20, 5) == 'Mira: 55'","revised":"assert label(' Mira ', 3, 20, 5) == 'Mira: 55'"}};
+
+**Slide Statements** moves related statements next to each other. Grouping work by purpose can make code easier to follow and prepare it for another refactoring, such as extracting a method. The move is safe only when the changed order preserves required behavior. [1](#source-1)
+
+## Original version: name formatting interrupts a calculation
+
+An order label combines a trimmed customer name with a discounted total. Inputs are a non-null string and small integers; the arithmetic fits within a C# integer.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Orders
+{
+    public static string Label(string name, int quantity, int price, int coupon)
+    {
+        int subtotal = quantity * price;
+        string displayName = name.Trim();
+        int total = subtotal - coupon;
+        return displayName + ": " + total;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def label(name, quantity, price, coupon):
+    subtotal = quantity * price
+    display_name = name.strip()
+    total = subtotal - coupon
+    return display_name + ": " + str(total)
+```
+
+</section>
+
+The total depends on the subtotal, but an unrelated name operation sits between them. A reader switches from pricing to formatting and back again.
+
+## Refactored version: finish the calculation together
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Orders
+{
+    public static string Label(string name, int quantity, int price, int coupon)
+    {
+        int subtotal = quantity * price;
+        int total = subtotal - coupon;
+        string displayName = name.Trim();
+        return displayName + ": " + total;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def label(name, quantity, price, coupon):
+    subtotal = quantity * price
+    total = subtotal - coupon
+    display_name = name.strip()
+    return display_name + ": " + str(total)
+```
+
+</section>
+
+The pricing statements are adjacent. Trimming still occurs before formatting, and the result remains `Mira: 55` for three items at twenty coins with a five-coin coupon.
+
+## Check what each statement reads, writes, and can fail to do
+
+The statements moved here operate on independent local values. Neither changes the inputs used by the other. The stated input assumptions also avoid meaningful differences in exception order.
+
+Real statements can write shared state, read time, perform I/O, throw, or change a value another statement uses. Moving “save” ahead of “validate,” for example, is not a harmless reorganization. Even two property reads can matter when getters have side effects or their underlying objects change.
+
+Move one small group at a time and verify the relevant results and effects. If two statements cannot be moved together without elaborate workarounds, that may reveal a real dependency rather than a formatting inconvenience.
+
+The benefit is not visual tidiness alone. Once the price calculation is contiguous, a reader can understand it as one step or extract it without carrying an unrelated formatting operation along.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Slide Statements](https://refactoring.com/catalog/slideStatements.html).

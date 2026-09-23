@@ -1,0 +1,101 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Move Statements into Function
+description: "Move work that callers repeatedly perform beside a function call into the function when that work belongs to the same operation."
+prerequisites: "Functions, callers, and string construction."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Receipts.Email(12) == \"EMAIL Total: 12 | Thank you\"); Check.That(Receipts.Print(12) == \"PRINT Total: 12 | Thank you\");","revised":"Check.That(Receipts.Email(12) == \"EMAIL Total: 12 | Thank you\"); Check.That(Receipts.Print(12) == \"PRINT Total: 12 | Thank you\");"},"python":{"original":"assert email_receipt(12) == 'EMAIL Total: 12 | Thank you'\nassert print_receipt(12) == 'PRINT Total: 12 | Thank you'","revised":"assert email_receipt(12) == 'EMAIL Total: 12 | Thank you'\nassert print_receipt(12) == 'PRINT Total: 12 | Thank you'"}};
+
+**Move Statements into Function** moves work that callers repeatedly perform beside a function call into the function itself. The move is useful when that repeated work is part of the function's responsibility, not just something these callers happen to do today. [1](#source-1)
+
+## Original version: every receipt caller adds the same closing text
+
+The examples construct text rather than send email or contact a printer. Both delivery formats use the same receipt body and add the same thank-you line.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Receipts
+{
+    private static string Body(int total) { return "Total: " + total; }
+    public static string Email(int total)
+    {
+        return "EMAIL " + Body(total) + " | Thank you";
+    }
+    public static string Print(int total)
+    {
+        return "PRINT " + Body(total) + " | Thank you";
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def _body(total):
+    return "Total: " + str(total)
+
+
+def email_receipt(total):
+    return "EMAIL " + _body(total) + " | Thank you"
+
+
+def print_receipt(total):
+    return "PRINT " + _body(total) + " | Thank you"
+```
+
+</section>
+
+The closing text belongs to the receipt in both cases, but each caller is responsible for remembering it. A third delivery format could easily omit it.
+
+## Refactored version: the receipt body includes its closing text
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Receipts
+{
+    private static string Body(int total)
+    {
+        return "Total: " + total + " | Thank you";
+    }
+    public static string Email(int total) { return "EMAIL " + Body(total); }
+    public static string Print(int total) { return "PRINT " + Body(total); }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def _body(total):
+    return "Total: " + str(total) + " | Thank you"
+
+
+def email_receipt(total):
+    return "EMAIL " + _body(total)
+
+
+def print_receipt(total):
+    return "PRINT " + _body(total)
+```
+
+</section>
+
+The callers retain only their delivery-specific prefixes. Their final text remains identical, while the shared closing rule now has one owner.
+
+## Inspect every caller before widening the function's job
+
+If another caller needs a bare total with no closing text, moving the suffix into the helper changes that caller's result. You may need a separate operation or a different extraction rather than changing every consumer indiscriminately.
+
+With side effects, check order and frequency. Moving a notification inside a function can make it run for callers that previously did not notify, or run more often if the function is called repeatedly.
+
+This is not merely a search-and-replace for duplicate lines. Establish that the moved work belongs to the operation's contract. Then remove the repeated statements from migrated callers so the work does not happen twice.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Move Statements into Function](https://refactoring.com/catalog/moveStatementsIntoFunction.html).
