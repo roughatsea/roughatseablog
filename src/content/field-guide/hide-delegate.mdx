@@ -1,0 +1,123 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Hide Delegate
+description: "Hide Delegate lets a caller ask one object for a result without navigating through that object's internal collaborators."
+prerequisites: "Objects, properties, and delegation."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Booking(new Route(\"Harbor\")).Route.Destination == \"Harbor\");","revised":"Check.That(new Booking(new Route(\"Harbor\")).Destination == \"Harbor\");"},"python":{"original":"assert Booking(Route('Harbor')).route.destination == 'Harbor'","revised":"assert Booking(Route('Harbor')).destination == 'Harbor'"}};
+
+**Hide Delegate** adds an operation to one object that forwards a request to a collaborator. Callers use the forwarding operation instead of navigating to that collaborator themselves. [1](#source-1)
+
+## Original version: the caller knows how a booking stores its destination
+
+A booking holds a route. A confirmation screen only needs the destination name, but reaches through the booking to retrieve it.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Route
+{
+    public string Destination { get; }
+    public Route(string destination) { Destination = destination; }
+}
+
+public sealed class Booking
+{
+    public Route Route { get; }
+    public Booking(Route route) { Route = route; }
+}
+```
+
+```csharp group=original role=run
+var booking = new Booking(new Route("Harbor"));
+Console.WriteLine(booking.Route.Destination);
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Route:
+    def __init__(self, destination):
+        self.destination = destination
+
+
+class Booking:
+    def __init__(self, route):
+        self.route = route
+```
+
+```python group=original role=run
+booking = Booking(Route("Harbor"))
+print(booking.route.destination)
+```
+
+</section>
+
+The screen depends on the relationship between booking and route, not just on the destination it displays.
+
+## Refactored version: ask the booking directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Route
+{
+    public string Destination { get; }
+    public Route(string destination) { Destination = destination; }
+}
+
+public sealed class Booking
+{
+    private readonly Route route;
+    public Booking(Route route) { this.route = route; }
+    public string Destination { get { return route.Destination; } }
+}
+```
+
+```csharp group=revised role=run
+var booking = new Booking(new Route("Harbor"));
+Console.WriteLine(booking.Destination);
+```
+
+`Booking.Destination` forwards the read. The screen no longer knows whether the name comes from a route, a saved itinerary, or another internal representation.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Route:
+    def __init__(self, destination):
+        self.destination = destination
+
+
+class Booking:
+    def __init__(self, route):
+        self._route = route
+
+    @property
+    def destination(self):
+        return self._route.destination
+```
+
+```python group=revised role=run
+booking = Booking(Route("Harbor"))
+print(booking.destination)
+```
+
+The property forwards the read. `_route` is internal by convention; the improvement is the public API callers are asked to use.
+
+</section>
+
+## Do not forward an entire universe
+
+Hiding a meaningful detail can reduce callers' dependencies. Forwarding every operation of a large collaborator can instead create a class full of tedious wrappers. In that case, exposing a focused collaborator may be clearer; that is the motivation for Remove Middle Man.
+
+This change removes public navigation in the example. Existing consumers using the old property must be migrated, or the property retained temporarily. Also preserve whether a value is live or a snapshot: the forwarding property reads the current route value each time.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Hide Delegate](https://refactoring.com/catalog/hideDelegate.html).

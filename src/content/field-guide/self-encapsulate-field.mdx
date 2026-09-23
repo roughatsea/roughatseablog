@@ -1,0 +1,109 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Self-Encapsulate Field
+description: "Self-Encapsulate Field makes a class use its own accessors rather than reading and writing a field directly throughout its methods."
+prerequisites: "Fields, properties, and private methods."
+---
+
+export const checks = {"csharp":{"original":"var score = new Score(); score.Add(3); score.Add(4); Check.That(score.Value == 7);","revised":"var score = new Score(); score.Add(3); score.Add(4); Check.That(score.Value == 7);"},"python":{"original":"score = Score()\nscore.add(3)\nscore.add(4)\nassert score.value == 7","revised":"score = Score()\nscore.add(3)\nscore.add(4)\nassert score.value == 7"}};
+
+**Self-Encapsulate Field** makes a class use its own accessors instead of reading and writing a field directly throughout its methods. The word *self* matters: outside callers may already use a property, while the class's internals bypass it. [1](#source-1)
+
+## Original version: internal code writes the field directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Score
+{
+    private int value;
+    public int Value { get { return value; } }
+    public void Add(int points)
+    {
+        value = value + points;
+    }
+}
+```
+
+Callers read `Value`, but `Add` writes the field. If writes later need common bookkeeping, each direct assignment would need inspection.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Score:
+    def __init__(self):
+        self._value = 0
+
+    @property
+    def value(self):
+        return self._value
+
+    def add(self, points):
+        self._value = self._value + points
+```
+
+The public property is read-only, but internal updates still write `_value` directly.
+
+</section>
+
+## Refactored version: use one internal access path
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Score
+{
+    private int value;
+    public int Value
+    {
+        get { return value; }
+        private set { this.value = value; }
+    }
+
+    public void Add(int points)
+    {
+        Value = Value + points;
+    }
+}
+```
+
+`Add` now uses the property's getter and private setter. Outside code still cannot assign `Value`. The arithmetic is unchanged.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Score:
+    def __init__(self):
+        self._value = 0
+
+    def _read(self):
+        return self._value
+
+    def _write(self, value):
+        self._value = value
+
+    @property
+    def value(self):
+        return self._read()
+
+    def add(self, points):
+        self._write(self._read() + points)
+```
+
+The internal helper methods centralize reads and writes without adding a public setter. Their underscores express a convention rather than enforced access control.
+
+</section>
+
+## Do not mistake indirection for protection
+
+These accessors perform no extra validation, logging, or synchronization. Adding such behavior later may change observable results and should be tested separately. An accessor can also make recursion easy to introduce accidentally: its body must ultimately reach the backing field, not call itself indefinitely.
+
+For this tiny score class, direct field access may be clearer. Self-encapsulation becomes useful when several internal operations need consistent access behavior or when a representation is being changed gradually. It is not a requirement that every private field acquire a pair of ceremonial methods.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Encapsulate Variable](https://refactoring.com/catalog/encapsulateVariable.html), including Self-Encapsulate Field in the earlier vocabulary.
