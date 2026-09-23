@@ -1,0 +1,276 @@
+---
+layout: '../../../../../layouts/FieldGuidePilotLayout.astro'
+title: 'Liskov Substitution Principle'
+description: 'Two discount classes have the same method. Only one keeps the promise that checkout relies on.'
+prerequisites: 'Classes, method calls, and exceptions. The interface and its behavioral promises are introduced here.'
+reviewRoot: '/guides/software-engineering/review/solid-batch-1/'
+reviewLabel: 'SOLID principles — review batch'
+---
+
+The **Liskov Substitution Principle** says that an object of a subtype must be usable wherever its base type is expected, without breaking the behavior the base type promises. The same question applies to classes that implement an interface: does each implementation keep the promises that callers rely on? [1](#sources)
+
+A method name and a return type are not the whole promise.
+
+Suppose checkout can accept different discount objects. Each object has a method that takes a subtotal and returns an amount to charge. Two classes may provide exactly that method, yet one may reject a purchase the other accepts.
+
+Checkout then has a problem that a compiler cannot discover just by checking the method names.
+
+## First, state what a discount promises
+
+For this shop, the discount operation accepts any nonnegative subtotal. It returns an amount between zero and the subtotal, without rejecting an ordinary purchase merely because no discount applies. A negative subtotal is invalid and raises an argument error.
+
+Those are the **contract**: the rules callers and implementations agree to follow. They are our shop's chosen rules, not a universal definition of every discount API.
+
+The examples use ordinary finite decimal amounts. They omit tax, currency rounding, and extreme numeric values so that we can concentrate on which purchases the operation accepts.
+
+<section data-pilot-language="csharp">
+
+### C#: declare the operation and show its caller
+
+These examples target .NET 8. Use `using System;` at file level. Declarations go at file level; calling statements go in `Main` or another method.
+
+`IDiscount` is an interface. It requires an `Apply` method accepting and returning a `decimal`. Its comment records the additional behavior that the C# signature does not express.
+
+```csharp sample=contract
+public interface IDiscount
+{
+    // Accept every nonnegative subtotal.
+    // Return an amount from zero through subtotal.
+    // Reject negative subtotals with ArgumentOutOfRangeException.
+    decimal Apply(decimal subtotal);
+}
+
+public sealed class NoDiscount : IDiscount
+{
+    public decimal Apply(decimal subtotal)
+    {
+        if (subtotal < 0m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(subtotal));
+        }
+
+        return subtotal;
+    }
+}
+
+public sealed class Checkout
+{
+    public decimal CalculateTotal(decimal subtotal, IDiscount discount)
+    {
+        return discount.Apply(subtotal);
+    }
+}
+```
+
+`NoDiscount` keeps the contract by returning a valid subtotal unchanged. `Checkout.CalculateTotal` knows only the interface, so it is entitled to expect other implementations to accept the same valid inputs.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: state the operation and show its caller
+
+Python does not require a declared interface here. The contract describes what any supplied object's `apply` method must do. The example uses `Decimal` amounts constructed from strings.
+
+```python sample=contract
+from decimal import Decimal
+
+
+class NoDiscount:
+    def apply(self, subtotal):
+        # Accept every nonnegative subtotal and return it unchanged.
+        if subtotal < 0:
+            raise ValueError("subtotal cannot be negative")
+        return subtotal
+
+
+class Checkout:
+    def calculate_total(self, subtotal, discount):
+        return discount.apply(subtotal)
+```
+
+`NoDiscount` keeps the contract by returning a valid subtotal unchanged. `Checkout.calculate_total` calls `apply` without checking the object's class. It expects other implementations to accept the same valid inputs.
+
+</section>
+
+## A new discount breaks an old expectation
+
+The shop introduces twenty percent off purchases of at least 100. A programmer implements the minimum-spend requirement by throwing an exception when the purchase is smaller.
+
+The percentage is correct. The rejection is the problem.
+
+<section data-pilot-language="csharp">
+
+### Original implementation: a valid subtotal is rejected
+
+```csharp sample=broken
+public sealed class MinimumSpendDiscount : IDiscount
+{
+    public decimal Apply(decimal subtotal)
+    {
+        if (subtotal < 100m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(subtotal));
+        }
+
+        return subtotal * 0.80m;
+    }
+}
+```
+
+This class implements the required method and can be passed to checkout. Now use it for a purchase of 50:
+
+```csharp sample=broken-use
+Checkout checkout = new Checkout();
+Console.WriteLine(checkout.CalculateTotal(50m, new NoDiscount()));
+// 50
+
+try
+{
+    checkout.CalculateTotal(50m, new MinimumSpendDiscount());
+}
+catch (ArgumentOutOfRangeException)
+{
+    Console.WriteLine("A valid purchase was rejected.");
+}
+```
+
+Only the supplied discount changed. The first call returns 50; the second throws. The interface's promise allowed this input, but `MinimumSpendDiscount.Apply` imposed a stricter requirement.
+
+The `catch` makes the failure visible without terminating the demonstration. It is not the design repair.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Original implementation: a valid subtotal is rejected
+
+```python sample=broken
+class MinimumSpendDiscount:
+    def apply(self, subtotal):
+        if subtotal < 100:
+            raise ValueError("purchase must be at least 100")
+        return subtotal * Decimal("0.80")
+```
+
+This class provides the method checkout calls. Now use it for a purchase of 50:
+
+```python sample=broken-use
+checkout = Checkout()
+print(checkout.calculate_total(Decimal("50"), NoDiscount()))
+# 50
+
+try:
+    checkout.calculate_total(Decimal("50"), MinimumSpendDiscount())
+except ValueError:
+    print("A valid purchase was rejected.")
+```
+
+Only the supplied discount changed. The first call returns 50; the second throws. The contract allowed this input, but `MinimumSpendDiscount.apply` imposed a stricter requirement.
+
+The `except` makes the failure visible without terminating the demonstration. It is not the design repair.
+
+</section>
+
+## Corrected implementation: no discount is still a valid result
+
+A purchase below 100 is not eligible for the promotion, but it is still a valid purchase. We can honor the discount contract by returning its subtotal unchanged.
+
+Replace the original minimum-spend class with the following version. Leave checkout and the no-discount class alone.
+
+<section data-pilot-language="csharp">
+
+### C#: accept the purchase, then decide whether to discount it
+
+```csharp sample=corrected
+public sealed class MinimumSpendDiscount : IDiscount
+{
+    public decimal Apply(decimal subtotal)
+    {
+        if (subtotal < 0m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(subtotal));
+        }
+
+        if (subtotal < 100m)
+        {
+            return subtotal;
+        }
+
+        return subtotal * 0.80m;
+    }
+}
+```
+
+The first check enforces the shared rule about negative amounts. The second check decides whether the promotion applies. It does not reject an otherwise valid subtotal.
+
+```csharp sample=corrected-use
+Checkout checkout = new Checkout();
+IDiscount discount = new MinimumSpendDiscount();
+
+Console.WriteLine(checkout.CalculateTotal(50m, discount));  // 50
+Console.WriteLine(checkout.CalculateTotal(100m, discount)); // 80.00
+Console.WriteLine(checkout.CalculateTotal(150m, discount)); // 120.00
+```
+
+Checkout still makes the same `Apply` call. It needs no special exception for this class and no check of its concrete type. The returned amounts differ because the discount rule differs; the contract remains true.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: accept the purchase, then decide whether to discount it
+
+```python sample=corrected
+class MinimumSpendDiscount:
+    def apply(self, subtotal):
+        if subtotal < 0:
+            raise ValueError("subtotal cannot be negative")
+
+        if subtotal < 100:
+            return subtotal
+
+        return subtotal * Decimal("0.80")
+```
+
+The first check enforces the shared rule about negative amounts. The second check decides whether the promotion applies. It does not reject an otherwise valid subtotal.
+
+```python sample=corrected-use
+checkout = Checkout()
+discount = MinimumSpendDiscount()
+
+print(checkout.calculate_total(Decimal("50"), discount))   # 50
+print(checkout.calculate_total(Decimal("100"), discount))  # 80.00
+print(checkout.calculate_total(Decimal("150"), discount))  # 120.00
+```
+
+Checkout still makes the same `apply` call. It needs no special exception for this class and no check of its concrete type. The returned amounts differ because the discount rule differs; the contract remains true.
+
+</section>
+
+This correction changes what happens to purchases below 100: they no longer fail. It is therefore a **behavioral bug fix**, not a behavior-preserving refactoring.
+
+## What substitution does—and does not—require
+
+Substitution does not require identical results. A ten-percent discount and a twenty-percent discount are allowed to charge different amounts. They must both respect the operation's promised input range and result rules.
+
+In this example, charging more than the subtotal would be another violation, even if the method returned normally. So would returning a negative amount. The caller relies on more than the absence of an exception.
+
+Nor does the principle prohibit exceptions. Both corrected implementations reject a negative subtotal because the contract explicitly permits that rejection. In another API, an operation might explicitly return a result meaning “not eligible.” That can be a sound design if callers know to handle that outcome from the start.
+
+What would not repair the current design is telling checkout to recognize the minimum-spend class and tiptoe around its extra restriction. That makes a supposedly interchangeable object require special treatment.
+
+## A practical way to check a replacement
+
+Write checks for the common promises and run them against every implementation. For these discounts, try zero, an amount below 100, exactly 100, and an amount above it. Verify that each valid input returns normally and produces an amount between zero and the subtotal. Check the promised rejection of negative amounts too.
+
+Those checks would catch the original minimum-spend implementation at 50. Separate tests should still verify each discount's exact arithmetic. Passing shared checks does not prove that twenty percent was calculated correctly, and a finite test set is not a proof about every possible input.
+
+The same reasoning transfers beyond discounts. Suppose a collection promises that adding an item makes it available afterward. A replacement that silently discards items breaks that promise even if it exposes the correct methods. First identify what the caller is entitled to expect; then examine whether the replacement preserves it. [1](#sources)
+
+The [Open/Closed Principle](/guides/software-engineering/open-closed-principle/) explains how a new discount can be added without editing checkout. Liskov Substitution asks whether the new discount keeps the promises checkout relies on. An unchanged caller is useful only when its expectations still hold.
+
+## Sources
+
+1. Barbara Liskov and Jeannette Wing, [A Behavioral Notion of Subtyping](https://www.cs.cmu.edu/afs/cs/project/venari/www/subtype-toplas.html). The authors' abstract describes preserving properties established for a supertype when using its subtypes. The discount contract and demonstrations here are original, bounded examples of that requirement.
+2. Microsoft, [Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces), for the C# mechanism. Implementing a method signature does not encode this article's numeric and error promises.

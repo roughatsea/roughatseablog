@@ -1,0 +1,334 @@
+---
+layout: '../../../../../layouts/FieldGuidePilotLayout.astro'
+title: 'Interface Segregation Principle'
+description: 'A screen that looks up an email address should not require an object that can also edit it.'
+prerequisites: 'Classes, method calls, and dictionaries. Interfaces and Python protocols are explained here.'
+reviewRoot: '/guides/software-engineering/review/solid-batch-1/'
+reviewLabel: 'SOLID principles — review batch'
+---
+
+The **Interface Segregation Principle** says that code should not have to depend on operations it does not use. Instead of making every caller depend on one large interface, give callers interfaces that describe the capabilities they actually need. [1](#sources)
+
+Here, an **interface** is a declaration of operations an object must provide. A **caller**, sometimes called a *client*, is the code using those operations—not necessarily a person or another computer.
+
+Suppose a contact-directory screen displays someone's email address. An editing screen can change an address. Both use the same directory, but only one needs the ability to edit it.
+
+Should displaying an address require an object that can change addresses too?
+
+## Original version: lookup and editing come as one package
+
+Our example keeps a small dictionary of names and email addresses in memory. The lookup is case-sensitive; an unknown name raises a lookup error. Names and addresses supplied by the demonstration are valid strings. This is not an email-validation or database example.
+
+<section data-pilot-language="csharp">
+
+### C#: the screen asks for more than it uses
+
+These examples target .NET 8 and use `System` and `System.Collections.Generic`. Add their `using` directives at file level. Class and interface declarations belong at file level; calling statements belong inside a method. Treat the original and refactored versions as separate programs.
+
+```csharp sample=original
+public interface IEmailDirectory
+{
+    string EmailFor(string name);
+    void SetEmail(string name, string email);
+}
+
+public sealed class MemoryDirectory : IEmailDirectory
+{
+    private readonly Dictionary<string, string> emails = new Dictionary<string, string>();
+
+    public string EmailFor(string name)
+    {
+        return emails[name];
+    }
+
+    public void SetEmail(string name, string email)
+    {
+        emails[name] = email;
+    }
+}
+
+public sealed class DirectoryPage
+{
+    private readonly IEmailDirectory directory;
+
+    public DirectoryPage(IEmailDirectory directory)
+    {
+        this.directory = directory;
+    }
+
+    public string Show(string name)
+    {
+        string email = directory.EmailFor(name);
+        return $"{name}: {email}";
+    }
+}
+```
+
+`DirectoryPage.Show` uses `EmailFor` and never uses `SetEmail`. Nevertheless, its constructor requires the entire `IEmailDirectory` interface. Any object supplied through that interface must provide both methods.
+
+```csharp sample=original-use
+MemoryDirectory directory = new MemoryDirectory();
+directory.SetEmail("Mira", "mira@example.test");
+DirectoryPage page = new DirectoryPage(directory);
+Console.WriteLine(page.Show("Mira"));
+// Mira: mira@example.test
+```
+
+The code works. The problem appears when we want to supply a directory that can only answer lookups—for example, a fixed snapshot exported from another system. It has what `Show` needs, but not everything its constructor demands.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: the annotation asks for more than the method uses
+
+A Python **protocol** describes the methods an object is expected to provide. Type-checking tools can use that description; ordinary Python execution does not enforce it merely because an annotation exists. The `...` bodies below declare protocol methods, not missing implementations in the directory itself. [3](#sources)
+
+```python sample=original
+from typing import Protocol
+
+
+class EmailDirectory(Protocol):
+    def email_for(self, name: str) -> str:
+        ...
+
+    def set_email(self, name: str, email: str) -> None:
+        ...
+
+
+class MemoryDirectory:
+    def __init__(self):
+        self.emails: dict[str, str] = {}
+
+    def email_for(self, name: str) -> str:
+        return self.emails[name]
+
+    def set_email(self, name: str, email: str) -> None:
+        self.emails[name] = email
+
+
+class DirectoryPage:
+    def __init__(self, directory: EmailDirectory):
+        self.directory = directory
+
+    def show(self, name: str) -> str:
+        email = self.directory.email_for(name)
+        return f"{name}: {email}"
+```
+
+`DirectoryPage.show` calls only `email_for`. Its annotation nevertheless says that a supplied object should also provide `set_email`. `MemoryDirectory` happens to provide both:
+
+```python sample=original-use
+directory = MemoryDirectory()
+directory.set_email("Mira", "mira@example.test")
+page = DirectoryPage(directory)
+print(page.show("Mira"))
+# Mira: mira@example.test
+```
+
+A lookup-only object would already work at runtime because `show` never calls the editing method. But it would not satisfy the declared `EmailDirectory` protocol. The repair below makes the declared requirement match the method's actual need; it does not unlock a previously impossible Python call.
+
+</section>
+
+## Refactored version: ask for lookup when lookup is enough
+
+We will separate lookup and editing into two interfaces. The in-memory directory will still support both. We are separating what callers must depend on, not insisting that one working object be split into two objects.
+
+<section data-pilot-language="csharp">
+
+### C#: two interfaces, one implementation
+
+```csharp sample=refactored
+public interface IEmailLookup
+{
+    string EmailFor(string name);
+}
+
+public interface IEmailEditor
+{
+    void SetEmail(string name, string email);
+}
+
+public sealed class MemoryDirectory : IEmailLookup, IEmailEditor
+{
+    private readonly Dictionary<string, string> emails = new Dictionary<string, string>();
+
+    public string EmailFor(string name)
+    {
+        return emails[name];
+    }
+
+    public void SetEmail(string name, string email)
+    {
+        emails[name] = email;
+    }
+}
+
+public sealed class DirectoryPage
+{
+    private readonly IEmailLookup directory;
+
+    public DirectoryPage(IEmailLookup directory)
+    {
+        this.directory = directory;
+    }
+
+    public string Show(string name)
+    {
+        string email = directory.EmailFor(name);
+        return $"{name}: {email}";
+    }
+}
+```
+
+`DirectoryPage` now requests `IEmailLookup`. The lookup and formatting statements inside `Show` are unchanged. `MemoryDirectory` still stores and updates addresses exactly as before; its declaration says it implements both interfaces. C# allows a class to implement multiple interfaces. [2](#sources)
+
+```csharp sample=refactored-use
+MemoryDirectory directory = new MemoryDirectory();
+IEmailEditor editor = directory;
+editor.SetEmail("Mira", "mira@example.test");
+
+DirectoryPage page = new DirectoryPage(directory);
+Console.WriteLine(page.Show("Mira"));
+// Mira: mira@example.test
+```
+
+The editing reference and the page use the same directory object. They ask for different operations from it.
+
+### Supply a lookup-only snapshot
+
+```csharp sample=snapshot
+public sealed class SnapshotDirectory : IEmailLookup
+{
+    private readonly Dictionary<string, string> emails;
+
+    public SnapshotDirectory(Dictionary<string, string> initialEmails)
+    {
+        emails = new Dictionary<string, string>(initialEmails);
+    }
+
+    public string EmailFor(string name)
+    {
+        return emails[name];
+    }
+}
+```
+
+`SnapshotDirectory` copies the supplied entries. It exposes no editing method, and later changes to the original dictionary do not change that copy.
+
+```csharp sample=snapshot-use
+Dictionary<string, string> exported = new Dictionary<string, string>();
+exported["Mira"] = "mira@example.test";
+
+SnapshotDirectory snapshot = new SnapshotDirectory(exported);
+DirectoryPage page = new DirectoryPage(snapshot);
+Console.WriteLine(page.Show("Mira"));
+// Mira: mira@example.test
+```
+
+The page accepts this class because its interface now states only what it needs. No dummy `SetEmail` method is necessary.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: describe the two capabilities separately
+
+```python sample=refactored
+from typing import Protocol
+
+
+class EmailLookup(Protocol):
+    def email_for(self, name: str) -> str:
+        ...
+
+
+class EmailEditor(Protocol):
+    def set_email(self, name: str, email: str) -> None:
+        ...
+
+
+class MemoryDirectory:
+    def __init__(self):
+        self.emails: dict[str, str] = {}
+
+    def email_for(self, name: str) -> str:
+        return self.emails[name]
+
+    def set_email(self, name: str, email: str) -> None:
+        self.emails[name] = email
+
+
+class DirectoryPage:
+    def __init__(self, directory: EmailLookup):
+        self.directory = directory
+
+    def show(self, name: str) -> str:
+        email = self.directory.email_for(name)
+        return f"{name}: {email}"
+```
+
+`DirectoryPage` now requests `EmailLookup`. The lookup and formatting statements inside `show` are unchanged. `MemoryDirectory` still stores and updates addresses exactly as before.
+
+It satisfies both protocols by providing their methods. It does not need to inherit from the protocol classes for structural type checking. [3](#sources)
+
+```python sample=refactored-use
+directory = MemoryDirectory()
+editor: EmailEditor = directory
+editor.set_email("Mira", "mira@example.test")
+
+page = DirectoryPage(directory)
+print(page.show("Mira"))
+# Mira: mira@example.test
+```
+
+### Supply a lookup-only snapshot
+
+```python sample=snapshot
+class SnapshotDirectory:
+    def __init__(self, initial_emails: dict[str, str]):
+        self._emails = dict(initial_emails)
+
+    def email_for(self, name: str) -> str:
+        return self._emails[name]
+```
+
+`SnapshotDirectory` copies the supplied entries and provides only the lookup method. Later changes to the original dictionary do not change that copy. The underscore marks `_emails` as internal by convention; Python does not make it inaccessible.
+
+```python sample=snapshot-use
+exported = {"Mira": "mira@example.test"}
+snapshot = SnapshotDirectory(exported)
+page = DirectoryPage(snapshot)
+print(page.show("Mira"))
+# Mira: mira@example.test
+```
+
+The snapshot now satisfies the page's declared requirement, as well as its runtime needs. It does not need a dummy `set_email` method.
+
+</section>
+
+## What the separation buys
+
+The page can use either a live, editable directory or a fixed snapshot. Its code asks the same lookup question in either case.
+
+Suppose editing later requires an audit note. The editing interface and the code performing edits would need review. A lookup-only implementation would not suddenly have to provide that editing feature. The lookup interface would still describe the same operation.
+
+That is more specific than saying “small interfaces are good.” A small interface is useful here because it corresponds to a real caller's need.
+
+It also explains why the principle is not “one method per interface.” A search screen might need lookup by name, search by department, and a list of matching names. Those could form one coherent read interface. Splitting them merely to minimize method counts might make callers harder to construct without giving them meaningful independence.
+
+## What the separation does not buy
+
+**A read interface is not a security boundary.** Passing an editable directory through a lookup interface does not erase its editing methods or revoke database permissions. Authorization must be enforced where changes are actually allowed or denied. Python annotations likewise do not restrict what code can access at runtime.
+
+The example also does not claim that a snapshot stays current. It is deliberately a copy. A caller requiring live updates would need that expectation stated and a suitable implementation supplied.
+
+Interface Segregation asks, “What operations does this caller need?” [Liskov Substitution](../liskov-substitution-principle/) asks, “Does the supplied object keep the promises of those operations?” A narrow interface is helpful, but narrowing it does not prove the answer to the second question.
+
+**The directory can still do several things. The page no longer has to ask for all of them.**
+
+## Sources
+
+1. Brannon B. King, Microsoft MSDN Magazine, [Dangers of Violating SOLID Principles in C# — Interface Segregation](https://learn.microsoft.com/en-us/archive/msdn-magazine/2014/may/csharp-best-practices-dangers-of-violating-solid-principles-in-csharp#the-interface-segregation-principle). Relevant here for separating read and write requirements; the directory example is original.
+2. Microsoft, [Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces), for interface declarations and multiple-interface implementation.
+3. Python documentation, [typing.Protocol](https://docs.python.org/3/library/typing.html#typing.Protocol), for structural typing and the distinction between annotations and runtime enforcement.
