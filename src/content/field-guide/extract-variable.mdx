@@ -1,0 +1,87 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Extract Variable
+description: "Extract Variable gives part of an expression a name so the reader can understand what that value represents."
+prerequisites: "Variables, arithmetic, and comparisons."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Clips.Fits(4, 59)); Check.That(Clips.Fits(5, 0)); Check.That(!Clips.Fits(5, 1));","revised":"Check.That(Clips.Fits(4, 59)); Check.That(Clips.Fits(5, 0)); Check.That(!Clips.Fits(5, 1));"},"python":{"original":"assert fits(4, 59)\nassert fits(5, 0)\nassert not fits(5, 1)","revised":"assert fits(4, 59)\nassert fits(5, 0)\nassert not fits(5, 1)"}};
+
+**Extract Variable** gives part of an expression a name. The new variable explains what a value represents instead of making every reader mentally interpret the arithmetic. [1](#source-1)
+
+## Original version: decode the units
+
+A video upload must be no longer than five minutes. Inputs are a nonnegative minute count and a second count between 0 and 59.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Clips
+{
+    public static bool Fits(int minutes, int seconds)
+    {
+        return minutes * 60 + seconds <= 5 * 60;
+    }
+}
+```
+
+The expression converts the clip length to seconds and compares it with the five-minute limit. That meaning is present, but only in the arithmetic.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def fits(minutes, seconds):
+    return minutes * 60 + seconds <= 5 * 60
+```
+
+The expression converts the clip length to seconds and compares it with the five-minute limit. A reader has to identify both quantities before understanding the comparison.
+
+</section>
+
+## Refactored version: name the quantities
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Clips
+{
+    public static bool Fits(int minutes, int seconds)
+    {
+        int durationSeconds = minutes * 60 + seconds;
+        int maximumSeconds = 5 * 60;
+        return durationSeconds <= maximumSeconds;
+    }
+}
+```
+
+`durationSeconds` and `maximumSeconds` make the comparison explicit. `Fits(5, 0)` remains true, and `Fits(5, 1)` remains false.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def fits(minutes, seconds):
+    duration_seconds = minutes * 60 + seconds
+    maximum_seconds = 5 * 60
+    return duration_seconds <= maximum_seconds
+```
+
+The new names explain both the values and their units. `fits(5, 0)` remains true, and `fits(5, 1)` remains false.
+
+</section>
+
+## Preserve when an expression runs
+
+Here all inputs are ordinary local numbers and both calculations always ran in the original version. Naming them does not change which work occurs.
+
+That is not true of every extraction. In `isReady && ExpensiveCheck()`, the second operation runs only when `isReady` is true. Calculating `ExpensiveCheck()` in a variable before the condition would make it run unconditionally. Exceptions, side effects, and cost could all change.
+
+Choose a scope that preserves the original evaluation. Prefer names that explain the domain or units, not `temp1` and `temp2`. Conversely, a long list of variables for obvious subexpressions can bury a simple calculation. The useful variable answers a question the expression left implicit.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Extract Variable](https://refactoring.com/catalog/extractVariable.html).
+2. [Microsoft — Boolean logical operators](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/boolean-logical-operators), including conditional evaluation of `&&` and `||`.

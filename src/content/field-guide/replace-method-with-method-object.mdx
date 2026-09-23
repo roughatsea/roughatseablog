@@ -1,0 +1,118 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Method with Method Object
+description: "Turn a complicated operation into a short-lived object so its inputs and intermediate calculations can be organized into smaller methods."
+prerequisites: "Classes, constructors, fields, and methods."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Prices.Calculate(20, 3, 10) == 50); Check.That(Prices.Calculate(5, 1, 10) == 0);","revised":"Check.That(new PriceCalculation(20, 3, 10).Calculate() == 50); Check.That(new PriceCalculation(5, 1, 10).Calculate() == 0);"},"python":{"original":"assert calculate_price(20, 3, 10) == 50\nassert calculate_price(5, 1, 10) == 0","revised":"assert PriceCalculation(20, 3, 10).calculate() == 50\nassert PriceCalculation(5, 1, 10).calculate() == 0"}};
+
+**Replace Method with Method Object** turns an operation into an object whose fields hold the operation's inputs or working state. Its implementation can then be divided into smaller methods without passing a long list of local variables between them. Fowler's newer catalog calls this **Replace Function with Command**. [1](#source-1)
+
+## Original version: an operation with several working values
+
+A price calculation multiplies quantity by unit price, applies a coupon, and prevents a negative result. This deliberately small calculation shows the mechanics; it would not, by itself, justify a new class.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Prices
+{
+    public static int Calculate(int unitPrice, int quantity, int coupon)
+    {
+        int subtotal = unitPrice * quantity;
+        int discounted = subtotal - coupon;
+        return Math.Max(0, discounted);
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def calculate_price(unit_price, quantity, coupon):
+    subtotal = unit_price * quantity
+    discounted = subtotal - coupon
+    return max(0, discounted)
+```
+
+</section>
+
+If a much larger version had many interdependent locals, extracting helpers could require passing the same values repeatedly. A per-calculation object offers another way to organize that work.
+
+## Refactored version: one object represents one calculation
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class PriceCalculation
+{
+    private readonly int unitPrice;
+    private readonly int quantity;
+    private readonly int coupon;
+
+    public PriceCalculation(int unitPrice, int quantity, int coupon)
+    {
+        this.unitPrice = unitPrice;
+        this.quantity = quantity;
+        this.coupon = coupon;
+    }
+
+    private int Subtotal() { return unitPrice * quantity; }
+    private int Discounted() { return Subtotal() - coupon; }
+
+    public int Calculate()
+    {
+        return Math.Max(0, Discounted());
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(new PriceCalculation(20, 3, 10).Calculate()); // 50
+```
+
+The constructor receives the old parameters. Helpers read those fields, and `Calculate` returns the same result. Each request creates its own calculation object.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class PriceCalculation:
+    def __init__(self, unit_price, quantity, coupon):
+        self._unit_price = unit_price
+        self._quantity = quantity
+        self._coupon = coupon
+
+    def _subtotal(self):
+        return self._unit_price * self._quantity
+
+    def _discounted(self):
+        return self._subtotal() - self._coupon
+
+    def calculate(self):
+        return max(0, self._discounted())
+```
+
+```python group=revised role=run
+print(PriceCalculation(20, 3, 10).calculate())  # 50
+```
+
+The old parameters become instance attributes. Small methods share those inputs through one short-lived object rather than globals or a shared service instance.
+
+</section>
+
+## Use the extra object where it earns its place
+
+Keep the original function for a calculation this simple. Consider the object when a difficult algorithm has meaningful phases, several helpers need the same working state, or the operation needs an explicit lifecycle.
+
+Do not move per-request state into a singleton and accidentally make concurrent requests overwrite one another. If the object accumulates intermediate results, decide whether it may be executed twice; resetting or reconstructing it may be necessary.
+
+The refactoring changes how an operation is organized. It does not require undo support, a command bus, a queue, or any other infrastructure sometimes associated with the word *command*.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Function with Command](https://refactoring.com/catalog/replaceFunctionWithCommand.html), formerly Replace Method with Method Object.
