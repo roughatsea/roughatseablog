@@ -1,0 +1,106 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Consolidate Duplicate Conditional Fragments
+description: "Move work repeated in every branch outside the conditional, while preserving its order relative to branch-specific work."
+prerequisites: "Conditionals, statement order, and side effects."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Checkout.Finish(true) == \"premium|saved\"); Check.That(Checkout.Finish(false) == \"regular|saved\");","revised":"Check.That(Checkout.Finish(true) == \"premium|saved\"); Check.That(Checkout.Finish(false) == \"regular|saved\");"},"python":{"original":"assert finish(True) == 'premium|saved'\nassert finish(False) == 'regular|saved'","revised":"assert finish(True) == 'premium|saved'\nassert finish(False) == 'regular|saved'"}};
+
+**Consolidate Duplicate Conditional Fragments** moves identical work out of conditional branches when that work should occur regardless of which branch is selected. The placement must preserve execution order. [1](#source-1)
+
+## Original version: both branches save afterward
+
+A tiny checkout example records its actions in a list. The list is a visible execution trace, not a real database: it lets us compare both what happens and in which order.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Checkout
+{
+    public static string Finish(bool premium)
+    {
+        var events = new List<string>();
+        if (premium)
+        {
+            events.Add("premium");
+            events.Add("saved");
+        }
+        else
+        {
+            events.Add("regular");
+            events.Add("saved");
+        }
+        return string.Join("|", events);
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def finish(premium):
+    events = []
+    if premium:
+        events.append("premium")
+        events.append("saved")
+    else:
+        events.append("regular")
+        events.append("saved")
+    return "|".join(events)
+```
+
+</section>
+
+The selected branch records a membership-specific action, then records saving. Saving occurs exactly once in either branch.
+
+## Refactored version: perform the common work once
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Checkout
+{
+    public static string Finish(bool premium)
+    {
+        var events = new List<string>();
+        if (premium) events.Add("premium");
+        else events.Add("regular");
+        events.Add("saved");
+        return string.Join("|", events);
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def finish(premium):
+    events = []
+    if premium:
+        events.append("premium")
+    else:
+        events.append("regular")
+    events.append("saved")
+    return "|".join(events)
+```
+
+</section>
+
+Both versions produce `premium|saved` or `regular|saved`. The common statement is after the conditional because it was after the branch-specific action in both original branches.
+
+## Identical text is not enough
+
+A repeated operation might use values changed inside each branch. It can be moved afterward if those values still mean the same thing there, but moving it before the branch would change behavior.
+
+Likewise, early returns, exceptions, and resource cleanup can make a statement unreachable on some paths. Do not move it into `finally` unless it really should run even after a failure; that is stronger than “run after either successful branch.”
+
+Extract only the common work whose ordering and conditions are understood. A good test observes the relevant side effects, not merely a final return value. The trace above makes the order visible without introducing a logging or database framework into a small refactoring lesson.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Slide Statements](https://refactoring.com/catalog/slideStatements.html), which includes this earlier refactoring name.

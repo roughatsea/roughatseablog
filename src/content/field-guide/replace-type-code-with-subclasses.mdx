@@ -1,0 +1,135 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Type Code with Subclasses
+description: "Represent stable categories as subclasses so category-specific behavior can live with the category instead of repeated type-code checks."
+prerequisites: "Classes, inheritance, overriding, and conditionals."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Delivery(\"standard\").Days() == 5); Check.That(new Delivery(\"express\").Days() == 1);","revised":"Check.That(Deliveries.Create(\"standard\").Days() == 5); Check.That(Deliveries.Create(\"express\").Days() == 1);"},"python":{"original":"assert Delivery('standard').days() == 5\nassert Delivery('express').days() == 1","revised":"assert create_delivery('standard').days() == 5\nassert create_delivery('express').days() == 1"}};
+
+**Replace Type Code with Subclasses** represents categories as subclasses rather than as codes inside one class. Behavior that differs by category can then move into overridden methods. The category should be a meaningful, reasonably stable kind of the original object. [1](#source-1)
+
+## Original version: ask the delivery which code it contains
+
+A delivery estimate is five days for standard and one day for express.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Delivery
+{
+    private readonly string kind;
+    public Delivery(string kind) { this.kind = kind; }
+    public int Days()
+    {
+        if (kind == "standard") return 5;
+        if (kind == "express") return 1;
+        throw new ArgumentException("Unknown delivery kind.");
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Delivery:
+    def __init__(self, kind):
+        self._kind = kind
+
+    def days(self):
+        if self._kind == "standard":
+            return 5
+        if self._kind == "express":
+            return 1
+        raise ValueError("Unknown delivery kind.")
+```
+
+</section>
+
+The method branches on a stored code. If several delivery operations develop substantial category-specific rules, those checks can spread.
+
+## Refactored version: select a subclass when creating the delivery
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class Delivery
+{
+    public abstract int Days();
+}
+public sealed class StandardDelivery : Delivery
+{
+    public override int Days() { return 5; }
+}
+public sealed class ExpressDelivery : Delivery
+{
+    public override int Days() { return 1; }
+}
+public static class Deliveries
+{
+    public static Delivery Create(string kind)
+    {
+        if (kind == "standard") return new StandardDelivery();
+        if (kind == "express") return new ExpressDelivery();
+        throw new ArgumentException("Unknown delivery kind.");
+    }
+}
+```
+
+```csharp group=revised role=run
+Delivery delivery = Deliveries.Create("express");
+Console.WriteLine(delivery.Days()); // 1
+```
+
+The creation function still interprets the external code. The caller then invokes `Days` on the selected subclass without inspecting that code again.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Delivery:
+    def days(self):
+        raise NotImplementedError
+
+
+class StandardDelivery(Delivery):
+    def days(self):
+        return 5
+
+
+class ExpressDelivery(Delivery):
+    def days(self):
+        return 1
+
+
+def create_delivery(kind):
+    if kind == "standard":
+        return StandardDelivery()
+    if kind == "express":
+        return ExpressDelivery()
+    raise ValueError("Unknown delivery kind.")
+```
+
+```python group=revised role=run
+delivery = create_delivery("express")
+print(delivery.days())  # 1
+```
+
+Selection happens once. Calls to `days` dispatch to the implementation on the selected object.
+
+</section>
+
+## Do not create subclasses for a small lookup table
+
+For this two-number example, a table or a field would be simpler. The code demonstrates the mechanics; a worthwhile application needs enough differing behavior to justify the extra types. Replace Subclass with Fields is the useful inverse when the subclasses merely return constants.
+
+Also note the error timing: unknown codes now fail during creation rather than during the later `Days` call. Preserve or deliberately migrate that behavior in a real API.
+
+If an object's category must change during its lifetime, a replaceable state or strategy object is often more suitable than trying to change its runtime class. And every subclass must honor the base class's behavioral promises—not merely provide methods with matching names.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Type Code with Subclasses](https://refactoring.com/catalog/replaceTypeCodeWithSubclasses.html).

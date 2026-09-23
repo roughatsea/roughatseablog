@@ -1,0 +1,113 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Introduce Null Object
+description: "Replace repeated checks for a missing collaborator with an object that implements the intended do-nothing behavior."
+prerequisites: "Objects, interfaces or compatible methods, and null checks."
+---
+
+export const checks = {"csharp":{"original":"var messages = new List<string>(); Check.That(Job.Run(messages.Add) == 7 && messages.SequenceEqual(new[] { \"started\" })); Check.That(Job.Run(null) == 7);","revised":"var log = new RecordingLog(); Check.That(Job.Run(log) == 7 && log.Messages.SequenceEqual(new[] { \"started\" })); Check.That(Job.Run(new SilentLog()) == 7);"},"python":{"original":"messages = []\nassert run(messages.append) == 7 and messages == ['started']\nassert run(None) == 7","revised":"log = RecordingLog()\nassert run(log) == 7 and log.messages == ['started']\nassert run(SilentLog()) == 7"}};
+
+**Introduce Null Object** replaces repeated checks for a missing collaborator with an object that performs the intended “nothing to do” behavior. The object still satisfies the operation's contract; its emptiness is deliberate rather than an accidental missing dependency. It is a form of Special Case. [1](#source-1)
+
+## Original version: optional diagnostic logging
+
+A small job can run with or without diagnostic messages. Logging is genuinely optional here; this is not a security audit trail or a required payment record.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Job
+{
+    public static int Run(Action<string>? log)
+    {
+        if (log != null) log("started");
+        return 7;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def run(log):
+    if log is not None:
+        log("started")
+    return 7
+```
+
+</section>
+
+One null check is harmless. If many operations repeat it, the absence rule becomes scattered across callers.
+
+## Refactored version: a logger that intentionally stays silent
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public interface ILog
+{
+    void Write(string message);
+}
+public sealed class RecordingLog : ILog
+{
+    public List<string> Messages { get; } = new List<string>();
+    public void Write(string message) { Messages.Add(message); }
+}
+public sealed class SilentLog : ILog
+{
+    public void Write(string message) { }
+}
+public static class Job
+{
+    public static int Run(ILog log)
+    {
+        log.Write("started");
+        return 7;
+    }
+}
+```
+
+`Job.Run(new SilentLog())` returns 7 without recording a message. `Run` no longer distinguishes absence; its caller supplies a logger whose behavior is silence.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class RecordingLog:
+    def __init__(self):
+        self.messages = []
+
+    def write(self, message):
+        self.messages.append(message)
+
+
+class SilentLog:
+    def write(self, message):
+        pass
+
+
+def run(log):
+    log.write("started")
+    return 7
+```
+
+`run(SilentLog())` performs the job with no diagnostic message. The recording implementation provides the same method but retains the message for inspection.
+
+</section>
+
+## Absence is not always success
+
+A silent diagnostic logger is plausible. A “null payment processor” that pretends a charge succeeded is not an equivalent fallback for a missing payment service. Decide whether absence should mean a default, a no-op, an explicit missing result, or an error.
+
+The revised API assumes a non-null compatible logger. Passing null directly now fails; construction code must translate intentional absence into `SilentLog`. That migration is part of the change.
+
+Also check argument evaluation. With a null check, an expensive message expression might never run. An unconditional call to a silent object still evaluates ordinary arguments before calling it. Preserve lazy message construction when that matters.
+
+For one optional operation, a simple conditional may remain clearer than three new types. Use a Null Object when one well-defined absence behavior removes repetition without hiding a meaningful failure.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Introduce Special Case](https://refactoring.com/catalog/introduceSpecialCase.html).

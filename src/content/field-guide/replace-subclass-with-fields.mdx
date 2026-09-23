@@ -1,0 +1,111 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Subclass with Fields
+description: "Replace subclasses that differ only in constant data with one class whose fields hold those values."
+prerequisites: "Inheritance, overriding, constructors, and fields."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new SmallChest().Capacity() == 10 && new LargeChest().Capacity() == 30);","revised":"Check.That(new Chest(10).Capacity() == 10 && new Chest(30).Capacity() == 30);"},"python":{"original":"assert SmallChest().capacity() == 10 and LargeChest().capacity() == 30","revised":"assert Chest(10).capacity() == 10 and Chest(30).capacity() == 30"}};
+
+**Replace Subclass with Fields** replaces subclasses that differ only in constant data with one class storing that data. Instead of creating a class for every capacity, color, or label, pass the value to an instance. Fowler's newer catalog calls this **Remove Subclass**. [1](#source-1)
+
+## Original version: a class for every chest size
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public abstract class Chest
+{
+    public abstract int Capacity();
+}
+public sealed class SmallChest : Chest
+{
+    public override int Capacity() { return 10; }
+}
+public sealed class LargeChest : Chest
+{
+    public override int Capacity() { return 30; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Chest:
+    def capacity(self):
+        raise NotImplementedError
+
+
+class SmallChest(Chest):
+    def capacity(self):
+        return 10
+
+
+class LargeChest(Chest):
+    def capacity(self):
+        return 30
+```
+
+</section>
+
+The subclasses do not implement different storage algorithms. Each supplies one fixed number. Adding a twenty-slot chest would require another class for another number.
+
+## Refactored version: capacity is data
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Chest
+{
+    private readonly int capacity;
+    public Chest(int capacity) { this.capacity = capacity; }
+    public int Capacity() { return capacity; }
+}
+```
+
+```csharp group=revised role=run
+Chest small = new Chest(10);
+Chest large = new Chest(30);
+Console.WriteLine(small.Capacity()); // 10
+Console.WriteLine(large.Capacity()); // 30
+```
+
+The behavior is one getter; only its stored value differs. An additional size no longer requires a subclass declaration.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Chest:
+    def __init__(self, capacity):
+        self._capacity = capacity
+
+    def capacity(self):
+        return self._capacity
+```
+
+```python group=revised role=run
+small = Chest(10)
+large = Chest(30)
+print(small.capacity())  # 10
+print(large.capacity())  # 30
+```
+
+Each instance stores its own capacity. The object type no longer encodes the size.
+
+</section>
+
+## Preserve distinctions that matter
+
+Before deleting subclasses, inspect type checks, serialization tags, public constructors, and overrides. A class name can be part of a contract even if its methods look trivial. Callers using `SmallChest` as an identity or dispatch signal need migration.
+
+The new constructor also permits capacities beyond the two original choices. A factory or validation can restrict that when necessary. This example deliberately demonstrates a more general data representation; it is not an assertion that every integer is a valid production chest size.
+
+Keep subclasses when their distinct behavior or substitutable domain roles are meaningful. Remove them when they merely turn a table of data into a collection of files.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Remove Subclass](https://refactoring.com/catalog/removeSubclass.html).
