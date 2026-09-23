@@ -1,0 +1,228 @@
+---
+const plot = { left: 78, right: 862, top: 40, bottom: 374 };
+const chartX = (value: number) => plot.left + value * (plot.right - plot.left);
+const chartY = (value: number) => plot.bottom - value * (plot.bottom - plot.top);
+const initialPath = Array.from({ length: 161 }, (_, index) => {
+  const value = index / 160;
+  return `${index === 0 ? 'M' : 'L'}${chartX(value).toFixed(2)} ${chartY(0.2 + 0.5 * value).toFixed(2)}`;
+}).join(' ');
+---
+
+<figure class="fixed-point-lab reckoning-visual" data-fixed-point-lab>
+  <header>
+    <p>Continuous-function explorer</p>
+    <h3>Find where the output returns the input</h3>
+  </header>
+
+  <div class="controls" aria-label="Choose a continuous function from the interval zero to one back into itself">
+    <button type="button" class="active" data-preset="pull" aria-pressed="true">Linear pull</button>
+    <button type="button" data-preset="mirror" aria-pressed="false">Mirror</button>
+    <button type="button" data-preset="arch" aria-pressed="false">Logistic arch</button>
+  </div>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 940 460" role="img" aria-labelledby="fixed-point-title fixed-point-desc">
+      <title id="fixed-point-title">The graph of f of x equals zero point two plus one half x crosses the diagonal at x equals zero point four</title>
+      <desc id="fixed-point-desc">A solid magenta function curve and a dashed blue diagonal are plotted on the unit square. Their intersection, marked with a ring and cross, is the function's fixed point.</desc>
+
+      <g class="grid" aria-hidden="true">
+        {[0, 0.25, 0.5, 0.75, 1].map((value) => (
+          <g>
+            <path d={`M${chartX(value)} ${plot.top}V${plot.bottom}`} />
+            <path d={`M${plot.left} ${chartY(value)}H${plot.right}`} />
+          </g>
+        ))}
+      </g>
+
+      <g class="axes" aria-hidden="true">
+        <path d={`M${plot.left} ${plot.top}V${plot.bottom}H${plot.right}`} />
+        {[0, 0.25, 0.5, 0.75, 1].map((value) => (
+          <g>
+            <path d={`M${chartX(value)} ${plot.bottom}v7`} />
+            <text x={chartX(value)} y="400" text-anchor="middle">{value.toFixed(value === 0 || value === 1 ? 0 : 2)}</text>
+            <path d={`M${plot.left - 7} ${chartY(value)}h7`} />
+            <text x="62" y={chartY(value) + 5} text-anchor="end">{value.toFixed(value === 0 || value === 1 ? 0 : 2)}</text>
+          </g>
+        ))}
+        <text class="axis-title" x="470" y="444" text-anchor="middle">input x</text>
+        <text class="axis-title y-title" x="22" y="207" text-anchor="middle">output f(x)</text>
+      </g>
+
+      <path class="diagonal" d={`M${chartX(0)} ${chartY(0)}L${chartX(1)} ${chartY(1)}`} aria-hidden="true" />
+      <path class="function" data-function-path d={initialPath} aria-hidden="true" />
+      <g class="fixed-points" data-fixed-points aria-hidden="true">
+        <g transform={`translate(${chartX(0.4)} ${chartY(0.4)})`}>
+          <circle r="11" />
+          <path d="M-5 0H5M0-5V5" />
+        </g>
+      </g>
+
+      <g class="legend" aria-hidden="true">
+        <path class="legend-function" d="M650 60h26" />
+        <text x="684" y="65">function f(x)</text>
+        <path class="legend-diagonal" d="M650 86h26" />
+        <text x="684" y="91">diagonal y = x</text>
+        <g class="legend-point" transform="translate(663 113)">
+          <circle r="7" />
+          <path d="M-3 0H3M0-3V3" />
+        </g>
+        <text x="684" y="118">fixed point</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div>
+      <span>Function</span>
+      <strong data-formula>f(x) = 0.2 + 0.5x</strong>
+    </div>
+    <div>
+      <span>Endpoint difference</span>
+      <strong data-endpoints>g(0) = 0.2; g(1) = −0.3</strong>
+    </div>
+    <div>
+      <span>Fixed point</span>
+      <strong data-fixed-label>x = 0.4</strong>
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> every solid function curve meets the dashed diagonal. At an intersection, the horizontal input and vertical output have the same value, so <span class="formula">f(x) = x</span>. The endpoint difference <span class="formula">g(x) = f(x) − x</span> starts nonnegative and ends nonpositive.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-fixed-point-lab]').forEach((figure) => {
+    const path = figure.querySelector('[data-function-path]');
+    const points = figure.querySelector('[data-fixed-points]');
+    const title = figure.querySelector('#fixed-point-title');
+    const desc = figure.querySelector('#fixed-point-desc');
+    const formula = figure.querySelector('[data-formula]');
+    const endpoints = figure.querySelector('[data-endpoints]');
+    const fixedLabel = figure.querySelector('[data-fixed-label]');
+    if (!(path instanceof SVGPathElement) || !(points instanceof SVGGElement) || !title || !desc || !formula || !endpoints || !fixedLabel) return;
+
+    const presets = {
+      pull: {
+        label: 'Linear pull',
+        formula: 'f(x) = 0.2 + 0.5x',
+        endpoints: 'g(0) = 0.2; g(1) = −0.3',
+        fixedLabel: 'x = 0.4',
+        fixedPoints: [0.4],
+        fn: (x: number) => 0.2 + 0.5 * x,
+      },
+      mirror: {
+        label: 'Mirror',
+        formula: 'f(x) = 1 − x',
+        endpoints: 'g(0) = 1; g(1) = −1',
+        fixedLabel: 'x = 0.5',
+        fixedPoints: [0.5],
+        fn: (x: number) => 1 - x,
+      },
+      arch: {
+        label: 'Logistic arch',
+        formula: 'f(x) = 4x(1 − x)',
+        endpoints: 'g(0) = 0; g(1) = −1',
+        fixedLabel: 'x = 0 and x = 0.75',
+        fixedPoints: [0, 0.75],
+        fn: (x: number) => 4 * x * (1 - x),
+      },
+    } as const;
+
+    const namespace = 'http://www.w3.org/2000/svg';
+    const left = 78;
+    const right = 862;
+    const top = 40;
+    const bottom = 374;
+    const chartX = (value: number) => left + value * (right - left);
+    const chartY = (value: number) => bottom - value * (bottom - top);
+
+    const render = (key: keyof typeof presets) => {
+      const preset = presets[key];
+      const pathData = Array.from({ length: 161 }, (_, index) => {
+        const value = index / 160;
+        return `${index === 0 ? 'M' : 'L'}${chartX(value).toFixed(2)} ${chartY(preset.fn(value)).toFixed(2)}`;
+      }).join(' ');
+      path.setAttribute('d', pathData);
+      points.replaceChildren();
+
+      preset.fixedPoints.forEach((value) => {
+        const group = document.createElementNS(namespace, 'g');
+        group.setAttribute('transform', `translate(${chartX(value)} ${chartY(value)})`);
+        const circle = document.createElementNS(namespace, 'circle');
+        circle.setAttribute('r', '11');
+        const cross = document.createElementNS(namespace, 'path');
+        cross.setAttribute('d', 'M-5 0H5M0-5V5');
+        group.append(circle, cross);
+        points.append(group);
+      });
+
+      figure.querySelectorAll('[data-preset]').forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        const active = button.dataset.preset === key;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      formula.textContent = preset.formula;
+      endpoints.textContent = preset.endpoints;
+      fixedLabel.textContent = preset.fixedLabel;
+      title.textContent = `${preset.label} function ${preset.formula} with fixed ${preset.fixedPoints.length === 1 ? 'point' : 'points'} ${preset.fixedLabel}`;
+      desc.textContent = `A solid function curve and a dashed diagonal are plotted on the unit square. ${preset.fixedPoints.length === 1 ? 'Their intersection is' : 'Their intersections are'} marked with a ring and cross: ${preset.fixedLabel}.`;
+    };
+
+    figure.querySelectorAll('[data-preset]').forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      button.addEventListener('click', () => {
+        const key = button.dataset.preset;
+        if (key === 'pull' || key === 'mirror' || key === 'arch') render(key);
+      });
+    });
+  });
+</script>
+
+<style>
+  .fixed-point-lab {
+    --fp-blue: #087dcc;
+    --fp-green: #4f9300;
+    --fp-pink: #d9007e;
+    background: radial-gradient(circle at 88% 5%, color-mix(in srgb, var(--fp-green) 12%, transparent), transparent 21rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .fixed-point-lab { --fp-blue: #1493ff; --fp-green: #93ff14; --fp-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .75rem; }
+  .controls button { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: .8rem; font-weight: 700; padding: .5rem .82rem; }
+  .controls button.active { background: var(--fp-blue); border-color: var(--fp-blue); color: #fff; }
+  .controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--fp-green) 65%, transparent); outline-offset: 2px; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 700px; width: 100%; }
+  .grid path { stroke: var(--border-color); stroke-width: 1; }
+  .axes path { fill: none; stroke: var(--text-secondary); stroke-width: 1.5; }
+  .axes text, .legend text { fill: var(--text-secondary); font-size: 12px; }
+  .axis-title { font-weight: 700; letter-spacing: .04em; }
+  .y-title { transform: rotate(-90deg); transform-box: fill-box; transform-origin: center; }
+  .diagonal, .legend-diagonal { fill: none; stroke: var(--fp-blue); stroke-dasharray: 10 7; stroke-linecap: round; stroke-width: 3; }
+  .function, .legend-function { fill: none; stroke: var(--fp-pink); stroke-linecap: round; stroke-linejoin: round; stroke-width: 4; }
+  .fixed-points circle, .legend-point circle { fill: var(--bg-color); stroke: var(--fp-green); stroke-width: 4; }
+  .fixed-points path, .legend-point path { fill: none; stroke: var(--fp-green); stroke-linecap: round; stroke-width: 2.5; }
+  .readout { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; display: grid; gap: .75rem; grid-template-columns: 1.05fr 1.45fr 1fr; margin-top: .75rem; padding: .9rem 1rem; }
+  .readout div { display: grid; gap: .18rem; }
+  .readout span { color: var(--text-secondary); font-size: .64rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .readout strong { color: var(--text-primary); font-size: .88rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  .formula { white-space: nowrap; }
+  @media (max-width: 720px) {
+    .fixed-point-lab { width: calc(100vw - 1.5rem); }
+    .readout { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fixed-point-lab * { transition: none !important; } }
+</style>

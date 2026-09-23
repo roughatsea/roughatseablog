@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A map and its territory share one fixed point</title>
+  <desc id="desc">A smaller luminous coordinate map rests over a dark maritime blueprint. Cyan diagonals and a magenta curve meet at one ringed green point, suggesting a printed location directly above the place it represents.</desc>
+  <defs>
+    <radialGradient id="sea" cx="66%" cy="41%" r="74%">
+      <stop offset="0" stop-color="#17354b"/>
+      <stop offset=".48" stop-color="#0b1e2c"/>
+      <stop offset="1" stop-color="#050b12"/>
+    </radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#1493ff" stroke-opacity=".12" stroke-width="1"/>
+    </pattern>
+    <pattern id="fine" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M10 0H0V10" fill="none" stroke="#bde6ff" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="11" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <clipPath id="mapClip"><rect x="405" y="160" width="790" height="560" rx="8"/></clipPath>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <rect width="1600" height="900" fill="url(#fine)"/>
+
+  <g fill="none" stroke="#4daee8" stroke-opacity=".18" stroke-width="2">
+    <path d="M-40 660C190 540 300 744 518 620S920 444 1140 570s336 77 510-42"/>
+    <path d="M-30 707C202 588 324 790 535 670s397-170 609-53 332 72 500-39"/>
+    <path d="M-50 238C190 112 316 318 530 198s386-165 608-45 327 66 505-48"/>
+  </g>
+  <g fill="#1493ff" opacity=".5">
+    <circle cx="161" cy="198" r="3"/><circle cx="1336" cy="205" r="3"/><circle cx="1382" cy="709" r="3"/><circle cx="220" cy="739" r="3"/>
+  </g>
+
+  <rect x="371" y="139" width="858" height="602" rx="22" fill="#000" opacity=".45" filter="url(#soft)"/>
+  <rect x="405" y="160" width="790" height="560" rx="8" fill="#0c2434" fill-opacity=".94" stroke="#77c9f4" stroke-opacity=".78" stroke-width="3"/>
+  <g clip-path="url(#mapClip)">
+    <rect x="405" y="160" width="790" height="560" fill="url(#grid)" opacity=".72"/>
+    <path d="M405 720L1195 160" fill="none" stroke="#1493ff" stroke-width="5" stroke-dasharray="18 14" opacity=".92"/>
+    <path d="M405 590C525 628 602 600 672 511S807 334 900 371s133 112 295-43" fill="none" stroke="#ff1493" stroke-width="9" stroke-linecap="round" filter="url(#glow)"/>
+    <path d="M482 222h632M482 658h632M470 238v402M1130 238v402" fill="none" stroke="#d8f2ff" stroke-opacity=".18" stroke-width="2"/>
+    <g fill="none" stroke="#d8f2ff" stroke-opacity=".32" stroke-width="2">
+      <circle cx="670" cy="510" r="152"/><circle cx="670" cy="510" r="107"/><circle cx="670" cy="510" r="62"/>
+    </g>
+  </g>
+
+  <g transform="translate(740 483)" filter="url(#glow)">
+    <circle r="34" fill="#07121b" stroke="#93ff14" stroke-width="7"/>
+    <circle r="8" fill="#93ff14"/>
+    <path d="M-51 0H51M0-51V51" fill="none" stroke="#93ff14" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g fill="none" stroke="#93ff14" stroke-opacity=".55" stroke-width="2">
+    <path d="M740 424V281M740 542v116M681 483H538M799 483h148"/>
+  </g>
+  <path d="M405 160l-28-34M1195 160l28-34M405 720l-28 34M1195 720l28 34" fill="none" stroke="#ff1493" stroke-opacity=".72" stroke-width="3"/>
+</svg>
