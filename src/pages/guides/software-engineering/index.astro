@@ -5,7 +5,7 @@ import { guideDomains, guideIndex, guideSources } from '../../../data/software-e
 const revisedDescriptions: Record<string, string> = {
   'open-closed-principle': 'Add a new behavior without rewriting the existing code that uses it. Follow a checkout as an employee discount is added.',
   'switch-statements': 'Repeated checks for the same kind of object can make one new case require changes in several places. Compare membership rules before and after refactoring.',
-  'deadlock': 'Two or more operations cannot continue because each is waiting for something another holds. Follow two workers and see how a shared lock order prevents their deadlock.',
+  'deadlocks-and-lock-discipline': 'Two or more operations cannot continue because each is waiting for something another holds. Follow two workers and see how a shared lock order prevents their deadlock.',
 };
 const concepts = guideIndex.map((concept) => revisedDescriptions[concept.slug]
   ? { ...concept, definition: revisedDescriptions[concept.slug], lookFor: revisedDescriptions[concept.slug] }
