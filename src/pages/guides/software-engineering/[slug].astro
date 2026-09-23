@@ -1,43 +1,32 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SoftwareEngineeringConcept from '../../../components/SoftwareEngineeringConcept.astro';
-import FieldGuidePilotLayout from '../../../layouts/FieldGuidePilotLayout.astro';
 import { guideConcepts } from '../../../data/software-engineering-guide.js';
-import { Content as OpenClosed, frontmatter as openClosedMeta } from './pilot/open-closed-principle.mdx';
-import { Content as SwitchStatements, frontmatter as switchMeta } from './pilot/switch-statements.mdx';
-import { Content as Deadlock, frontmatter as deadlockMeta } from './pilot/deadlock.mdx';
+import { Content as OpenClosed } from './pilot/open-closed-principle.mdx';
+import { Content as SwitchStatements } from './pilot/switch-statements.mdx';
+import { Content as Deadlock } from './pilot/deadlock.mdx';
 
 export function getStaticPaths() {
   return guideConcepts.map((concept, index) => ({
     params: { slug: concept.slug },
     props: {
       concept,
-      previous: index > 0
-        ? { slug: guideConcepts[index - 1].slug, title: guideConcepts[index - 1].title }
-        : undefined,
-      next: index < guideConcepts.length - 1
-        ? { slug: guideConcepts[index + 1].slug, title: guideConcepts[index + 1].title }
-        : undefined,
+      previous: index > 0 ? { slug: guideConcepts[index - 1].slug, title: guideConcepts[index - 1].title } : undefined,
+      next: index < guideConcepts.length - 1 ? { slug: guideConcepts[index + 1].slug, title: guideConcepts[index + 1].title } : undefined,
     },
   }));
 }
-
 const { concept, previous, next } = Astro.props;
-// Import the approved source, rather than maintain a second copy of its examples.
-const replacements: Record<string, { Content: any; frontmatter: any }> = {
-  'open-closed-principle': { Content: OpenClosed, frontmatter: openClosedMeta },
-  'switch-statements': { Content: SwitchStatements, frontmatter: switchMeta },
-  'deadlock': { Content: Deadlock, frontmatter: deadlockMeta },
+// MDX Content already includes its frontmatter layout. Do not wrap it twice.
+const replacements: Record<string, any> = {
+  'open-closed-principle': OpenClosed,
+  'switch-statements': SwitchStatements,
+  'deadlocks-and-lock-discipline': Deadlock,
 };
-const replacement = replacements[concept.slug];
-const ApprovedArticle = replacement?.Content;
+const ApprovedArticle = replacements[concept.slug];
 ---
 
-{replacement ? (
-  <FieldGuidePilotLayout frontmatter={replacement.frontmatter} published={true} previous={previous} next={next}>
-    <ApprovedArticle />
-  </FieldGuidePilotLayout>
-) : (
+{ApprovedArticle ? <ApprovedArticle /> : (
   <BaseLayout title={`${concept.title} — Software Engineering Field Guide`} description={concept.definition}>
     <SoftwareEngineeringConcept concept={concept} previous={previous} next={next} />
   </BaseLayout>
