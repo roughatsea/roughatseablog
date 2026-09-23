@@ -1,0 +1,100 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Command-Query Separation
+description: "A query asks for information without changing the relevant state. A command changes state. Keeping those jobs distinct makes calls easier to understand."
+prerequisites: "Objects, methods, fields, and return values."
+---
+
+export const checks = {"csharp":{"counter":"var c = new Counter(); Check.That(c.Value == 0); Check.That(c.Value == 0); c.Increment(); Check.That(c.Value == 1); c.Increment(); Check.That(c.Value == 2);"},"python":{"counter":"counter = Counter()\nassert counter.value() == 0\nassert counter.value() == 0\nassert counter.increment() is None\nassert counter.value() == 1\ncounter.increment()\nassert counter.value() == 2"}};
+
+**Command-query separation** distinguishes two kinds of operation. A **query** asks for information without changing the relevant state. A **command** changes state. In the strict formulation, queries return results and commands do not. [1](#source-1)
+
+The practical benefit is predictability: asking what the count is should not secretly increase it.
+
+## Read a counter twice
+
+Here is a small, single-threaded counter. Reading its value leaves it alone. Incrementing it changes the stored number.
+
+<section data-pilot-language="csharp">
+
+```csharp group=counter role=types
+public sealed class Counter
+{
+    private int value;
+
+    public int Value
+    {
+        get { return value; }
+    }
+
+    public void Increment()
+    {
+        value = checked(value + 1);
+    }
+}
+```
+
+```csharp group=counter role=run
+Counter counter = new Counter();
+Console.WriteLine(counter.Value); // 0
+Console.WriteLine(counter.Value); // 0
+counter.Increment();
+Console.WriteLine(counter.Value); // 1
+```
+
+`Value` is a query expressed as a property getter. `Increment` is a command returning `void`. The two reads produce zero; only the command changes the result of a later read. `checked` prevents the stored integer from silently wrapping around.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=counter role=types
+class Counter:
+    def __init__(self):
+        self._value = 0
+
+    def value(self):
+        return self._value
+
+    def increment(self):
+        self._value += 1
+```
+
+```python group=counter role=run
+counter = Counter()
+print(counter.value())  # 0
+print(counter.value())  # 0
+counter.increment()
+print(counter.value())  # 1
+```
+
+`value` is a query. `increment` is a command and implicitly returns `None`. The two reads produce zero; only the command changes the result of a later read.
+
+</section>
+
+## The surprise this avoids
+
+A method named “get balance” that also deducts a fee would make an apparently harmless display operation change an account. Refreshing the screen could then deduct another fee. The issue is not simply the method's name: observation and modification have been combined without making the consequence clear.
+
+Separating them lets a caller request a balance repeatedly without having to study the implementation to discover a hidden charge. If a charge is required, the caller explicitly invokes the operation that performs it.
+
+This does not mean a query must never touch any internal machinery. Caching, tracing, and database access can complicate a strict notion of purity. What callers are promised about visible state and side effects needs to be clear.
+
+## Some operations should change and return together
+
+Removing and returning an item from a queue is a useful counterexample to a blanket rule. Splitting it into “read the next item” and “remove it” can allow another worker to interfere between calls.
+
+An atomic operation performs its change as one indivisible operation relative to the other participants. Returning the removed item is part of that useful operation, not evidence that it should be split. Likewise, an atomic increment can reasonably return the new value. The counter shown here is not an implementation of thread-safe counting. [2](#source-2)
+
+When change-and-return belongs together, keep it together and make the combined behavior explicit. A design principle should not manufacture a race condition in pursuit of a tidy signature.
+
+## Not the same as CQRS
+
+**Command Query Responsibility Segregation**, or **CQRS**, goes further by using separate models for writing and reading. Command-query separation can guide the methods of one tiny object; it does not require separate databases, message queues, or a distributed architecture.
+
+The first useful question is local: **does this call observe state, change it, or deliberately do both?** A reader should not have to guess.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Command Query Separation](https://martinfowler.com/bliki/CommandQuerySeparation.html), including qualifications to the strict rule.
+2. <span id="source-2"></span>[Microsoft — Managed threading best practices](https://learn.microsoft.com/en-us/dotnet/standard/threading/managed-threading-best-practices), including atomic increments.

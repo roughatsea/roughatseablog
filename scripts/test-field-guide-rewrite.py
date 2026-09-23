@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Execute the displayed examples, grouped by version, from the new MDX lessons.
 
-C# declarations get separate namespaces; printed call sites run in Main-like async
-methods with the article's additional checks. Python groups run in fresh processes.
-This verifies selected behaviors, not arbitrary equivalence or reader enjoyment.
+C# declarations get separate namespaces; printed call sites and additional checks
+run in separate lexical scopes. Python groups run in fresh processes. This verifies
+selected behaviors, not arbitrary equivalence or reader enjoyment.
 """
 import argparse
 import hashlib
@@ -82,7 +82,7 @@ def main():
                 ident = f'Sample{len(csharp_sources)}'
                 types = '\n\n'.join(code for role, code in blocks if role == 'types')
                 calls = '\n\n'.join(code for role, code in blocks if role == 'run')
-                csharp_sources.append(f'namespace {ident} {{\n{types}\ninternal static class Harness {{ public static async System.Threading.Tasks.Task Run() {{\n{calls}\n{extra}\nawait System.Threading.Tasks.Task.CompletedTask;\n}} }}\n}}')
+                csharp_sources.append(f'namespace {ident} {{\n{types}\ninternal static class Harness {{ public static async System.Threading.Tasks.Task Run() {{\n{{\n{calls}\n}}\n{{\n{extra}\n}}\nawait System.Threading.Tasks.Task.CompletedTask;\n}} }}\n}}')
                 csharp_calls.append(f'await {ident}.Harness.Run();')
         results.append({'slug': path.stem, 'sha256': hashlib.sha256(text.encode()).hexdigest(), 'snippets': count, 'groups': len(groups)})
         print(f'PASS Python and extraction: {path.stem}')

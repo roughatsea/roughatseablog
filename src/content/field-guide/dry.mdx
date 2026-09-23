@@ -1,0 +1,125 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "DRY: One Source of Truth"
+description: "DRY means Don't Repeat Yourself: keep one authoritative representation of a rule instead of maintaining several copies that must agree."
+prerequisites: "Functions, constants, and basic arithmetic."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Party.CanJoin(3)); Check.That(!Party.CanJoin(4)); Check.That(Party.SeatsLeft(2) == 2); Check.That(Party.SeatsLeft(6) == 0);","after":"Check.That(Party.CanJoin(3)); Check.That(!Party.CanJoin(4)); Check.That(Party.SeatsLeft(2) == 2); Check.That(Party.SeatsLeft(6) == 0);"},"python":{"before":"assert can_join(3)\nassert not can_join(4)\nassert seats_left(2) == 2\nassert seats_left(6) == 0","after":"assert can_join(3)\nassert not can_join(4)\nassert seats_left(2) == 2\nassert seats_left(6) == 0"}};
+
+**DRY** means **Don't Repeat Yourself**. The important thing not to repeat is knowledge: keep one authoritative representation of a rule instead of maintaining several copies that must agree. [1](#source-1)
+
+It does not mean that two lines which happen to look alike must always be combined.
+
+## How many players fit in the party?
+
+A game allows four players in an adventuring party. One function decides whether another player can join; another tells the interface how many spaces remain. Player counts here are nonnegative integers.
+
+### Original version: remember to change both fours
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Party
+{
+    public static bool CanJoin(int playerCount)
+    {
+        return playerCount < 4;
+    }
+
+    public static int SeatsLeft(int playerCount)
+    {
+        return Math.Max(0, 4 - playerCount);
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def can_join(player_count):
+    return player_count < 4
+
+
+def seats_left(player_count):
+    return max(0, 4 - player_count)
+```
+
+</section>
+
+The two fours express the same decision: maximum party size. If the game switches to six-player parties and only one value changes, joining and the displayed capacity can disagree.
+
+The expressions themselves do different jobs. We should not force them into one confusing general-purpose function. We should give the shared rule one definition.
+
+### Refactored version: name the shared limit
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class Party
+{
+    public const int MaximumPlayers = 4;
+
+    public static bool CanJoin(int playerCount)
+    {
+        return playerCount < MaximumPlayers;
+    }
+
+    public static int SeatsLeft(int playerCount)
+    {
+        return Math.Max(0, MaximumPlayers - playerCount);
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(Party.CanJoin(3));   // True
+Console.WriteLine(Party.SeatsLeft(3)); // 1
+```
+
+Both functions now use `MaximumPlayers`. A party-size change has one value to update. `Math.Max` still prevents a negative display if the count is already over capacity; this example does not decide how an over-capacity party should be repaired.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+MAXIMUM_PLAYERS = 4
+
+
+def can_join(player_count):
+    return player_count < MAXIMUM_PLAYERS
+
+
+def seats_left(player_count):
+    return max(0, MAXIMUM_PLAYERS - player_count)
+```
+
+```python group=after role=run
+print(can_join(3))    # True
+print(seats_left(3))  # 1
+```
+
+Both functions now use `MAXIMUM_PLAYERS`. Uppercase is Python's convention for a constant, not an enforcement mechanism. `max` still prevents a negative display if the count is already over capacity; this example does not decide how an over-capacity party should be repaired.
+
+</section>
+
+## A different four should stay different
+
+Suppose the same game displays four thumbnail columns in its screenshot gallery. That is not a second representation of maximum party size. Widening the gallery should not admit more players to a dungeon.
+
+Using one constant for both decisions would make the code shorter while making the design worse. The right test is not “are these values equal?” It is **“must these pieces change together because they express the same rule?”**
+
+The same reasoning applies to larger blocks. Two similar reports may belong to different departments with different requirements. Merging them before those requirements are understood can create a function full of flags and exceptions.
+
+## DRY reaches beyond source code
+
+A limit copied into validation, a database constraint, documentation, and an interface can drift even if each source file contains only one copy. Sometimes the solution is generating those representations from shared data. Sometimes the copies must exist, but an automated check can verify that they agree.
+
+Choose the smallest arrangement that keeps a real rule consistent. A named constant is enough for this party. A universal configuration framework is not required.
+
+## Sources
+
+1. <span id="source-1"></span>[Andy Hunt and Dave Thomas — Pragmatic Programmer tips, DRY](https://pragprog.com/tips/). The party-size example and counterexample are original.

@@ -1,0 +1,109 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Encapsulation and Information Hiding
+description: "Encapsulation puts data and the operations that manage it together. Information hiding keeps callers from depending on implementation details."
+prerequisites: "Objects, methods, lists, and properties."
+---
+
+export const checks = {"csharp":{"playlist":"var list = new Playlist(); list.Add(\"Harbor Lights\"); var copy = list.Tracks; copy[0] = \"Changed outside\"; Check.That(list.Tracks[0] == \"Harbor Lights\"); bool rejected = false; try { list.Add(\"   \"); } catch (ArgumentException) { rejected = true; } Check.That(rejected && list.Count == 1);"},"python":{"playlist":"playlist = Playlist()\nplaylist.add('Harbor Lights')\ncopy = list(playlist.tracks)\ncopy[0] = 'Changed outside'\nassert playlist.tracks == ('Harbor Lights',)\ntry:\n    playlist.add('   ')\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('blank title accepted')\nassert playlist.count == 1"}};
+
+**Encapsulation** puts data together with the operations that manage it, and lets an object control how callers use that data. **Information hiding** keeps callers from depending on decisions about the object's implementation. [1](#source-1)
+
+A private field helps, but the useful question is not “did we type `private`?” It is **who is allowed to make changes, and what can callers safely assume afterward?**
+
+## A playlist that never accepts a blank title
+
+Suppose a playlist has one rule: every track title must contain something other than whitespace. If callers can edit the playlist's internal list directly, they can bypass any validation we write in an add method.
+
+Instead, let callers ask the playlist to add a track. When they want to see its contents, return a snapshot rather than the mutable list itself.
+
+<section data-pilot-language="csharp">
+
+```csharp group=playlist role=types
+public sealed class Playlist
+{
+    private readonly List<string> tracks = new List<string>();
+
+    public int Count { get { return tracks.Count; } }
+
+    public string[] Tracks
+    {
+        get { return tracks.ToArray(); }
+    }
+
+    public void Add(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            throw new ArgumentException("A track needs a title.", nameof(title));
+        }
+        tracks.Add(title);
+    }
+}
+```
+
+```csharp group=playlist role=run
+Playlist playlist = new Playlist();
+playlist.Add("Harbor Lights");
+string[] snapshot = playlist.Tracks;
+snapshot[0] = "Changed outside";
+Console.WriteLine(playlist.Tracks[0]); // Harbor Lights
+```
+
+`Add` checks the title before changing `tracks`. `Tracks` returns a new array, so modifying that array does not modify the playlist. The `readonly` field alone would not do this: it prevents replacing the list reference, not adding items to the list.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=playlist role=types
+class Playlist:
+    def __init__(self):
+        self._tracks = []
+
+    @property
+    def count(self):
+        return len(self._tracks)
+
+    @property
+    def tracks(self):
+        return tuple(self._tracks)
+
+    def add(self, title):
+        if not isinstance(title, str) or not title.strip():
+            raise ValueError("A track needs a title.")
+        self._tracks.append(title)
+```
+
+```python group=playlist role=run
+playlist = Playlist()
+playlist.add("Harbor Lights")
+snapshot = list(playlist.tracks)
+snapshot[0] = "Changed outside"
+print(playlist.tracks[0])  # Harbor Lights
+```
+
+`add` checks the title before changing `_tracks`. The `tracks` property returns a tuple, an immutable sequence. Converting it to a new list and modifying that copy does not modify the playlist. `_tracks` remains accessible to Python code; the underscore asks callers to treat it as private rather than enforcing that restriction.
+
+</section>
+
+## Where the information is hidden
+
+A caller knows how to add a title, ask for the count, and retrieve a snapshot. It does not need to know that the playlist stores its titles in a list.
+
+We could later store extra information with each track while continuing to return the same title snapshots. Callers using the public operations would not need to learn the new storage structure. Callers reaching directly into the old list would.
+
+That freedom to change an internal decision is information hiding. Keeping the title rule inside the object is a benefit of encapsulation. The two ideas reinforce each other, but they emphasize different things.
+
+## Know what the example does not promise
+
+A snapshot is not a live view: tracks added later will not appear in a snapshot already returned. Copying also costs time and memory proportional to the number of titles. Neither version adds thread safety; concurrent readers and writers would need an additional design.
+
+Nor does encapsulation mean every number requires a class. A pair of immutable coordinates may be useful as transparent data. Add controlled operations where they protect a real rule or prevent callers from depending on details you expect to change.
+
+A wrapper that exposes the same mutable list under a different property name has changed the spelling, not the protection.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Object-oriented programming](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/), including encapsulation and access control.
+2. [Python — Classes, private variables](https://docs.python.org/3/tutorial/classes.html#private-variables), explaining the convention used for `_tracks`.

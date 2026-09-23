@@ -1,0 +1,131 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Dependency Injection
+description: "Dependency injection means supplying an object with something it needs, rather than making it construct or locate that dependency itself."
+prerequisites: "Objects, constructors, and method calls. The writer interface is introduced here."
+---
+
+export const checks = {"csharp":{"printer":"var sink = new RecordingWriter(); var receipt = new ReceiptPrinter(sink); receipt.Print(50); receipt.Print(0); Check.That(sink.Messages.SequenceEqual(new[] {\"Total: 50 tokens\", \"Total: 0 tokens\"}));"},"python":{"printer":"sink = RecordingWriter()\nreceipt = ReceiptPrinter(sink)\nreceipt.print_receipt(50)\nreceipt.print_receipt(0)\nassert sink.messages == ['Total: 50 tokens', 'Total: 0 tokens']"}};
+
+**Dependency injection** means supplying an object with something it needs, rather than making the object construct or locate that dependency itself. A dependency is simply something the object uses to do its work. [1](#source-1)
+
+Despite the imposing name, ordinary constructor arguments can do it.
+
+## A receipt printer needs somewhere to write
+
+Suppose a receipt printer formats a total and sends the resulting text to a writer. In the running application, the writer might write to the console. In a test, it can record the text in memory so that we can inspect it.
+
+The receipt printer should not have to know which destination was chosen.
+
+<section data-pilot-language="csharp">
+
+`ITextWriter` describes the required operation: write one message. `ReceiptPrinter` receives a writer in its constructor and keeps it for later calls.
+
+```csharp group=printer role=types
+public interface ITextWriter
+{
+    void Write(string message);
+}
+
+public sealed class ConsoleWriter : ITextWriter
+{
+    public void Write(string message)
+    {
+        Console.WriteLine(message);
+    }
+}
+
+public sealed class RecordingWriter : ITextWriter
+{
+    public List<string> Messages { get; } = new List<string>();
+
+    public void Write(string message)
+    {
+        Messages.Add(message);
+    }
+}
+
+public sealed class ReceiptPrinter
+{
+    private readonly ITextWriter writer;
+
+    public ReceiptPrinter(ITextWriter writer)
+    {
+        this.writer = writer;
+    }
+
+    public void Print(int total)
+    {
+        writer.Write($"Total: {total} tokens");
+    }
+}
+```
+
+```csharp group=printer role=run
+RecordingWriter recorder = new RecordingWriter();
+ReceiptPrinter printer = new ReceiptPrinter(recorder);
+printer.Print(50);
+Console.WriteLine(recorder.Messages[0]); // Total: 50 tokens
+```
+
+The injection occurs in `new ReceiptPrinter(recorder)`: the caller supplies the writer. `Print` works the same way whether it receives a `RecordingWriter` or a `ConsoleWriter`.
+
+</section>
+
+<section data-pilot-language="python">
+
+The writer needs a `write` method. Python can call that method without a declared interface.
+
+```python group=printer role=types
+class ConsoleWriter:
+    def write(self, message):
+        print(message)
+
+
+class RecordingWriter:
+    def __init__(self):
+        self.messages = []
+
+    def write(self, message):
+        self.messages.append(message)
+
+
+class ReceiptPrinter:
+    def __init__(self, writer):
+        self.writer = writer
+
+    def print_receipt(self, total):
+        self.writer.write(f"Total: {total} tokens")
+```
+
+```python group=printer role=run
+recorder = RecordingWriter()
+printer = ReceiptPrinter(recorder)
+printer.print_receipt(50)
+print(recorder.messages[0])  # Total: 50 tokens
+```
+
+The injection occurs in `ReceiptPrinter(recorder)`: the caller supplies the writer. `print_receipt` works the same way whether it receives a `RecordingWriter` or a `ConsoleWriter`.
+
+</section>
+
+The recorder makes a useful test possible: check the exact message and the number of writes without capturing console output. The example assumes a valid writer and an already-calculated whole-token total; it is not an email-delivery system or a payment processor.
+
+## No container is required
+
+A dependency-injection container is a tool that can construct objects and supply their dependencies from registrations. It can be useful when there are many objects to assemble. The constructor call above is dependency injection without one.
+
+A dependency used throughout an object's lifetime often belongs in its constructor. A dependency needed for one operation can instead be passed to that method. What matters is that the need is explicit and supplied, rather than secretly retrieved from a global registry.
+
+If the receipt printer called a global “get writer” service every time, that would hide its need from the constructor. Such a registry is commonly called a service locator. It can have uses, but it is not the same arrangement as the one shown here.
+
+## Injection is not the same as inversion
+
+Injection tells us **how a dependency arrives**. Dependency inversion asks **which code depends on which interface or implementation**. You can inject a concrete database object and still make business code depend directly on that database's API.
+
+Do not add an interface just to claim that injection happened. Passing an ordinary object or function from outside can be enough. The benefit is being able to see and control what an object uses, not acquiring another framework.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Dependency injection overview](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/overview).
+2. [Martin Fowler — Inversion of Control Containers and the Dependency Injection pattern](https://martinfowler.com/articles/injection.html), including the distinction from service location.

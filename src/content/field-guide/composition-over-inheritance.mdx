@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Composition over Inheritance
+description: "Composition gives an object other objects to use. Inheritance makes a class a kind of another class. Prefer composition when you want to combine or exchange capabilities rather than declare a true subtype."
+prerequisites: "Classes, constructors, and the difference between an object and a class."
+---
+
+export const checks = {"csharp":{"weapons":"Check.That(new Character(new SwordAttack()).Attack() == \"Swings a sword\"); Check.That(new Character(new BowAttack()).Attack() == \"Shoots an arrow\");"},"python":{"weapons":"assert Character(SwordAttack()).attack() == 'Swings a sword'\nassert Character(BowAttack()).attack() == 'Shoots an arrow'"}};
+
+**Composition** gives an object other objects to use. **Inheritance** makes a class a kind of another class, with the operations and promises that relationship brings.
+
+“Prefer composition over inheritance” means that reusing a capability is often better expressed by *having an object that provides it* than by becoming a subclass. It is a preference, not a ban on inheritance. [1](#source-1)
+
+## A character has an attack
+
+Suppose a game has sword and bow attacks. The character needs to perform the selected attack, but a character is not a kind of sword or bow.
+
+We can give the character an attack object. In this small example, performing an attack returns a description instead of altering a full game world.
+
+<section data-pilot-language="csharp">
+
+`IAttack` says that every attack provides `Perform`. The character stores an object supporting that operation.
+
+```csharp group=weapons role=types
+public interface IAttack
+{
+    string Perform();
+}
+
+public sealed class SwordAttack : IAttack
+{
+    public string Perform()
+    {
+        return "Swings a sword";
+    }
+}
+
+public sealed class BowAttack : IAttack
+{
+    public string Perform()
+    {
+        return "Shoots an arrow";
+    }
+}
+
+public sealed class Character
+{
+    private readonly IAttack attack;
+
+    public Character(IAttack attack)
+    {
+        this.attack = attack;
+    }
+
+    public string Attack()
+    {
+        return attack.Perform();
+    }
+}
+```
+
+```csharp group=weapons role=run
+Character archer = new Character(new BowAttack());
+Console.WriteLine(archer.Attack()); // Shoots an arrow
+```
+
+`Character` has an `IAttack` field; it does not inherit from `BowAttack`. The interface implementation in `BowAttack : IAttack` supplies a promise about one operation. It does not make the character part of a weapon class hierarchy.
+
+</section>
+
+<section data-pilot-language="python">
+
+Both attack classes provide `perform`. The character can use either object through that common method.
+
+```python group=weapons role=types
+class SwordAttack:
+    def perform(self):
+        return "Swings a sword"
+
+
+class BowAttack:
+    def perform(self):
+        return "Shoots an arrow"
+
+
+class Character:
+    def __init__(self, attack):
+        self._attack = attack
+
+    def attack(self):
+        return self._attack.perform()
+```
+
+```python group=weapons role=run
+archer = Character(BowAttack())
+print(archer.attack())  # Shoots an arrow
+```
+
+`Character` stores an attack object in `_attack`; it does not inherit from either attack class. The method call is the connection between them.
+
+</section>
+
+## Why the distinction matters when the game grows
+
+Now imagine that characters can also walk, fly, or swim. A class hierarchy combining every attack and movement option could accumulate names such as flying archer, swimming archer, flying swordsman, and swimming swordsman.
+
+Keeping attack and movement as separate capabilities would let a character combine them without a class for every pair. This example implements only attack; a movement capability would be a later addition, not something the current code already provides.
+
+The attack is selected when a character is constructed. Changing equipment on an existing character would require an explicit operation to replace the attack object. Composition makes that possibility straightforward, but the displayed class does not silently implement equipment changes.
+
+## When inheritance still makes sense
+
+Inheritance can express a genuine subtype, or support an extension model imposed by a framework. The important question is whether the subclass can honestly be used wherever the base class is expected, not merely whether it would save some repeated code.
+
+Composition has costs too. It introduces objects to construct and calls to follow. One permanent, two-line attack may not need its own interface. The design becomes worthwhile when the capabilities actually vary, are reused, or need independent testing.
+
+You may recognize the interchangeable attacks as an example of Strategy. That name describes their role. Composition describes how the character is built: it contains and uses the attack object.
+
+## Sources
+
+1. <span id="source-1"></span>Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides, *Design Patterns: Elements of Reusable Object-Oriented Software*, introduction on object composition and inheritance.
+2. [Microsoft — Inheritance](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/inheritance), for the language relationship distinguished from composition here.

@@ -1,0 +1,89 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "KISS: Keep the Design Simple"
+description: "KISS favors the simplest design that clearly and correctly meets the actual requirements. Simplicity is about understanding, not character count."
+prerequisites: "Functions, conditionals, and exceptions."
+---
+
+export const checks = {"csharp":{"label":"Check.That(Delivery.Label(0) == \"Today\"); Check.That(Delivery.Label(1) == \"Tomorrow\"); Check.That(Delivery.Label(5) == \"In 5 days\"); bool rejected=false; try { Delivery.Label(-1); } catch (ArgumentOutOfRangeException) { rejected=true; } Check.That(rejected);"},"python":{"label":"assert delivery_label(0) == 'Today'\nassert delivery_label(1) == 'Tomorrow'\nassert delivery_label(5) == 'In 5 days'\ntry:\n    delivery_label(-1)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('negative days accepted')"}};
+
+**KISS** is the familiar “keep it simple” design principle: prefer the simplest arrangement that clearly and correctly meets the actual requirements.
+
+Here, simple means that another programmer can follow what happens and make a reasonable change. It does not necessarily mean fewer characters, fewer checks, or no abstractions. [1](#source-1)
+
+## Three delivery labels
+
+Suppose a screen needs English delivery text. Zero days should say “Today,” one day “Tomorrow,” and larger values “In N days.” Negative days indicate invalid input.
+
+<section data-pilot-language="csharp">
+
+```csharp group=label role=types
+public static class Delivery
+{
+    public static string Label(int days)
+    {
+        if (days < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(days));
+        }
+        if (days == 0)
+        {
+            return "Today";
+        }
+        if (days == 1)
+        {
+            return "Tomorrow";
+        }
+        return $"In {days} days";
+    }
+}
+```
+
+```csharp group=label role=run
+Console.WriteLine(Delivery.Label(3)); // In 3 days
+```
+
+`Label` follows the requirements in order. A reader can find the invalid input, the two special cases, and the ordinary result without following another class.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=label role=types
+def delivery_label(days):
+    if days < 0:
+        raise ValueError("days cannot be negative")
+    if days == 0:
+        return "Today"
+    if days == 1:
+        return "Tomorrow"
+    return f"In {days} days"
+```
+
+```python group=label role=run
+print(delivery_label(3))  # In 3 days
+```
+
+`delivery_label` follows the requirements in order. A reader can find the invalid input, the two special cases, and the ordinary result without following another class. The example expects an integer number of days.
+
+</section>
+
+## What would extra machinery buy?
+
+For these requirements, we do not need separate classes for today's delivery, tomorrow's delivery, and every other delivery. A registry of text-producing plug-ins would make the reader learn how the registry works before finding three strings.
+
+Nor would packing all the branches into a dense one-line expression necessarily improve the function. A shorter expression can be fine when its syntax is familiar, but it is a change in notation, not automatically an improvement in design.
+
+The validation remains. Removing it would produce misleading text for a negative number, not a simpler correct solution.
+
+## Simple can change as requirements change
+
+Suppose the screen must support many languages, including languages with different plural forms. The English strings and this small condition are no longer enough. A localization system could then be simpler for the whole problem, even though calling it involves more code elsewhere.
+
+The principle does not tell us to preserve the first implementation forever. It tells us to judge complexity against the problem we actually need to solve.
+
+A useful review question is: **what does a reader have to learn before understanding this behavior?** For three English labels, the answer should be very little.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — YAGNI](https://martinfowler.com/bliki/Yagni.html), for the related argument against unused design complexity. The delivery-label example illustrates the design judgment rather than prescribing a universal line-count rule.
