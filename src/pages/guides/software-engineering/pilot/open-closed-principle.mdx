@@ -1,0 +1,223 @@
+---
+layout: '../../../../layouts/FieldGuidePilotLayout.astro'
+title: 'Open/Closed Principle'
+description: 'Add another discount without rewriting the checkout that uses it.'
+prerequisites: 'Functions, classes, method calls, and return values. Interfaces are introduced here.'
+---
+
+The **Open/Closed Principle** says that classes, modules, and functions should be **open for extension but closed for modification**. You should be able to add another behavior without rewriting the existing code that uses those behaviors. [1](#sources)
+
+That sounds contradictory only until you separate two things: the code that performs a particular job, and the code that asks for that job to be done.
+
+A checkout provides a small example. It needs to apply a discount. Does it also need to know how every discount is calculated?
+
+## A checkout that does not calculate the discount itself
+
+Suppose a shop currently offers two choices: no discount, or ten percent off. We will give each choice its own class. Each class has a method that accepts a subtotal and returns the amount to charge.
+
+The examples assume a valid, nonnegative subtotal and a discount object supplied by the application. They omit tax and currency rounding so that the change we are studying stays visible.
+
+<section data-pilot-language="csharp">
+
+### C#: give the discounts a common method
+
+The C# snippets target .NET 8 and use `System`; add `using System;` at the top of the source file. Put class and interface declarations at file level, and the calling statements in `Main` or another method.
+
+An **interface** declares operations that a class promises to provide. Here, `IDiscount` requires one method: `Apply`. The `: IDiscount` after a class name says that the class implements that interface. [2](#sources)
+
+```csharp sample=discounts
+public interface IDiscount
+{
+    decimal Apply(decimal subtotal);
+}
+
+public sealed class NoDiscount : IDiscount
+{
+    public decimal Apply(decimal subtotal)
+    {
+        return subtotal;
+    }
+}
+
+public sealed class TenPercentDiscount : IDiscount
+{
+    public decimal Apply(decimal subtotal)
+    {
+        return subtotal * 0.90m;
+    }
+}
+
+public sealed class Checkout
+{
+    public decimal CalculateTotal(decimal subtotal, IDiscount discount)
+    {
+        return discount.Apply(subtotal);
+    }
+}
+```
+
+`NoDiscount.Apply` returns the subtotal unchanged. `TenPercentDiscount.Apply` keeps ninety percent of it. The `m` suffix makes `0.90m` a C# `decimal` literal.
+
+Look at `Checkout.CalculateTotal`: it has no percentage and no check for a discount name. It simply calls `Apply` on the object it receives. That object supplies the calculation.
+
+### Use the existing discounts
+
+These statements belong inside a calling method, such as `Main`:
+
+```csharp sample=existing-use
+Checkout checkout = new Checkout();
+
+decimal fullPrice = checkout.CalculateTotal(100m, new NoDiscount());
+decimal salePrice = checkout.CalculateTotal(100m, new TenPercentDiscount());
+
+Console.WriteLine(fullPrice); // 100
+Console.WriteLine(salePrice); // 90.00
+```
+
+The two calls use the same checkout method. Only the discount object changes. Display formatting can vary by culture; the amounts are 100 and 90.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: give the discounts a common method
+
+Python does not require a declared interface for this example. Both discount classes provide `apply`, and checkout calls that method on the object it receives. Supplying an object without a suitable `apply` method would fail when the call is made.
+
+```python sample=discounts
+from decimal import Decimal
+
+
+class NoDiscount:
+    def apply(self, subtotal):
+        return subtotal
+
+
+class TenPercentDiscount:
+    def apply(self, subtotal):
+        return subtotal * Decimal("0.90")
+
+
+class Checkout:
+    def calculate_total(self, subtotal, discount):
+        return discount.apply(subtotal)
+```
+
+`NoDiscount.apply` returns the subtotal unchanged. `TenPercentDiscount.apply` keeps ninety percent of it. `Decimal("0.90")` constructs a decimal value from text, rather than introducing a binary floating-point approximation. [3](#sources)
+
+Look at `Checkout.calculate_total`: it has no percentage and no check for a discount name. It simply calls `apply` on the object it receives. That object supplies the calculation.
+
+### Use the existing discounts
+
+Run these statements after the class definitions:
+
+```python sample=existing-use
+checkout = Checkout()
+
+full_price = checkout.calculate_total(Decimal("100"), NoDiscount())
+sale_price = checkout.calculate_total(Decimal("100"), TenPercentDiscount())
+
+print(full_price)  # 100
+print(sale_price)  # 90.00
+```
+
+The two calls use the same checkout method. Only the discount object changes.
+
+</section>
+
+## A new requirement arrives
+
+Employees should now receive twenty percent off. We need another calculation, but we do not need another version of checkout.
+
+<section data-pilot-language="csharp">
+
+### Add the employee discount
+
+```csharp sample=extension
+public sealed class EmployeeDiscount : IDiscount
+{
+    public decimal Apply(decimal subtotal)
+    {
+        return subtotal * 0.80m;
+    }
+}
+```
+
+This class satisfies the same `IDiscount` interface. In a calling method, we can pass an instance to the existing checkout:
+
+```csharp sample=extension-use
+Checkout employeeCheckout = new Checkout();
+IDiscount employeeDiscount = new EmployeeDiscount();
+
+decimal employeeTotal = employeeCheckout.CalculateTotal(100m, employeeDiscount);
+Console.WriteLine(employeeTotal); // 80.00
+```
+
+`Checkout.CalculateTotal` has not changed. Neither have `NoDiscount`, `TenPercentDiscount`, or `IDiscount`.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Add the employee discount
+
+```python sample=extension
+class EmployeeDiscount:
+    def apply(self, subtotal):
+        return subtotal * Decimal("0.80")
+```
+
+This class provides the same `apply` method. Run it after the earlier definitions, then pass an instance to the existing checkout:
+
+```python sample=extension-use
+employee_checkout = Checkout()
+employee_discount = EmployeeDiscount()
+
+employee_total = employee_checkout.calculate_total(
+    Decimal("100"), employee_discount
+)
+print(employee_total)  # 80.00
+```
+
+`Checkout.calculate_total` has not changed. Neither have `NoDiscount` or `TenPercentDiscount`.
+
+</section>
+
+**The new behavior lives in new code. The existing checkout already knows how to use it.** That is the Open/Closed Principle made visible.
+
+## What is open? What is closed?
+
+Checkout is **open to another discount calculation**: we can supply another object with the required method. It is **closed to edits made solely to list another discount**: there is no discount list inside checkout to update.
+
+Application code still has to choose an object. A screen, configuration file, or method that decides which customers receive which discount might need changing. We have protected the checkout calculation from those choices, not made all modification disappear.
+
+Nor have we designed for every possible requirement. A discount that depends on individual items cannot be calculated from the subtotal alone. Supporting that requirement could mean changing the method's inputs and its implementations. Fixing a bug in checkout could also require editing checkout.
+
+The useful question is therefore not, “Will this code ever change?” It is, **“Which additions can it already accept without a change?”**
+
+## When this arrangement earns its extra classes
+
+Consider a checkout method that currently checks discount names itself. Every new discount adds another branch to that method. Once discounts are changing independently, giving them separate implementations may let you test and add them without continually reopening checkout.
+
+But a shop with one permanent discount may need only a multiplication. An interface and several classes would be more code to navigate without solving an existing problem. The principle is a design goal, not an instruction to build a plug-in system around every calculation.
+
+Objects are not the only way to provide interchangeable behavior. A function passed into another function can also separate a calculation from the code that uses it. The interface is one technique; the important result is the unchanged checkout.
+
+You may also encounter the name **Strategy** for an arrangement of interchangeable implementations of a task. In this example, the task is calculating a discounted amount. That name is useful *after* you can point to the discount objects and explain what they do. [4](#sources)
+
+## Recognize the idea somewhere else
+
+Imagine a report exporter that accepts a formatter. The formatter turns report data into CSV. You add a JSON formatter, pass it to the exporter, and leave the exporter's method unchanged.
+
+The same question applies: did the new format require rewriting the exporter, or could the exporter use a new implementation of an operation it already understood?
+
+A program does not demonstrate OCP merely by containing interfaces. Look for the addition that those interfaces allow—and the existing code that the addition leaves alone.
+
+## Sources
+
+1. [Robert C. Martin: The Open Closed Principle](https://blog.cleancoder.com/uncle-bob/2014/05/12/TheOpenClosedPrinciple.html). The principle and the distinction between extension and modification.
+2. [Microsoft: Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces). The C# interface mechanism used here.
+3. [Python: Decimal arithmetic](https://docs.python.org/3/library/decimal.html). Why the Python examples construct decimal amounts from strings.
+4. [Microsoft: Strategy pattern](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-strategy). Related terminology for interchangeable behavior.
+
+The shop, requirements, and examples are original teaching examples. They are not a production checkout implementation.

@@ -1,0 +1,354 @@
+---
+layout: '../../../../layouts/FieldGuidePilotLayout.astro'
+title: 'Switch Statements'
+description: 'When adding one membership means finding and changing the same decision in several places.'
+prerequisites: 'Functions, conditionals, classes, and method calls. Interfaces and polymorphism are introduced here.'
+---
+
+The **Switch Statements code smell** is a warning that several parts of a program keep checking the same kind of thing to decide what to do. Adding another kind then means finding and updating each check.
+
+A *code smell* is a reason to investigate a design, not proof that the code is wrong. The `switch` keyword is not the problem by itself. Repeated `if` statements can create the same difficulty.
+
+Suppose a shop has regular and premium memberships. Membership affects both shipping fees and the number of days a customer has to return a purchase. Those are two operations, but both begin by asking the same question: which membership is this?
+
+## Before: each operation checks the membership
+
+Our rules are small. Regular members pay 5 for shipping unless their subtotal is at least 50; they have 30 days for returns. Premium members always receive free shipping and have 60 days for returns. Unknown membership names are rejected rather than silently treated as regular.
+
+The snippets assume the subtotal has already been validated. The string naming a membership is an internal value chosen by the application, not permission a customer can grant themselves.
+
+<section data-pilot-language="csharp">
+
+The C# snippets target .NET 8. Add `using System;` at the top of the source file for `ArgumentException` and `Console`. Class and interface declarations belong at file level; calling statements belong inside a method.
+
+```csharp sample=before
+public static class MembershipRules
+{
+    public static decimal ShippingFee(string membership, decimal subtotal)
+    {
+        switch (membership)
+        {
+            case "regular":
+                if (subtotal >= 50m)
+                {
+                    return 0m;
+                }
+                return 5m;
+            case "premium":
+                return 0m;
+            default:
+                throw new ArgumentException("Unknown membership.", nameof(membership));
+        }
+    }
+
+    public static int ReturnDays(string membership)
+    {
+        switch (membership)
+        {
+            case "regular":
+                return 30;
+            case "premium":
+                return 60;
+            default:
+                throw new ArgumentException("Unknown membership.", nameof(membership));
+        }
+    }
+}
+```
+
+`ShippingFee` and `ReturnDays` both switch on `membership`. Read the two `"regular"` cases together: one knows about the free-shipping threshold, while the other knows about the return window. Those rules belong to the same membership but live in different methods.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python sample=before
+from decimal import Decimal
+
+
+def shipping_fee(membership, subtotal):
+    if membership == "regular":
+        if subtotal >= Decimal("50"):
+            return Decimal("0")
+        return Decimal("5")
+    if membership == "premium":
+        return Decimal("0")
+    raise ValueError("unknown membership")
+
+
+def return_days(membership):
+    if membership == "regular":
+        return 30
+    if membership == "premium":
+        return 60
+    raise ValueError("unknown membership")
+```
+
+`shipping_fee` and `return_days` both inspect `membership`. Read the two `"regular"` branches together: one knows about the free-shipping threshold, while the other knows about the return window. Those rules belong to the same membership but live in different functions.
+
+Python uses `if` here. The design issue is identical to the C# switches.
+
+</section>
+
+For two short functions, this is manageable. Now imagine adding a Plus membership. You must remember both functions. If the shipping change is made but the return-window change is missed, the application will recognize Plus in one place and reject it in another.
+
+That repeated maintenance is the reason to consider a different arrangement—not a rule that conditionals are unfashionable.
+
+## After: put each membership's behavior together
+
+Instead of asking a string which rules to run, we can create an object that provides those rules. A regular-benefits object calculates regular shipping and supplies the regular return window. A premium-benefits object does the corresponding jobs for premium members.
+
+<section data-pilot-language="csharp">
+
+An **interface** lists methods an implementing class must provide. `IMembershipBenefits` requires both operations, so code using the interface can call either method without checking the object's class. [1](#sources)
+
+```csharp sample=after
+public interface IMembershipBenefits
+{
+    decimal ShippingFee(decimal subtotal);
+    int ReturnDays();
+}
+
+public sealed class RegularBenefits : IMembershipBenefits
+{
+    public decimal ShippingFee(decimal subtotal)
+    {
+        if (subtotal >= 50m)
+        {
+            return 0m;
+        }
+        return 5m;
+    }
+
+    public int ReturnDays()
+    {
+        return 30;
+    }
+}
+
+public sealed class PremiumBenefits : IMembershipBenefits
+{
+    public decimal ShippingFee(decimal subtotal)
+    {
+        return 0m;
+    }
+
+    public int ReturnDays()
+    {
+        return 60;
+    }
+}
+```
+
+The regular shipping calculation moved into `RegularBenefits.ShippingFee`; its arithmetic is unchanged. The return value of 30 moved into `RegularBenefits.ReturnDays`. `PremiumBenefits` now contains the two premium rules.
+
+Notice that the subtotal check remains. It calculates a fee *within* the regular membership. We are removing repeated membership selection, not trying to remove every `if`.
+
+</section>
+
+<section data-pilot-language="python">
+
+Both objects provide methods named `shipping_fee` and `return_days`. Code receiving either object can call those methods. Python needs no declared interface for these calls; the supplied object must actually support them.
+
+```python sample=after
+class RegularBenefits:
+    def shipping_fee(self, subtotal):
+        if subtotal >= Decimal("50"):
+            return Decimal("0")
+        return Decimal("5")
+
+    def return_days(self):
+        return 30
+
+
+class PremiumBenefits:
+    def shipping_fee(self, subtotal):
+        return Decimal("0")
+
+    def return_days(self):
+        return 60
+```
+
+The regular shipping calculation moved into `RegularBenefits.shipping_fee`; its arithmetic is unchanged. The return value of 30 moved into `RegularBenefits.return_days`. `PremiumBenefits` now contains the two premium rules.
+
+Notice that the subtotal check remains. It calculates a fee *within* the regular membership. We are removing repeated membership selection, not trying to remove every `if`.
+
+</section>
+
+## The choice has to happen somewhere
+
+An application may load the text `"premium"` from a customer record. It still needs to turn that text into the appropriate object. We will put that decision in one function.
+
+<section data-pilot-language="csharp">
+
+```csharp sample=selection
+public static class BenefitSelection
+{
+    public static IMembershipBenefits For(string membership)
+    {
+        switch (membership)
+        {
+            case "regular":
+                return new RegularBenefits();
+            case "premium":
+                return new PremiumBenefits();
+            default:
+                throw new ArgumentException("Unknown membership.", nameof(membership));
+        }
+    }
+}
+```
+
+Yes, this is still a switch. Its job is now to choose an object once, rather than calculate each benefit separately.
+
+A method that displays the benefits can accept the selected object:
+
+```csharp sample=caller
+public static class BenefitsSummary
+{
+    public static string Describe(IMembershipBenefits benefits, decimal subtotal)
+    {
+        decimal fee = benefits.ShippingFee(subtotal);
+        int days = benefits.ReturnDays();
+        return $"Shipping fee: {fee}; return window: {days} days.";
+    }
+}
+```
+
+These statements go inside a calling method:
+
+```csharp sample=use
+IMembershipBenefits benefits = BenefitSelection.For("regular");
+string summary = BenefitsSummary.Describe(benefits, 40m);
+Console.WriteLine(summary);
+// Shipping fee: 5; return window: 30 days.
+```
+
+`Describe` contains no membership names. Passing `PremiumBenefits` to the same method would produce a fee of 0 and a return window of 60 days.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python sample=selection
+def select_benefits(membership):
+    if membership == "regular":
+        return RegularBenefits()
+    if membership == "premium":
+        return PremiumBenefits()
+    raise ValueError("unknown membership")
+```
+
+Yes, these are still `if` statements. Their job is now to choose an object once, rather than calculate each benefit separately.
+
+A function that displays the benefits can accept the selected object:
+
+```python sample=caller
+def describe_benefits(benefits, subtotal):
+    fee = benefits.shipping_fee(subtotal)
+    days = benefits.return_days()
+    return f"Shipping fee: {fee}; return window: {days} days."
+```
+
+Run this after the definitions:
+
+```python sample=use
+benefits = select_benefits("regular")
+summary = describe_benefits(benefits, Decimal("40"))
+print(summary)
+# Shipping fee: 5; return window: 30 days.
+```
+
+`describe_benefits` contains no membership names. Passing `PremiumBenefits` to the same function would produce a fee of 0 and a return window of 60 days.
+
+</section>
+
+Calling the same named operation on different kinds of objects, with each providing its own behavior, is **polymorphism**. Moving the branches into those implementations is the refactoring called **Replace Conditional with Polymorphism**. Now the name describes a change we have actually seen. [2](#sources)
+
+## Check that we did not change the benefits
+
+A refactoring changes how code is organized while preserving the behavior being relied on. [3](#sources) In this example, the original functions and the refactored objects must agree on these outcomes:
+
+| Membership | Subtotal | Shipping fee | Return window |
+| --- | ---: | ---: | ---: |
+| Regular | 40 | 5 | 30 days |
+| Regular | 50 | 0 | 30 days |
+| Regular | 75 | 0 | 30 days |
+| Premium | 40 | 0 | 60 days |
+| Unknown name | Any valid subtotal | Rejected | Rejected |
+
+The exact threshold matters: a subtotal of 50 qualifies for free shipping. Testing only 40 would miss a mistake in that comparison.
+
+The calling interface deliberately changes—from functions receiving a membership name to methods on a selected object. Existing call sites therefore need updating during the refactoring. The claim is that the shop's benefit rules remain the same, not that the public signatures remain identical.
+
+## Add Plus without editing the existing benefit classes
+
+Suppose Plus members should receive free shipping and a 45-day return window.
+
+<section data-pilot-language="csharp">
+
+```csharp sample=extension
+public sealed class PlusBenefits : IMembershipBenefits
+{
+    public decimal ShippingFee(decimal subtotal)
+    {
+        return 0m;
+    }
+
+    public int ReturnDays()
+    {
+        return 45;
+    }
+}
+```
+
+In `BenefitSelection.For`, add this case before `default`:
+
+```csharp sample=selection-addition
+case "plus":
+    return new PlusBenefits();
+```
+
+`RegularBenefits`, `PremiumBenefits`, and `BenefitsSummary.Describe` stay unchanged. The new rules live in `PlusBenefits`, and one selection function knows how to choose it.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python sample=extension
+class PlusBenefits:
+    def shipping_fee(self, subtotal):
+        return Decimal("0")
+
+    def return_days(self):
+        return 45
+```
+
+In `select_benefits`, add this branch before the final `raise`:
+
+```python sample=selection-addition
+if membership == "plus":
+    return PlusBenefits()
+```
+
+`RegularBenefits`, `PremiumBenefits`, and `describe_benefits` stay unchanged. The new rules live in `PlusBenefits`, and one selection function knows how to choose it.
+
+</section>
+
+Adding Plus is a feature change. Moving the existing rules into objects was the refactoring. Keeping those steps separate makes it easier to check which behavior should stay the same.
+
+## The price of this arrangement
+
+There are now more classes and more code to navigate. Adding a *membership* is localized, but adding a new *operation* to the interface—for example, a support-response allowance—would require implementing it in each membership class. That is a trade-off, not a universal improvement.
+
+For a small, stable set of benefits, the original functions may be easier to maintain. If every benefit is just a constant price or day count, a table of membership data may be simpler than a class for each row. Different designs suit different kinds of change.
+
+The question to ask in a review is concrete: **“When this membership changes, how many separate places must we remember to update?”** If the answer is growing, gathering its behavior together may help. If the answer is one clear function, a switch may already be doing its job well.
+
+## Sources
+
+1. [Microsoft: Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces). How C# classes provide the shared operations used in this example.
+2. [Martin Fowler: Replace Conditional with Polymorphism](https://refactoring.com/catalog/replaceConditionalWithPolymorphism.html). The named transformation illustrated here.
+3. [Martin Fowler: Definition of refactoring](https://refactoring.com/). The distinction between reorganizing existing behavior and introducing new behavior.
+
+The memberships and benefit rules are original teaching examples. The small number of memberships makes comparison possible; it does not, by itself, justify choosing the longer design.

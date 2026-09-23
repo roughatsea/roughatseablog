@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+const articles = [
+  { slug: 'open-closed-principle', title: 'Open/Closed Principle' },
+  { slug: 'switch-statements', title: 'Switch Statements' },
+  { slug: 'deadlocks-and-lock-discipline', title: 'Deadlock' },
+];
+---
+<BaseLayout title="Field Guide — Approved pilot articles" description="The three approved articles are now published at their original guide addresses." robots="noindex, nofollow">
+  <section style="max-width:48rem;margin:2rem auto;line-height:1.8">
+    <h1>The pilots are now published.</h1>
+    <p>These three articles were approved as the reference standard for the guide rewrite. Their text and tested examples now replace the original articles.</p>
+    {articles.map((article) => <h2><a href={`/guides/software-engineering/${article.slug}/`}>{article.title} →</a></h2>)}
+    <p><a href="/guides/software-engineering/">Return to the Software Engineering Field Guide</a></p>
+  </section>
+</BaseLayout>
