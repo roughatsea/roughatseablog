@@ -1,0 +1,91 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Remove Setting Method
+description: "Remove an assignment operation when a value should be established at construction and remain unchanged afterward."
+prerequisites: "Constructors, properties, and object identity."
+---
+
+export const checks = {"csharp":{"original":"var ticket = new Ticket(); ticket.Id = \"T-7\"; Check.That(ticket.Id == \"T-7\");","revised":"Check.That(new Ticket(\"T-7\").Id == \"T-7\");"},"python":{"original":"ticket = Ticket()\nticket.id = 'T-7'\nassert ticket.id == 'T-7'","revised":"ticket = Ticket('T-7')\nassert ticket.id == 'T-7'\ntry:\n    ticket.id = 'T-8'\nexcept AttributeError:\n    pass\nelse:\n    raise AssertionError('public assignment allowed')"}};
+
+**Remove Setting Method** removes an assignment operation for a value that should be established once and remain fixed. Construction becomes the place to supply the value, and later code can no longer casually replace it through the public API. [1](#source-1)
+
+## Original version: a ticket can change its identifier
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Ticket
+{
+    public string Id { get; set; } = "";
+}
+```
+
+A caller creates the ticket, assigns an identifier, and can assign another one later. Dictionaries, logs, or other records may already refer to the original identifier.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Ticket:
+    def __init__(self):
+        self.id = ""
+```
+
+The public attribute permits both initial assignment and arbitrary reassignment. The interface does not distinguish those operations.
+
+</section>
+
+## Revised version: identity is supplied at construction
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Ticket
+{
+    public string Id { get; }
+    public Ticket(string id) { Id = id; }
+}
+```
+
+```csharp group=revised role=run
+var ticket = new Ticket("T-7");
+Console.WriteLine(ticket.Id);
+```
+
+The get-only property can be initialized by the constructor but not assigned by ordinary callers afterward. The identifier string is itself immutable.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Ticket:
+    def __init__(self, ticket_id):
+        self._id = ticket_id
+
+    @property
+    def id(self):
+        return self._id
+```
+
+```python group=revised role=run
+ticket = Ticket("T-7")
+print(ticket.id)
+```
+
+The public property has no setter. Direct assignment to `_id` remains possible by convention; this is not a security boundary.
+
+</section>
+
+## Remove only changes the domain should not permit
+
+A ticket's identity may be fixed while its status legitimately changes. Removing every setter without providing meaningful update operations can make a useful object unusable.
+
+Migrate construction sites before removing the setter. Some serializers and persistence frameworks require particular construction mechanisms; support those explicitly rather than keeping an unrestricted setter for all application code.
+
+The example does not add nonempty-string validation. Its change is the timing and availability of assignment, which can break callers that previously mutated identity. Verify that those mutations were not part of the intended contract before calling the migration complete.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Remove Setting Method](https://refactoring.com/catalog/removeSettingMethod.html).

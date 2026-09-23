@@ -1,0 +1,106 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Error Code with Exception
+description: "Report an operation's failure with an exception instead of returning a special value that callers can accidentally treat as success."
+prerequisites: "Return values, exceptions, and error handling."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Inventory.Reserve(5, 2) == 3); Check.That(Inventory.Reserve(1, 2) == -1);","revised":"Check.That(Inventory.Reserve(5, 2) == 3); bool failed = false; try { Inventory.Reserve(1, 2); } catch (InvalidOperationException) { failed = true; } Check.That(failed);"},"python":{"original":"assert reserve(5, 2) == 3\nassert reserve(1, 2) == -1","revised":"assert reserve(5, 2) == 3\ntry:\n    reserve(1, 2)\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('shortage was not reported')"}};
+
+**Replace Error Code with Exception** reports a failure by raising an exception rather than returning a special value. This separates a successful result from an error that callers might otherwise forget to check. It also changes control flow, so every affected caller needs review. [1](#source-1)
+
+## Original version: minus one secretly means failure
+
+A simplified reservation calculation returns the remaining inventory. Inputs are nonnegative counts; a request larger than availability cannot be fulfilled. No shared inventory is modified in this arithmetic example.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Inventory
+{
+    public static int Reserve(int available, int requested)
+    {
+        if (requested > available) return -1;
+        return available - requested;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def reserve(available, requested):
+    if requested > available:
+        return -1
+    return available - requested
+```
+
+</section>
+
+A caller forgetting the sentinel check can display “minus one items remaining” or persist the error code as if it were a valid result.
+
+## Revised version: failure interrupts the normal result path
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Inventory
+{
+    public static int Reserve(int available, int requested)
+    {
+        if (requested > available)
+        {
+            throw new InvalidOperationException("Insufficient inventory.");
+        }
+        return available - requested;
+    }
+}
+```
+
+```csharp group=revised role=run
+try
+{
+    Console.WriteLine(Inventory.Reserve(1, 2));
+}
+catch (InvalidOperationException error)
+{
+    Console.WriteLine(error.Message);
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def reserve(available, requested):
+    if requested > available:
+        raise RuntimeError("Insufficient inventory.")
+    return available - requested
+```
+
+```python group=revised role=run
+try:
+    print(reserve(1, 2))
+except RuntimeError as error:
+    print(error)
+```
+
+</section>
+
+Successful calls still return the remaining count. A failed call no longer produces a value that looks numeric and successful.
+
+## Choose the error representation to fit the operation
+
+An expected shortage may be better represented by a typed result, a `TryReserve` operation, or a domain-specific exception, depending on the application's conventions. Exceptions are not automatically superior for every ordinary negative outcome.
+
+The migration must preserve user-visible failure handling intentionally. Callers that checked `-1` must now handle the exception at an appropriate boundary. Broadly catching everything and returning zero would recreate ambiguity rather than solve it.
+
+This example is not a concurrent reservation system: checking availability and updating real stock would need atomicity. Changing the error-reporting mechanism does not make a check-then-update sequence race-free.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Error Code with Exception](https://refactoring.com/catalog/replaceErrorCodeWithException.html).
+2. [Microsoft — Best practices for exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions).

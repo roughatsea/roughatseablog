@@ -1,0 +1,85 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Hide Method
+description: "Reduce a method's visibility when it is an implementation detail rather than an operation outside callers should depend on."
+prerequisites: "Public and private methods, classes, and callers."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Receipt().Render(12) == \"Total: 12\");","revised":"Check.That(new Receipt().Render(12) == \"Total: 12\");"},"python":{"original":"assert Receipt().render(12) == 'Total: 12'","revised":"assert Receipt().render(12) == 'Total: 12'"}};
+
+**Hide Method** reduces a method's visibility when it is an implementation detail. A smaller public interface gives callers fewer accidental dependencies and gives the implementation more freedom to change. [1](#source-1)
+
+## Original version: an internal formatting step is public
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Receipt
+{
+    public string Prefix() { return "Total: "; }
+    public string Render(int total) { return Prefix() + total; }
+}
+```
+
+Callers can ask for the prefix independently even though the intended service is rendering a receipt. They might begin relying on a formatting detail the class never needed to expose.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Receipt:
+    def prefix(self):
+        return "Total: "
+
+    def render(self, total):
+        return self.prefix() + str(total)
+```
+
+The method name looks like an ordinary public operation. Nothing distinguishes it as an internal part of rendering.
+
+</section>
+
+## Refactored version: expose rendering, keep the prefix internal
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Receipt
+{
+    private string Prefix() { return "Total: "; }
+    public string Render(int total) { return Prefix() + total; }
+}
+```
+
+`Render` still returns `Total: 12` for 12. Outside source code can no longer call `Prefix` directly.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Receipt:
+    def _prefix(self):
+        return "Total: "
+
+    def render(self, total):
+        return self._prefix() + str(total)
+```
+
+The underscore signals that `_prefix` is not part of the supported public interface. Python does not enforce that convention; callers can still invoke it deliberately.
+
+</section>
+
+## Check consumers before narrowing access
+
+Search direct callers, subclasses, reflection, templates, and framework conventions. A method that appears unused may be invoked by name at runtime. For a published library, reducing visibility can be a breaking change even if internal tests pass.
+
+If external callers need a legitimate operation, offer that operation rather than simply hiding everything they currently use. Conversely, tests reaching into every private helper may be over-coupled to implementation details; verify externally meaningful results where possible.
+
+For a class this small, the helper could also be inlined. Hiding and inlining solve different problems: hiding changes what clients may depend on, while inlining removes an internal level of indirection.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Refactoring catalog](https://refactoring.com/catalog/), for the first-edition Hide Method vocabulary.
+2. [Microsoft — Access modifiers](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers) and [Python — Public and internal interfaces](https://peps.python.org/pep-0008/#public-and-internal-interfaces).

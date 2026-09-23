@@ -1,0 +1,102 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Rename Method
+description: "Rename Method changes a method's name so callers can understand the operation without inspecting its implementation."
+prerequisites: "Methods, arguments, and call sites."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Rectangles.Calculate(3, 4) == 12);","revised":"Check.That(Rectangles.Area(3, 4) == 12); Check.That(Rectangles.Area(0, 4) == 0);"},"python":{"original":"assert calculate(3, 4) == 12","revised":"assert area(3, 4) == 12\nassert area(0, 4) == 0"}};
+
+**Rename Method** changes a method's name to communicate its purpose more clearly. Its parameters, calculation, and result need not change. The improvement appears wherever the method is called. [1](#source-1)
+
+## Original version: calculate what?
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Rectangles
+{
+    public static int Calculate(int width, int height)
+    {
+        return width * height;
+    }
+}
+```
+
+```csharp group=original role=run
+int result = Rectangles.Calculate(3, 4);
+Console.WriteLine(result);
+```
+
+`Calculate` says that work occurs, but not whether it calculates area, perimeter, or something else.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def calculate(width, height):
+    return width * height
+```
+
+```python group=original role=run
+result = calculate(3, 4)
+print(result)
+```
+
+The implementation reveals the meaning, but every caller should not need to open it to identify the result.
+
+</section>
+
+## Refactored version: name the result
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Rectangles
+{
+    public static int Area(int width, int height)
+    {
+        return width * height;
+    }
+}
+```
+
+```csharp group=revised role=run
+int area = Rectangles.Area(3, 4);
+Console.WriteLine(area); // 12
+```
+
+The call now identifies the quantity. The multiplication is unchanged.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def area(width, height):
+    return width * height
+```
+
+```python group=revised role=run
+rectangle_area = area(3, 4)
+print(rectangle_area)  # 12
+```
+
+The name explains what the function returns before the reader sees its body.
+
+</section>
+
+## Rename the contract everywhere it is used
+
+An editor's symbol-aware rename is safer than an unrestricted text replacement. Still inspect reflection, string-based callbacks, routes, serialization metadata, and external users that the editor may not recognize.
+
+For a public API, retain an old-name forwarding method during a migration when consumers cannot all update together. Mark the compatibility path clearly rather than maintaining two independent implementations.
+
+Choose names from the caller's perspective. Include units when ambiguity matters, and make side effects visible: a method that saves data should not sound like a harmless getter. Do not rename a method to promise behavior it does not provide; changing the implementation to match a new promise is a separate change.
+
+The test here is intentionally simple: both names calculate 12 for a three-by-four rectangle. The harder review question is whether the new name makes a real call easier to understand.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Change Function Declaration](https://refactoring.com/catalog/changeFunctionDeclaration.html), including Rename Method.
