@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+const articles = [
+  {slug: 'single-responsibility-principle', title: 'Single Responsibility Principle', description: 'A quest reward and its announcement: separate decisions that change for different reasons.'},
+  {slug: 'liskov-substitution-principle', title: 'Liskov Substitution Principle', description: 'A discount that has the right method but rejects a valid purchase: what substitution actually promises.'},
+  {slug: 'interface-segregation-principle', title: 'Interface Segregation Principle', description: 'A directory screen needs lookup, not editing. Narrow the requirement without splitting the working directory object.'},
+  {slug: 'dependency-inversion-principle', title: 'Dependency Inversion Principle', description: 'An inventory rule requests a notice without importing delivery code. Follow both the method calls and the source dependencies.'},
+];
+---
+<BaseLayout title="SOLID principles — Field Guide review" description="Four complete review drafts following the reader-approved field-guide pilots." robots="noindex, nofollow">
+  <article class="review-hub">
+    <a href="/guides/software-engineering/">← Published Software Engineering Field Guide</a>
+    <p class="status">Review batch · not replacements for the published entries yet</p>
+    <h1>The remaining four SOLID principles</h1>
+    <p>These drafts follow the approved Open/Closed Principle, Switch Statements, and Deadlock articles. Each includes C# and Python examples with explanations beside the relevant code.</p>
+    {articles.map((article) => <section><h2><a href={`/guides/software-engineering/review/solid-batch-1/${article.slug}/`}>{article.title} →</a></h2><p>{article.description}</p></section>)}
+    <p>The approved <a href="/guides/software-engineering/open-closed-principle/">Open/Closed Principle</a> supplies the fifth SOLID principle. No article here assumes you have already read it.</p>
+  </article>
+</BaseLayout>
+<style>
+.review-hub { max-width: 48rem; margin: 2rem auto 4rem; font-family: var(--font-serif); line-height: 1.8; }
+h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.15; margin: 1rem 0 1.5rem; }
+h2 { font-family: var(--font-sans); font-size: 1.3rem; line-height: 1.4; }
+section { border-top: 1px solid var(--border-color); margin: 1.5rem 0; padding-top: 1rem; }
+a { color: var(--link-color); text-decoration: underline; text-underline-offset: 3px; }
+.status { font-family: var(--font-sans); font-size: .8rem; color: var(--text-secondary); margin-top: 1.5rem; }
+</style>

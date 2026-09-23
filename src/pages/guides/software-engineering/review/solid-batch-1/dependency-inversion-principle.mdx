@@ -1,0 +1,378 @@
+---
+layout: '../../../../../layouts/FieldGuidePilotLayout.astro'
+title: 'Dependency Inversion Principle'
+description: 'Let an inventory rule ask for a restock notice without depending on the code that delivers it.'
+prerequisites: 'Classes, constructors, method calls, and source files. The interface and dependency direction are introduced here.'
+reviewRoot: '/guides/software-engineering/review/solid-batch-1/'
+reviewLabel: 'SOLID principles — review batch'
+---
+
+The **Dependency Inversion Principle** says that high-level rules should not depend directly on low-level implementation details. Both should depend on an abstraction: a description of the operation the rules need, rather than the particular code that performs it. [1](#sources)
+
+“High-level” and “low-level” sound abstract, so let us give them specific meanings.
+
+An inventory rule says, **when fewer than five units remain, request a restock notice**. That is the high-level rule. Writing the notice to a console, emailing it, or posting it to a service are different ways to perform the delivery. Those are implementation details.
+
+The rule needs a notice sent. It does not need to know which delivery mechanism has been selected.
+
+## Original version: the rule names the delivery class
+
+Our small program prints notices to the console. It accepts a valid item name and an integer count, rejecting negative counts. It sends a notice on each call below five; it does not remember previous alerts or place an order.
+
+<section data-pilot-language="csharp">
+
+### C#: accepting an object is not yet dependency inversion
+
+These examples target .NET 8. Add `using System;` and `using System.Collections.Generic;` at file level. Put declarations at file level and calling statements inside `Main` or another method. Compile the original and refactored versions separately.
+
+```csharp sample=original
+public sealed class ConsoleNotifier
+{
+    public void SendRestockNotice(string item, int unitsRemaining)
+    {
+        Console.WriteLine($"{item}: {unitsRemaining} left. Order more.");
+    }
+}
+
+public sealed class InventoryMonitor
+{
+    private readonly ConsoleNotifier notifier;
+
+    public InventoryMonitor(ConsoleNotifier notifier)
+    {
+        this.notifier = notifier;
+    }
+
+    public void Check(string item, int unitsRemaining)
+    {
+        if (unitsRemaining < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(unitsRemaining));
+        }
+
+        if (unitsRemaining < 5)
+        {
+            notifier.SendRestockNotice(item, unitsRemaining);
+        }
+    }
+}
+```
+
+`InventoryMonitor` already receives its notifier through a constructor. It does not create the notifier itself. But the field and constructor explicitly name `ConsoleNotifier`. To compile this monitor, the console implementation must be available.
+
+```csharp sample=original-use
+ConsoleNotifier notifier = new ConsoleNotifier();
+InventoryMonitor monitor = new InventoryMonitor(notifier);
+monitor.Check("Pencils", 3);
+// Pencils: 3 left. Order more.
+monitor.Check("Paper", 5);
+// No notice.
+```
+
+An unrelated email-notifier class cannot simply be passed to this constructor: the parameter specifically requires a `ConsoleNotifier`.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: the rule imports the delivery class
+
+For the original version, save these two files in one directory.
+
+First, `console_notifier.py`:
+
+```python sample=original-console
+class ConsoleNotifier:
+    def send_restock_notice(self, item: str, units_remaining: int) -> None:
+        print(f"{item}: {units_remaining} left. Order more.")
+```
+
+Then `original_monitor.py`:
+
+```python sample=original-monitor
+from console_notifier import ConsoleNotifier
+
+
+class InventoryMonitor:
+    def __init__(self, notifier: ConsoleNotifier):
+        self.notifier = notifier
+
+    def check(self, item: str, units_remaining: int) -> None:
+        if units_remaining < 0:
+            raise ValueError("units_remaining cannot be negative")
+
+        if units_remaining < 5:
+            self.notifier.send_restock_notice(item, units_remaining)
+```
+
+`InventoryMonitor` already receives its notifier through a constructor. But this source file imports the console implementation and declares that specific class as its expected dependency.
+
+Save the calling code as `main.py` and run it:
+
+```python sample=original-use
+from console_notifier import ConsoleNotifier
+from original_monitor import InventoryMonitor
+
+notifier = ConsoleNotifier()
+monitor = InventoryMonitor(notifier)
+monitor.check("Pencils", 3)
+# Pencils: 3 left. Order more.
+monitor.check("Paper", 5)
+# No notice.
+```
+
+Python's runtime would allow a different object with a compatible method. That flexibility does not remove this file's import of `ConsoleNotifier` or correct its overly specific annotation. We will change those source dependencies explicitly.
+
+</section>
+
+## Refactored version: the rule declares the operation it needs
+
+We will introduce a small interface for sending a restock notice. It takes an item name and its remaining count. It says nothing about console output, email addresses, or network requests.
+
+That interface belongs with the inventory rule because it describes the inventory program's need. A delivery implementation must fit that description, rather than making inventory code adopt a delivery library's vocabulary.
+
+<section data-pilot-language="csharp">
+
+### C#: the inventory code can stand on its own
+
+Put these declarations in an application project—for example, a class library named `InventoryApplication`:
+
+```csharp sample=application
+public interface IRestockNotifier
+{
+    void SendRestockNotice(string item, int unitsRemaining);
+}
+
+public sealed class InventoryMonitor
+{
+    private readonly IRestockNotifier notifier;
+
+    public InventoryMonitor(IRestockNotifier notifier)
+    {
+        this.notifier = notifier;
+    }
+
+    public void Check(string item, int unitsRemaining)
+    {
+        if (unitsRemaining < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(unitsRemaining));
+        }
+
+        if (unitsRemaining < 5)
+        {
+            notifier.SendRestockNotice(item, unitsRemaining);
+        }
+    }
+}
+```
+
+The threshold, validation, and method call inside `Check` are unchanged. The difference is what the class depends on: `IRestockNotifier`, not `ConsoleNotifier`.
+
+The application project can compile without any console-notifier class. It knows the required operation but does not provide delivery.
+
+### Make console delivery implement the interface
+
+Put this class in a separate `InventoryDelivery` class library and give that project a reference to `InventoryApplication`:
+
+```csharp sample=console
+public sealed class ConsoleNotifier : IRestockNotifier
+{
+    public void SendRestockNotice(string item, int unitsRemaining)
+    {
+        Console.WriteLine($"{item}: {unitsRemaining} left. Order more.");
+    }
+}
+```
+
+`ConsoleNotifier` now depends on the interface declared by the application project. The application project does not reference this delivery project.
+
+A console executable can reference both projects and connect them in `Main`:
+
+```csharp sample=refactored-use
+IRestockNotifier notifier = new ConsoleNotifier();
+InventoryMonitor monitor = new InventoryMonitor(notifier);
+monitor.Check("Pencils", 3);
+// Pencils: 3 left. Order more.
+monitor.Check("Paper", 5);
+// No notice.
+```
+
+This setup code must know which class to construct. The inventory rule does not. For a one-file experiment, the same declarations can share a file; using separate projects makes the intended source dependency enforceable by project references.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: the inventory module can stand on its own
+
+Use a fresh directory for the refactored version. Save this file as `application.py`:
+
+```python sample=application
+from typing import Protocol
+
+
+class RestockNotifier(Protocol):
+    def send_restock_notice(self, item: str, units_remaining: int) -> None:
+        ...
+
+
+class InventoryMonitor:
+    def __init__(self, notifier: RestockNotifier):
+        self.notifier = notifier
+
+    def check(self, item: str, units_remaining: int) -> None:
+        if units_remaining < 0:
+            raise ValueError("units_remaining cannot be negative")
+
+        if units_remaining < 5:
+            self.notifier.send_restock_notice(item, units_remaining)
+```
+
+`RestockNotifier` is a protocol: it describes the method a supplied object should provide. The `...` declares that method without implementing delivery. Annotations assist readers and type-checking tools; they do not enforce behavior at runtime. [2](#sources)
+
+The threshold, validation, and method call inside `check` are unchanged. This module now imports no console delivery code. It can be imported and its rule tested without that implementation present.
+
+### Make console delivery depend on the application contract
+
+Save this as the new `console_notifier.py`:
+
+```python sample=console
+from application import RestockNotifier
+
+
+class ConsoleNotifier(RestockNotifier):
+    def send_restock_notice(self, item: str, units_remaining: int) -> None:
+        print(f"{item}: {units_remaining} left. Order more.")
+```
+
+The import now goes from console delivery toward the application module. Explicit inheritance makes that relationship visible here; a class with a compatible method can also satisfy a protocol structurally.
+
+Save the calling code as the new `main.py`:
+
+```python sample=refactored-use
+from application import InventoryMonitor
+from console_notifier import ConsoleNotifier
+
+notifier = ConsoleNotifier()
+monitor = InventoryMonitor(notifier)
+monitor.check("Pencils", 3)
+# Pencils: 3 left. Order more.
+monitor.check("Paper", 5)
+# No notice.
+```
+
+This setup file imports both parts because it chooses what to connect. The rule module itself still knows nothing about console delivery.
+
+</section>
+
+## So what was inverted?
+
+Originally, the inventory-rule source depended on a concrete delivery implementation. After the change, the delivery implementation depends on an operation declared with the inventory rule.
+
+The direction of the **source dependency** changed. The direction of the **runtime call** did not: inventory still calls a notifier, which still performs delivery. Nothing runs backward. [1](#sources)
+
+The difference can be made visible in project references or Python imports:
+
+| Part | What it needs from the other parts |
+|---|---|
+| Inventory application | Nothing from a delivery implementation; it declares the required operation. |
+| Console delivery | The application's notifier interface or protocol. |
+| Startup code | Both parts, so it can construct a notifier and give it to the monitor. |
+
+Putting an interface in the console-delivery project and making the application reference that project would weaken the separation we just established. The file's name is not enough; inspect what must be imported or referenced to use it.
+
+## Try the rule without delivering anything
+
+A test can provide an object that records requests rather than printing them. Such an object is a **test double**: a substitute used to observe or control a dependency during a test.
+
+<section data-pilot-language="csharp">
+
+### C#: record the requested notices
+
+This class belongs in test code that references `InventoryApplication`, not the console-delivery project:
+
+```csharp sample=recording
+public sealed class RecordingNotifier : IRestockNotifier
+{
+    public List<string> Notices { get; } = new List<string>();
+
+    public void SendRestockNotice(string item, int unitsRemaining)
+    {
+        Notices.Add($"{item}:{unitsRemaining}");
+    }
+}
+```
+
+```csharp sample=recording-use
+RecordingNotifier notifier = new RecordingNotifier();
+InventoryMonitor monitor = new InventoryMonitor(notifier);
+monitor.Check("Pencils", 3);
+monitor.Check("Paper", 5);
+
+Console.WriteLine(notifier.Notices.Count); // 1
+Console.WriteLine(notifier.Notices[0]);    // Pencils:3
+```
+
+The recorded request proves that this call to the rule asked for the expected notice. It does not prove that a real delivery provider would deliver it.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: record the requested notices
+
+Save this as `recording_notifier.py`:
+
+```python sample=recording
+from application import RestockNotifier
+
+
+class RecordingNotifier(RestockNotifier):
+    def __init__(self):
+        self.notices: list[str] = []
+
+    def send_restock_notice(self, item: str, units_remaining: int) -> None:
+        self.notices.append(f"{item}:{units_remaining}")
+```
+
+The following calling code can be saved as `check_recording.py`:
+
+```python sample=recording-use
+from application import InventoryMonitor
+from recording_notifier import RecordingNotifier
+
+notifier = RecordingNotifier()
+monitor = InventoryMonitor(notifier)
+monitor.check("Pencils", 3)
+monitor.check("Paper", 5)
+
+print(len(notifier.notices))  # 1
+print(notifier.notices[0])    # Pencils:3
+```
+
+No console-notifier import is needed. The recorded request proves that this call to the rule asked for the expected notice. It does not prove that a real delivery provider would deliver it.
+
+</section>
+
+## Dependency injection is a different question
+
+**Dependency injection** means supplying an object with a dependency from outside. Both versions did that: the startup code constructed a notifier and passed it to the monitor.
+
+**Dependency inversion** concerns what the rule's source depends on. The original version named the console class. The revised version names the operation it needs and leaves delivery code to implement it.
+
+Receiving a concrete object through a constructor is therefore not, by itself, evidence of dependency inversion. Conversely, this design needs no dependency-injection container. Ordinary constructor calls connect the objects. [3](#sources)
+
+## Where to stop
+
+The extra interface and project boundary are useful when delivery might change independently, when it involves external systems, or when we need to test the rule without performing delivery. They are not a reason to invent an interface for every arithmetic helper or data value.
+
+Keep the promised operation small and meaningful. Our rule asks for a restock notice; it does not expose a mail server's entire API through a renamed interface. If future requirements need delivery acknowledgments, retries, or suppression of repeated notices, those behaviors must be designed and tested explicitly. This example does not provide them.
+
+The payoff is concrete: **we can change how a notice is delivered without putting delivery-specific code into the inventory rule. We can test when a notice is requested without delivering one at all.**
+
+## Sources
+
+1. Microsoft, [Architectural principles — Dependency inversion](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/architectural-principles#dependency-inversion), for source-dependency direction and unchanged runtime call direction. The inventory scenario and code are original.
+2. Python documentation, [typing.Protocol](https://docs.python.org/3/library/typing.html#typing.Protocol), for protocol declarations, structural conformance, and annotation limits.
+3. Microsoft, [Dependency injection in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection), for constructor-supplied dependencies. No container is used in these examples.

@@ -1,0 +1,39 @@
+name: Field guide editorial snapshot
+on:
+  pull_request:
+    paths:
+      - 'src/pages/guides/software-engineering/**'
+      - 'src/data/field-guide/**'
+      - '.github/workflows/field-guide-snapshot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Bundle editable guide sources without credentials or repository metadata
+        shell: python
+        run: |
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          roots = ['src/data/code-guru', 'src/data/field-guide', 'src/pages/guides/software-engineering', 'src/layouts', 'src/styles', 'src/components', 'scripts', '.github/workflows']
+          singles = ['src/data/software-engineering-guide.js', 'package.json', 'package-lock.json', 'astro.config.mjs', 'tsconfig.json', 'vercel.json', 'experiments/style_guide.md', 'experiments/unintroduced_referents.md']
+          with ZipFile('field-guide-editorial-source.zip', 'w', ZIP_DEFLATED) as archive:
+              for root in roots:
+                  for path in Path(root).rglob('*'):
+                      if path.is_file() and path.suffix in ['.json', '.js', '.jsx', '.ts', '.tsx', '.astro', '.md', '.mdx', '.css', '.py', '.mjs', '.yml']:
+                          archive.write(path)
+              for name in singles:
+                  path = Path(name)
+                  if path.exists():
+                      archive.write(path)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: field-guide-editorial-source
+          path: field-guide-editorial-source.zip
+          retention-days: 7

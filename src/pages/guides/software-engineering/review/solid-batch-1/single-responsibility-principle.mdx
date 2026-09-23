@@ -1,0 +1,247 @@
+---
+layout: '../../../../../layouts/FieldGuidePilotLayout.astro'
+title: 'Single Responsibility Principle'
+description: 'Separate the rules that determine a quest reward from the words that announce it.'
+prerequisites: 'Functions, classes, parameters, and return values. No design-pattern knowledge is needed.'
+reviewRoot: '/guides/software-engineering/review/solid-batch-1/'
+reviewLabel: 'SOLID principles — review batch'
+---
+
+The **Single Responsibility Principle** says that a class or module should have **one reason to change**. Keep code that serves the same responsibility together; separate responsibilities that change independently. [1](#sources)
+
+The difficult word is not *single*. It is *responsibility*.
+
+A method can multiply two numbers, add a bonus, and return a result while doing one job: calculating a reward. A different method can contain only a few lines yet combine two jobs that different people will want to change.
+
+Consider a game that displays a message when a player completes a quest. The game designer decides how many coins the player earns. The writer decides what the message says. Those decisions meet on the same screen, but they are not the same decision.
+
+## Original version: the reward and its announcement live together
+
+In this fictional game, a quest pays twenty coins per difficulty level, plus fifty coins for completing an optional objective. Difficulty is a whole number from one through five. The code rejects values outside that range.
+
+We will calculate a message for a player named Mira. The quest has difficulty three, and Mira completed the optional objective: sixty coins plus fifty makes 110.
+
+This example produces text only. It does not credit a player's balance, verify quest completion, or draw the results screen. Those jobs are outside this example.
+
+<section data-pilot-language="csharp">
+
+### C#: one method makes both decisions
+
+The C# examples target .NET 8. Add `using System;` at file level. Put declarations at file level and calling statements inside `Main` or another method. The original and refactored versions are alternatives, not declarations to paste into the same file together.
+
+```csharp sample=original
+public sealed class QuestResults
+{
+    public string BuildMessage(string playerName, int difficulty, bool bonusCompleted)
+    {
+        if (difficulty < 1 || difficulty > 5)
+        {
+            throw new ArgumentOutOfRangeException(nameof(difficulty));
+        }
+
+        int coins = difficulty * 20;
+        if (bonusCompleted)
+        {
+            coins += 50;
+        }
+
+        return $"{playerName} earned {coins} coins.";
+    }
+}
+```
+
+`BuildMessage` knows both the reward formula and the sentence used to announce it. Here is a call:
+
+```csharp sample=original-use
+QuestResults results = new QuestResults();
+Console.WriteLine(results.BuildMessage("Mira", 3, true));
+// Mira earned 110 coins.
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: one method makes both decisions
+
+The two versions below are alternatives. Run each version with its own calling statements. Inputs are a player-name string, an integer difficulty, and a Boolean indicating whether the optional objective was completed.
+
+```python sample=original
+class QuestResults:
+    def build_message(self, player_name, difficulty, bonus_completed):
+        if difficulty < 1 or difficulty > 5:
+            raise ValueError("difficulty must be between 1 and 5")
+
+        coins = difficulty * 20
+        if bonus_completed:
+            coins += 50
+
+        return f"{player_name} earned {coins} coins."
+```
+
+`build_message` knows both the reward formula and the sentence used to announce it. Here is a call:
+
+```python sample=original-use
+results = QuestResults()
+print(results.build_message("Mira", 3, True))
+# Mira earned 110 coins.
+```
+
+</section>
+
+## Two requests, one place to edit
+
+Now imagine two requests arriving independently.
+
+The game designer says, “Completing the optional objective should pay seventy-five coins instead of fifty.” The writer says, “Change the announcement to ‘Reward for Mira: 110 coins.’” The second request changes the sentence, not the amount.
+
+Both requests send us to the same method. That does not make the method broken. It does tell us that reward balancing and message wording are coupled in this implementation: either kind of change requires editing it.
+
+For one short, rarely changed message, that may be acceptable. Suppose, however, that reward rules and results-screen copy are edited frequently, and other screens also need the reward amount without an announcement. Giving the calculation its own home now serves an actual need.
+
+## Refactored version: calculate first, then format the result
+
+We will separate three jobs. A reward calculator determines the number of coins. A formatter turns a name and an amount into a sentence. A small results class calls them in that order.
+
+We are not applying either new request yet. First, we reorganize the code while preserving its message and validation behavior. That lets us distinguish moving existing behavior from changing it.
+
+<section data-pilot-language="csharp">
+
+### C#: the calculation no longer contains a sentence
+
+```csharp sample=refactored
+public sealed class RewardCalculator
+{
+    public int Calculate(int difficulty, bool bonusCompleted)
+    {
+        if (difficulty < 1 || difficulty > 5)
+        {
+            throw new ArgumentOutOfRangeException(nameof(difficulty));
+        }
+
+        int coins = difficulty * 20;
+        if (bonusCompleted)
+        {
+            coins += 50;
+        }
+
+        return coins;
+    }
+}
+
+public sealed class RewardFormatter
+{
+    public string Format(string playerName, int coins)
+    {
+        return $"{playerName} earned {coins} coins.";
+    }
+}
+
+public sealed class QuestResults
+{
+    private readonly RewardCalculator calculator = new RewardCalculator();
+    private readonly RewardFormatter formatter = new RewardFormatter();
+
+    public string BuildMessage(string playerName, int difficulty, bool bonusCompleted)
+    {
+        int coins = calculator.Calculate(difficulty, bonusCompleted);
+        return formatter.Format(playerName, coins);
+    }
+}
+```
+
+`RewardCalculator.Calculate` accepts quest information and returns an integer. It does not know Mira's name or any announcement text. `RewardFormatter.Format` receives the already-calculated amount. It cannot accidentally choose a different bonus because it has neither the difficulty nor the bonus flag.
+
+`QuestResults.BuildMessage` still produces the complete message, but now it does so by calling those two methods. It does not contain their decisions.
+
+```csharp sample=refactored-use
+QuestResults results = new QuestResults();
+Console.WriteLine(results.BuildMessage("Mira", 3, true));
+// Mira earned 110 coins.
+
+RewardCalculator calculator = new RewardCalculator();
+Console.WriteLine(calculator.Calculate(3, true));
+// 110
+```
+
+Changing the bonus now means editing `RewardCalculator.Calculate`. Changing the sentence means editing `RewardFormatter.Format`. Neither request requires rewriting `BuildMessage`.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Python: the calculation no longer contains a sentence
+
+```python sample=refactored
+class RewardCalculator:
+    def calculate(self, difficulty, bonus_completed):
+        if difficulty < 1 or difficulty > 5:
+            raise ValueError("difficulty must be between 1 and 5")
+
+        coins = difficulty * 20
+        if bonus_completed:
+            coins += 50
+
+        return coins
+
+
+class RewardFormatter:
+    def format(self, player_name, coins):
+        return f"{player_name} earned {coins} coins."
+
+
+class QuestResults:
+    def __init__(self):
+        self.calculator = RewardCalculator()
+        self.formatter = RewardFormatter()
+
+    def build_message(self, player_name, difficulty, bonus_completed):
+        coins = self.calculator.calculate(difficulty, bonus_completed)
+        return self.formatter.format(player_name, coins)
+```
+
+`RewardCalculator.calculate` accepts quest information and returns an integer. It does not know Mira's name or any announcement text. `RewardFormatter.format` receives the already-calculated amount. It cannot accidentally choose a different bonus because it has neither the difficulty nor the bonus flag.
+
+`QuestResults.build_message` still produces the complete message, but now it does so by calling those two methods. It does not contain their decisions.
+
+```python sample=refactored-use
+results = QuestResults()
+print(results.build_message("Mira", 3, True))
+# Mira earned 110 coins.
+
+calculator = RewardCalculator()
+print(calculator.calculate(3, True))
+# 110
+```
+
+Changing the bonus now means editing `RewardCalculator.calculate`. Changing the sentence means editing `RewardFormatter.format`. Neither request requires rewriting `build_message`.
+
+These small, stateless classes could also be ordinary functions in separate Python modules. Classes are used here to make comparison with C# straightforward; the separation of calculation from wording is the important part.
+
+</section>
+
+## Why three classes are not the point
+
+The original class had one method and two independently changing responsibilities. Counting methods would have missed the problem.
+
+The revised calculator could legitimately gain several methods for calculating related quest rewards. It would not violate the principle merely because the method count increased. Conversely, putting unrelated operations into different methods of one large class does not automatically separate their reasons for change.
+
+Nor does every arithmetic step need a class. Multiplying difficulty and adding the optional bonus both serve the reward calculation. Splitting them into a multiplication service and an addition service would make this example harder to read without separating the two decisions we actually care about.
+
+The useful question is: **when a requirement changes, which code should we expect to edit together?** For this game, reward balancing and announcement wording have different answers.
+
+## Recognizing when the separation is useful
+
+Look at actual changes, not just the current file. A class that repeatedly receives unrelated requests deserves investigation. So does a calculation you cannot test without setting up a screen, sending an email, or writing a file.
+
+In this example, tests can now ask the calculator for a number without asserting anything about a sentence. Tests for the formatter can supply a known number without arranging a quest. Tests for the complete message still matter: separating classes does not prove they were connected correctly.
+
+Keep the cost in view. There are more names and calls to follow. The separation is worthwhile when independent changes, reuse, or testing make that cost smaller than leaving the decisions mixed together. It is not an obligation to turn every short function into a collection of objects.
+
+A responsibility also should not be equated with one employee. Several people can specify the same reward rules; one person can work on both rewards and writing. The distinction is the kind of decision the code serves, not the number of people allowed to edit it. [1](#sources)
+
+**The reward can change without redesigning its announcement. The announcement can change without reopening the reward formula. That is the separation this example was built to show.**
+
+## Sources
+
+1. Robert C. Martin, [The Single Responsibility Principle](https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html). The formulation and its explanation in terms of independently changing responsibilities. The game, code, and change scenarios on this page are original examples.
