@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser checks against the real Astro build, not hand-rendered substitutes."""
+"""Browser checks against the actual Astro build."""
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'verification/field-guide'
 OUT.mkdir(parents=True, exist_ok=True)
-PUBLISHED = ['open-closed-principle', 'switch-statements', 'deadlock']
+PUBLISHED = ['open-closed-principle', 'switch-statements', 'deadlocks-and-lock-discipline']
 REVIEW = ['single-responsibility-principle', 'liskov-substitution-principle', 'interface-segregation-principle', 'dependency-inversion-principle']
 base = '/guides/software-engineering/'
 routes = [(base + slug + '/', True) for slug in PUBLISHED]
@@ -19,8 +19,7 @@ for slug in REVIEW:
     if (ROOT / 'dist' / review_base.lstrip('/') / slug / 'index.html').exists():
         routes.append((review_base + slug + '/', False))
 server = ThreadingHTTPServer(('127.0.0.1', 0), partial(SimpleHTTPRequestHandler, directory=str(ROOT / 'dist')))
-thread = threading.Thread(target=server.serve_forever, daemon=True)
-thread.start()
+threading.Thread(target=server.serve_forever, daemon=True).start()
 origin = f'http://127.0.0.1:{server.server_port}'
 report = []
 try:
@@ -32,8 +31,12 @@ try:
         page.on('pageerror', lambda error: errors.append(str(error)))
         for path, published in routes:
             response = page.goto(origin + path, wait_until='networkidle')
+            slug = path.rstrip('/').split('/')[-1]
+            page.screenshot(path=str(OUT / (slug + '-initial.png')))
+            (OUT / (slug + '.html')).write_text(page.content())
             assert response.status == 200, path
-            assert page.locator('h1').count() == 1, (path, 'one heading')
+            headings = page.locator('h1').all_text_contents()
+            assert len(headings) == 1, (path, headings)
             assert page.locator('[data-field-guide-pilot]').count() == 1, (path, 'one layout')
             assert page.locator('.pilot-body').inner_text().strip(), path
             assert page.locator('.pilot-body pre').count() >= 2, path
@@ -58,7 +61,6 @@ try:
             assert page.locator('[data-pilot-choice="python"]').get_attribute('aria-pressed') == 'true'
             page.locator('[data-pilot-choice="csharp"]').click()
             page.evaluate('window.scrollTo(0, 0)')
-            slug = path.rstrip('/').split('/')[-1]
             page.screenshot(path=str(OUT / (slug + '-desktop.png')))
             page.set_viewport_size({'width': 390, 'height': 844})
             page.screenshot(path=str(OUT / (slug + '-mobile.png')))
@@ -66,8 +68,7 @@ try:
             page.locator('.pilot-body pre').first.scroll_into_view_if_needed()
             page.screenshot(path=str(OUT / (slug + '-mobile-code.png')))
             page.set_viewport_size({'width': 1280, 'height': 900})
-            # Every in-article fragment link must refer to a real ID.
-            missing = page.locator('.pilot-body').evaluate('(root) => [...root.querySelectorAll("a[href^=\\\"#\\\"]")].map(a => a.getAttribute("href").slice(1)).filter(id => !document.getElementById(id))')
+            missing = page.locator('.pilot-body').evaluate("(root) => [...root.querySelectorAll('a')].map(a => a.getAttribute('href') || '').filter(h => h.startsWith('#')).map(h => h.slice(1)).filter(id => !document.getElementById(id))")
             assert not missing, (path, missing)
             report.append({'path': path, 'published': published, 'language_controls': 'pass', 'narrow_layout': 'pass', 'anchors': 'pass'})
         assert not errors, errors
