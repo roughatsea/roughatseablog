@@ -1,0 +1,272 @@
+---
+layout: '../../../../layouts/FieldGuidePilotLayout.astro'
+title: 'Deadlock'
+description: 'Two threads each hold something the other needs. Neither can reach the code that would let go.'
+prerequisites: 'Functions, classes, and changing a variable. Threads and locks are introduced here.'
+---
+
+A **deadlock** occurs when operations cannot proceed because each is waiting for something that another blocked operation must do. With locks, two threads can each hold a lock the other needs. Neither can continue far enough to release its own. [1](#sources)
+
+This is different from a slow operation. Giving a deadlock more time does not supply the missing release.
+
+## Two threads, two piles of tokens
+
+Imagine a game with a red pile and a blue pile, each containing 100 tokens. One worker moves a token from red to blue. Another moves a token from blue to red.
+
+Each worker runs on a **thread**: a sequence of instructions that can be scheduled alongside another sequence. The threads share the same two piles. We want a move to remove one token and add one token without another worker changing those piles halfway through.
+
+A **lock** allows only one thread at a time to enter code guarded by that same lock. The rule works only when the code accessing the shared state participates in it; a lock is not a physical barrier around a variable. [2](#sources) [3](#sources)
+
+For this example, the program has a red lock and a blue lock. Both moves take both locks. Red-to-blue takes red first. Blue-to-red takes blue first.
+
+Each choice sounds reasonable in isolation: lock the source, then the destination. Together, those choices create a problem.
+
+## Before: acquire the locks in opposite orders
+
+<section data-pilot-language="csharp">
+
+The C# snippets target .NET 8. Add `using System;` and `using System.Threading;` at the top of the source file. Put the class at file level and the later calling statements inside `Main` or another method.
+
+```csharp sample=before
+public sealed class TokenPiles
+{
+    private readonly object redLock = new object();
+    private readonly object blueLock = new object();
+
+    public int RedTokens { get; private set; } = 100;
+    public int BlueTokens { get; private set; } = 100;
+
+    public void MoveRedToBlue()
+    {
+        lock (redLock)
+        {
+            lock (blueLock)
+            {
+                if (RedTokens == 0)
+                {
+                    return;
+                }
+                RedTokens--;
+                BlueTokens++;
+            }
+        }
+    }
+
+    public void MoveBlueToRed()
+    {
+        lock (blueLock)
+        {
+            lock (redLock)
+            {
+                if (BlueTokens == 0)
+                {
+                    return;
+                }
+                BlueTokens--;
+                RedTokens++;
+            }
+        }
+    }
+}
+```
+
+`lock (redLock)` waits if another thread holds `redLock`. Once it acquires that lock, it holds it until execution leaves the block, including through `return` or an exception. The inner `lock (blueLock)` therefore attempts to acquire blue *while still holding red*. C# releases the locks when their blocks exit; it does not release the outer lock while waiting to enter the inner block. [2](#sources)
+
+The two `object` instances are dedicated lock objects, suitable for this .NET 8 example. They are not the token counts themselves.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python sample=before
+from threading import Lock
+
+
+class TokenPiles:
+    def __init__(self):
+        self._red_lock = Lock()
+        self._blue_lock = Lock()
+        self.red_tokens = 100
+        self.blue_tokens = 100
+
+    def move_red_to_blue(self):
+        with self._red_lock:
+            with self._blue_lock:
+                if self.red_tokens == 0:
+                    return
+                self.red_tokens -= 1
+                self.blue_tokens += 1
+
+    def move_blue_to_red(self):
+        with self._blue_lock:
+            with self._red_lock:
+                if self.blue_tokens == 0:
+                    return
+                self.blue_tokens -= 1
+                self.red_tokens += 1
+```
+
+`with self._red_lock` waits if another thread holds that lock. It acquires the lock before entering the block and releases it when the block exits, including through `return` or an exception. Entering `with self._blue_lock` inside that block means trying to acquire blue *while still holding red*. Python does not release the outer lock while waiting for the inner one. [3](#sources)
+
+The two `Lock` objects control access. They are not the token counts themselves.
+
+</section>
+
+Do not launch both original methods and assume they will finish. The deliberately unsafe example is here to show the fault. The replacement method comes next, and the accompanying test uses a time-bounded child process to demonstrate the original failure without leaving the test runner stuck.
+
+## Watch one possible execution
+
+Call the red-to-blue worker **A** and the blue-to-red worker **B**. The runtime does not have to finish A's method before giving B a turn.
+
+| Step | Worker A: red to blue | Worker B: blue to red |
+| --- | --- | --- |
+| 1 | Acquires red. | Has not acquired a lock. |
+| 2 | Still holds red. | Acquires blue. |
+| 3 | Tries to acquire blue; waits because B holds it. | Still holds blue. |
+| 4 | Still waits for blue and holds red. | Tries to acquire red; waits because A holds it. |
+
+At the end, A can get blue only after B releases it. But B can release blue only after getting red and finishing its move. Red is held by A, which cannot finish its own move without blue.
+
+**A is waiting for B to make progress. B is waiting for A to make progress.** Neither has reached a token update. Neither can reach the end of its outer lock block.
+
+The program need not deadlock on every run. If A takes both locks before B takes either, A can finish normally. That successful run does not eliminate the bad execution shown in the table.
+
+## After: both workers take red before blue
+
+We do not need to change which direction the tokens move. We need to change the order in which the blue-to-red method acquires its locks. Leave the red-to-blue method unchanged and replace only the blue-to-red method with this version.
+
+<section data-pilot-language="csharp">
+
+### Replacement method inside `TokenPiles`
+
+```csharp sample=replacement
+public void MoveBlueToRed()
+{
+    lock (redLock)
+    {
+        lock (blueLock)
+        {
+            if (BlueTokens == 0)
+            {
+                return;
+            }
+            BlueTokens--;
+            RedTokens++;
+        }
+    }
+}
+```
+
+`MoveBlueToRed` still subtracts from `BlueTokens` and adds to `RedTokens`. Only the lock order changes: `redLock`, then `blueLock`, just like `MoveRedToBlue`.
+
+### Run the corrected class
+
+These statements belong in a calling method and use `System.Threading.Thread`. They must use the class with the replacement method above:
+
+```csharp sample=use
+TokenPiles piles = new TokenPiles();
+Thread workerA = new Thread(piles.MoveRedToBlue);
+Thread workerB = new Thread(piles.MoveBlueToRed);
+
+workerA.Start();
+workerB.Start();
+workerA.Join();
+workerB.Join();
+
+Console.WriteLine($"Red: {piles.RedTokens}; blue: {piles.BlueTokens}");
+// Red: 100; blue: 100
+```
+
+`Start` makes each thread eligible to run. `Join` waits for that thread to finish. We read the token counts only after both joins; these properties are not a synchronized way to inspect an in-progress transfer.
+
+</section>
+
+<section data-pilot-language="python">
+
+### Replacement method inside `TokenPiles`
+
+Replace the original method, keeping the usual indentation for a class method:
+
+```python sample=replacement
+def move_blue_to_red(self):
+    with self._red_lock:
+        with self._blue_lock:
+            if self.blue_tokens == 0:
+                return
+            self.blue_tokens -= 1
+            self.red_tokens += 1
+```
+
+`move_blue_to_red` still subtracts from `blue_tokens` and adds to `red_tokens`. Only the lock order changes: `_red_lock`, then `_blue_lock`, just like `move_red_to_blue`.
+
+### Run the corrected class
+
+Run this after defining the class with the replacement method above:
+
+```python sample=use
+from threading import Thread
+
+piles = TokenPiles()
+worker_a = Thread(target=piles.move_red_to_blue)
+worker_b = Thread(target=piles.move_blue_to_red)
+
+worker_a.start()
+worker_b.start()
+worker_a.join()
+worker_b.join()
+
+print(f"Red: {piles.red_tokens}; blue: {piles.blue_tokens}")
+# Red: 100; blue: 100
+```
+
+`start` makes each thread eligible to run. `join` waits for that thread to finish. We read the token counts only after both joins; these attributes are not a synchronized way to inspect an in-progress transfer.
+
+</section>
+
+## Why the new order removes this deadlock
+
+Suppose A acquires red first. B now waits for red **without holding blue**. Blue is available to A, so A can acquire it, move its token, and release both locks. B can then take the locks and make its move.
+
+If B acquires red first, the same reasoning works with the workers exchanged. Whichever worker waits at the first lock is not holding the second lock hostage.
+
+This technique is called **lock ordering**: code that needs multiple locks acquires them in one agreed order. It removes the circular wait in this example. It works only if every relevant path obeys the order and does not introduce some other dependency while holding a lock. [4](#sources)
+
+For a larger collection of objects, a fixed order might come from unique, unchanging IDs. “Always lock the source first” is not a fixed order when either object can be the source.
+
+## Four ingredients in the original failure
+
+The classic conditions for this kind of resource deadlock have names. Our two workers give each name something concrete to point to. [4](#sources)
+
+| Condition | What it means here |
+| --- | --- |
+| **Mutual exclusion** | Only one worker can hold each lock at a time. |
+| **Hold and wait** | A worker keeps its first lock while waiting for its second. |
+| **No preemption** | Another worker cannot simply take an acquired lock away. |
+| **Circular wait** | A waits for B's lock, while B waits for A's lock. |
+
+The correction breaks circular wait. It does not stop threads from waiting briefly or from sharing data. That distinction matters: ordinary waiting for a worker that can finish is not the deadlock in our table.
+
+## What this example does not promise
+
+A single lock around both token piles would be simpler for this tiny program. Both operations always need both piles anyway. We used two locks to expose a mistake that becomes relevant when different operations genuinely need different combinations of resources.
+
+Consistent ordering does not guarantee fairness or prevent every kind of hang. A worker might still spend too long inside a lock. A new method that takes the locks in the opposite order can reintroduce the fault. Waiting for an external operation while holding a lock can create a different dependency to investigate.
+
+A timeout can give a failed attempt a way out, but only if that path releases resources and handles any partial work correctly. Increasing a timeout does not repair a circular dependency.
+
+Nor is asynchronous code automatically immune. Two operations can await each other's completion instead of blocking on locks. The important question remains who must make progress before whom. [4](#sources)
+
+## A useful question when a program stops progressing
+
+For each blocked operation, ask: **“What is it waiting for, who can provide it, and what is that provider waiting for?”**
+
+If following those dependencies brings you back to the operation you started with, you have found a cycle worth explaining. In the token example, that explanation fits in four steps—and changing two lock acquisitions is enough to remove it.
+
+## Sources
+
+1. [Oracle: Deadlock](https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html). A concrete introduction to mutual waiting between threads.
+2. [Microsoft: The C# lock statement](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock). Acquisition, exclusion, and release behavior.
+3. [Python: threading](https://docs.python.org/3/library/threading.html). Locks, context-manager use, thread start, and join.
+4. [Stephen Toub, Microsoft: Are deadlocks still possible with await?](https://devblogs.microsoft.com/dotnet/are-deadlocks-still-possible-with-await/). The four conditions, lock ordering, and asynchronous deadlocks.
+
+The token-pile example and execution table are original. The ordering argument addresses the two displayed locks and methods, not arbitrary concurrent code.

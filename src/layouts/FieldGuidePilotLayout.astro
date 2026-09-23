@@ -1,0 +1,101 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    prerequisites: string;
+  };
+}
+const { frontmatter } = Astro.props;
+const pilots = [
+  { slug: 'open-closed-principle', title: 'Open/Closed Principle' },
+  { slug: 'switch-statements', title: 'Switch Statements' },
+  { slug: 'deadlock', title: 'Deadlock' },
+];
+---
+
+<BaseLayout title={`${frontmatter.title} — Field Guide Pilot`} description={frontmatter.description} robots="noindex, nofollow" article={true}>
+  <article class="pilot" data-field-guide-pilot>
+    <header>
+      <a class="back-link" href="/guides/software-engineering/pilot/">Field Guide · three pilot articles</a>
+      <p class="pilot-status">Review draft · published guide unchanged</p>
+      <h1>{frontmatter.title}</h1>
+      <p class="prerequisites"><strong>Before you begin:</strong> {frontmatter.prerequisites}</p>
+    </header>
+    <div class="language-controls" role="group" aria-label="Example language" hidden>
+      <span>Examples in</span>
+      <button type="button" data-pilot-choice="csharp" aria-pressed="false">C#</button>
+      <button type="button" data-pilot-choice="python" aria-pressed="false">Python</button>
+      <button type="button" data-pilot-choice="both" aria-pressed="false">Both</button>
+    </div>
+    <div class="pilot-body"><slot /></div>
+    <nav class="other-pilots" aria-label="Other pilot articles">
+      {pilots.filter((pilot) => pilot.title !== frontmatter.title).map((pilot) => (
+        <a href={`/guides/software-engineering/pilot/${pilot.slug}/`}>{pilot.title} →</a>
+      ))}
+    </nav>
+  </article>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-field-guide-pilot]');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = 'true';
+    const controls = root.querySelector('.language-controls');
+    const buttons = [...root.querySelectorAll('[data-pilot-choice]')];
+    const key = 'roughatsea-field-guide-language';
+    const valid = (value) => ['csharp', 'python', 'both'].includes(value);
+    const apply = (value) => {
+      const language = valid(value) ? value : 'csharp';
+      root.dataset.pilotLanguage = language;
+      buttons.forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.pilotChoice === language));
+      });
+      try { localStorage.setItem(key, language); } catch { /* Page-local selection still works. */ }
+    };
+    let preferred = 'csharp';
+    try { preferred = localStorage.getItem(key) || preferred; } catch { /* Use the default. */ }
+    apply(preferred);
+    controls.hidden = false;
+    buttons.forEach((button) => button.addEventListener('click', () => apply(button.dataset.pilotChoice)));
+  })();
+</script>
+
+<style>
+  .pilot { max-width: 52rem; width: 100%; margin: 2rem auto 4rem; font-family: var(--font-serif, Georgia, serif); font-size: 1.08rem; line-height: 1.78; overflow-wrap: break-word; }
+  .pilot header { border-bottom: 1px solid var(--border-color, #888); padding-bottom: 1.4rem; margin-bottom: 1.6rem; }
+  .back-link, .pilot-status, .prerequisites, .language-controls, .other-pilots { font-family: var(--font-sans, system-ui, sans-serif); }
+  .back-link { font-size: .85rem; }
+  .pilot-status { color: var(--text-secondary, #666); font-size: .75rem; margin: .8rem 0; }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: 1.12; margin: .9rem 0 1.3rem; }
+  .prerequisites { font-size: .88rem; line-height: 1.65; margin: 0; color: var(--text-secondary, #666); }
+  .language-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: 1rem 0 1.7rem; font-size: .85rem; }
+  .language-controls[hidden] { display: none; }
+  .language-controls span { margin-right: .35rem; }
+  button { font: inherit; border: 1px solid var(--border-color, #888); border-radius: .45rem; padding: .5rem .85rem; min-height: 44px; cursor: pointer; color: var(--text-primary, #171717); background: var(--bg-color, #fff); }
+  button[aria-pressed='true'] { color: var(--bg-color, #fff); background: var(--text-primary, #171717); }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--link-color, #1493ff); outline-offset: 3px; }
+  .pilot[data-pilot-language='csharp'] .pilot-body :global([data-pilot-language='python']),
+  .pilot[data-pilot-language='python'] .pilot-body :global([data-pilot-language='csharp']) { display: none; }
+  .pilot-body :global(h2) { font-family: var(--font-sans, system-ui, sans-serif); font-size: 1.45rem; line-height: 1.35; margin: 2.7rem 0 1rem; scroll-margin-top: 2rem; }
+  .pilot-body :global(h3) { font-family: var(--font-sans, system-ui, sans-serif); font-size: 1.05rem; line-height: 1.4; margin: 1.8rem 0 .7rem; }
+  .pilot-body :global(p) { margin: 1rem 0; }
+  .pilot-body :global(a), .back-link, .other-pilots a { color: var(--link-color, #006cb5); text-decoration: underline; text-underline-offset: 3px; }
+  .pilot-body :global(pre) { padding: 1.1rem; border-radius: .6rem; font-size: .83rem; line-height: 1.65; overflow-x: auto; white-space: pre; tab-size: 4; max-width: 100%; margin: 1.1rem 0; }
+  .pilot-body :global(code) { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .pilot-body :global(p code), .pilot-body :global(td code) { font-size: .88em; overflow-wrap: anywhere; }
+  .pilot-body :global(table) { border-collapse: collapse; display: block; overflow-x: auto; font-family: var(--font-sans, system-ui, sans-serif); font-size: .86rem; line-height: 1.65; margin: 1.5rem 0; }
+  .pilot-body :global(th), .pilot-body :global(td) { text-align: left; vertical-align: top; padding: .7rem .8rem; border-bottom: 1px solid var(--border-color, #888); }
+  .pilot-body :global(th) { background: var(--surface-color, #eee); }
+  .pilot-body :global(ol) { padding-left: 1.4rem; font-size: .9rem; }
+  .pilot-body :global(li) { padding-left: .2rem; margin: .65rem 0; }
+  .other-pilots { border-top: 1px solid var(--border-color, #888); margin-top: 3rem; padding-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem 2rem; font-size: .92rem; }
+  @media (max-width: 600px) {
+    .pilot { font-size: 1rem; line-height: 1.75; margin-top: 1.2rem; }
+    .pilot-body :global(pre) { font-size: .78rem; padding: .8rem; }
+    .pilot-body :global(th), .pilot-body :global(td) { padding: .55rem; }
+  }
+</style>
