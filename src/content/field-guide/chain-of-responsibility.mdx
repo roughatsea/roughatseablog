@@ -1,0 +1,100 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Chain of Responsibility
+description: "Pass a request through potential handlers until one handles it, without making the sender choose that handler directly."
+prerequisites: "Objects, references, conditions, and nullable results."
+---
+
+export const checks = {"csharp":{"example":"var movement = new HelpNode(\"move\", \"Use arrows\"); var chat = new HelpNode(\"chat\", \"Press Enter\", movement); Check.That(chat.Find(\"chat\") == \"Press Enter\" && movement.Visits == 0); Check.That(chat.Find(\"move\") == \"Use arrows\"); Check.That(chat.Find(\"unknown\") == null);"},"python":{"example":"movement = HelpNode('move', 'Use arrows')\nchat = HelpNode('chat', 'Press Enter', movement)\nassert chat.find('chat') == 'Press Enter' and movement.visits == 0\nassert chat.find('move') == 'Use arrows'\nassert chat.find('unknown') is None"}};
+
+**Chain of Responsibility** passes a request through potential handlers until one handles it. The sender starts the request at the beginning of the chain rather than selecting the final handler itself. [1](#source-1)
+
+## Ask for help without searching every component yourself
+
+A game screen can answer questions about chat controls or movement. Imagine that help starts at the focused component, then passes to a broader component if the first has no answer.
+
+Each node below knows one topic and optionally another node. It either answers or forwards. A visit counter makes it possible to see which nodes were consulted; it is diagnostic data, not a requirement of the pattern.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class HelpNode
+{
+    private readonly string topic;
+    private readonly string answer;
+    private readonly HelpNode? next;
+    public int Visits { get; private set; }
+
+    public HelpNode(string topic, string answer, HelpNode? next = null)
+    {
+        this.topic = topic;
+        this.answer = answer;
+        this.next = next;
+    }
+
+    public string? Find(string requestedTopic)
+    {
+        Visits++;
+        if (requestedTopic == topic) return answer;
+        return next?.Find(requestedTopic);
+    }
+}
+```
+
+```csharp group=example role=run
+var movement = new HelpNode("move", "Use arrows");
+var chat = new HelpNode("chat", "Press Enter", movement);
+Console.WriteLine(chat.Find("move")); // Use arrows
+Console.WriteLine(chat.Find("unknown") ?? "No help available");
+```
+
+The chat node cannot answer the movement request, so it forwards it. The movement node answers. A chat request would stop at the first node; the second node would not be visited.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class HelpNode:
+    def __init__(self, topic, answer, next_node=None):
+        self._topic = topic
+        self._answer = answer
+        self._next = next_node
+        self.visits = 0
+
+    def find(self, requested_topic):
+        self.visits += 1
+        if requested_topic == self._topic:
+            return self._answer
+        if self._next is not None:
+            return self._next.find(requested_topic)
+        return None
+```
+
+```python group=example role=run
+movement = HelpNode("move", "Use arrows")
+chat = HelpNode("chat", "Press Enter", movement)
+print(chat.find("move"))  # Use arrows
+answer = chat.find("unknown")
+print("No help available" if answer is None else answer)
+```
+
+The first matching node returns an answer. Reaching the end without a match returns `None`, which the caller handles explicitly instead of assuming every request succeeds.
+
+</section>
+
+## Order is a policy
+
+If two nodes can answer the same topic, the earlier one wins. Reordering handlers can therefore change behavior. A more specific handler commonly comes before a general fallback; putting an unconditional fallback first would make later handlers unreachable.
+
+The nodes happen to share one class here because their behavior differs only in configured values. More complicated handlers can have different implementations of a common handling operation. A class hierarchy is not necessary merely to make a chain.
+
+A simple dictionary would be better for this fixed topic table. A chain becomes useful when handling depends on runtime context, handlers have different responsibilities, or the sequence must be assembled independently of the request sender.
+
+Unlike ordinary Observer notification, this example does not notify everyone. Unlike a pipeline in which every stage transforms a value, it stops after one handler accepts responsibility. Middleware sometimes uses a related chain shape with different forwarding rules; state those rules rather than inferring them from the name.
+
+Keep the chain acyclic and decide how failures propagate. A handler throwing an exception is not the same as declining a request. Silently trying the next handler after an authorization failure, for example, could change an enforced denial into a bypass.
+
+## Sources
+
+1. <span id="source-1"></span>[Gamma, Helm, Johnson, and Vlissides — Chain of Responsibility](https://www.informit.com/articles/article.aspx?p=1398601), the original catalog excerpt.

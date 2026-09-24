@@ -1,0 +1,110 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Observer
+description: "Observer lets interested components subscribe to notifications from an object, so the object can announce changes without naming every reaction."
+prerequisites: "Callbacks, collections, and object lifetimes."
+---
+
+export const checks = {"csharp":{"example":"var score = new Score(); var first = new List<int>(); var second = new List<int>(); Action<int> a = first.Add; Action<int> b = second.Add; score.Subscribe(a); score.Subscribe(b); score.Add(3); score.Unsubscribe(a); score.Add(2); Check.That(first.SequenceEqual(new[] { 3 })); Check.That(second.SequenceEqual(new[] { 3, 5 }) && score.Value == 5);"},"python":{"example":"score = Score()\nfirst = []\nsecond = []\na = first.append\nb = second.append\nscore.subscribe(a)\nscore.subscribe(b)\nscore.add(3)\nscore.unsubscribe(a)\nscore.add(2)\nassert first == [3] and second == [3, 5] and score.value == 5"}};
+
+**Observer** lets interested components subscribe to notifications from an object. The object announces an event or change through those subscriptions instead of naming every component that might react. [1](#source-1)
+
+## One score, several reactions
+
+A game score might be displayed in a heads-up display and recorded in a statistics panel. The score object should not need a new field and a new direct call every time another display is added.
+
+Instead, each interested component registers a callback. When the score changes, the score object sends the new value to the callbacks. These list-recording callbacks stand in for real displays.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Score
+{
+    private readonly List<Action<int>> listeners = new List<Action<int>>();
+    public int Value { get; private set; }
+
+    public void Subscribe(Action<int> listener) { listeners.Add(listener); }
+    public void Unsubscribe(Action<int> listener) { listeners.Remove(listener); }
+
+    public void Add(int points)
+    {
+        Value += points;
+        foreach (Action<int> listener in listeners.ToArray())
+        {
+            listener(Value);
+        }
+    }
+}
+```
+
+The score changes first, then notifies subscribers. Copying the callback list means subscription changes during notification do not invalidate the current loop. A C# event can supply a more conventional subscription API; this explicit list makes the mechanism visible.
+
+```csharp group=example role=run
+var score = new Score();
+Action<int> display = value => Console.WriteLine("Score: " + value);
+score.Subscribe(display);
+score.Add(3); // Score: 3
+score.Unsubscribe(display);
+score.Add(2); // No display notification
+```
+
+The callback is the observer. The `Score` object is the subject or provider. The subject knows the callback contract, not which screen receives it.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Score:
+    def __init__(self):
+        self.value = 0
+        self._listeners = []
+
+    def subscribe(self, listener):
+        self._listeners.append(listener)
+
+    def unsubscribe(self, listener):
+        self._listeners.remove(listener)
+
+    def add(self, points):
+        self.value += points
+        for listener in tuple(self._listeners):
+            listener(self.value)
+```
+
+The tuple snapshots which listeners receive this notification. A newly subscribed callback waits until the next notification; a removed callback already in the snapshot may still receive the current one.
+
+```python group=example role=run
+score = Score()
+
+def display(value):
+    print("Score:", value)
+
+score.subscribe(display)
+score.add(3)  # Score: 3
+score.unsubscribe(display)
+score.add(2)  # No display notification
+```
+
+This small unsubscribe method expects an existing subscription and raises if it is missing. A production subscription token could make cleanup idempotent and distinguish duplicate registrations.
+
+</section>
+
+## Notifications have timing and failure behavior
+
+These callbacks run synchronously on the caller's thread. A slow observer delays `Add`. A throwing observer stops the loop and propagates an error even though the score has already changed. The example does not provide rollback, failure isolation, or guaranteed delivery. [2](#source-2)
+
+It also assumes sequential, non-reentrant score updates. If a listener calls `Add` again, nested notifications and the changing current value need a defined policy. A snapshot of the listener list alone does not solve reentrancy or concurrent access.
+
+An event queue or message broker can decouple execution in time, but introduces its own ordering, retention, and failure contracts. Do not assume an in-process observer list has those distributed-system guarantees.
+
+## Unsubscribe when the relationship ends
+
+The subject retains callbacks, and a callback can retain its receiving screen. Closing a screen without unsubscribing can leave it alive and receiving invisible updates. Subscription cleanup belongs to the screen's lifecycle, not to an assumption that garbage collection will infer your intention. [2](#source-2)
+
+Observer is useful when several relatively independent features react to an event. For two components that must always be understood and updated together, a direct call can be clearer. The pattern makes communication more flexible, but also makes the actual recipients a runtime fact that debugging tools and readers must discover.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Observer design pattern](https://learn.microsoft.com/en-us/dotnet/standard/events/observer-design-pattern).
+2. <span id="source-2"></span>[Robert Nystrom — Observer](https://gameprogrammingpatterns.com/observer.html), particularly synchronous notification, subscriptions, and lifecycle costs.

@@ -1,0 +1,138 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: State
+description: "State moves behavior that depends on an object's current condition into state objects, allowing the object to change behavior by changing its state object."
+prerequisites: "Objects, interfaces or compatible methods, and state transitions."
+---
+
+export const checks = {"csharp":{"example":"var player = new Player(); Check.That(player.Status == \"paused\"); player.Pause(); Check.That(player.Status == \"paused\"); player.Play(); Check.That(player.Status == \"playing\"); player.Play(); player.Pause(); Check.That(player.Status == \"paused\"); Check.That(new Player().Status == \"paused\");"},"python":{"example":"player = Player()\nassert player.status == 'paused'\nplayer.pause()\nassert player.status == 'paused'\nplayer.play()\nassert player.status == 'playing'\nplayer.play()\nplayer.pause()\nassert player.status == 'paused'\nassert Player().status == 'paused'"}};
+
+**State** moves behavior that depends on an object's current condition into separate state objects. The original object forwards an operation to its current state. Changing that state object changes how the next operation is handled. [1](#source-1)
+
+This is one way to implement a state machine, not the only way. A small enum and a switch can express the same transitions with fewer classes.
+
+## The same button press means different things now
+
+Consider a player with two conditions: paused and playing. Pressing Play while paused starts playback; pressing it while already playing does nothing. Pause has the opposite effect.
+
+| Current condition | Play | Pause |
+|---|---|---|
+| Paused | Become playing | Remain paused |
+| Playing | Remain playing | Become paused |
+
+The example models those transitions only. It does not start audio hardware or manage a track position.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IPlaybackState
+{
+    string Name { get; }
+    IPlaybackState Play();
+    IPlaybackState Pause();
+}
+
+public sealed class Paused : IPlaybackState
+{
+    public string Name { get { return "paused"; } }
+    public IPlaybackState Play() { return new Playing(); }
+    public IPlaybackState Pause() { return this; }
+}
+
+public sealed class Playing : IPlaybackState
+{
+    public string Name { get { return "playing"; } }
+    public IPlaybackState Play() { return this; }
+    public IPlaybackState Pause() { return new Paused(); }
+}
+
+public sealed class Player
+{
+    private IPlaybackState state = new Paused();
+    public string Status { get { return state.Name; } }
+    public void Play() { state = state.Play(); }
+    public void Pause() { state = state.Pause(); }
+}
+```
+
+Each state decides what state an operation should produce. Returning `this` keeps the current state. Returning another object requests a transition. The player's forwarding methods do not contain a switch on status.
+
+```csharp group=example role=run
+var player = new Player();
+Console.WriteLine(player.Status); // paused
+player.Play();
+Console.WriteLine(player.Status); // playing
+player.Pause();
+Console.WriteLine(player.Status); // paused
+```
+
+The player remains the same object throughout. Its runtime class has not changed; its delegated behavior has.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Paused:
+    name = "paused"
+
+    def play(self):
+        return Playing()
+
+    def pause(self):
+        return self
+
+
+class Playing:
+    name = "playing"
+
+    def play(self):
+        return self
+
+    def pause(self):
+        return Paused()
+
+
+class Player:
+    def __init__(self):
+        self._state = Paused()
+
+    @property
+    def status(self):
+        return self._state.name
+
+    def play(self):
+        self._state = self._state.play()
+
+    def pause(self):
+        self._state = self._state.pause()
+```
+
+Compatible state methods return either the existing object or the next state object. The player owns which state is current; callers request playback actions rather than assigning a status string directly.
+
+```python group=example role=run
+player = Player()
+print(player.status)  # paused
+player.play()
+print(player.status)  # playing
+player.pause()
+print(player.status)  # paused
+```
+
+A second player starts with its own paused state. These state classes have no per-player mutable fields, but adding timers or other state later would require preserving appropriate ownership.
+
+</section>
+
+## Keep the transition rules visible
+
+The table is a compact specification. Tests should exercise each cell, not just the happy path from paused to playing. For a real player, define what happens when loading fails, a track ends, or an asynchronous event arrives after the user has pressed Stop.
+
+Entry and exit actions can belong to transitions, but their ordering and failure behavior must be explicit. Changing the state first and then failing to start hardware may leave the model claiming something that never happened.
+
+Strategy has a similar delegation shape, but commonly selects an interchangeable algorithm from outside. State emphasizes an object's lifecycle and how its current condition determines both behavior and valid next conditions.
+
+For these two states, the class-based version is more machinery than necessary. It becomes attractive when each state has substantial behavior or state-specific data. Do not create a separate class for every Boolean combination when the underlying conditions actually vary independently; separate state machines or a simpler data model may avoid that explosion.
+
+## Sources
+
+1. <span id="source-1"></span>[Robert Nystrom — State](https://gameprogrammingpatterns.com/state.html), on state machines, state-object delegation, transitions, and alternatives.
