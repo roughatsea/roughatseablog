@@ -1,0 +1,121 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Domain Modeling
+description: "Domain modeling represents the concepts and rules of the problem being solved, rather than organizing the program only around screens and database tables."
+prerequisites: "Classes or data structures, functions, and validation."
+---
+
+export const checks = {"csharp":{"example":"var booking = new Booking(\"B-7\", 2); booking.Confirm(); Check.That(booking.Status == \"confirmed\" && booking.Id == \"B-7\"); booking.Cancel(); bool rejected = false; try { booking.Confirm(); } catch (InvalidOperationException) { rejected = true; } Check.That(rejected && booking.Status == \"cancelled\");"},"python":{"example":"booking = Booking('B-7', 2)\nbooking.confirm()\nassert booking.status == 'confirmed' and booking.id == 'B-7'\nbooking.cancel()\ntry:\n    booking.confirm()\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('cancelled booking confirmed')\nassert booking.status == 'cancelled'"}};
+
+**Domain modeling** represents the concepts and rules of the problem being solved. For a booking application, those concepts might include reservations, departures, passengers, and cancellation—not merely forms, records, and controllers. [1](#source-1)
+
+A model is deliberately selective. It includes distinctions the application needs to make, not every fact that exists in the real world.
+
+## Start with a rule people can explain
+
+Suppose a ferry operator says: “A booking requests one or more seats. We can confirm it or cancel it. Once cancelled, it cannot be confirmed again.” Those sentences give us a starting model.
+
+A database with writable `status` and `seat_count` columns does not, by itself, enforce that meaning. We can instead provide named operations that express valid changes. This example concerns booking state only; it does not check remaining ferry capacity or collect payment.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Booking
+{
+    public string Id { get; }
+    public int Seats { get; }
+    public string Status { get; private set; } = "requested";
+
+    public Booking(string id, int seats)
+    {
+        if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException("Id required.");
+        if (seats < 1) throw new ArgumentOutOfRangeException(nameof(seats));
+        Id = id;
+        Seats = seats;
+    }
+
+    public void Confirm()
+    {
+        if (Status == "cancelled")
+        {
+            throw new InvalidOperationException("A cancelled booking cannot be confirmed.");
+        }
+        Status = "confirmed";
+    }
+
+    public void Cancel() { Status = "cancelled"; }
+}
+```
+
+`Confirm` contains the operator's rule. A caller cannot bypass it by assigning `Status` through the public API. Reconfirming an already confirmed booking is a no-op under this particular contract.
+
+```csharp group=example role=run
+var booking = new Booking("B-7", 2);
+booking.Confirm();
+Console.WriteLine(booking.Status); // confirmed
+booking.Cancel();
+Console.WriteLine(booking.Status); // cancelled
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Booking:
+    def __init__(self, booking_id, seats):
+        if not isinstance(booking_id, str) or not booking_id.strip():
+            raise ValueError("Id required.")
+        if type(seats) is not int or seats < 1:
+            raise ValueError("Seats must be a positive integer.")
+        self.id = booking_id
+        self.seats = seats
+        self._status = "requested"
+
+    @property
+    def status(self):
+        return self._status
+
+    def confirm(self):
+        if self._status == "cancelled":
+            raise RuntimeError("A cancelled booking cannot be confirmed.")
+        self._status = "confirmed"
+
+    def cancel(self):
+        self._status = "cancelled"
+```
+
+The public operations express the rule. Python's internal attributes remain accessible by convention, so this is not protection against code deliberately bypassing the model.
+
+```python group=example role=run
+booking = Booking("B-7", 2)
+booking.confirm()
+print(booking.status)  # confirmed
+booking.cancel()
+print(booking.status)  # cancelled
+```
+
+</section>
+
+## Name the important distinctions
+
+A booking has an identity: B-7 remains the same booking when its status changes. An object tracked by such an identity is an **entity**. Two bookings requesting two seats are not the same booking merely because their data initially matches.
+
+A **value object** instead represents information by its contents, such as a date range or a quantity with units. Replacing a two-seat quantity with an equal two-seat quantity need not create a new business identity. A separate quantity type becomes worthwhile when its meaning and rules recur; the small example keeps an integer.
+
+A **domain service** holds an operation that belongs to the problem but not naturally to one entity or value. Finding compatible departures for a multi-leg journey may be such an operation. That does not mean every operation belongs in a generic service class.
+
+These categories are tools for expressing rules. Functional designs can model the same distinctions with immutable data and functions. A class diagram full of domain-sounding names is not enough if all meaningful rules still live in unrelated button handlers.
+
+## Test the model against actual decisions
+
+Ask the operator what cancellation means after departure, whether seat counts can change, and whether confirmation requires payment. Do not invent those rules merely because a familiar booking example often has them.
+
+The displayed model is useful precisely because its limitations are explicit. It protects local state transitions for sequential calls. A real system still needs authorization, persistence, and concurrency control. Two servers modifying different copies of B-7 require more than a private setter to agree on the final state.
+
+For a straightforward data-entry tool, a rich object model may add unnecessary ceremony. Model deeply where the rules are complex enough that naming them, locating them, and making valid changes explicit saves work.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Domain Model](https://martinfowler.com/eaaCatalog/domainModel.html), on combining domain behavior and data.
+2. [Microsoft — Design a domain model](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-domain-model), covering entities, value objects, and domain rules.

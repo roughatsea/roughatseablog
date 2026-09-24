@@ -1,0 +1,111 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Aggregate and Invariant Boundary
+description: "An aggregate groups domain state that must stay consistent together and exposes a root through which its rules are enforced."
+prerequisites: "Objects, collections, validation, and database transactions."
+---
+
+export const checks = {"csharp":{"example":"var roster = new ClassRoster(1); Check.That(roster.Enroll(\"Mira\")); Check.That(!roster.Enroll(\"Mira\")); bool full = false; try { roster.Enroll(\"Sol\"); } catch (InvalidOperationException) { full = true; } Check.That(full && roster.Students.SequenceEqual(new[] { \"Mira\" }));"},"python":{"example":"roster = ClassRoster(1)\nassert roster.enroll('Mira')\nassert not roster.enroll('Mira')\ntry:\n    roster.enroll('Sol')\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('capacity exceeded')\nassert roster.students == ('Mira',)"}};
+
+An **aggregate** groups domain state that must stay consistent together. One object, the **aggregate root**, is the entry point for changes to that group. An **invariant** is a rule that must hold whenever an operation successfully completes. [1](#source-1)
+
+An aggregate is therefore not just a list, a database join, or every object reachable from a customer. Its boundary is chosen around rules that need coordinated enforcement.
+
+## A class must not enroll more students than it has seats
+
+A class roster has a capacity and a set of enrolled student identifiers. Those facts belong together because a new enrollment is valid only when the resulting count stays within capacity.
+
+The root should check capacity and add the student in one operation. Returning its mutable collection for callers to edit directly would bypass that rule.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class ClassRoster
+{
+    private readonly int capacity;
+    private readonly HashSet<string> students = new HashSet<string>();
+
+    public ClassRoster(int capacity)
+    {
+        if (capacity < 1) throw new ArgumentOutOfRangeException(nameof(capacity));
+        this.capacity = capacity;
+    }
+
+    public string[] Students { get { return students.ToArray(); } }
+
+    public bool Enroll(string studentId)
+    {
+        if (string.IsNullOrWhiteSpace(studentId)) throw new ArgumentException("Id required.");
+        if (students.Contains(studentId)) return false;
+        if (students.Count >= capacity) throw new InvalidOperationException("Class is full.");
+        students.Add(studentId);
+        return true;
+    }
+}
+```
+
+```csharp group=example role=run
+var roster = new ClassRoster(1);
+Console.WriteLine(roster.Enroll("Mira")); // True
+Console.WriteLine(roster.Enroll("Mira")); // False: already enrolled
+```
+
+An already enrolled student does not consume another seat. Another student would be rejected without changing the collection. The returned array is a copy; its contents cannot be used to mutate the roster.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class ClassRoster:
+    def __init__(self, capacity):
+        if type(capacity) is not int or capacity < 1:
+            raise ValueError("Capacity must be positive.")
+        self._capacity = capacity
+        self._students = set()
+
+    @property
+    def students(self):
+        return tuple(sorted(self._students))
+
+    def enroll(self, student_id):
+        if not isinstance(student_id, str) or not student_id.strip():
+            raise ValueError("Id required.")
+        if student_id in self._students:
+            return False
+        if len(self._students) >= self._capacity:
+            raise RuntimeError("Class is full.")
+        self._students.add(student_id)
+        return True
+```
+
+```python group=example role=run
+roster = ClassRoster(1)
+print(roster.enroll("Mira"))  # True
+print(roster.enroll("Mira"))  # False: already enrolled
+```
+
+The public methods funnel enrollment through the capacity rule. The tuple provides a read snapshot; internal attributes remain private by convention. Sorting makes the Python snapshot deterministic, while the C# set snapshot does not promise an order.
+
+</section>
+
+## Private fields do not prevent two servers from overbooking
+
+The code assumes sequential calls to one in-memory root. Imagine two servers load a roster with one remaining seat. Each independently approves a different student. If both writes succeed without conflict detection, the persisted class may exceed capacity.
+
+The storage operation must enforce the same consistency boundary. Optimistic version checks, an appropriate transaction, or database constraints can prevent conflicting updates from both committing. On a conflict, reload and reevaluate the rule rather than blindly overwriting another enrollment.
+
+An aggregate tells you what must be consistent; it does not supply that database behavior merely by being a class. Tests should cover both local invariants and the real persistence conflict path.
+
+## Keep the boundary small enough to use
+
+The roster can refer to students by identifier without loading each student's entire profile. A profile name change does not need to lock every class the student attends. A single giant aggregate would turn independent changes into contention.
+
+Conversely, splitting capacity and enrollment into independently committed records would make this rule harder to enforce. Start with the required invariant, then decide which state must participate in its change.
+
+Rules spanning several aggregates may need a coordinating process with explicit intermediate states or compensation. Do not promise immediate consistency across unrelated services simply because an application method calls them one after another.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — DDD Aggregate](https://martinfowler.com/bliki/DDD_Aggregate.html).
+2. [Microsoft — Domain model design](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-domain-model), on aggregate roots and invariants.

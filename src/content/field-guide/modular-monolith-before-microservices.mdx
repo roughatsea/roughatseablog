@@ -1,0 +1,123 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Modular Monolith Before Microservices
+description: "A modular monolith deploys as one application while keeping meaningful internal modules behind explicit contracts and data ownership."
+prerequisites: "Modules, APIs, and application deployment."
+---
+
+export const checks = {"csharp":{"example":"var inventory = new InventoryModule(3); var checkout = new CheckoutModule(inventory); Check.That(checkout.Buy(2) == \"accepted\"); Check.That(checkout.Buy(2) == \"out of stock\"); Check.That(checkout.Buy(1) == \"accepted\");"},"python":{"example":"inventory = InventoryModule(3)\ncheckout = CheckoutModule(inventory)\nassert checkout.buy(2) == 'accepted'\nassert checkout.buy(2) == 'out of stock'\nassert checkout.buy(1) == 'accepted'"}};
+
+A **modular monolith** deploys as one application while keeping meaningful internal modules behind explicit contracts and data ownership. A monolith describes the deployment arrangement; modularity describes how the code is organized. They are not opposites. [1](#source-1)
+
+“Before microservices” is a useful starting preference, not a law. Separate services should solve a concrete need for independent deployment, ownership, scaling, or isolation that justifies operating a distributed system.
+
+## Keep inventory ownership even without a network
+
+A small shop has checkout and inventory modules. Checkout should request a reservation rather than edit inventory's internal count. Both modules can still run in one process, making ordinary method calls.
+
+These classes illustrate a boundary; they are not sufficient enforcement by themselves. In a larger application, separate projects or packages and architecture checks can prevent callers from importing internal implementation details.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IReservations
+{
+    bool TryReserve(int quantity);
+}
+
+public sealed class InventoryModule : IReservations
+{
+    private int available;
+
+    public InventoryModule(int available)
+    {
+        if (available < 0) throw new ArgumentOutOfRangeException(nameof(available));
+        this.available = available;
+    }
+
+    public bool TryReserve(int quantity)
+    {
+        if (quantity < 1) throw new ArgumentOutOfRangeException(nameof(quantity));
+        if (quantity > available) return false;
+        available -= quantity;
+        return true;
+    }
+}
+
+public sealed class CheckoutModule
+{
+    private readonly IReservations inventory;
+    public CheckoutModule(IReservations inventory) { this.inventory = inventory; }
+    public string Buy(int quantity)
+    {
+        return inventory.TryReserve(quantity) ? "accepted" : "out of stock";
+    }
+}
+```
+
+```csharp group=example role=run
+var inventory = new InventoryModule(3);
+var checkout = new CheckoutModule(inventory);
+Console.WriteLine(checkout.Buy(2)); // accepted
+Console.WriteLine(checkout.Buy(2)); // out of stock
+```
+
+Checkout cannot decrement the stored count directly through this API. Inventory owns the reservation rule. Startup connects the modules without introducing HTTP or a broker.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class InventoryModule:
+    def __init__(self, available):
+        if type(available) is not int or available < 0:
+            raise ValueError("Initial stock must be nonnegative.")
+        self._available = available
+
+    def try_reserve(self, quantity):
+        if type(quantity) is not int or quantity < 1:
+            raise ValueError("Quantity must be positive.")
+        if quantity > self._available:
+            return False
+        self._available -= quantity
+        return True
+
+
+class CheckoutModule:
+    def __init__(self, inventory):
+        self._inventory = inventory
+
+    def buy(self, quantity):
+        return "accepted" if self._inventory.try_reserve(quantity) else "out of stock"
+```
+
+```python group=example role=run
+inventory = InventoryModule(3)
+checkout = CheckoutModule(inventory)
+print(checkout.buy(2))  # accepted
+print(checkout.buy(2))  # out of stock
+```
+
+The underscore marks internal ownership by convention. Package boundaries and review must reinforce that rule; a folder named `inventory` does not stop code elsewhere from reaching into private data.
+
+</section>
+
+## Deployment independence has a price
+
+In this sequential in-memory example, a call either returns or raises in the same process. Moving inventory to another service introduces latency, unavailable hosts, timeouts, and ambiguous outcomes. If checkout times out after a remote reservation succeeds, retrying may reserve twice unless the API has an appropriate identity and retry contract.
+
+A separate service also needs deployment automation, monitoring, version-compatible APIs, and data migration procedures. It can offer valuable isolation and independent scaling, but those benefits should be compared with the added work rather than assumed. [2](#source-2)
+
+The example does not implement payments, durable stock, or concurrency. A real monolith still needs transactions and synchronization. One process is simpler to coordinate than several, not automatically correct.
+
+## Use modules to learn the right boundaries
+
+When a product's rules are still changing, keeping operations together can make boundary adjustments cheaper. Watch which capabilities change together and which develop genuinely independent needs. A well-owned module is a better candidate for later extraction than code that shares arbitrary tables and internal classes across the application.
+
+Some systems have clear independent services from the start; others remain better as one deployment indefinitely. Avoid treating microservices as the graduation ceremony for successful software. The goal is an architecture the team can change and operate reliably, not the maximum number of deployable boxes.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Monolith First](https://martinfowler.com/bliki/MonolithFirst.html), including the difficulty of finding boundaries early and the importance of modularity.
+2. <span id="source-2"></span>[James Lewis and Martin Fowler — Microservices](https://martinfowler.com/articles/microservices.html), on independent deployment and operational consequences.

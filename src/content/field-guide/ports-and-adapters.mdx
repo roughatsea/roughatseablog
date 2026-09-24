@@ -1,0 +1,132 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Ports and Adapters
+description: "Ports and Adapters keeps an application's operations separate from the technologies that invoke them or provide their external services."
+prerequisites: "Functions, interfaces or protocols, and dependency injection."
+---
+
+export const checks = {"csharp":{"example":"var stock = new MemoryStock(); var app = new StockCheck(stock); Check.That(app.HasEnough(\"potion\", 3)); Check.That(!app.HasEnough(\"potion\", 4)); Check.That(new TextCommand(app).Handle(\"potion 3\") == \"available\");"},"python":{"example":"app = StockCheck(MemoryStock())\nassert app.has_enough('potion', 3)\nassert not app.has_enough('potion', 4)\nassert TextCommand(app).handle('potion 3') == 'available'"}};
+
+**Ports and Adapters** keeps an application's operations separate from the technologies that invoke them or provide external services. A **port** is a defined way to interact with the application. An **adapter** translates between that port and a particular technology or external representation. It is also called **Hexagonal Architecture**. [1](#source-1)
+
+A port here is not a TCP port number. It is an application-level conversation, such as checking stock or requesting a stored order.
+
+## One stock check, several ways to use it
+
+A shop needs to answer whether enough potions are available. A command-line tool supplies text; an automated test supplies arguments directly. The application should use the same quantity rule for both.
+
+The application also needs a stock count. It defines that requirement without depending on a particular database. The demonstration supplies an in-memory adapter, not a simulated database transaction.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IStockCounts
+{
+    int Available(string item);
+}
+
+public sealed class StockCheck
+{
+    private readonly IStockCounts counts;
+    public StockCheck(IStockCounts counts) { this.counts = counts; }
+
+    public bool HasEnough(string item, int requested)
+    {
+        if (requested < 1) throw new ArgumentOutOfRangeException(nameof(requested));
+        return counts.Available(item) >= requested;
+    }
+}
+
+public sealed class MemoryStock : IStockCounts
+{
+    public int Available(string item) { return item == "potion" ? 3 : 0; }
+}
+
+public sealed class TextCommand
+{
+    private readonly StockCheck app;
+    public TextCommand(StockCheck app) { this.app = app; }
+
+    public string Handle(string line)
+    {
+        string[] parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length != 2) throw new ArgumentException("Use: item quantity");
+        int quantity = int.Parse(parts[1]);
+        return app.HasEnough(parts[0], quantity) ? "available" : "unavailable";
+    }
+}
+```
+
+`HasEnough` is an incoming application operation. `IStockCounts` is the outgoing requirement. `TextCommand` converts text into a call; `MemoryStock` supplies the outgoing capability. The application names neither adapter.
+
+```csharp group=example role=run
+var app = new StockCheck(new MemoryStock());
+Console.WriteLine(new TextCommand(app).Handle("potion 3")); // available
+Console.WriteLine(app.HasEnough("potion", 4));              // False
+```
+
+The second call drives the application without any command-line parsing. A web adapter could call the same operation after validating an HTTP request.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from typing import Protocol
+
+
+class StockCounts(Protocol):
+    def available(self, item: str) -> int:
+        ...
+
+
+class StockCheck:
+    def __init__(self, counts: StockCounts):
+        self._counts = counts
+
+    def has_enough(self, item, requested):
+        if type(requested) is not int or requested < 1:
+            raise ValueError("Quantity must be positive.")
+        return self._counts.available(item) >= requested
+
+
+class MemoryStock:
+    def available(self, item):
+        return 3 if item == "potion" else 0
+
+
+class TextCommand:
+    def __init__(self, app):
+        self._app = app
+
+    def handle(self, line):
+        parts = line.split()
+        if len(parts) != 2:
+            raise ValueError("Use: item quantity")
+        quantity = int(parts[1])
+        return "available" if self._app.has_enough(parts[0], quantity) else "unavailable"
+```
+
+```python group=example role=run
+app = StockCheck(MemoryStock())
+print(TextCommand(app).handle("potion 3"))  # available
+print(app.has_enough("potion", 4))         # False
+```
+
+The protocol documents the count operation. Tests can exercise the application directly, while adapter tests separately cover parsing and external behavior.
+
+</section>
+
+## Keep the rule inside; translate outside
+
+Text parsing belongs to the text adapter. The rule that a request must contain a positive quantity belongs to the application because it applies regardless of who calls it. A database adapter would translate its storage representation into the count promised by the port.
+
+The original hexagon is a drawing convention, not a requirement for six ports. The significant distinction is inside versus outside: application behavior should not be trapped inside one UI or persistence technology. [1](#source-1)
+
+Neither an interface nor an in-memory test proves a production adapter is compatible. A database implementation must honor missing-item semantics, errors, and freshness requirements. The stock check is only a query; it does not reserve inventory or prevent another customer buying the last potion immediately afterward.
+
+For a small script, separate functions may provide enough isolation. Use explicit ports where they make real external dependencies and alternate drivers manageable. Do not create layers of forwarding interfaces that merely rename the same dependency without removing knowledge of its technology.
+
+## Sources
+
+1. <span id="source-1"></span>[Alistair Cockburn — Hexagonal Architecture, original article](https://alistair.cockburn.us/hexagonal-architecture), defining application ports, technology adapters, and test drivers.
