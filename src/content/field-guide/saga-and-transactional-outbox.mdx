@@ -1,0 +1,139 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Sagas and the Transactional Outbox"
+description: "A saga coordinates local business steps and compensations. A transactional outbox records a state change and an event together before a separate relay publishes the event."
+prerequisites: "Transactions, messages, state changes, and partial failure."
+---
+
+export const checks = {"csharp":{"saga":"Check.That(Booking.Run(false).SequenceEqual(new[] { \"reserved\", \"payment declined\", \"released\" })); Check.That(Booking.Run(true).SequenceEqual(new[] { \"reserved\", \"paid\", \"confirmed\" }));","outbox":"var store = new Store(); store.Confirm(\"O-7\"); Check.That(store.Confirmed.Contains(\"O-7\") && store.Pending.Single() == \"confirmed:O-7\"); store.Confirm(\"O-7\"); Check.That(store.Pending.Length == 1);"},"python":{"saga":"assert book(False) == ['reserved', 'payment declined', 'released']\nassert book(True) == ['reserved', 'paid', 'confirmed']","outbox":"store = Store()\nstore.confirm('O-7')\nassert 'O-7' in store.confirmed and store.pending == ('confirmed:O-7',)\nstore.confirm('O-7')\nassert len(store.pending) == 1"}};
+
+A **saga** coordinates a business operation as a sequence of local steps. If a later step cannot proceed, earlier steps may need compensating actions. A **transactional outbox** addresses a different problem: committing business state and a message-to-be-published in the same local transaction. A separate relay publishes that recorded message. [1](#source-1) [2](#source-2)
+
+A shop can use both. Reserving stock and taking payment may form a saga. A stock service can use an outbox to announce a committed reservation without losing the announcement during a crash.
+
+## A compensation is another business action
+
+Imagine reserving a seat, requesting payment, then confirming a booking. If payment is definitely declined, release the reservation. That release is not time travel: another customer may have observed the seat as unavailable while it was reserved.
+
+The first example records the sequence as a trace. It models an explicit payment acceptance or decline, not an unknown outcome after a timeout.
+
+<section data-pilot-language="csharp">
+
+```csharp group=saga role=types
+public static class Booking
+{
+    public static string[] Run(bool paymentAccepted)
+    {
+        var steps = new List<string> { "reserved" };
+        if (!paymentAccepted)
+        {
+            steps.Add("payment declined");
+            steps.Add("released");
+            return steps.ToArray();
+        }
+        steps.Add("paid");
+        steps.Add("confirmed");
+        return steps.ToArray();
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=saga role=types
+def book(payment_accepted):
+    steps = ["reserved"]
+    if not payment_accepted:
+        steps.append("payment declined")
+        steps.append("released")
+        return steps
+    steps.append("paid")
+    steps.append("confirmed")
+    return steps
+```
+
+</section>
+
+A real saga must persist progress, correlate replies, and retry or escalate failed compensations. A timeout after a payment request is not a confirmed decline; reconcile its outcome before assuming the only action needed is releasing the seat. The trace makes the desired paths visible but implements no remote coordination.
+
+## Avoid the gap between saving and announcing
+
+Suppose an order is marked confirmed in a database, then an ordinary send call publishes `OrderConfirmed`. A crash between those operations loses the event. Sending first creates the reverse risk: consumers see confirmation for a transaction that later fails.
+
+An outbox records both facts together. This next in-memory model prepares a new state containing the confirmed order and its pending event, then installs that state under one lock. It illustrates a transaction boundary; it is not durable storage.
+
+<section data-pilot-language="csharp">
+
+```csharp group=outbox role=types
+public sealed class Store
+{
+    private readonly object gate = new();
+    private (string[] Orders, string[] Events) state =
+        (Array.Empty<string>(), Array.Empty<string>());
+    public string[] Confirmed { get { lock (gate) { return state.Orders.ToArray(); } } }
+    public string[] Pending { get { lock (gate) { return state.Events.ToArray(); } } }
+
+    public void Confirm(string orderId)
+    {
+        lock (gate)
+        {
+            if (state.Orders.Contains(orderId)) return;
+            var nextOrders = state.Orders.Append(orderId).ToArray();
+            var nextEvents = state.Events.Append("confirmed:" + orderId).ToArray();
+            state = (nextOrders, nextEvents);
+        }
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=outbox role=types
+from threading import Lock
+
+
+class Store:
+    def __init__(self):
+        self._gate = Lock()
+        self._state = ((), ())
+
+    @property
+    def confirmed(self):
+        with self._gate:
+            return self._state[0]
+
+    @property
+    def pending(self):
+        with self._gate:
+            return self._state[1]
+
+    def confirm(self, order_id):
+        with self._gate:
+            orders, events = self._state
+            if order_id in orders:
+                return
+            next_orders = orders + (order_id,)
+            next_events = events + ("confirmed:" + order_id,)
+            self._state = (next_orders, next_events)
+```
+
+</section>
+
+There is no observable model state in which this operation adds the order but omits its event. In a database, the equivalent guarantee requires the order update and outbox insertion to participate in the same committed transaction. Two unrelated writes do not become atomic because a class is named `Store`.
+
+## The relay can still publish twice
+
+After committing, a relay reads pending outbox entries, publishes them, and records completion. If it crashes after publication but before recording completion, it can publish the same event again. Consumers still need duplicate handling, and the event needs a stable identifier.
+
+Order the relay appropriately, monitor backlog, retry failures, and retain enough state for recovery. An outbox does not make an email recipient part of the order database transaction.
+
+Sagas organize business recovery across boundaries; outboxes protect the handoff from one local commit to messaging. Keeping those jobs distinct makes it easier to identify which failure each mechanism actually addresses.
+
+## Sources
+
+1. <span id="source-1"></span>[Chris Richardson — Saga](https://microservices.io/patterns/data/saga.html).
+2. <span id="source-2"></span>[Chris Richardson — Transactional Outbox](https://microservices.io/patterns/data/transactional-outbox.html).
