@@ -3,15 +3,18 @@ import { guideConcepts } from '../../../data/software-engineering-guide.js';
 import { revisedArticles } from '../../../data/field-guide-revisions';
 
 export function getStaticPaths() {
-  return guideConcepts.map((concept) => ({
-    params: { slug: concept.slug },
-    props: { concept },
-  }));
+  const expected = new Set(guideConcepts.map((concept) => concept.slug));
+  const actual = Object.keys(revisedArticles);
+  if (expected.size !== 206 || actual.length !== expected.size || actual.some((slug) => !expected.has(slug))) {
+    throw new Error('The field-guide release requires exactly one revised article for each of its 206 canonical entries.');
+  }
+  return guideConcepts.map((concept) => {
+    if (!revisedArticles[concept.slug]?.Content) throw new Error(`Missing revised lesson: ${concept.slug}`);
+    return { params: { slug: concept.slug }, props: { slug: concept.slug } };
+  });
 }
-const { concept } = Astro.props;
-const Article = revisedArticles[concept.slug]?.Content;
-if (!Article) {
-  throw new Error(`Missing rewritten field-guide article: ${concept.slug}`);
-}
+
+const Article = revisedArticles[Astro.props.slug].Content;
 ---
+
 <Article />
