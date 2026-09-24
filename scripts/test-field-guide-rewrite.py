@@ -91,7 +91,12 @@ def main():
     if dotnet and csharp_sources:
         with tempfile.TemporaryDirectory(prefix='field-guide-csharp-') as tmp:
             temp = Path(tmp)
-            (temp / 'GuideExamples.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup></Project>')
+            # Only the database-plan lesson requires an external test-only provider.
+            # Keep the version identical to the installation command printed in that lesson.
+            packages = ''
+            if 'database-indexes-and-query-plans' in found:
+                packages = '<ItemGroup><PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.31" /></ItemGroup>'
+            (temp / 'GuideExamples.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>' + packages + '</Project>')
             helper = 'public static class Check { public static void That(bool value, string message = "Example assertion failed") { if (!value) throw new Exception(message); } }\n'
             (temp / 'Program.cs').write_text('using System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Threading.Tasks;\n' + '\n'.join(csharp_calls) + '\nConsole.WriteLine("PASS all C# example groups");\n' + helper + '\n'.join(csharp_sources))
             run = subprocess.run([dotnet, 'run', '--project', str(temp / 'GuideExamples.csproj'), '--configuration', 'Release'], text=True, capture_output=True, timeout=240)

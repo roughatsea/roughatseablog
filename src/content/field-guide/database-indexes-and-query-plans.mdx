@@ -1,0 +1,134 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Database Indexes and Query Plans
+description: "An index provides another way to locate rows. A query plan shows how the database intends to execute a particular query, including whether that index is used."
+prerequisites: "SQL SELECT and WHERE, tables, parameters, and database connections."
+---
+
+export const checks = {"csharp":{"example":"var before = IndexExperiment.Run(false); var after = IndexExperiment.Run(true); Check.That(before.Ids.SequenceEqual(new[] { 777 }) && after.Ids.SequenceEqual(before.Ids)); Check.That(before.Plan.Any(line => line.Contains(\"SCAN\", StringComparison.OrdinalIgnoreCase))); Check.That(after.Plan.Any(line => line.Contains(\"ix_notes_title\", StringComparison.OrdinalIgnoreCase)));"},"python":{"example":"before_plan, before_ids = index_experiment(False)\nafter_plan, after_ids = index_experiment(True)\nassert before_ids == after_ids == [777]\nassert any('SCAN' in line.upper() for line in before_plan)\nassert any('ix_notes_title' in line for line in after_plan)"}};
+
+A **database index** stores information in a structure that can help locate rows without inspecting every row in a table. A **query plan** shows how the database intends to execute a particular query. Creating an index does not mean every query will use it or become faster. [1](#source-1)
+
+## Find one title among a thousand notes
+
+Create a table with one thousand notes. Only note 777 has the title `Harbor`. We will run the same parameterized query twice: once without a title index, and once in a separate database with that index.
+
+Each experiment uses a real, temporary in-memory SQLite database. In-memory storage avoids file setup, but SQLite still parses SQL, builds its table and index structures, and chooses a plan.
+
+<section data-pilot-language="csharp">
+
+The C# example uses Microsoft's SQLite provider. Add the tested package to a .NET 8 console project:
+
+```bash
+dotnet add package Microsoft.Data.Sqlite --version 8.0.31
+```
+
+```csharp group=example role=types
+public sealed record PlanResult(string[] Plan, int[] Ids);
+
+public static class IndexExperiment
+{
+    public static PlanResult Run(bool indexed)
+    {
+        using var database = new Microsoft.Data.Sqlite.SqliteConnection("Data Source=:memory:");
+        database.Open();
+        using var command = database.CreateCommand();
+        command.CommandText = """
+            CREATE TABLE notes (id INTEGER PRIMARY KEY, title TEXT NOT NULL);
+            WITH RECURSIVE seq(n) AS (
+                VALUES(1) UNION ALL SELECT n + 1 FROM seq WHERE n < 1000
+            )
+            INSERT INTO notes
+            SELECT n, CASE WHEN n = 777 THEN 'Harbor' ELSE 'Note-' || n END FROM seq;
+            """;
+        command.ExecuteNonQuery();
+        if (indexed)
+        {
+            command.CommandText = "CREATE INDEX ix_notes_title ON notes(title);";
+            command.ExecuteNonQuery();
+        }
+        command.Parameters.AddWithValue("$title", "Harbor");
+        command.CommandText = "EXPLAIN QUERY PLAN SELECT id FROM notes WHERE title = $title;";
+        var plan = new List<string>();
+        using (var reader = command.ExecuteReader())
+        {
+            while (reader.Read()) plan.Add(reader.GetString(3));
+        }
+        command.CommandText = "SELECT id FROM notes WHERE title = $title;";
+        var ids = new List<int>();
+        using (var reader = command.ExecuteReader())
+        {
+            while (reader.Read()) ids.Add(reader.GetInt32(0));
+        }
+        return new PlanResult(plan.ToArray(), ids.ToArray());
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(string.Join("; ", IndexExperiment.Run(false).Plan));
+Console.WriteLine(string.Join("; ", IndexExperiment.Run(true).Plan));
+```
+
+The first plan describes a table scan. The second names `ix_notes_title` and an indexed search. Both queries return identifier 777. The parameter remains data; it is not concatenated into SQL syntax.
+
+</section>
+
+<section data-pilot-language="python">
+
+Python's standard library includes the SQLite interface used here.
+
+```python group=example role=types
+import sqlite3
+from contextlib import closing
+
+
+def index_experiment(indexed):
+    with closing(sqlite3.connect(":memory:")) as database:
+        database.executescript("""
+            CREATE TABLE notes (id INTEGER PRIMARY KEY, title TEXT NOT NULL);
+            WITH RECURSIVE seq(n) AS (
+                VALUES(1) UNION ALL SELECT n + 1 FROM seq WHERE n < 1000
+            )
+            INSERT INTO notes
+            SELECT n, CASE WHEN n = 777 THEN 'Harbor' ELSE 'Note-' || n END FROM seq;
+        """)
+        if indexed:
+            database.execute("CREATE INDEX ix_notes_title ON notes(title)")
+        plan_rows = database.execute(
+            "EXPLAIN QUERY PLAN SELECT id FROM notes WHERE title = ?", ("Harbor",)
+        ).fetchall()
+        rows = database.execute(
+            "SELECT id FROM notes WHERE title = ?", ("Harbor",)
+        ).fetchall()
+        return [row[3] for row in plan_rows], [row[0] for row in rows]
+```
+
+```python group=example role=run
+print(index_experiment(False)[0])
+print(index_experiment(True)[0])
+```
+
+The plan output changes from scanning the table to searching the named index. `closing` also closes the connection when an exception occurs; a connection's transaction context alone would not necessarily perform that cleanup.
+
+</section>
+
+## Read the plan as evidence, not a performance verdict
+
+SQLite's `SCAN` indicates scanning a table or index; `SEARCH` indicates visiting a selected subset. The exact explanatory text can change between SQLite versions and is intended for interactive diagnosis, not as a stable application protocol. The checks here recognize features of this controlled experiment, not a production parser for arbitrary plans. [2](#source-2)
+
+The plan is not an elapsed-time measurement. On a tiny table a scan may be cheaper. For a real query, inspect realistic row counts, parameter selectivity, statistics, and actual runtime evidence. Database products expose different plan formats and different distinctions between estimated and executed plans.
+
+## An index makes writes do more work
+
+The index occupies space and must be maintained as indexed data changes. Additional indexes can slow inserts or updates, and an index that duplicates another may add cost without helping a workload.
+
+Choose indexes from actual filters, joins, and ordering needs. Column order matters in a multi-column index. Functions, casts, or incompatible comparisons can also prevent a useful search; verify the real plan rather than assuming an indexed column guarantees one.
+
+This experiment proves that the selected query can use a specific index while returning the same row. It does not claim that indexing every column is wise or that the production query became faster. The next step is to measure the actual workload, including the cost paid by writes.
+
+## Sources
+
+1. <span id="source-1"></span>[SQLite — Query Planning](https://www.sqlite.org/queryplanner.html).
+2. <span id="source-2"></span>[SQLite — EXPLAIN QUERY PLAN](https://www.sqlite.org/eqp.html).
+3. [Microsoft — SQLite provider](https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/) and [Microsoft.Data.Sqlite 8.0.31](https://www.nuget.org/packages/Microsoft.Data.Sqlite/8.0.31).
