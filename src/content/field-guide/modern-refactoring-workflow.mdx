@@ -1,0 +1,110 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: A Practical Refactoring Workflow
+description: "Change one structural idea at a time, preserve observable behavior, and use tests and review to check what automated tools cannot infer."
+prerequisites: "Functions, version control, tests, and the meaning of refactoring."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Labels.Total(new[] { 3, 7 }) == \"Coins: 10\"); Check.That(Labels.Total(Array.Empty<int>()) == \"Coins: 0\");","revised":"Check.That(Labels.Total(new[] { 3, 7 }) == \"Coins: 10\"); Check.That(Labels.Total(Array.Empty<int>()) == \"Coins: 0\");"},"python":{"original":"assert total_label([3, 7]) == 'Coins: 10'\nassert total_label([]) == 'Coins: 0'","revised":"assert total_label([3, 7]) == 'Coins: 10'\nassert total_label([]) == 'Coins: 0'"}};
+
+A **refactoring workflow** is a repeatable way to reorganize code while preserving the behavior callers rely on. The central discipline is making a small structural change, checking it, and keeping that change separate from new requirements. Refactoring is not another name for an unrestricted rewrite. [1](#source-1)
+
+An editor can move code, a compiler can reject incompatible types, and a test suite can detect selected behavior changes. None of them independently knows which external promises your application must keep.
+
+## Establish what must stay true
+
+A game totals reward amounts and creates a label. We want to separate calculation from formatting, not change the label, the numeric result, or the order of additions. Inputs are ordinary integer arrays or lists with totals inside the C# integer range.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Labels
+{
+    public static string Total(int[] amounts)
+    {
+        int total = 0;
+        foreach (int amount in amounts) total += amount;
+        return "Coins: " + total;
+    }
+}
+```
+
+Before editing, check that `Labels.Total(new[] { 3, 7 })` returns `Coins: 10` and an empty array returns `Coins: 0`. Those are concrete promises, not a claim that two tests exhaust every possible input.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def total_label(amounts):
+    total = 0
+    for amount in amounts:
+        total += amount
+    return "Coins: " + str(total)
+```
+
+Before editing, check `total_label([3, 7]) == 'Coins: 10'` and `total_label([]) == 'Coins: 0'`. Run the existing broader suite too, so pre-existing failures are not confused with new ones.
+
+</section>
+
+## Make one move
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Labels
+{
+    private static int Sum(int[] amounts)
+    {
+        int total = 0;
+        foreach (int amount in amounts) total += amount;
+        return total;
+    }
+
+    public static string Total(int[] amounts)
+    {
+        return "Coins: " + Sum(amounts);
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def sum_amounts(amounts):
+    total = 0
+    for amount in amounts:
+        total += amount
+    return total
+
+
+def total_label(amounts):
+    return "Coins: " + str(sum_amounts(amounts))
+```
+
+</section>
+
+The loop has a new home. Its inputs, sequence, and additions are unchanged. We have not simultaneously renamed the public API, switched number types, changed the wording, and replaced the algorithm. A failure now has a small set of plausible causes.
+
+## Verify at the right boundaries
+
+Compile and run the focused examples, then the relevant integration tests. Review the diff as a reader: did the moved code lose an early return, catch a different exception, read a clock twice, or change when an argument is evaluated?
+
+For public APIs, inspect consumers that symbol tools may miss: reflection, serialized names, markup bindings, configuration strings, and separately deployed clients. A successful symbol rename does not prove all those references migrated.
+
+The example's tests check return values. A real operation that also writes a file or publishes a message needs observations for those effects. Otherwise “tests passed” can coexist with “the receipt is never sent.”
+
+## Save a coherent checkpoint
+
+Commit the structural move with a message describing the preserved behavior and the reason for the reorganization. Subsequent feature work can then be reviewed separately. Small coherent commits also make reverting an unsuccessful approach easier than disentangling one giant cleanup-and-feature patch.
+
+Automated refactoring and AI assistance can reduce mechanical work. Treat their output as a proposed edit: inspect it, run checks, and keep production secrets out of example inputs. Generating more code is not evidence that the operation was safer.
+
+Finally, stop when the intended improvement is achieved. Refactoring should make a real change easier to understand or implement. It is not an invitation to reorganize every neighboring file merely because it is open in the editor.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Refactoring](https://refactoring.com/), defining behavior-preserving restructuring and small transformations.
+2. [Martin Fowler — Self-Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), on automated feedback during development.

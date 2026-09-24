@@ -1,0 +1,121 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Property-Based Testing
+description: "Property-based testing checks general rules across generated inputs instead of relying only on individual examples chosen by the author."
+prerequisites: "Functions, assertions, loops, and simple random-number generation."
+---
+
+export const checks = {"csharp":{"example":"Properties.CheckGeneratedInputs(); Check.That(Limits.Clamp(12, 0, 10) == 10); Check.That(Limits.Clamp(4, 0, 10) == 4);"},"python":{"example":"check_generated_inputs()\nassert clamp(12, 0, 10) == 10\nassert clamp(4, 0, 10) == 4"}};
+
+**Property-based testing** checks rules that should hold across many inputs. Rather than write only “this input should produce this answer,” you describe a property and generate values with which to challenge it.
+
+An image editor's brightness control provides a small example. Its `clamp` operation keeps a value inside an inclusive interval: values below the minimum become the minimum, values above the maximum become the maximum, and values already inside stay unchanged.
+
+## Turn the requirement into several properties
+
+For a valid interval, the answer must be inside the bounds. Clamping an answer again must not change it. An input already inside the interval must be returned unchanged.
+
+These rules complement one another. A broken function that always returns the minimum would satisfy the first two. The third property prevents that particular mistake. Writing several weak properties does not automatically make a strong specification.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Limits
+{
+    public static int Clamp(int value, int minimum, int maximum)
+    {
+        if (minimum > maximum) throw new ArgumentException("Reversed bounds.");
+        if (value < minimum) return minimum;
+        if (value > maximum) return maximum;
+        return value;
+    }
+}
+
+public static class Properties
+{
+    public static void CheckGeneratedInputs()
+    {
+        var random = new Random(742);
+        for (int trial = 0; trial < 500; trial++)
+        {
+            int minimum = random.Next(-20, 21);
+            int maximum = minimum + random.Next(0, 21);
+            int value = random.Next(-50, 51);
+            int result = Limits.Clamp(value, minimum, maximum);
+
+            if (result < minimum || result > maximum)
+                throw new Exception($"Outside bounds: {value}, {minimum}, {maximum}");
+            if (Limits.Clamp(result, minimum, maximum) != result)
+                throw new Exception("Clamping twice changed the result.");
+            if (value >= minimum && value <= maximum && result != value)
+                throw new Exception("An in-range input changed.");
+        }
+    }
+}
+```
+
+```csharp group=example role=run
+Properties.CheckGeneratedInputs();
+```
+
+The generator always creates an ordered interval and sometimes creates a zero-width interval. The fixed seed makes this example repeatable within its runtime. It is not a promise that different runtimes or languages generate the same sequence.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import random
+
+
+def clamp(value, minimum, maximum):
+    if minimum > maximum:
+        raise ValueError("Reversed bounds.")
+    if value < minimum:
+        return minimum
+    if value > maximum:
+        return maximum
+    return value
+
+
+def check_generated_inputs():
+    generator = random.Random(742)
+    for _ in range(500):
+        minimum = generator.randint(-20, 20)
+        maximum = minimum + generator.randint(0, 20)
+        value = generator.randint(-50, 50)
+        result = clamp(value, minimum, maximum)
+
+        assert minimum <= result <= maximum, (value, minimum, maximum)
+        assert clamp(result, minimum, maximum) == result
+        if minimum <= value <= maximum:
+            assert result == value
+```
+
+```python group=example role=run
+check_generated_inputs()
+```
+
+The generated bounds are valid by construction, leaving the checks to focus on clamping behavior. Invalid intervals need a separate rejection test rather than being silently filtered out of every test suite.
+
+</section>
+
+## A framework does more than this loop
+
+The example exposes the mechanism without adding a library dependency. A property-testing framework such as Hypothesis also guides generation, remembers useful failures, and simplifies failing inputs. That last operation, often called **shrinking**, turns a complicated counterexample into a smaller one that still fails. [1](#source-1)
+
+Our loop has no shrinker. It samples a small integer range and checks selected properties. Five hundred passes are not proof for every integer, overflow boundary, or invalid input.
+
+Keep ordinary examples too: `clamp(12, 0, 10)` should return ten, and `clamp(4, 0, 10)` should return four. Examples communicate particular expectations; properties search more broadly for violations of relationships.
+
+## Find a property that is independent of the implementation
+
+Useful candidates include encode/decode round trips, preserving a sum while moving values between accounts, or agreement between an optimized algorithm and a simpler reference algorithm. Be careful: two inverse functions can share a compensating mistake, and a reference algorithm can also be wrong.
+
+Choose generators that include the shapes your code actually sees: empty collections, repeated values, unusual text, and boundary sizes. A thousand lists of five positive integers do not explore empty lists or negative values at all.
+
+When a generated input exposes a defect, keep a small regression example alongside the broader property. The failure becomes both a discovered counterexample and a readable part of the specification.
+
+## Sources
+
+1. <span id="source-1"></span>[Hypothesis — Introduction](https://hypothesis.readthedocs.io/en/latest/tutorial/introduction.html), on generated examples, properties, and simplified counterexamples.

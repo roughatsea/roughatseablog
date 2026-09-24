@@ -1,0 +1,140 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Test-Driven Development
+description: "Test-driven development alternates between a failing test, enough implementation to pass it, and a behavior-preserving improvement to the code."
+prerequisites: "Functions, tests, and refactoring."
+---
+
+export const checks = {"csharp":{"red":"Check.That(Shipping.Fee(50) == 5, \"The displayed initial version should expose the missing rule.\");","green":"Check.That(Shipping.Fee(49) == 5 && Shipping.Fee(50) == 0 && Shipping.Fee(51) == 0);","refactored":"Check.That(Shipping.Fee(49) == 5 && Shipping.Fee(50) == 0 && Shipping.Fee(51) == 0);"},"python":{"red":"assert shipping_fee(50) == 5","green":"assert shipping_fee(49) == 5\nassert shipping_fee(50) == 0\nassert shipping_fee(51) == 0","refactored":"assert shipping_fee(49) == 5\nassert shipping_fee(50) == 0\nassert shipping_fee(51) == 0"}};
+
+**Test-driven development**, or **TDD**, uses a repeating cycle: write a test for a small requirement, see it fail, implement enough behavior to pass, then improve the code while keeping the tests passing. The customary names are **red, green, refactor**. Writing tests after implementation can also be valuable, but it is a different sequence. [1](#source-1)
+
+## Begin with a requirement, not a class diagram
+
+A shop currently charges five coins for every delivery. The next requirement is free shipping for orders of at least fifty coins. Before editing the function, identify the cases: below fifty, exactly fifty, and above fifty. Negative amounts require a separate input policy and are outside this example.
+
+We start with the exact threshold because it distinguishes the new behavior from the old behavior.
+
+## Red: observe the missing behavior
+
+<section data-pilot-language="csharp">
+
+```csharp group=red role=types
+public static class Shipping
+{
+    public static int Fee(int subtotal)
+    {
+        return 5;
+    }
+}
+```
+
+The new test calls `Shipping.Fee(50)` and expects zero. It fails because the actual answer is five. In a test framework, the essential assertion is an equality check between expected zero and that returned value.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=red role=types
+def shipping_fee(subtotal):
+    return 5
+```
+
+The new assertion is `assert shipping_fee(50) == 0`. It fails: the actual answer is five.
+
+</section>
+
+The reason for the failure matters. A missing import or a broken test runner is not evidence that the test detects the shipping requirement. Our example checks deliberately confirm the initial five-coin result before checking the corrected stages.
+
+## Green: implement the requirement
+
+The following declaration replaces the original; it is not another function the application calls afterward.
+
+<section data-pilot-language="csharp">
+
+```csharp group=green role=types
+public static class Shipping
+{
+    public static int Fee(int subtotal)
+    {
+        if (subtotal >= 50) return 0;
+        return 5;
+    }
+}
+```
+
+```csharp group=green role=run
+if (Shipping.Fee(49) != 5) throw new Exception("Below-threshold fee changed.");
+if (Shipping.Fee(50) != 0) throw new Exception("Threshold should qualify.");
+if (Shipping.Fee(51) != 0) throw new Exception("Above threshold should qualify.");
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=green role=types
+def shipping_fee(subtotal):
+    if subtotal >= 50:
+        return 0
+    return 5
+```
+
+```python group=green role=run
+assert shipping_fee(49) == 5
+assert shipping_fee(50) == 0
+assert shipping_fee(51) == 0
+```
+
+</section>
+
+The exact-threshold check now passes, and the neighboring cases guard against accidentally making all shipping free or treating only fifty as special. The implementation is small because the requirement is small, not because TDD requires deliberately cryptic code.
+
+## Refactor: improve the explanation without changing the result
+
+<section data-pilot-language="csharp">
+
+```csharp group=refactored role=types
+public static class Shipping
+{
+    private const int FreeShippingThreshold = 50;
+    private const int StandardFee = 5;
+
+    public static int Fee(int subtotal)
+    {
+        if (subtotal >= FreeShippingThreshold) return 0;
+        return StandardFee;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=refactored role=types
+FREE_SHIPPING_THRESHOLD = 50
+STANDARD_FEE = 5
+
+
+def shipping_fee(subtotal):
+    if subtotal >= FREE_SHIPPING_THRESHOLD:
+        return 0
+    return STANDARD_FEE
+```
+
+</section>
+
+The names explain the two business values. Rerun the same tests: 49 still pays five, 50 and 51 still pay zero. This is the refactoring stage. Changing the threshold to sixty here would be another feature change, not cleanup.
+
+## What the cycle buys—and what it does not
+
+Seeing red first checks that a test can distinguish the missing behavior from the desired behavior. Seeing green establishes the selected cases. Refactoring makes room for the next change without accumulating a patchwork of special cases.
+
+The cycle does not guarantee that the chosen requirements are right, that no edge case is missing, or that the browser uses this function. It also does not require a new interface, mock, or class for every step. The shipping rule remains an ordinary function.
+
+For unfamiliar legacy code, characterization tests may need to come first so an existing promise is not lost while introducing a new one. For a new feature, the test's call site is also design feedback: if expressing one straightforward requirement requires elaborate setup, reconsider the interface before multiplying the setup across a whole suite.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Test Driven Development](https://martinfowler.com/bliki/TestDrivenDevelopment.html), describing the test-first cycle and the importance of refactoring.

@@ -1,0 +1,108 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Branch by Abstraction and Strangler Fig
+description: "Replace a working system gradually by letting old and new implementations coexist behind a deliberate selection point."
+prerequisites: "Interfaces or compatible functions, deployment, and the distinction between reads and writes."
+---
+
+export const checks = {"csharp":{"example":"foreach (string name in new[] { \"Mira\", \"\", \"Sol\" }) { Check.That(new Welcome(new OldLabels()).Render(name) == new Welcome(new NewLabels()).Render(name)); } var oldPath = new Welcome(new OldLabels()); Check.That(oldPath.Render(\"Mira\") == \"Welcome, Mira\");"},"python":{"example":"for name in ['Mira', '', 'Sol']:\n    assert Welcome(OldLabels()).render(name) == Welcome(NewLabels()).render(name)"}};
+
+**Branch by Abstraction** introduces a common calling interface so old and replacement implementations can coexist while callers move gradually. The “branch” is a choice between implementations, not necessarily a long-lived Git branch. [1](#source-1)
+
+A **Strangler Fig** migration gradually replaces parts of a larger system by routing selected capabilities or requests to a replacement while the old system continues handling the rest. [2](#source-2)
+
+They share an idea—coexistence before removal—but operate at different useful boundaries. You might replace a library behind an interface inside one application, or replace an old application's catalog endpoint behind a routing layer.
+
+## Keep the caller stable while changing the implementation
+
+Suppose a welcome-screen formatter is being replaced. Both versions must return the same text. The different string-building methods below stand in for a larger implementation change; there is no performance claim.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface ILabels
+{
+    string Welcome(string name);
+}
+public sealed class OldLabels : ILabels
+{
+    public string Welcome(string name) { return "Welcome, " + name; }
+}
+public sealed class NewLabels : ILabels
+{
+    public string Welcome(string name)
+    {
+        return string.Join(", ", new[] { "Welcome", name });
+    }
+}
+public sealed class Welcome
+{
+    private readonly ILabels labels;
+    public Welcome(ILabels labels) { this.labels = labels; }
+    public string Render(string name) { return labels.Welcome(name); }
+}
+```
+
+```csharp group=example role=run
+bool useReplacement = false;
+ILabels labels = useReplacement ? new NewLabels() : new OldLabels();
+var screen = new Welcome(labels);
+Console.WriteLine(screen.Render("Mira"));
+```
+
+`Welcome.Render` depends on the common operation. Setup chooses the implementation once. Changing that choice does not require rewriting the screen. The flag's false value deliberately leaves the old path active while a replacement is being checked.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class OldLabels:
+    def welcome(self, name):
+        return "Welcome, " + name
+
+
+class NewLabels:
+    def welcome(self, name):
+        return ", ".join(["Welcome", name])
+
+
+class Welcome:
+    def __init__(self, labels):
+        self._labels = labels
+
+    def render(self, name):
+        return self._labels.welcome(name)
+```
+
+```python group=example role=run
+use_replacement = False
+labels = NewLabels() if use_replacement else OldLabels()
+screen = Welcome(labels)
+print(screen.render("Mira"))
+```
+
+The two implementations provide the same operation. The screen does not inspect the flag or know which one it received. This is a local implementation-selection example, not a deployed traffic router.
+
+</section>
+
+## Apply the idea to a larger migration
+
+For a Strangler Fig migration, choose a coherent capability such as catalog lookup. A gateway or application boundary sends that capability to the new system while checkout and billing remain on the old one. Preserve authentication, request semantics, errors, and data ownership across that route.
+
+Replacing every dependency at once behind one new façade would not be gradual merely because an interface exists. The value comes from a migration unit small enough to validate and reverse independently.
+
+Before changing writes, decide which system is authoritative. Blindly sending the same purchase to old and new systems can create two purchases. Comparing both implementations is safer for side-effect-free calculations or controlled shadow reads; real side effects require isolation and deliberate handling.
+
+## Remove the temporary machinery when its job is done
+
+A useful sequence is to establish the common contract around the existing implementation, move callers to it, build and verify the replacement, change selection for a bounded group, then remove the retired implementation when the rollback window closes.
+
+“Rollback” must mean more than resetting a flag. If the new implementation has written a format the old one cannot read, switching back may not restore service. Test compatibility and recovery while both paths exist.
+
+The final design may retain the interface because it expresses a valuable boundary. It may also remove a migration-only wrapper. Coexistence is a way to make replacement safer, not a reason to carry two implementations indefinitely.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Branch By Abstraction](https://martinfowler.com/bliki/BranchByAbstraction.html).
+2. <span id="source-2"></span>[Microsoft — Strangler Fig pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig).
