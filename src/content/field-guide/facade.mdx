@@ -1,0 +1,125 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Facade
+description: "A Facade offers a convenient operation over a subsystem, so ordinary callers do not have to know and repeat its internal sequence of calls."
+prerequisites: "Classes, methods, composition, and validation."
+---
+
+export const checks = {"csharp":{"example":"var importer = new ScoreImport(new ScoreParser(), new ScoreRules()); Check.That(importer.Total(\"2,3,8\") == 13); bool rejected = false; try { importer.Total(\"2,-1\"); } catch (ArgumentException) { rejected = true; } Check.That(rejected);"},"python":{"example":"importer = ScoreImport(ScoreParser(), ScoreRules())\nassert importer.total('2,3,8') == 13\ntry:\n    importer.total('2,-1')\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('negative score accepted')"}};
+
+A **Facade** offers a convenient operation over a subsystem. Ordinary callers use that operation instead of learning and repeating the subsystem's internal sequence of calls. The subsystem's components still exist and retain their own responsibilities. [1](#source-1)
+
+The everyday meaning of *facade* suggests a front. Here that front is useful because it gives callers a smaller, task-oriented interface—not because it conceals problems behind an attractive name.
+
+## Import a score line without remembering three steps
+
+A small tool imports comma-separated whole-number scores. It must parse the text, reject negative scores, and total the values. Without a facade, each screen importing scores would have to perform those steps in the right order.
+
+The parser and validation rules are separate components. A `ScoreImport` facade provides the complete ordinary operation. This is deliberately a one-line format, not a general CSV parser with quoted fields or headers.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class ScoreParser
+{
+    public int[] Parse(string line)
+    {
+        return line.Split(',').Select(int.Parse).ToArray();
+    }
+}
+
+public sealed class ScoreRules
+{
+    public void Validate(IEnumerable<int> scores)
+    {
+        if (scores.Any(score => score < 0))
+        {
+            throw new ArgumentException("Scores cannot be negative.");
+        }
+    }
+}
+
+public sealed class ScoreImport
+{
+    private readonly ScoreParser parser;
+    private readonly ScoreRules rules;
+
+    public ScoreImport(ScoreParser parser, ScoreRules rules)
+    {
+        this.parser = parser;
+        this.rules = rules;
+    }
+
+    public int Total(string line)
+    {
+        int[] scores = parser.Parse(line);
+        rules.Validate(scores);
+        return scores.Sum();
+    }
+}
+```
+
+`Total` expresses the task's order. Parsing belongs to `ScoreParser`; permitted-value rules belong to `ScoreRules`. A screen does not need to remember to validate between parsing and totaling.
+
+```csharp group=example role=run
+var importer = new ScoreImport(new ScoreParser(), new ScoreRules());
+Console.WriteLine(importer.Total("2,3,8")); // 13
+```
+
+The facade has not made malformed input successful. A parsing or validation exception still reaches the caller. A UI boundary can translate that failure into an appropriate user message.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class ScoreParser:
+    def parse(self, line):
+        return [int(value) for value in line.split(",")]
+
+
+class ScoreRules:
+    def validate(self, scores):
+        if any(score < 0 for score in scores):
+            raise ValueError("Scores cannot be negative.")
+
+
+class ScoreImport:
+    def __init__(self, parser, rules):
+        self._parser = parser
+        self._rules = rules
+
+    def total(self, line):
+        scores = self._parser.parse(line)
+        self._rules.validate(scores)
+        return sum(scores)
+```
+
+The facade coordinates the parser and rules rather than copying their logic. Its public `total` method is the operation a screen cares about.
+
+```python group=example role=run
+importer = ScoreImport(ScoreParser(), ScoreRules())
+print(importer.total("2,3,8"))  # 13
+```
+
+Invalid integer text or a negative score raises an error instead of returning a plausible but false total. Python's integer range differs from C#'s; these examples use small values that fit both.
+
+</section>
+
+## Simplify the common path without trapping every caller
+
+A specialist tool might legitimately need to inspect parsed scores before totaling them. It can use the parser directly if that is part of the supported subsystem API. A facade need not prohibit all lower-level access.
+
+It also need not be a giant class that owns everything. Several focused facades can expose different tasks. If one facade accumulates parsing algorithms, persistence details, business rules, and presentation templates, it has stopped simplifying access and started concentrating unrelated responsibilities.
+
+For this tiny tool, three ordinary functions could be enough. The object-based example makes the coordination visible; a production facade is most useful when a subsystem has a substantial interface and callers repeatedly need the same smaller set of operations.
+
+## What the name does not guarantee
+
+A facade does not automatically create a transaction. If its operation writes to two systems and the second fails, the first write may already have happened. Nor does one method call imply one network round trip or a cheap operation. Its contract should make consequential costs and failure behavior explicit.
+
+Adapter translates an incompatible interface into a required one. Facade offers a convenient higher-level interface to existing components. Both can wrap objects, but the reason for the wrapper is different. In this example, no interface was incompatible; callers simply needed a reliable way to perform a task without repeating its sequence.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Adapter and Façade](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-adapterfaade), distinguishing translation from subsystem simplification.

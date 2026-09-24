@@ -1,0 +1,136 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Flyweight
+description: "Flyweight shares the unchanging part of many objects while keeping each object's individual context separate."
+prerequisites: "References, dictionaries, immutable values, and object identity."
+---
+
+export const checks = {"csharp":{"example":"var pool = new StylePool(); var a = new Glyph('A', 10, pool.Get(\"Serif\", 14)); var b = new Glyph('B', 30, pool.Get(\"Serif\", 14)); Check.That(ReferenceEquals(a.Style, b.Style)); Check.That(a.X == 10 && b.X == 30); Check.That(!ReferenceEquals(a.Style, pool.Get(\"Serif\", 18)));"},"python":{"example":"pool = StylePool()\na = Glyph('A', 10, pool.get('Serif', 14))\nb = Glyph('B', 30, pool.get('Serif', 14))\nassert a.style is b.style\nassert a.x == 10 and b.x == 30\nassert a.style is not pool.get('Serif', 18)"}};
+
+**Flyweight** shares the unchanging part of many objects while keeping each object's individual context separate. It is a way to avoid storing identical data repeatedly when a program needs many similar objects. [1](#source-1)
+
+Sharing works only when the shared data is genuinely independent of each occurrence. A character's font settings can be shared; its position on a page cannot be stored in one shared field without making every character move together.
+
+## Many characters, a few text styles
+
+A document renderer may contain thousands of positioned characters but only a few font-and-size combinations. Let each character retain its letter and position, while several characters refer to the same immutable style object.
+
+The style below contains only a font name and size. A real renderer might associate it with much larger immutable font data. The example demonstrates sharing through object identity; it is not a memory benchmark or a font renderer.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class TextStyle
+{
+    public string Font { get; }
+    public int Size { get; }
+    public TextStyle(string font, int size) { Font = font; Size = size; }
+}
+
+public sealed class StylePool
+{
+    private readonly Dictionary<(string Font, int Size), TextStyle> styles =
+        new Dictionary<(string Font, int Size), TextStyle>();
+
+    public TextStyle Get(string font, int size)
+    {
+        var key = (font, size);
+        if (!styles.TryGetValue(key, out TextStyle? style))
+        {
+            style = new TextStyle(font, size);
+            styles.Add(key, style);
+        }
+        return style;
+    }
+}
+
+public sealed class Glyph
+{
+    public char Letter { get; }
+    public int X { get; }
+    public TextStyle Style { get; }
+
+    public Glyph(char letter, int x, TextStyle style)
+    {
+        Letter = letter;
+        X = x;
+        Style = style;
+    }
+}
+```
+
+The pool's key includes both properties that define a style. Requesting the same pair returns the same object. A different size gets a different style rather than accidentally reusing the wrong one.
+
+```csharp group=example role=run
+var styles = new StylePool();
+var first = new Glyph('A', 10, styles.Get("Serif", 14));
+var second = new Glyph('B', 30, styles.Get("Serif", 14));
+Console.WriteLine(ReferenceEquals(first.Style, second.Style)); // True
+Console.WriteLine(first.X + ", " + second.X);                 // 10, 30
+```
+
+The characters remain separate occurrences with separate positions. Only their style is shared.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class TextStyle:
+    font: str
+    size: int
+
+
+class StylePool:
+    def __init__(self):
+        self._styles = {}
+
+    def get(self, font, size):
+        key = (font, size)
+        if key not in self._styles:
+            self._styles[key] = TextStyle(font, size)
+        return self._styles[key]
+
+
+@dataclass(frozen=True)
+class Glyph:
+    letter: str
+    x: int
+    style: TextStyle
+```
+
+The style is a frozen dataclass containing immutable values. The pool retains one instance for each font-size pair. Each glyph separately stores its letter and position; assume a one-character letter in this simplified model.
+
+```python group=example role=run
+styles = StylePool()
+first = Glyph("A", 10, styles.get("Serif", 14))
+second = Glyph("B", 30, styles.get("Serif", 14))
+print(first.style is second.style)  # True
+print(first.x, second.x)            # 10 30
+```
+
+Equality of style contents would not, by itself, prove memory sharing. The identity check shows that both glyphs actually refer to the same style object.
+
+</section>
+
+## Give the two kinds of state their names
+
+Pattern descriptions call the shared, context-independent data *intrinsic state*. Here that is font and size. The per-occurrence information is *extrinsic state*: the letter and position kept outside the shared style. Those terms label the division the example has already made. [1](#source-1)
+
+Do not put a mutable “current position” into the style object and update it while drawing each glyph. Two users of the style would then interfere, particularly under concurrent rendering. Pass occurrence-specific data to drawing operations instead.
+
+## Count the cost as well as the savings
+
+A pool adds dictionary lookups, keys, references, and retained objects. For a few tiny styles, that overhead may exceed the savings. Measure allocation and retained memory on representative documents before calling the design faster or smaller.
+
+The examples assume sequential pool access. Concurrent creation needs coordination. A long-lived pool also needs a retention policy when inputs can produce unbounded numbers of distinct styles; otherwise a sharing optimization can become a memory leak.
+
+Flyweight is not object pooling in the usual reuse-after-release sense. These styles are shared by several live glyphs at once. The useful situation is many occurrences, substantially repeated immutable data, and a clear place to keep each occurrence's individual context.
+
+## Sources
+
+1. <span id="source-1"></span>[Robert Nystrom — Flyweight, Game Programming Patterns](https://gameprogrammingpatterns.com/flyweight.html), on shared intrinsic state, per-occurrence context, and the need to measure performance.

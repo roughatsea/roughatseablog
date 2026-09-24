@@ -1,0 +1,132 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Decorator
+description: "Decorator wraps an object in another object with the same interface, adding behavior before or after delegating the operation."
+prerequisites: "Objects, interfaces or compatible methods, and composition."
+---
+
+export const checks = {"csharp":{"example":"IText plain = new LiteralText(\" hello \"); Check.That(new FramedText(new TrimmedText(plain)).Render() == \"[hello]\"); Check.That(new TrimmedText(new FramedText(plain)).Render() == \"[ hello ]\"); Check.That(plain.Render() == \" hello \");"},"python":{"example":"plain = LiteralText(' hello ')\nassert FramedText(TrimmedText(plain)).render() == '[hello]'\nassert TrimmedText(FramedText(plain)).render() == '[ hello ]'\nassert plain.render() == ' hello '"}};
+
+**Decorator** wraps an object in another object with the same interface, adding behavior before or after delegating the operation. Because the wrapper still supports that interface, another decorator can wrap it in turn. [1](#source-1)
+
+The original object does not need a subclass for every possible combination of added behavior. The caller assembles the combination it needs.
+
+## Trim some text, then put a frame around it
+
+Suppose text can be displayed as supplied, with outside whitespace removed, or inside square brackets. We want to combine the last two behaviors without making a separate class for every combination.
+
+Each object below provides a rendering operation. A literal returns its text. One decorator trims its wrapped object's result; another adds brackets.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IText
+{
+    string Render();
+}
+
+public sealed class LiteralText : IText
+{
+    private readonly string value;
+    public LiteralText(string value) { this.value = value; }
+    public string Render() { return value; }
+}
+
+public sealed class TrimmedText : IText
+{
+    private readonly IText inner;
+    public TrimmedText(IText inner) { this.inner = inner; }
+
+    public string Render()
+    {
+        return inner.Render().Trim();
+    }
+}
+
+public sealed class FramedText : IText
+{
+    private readonly IText inner;
+    public FramedText(IText inner) { this.inner = inner; }
+
+    public string Render()
+    {
+        return "[" + inner.Render() + "]";
+    }
+}
+```
+
+Both wrappers accept `IText` and implement `IText`. That matching interface is what allows the objects to nest. Neither needs to know whether `inner` is a literal or another decorator.
+
+```csharp group=example role=run
+IText plain = new LiteralText(" hello ");
+IText trimmedThenFramed = new FramedText(new TrimmedText(plain));
+IText framedThenTrimmed = new TrimmedText(new FramedText(plain));
+Console.WriteLine(trimmedThenFramed.Render()); // [hello]
+Console.WriteLine(framedThenTrimmed.Render()); // [ hello ]
+```
+
+In the first call, the literal returns its text, trimming removes the spaces, and framing adds brackets. In the second, framing puts the spaces inside brackets, where trimming outside whitespace no longer reaches them.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class LiteralText:
+    def __init__(self, value):
+        self._value = value
+
+    def render(self):
+        return self._value
+
+
+class TrimmedText:
+    def __init__(self, inner):
+        self._inner = inner
+
+    def render(self):
+        return self._inner.render().strip()
+
+
+class FramedText:
+    def __init__(self, inner):
+        self._inner = inner
+
+    def render(self):
+        return "[" + self._inner.render() + "]"
+```
+
+Every object provides `render`, and each wrapper holds another such object. Python's ordinary method compatibility is sufficient for this arrangement.
+
+```python group=example role=run
+plain = LiteralText(" hello ")
+trimmed_then_framed = FramedText(TrimmedText(plain))
+framed_then_trimmed = TrimmedText(FramedText(plain))
+print(trimmed_then_framed.render())  # [hello]
+print(framed_then_trimmed.render())  # [ hello ]
+```
+
+The object nesting specifies the order of transformations. The original `plain` object remains unchanged and still returns its original text.
+
+</section>
+
+## Ordering is behavior
+
+Decorators are often presented as freely stackable additions. They are stackable structurally, but their order may change results. Caching outside authorization can differ dangerously from authorization outside caching. Retrying outside logging can produce different records from logging outside retrying.
+
+Name and test the intended order. For these text decorators, the two displayed outputs provide a small counterexample to the assumption that wrappers always commute.
+
+The same issue applies to resources. If a wrapper surrounds a file stream, decide whether disposing the wrapper also closes the stream. A consistent method shape does not, by itself, describe ownership or failure semantics.
+
+## Keep wrappers readable
+
+For two local text transformations, ordinary function composition may be simpler. Decorator becomes useful when clients already work with an object interface and need independently combinable additions such as buffering, tracing, or formatting.
+
+An Adapter changes an interface to meet a different caller expectation. A Decorator usually preserves the interface and adds behavior. Python's `@decorator` syntax is a broader language mechanism for transforming functions or classes; it can implement related wrapping ideas, but it is not limited to this object-oriented pattern.
+
+The useful sign is a wrapper that remains substitutable for what it wraps, while making one added responsibility explicit. A deep stack of unnamed wrappers that nobody can trace is not an improvement simply because every layer has a pattern name.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Decorator](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-decorator), on adding behavior to individual objects through composition.
+2. [Python — Function definitions and decorators](https://docs.python.org/3/reference/compound_stmts.html#function-definitions), for the separate language syntax.

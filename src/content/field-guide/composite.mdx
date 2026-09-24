@@ -1,0 +1,121 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Composite
+description: "Composite gives individual objects and groups of those objects a common operation, so callers can work with either without special cases."
+prerequisites: "Interfaces or compatible methods, collections, and recursion."
+---
+
+export const checks = {"csharp":{"example":"var tree = new Folder(new IEntry[] { new GameAsset(3), new Folder(new IEntry[] { new GameAsset(5), new GameAsset(7) }) }); Check.That(tree.Bytes() == 15); Check.That(new Folder(Array.Empty<IEntry>()).Bytes() == 0); Check.That(new GameAsset(4).Bytes() == 4);"},"python":{"example":"tree = Folder([GameAsset(3), Folder([GameAsset(5), GameAsset(7)])])\nassert tree.bytes() == 15\nassert Folder([]).bytes() == 0\nassert GameAsset(4).bytes() == 4"}};
+
+**Composite** gives individual objects and groups of those objects a common operation. A group implements the operation by applying it to its children, which can themselves be groups. The result is a tree that callers can use without checking which nodes are individual items. [1](#source-1)
+
+## How large is this folder?
+
+A game's asset browser displays files inside folders, with more folders nested underneath. To calculate total size, a file returns its own byte count. A folder adds the sizes returned by its children.
+
+The example stores small byte counts in memory; it does not read the filesystem. Its structure matters: the same operation works on a single asset, a folder, or a folder containing other folders.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IEntry
+{
+    int Bytes();
+}
+
+public sealed class GameAsset : IEntry
+{
+    private readonly int bytes;
+    public GameAsset(int bytes) { this.bytes = bytes; }
+    public int Bytes() { return bytes; }
+}
+
+public sealed class Folder : IEntry
+{
+    private readonly IEntry[] children;
+
+    public Folder(IEnumerable<IEntry> children)
+    {
+        this.children = children.ToArray();
+    }
+
+    public int Bytes()
+    {
+        int total = 0;
+        foreach (IEntry child in children)
+        {
+            total += child.Bytes();
+        }
+        return total;
+    }
+}
+```
+
+`GameAsset` is an individual entry, often called a *leaf*. `Folder` is the composite: it contains entries and exposes the same `Bytes` operation. Its loop does not ask whether a child is another folder.
+
+```csharp group=example role=run
+IEntry package = new Folder(new IEntry[]
+{
+    new GameAsset(3),
+    new Folder(new IEntry[] { new GameAsset(5), new GameAsset(7) })
+});
+Console.WriteLine(package.Bytes()); // 15
+```
+
+The outer folder asks its first child for 3 and its second child for 12. The second child obtains 12 by asking its own children for 5 and 7. Those results add to 15.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class GameAsset:
+    def __init__(self, byte_count):
+        self._byte_count = byte_count
+
+    def bytes(self):
+        return self._byte_count
+
+
+class Folder:
+    def __init__(self, children):
+        self._children = tuple(children)
+
+    def bytes(self):
+        total = 0
+        for child in self._children:
+            total += child.bytes()
+        return total
+```
+
+Both classes provide `bytes`. An asset returns its stored number. A folder requests the same operation from each child, including any child folders.
+
+```python group=example role=run
+package = Folder([
+    GameAsset(3),
+    Folder([GameAsset(5), GameAsset(7)]),
+])
+print(package.bytes())  # 15
+```
+
+The nested folder returns 12, which the outer folder adds to 3. The caller does not need to flatten the tree or perform its own type checks.
+
+</section>
+
+## Uniform operations do not require identical capabilities
+
+A folder can contain children; a file cannot. This design therefore puts the common size operation on `IEntry` or the shared method convention, but does not force a file to support a meaningless `AddChild` method.
+
+An empty folder returns zero because adding no child sizes produces zero. A drawing application might use the same idea with `Draw`: an individual shape draws itself, and a group asks its children to draw. Each operation needs a coherent group interpretation.
+
+## A tree assumption needs protection
+
+The example copies each collection of children and assumes an acyclic tree. Real filesystem links or editable scene graphs can create cycles. Recursively following a cycle without detection never reaches a leaf. A traversal should either reject such structures or track visited nodes according to its intended semantics.
+
+Shared children require another decision. If the same asset appears twice, this calculation counts it twice because it counts occurrences in the tree. Calculating unique storage consumption would be a different operation with identity tracking.
+
+Composite is useful when clients repeatedly perform meaningful whole-and-part operations. A flat collection with no recursive grouping may need only a loop. The benefit here is not recursion for its own sake; it is letting every level answer the same understandable question.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Solidify Your C# Application Architecture](https://learn.microsoft.com/en-us/archive/msdn-magazine/2001/july/design-patterns-solidify-your-csharp-application-architecture-with-design-patterns), including Composite's uniform treatment of individual objects and groups.
