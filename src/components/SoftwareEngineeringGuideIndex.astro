@@ -32,7 +32,7 @@ function searchable(value: string) {
 <section class="guide-index" data-guide-index>
   <div class="guide-controls" aria-label="Field guide filters">
     <label class="search-control">
-      <span>Search by term, alias, or symptom</span>
+      <span>Search by term, alias, or problem</span>
       <input
         type="search"
         name="q"
@@ -106,14 +106,14 @@ function searchable(value: string) {
         {concept.aliases.length > 0 && (
           <p class="aliases"><strong>Also:</strong> {concept.aliases.join(' · ')}</p>
         )}
-        <p class="recognition-label">Recognize it when</p>
-        <p class="recognition-text">{concept.lookFor}</p>
+        <p class="definition-label">What it means</p>
+        <p class="definition-text">{concept.lookFor}</p>
       </article>
     ))}
   </div>
 
   <p class="no-results" data-guide-empty hidden>
-    No term matched those filters. Try describing the code pressure in plainer language or clearing one filter.
+    No term matched those filters. Try describing the problem in plainer language or clearing one filter.
   </p>
 </section>
 
@@ -359,7 +359,7 @@ function searchable(value: string) {
     display: none;
   }
 
-  .recognition-label {
+  .definition-label {
     color: var(--link-color);
     font-size: 0.66rem;
     font-weight: 700;
@@ -368,7 +368,7 @@ function searchable(value: string) {
     text-transform: uppercase;
   }
 
-  .recognition-text {
+  .definition-text {
     color: var(--text-secondary);
     font-family: var(--font-serif);
     font-size: 0.93rem;

@@ -1,24 +1,17 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import SoftwareEngineeringConcept from '../../../components/SoftwareEngineeringConcept.astro';
 import { guideConcepts } from '../../../data/software-engineering-guide.js';
 import { revisedArticles } from '../../../data/field-guide-revisions';
 
 export function getStaticPaths() {
-  return guideConcepts.map((concept, index) => ({
+  return guideConcepts.map((concept) => ({
     params: { slug: concept.slug },
-    props: {
-      concept,
-      previous: index > 0 ? { slug: guideConcepts[index - 1].slug, title: guideConcepts[index - 1].title } : undefined,
-      next: index < guideConcepts.length - 1 ? { slug: guideConcepts[index + 1].slug, title: guideConcepts[index + 1].title } : undefined,
-    },
+    props: { concept },
   }));
 }
-const { concept, previous, next } = Astro.props;
+const { concept } = Astro.props;
 const Article = revisedArticles[concept.slug]?.Content;
+if (!Article) {
+  throw new Error(`Missing rewritten field-guide article: ${concept.slug}`);
+}
 ---
-{Article ? <Article /> : (
-  <BaseLayout title={`${concept.title} — Software Engineering Field Guide`} description={concept.definition}>
-    <SoftwareEngineeringConcept concept={concept} previous={previous} next={next} />
-  </BaseLayout>
-)}
+<Article />

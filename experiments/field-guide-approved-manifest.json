@@ -1,0 +1,13 @@
+{
+  "baseline_main": "1e1abcca79f527e674c5c3b0e79018e7cd84141e",
+  "purpose": "Preserve the seven reader-approved MDX sources byte for byte during the guide-wide rewrite.",
+  "files": {
+    "src/pages/guides/software-engineering/pilot/deadlock.mdx": "22c7238c6e71411b443a391ec8cb67bc0e946ac6d2cd64a3d9e6a4b6e363762f",
+    "src/pages/guides/software-engineering/pilot/open-closed-principle.mdx": "943d7786bd4695b86b45d60608a25fe10e8eaac5ddec17958bddd0ed3f9a27ae",
+    "src/pages/guides/software-engineering/pilot/switch-statements.mdx": "fb3d897920d6e677f23ceb82155486c3e601dfec6581056edd0978168c42b0d4",
+    "src/pages/guides/software-engineering/review/solid-batch-1/dependency-inversion-principle.mdx": "2cdd78af2478e623017461a200434e3bf6dd0d5f2ba98cdaad4c9b69c99541a9",
+    "src/pages/guides/software-engineering/review/solid-batch-1/interface-segregation-principle.mdx": "56248680521db87a3642dc5300932eaac09baa896455274b473ca268ff5c0348",
+    "src/pages/guides/software-engineering/review/solid-batch-1/liskov-substitution-principle.mdx": "7fc8604fbc9235c01d7420defc2a274ea2d74c7612bd6c792bb28e9d5870f56f",
+    "src/pages/guides/software-engineering/review/solid-batch-1/single-responsibility-principle.mdx": "cd61be160423cfaa7a51f905460250382dfe079954157a507cc73772a32513d2"
+  }
+}
