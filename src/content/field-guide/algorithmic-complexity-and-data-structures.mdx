@@ -1,0 +1,118 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Algorithmic Complexity and Data Structures
+description: "Algorithmic complexity describes how required work grows with input size; a suitable data structure can change that growth rather than merely make one line faster."
+prerequisites: "Arrays, loops, sorted order, and integer comparisons."
+---
+
+export const checks = {"csharp":{"example":"int[] values = Enumerable.Range(0, 128).ToArray(); Check.That(Search.Linear(values, 999).Probes == 128); Check.That(Search.Binary(values, 999).Probes == 8); foreach (int target in new[] { -1, 0, 37, 127, 128 }) Check.That(Search.Linear(values, target).Found == Search.Binary(values, target).Found); Check.That(!Search.Binary(Array.Empty<int>(), 1).Found);"},"python":{"example":"values = list(range(128))\nassert linear(values, 999)[1] == 128\nassert binary(values, 999)[1] == 8\nfor target in [-1, 0, 37, 127, 128]:\n    assert linear(values, target)[0] == binary(values, target)[0]\nassert binary([], 1) == (False, 0)"}};
+
+**Algorithmic complexity** describes how an algorithm's required work or storage grows with input size. A **data structure** organizes values so particular operations are possible or efficient. Choosing the right representation can change the amount of work the program needs to do, not just the speed of one instruction. [1](#source-1)
+
+## Search a sorted list without checking every item
+
+Suppose a catalog contains sorted integer identifiers. A linear search inspects entries until it finds the target or reaches the end. A binary search inspects the middle and uses the ordering to discard half the remaining candidates.
+
+Count **array positions inspected**, not milliseconds. That makes the difference visible without depending on which machine runs the example.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record SearchResult(bool Found, int Probes);
+
+public static class Search
+{
+    public static SearchResult Linear(int[] values, int target)
+    {
+        int probes = 0;
+        foreach (int value in values)
+        {
+            probes++;
+            if (value == target) return new SearchResult(true, probes);
+        }
+        return new SearchResult(false, probes);
+    }
+
+    public static SearchResult Binary(int[] sorted, int target)
+    {
+        int low = 0, high = sorted.Length - 1, probes = 0;
+        while (low <= high)
+        {
+            int middle = low + (high - low) / 2;
+            int value = sorted[middle];
+            probes++;
+            if (value == target) return new SearchResult(true, probes);
+            if (value < target) low = middle + 1;
+            else high = middle - 1;
+        }
+        return new SearchResult(false, probes);
+    }
+}
+```
+
+```csharp group=example role=run
+int[] ids = Enumerable.Range(0, 128).ToArray();
+Console.WriteLine(Search.Linear(ids, 999).Probes); // 128
+Console.WriteLine(Search.Binary(ids, 999).Probes); // 8
+```
+
+Both searches correctly report that 999 is absent. The binary search discards a range after each unsuccessful probe. It assumes ascending order; it does not sort or validate that order on each call.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def linear(values, target):
+    probes = 0
+    for value in values:
+        probes += 1
+        if value == target:
+            return True, probes
+    return False, probes
+
+
+def binary(sorted_values, target):
+    low = 0
+    high = len(sorted_values) - 1
+    probes = 0
+    while low <= high:
+        middle = low + (high - low) // 2
+        value = sorted_values[middle]
+        probes += 1
+        if value == target:
+            return True, probes
+        if value < target:
+            low = middle + 1
+        else:
+            high = middle - 1
+    return False, probes
+```
+
+```python group=example role=run
+ids = list(range(128))
+print(linear(ids, 999)[1])  # 128
+print(binary(ids, 999)[1])  # 8
+```
+
+The returned pair contains the answer and the probe count. Access to a middle position is efficient for this list representation. Repeatedly walking a linked list to reach its middle would not have the same cost.
+
+</section>
+
+## Put names on the growth
+
+A worst-case linear search inspects a number of positions proportional to the number of entries, conventionally described as **O(n)**. Binary search over a sorted array requires **O(log n)** probes: doubling the number of candidates adds roughly one halving step. Here `n` is the input length, not the numeric magnitude of an identifier. [1](#source-1)
+
+Big-O is an asymptotic upper-bound notation. It does not state an exact duration, and saying an operation is O(n) should be accompanied by what case and resource are being discussed. Our counter measures inspections; a real runtime also pays for comparisons, branches, memory access, and function overhead.
+
+## Include the cost of obtaining the representation
+
+If the data is unsorted and only one search is needed, sorting it first may cost more than simply scanning it. Repeated queries can justify maintaining a sorted array or a different index. A hash-based set is another option when membership matters but sorted order does not; its memory use and behavior under collisions are separate trade-offs.
+
+Do not select a structure from one operation alone. Consider insertion, deletion, ordered traversal, duplicate handling, and the actual sizes involved. A simpler algorithm can win on tiny inputs even with worse asymptotic growth.
+
+The two implementations are teaching examples; production libraries already provide tested searches. Their purpose here is to make the reduction in work visible and to show why the required sorted representation is part of the algorithm's promise.
+
+## Sources
+
+1. <span id="source-1"></span>[Sedgewick and Wayne — Analysis of Algorithms](https://algs4.cs.princeton.edu/14analysis/), on cost models, input dependence, and growth rates.

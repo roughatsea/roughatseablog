@@ -1,0 +1,112 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Latency, Throughput, and Tail Behavior
+description: "Latency measures how long an operation takes, throughput measures completed work per time interval, and tail latency describes the slower end of the distribution."
+prerequisites: "Elapsed time, averages, sorting, and percentages."
+---
+
+export const checks = {"csharp":{"example":"double[] times = Enumerable.Repeat(10d, 98).Concat(new[] { 1000d, 1000d }).ToArray(); var result = Measurements.Describe(times, 2); Check.That(Math.Abs(result.MeanMs - 29.8) < 0.000001); Check.That(result.P50Ms == 10 && result.P99Ms == 1000 && result.PerSecond == 50); Check.That(times[0] == 10);"},"python":{"example":"times = [10.0] * 98 + [1000.0, 1000.0]\nresult = describe(times, 2)\nassert abs(result.mean_ms - 29.8) < 0.000001\nassert result.p50_ms == 10 and result.p99_ms == 1000\nassert result.per_second == 50 and times[0] == 10"}};
+
+**Latency** measures how long an operation takes. **Throughput** measures how much work completes per unit of time. **Tail latency** describes the slower end of the latency distribution, where an average can hide a poor experience for some requests. [1](#source-1)
+
+An application can complete many requests per second while a small but important fraction take far too long.
+
+## An average of thirty milliseconds can hide one-second requests
+
+Consider a hypothetical measured window containing one hundred completed requests. Ninety-eight took 10 milliseconds each; two took 1,000 milliseconds each. Their mean latency is 29.8 milliseconds, but that does not describe the two slow requests well.
+
+A **percentile** identifies a position in the sorted observations. This example uses the *nearest-rank* convention: the p99 observation is at rank `ceil(0.99 × count)`. Different systems may interpolate or approximate percentiles differently, so state the convention when comparing results.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Summary(double MeanMs, double P50Ms, double P99Ms, double PerSecond);
+
+public static class Measurements
+{
+    public static Summary Describe(double[] milliseconds, double windowSeconds)
+    {
+        if (milliseconds.Length == 0 || milliseconds.Any(x => !double.IsFinite(x) || x < 0))
+            throw new ArgumentException("Provide finite, nonnegative observations.");
+        if (!double.IsFinite(windowSeconds) || windowSeconds <= 0)
+            throw new ArgumentOutOfRangeException(nameof(windowSeconds));
+        double[] sorted = milliseconds.OrderBy(x => x).ToArray();
+        double p50 = sorted[(int)Math.Ceiling(0.50 * sorted.Length) - 1];
+        double p99 = sorted[(int)Math.Ceiling(0.99 * sorted.Length) - 1];
+        return new Summary(sorted.Average(), p50, p99, sorted.Length / windowSeconds);
+    }
+}
+```
+
+```csharp group=example role=run
+double[] times = Enumerable.Repeat(10d, 98).Concat(new[] { 1000d, 1000d }).ToArray();
+Summary result = Measurements.Describe(times, 2);
+Console.WriteLine(result.MeanMs);    // 29.8
+Console.WriteLine(result.P50Ms);     // 10
+Console.WriteLine(result.P99Ms);     // 1000
+Console.WriteLine(result.PerSecond); // 50
+```
+
+The p50 is the fiftieth sorted observation, still 10. The p99 is the ninety-ninth observation, which is 1,000. Sorting a copy leaves the original sample unchanged.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import math
+from statistics import fmean
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Summary:
+    mean_ms: float
+    p50_ms: float
+    p99_ms: float
+    per_second: float
+
+
+def describe(milliseconds, window_seconds):
+    if not milliseconds or any(not math.isfinite(x) or x < 0 for x in milliseconds):
+        raise ValueError("Provide finite, nonnegative observations.")
+    if not math.isfinite(window_seconds) or window_seconds <= 0:
+        raise ValueError("Window duration must be positive.")
+    ordered = sorted(milliseconds)
+    p50 = ordered[math.ceil(0.50 * len(ordered)) - 1]
+    p99 = ordered[math.ceil(0.99 * len(ordered)) - 1]
+    return Summary(fmean(ordered), p50, p99, len(ordered) / window_seconds)
+```
+
+```python group=example role=run
+times = [10.0] * 98 + [1000.0, 1000.0]
+result = describe(times, 2)
+print(result.mean_ms)     # 29.8
+print(result.p50_ms)      # 10.0
+print(result.p99_ms)      # 1000.0
+print(result.per_second)  # 50.0
+```
+
+The supplied two-second window is independent of the sum of request durations: requests may overlap. Throughput is completed requests divided by observed wall-clock time, not the reciprocal of the average latency in an arbitrarily concurrent service.
+
+</section>
+
+## Define where the timer starts and stops
+
+A server handler's duration may exclude time waiting in a proxy or queue. A user experiences that waiting too. Measure at a boundary appropriate to the promise being evaluated, and distinguish time to first byte from complete response time when both matter.
+
+Track failures alongside successful latency. A fast error response can make an overall average look better while the service becomes less useful. Timeouts and abandoned requests must not simply disappear from the denominator. [1](#source-1)
+
+## More concurrency can improve throughput and worsen latency
+
+Overlapping work can increase completed requests per second until a limiting resource saturates. Beyond that point, queues and contention may grow. A system can appear busy and maintain throughput while individual requests wait longer.
+
+The slow tail can matter disproportionately when a page waits for several dependencies: one slow required call can hold up the whole page. Inspect the distribution and relevant request classes instead of assuming the average represents everyone.
+
+Percentiles also require adequate samples and a consistent time window. A p99 from ten observations is effectively an extreme observation under many conventions, not a precise estimate of a stable one-in-a-hundred boundary. Do not average p99 values from several servers and call the result the global p99; combine compatible distributions or observations instead.
+
+The code summarizes a deliberately constructed dataset. It is not a load generator and does not measure this website. Its purpose is to make the difference between average latency, tail behavior, and throughput numerically visible before applying those measures to real telemetry.
+
+## Sources
+
+1. <span id="source-1"></span>[Google SRE — Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/), on latency, traffic, errors, saturation, and distribution-aware monitoring.

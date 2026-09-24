@@ -1,0 +1,113 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Allocations, Memory, and Data Locality
+description: "Allocation creates storage, retention keeps it alive, and data locality concerns how closely the values an operation needs are arranged in memory."
+prerequisites: "Arrays, references, copying, and the difference between a view and a snapshot."
+---
+
+export const checks = {"csharp":{"example":"byte[] packet = { 9, 1, 2, 3, 9 }; byte[] saved = Payload.Copy(packet, 1, 3); Check.That(Payload.SumCopy(packet, 1, 3) == 6 && Payload.SumView(packet, 1, 3) == 6); packet[2] = 20; Check.That(Payload.SumView(packet, 1, 3) == 24); Check.That(Payload.SumView(saved, 0, saved.Length) == 6); Check.That(Payload.SumView(packet, 0, 0) == 0);"},"python":{"example":"packet = bytearray([9, 1, 2, 3, 9])\nsaved = copy_payload(packet, 1, 3)\nassert sum_copy(packet, 1, 3) == sum_view(packet, 1, 3) == 6\npacket[2] = 20\nassert sum_view(packet, 1, 3) == 24\nassert sum_view(saved, 0, len(saved)) == 6\nassert sum_view(packet, 0, 0) == 0"}};
+
+**Allocation** creates storage for a value or object. **Retention** keeps that storage alive because something still refers to it. **Data locality** concerns how closely the values an operation needs are arranged in memory. Reducing allocation, reducing retained memory, and improving locality are related but different optimizations. [1](#source-1)
+
+A program can allocate rapidly without leaking. It can also allocate very little while a cache retains far more data than necessary.
+
+## Read a packet payload without copying it first
+
+A byte packet contains a payload between a header and a trailer. An operation only needs to sum those payload bytes. Creating a separate array for every read duplicates data the operation could inspect in place.
+
+Compare a copied range with a view of the existing range. This example sums bytes to keep ownership visible; it is not a checksum algorithm for security or corruption detection.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Payload
+{
+    public static byte[] Copy(byte[] packet, int offset, int count)
+    {
+        return packet.AsSpan(offset, count).ToArray();
+    }
+
+    public static int SumCopy(byte[] packet, int offset, int count)
+    {
+        byte[] payload = Copy(packet, offset, count);
+        int total = 0;
+        foreach (byte value in payload) total += value;
+        return total;
+    }
+
+    public static int SumView(byte[] packet, int offset, int count)
+    {
+        ReadOnlySpan<byte> payload = packet.AsSpan(offset, count);
+        int total = 0;
+        foreach (byte value in payload) total += value;
+        return total;
+    }
+}
+```
+
+```csharp group=example role=run
+byte[] packet = { 9, 1, 2, 3, 9 };
+byte[] saved = Payload.Copy(packet, 1, 3);
+Console.WriteLine(Payload.SumView(packet, 1, 3)); // 6
+packet[2] = 20;
+Console.WriteLine(Payload.SumView(packet, 1, 3)); // 24
+Console.WriteLine(Payload.SumView(saved, 0, 3));  // 6
+```
+
+`ReadOnlySpan` prevents writes through this view; it does not freeze the underlying array. The saved copy retains the old values, while a later view reads the changed array. The span avoids allocating a separate payload array for this synchronous calculation. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def copy_payload(packet, offset, count):
+    if offset < 0 or count < 0 or offset + count > len(packet):
+        raise ValueError("Invalid payload range.")
+    return bytes(packet[offset:offset + count])
+
+
+def sum_copy(packet, offset, count):
+    return sum(copy_payload(packet, offset, count))
+
+
+def sum_view(packet, offset, count):
+    if offset < 0 or count < 0 or offset + count > len(packet):
+        raise ValueError("Invalid payload range.")
+    with memoryview(packet) as whole:
+        with whole[offset:offset + count] as payload:
+            return sum(payload)
+```
+
+```python group=example role=run
+packet = bytearray([9, 1, 2, 3, 9])
+saved = copy_payload(packet, 1, 3)
+print(sum_view(packet, 1, 3))  # 6
+packet[2] = 20
+print(sum_view(packet, 1, 3))  # 24
+print(sum_view(saved, 0, 3))   # 6
+```
+
+`memoryview` avoids copying the payload bytes, though the view objects themselves still have a cost. The range checks make invalid offsets explicit instead of relying on Python slicing's silent clipping. Releasing the views ends their access to the buffer. [3](#source-3)
+
+</section>
+
+## Copies sometimes buy the independence you need
+
+A view is not a snapshot. If another thread or a buffer pool changes the packet during use, avoiding the copy may change correctness. Never return a pooled buffer while someone still uses a view into it. A small retained view can also keep a much larger backing allocation alive.
+
+Choose ownership first. Use a copy when the consumer needs independent lifetime or stable historical contents. Use a view when the producer's buffer remains valid and the operation can safely share it.
+
+## Locality is about the data you actually touch
+
+CPUs fetch memory in chunks. Processing nearby values can make better use of cached data than following references to scattered objects. An array of references does not necessarily place the referenced objects' fields next to each other. For a hot loop, keeping frequently used fields compactly arranged may reduce memory traffic. [1](#source-1)
+
+The payload example traverses contiguous bytes in both versions; it demonstrates avoided copying, not a measured cache-locality speedup. A locality claim needs a representative workload and suitable profiling evidence. Concurrent writes to nearby data can introduce their own cache-coordination costs.
+
+Measure allocation rate, retained memory, and the operation's actual latency separately. Do not replace a clear data model with pooled mutable buffers or densely packed structures unless the measured benefit justifies the new lifetime and maintenance obligations.
+
+## Sources
+
+1. <span id="source-1"></span>[Robert Nystrom — Data Locality](https://gameprogrammingpatterns.com/data-locality.html).
+2. <span id="source-2"></span>[Microsoft — Memory and Span](https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/).
+3. <span id="source-3"></span>[Python — Memory views](https://docs.python.org/3/library/stdtypes.html#memory-views).
