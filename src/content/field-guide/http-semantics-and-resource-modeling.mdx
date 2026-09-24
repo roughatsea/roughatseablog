@@ -1,0 +1,115 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "HTTP Semantics and Resource Modeling"
+description: "Model the thing a client addresses separately from the action requested, and preserve the meanings of HTTP methods and response codes."
+prerequisites: "HTTP requests, URLs, JSON, and basic client/server interaction."
+---
+
+export const checks = {"csharp":{"example":"var notes = new Notes(); Check.That(notes.Put(7, \"Harbor\") == 201); Check.That(notes.Put(7, \"Harbor\") == 204); Check.That(notes.Get(7) == \"Harbor\"); Check.That(notes.Delete(7) == 204 && notes.Delete(7) == 204); Check.That(notes.Get(7) == null);"},"python":{"example":"notes = Notes()\nassert notes.put(7, 'Harbor') == 201\nassert notes.put(7, 'Harbor') == 204\nassert notes.get(7) == 'Harbor'\nassert notes.delete(7) == notes.delete(7) == 204\nassert notes.get(7) is None"}};
+
+**Resource modeling** identifies the things a client can address: a note, an order, a collection of images. **HTTP semantics** describes what a request asks the server to do with a resource and how the response communicates the outcome.
+
+The URL identifies a resource; the method expresses the request. For example, `GET /notes/7` asks for a representation of note 7. It should not delete the note as a side effect the client is expected to request. [1](#source-1)
+
+## One note, several requests
+
+Imagine a note service with caller-selected identifiers:
+
+| Request | Intended meaning in this service |
+| --- | --- |
+| `GET /notes/7` | Retrieve note 7 without requesting a state change |
+| `PUT /notes/7` | Create or replace note 7 with the supplied representation |
+| `DELETE /notes/7` | Remove the association with note 7 |
+| `POST /notes` | Ask the service to create a new note and assign its identifier |
+
+This is a chosen resource design, not a rule that every business operation must be reducible to a database table. A resource can represent an operation or a processing job when that is useful.
+
+## Repeating a request does not always mean repeating its effect
+
+The following in-memory model implements the first three intentions. Returned integers represent response statuses; there is no HTTP server, routing, or authorization code in this example.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Notes
+{
+    private readonly Dictionary<int, string> text = new();
+
+    public string? Get(int id)
+    {
+        return text.TryGetValue(id, out string? value) ? value : null;
+    }
+
+    public int Put(int id, string value)
+    {
+        bool existed = text.ContainsKey(id);
+        text[id] = value;
+        return existed ? 204 : 201;
+    }
+
+    public int Delete(int id)
+    {
+        text.Remove(id);
+        return 204;
+    }
+}
+```
+
+```csharp group=example role=run
+var notes = new Notes();
+Console.WriteLine(notes.Put(7, "Harbor")); // 201: created
+Console.WriteLine(notes.Put(7, "Harbor")); // 204: replaced, no response body
+Console.WriteLine(notes.Get(7));          // Harbor
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Notes:
+    def __init__(self):
+        self._text = {}
+
+    def get(self, note_id):
+        return self._text.get(note_id)
+
+    def put(self, note_id, value):
+        existed = note_id in self._text
+        self._text[note_id] = value
+        return 204 if existed else 201
+
+    def delete(self, note_id):
+        self._text.pop(note_id, None)
+        return 204
+```
+
+```python group=example role=run
+notes = Notes()
+print(notes.put(7, "Harbor"))  # 201: created
+print(notes.put(7, "Harbor"))  # 204: replaced, no response body
+print(notes.get(7))           # Harbor
+```
+
+</section>
+
+The second identical put leaves the same note content even though its response status differs from the first. That illustrates **idempotence**: repeating the request has the same intended effect as making it once. It does not require identical response bytes.
+
+Our delete returns 204 even when the note is already absent. Another API can report 404 on the second call and still have an idempotent deletion effect. A handler must translate an absent get into its documented missing-resource response rather than accidentally returning a successful null body.
+
+## Safe does not mean nothing whatsoever happens
+
+A safe method such as GET does not request a state-changing business operation. Logging, accounting, or cache updates can still occur. That distinction allows clients and infrastructure to retrieve representations without intending to place orders or erase records. PUT and DELETE are idempotent but not safe. [1](#source-1)
+
+POST has broader processing semantics and is not inherently idempotent. An application can nevertheless provide safe retry behavior for a particular POST operation through an explicit idempotency contract.
+
+## Resource names do not solve concurrency
+
+Two writers can overwrite each other's edits in this simple model. A real service can require an entity tag through `If-Match` so a client updates only the version it read, returning a failed-precondition response when it is stale. [1](#source-1)
+
+Also specify content types, validation, authorization, and meaningful response bodies. A 202 response means a request was accepted, not that its background job succeeded. A familiar URL structure is useful only when the behavior behind it honors the advertised contract.
+
+## Sources
+
+1. <span id="source-1"></span>[IETF — RFC 9110, HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html), particularly methods, conditional requests, and status codes.
+2. [Microsoft — API design guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design), for resource-oriented examples.

@@ -1,0 +1,93 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Partial Failure and Timeout Budgets"
+description: "A distributed operation can partly succeed while its caller sees failure. Allocate waiting time across the whole operation and preserve uncertainty about remote effects."
+prerequisites: "Network requests, retries, elapsed time, and exceptions."
+---
+
+export const checks = {"csharp":{"example":"Check.That(Budgets.ForNextCall(2000, 1800, 1000) == 200); Check.That(Budgets.ForNextCall(2000, 400, 1000) == 1000); Check.That(Budgets.ForNextCall(2000, 2100, 1000) == 0);"},"python":{"example":"assert for_next_call(2000, 1800, 1000) == 200\nassert for_next_call(2000, 400, 1000) == 1000\nassert for_next_call(2000, 2100, 1000) == 0"}};
+
+A **partial failure** occurs when some parts of an operation succeed while others fail or become unreachable. In a distributed system, the caller's failure to receive a response does not establish whether the remote action happened.
+
+A **timeout budget** limits the time available to a whole operation, rather than giving every nested call a fresh full-length timeout. Waiting in queues, retry delays, and earlier calls all spend that same budget. [1](#source-1)
+
+## The missing response is not a missing order
+
+Consider this sequence:
+
+| Step | What happens | What the client knows |
+| --- | --- | --- |
+| 1 | Client submits order request R | Request was sent |
+| 2 | Server commits order 42 | Client has not seen a result yet |
+| 3 | Connection fails before the response arrives | Client sees a network failure |
+| 4 | Client reaches its deadline | Outcome remains unknown to the client |
+
+Reporting “order definitely failed” would be inaccurate. Retrying with a new request identity could create order 43. An idempotent request identity or a status lookup tied to the original request can resolve the uncertainty without blindly repeating the effect.
+
+## Spend one budget across several calls
+
+Suppose a screen has a two-second deadline. Its first lookup spends 1.8 seconds. The next call has at most 0.2 seconds remaining, even if its usual per-call limit is one second.
+
+The helper below makes that arithmetic explicit. All values are elapsed durations in milliseconds. It does not perform I/O or pretend to enforce a remote server's deadline.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Budgets
+{
+    public static int ForNextCall(int total, int elapsed, int perCallMaximum)
+    {
+        if (total < 0 || elapsed < 0 || perCallMaximum < 0)
+            throw new ArgumentOutOfRangeException();
+        int remaining = Math.Max(0, total - elapsed);
+        return Math.Min(remaining, perCallMaximum);
+    }
+}
+```
+
+```csharp group=example role=run
+int allowed = Budgets.ForNextCall(2000, 1800, 1000);
+Console.WriteLine(allowed); // 200 milliseconds
+```
+
+Use a monotonic elapsed-time source such as `Stopwatch` around the owning operation. Recalculate before the next attempt rather than subtracting only the time you expected the previous call to take.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def for_next_call(total, elapsed, per_call_maximum):
+    if min(total, elapsed, per_call_maximum) < 0:
+        raise ValueError("Durations must be nonnegative.")
+    remaining = max(0, total - elapsed)
+    return min(remaining, per_call_maximum)
+```
+
+```python group=example role=run
+allowed = for_next_call(2000, 1800, 1000)
+print(allowed)  # 200 milliseconds
+```
+
+Use a monotonic clock for actual elapsed time, such as `time.monotonic`. A change to the machine's calendar clock should not extend the local deadline. [2](#source-2)
+
+</section>
+
+If the result is zero, do not start another ordinary attempt. An operation may still need cleanup or reconciliation, but that should have its own explicit ownership and limits rather than silently becoming another full request.
+
+## Bound retries as well as individual calls
+
+Three nested layers each making three attempts can turn one user action into far more than three downstream calls. Choose where retries belong, limit them, and include their delay in the remaining budget.
+
+A connection timeout may cover different work from an overall request deadline. Check what a library actually measures: connection establishment, reading a response, or the entire operation. A timeout setting is not useful if the expensive stage lies outside it. [1](#source-1)
+
+## Preserve an honest outcome
+
+For a failed read, the application might display unavailable data or use a clearly labeled cached result. For a write with unknown outcome, it may need to report “still confirming” and query the authoritative system. Do not translate every timeout into an empty successful result.
+
+The numbers in this example are illustrative, not recommended service limits. Select production budgets from measured behavior and user needs. The goal is to bound waiting without inventing certainty about effects that may already have happened elsewhere.
+
+## Sources
+
+1. <span id="source-1"></span>[AWS Builders' Library — Timeouts, retries, and backoff with jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/).
+2. <span id="source-2"></span>[Python — time.monotonic](https://docs.python.org/3/library/time.html#time.monotonic) and [Microsoft — Stopwatch](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.stopwatch).
