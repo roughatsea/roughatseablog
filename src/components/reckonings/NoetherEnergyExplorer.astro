@@ -1,0 +1,252 @@
+---
+const springPath = (endX: number) => {
+  const startX = 94;
+  const turns = 11;
+  const points = [`M${startX} 214`, `L${startX + 18} 214`];
+  const coilStart = startX + 18;
+  const coilEnd = endX - 16;
+  for (let index = 0; index <= turns * 2; index += 1) {
+    const fraction = index / (turns * 2);
+    const x = coilStart + fraction * (coilEnd - coilStart);
+    const y = index === 0 || index === turns * 2 ? 214 : 214 + (index % 2 === 0 ? -18 : 18);
+    points.push(`L${x.toFixed(1)} ${y}`);
+  }
+  points.push(`L${endX} 214`);
+  return points.join(' ');
+};
+---
+
+<figure class="noether-lab reckoning-visual" data-noether-lab>
+  <header>
+    <p>Spring-energy explorer</p>
+    <h3>One conserved total, two changing forms</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 940 490" role="img" aria-labelledby="noether-title noether-desc">
+      <title id="noether-title">A spring oscillator at its rightmost point, with all one joule of energy stored as potential energy</title>
+      <desc id="noether-desc">A mass attached to a horizontal spring is displaced half a metre to the right. Beside it, a striped potential-energy bar reaches one joule while the solid kinetic-energy portion is zero. A fixed line marks the one-joule total.</desc>
+
+      <defs>
+        <pattern id="noether-stripes" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="9" height="9" class="pattern-bg" />
+          <path d="M0 0V9" class="pattern-line" />
+        </pattern>
+      </defs>
+
+      <g class="spring-panel">
+        <text class="panel-label" x="52" y="52">OSCILLATOR</text>
+        <path class="baseline" d="M52 270H520" />
+        <path class="wall" d="M78 132V270M60 145l18-13M60 170l18-13M60 195l18-13M60 220l18-13M60 245l18-13M60 270l18-13" />
+        <path class="spring" data-spring d={springPath(298)} />
+        <g class="mass" data-mass transform="translate(298 172)">
+          <rect width="84" height="84" rx="8" />
+          <path d="M18 64h48" />
+          <circle cx="21" cy="91" r="7" />
+          <circle cx="63" cy="91" r="7" />
+        </g>
+        <path class="equilibrium" d="M256 124V281" />
+        <text class="small-label" x="256" y="302" text-anchor="middle">equilibrium</text>
+        <path class="position-arrow" data-position-arrow d="M256 332H340" />
+        <path class="arrow-head" data-arrow-head d="M340 332l-12-7v14z" />
+        <text class="position-label" data-position-label x="298" y="358" text-anchor="middle">q = 0.500 m</text>
+
+        <g class="phase" transform="translate(115 378)">
+          <circle cx="68" cy="45" r="39" />
+          <path d="M20 45h96M68 0v90" />
+          <circle class="phase-point" data-phase-point cx="107" cy="45" r="7" />
+          <text class="small-label" x="68" y="108" text-anchor="middle">phase orbit</text>
+          <text class="phase-axis" x="119" y="40">q</text>
+          <text class="phase-axis" x="73" y="10">q̇/ω</text>
+        </g>
+      </g>
+
+      <g class="energy-panel">
+        <text class="panel-label" x="574" y="52">ENERGY ACCOUNT</text>
+        <text class="small-label" x="902" y="86" text-anchor="end">1.0 J total</text>
+        <path class="total-line" d="M602 102H902" />
+        <rect class="energy-frame" x="632" y="102" width="240" height="268" rx="5" />
+        <rect class="potential" data-potential x="633" y="103" width="238" height="266" />
+        <rect class="kinetic" data-kinetic x="633" y="103" width="238" height="0" />
+        <path class="energy-divider" data-energy-divider d="M633 103H871" />
+        <text class="bar-label potential-label" data-potential-label x="752" y="238" text-anchor="middle">potential 1.000 J</text>
+        <text class="bar-label kinetic-label" data-kinetic-label x="752" y="92" text-anchor="middle">kinetic 0.000 J</text>
+        <g class="legend" transform="translate(630 403)">
+          <rect class="legend-kinetic" width="20" height="20" rx="2" />
+          <text x="29" y="15">kinetic K</text>
+          <rect class="legend-potential" x="136" width="20" height="20" rx="2" />
+          <text x="165" y="15">potential U</text>
+        </g>
+        <text class="total-readout" data-total x="752" y="464" text-anchor="middle">K + U = 1.000 J</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <label for="noether-time">Move through one period</label>
+    <div>
+      <input id="noether-time" data-time type="range" min="0" max="3.141593" step="0.005" value="0" />
+      <output data-time-output for="noether-time">t = 0.000 s</output>
+    </div>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div><span>Position</span><strong data-q>q = 0.500 m</strong></div>
+    <div><span>Velocity</span><strong data-v>q̇ = 0.000 m/s</strong></div>
+    <div><span>Kinetic</span><strong data-k>K = 0.000 J</strong></div>
+    <div><span>Potential</span><strong data-u>U = 1.000 J</strong></div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> moving the time slider transfers energy between the solid kinetic region and the striped potential region. Their boundary moves, but the outlined account stays filled to the 1-joule line. The marked point also circles a closed phase orbit instead of spiraling inward or outward.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-noether-lab]').forEach((figure) => {
+    const slider = figure.querySelector('[data-time]');
+    const spring = figure.querySelector('[data-spring]');
+    const mass = figure.querySelector('[data-mass]');
+    const arrow = figure.querySelector('[data-position-arrow]');
+    const arrowHead = figure.querySelector('[data-arrow-head]');
+    const positionLabel = figure.querySelector('[data-position-label]');
+    const phasePoint = figure.querySelector('[data-phase-point]');
+    const kineticBar = figure.querySelector('[data-kinetic]');
+    const potentialBar = figure.querySelector('[data-potential]');
+    const divider = figure.querySelector('[data-energy-divider]');
+    const kineticLabel = figure.querySelector('[data-kinetic-label]');
+    const potentialLabel = figure.querySelector('[data-potential-label]');
+    const timeOutput = figure.querySelector('[data-time-output]');
+    const qOutput = figure.querySelector('[data-q]');
+    const vOutput = figure.querySelector('[data-v]');
+    const kOutput = figure.querySelector('[data-k]');
+    const uOutput = figure.querySelector('[data-u]');
+    const title = figure.querySelector('#noether-title');
+    const desc = figure.querySelector('#noether-desc');
+
+    if (!(slider instanceof HTMLInputElement) || !(spring instanceof SVGPathElement) || !(mass instanceof SVGGElement) || !(arrow instanceof SVGPathElement) || !(arrowHead instanceof SVGPathElement) || !(positionLabel instanceof SVGTextElement) || !(phasePoint instanceof SVGCircleElement) || !(kineticBar instanceof SVGRectElement) || !(potentialBar instanceof SVGRectElement) || !(divider instanceof SVGPathElement) || !(kineticLabel instanceof SVGTextElement) || !(potentialLabel instanceof SVGTextElement) || !(timeOutput instanceof HTMLOutputElement) || !qOutput || !vOutput || !kOutput || !uOutput || !title || !desc) return;
+
+    const formatSigned = (value: number) => Math.abs(value) < 0.0005 ? '0.000' : value.toFixed(3);
+    const springPath = (endX: number) => {
+      const startX = 94;
+      const turns = 11;
+      const points = [`M${startX} 214`, `L${startX + 18} 214`];
+      const coilStart = startX + 18;
+      const coilEnd = endX - 16;
+      for (let index = 0; index <= turns * 2; index += 1) {
+        const fraction = index / (turns * 2);
+        const x = coilStart + fraction * (coilEnd - coilStart);
+        const y = index === 0 || index === turns * 2 ? 214 : 214 + (index % 2 === 0 ? -18 : 18);
+        points.push(`L${x.toFixed(1)} ${y}`);
+      }
+      points.push(`L${endX} 214`);
+      return points.join(' ');
+    };
+
+    const render = () => {
+      const time = Number(slider.value);
+      const q = 0.5 * Math.cos(2 * time);
+      const velocity = -Math.sin(2 * time);
+      const kinetic = velocity * velocity;
+      const potential = 4 * q * q;
+      const massX = 256 + 168 * q;
+      const massLeft = massX - 42;
+      const splitY = 103 + 266 * kinetic;
+
+      spring.setAttribute('d', springPath(massLeft));
+      mass.setAttribute('transform', `translate(${massLeft.toFixed(2)} 172)`);
+      arrow.setAttribute('d', `M256 332H${massX.toFixed(2)}`);
+      arrowHead.setAttribute('d', q >= 0
+        ? `M${massX.toFixed(2)} 332l-12-7v14z`
+        : `M${massX.toFixed(2)} 332l12-7v14z`);
+      positionLabel.setAttribute('x', ((256 + massX) / 2).toFixed(2));
+      positionLabel.textContent = `q = ${formatSigned(q)} m`;
+      phasePoint.setAttribute('cx', (68 + 78 * q).toFixed(2));
+      phasePoint.setAttribute('cy', (45 - 39 * velocity).toFixed(2));
+
+      kineticBar.setAttribute('height', (266 * kinetic).toFixed(2));
+      potentialBar.setAttribute('y', splitY.toFixed(2));
+      potentialBar.setAttribute('height', (266 * potential).toFixed(2));
+      divider.setAttribute('d', `M633 ${splitY.toFixed(2)}H871`);
+      kineticLabel.setAttribute('y', kinetic > 0.13 ? (103 + 133 * kinetic + 5).toFixed(2) : '92');
+      potentialLabel.setAttribute('y', potential > 0.13 ? (splitY + 133 * potential + 5).toFixed(2) : '391');
+      kineticLabel.textContent = `kinetic ${kinetic.toFixed(3)} J`;
+      potentialLabel.textContent = `potential ${potential.toFixed(3)} J`;
+
+      timeOutput.value = `t = ${time.toFixed(3)} s`;
+      qOutput.textContent = `q = ${formatSigned(q)} m`;
+      vOutput.textContent = `q̇ = ${formatSigned(velocity)} m/s`;
+      kOutput.textContent = `K = ${kinetic.toFixed(3)} J`;
+      uOutput.textContent = `U = ${potential.toFixed(3)} J`;
+      title.textContent = `Spring oscillator at time ${time.toFixed(3)} seconds with ${kinetic.toFixed(3)} joules kinetic and ${potential.toFixed(3)} joules potential energy`;
+      desc.textContent = `The mass is at q equals ${formatSigned(q)} metres and moves at ${formatSigned(velocity)} metres per second. Solid kinetic and striped potential regions fill the energy account to a constant total of one joule.`;
+    };
+
+    slider.addEventListener('input', render);
+    render();
+  });
+</script>
+
+<style>
+  .noether-lab {
+    --nt-blue: #087dcc;
+    --nt-green: #4f9300;
+    --nt-pink: #d9007e;
+    background: radial-gradient(circle at 86% 2%, color-mix(in srgb, var(--nt-green) 12%, transparent), transparent 22rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .noether-lab { --nt-blue: #1493ff; --nt-green: #93ff14; --nt-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 720px; width: 100%; }
+  svg text { fill: var(--text-secondary); font-family: var(--font-sans); }
+  .panel-label { fill: var(--text-primary); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+  .small-label, .phase-axis { font-size: 12px; }
+  .baseline, .wall { fill: none; stroke: var(--text-secondary); stroke-width: 2; }
+  .spring { fill: none; stroke: var(--nt-blue); stroke-linecap: round; stroke-linejoin: round; stroke-width: 4; }
+  .mass rect { fill: color-mix(in srgb, var(--nt-pink) 17%, var(--bg-color)); stroke: var(--nt-pink); stroke-width: 3; }
+  .mass path, .mass circle { fill: var(--bg-color); stroke: var(--nt-pink); stroke-width: 3; }
+  .equilibrium { fill: none; stroke: var(--text-secondary); stroke-dasharray: 5 7; stroke-width: 1.5; }
+  .position-arrow { fill: none; stroke: var(--nt-green); stroke-width: 3; }
+  .arrow-head { fill: var(--nt-green); }
+  .position-label { fill: var(--text-primary); font-size: 14px; font-weight: 700; }
+  .phase circle:first-child, .phase path { fill: none; stroke: var(--border-color); stroke-width: 1.5; }
+  .phase-point { fill: var(--nt-green); stroke: var(--bg-color); stroke-width: 3; }
+  .total-line { fill: none; stroke: var(--nt-green); stroke-dasharray: 9 6; stroke-width: 3; }
+  .energy-frame { fill: none; stroke: var(--text-primary); stroke-width: 2; }
+  .pattern-bg { fill: color-mix(in srgb, var(--nt-pink) 12%, var(--bg-color)); }
+  .pattern-line { stroke: var(--nt-pink); stroke-width: 3; }
+  .potential, .legend-potential { fill: url(#noether-stripes); }
+  .kinetic, .legend-kinetic { fill: color-mix(in srgb, var(--nt-blue) 72%, var(--bg-color)); }
+  .energy-divider { fill: none; stroke: var(--text-primary); stroke-width: 2; }
+  .bar-label { fill: var(--text-primary); font-size: 13px; font-weight: 750; }
+  .legend text { font-size: 13px; }
+  .legend-kinetic, .legend-potential { stroke: var(--text-secondary); stroke-width: 1; }
+  .total-readout { fill: var(--text-primary); font-size: 16px; font-weight: 800; }
+  .controls { margin-top: .9rem; }
+  .controls label { color: var(--text-primary); display: block; font-size: .72rem; font-weight: 800; letter-spacing: .06em; margin-bottom: .45rem; text-transform: uppercase; }
+  .controls > div { align-items: center; display: grid; gap: .8rem; grid-template-columns: minmax(0, 1fr) 8rem; }
+  input[type='range'] { accent-color: var(--nt-blue); cursor: pointer; width: 100%; }
+  input[type='range']:focus-visible { outline: 3px solid color-mix(in srgb, var(--nt-green) 65%, transparent); outline-offset: 3px; }
+  output { color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+  .readout { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; display: grid; gap: .75rem; grid-template-columns: repeat(4, 1fr); margin-top: .8rem; padding: .85rem 1rem; }
+  .readout div { display: grid; gap: .16rem; }
+  .readout span { color: var(--text-secondary); font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .readout strong { color: var(--text-primary); font-size: .84rem; font-variant-numeric: tabular-nums; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 720px) {
+    .noether-lab { width: calc(100vw - 1.5rem); }
+    .readout { grid-template-columns: 1fr 1fr; }
+    .controls > div { grid-template-columns: 1fr; }
+    output { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) { .noether-lab * { transition: none !important; } }
+</style>

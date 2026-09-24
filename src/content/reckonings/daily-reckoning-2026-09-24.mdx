@@ -1,0 +1,320 @@
+---
+title: "Why Does Time Symmetry Keep Energy Constant?"
+description: "Noether’s theorem turns an unchanged law of motion into a conserved quantity. The time-translation case shows, line by line, where energy comes from."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-24.svg"
+heroImageAlt: "On a dark maritime blueprint, five cyan spring-and-mass outlines occupy successive instants of a magenta oscillation. Their positions change beneath a straight neon-green energy trace, suggesting motion whose total energy remains constant."
+date: 2026-09-24
+publishedAt: 2026-09-24T06:00:00-07:00
+area: "Mathematical physics and calculus of variations"
+difficulty: "Advanced"
+prerequisites:
+  - "Derivatives and the chain rule"
+  - "Kinetic and potential energy"
+  - "Basic partial derivatives"
+readTimeMinutes: 10
+tags:
+  - daily-reckoning
+  - noethers-theorem
+  - symmetry
+  - conservation-of-energy
+  - lagrangian-mechanics
+  - calculus-of-variations
+  - mathematical-physics
+  - history-of-mathematics
+---
+
+import NoetherEnergyExplorer from '../../components/reckonings/NoetherEnergyExplorer.astro';
+
+Put a mass on a spring, pull it sideways, and let go. Now repeat the experiment tomorrow with the same spring, the same mass, and the same starting position. Physics gives no reason for tomorrow's motion to differ from today's.
+
+That indifference to the starting date is **time-translation symmetry**. Shift every clock reading by the same amount and the law of motion keeps the same form. In a closed mechanical system, that symmetry is tied to a quantity that refuses to change: energy.
+
+Emmy Noether's theorem makes the connection exact. The full theorem applies to continuous families of transformations—time shifts, spatial shifts, rotations, and many others. This lesson works through one narrow case: why a time-independent Lagrangian produces conserved energy.
+
+## The bookkeeping function is not the energy
+
+Describe a system with one coordinate $q(t)$, the position at time $t$. A dot denotes a time derivative, so
+
+$$
+\dot q(t)=\frac{dq}{dt}
+$$
+
+is velocity. The **Lagrangian** is a function
+
+$$
+L(q,\dot q,t)
+$$
+
+of position, velocity, and possibly time itself. For an ordinary particle moving in a potential $V(q)$,
+
+$$
+L(q,\dot q)=T-V
+=\frac12m\dot q^2-V(q),
+$$
+
+where $m$ is the particle's mass and $T=\tfrac12m\dot q^2$ is kinetic energy.
+
+The minus sign matters: $L$ is kinetic energy minus potential energy, not total energy. Its job is to assign a number called the **action** to an entire path from time $t_1$ to time $t_2$:
+
+$$
+S[q]=\int_{t_1}^{t_2}L(q,\dot q,t)\,dt.
+$$
+
+The notation $S[q]$ emphasizes that the action depends on the whole proposed path $q(t)$. The physical path makes the action stationary: sufficiently small changes of the path produce no first-order change in $S$. Calculus of variations turns that condition into the **Euler–Lagrange equation**
+
+$$
+\frac{d}{dt}\left(\frac{\partial L}{\partial \dot q}\right)
+=\frac{\partial L}{\partial q}.
+$$
+
+A partial derivative changes one input while holding the other inputs fixed. Thus $\partial L/\partial q$ asks how $L$ changes with position, while $\partial L/\partial \dot q$ asks how $L$ changes with velocity.
+
+## Watch the exchange
+
+Before manipulating the symbols, move through one period of a specific spring. The diagram uses $m=2$ kilograms, spring constant $k=8$ newtons per metre, and amplitude $A=0.5$ metre. The outlined energy account is exactly one joule tall.
+
+<NoetherEnergyExplorer />
+
+The mass never stops changing position for long. Kinetic and potential energy never stop trading places. What remains fixed is their sum.
+
+## The conserved quantity, derived
+
+For any Lagrangian $L(q,\dot q,t)$, define
+
+$$
+E=\dot q\frac{\partial L}{\partial \dot q}-L.
+$$
+
+The letter $E$ anticipates the result, but first treat the expression as a candidate quantity. Differentiate it with respect to time. The product rule gives
+
+$$
+\frac{dE}{dt}
+=\ddot q\frac{\partial L}{\partial \dot q}
++\dot q\frac{d}{dt}\left(\frac{\partial L}{\partial \dot q}\right)
+-\frac{dL}{dt}.
+$$
+
+The Lagrangian depends on three changing arguments: $q$, $\dot q$, and $t$. The multivariable chain rule therefore expands its total derivative as
+
+$$
+\frac{dL}{dt}
+=\frac{\partial L}{\partial q}\dot q
++\frac{\partial L}{\partial \dot q}\ddot q
++\frac{\partial L}{\partial t}.
+$$
+
+Substitute that expansion into the derivative of $E$:
+
+$$
+\begin{aligned}
+\frac{dE}{dt}
+&=\ddot q\frac{\partial L}{\partial \dot q}
++\dot q\frac{d}{dt}\left(\frac{\partial L}{\partial \dot q}\right)\\
+&\quad-\frac{\partial L}{\partial q}\dot q
+-\frac{\partial L}{\partial \dot q}\ddot q
+-\frac{\partial L}{\partial t}.
+\end{aligned}
+$$
+
+The first and fourth terms cancel. Factor $\dot q$ from the next two:
+
+$$
+\frac{dE}{dt}
+=\dot q\left[
+\frac{d}{dt}\left(\frac{\partial L}{\partial \dot q}\right)
+-\frac{\partial L}{\partial q}
+\right]
+-\frac{\partial L}{\partial t}.
+$$
+
+The expression inside square brackets is zero along a physical path because of the Euler–Lagrange equation. What remains is
+
+$$
+\boxed{\frac{dE}{dt}=-\frac{\partial L}{\partial t}}.
+$$
+
+Now the symmetry does the work. If the Lagrangian contains no explicit $t$, shifting the clock changes none of its rules, so $\partial L/\partial t=0$. Therefore
+
+$$
+\frac{dE}{dt}=0,
+$$
+
+which means $E$ is constant.
+
+Time-translation symmetry does not say that the system is motionless. It says that the rule governing the motion does not care where the time origin was placed.
+
+## Worked example: the spring's one joule
+
+For an ideal spring,
+
+$$
+V(q)=\frac12kq^2,
+$$
+
+so its Lagrangian is
+
+$$
+L=\frac12m\dot q^2-\frac12kq^2.
+$$
+
+There is no explicit time variable in this formula. Compute the candidate conserved quantity step by step:
+
+$$
+\frac{\partial L}{\partial \dot q}=m\dot q,
+$$
+
+then
+
+$$
+\begin{aligned}
+E
+&=\dot q\frac{\partial L}{\partial \dot q}-L\\
+&=\dot q(m\dot q)-\left(\frac12m\dot q^2-\frac12kq^2\right)\\
+&=m\dot q^2-\frac12m\dot q^2+\frac12kq^2\\
+&=\frac12m\dot q^2+\frac12kq^2.
+\end{aligned}
+$$
+
+The abstract expression has become kinetic energy plus potential energy.
+
+For the values in the diagram, $m=2$, $k=8$, and $A=0.5$. The angular frequency is
+
+$$
+\omega=\sqrt{\frac{k}{m}}=\sqrt{\frac82}=2\ \text{radians per second}.
+$$
+
+Released from rest at $q=A$, the motion is
+
+$$
+q(t)=0.5\cos(2t),
+$$
+
+and differentiation gives
+
+$$
+\dot q(t)=-\sin(2t).
+$$
+
+Substitute those expressions into the two energy terms:
+
+$$
+K(t)=\frac12(2)\sin^2(2t)=\sin^2(2t),
+$$
+
+$$
+U(t)=\frac12(8)\left[0.5\cos(2t)\right]^2=\cos^2(2t).
+$$
+
+Their sum is
+
+$$
+E(t)=\sin^2(2t)+\cos^2(2t)=1\ \text{joule}.
+$$
+
+At $t=\pi/8$ seconds, $2t=\pi/4$, so $\sin^2(2t)=\cos^2(2t)=1/2$. The spring holds $0.5$ joule of potential energy while the mass carries $0.5$ joule of kinetic energy. The split changes; the total does not.
+
+## Try the symmetry test
+
+### Problem 1
+
+A free particle has Lagrangian
+
+$$
+L=\frac12m\dot q^2.
+$$
+
+Find $E$. Then evaluate it for $m=3$ kilograms and constant velocity $\dot q=4$ metres per second.
+
+<details>
+<summary>Reveal the solution</summary>
+
+First differentiate with respect to velocity:
+
+$$
+\frac{\partial L}{\partial \dot q}=m\dot q.
+$$
+
+Then
+
+$$
+\begin{aligned}
+E
+&=\dot q(m\dot q)-\frac12m\dot q^2\\
+&=\frac12m\dot q^2.
+\end{aligned}
+$$
+
+There is no explicit time dependence, so this kinetic energy is conserved. With the stated mass and velocity,
+
+$$
+E=\frac12(3)(4^2)=\frac32\cdot16=24\ \text{joules}.
+$$
+
+</details>
+
+### Problem 2
+
+Suppose an external controller changes a parameter in time, producing
+
+$$
+L(q,\dot q,t)=\frac12m\dot q^2-\beta tq,
+$$
+
+where $\beta$ is a constant with the units needed to make $\beta tq$ an energy. What does the identity $dE/dt=-\partial L/\partial t$ say?
+
+<details>
+<summary>Reveal the solution</summary>
+
+Holding $q$ and $\dot q$ fixed while differentiating with respect to $t$ gives
+
+$$
+\frac{\partial L}{\partial t}=-\beta q.
+$$
+
+Therefore
+
+$$
+\frac{dE}{dt}=-\frac{\partial L}{\partial t}=\beta q.
+$$
+
+The candidate energy is not guaranteed to stay constant. The explicit $t$ records an external rule that changes with the clock; time-translation symmetry has been broken. Depending on the sign of $q$, the controller can add energy to or remove energy from the system.
+
+</details>
+
+## What Noether proved—and what this calculation omits
+
+The spring calculation is one instance of Noether's first theorem. In modern language, if the action is invariant under a differentiable one-parameter family of continuous transformations, then the Euler–Lagrange equations have a corresponding conserved quantity. A time shift yields energy. A spatial shift yields linear momentum. A rotation yields angular momentum.
+
+This lesson has not proved the theorem in that general form. It used one coordinate, assumed enough smoothness to differentiate every expression, and started from an action principle. Systems with friction, impacts, constraints, fields, or gauge freedom require additional care. Noether's 1918 paper actually contains two theorems: one for finite-dimensional continuous symmetry groups and another for groups depending on arbitrary functions.
+
+The distinction matters in modern physics. The [European Organization for Nuclear Research (CERN) overview of the Standard Model](https://home.cern/science/physics/standard-model/) describes a theory that connects matter particles with the electromagnetic, strong, and weak forces. A [Fermilab and SLAC account of Noether's influence](https://www.symmetrymagazine.org/article/june-2015/mathematician-to-know-emmy-noether) explains how symmetry became part of particle physics's working language. In the mathematics, global continuous symmetries produce conserved currents through the first theorem; local gauge symmetries are governed by Noether's second theorem and its relations among field equations. The slogan “every symmetry gives a conservation law” is useful, but the mathematical type of symmetry determines which theorem applies.
+
+Conserved quantities also guide computation. A numerical simulation advances a system in finite time steps, so rounding and truncation can make a computed energy drift even when the exact equations conserve it. **Geometric numerical integrators** are designed to preserve structural features of the equations over long runs; energy and momentum provide demanding diagnostics for orbital mechanics, molecular dynamics, and other Hamiltonian systems. Ernst Hairer, Christian Lubich, and Gerhard Wanner develop these methods in [*Geometric Numerical Integration*](https://link.springer.com/book/10.1007/3-540-30666-8).
+
+## A theorem born from a specific crisis
+
+Noether did not begin with a classroom spring. David Hilbert and Felix Klein invited her to Göttingen in 1915 while they were wrestling with invariant theory, variational principles, and the energy problem in Albert Einstein's new general theory of relativity. Tilman Sauer's 2025 archival study reconstructs the [intensive discussions among Noether, Hilbert, and Klein from 1915 to 1918](https://link.springer.com/article/10.1007/s44007-025-00166-w). The surviving notes show collaboration and argument; Noether supplied the general mathematics that reorganized the problem.
+
+Her route into that discussion was constrained by German academic rules. A Prussian decree had barred women from habilitation, the qualification required to teach independently at a university. Noether's earlier applications failed, she lectured under Hilbert's name, and even after gaining habilitation in 1919 she held unpaid positions. The same archival study records that Nazi racial policy expelled her from Göttingen in 1933 because she was Jewish. She continued teaching at Bryn Mawr College in the United States until her death in 1935.
+
+The paper [“Invariant Variation Problems”](https://arxiv.org/abs/physics/0503066), presented in 1918, did more than settle a bookkeeping difficulty in relativity. It combined the calculus of variations with Sophus Lie's theory of continuous groups and stated the symmetry–conservation correspondence in a general form. Noether acknowledged earlier special cases by Georg Hamel, Gustav Herglotz, Hendrik Lorentz and his students, Hermann Weyl, and Klein. The theorem bears her name because the unifying result was hers, not because the surrounding work belonged to one person.
+
+## One idea to remember
+
+Energy conservation is not an extra rule pasted onto time-independent mechanics. When the action does not care where the clock starts, the Euler–Lagrange equation forces
+
+$$
+\dot q\frac{\partial L}{\partial \dot q}-L
+$$
+
+to stay constant.
+
+To continue, compare the spring with [the force balance behind a hanging chain](/reckonings/daily-reckoning-2026-09-06/), or study spatial translations and rotations to see momentum and angular momentum emerge from the same theorem.
+
+## Sources
+
+- Emmy Noether, [“Invariant Variation Problems”](https://arxiv.org/abs/physics/0503066), M. A. Tavel translation, originally published in *Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen*, 1918, pages 235–257.
+- Tilman Sauer, [“‘Before Everything was Completely Clear, We Had a Few Arguments.’ — Emmy Noether, David Hilbert and Felix Klein”](https://link.springer.com/article/10.1007/s44007-025-00166-w), *La Matematica*, volume 4, 2025, pages 674–701.
+- J. J. O'Connor and E. F. Robertson, [“Emmy Amalie Noether”](https://mathshistory.st-andrews.ac.uk/Biographies/Noether_Emmy/), MacTutor History of Mathematics, University of St Andrews, updated November 2014.
+- Kathryn Jepsen and Lauren Biron, [“Mathematician to Know: Emmy Noether”](https://www.symmetrymagazine.org/article/june-2015/mathematician-to-know-emmy-noether), *Symmetry*, Fermilab and SLAC National Accelerator Laboratory, June 2015.
+- Ernst Hairer, Christian Lubich, and Gerhard Wanner, [*Geometric Numerical Integration: Structure-Preserving Algorithms for Ordinary Differential Equations*](https://link.springer.com/book/10.1007/3-540-30666-8), second edition, Springer, 2006.

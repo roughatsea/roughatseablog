@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-23T06:00:00-07:00",
+  "updatedAt": "2026-09-24T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -215,7 +215,8 @@
       "relatedLessons": [
         "daily-reckoning-2026-08-29",
         "daily-reckoning-2026-09-12",
-        "daily-reckoning-2026-09-14"
+        "daily-reckoning-2026-09-14",
+        "daily-reckoning-2026-09-24"
       ]
     },
     {
@@ -573,6 +574,34 @@
         "daily-reckoning-2026-08-29",
         "daily-reckoning-2026-08-30",
         "daily-reckoning-2026-09-05"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "slug": "daily-reckoning-2026-09-24",
+      "title": "Why Does Time Symmetry Keep Energy Constant?",
+      "area": "Mathematical physics and calculus of variations",
+      "difficulty": "Advanced",
+      "prerequisites": [
+        "Derivatives and the chain rule",
+        "Kinetic and potential energy",
+        "Basic partial derivatives"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Noether's theorem",
+        "time-translation symmetry",
+        "conservation of energy",
+        "Lagrangian mechanics",
+        "Euler-Lagrange equation",
+        "action principle",
+        "calculus of variations",
+        "geometric numerical integration"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-29",
+        "daily-reckoning-2026-09-06",
+        "daily-reckoning-2026-09-14"
       ]
     }
   ]
