@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">A parent and child exploring ideas together</title>
+<desc id="desc">A warm illustrated study table with a parent and child building, reading, observing, and experimenting together beneath constellations of scientific ideas.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#071525"/>
+    <stop offset="55%" stop-color="#10263d"/>
+    <stop offset="100%" stop-color="#1b3851"/>
+  </linearGradient>
+  <linearGradient id="desk" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#8f5a3a"/>
+    <stop offset="100%" stop-color="#c58250"/>
+  </linearGradient>
+  <radialGradient id="lamp" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#ffd98b" stop-opacity=".8"/>
+    <stop offset="100%" stop-color="#ffd98b" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<circle cx="800" cy="430" r="360" fill="url(#lamp)"/>
+<g fill="none" stroke="#78d7ff" stroke-width="3" opacity=".7">
+  <path d="M130 170 C310 90 430 240 590 150 S900 95 1040 180 1310 215 1470 120"/>
+  <path d="M180 300 C340 250 470 360 620 285 S910 235 1070 310 1310 365 1440 300"/>
+</g>
+<g fill="#b6ecff">
+  <circle cx="170" cy="157" r="7"/><circle cx="360" cy="132" r="6"/><circle cx="590" cy="150" r="8"/>
+  <circle cx="815" cy="115" r="6"/><circle cx="1040" cy="180" r="7"/><circle cx="1260" cy="190" r="6"/><circle cx="1470" cy="120" r="8"/>
+  <circle cx="180" cy="300" r="5"/><circle cx="430" cy="325" r="7"/><circle cx="620" cy="285" r="6"/>
+  <circle cx="870" cy="250" r="6"/><circle cx="1070" cy="310" r="7"/><circle cx="1320" cy="350" r="5"/><circle cx="1440" cy="300" r="7"/>
+</g>
+<g font-family="system-ui, sans-serif" font-size="28" fill="#d7f4ff" opacity=".9">
+  <text x="115" y="110">curiosity</text>
+  <text x="520" y="105">competence</text>
+  <text x="975" y="115">autonomy</text>
+  <text x="1280" y="105">connection</text>
+</g>
+<rect x="120" y="650" width="1360" height="170" rx="18" fill="url(#desk)"/>
+<!-- parent -->
+<circle cx="560" cy="475" r="74" fill="#f0bf98"/>
+<path d="M490 460 Q560 355 632 455 L625 405 Q560 338 492 408Z" fill="#3a2d2b"/>
+<path d="M430 650 Q450 520 560 525 Q675 530 705 650Z" fill="#2e6f85"/>
+<path d="M575 585 Q680 550 760 625" fill="none" stroke="#f0bf98" stroke-width="28" stroke-linecap="round"/>
+<!-- child -->
+<circle cx="935" cy="520" r="62" fill="#eab58d"/>
+<path d="M878 510 Q935 420 995 510 L982 462 Q930 418 884 463Z" fill="#5b3828"/>
+<path d="M825 650 Q840 565 935 570 Q1020 575 1045 650Z" fill="#7c4f9b"/>
+<path d="M918 606 Q845 598 785 642" fill="none" stroke="#eab58d" stroke-width="24" stroke-linecap="round"/>
+<!-- open book -->
+<path d="M665 690 Q760 655 805 698 L805 775 Q750 735 665 760Z" fill="#f5efe4"/>
+<path d="M805 698 Q855 655 955 690 L955 760 Q865 735 805 775Z" fill="#fff8e8"/>
+<path d="M805 700 L805 772" stroke="#b59d7f" stroke-width="3"/>
+<g stroke="#7b8a91" stroke-width="4" opacity=".7">
+  <path d="M700 710h65M690 730h78M840 710h78M842 730h70"/>
+</g>
+<!-- paper bridge experiment -->
+<rect x="1085" y="700" width="55" height="80" rx="6" fill="#546d7a"/>
+<rect x="1310" y="700" width="55" height="80" rx="6" fill="#546d7a"/>
+<path d="M1135 720 Q1225 655 1315 720" fill="none" stroke="#ffdd6e" stroke-width="14"/>
+<circle cx="1225" cy="683" r="22" fill="#ef6d6d"/>
+<!-- blocks / circuit -->
+<rect x="235" y="708" width="70" height="70" rx="8" fill="#e66f9d"/>
+<rect x="310" y="730" width="65" height="48" rx="8" fill="#67c6d9"/>
+<rect x="380" y="695" width="58" height="83" rx="8" fill="#ffd15c"/>
+<path d="M440 738 C485 700 520 770 565 725" fill="none" stroke="#93ffda" stroke-width="7"/>
+<circle cx="565" cy="725" r="10" fill="#93ffda"/>
+<!-- microscope silhouette -->
+<g transform="translate(1030 350)" fill="#9ae7ff" opacity=".9">
+  <rect x="60" y="70" width="24" height="145" rx="10" transform="rotate(-28 72 140)"/>
+  <rect x="110" y="52" width="85" height="34" rx="10"/>
+  <rect x="145" y="82" width="30" height="95" rx="10"/>
+  <path d="M105 190 Q160 235 215 190 L225 210 Q160 270 90 212Z"/>
+  <rect x="80" y="235" width="170" height="22" rx="10"/>
+</g>
+<text x="800" y="860" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" font-weight="700" fill="#eefbff">TEACHING WITHOUT TAKING OVER</text>
+</svg>
