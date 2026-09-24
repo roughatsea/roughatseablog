@@ -1,0 +1,93 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Health Checks and Actionable Alerting"
+description: "Use health checks to make specific routing or recovery decisions, and alert on conditions that require an identifiable response."
+prerequisites: "Services, request routing, failures, and basic monitoring."
+---
+
+export const checks = {"csharp":{"example":"var health = new Health(true, true, false); Check.That(health.Live && !health.Ready); Check.That(Alert.ShouldPage(new[] { 6, 7, 8 })); Check.That(!Alert.ShouldPage(new[] { 0, 10, 0 }));"},"python":{"example":"health = Health(True, True, False)\nassert health.live and not health.ready\nassert should_page([6, 7, 8])\nassert not should_page([0, 10, 0])"}};
+
+A **health check** tests a specific condition so another component can decide what to do. An **alert** asks someone or something to respond to a condition. Neither should be a generic red light with an unclear meaning.
+
+A process can be alive yet unable to serve requests. It can also serve most requests while users experience a serious failure in one important operation. Distinguishing those situations prevents one simplistic “healthy” flag from doing several incompatible jobs.
+
+## Separate alive, initialized, and ready
+
+In an orchestrated service, a liveness probe can inform restart decisions, a readiness probe can determine whether an instance should receive traffic, and a startup probe can allow initialization to finish before normal probe policies apply. Kubernetes documents these distinct roles. [1](#source-1)
+
+For a fictional note-writing service, choose this policy: it is live when its request loop is responsive; it is ready only after initialization and while its required write store is available.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Health(bool Responsive, bool Initialized, bool StoreAvailable)
+{
+    public bool Live { get { return Responsive; } }
+    public bool Ready { get { return Responsive && Initialized && StoreAvailable; } }
+}
+
+public static class Alert
+{
+    public static bool ShouldPage(int[] failedPercentPerMinute)
+    {
+        if (failedPercentPerMinute.Length < 3) return false;
+        return failedPercentPerMinute.TakeLast(3).All(percent => percent >= 5);
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass
+class Health:
+    responsive: bool
+    initialized: bool
+    store_available: bool
+
+    @property
+    def live(self):
+        return self.responsive
+
+    @property
+    def ready(self):
+        return self.responsive and self.initialized and self.store_available
+
+
+def should_page(failed_percent_per_minute):
+    if len(failed_percent_per_minute) < 3:
+        return False
+    return all(value >= 5 for value in failed_percent_per_minute[-3:])
+```
+
+</section>
+
+These functions evaluate already collected observations. They do not probe a database or measure responsiveness themselves. A responsive process with an unavailable store is live but not ready under this chosen policy. Restarting every process during one shared database outage would not repair that database and could add more load.
+
+Readiness is application-specific. A service able to answer useful cached reads might remain ready for those operations while write functionality is degraded. Do not remove every instance from routing without considering the effect of losing all service.
+
+## An alert needs a next action
+
+The sample alert requires three consecutive one-minute observations with at least five percent failures. That avoids paging on one isolated bad interval, but it is only an illustrative policy. It ignores traffic volume, missing observations, and how quickly an SLO budget is being spent.
+
+A useful alert should identify the affected user operation, the observed condition, its scope, an owner, and a first diagnostic or recovery step. “Save failures increased in region A; inspect database connectivity and recent release” is more actionable than “metric 17 exceeded 5.”
+
+Choose paging for conditions that need timely intervention. Put lower-urgency trends into tickets or dashboards. Repeated non-actionable pages train people to ignore the system, including its important warnings. [2](#source-2)
+
+## Check the checks
+
+Keep probes cheap and bound their own execution time. A health endpoint that performs an expensive full-table scan can become a source of load. Avoid exposing credentials, internal addresses, or stack traces in public responses.
+
+Also test external user journeys. An internal probe can be green while DNS, routing, authentication, or a particular client path is broken. Conversely, a single failed probe does not necessarily establish that every request is failing.
+
+For the alert pipeline, verify delivery, ownership, escalation, and a recovery signal. A perfectly calculated condition stored in a dashboard nobody watches is not an effective operational response.
+
+## Sources
+
+1. <span id="source-1"></span>[Kubernetes — Liveness, Readiness, and Startup Probes](https://kubernetes.io/docs/concepts/workloads/pods/probes/).
+2. <span id="source-2"></span>[Google SRE — Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/), on symptoms, useful signals, and alert noise.

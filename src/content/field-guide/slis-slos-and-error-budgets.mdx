@@ -1,0 +1,99 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "SLIs, SLOs, and Error Budgets"
+description: "Measure a user-relevant outcome, choose a reliability target over a defined window, and calculate how much failure that target permits."
+prerequisites: "Percentages, counts, and service requests."
+---
+
+export const checks = {"csharp":{"example":"var result = Reliability.Evaluate(10000, 8, 0.999m); Check.That(result.SuccessRate == 0.9992m && result.AllowedFailures == 10 && result.RemainingFailures == 2); Check.That(Reliability.Evaluate(10000, 12, 0.999m).RemainingFailures == -2);"},"python":{"example":"rate, allowed, remaining = evaluate(10000, 8, Decimal('0.999'))\nassert rate == Decimal('0.9992') and allowed == 10 and remaining == 2\nassert evaluate(10000, 12, Decimal('0.999'))[2] == -2"}};
+
+A **service-level indicator**, or **SLI**, measures an outcome users care about. A **service-level objective**, or **SLO**, sets a target for that indicator over a defined window. An **error budget** is the amount of unsuccessful behavior the objective permits. [1](#source-1)
+
+For example, a notes service might aim for at least 99.9% of eligible save requests to succeed over a rolling thirty-day window. That statement specifies an operation, a success criterion, a population of requests, a target, and a window. “The service should be reliable” specifies none of them.
+
+## Work through ten thousand requests
+
+Assume the window contains exactly ten thousand eligible save requests and eight failed saves. Our fictional SLO allows a failure fraction of 0.1%, or ten failures for this request count.
+
+| Quantity | Calculation | Result |
+| --- | --- | --- |
+| Successful requests | 10,000 − 8 | 9,992 |
+| Observed success SLI | 9,992 / 10,000 | 99.92% |
+| Allowed failures | 10,000 × 0.001 | 10 |
+| Remaining error budget | 10 − 8 | 2 failures |
+
+The service meets this objective in this window. That does not mean the eight failures were unimportant or that the next two failures are something to seek out.
+
+## Keep the arithmetic tied to its definitions
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record ReliabilityResult(decimal SuccessRate,
+    int AllowedFailures, int RemainingFailures);
+
+public static class Reliability
+{
+    public static ReliabilityResult Evaluate(int total, int failed, decimal target)
+    {
+        if (total <= 0 || failed < 0 || failed > total || target <= 0 || target > 1)
+            throw new ArgumentOutOfRangeException();
+        decimal rate = (decimal)(total - failed) / total;
+        int allowed = (int)decimal.Floor(total * (1m - target));
+        return new ReliabilityResult(rate, allowed, allowed - failed);
+    }
+}
+```
+
+```csharp group=example role=run
+var result = Reliability.Evaluate(10000, 8, 0.999m);
+Console.WriteLine(result.RemainingFailures); // 2
+```
+
+Decimal arithmetic avoids an accidental floating-point rounding change at this exact threshold. Flooring converts the permitted fraction into a maximum whole number of failures for the fixed observed count.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from decimal import Decimal, ROUND_FLOOR
+
+
+def evaluate(total, failed, target):
+    if total <= 0 or not 0 <= failed <= total or not 0 < target <= 1:
+        raise ValueError("Invalid counts or objective.")
+    rate = Decimal(total - failed) / Decimal(total)
+    allowed = int((Decimal(total) * (1 - target)).to_integral_value(
+        rounding=ROUND_FLOOR))
+    return rate, allowed, allowed - failed
+```
+
+```python group=example role=run
+rate, allowed, remaining = evaluate(10000, 8, Decimal("0.999"))
+print(remaining)  # 2
+```
+
+Pass a decimal target rather than constructing it from an approximate binary float. The helper rejects zero observed requests rather than labeling an unmeasured interval as 100% successful.
+
+</section>
+
+## Decide what qualifies as good before an incident
+
+Does success mean receiving HTTP 200, saving durable data, or displaying the saved note to the user? A fast 200 that discards the note does not meet a user-oriented save promise.
+
+Define eligibility and exclusions in advance. Excluding failures after they occur because they make the graph look bad defeats the measurement. Missing telemetry is also not automatically evidence of success.
+
+A latency objective needs a different good-event definition, such as a successful save completed within a specified duration. A request-based availability budget is not interchangeable with a number of downtime minutes: request volume varies over time.
+
+## Use the budget to guide decisions
+
+A negative remaining budget makes an exceeded objective visible rather than clipping the display to zero. A team can agree that rapid budget consumption pauses risky releases and prioritizes reliability work. The policy should be explicit, not improvised during every incident.
+
+A rolling window changes as old requests leave and new ones arrive, so “two failures remaining” is not a permanent allowance. Monitor the rate at which the budget is being consumed and investigate concentrated failures that averages may hide.
+
+An SLO is not automatically a contractual service-level agreement. Its immediate engineering value is turning “reliable enough” into a defined, measurable decision that the team and its users can discuss.
+
+## Sources
+
+1. <span id="source-1"></span>[Google SRE Workbook — Implementing SLOs](https://sre.google/workbook/implementing-slos/), for indicators, objectives, and error-budget policies.

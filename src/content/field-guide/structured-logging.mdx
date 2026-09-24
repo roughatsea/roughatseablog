@@ -1,0 +1,100 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Structured Logging"
+description: "Record events with stable names and separate typed fields so people and tools can investigate them without parsing improvised sentences."
+prerequisites: "Dictionaries or records, JSON, and application events."
+---
+
+export const checks = {"csharp":{"example":"using var item = System.Text.Json.JsonDocument.Parse(Events.Saved(7, 12)); Check.That(item.RootElement.GetProperty(\"event\").GetString() == \"order.saved\"); Check.That(item.RootElement.GetProperty(\"duration_ms\").GetInt32() == 12); Check.That(!item.RootElement.TryGetProperty(\"password\", out _));"},"python":{"example":"item = json.loads(saved_event(7, 12))\nassert item['event'] == 'order.saved'\nassert item['duration_ms'] == 12\nassert 'password' not in item"}};
+
+**Structured logging** records an event as a stable event name plus separate fields. A tool can filter on an order identifier or compare numeric durations without guessing which words in a sentence contain those values.
+
+Compare `Saved order 7 in 12ms` with a record containing `event = order.saved`, `order_id = 7`, and `duration_ms = 12`. Both can be readable. The second also provides a consistent shape for searching and aggregation. Logging frameworks commonly preserve named properties supplied through message templates. [1](#source-1)
+
+## Give the event a small, deliberate schema
+
+Assume an order has already been saved successfully. The helper below formats the event that records that success. It does not save the order, choose a storage destination for logs, or guarantee durable log delivery.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Events
+{
+    public static string Saved(int orderId, int durationMs)
+    {
+        if (orderId <= 0 || durationMs < 0)
+            throw new ArgumentOutOfRangeException();
+        var fields = new Dictionary<string, object>
+        {
+            ["event"] = "order.saved",
+            ["order_id"] = orderId,
+            ["duration_ms"] = durationMs,
+            ["outcome"] = "success"
+        };
+        return System.Text.Json.JsonSerializer.Serialize(fields);
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(Events.Saved(7, 12));
+```
+
+The serializer keeps the duration numeric and escapes strings correctly. Passing a preformatted interpolated sentence to a logger may discard that separation; use the logger's structured-property mechanism when one is available.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import json
+
+
+def saved_event(order_id, duration_ms):
+    if order_id <= 0 or duration_ms < 0:
+        raise ValueError("Invalid event values.")
+    fields = {
+        "event": "order.saved",
+        "order_id": order_id,
+        "duration_ms": duration_ms,
+        "outcome": "success",
+    }
+    return json.dumps(fields)
+```
+
+```python group=example role=run
+print(saved_event(7, 12))
+```
+
+A JSON-capable logging formatter can perform this serialization around ordinary logging calls. Formatting a dictionary is the local demonstration here, not an entire collection and retention system.
+
+</section>
+
+The resulting record has a shape like this:
+
+```json
+{"event":"order.saved","order_id":7,"duration_ms":12,"outcome":"success"}
+```
+
+Whitespace and property order need not match across serializers. The important contract is the field names, types, units, and meanings.
+
+## Say what actually happened
+
+Emit a success event after the relevant operation succeeds, not when it merely starts. Distinguish an attempted send from confirmed delivery. A message called `payment.completed` is misleading if all the application has done is place a payment request in a queue.
+
+Use timestamps with a known time basis and include correlation identifiers when following one request across components. A trace identifier can connect a failure log to the surrounding operations; the order identifier connects it to the business record. Those identifiers serve different purposes.
+
+Log levels should support investigation. Expected validation failures, application faults, and verbose diagnostic details need not all page an operator. Repeating one error at every layer can turn a single failure into a wall of duplicate records.
+
+## Log selected facts, not entire objects
+
+Serializing a request or user object wholesale can expose passwords, tokens, private documents, and fields added months later. Start with a deliberate list of permitted fields. Avoid raw request bodies unless there is a specific, reviewed need and suitable handling. OWASP's logging guidance also calls out sensitive values and log-injection risks. [2](#source-2)
+
+JSON encoding prevents an embedded newline from becoming a literal new line in this serialized record, but it does not automatically make every downstream viewer safe. Apply appropriate escaping when displaying logs and limit access to them.
+
+Finally, decide what happens when logging is unavailable or overloaded. Bound buffers, measure dropped events, and distinguish optional diagnostics from audit records that require stronger delivery guarantees. Structured fields make evidence easier to use; they do not establish that the evidence was ever retained.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Logging in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/logging), including message templates and structured parameters.
+2. <span id="source-2"></span>[OWASP — Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html).
