@@ -1,0 +1,107 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Testing Strategy
+description: "A testing strategy chooses which failures to look for, where to look for them, and what evidence is needed before a change is released."
+prerequisites: "Functions, assertions, and the idea of an application calling a database or service."
+---
+
+export const checks = {"csharp":{"example":"Checks.ShippingBoundaries();"},"python":{"example":"test_shipping_boundaries()"}};
+
+A **testing strategy** is a plan for finding the failures that matter. It decides what to test directly, what to test through connected components, and what must be checked in a running application. It is not simply a target number of tests or a desired coverage percentage.
+
+Suppose a shop offers free shipping on orders of at least fifty coins. A pricing function can be correct while the checkout screen displays an old fee, the database stores the wrong total, or the payment request is sent twice. Those are different failures. One kind of test will not catch all of them.
+
+## Start with a user outcome, then locate its risks
+
+For this shop, the outcome is: a customer sees the correct total and places exactly the intended order. An initial plan might look like this:
+
+| Risk | Focused evidence |
+| --- | --- |
+| The free-shipping comparison is wrong at fifty | Call the fee function with 49, 50, and 51 |
+| Saving a receipt loses the fee | Save and reload using the real storage adapter |
+| A service changes its response format | Check the agreed request and response contract |
+| Checkout displays one total but submits another | Exercise the assembled checkout journey |
+| Two simultaneous submissions create duplicate orders | Test concurrency and duplicate-request handling explicitly |
+
+These rows are an example strategy, not a universal distribution of tests. They identify failures and the smallest useful places to observe them. A collection of focused tests can give quick feedback, while a smaller set of broader tests checks that the pieces are connected correctly. That is the useful intuition behind a test pyramid, not a law prescribing exact percentages. [1](#source-1)
+
+## Make one risk executable
+
+Here is the first row of the plan. The test has explicit expected answers rather than copying the implementation's comparison to calculate its own answer.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Shipping
+{
+    public static int Fee(int subtotal)
+    {
+        if (subtotal < 0) throw new ArgumentOutOfRangeException(nameof(subtotal));
+        return subtotal >= 50 ? 0 : 5;
+    }
+}
+
+public static class Checks
+{
+    public static void ShippingBoundaries()
+    {
+        if (Shipping.Fee(49) != 5) throw new Exception("49 should pay shipping.");
+        if (Shipping.Fee(50) != 0) throw new Exception("50 should qualify.");
+        if (Shipping.Fee(51) != 0) throw new Exception("51 should qualify.");
+    }
+}
+```
+
+```csharp group=example role=run
+Checks.ShippingBoundaries();
+Console.WriteLine("Shipping boundary checks passed.");
+```
+
+These ordinary checks throw on a mismatch; a test framework would provide assertion methods and report each case separately. The exact-threshold case would catch accidentally changing `>=` to `>`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def shipping_fee(subtotal):
+    if subtotal < 0:
+        raise ValueError("Subtotal must be nonnegative.")
+    return 0 if subtotal >= 50 else 5
+
+
+def test_shipping_boundaries():
+    assert shipping_fee(49) == 5
+    assert shipping_fee(50) == 0
+    assert shipping_fee(51) == 0
+```
+
+```python group=example role=run
+test_shipping_boundaries()
+print("Shipping boundary checks passed.")
+```
+
+The assertions are meant to run with Python assertions enabled, as test runners normally do. The case at exactly fifty catches a comparison that is almost right but excludes the threshold.
+
+</section>
+
+This is evidence about one calculation. It does not prove that the browser calls it, that the receipt persists, or that a payment provider accepts the request. The other rows of the plan remain necessary work.
+
+## Coverage should reveal gaps, not become the goal
+
+Executing every line does not establish that the assertions would notice the wrong answer. Conversely, a small collection of carefully chosen boundary cases can reveal an important defect. Coverage is useful for locating unexercised code, not certifying correctness. [2](#source-2)
+
+Ask whether a plausible mistake would make a test fail. For the shipping function, imagine changing the threshold, reversing the comparison, or always returning zero. For persistence, imagine writing the right value to the wrong order. For a user journey, imagine disabling the submit button forever. The strategy should contain observations that distinguish success from those failures.
+
+## Keep the plan connected to actual failures
+
+When a production bug escapes, add a regression test at a useful level and inspect why the previous checks missed it. Do not automatically add another slow browser test when a missing one-line calculation check would have detected the problem earlier.
+
+Include the conditions normal examples leave out: invalid input, unavailable dependencies, permissions, load, and recovery after partial work. Not every application needs the same investment in each area. A disposable local tool and a shared payment service have different consequences of failure.
+
+The practical question is not “Do we have enough tests?” It is **“What important mistake could this change introduce, and which check would tell us?”**
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html), on balancing focused and broad tests.
+2. <span id="source-2"></span>[Microsoft — Unit testing best practices](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices), including coverage limitations.

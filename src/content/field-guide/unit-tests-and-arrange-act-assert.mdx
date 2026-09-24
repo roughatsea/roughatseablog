@@ -1,0 +1,147 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Unit Tests and Arrange–Act–Assert
+description: "A unit test checks a small piece of behavior. Arrange–Act–Assert makes the starting conditions, the operation, and the expected result easy to distinguish."
+prerequisites: "Methods, objects, exceptions, and assertions."
+---
+
+export const checks = {"csharp":{"example":"Tests.ClaimingACompletedQuestReturnsItsReward(); Tests.ASecondClaimIsRejected();"},"python":{"example":"test_claiming_a_completed_quest_returns_its_reward()\ntest_a_second_claim_is_rejected()"}};
+
+A **unit test** checks a small, focused piece of behavior under controlled conditions. The unit might be one function or several objects working together; it does not have to coincide with one class.
+
+**Arrange–Act–Assert** is a way to organize that test. Establish the starting conditions, perform the operation, then compare the actual outcome with the expected one. Separating those steps helps a reader see what the test is claiming. [1](#source-1)
+
+## One promise worth testing
+
+A completed quest awards twenty coins, once. The quest object below models only claiming: creation tells it whether completion has already occurred. This is a sequential in-memory example, not a server that prevents cheating or coordinates multiple database records.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Quest
+{
+    private readonly bool complete;
+    private bool claimed;
+
+    public Quest(bool complete) { this.complete = complete; }
+
+    public int ClaimReward()
+    {
+        if (!complete || claimed)
+            throw new InvalidOperationException("Reward unavailable.");
+        claimed = true;
+        return 20;
+    }
+}
+
+public static class Tests
+{
+    public static void ClaimingACompletedQuestReturnsItsReward()
+    {
+        // Arrange
+        var quest = new Quest(complete: true);
+
+        // Act
+        int coins = quest.ClaimReward();
+
+        // Assert
+        if (coins != 20) throw new Exception("Expected twenty coins.");
+    }
+
+    public static void ASecondClaimIsRejected()
+    {
+        // Arrange: the first claim is part of this scenario's starting state.
+        var quest = new Quest(complete: true);
+        quest.ClaimReward();
+
+        // Act
+        bool rejected = false;
+        try { quest.ClaimReward(); }
+        catch (InvalidOperationException) { rejected = true; }
+
+        // Assert
+        if (!rejected) throw new Exception("A second reward was allowed.");
+    }
+}
+```
+
+```csharp group=example role=run
+Tests.ClaimingACompletedQuestReturnsItsReward();
+Tests.ASecondClaimIsRejected();
+```
+
+The first test observes the returned coins. The second observes a specific exception on the second attempt. Neither inspects the private `claimed` field: changing how the quest records a claim should not break the tests if its public behavior is unchanged.
+
+The explicit throws keep the example independent of a framework. In a test project, use the framework's equality and expected-exception assertions; those produce clearer failure reports than hand-written Boolean bookkeeping.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Quest:
+    def __init__(self, complete):
+        self._complete = complete
+        self._claimed = False
+
+    def claim_reward(self):
+        if not self._complete or self._claimed:
+            raise RuntimeError("Reward unavailable.")
+        self._claimed = True
+        return 20
+
+
+def test_claiming_a_completed_quest_returns_its_reward():
+    # Arrange
+    quest = Quest(complete=True)
+
+    # Act
+    coins = quest.claim_reward()
+
+    # Assert
+    assert coins == 20
+
+
+def test_a_second_claim_is_rejected():
+    # Arrange
+    quest = Quest(complete=True)
+    quest.claim_reward()
+
+    # Act
+    rejected = False
+    try:
+        quest.claim_reward()
+    except RuntimeError:
+        rejected = True
+
+    # Assert
+    assert rejected, "A second reward was allowed."
+```
+
+```python group=example role=run
+test_claiming_a_completed_quest_returns_its_reward()
+test_a_second_claim_is_rejected()
+```
+
+Each test creates a fresh quest. The successful first claim in the second test is setup: the behavior under examination is the next claim. A test framework's expected-exception helper can replace the explicit flag while preserving that distinction.
+
+</section>
+
+## Test the outcome, not your memory of the implementation
+
+A test that only checks that no exception occurred would miss a reward of nineteen coins. A test that checks the private flag but never tries a second claim could miss a method that ignores the flag. Choose observations that express the promise.
+
+An incomplete quest is a separate scenario and deserves another test. These two checks are not a complete specification. Their names make their scope visible so the missing scenario is easier to notice.
+
+## Keep setup local and believable
+
+The quest does not need an email server, a real player account, or a database to demonstrate this rule. Supplying such infrastructure would introduce failure causes unrelated to reward eligibility.
+
+That does not imply all collaborators must be replaced by mocks. Small deterministic objects can work together in a focused test. The boundary matters less than whether the test has controlled inputs, a clear claim, and a useful failure message.
+
+Arrange–Act–Assert is a reading aid, not a requirement to decorate every test with three comments. When the steps are obvious, whitespace and names can do the work. What matters is that another programmer can identify the starting state, the operation being tested, and the reason the test passes.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Unit testing best practices](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices), on Arrange–Act–Assert and readable tests.
+2. [Python — unittest](https://docs.python.org/3/library/unittest.html), for framework-based equality and exception assertions.

@@ -1,0 +1,160 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Test Doubles: Fakes, Stubs, Spies, and Mocks
+description: "A test double stands in for a real collaborator. Its name should tell you whether it supplies answers, implements a small working substitute, records calls, or verifies expected interactions."
+prerequisites: "Objects, interfaces or compatible methods, and tests."
+---
+
+export const checks = {"csharp":{"example":"var stub = new FixedAddress(); Check.That(stub.Lookup(7) == \"mira@example.test\"); var fake = new MemoryDirectory(); fake.Save(7, \"mira@example.test\"); Check.That(fake.Lookup(7) == \"mira@example.test\"); var spy = new RecordingSender(); Receipts.Send(spy); Check.That(spy.Messages.SequenceEqual(new[] { \"Receipt ready\" })); var mock = new ExpectedSender(\"Receipt ready\"); Receipts.Send(mock); mock.Verify();"},"python":{"example":"assert FixedAddress().lookup(7) == 'mira@example.test'\nfake = MemoryDirectory()\nfake.save(7, 'mira@example.test')\nassert fake.lookup(7) == 'mira@example.test'\nspy = RecordingSender()\nsend_receipt(spy)\nassert spy.messages == ['Receipt ready']\nmock = ExpectedSender('Receipt ready')\nsend_receipt(mock)\nmock.verify()"}};
+
+A **test double** stands in for a real collaborator during a test. A fake database, a fixed clock, and a sender that records messages are all test doubles, but they do different jobs.
+
+This article uses the classic distinctions: a **stub** supplies prepared answers; a **fake** has a simplified working implementation; a **spy** records interactions for later inspection; and a **mock** has expectations about interactions that will be verified. Tools and teams sometimes use these names differently, so describe the behavior when a label is ambiguous. [1](#source-1)
+
+## Four replacements, four purposes
+
+Imagine testing receipt delivery without connecting to an actual mail provider. We may need an address source and a message sender. The following small doubles show the differences without a mocking library.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+// Stub: always supplies the answer chosen by the test.
+public sealed class FixedAddress
+{
+    public string Lookup(int customerId) { return "mira@example.test"; }
+}
+
+// Fake: remembers records and performs real lookup, but only in memory.
+public sealed class MemoryDirectory
+{
+    private readonly Dictionary<int, string> addresses = new();
+    public void Save(int id, string address) { addresses[id] = address; }
+    public string Lookup(int id) { return addresses[id]; }
+}
+
+public interface ISender
+{
+    void Send(string message);
+}
+
+// Spy: records calls; the test decides afterward what they mean.
+public sealed class RecordingSender : ISender
+{
+    public List<string> Messages { get; } = new();
+    public void Send(string message) { Messages.Add(message); }
+}
+
+// Mock: the expected interaction is provided before the operation.
+public sealed class ExpectedSender : ISender
+{
+    private readonly string expected;
+    private int calls;
+    public ExpectedSender(string expected) { this.expected = expected; }
+    public void Send(string message)
+    {
+        if (message != expected) throw new Exception("Unexpected message.");
+        calls++;
+    }
+    public void Verify()
+    {
+        if (calls != 1) throw new Exception("Expected exactly one send.");
+    }
+}
+
+public static class Receipts
+{
+    public static void Send(ISender sender) { sender.Send("Receipt ready"); }
+}
+```
+
+```csharp group=example role=run
+var spy = new RecordingSender();
+Receipts.Send(spy);
+if (!spy.Messages.SequenceEqual(new[] { "Receipt ready" }))
+    throw new Exception("Wrong receipt messages.");
+
+var mock = new ExpectedSender("Receipt ready");
+Receipts.Send(mock);
+mock.Verify();
+```
+
+The spy exposes a record. The test examines that record after the operation. The mock was configured with the required message first and has its own verification step. Forgetting `Verify` would let the zero-call case pass unnoticed.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class FixedAddress:
+    def lookup(self, customer_id):
+        return "mira@example.test"
+
+
+class MemoryDirectory:
+    def __init__(self):
+        self._addresses = {}
+
+    def save(self, customer_id, address):
+        self._addresses[customer_id] = address
+
+    def lookup(self, customer_id):
+        return self._addresses[customer_id]
+
+
+class RecordingSender:
+    def __init__(self):
+        self.messages = []
+
+    def send(self, message):
+        self.messages.append(message)
+
+
+class ExpectedSender:
+    def __init__(self, expected):
+        self._expected = expected
+        self._calls = 0
+
+    def send(self, message):
+        assert message == self._expected, "Unexpected message."
+        self._calls += 1
+
+    def verify(self):
+        assert self._calls == 1, "Expected exactly one send."
+
+
+def send_receipt(sender):
+    sender.send("Receipt ready")
+```
+
+```python group=example role=run
+spy = RecordingSender()
+send_receipt(spy)
+assert spy.messages == ["Receipt ready"]
+
+mock = ExpectedSender("Receipt ready")
+send_receipt(mock)
+mock.verify()
+```
+
+The fixed address is a prepared answer, not a directory. The memory directory actually stores values but has none of a database's persistence guarantees. The sender doubles either record what happened or verify an interaction chosen beforehand.
+
+</section>
+
+## Choose the double for the question
+
+Use a stub when a collaborator's answer is simply an input to the behavior being tested. Use a fake when a sequence of meaningful operations is easier to express with working state than with many canned responses. Use a spy or mock when an interaction itself is important—for example, whether one receipt was requested rather than none or two.
+
+The one-call check does not prove that an email reached a person. It establishes that this code requested a send from its collaborator. Delivery requires separate integration evidence.
+
+A fake can also disagree with the real dependency. An in-memory map might compare names differently from a production database, never encounter transaction conflicts, and ignore durability. Keep tests against the real adapter for those promises.
+
+## Avoid making every internal call a requirement
+
+Verifying every private collaboration can make harmless reorganization break dozens of tests. Prefer observable results unless a particular interaction is part of the requirement. Renaming an internal helper should not mean the product became incorrect.
+
+A double is useful because it lets a test control or observe something deliberately. It is not a badge of testing sophistication. Sometimes the real collaborator is already small, deterministic, and easier to use.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Mocks Aren't Stubs](https://martinfowler.com/articles/mocksArentStubs.html), using the Meszaros test-double terminology.
+2. [Python — unittest.mock](https://docs.python.org/3/library/unittest.mock.html), a library that can supply several of these behaviors.
