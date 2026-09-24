@@ -1,0 +1,141 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Builder
+description: "Builder separates the steps used to assemble something from the representation being assembled, allowing one construction process to produce different results."
+prerequisites: "Objects, interfaces or compatible methods, and collections."
+---
+
+export const checks = {"csharp":{"example":"var plan = new PlanBuilder(); Cottage.Build(plan); Check.That(plan.Result.SequenceEqual(new[] { \"room\", \"room\", \"door\" })); var estimate = new EstimateBuilder(); Cottage.Build(estimate); Check.That(estimate.Total == 210); var copy = plan.Result; copy[0] = \"changed\"; Check.That(plan.Result[0] == \"room\");"},"python":{"example":"plan = PlanBuilder()\nbuild_cottage(plan)\nassert plan.result == ('room', 'room', 'door')\nestimate = EstimateBuilder()\nbuild_cottage(estimate)\nassert estimate.total == 210"}};
+
+**Builder** separates the steps used to assemble something from the representation being assembled. One construction process can send the same sequence of instructions to different builders and obtain different kinds of result. [1](#source-1)
+
+A builder is often useful even with one result type, especially when construction has several optional steps. But chained calls such as `WithName(...).WithSize(...)` are a style of API, not the definition of the pattern. A builder does not have to be fluent.
+
+## One cottage recipe, two useful results
+
+Imagine a tiny level editor. A cottage recipe consists of two rooms and one door. One tool needs a list of parts for a plan. Another needs a price estimate: 100 coins per room and 10 per door.
+
+We can write the recipe once. It tells a builder to add rooms and doors without deciding what the builder stores. The plan builder stores parts. The estimate builder accumulates cost.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IHouseBuilder
+{
+    void AddRoom();
+    void AddDoor();
+}
+
+public sealed class PlanBuilder : IHouseBuilder
+{
+    private readonly List<string> parts = new List<string>();
+
+    public void AddRoom() { parts.Add("room"); }
+    public void AddDoor() { parts.Add("door"); }
+    public string[] Result { get { return parts.ToArray(); } }
+}
+
+public sealed class EstimateBuilder : IHouseBuilder
+{
+    public int Total { get; private set; }
+
+    public void AddRoom() { Total += 100; }
+    public void AddDoor() { Total += 10; }
+}
+
+public static class Cottage
+{
+    public static void Build(IHouseBuilder builder)
+    {
+        builder.AddRoom();
+        builder.AddRoom();
+        builder.AddDoor();
+    }
+}
+```
+
+`Cottage.Build` is the construction recipe. Pattern descriptions call this coordinating role the *director*. It knows which steps to request, but it never touches a list or a price.
+
+```csharp group=example role=run
+var plan = new PlanBuilder();
+Cottage.Build(plan);
+Console.WriteLine(string.Join(", ", plan.Result)); // room, room, door
+
+var estimate = new EstimateBuilder();
+Cottage.Build(estimate);
+Console.WriteLine(estimate.Total); // 210
+```
+
+The client reads the result from the concrete builder. `IHouseBuilder` does not force a part list and a number into one awkward common result type. Returning a copy from `PlanBuilder.Result` prevents readers from editing its internal list.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class PlanBuilder:
+    def __init__(self):
+        self._parts = []
+
+    def add_room(self):
+        self._parts.append("room")
+
+    def add_door(self):
+        self._parts.append("door")
+
+    @property
+    def result(self):
+        return tuple(self._parts)
+
+
+class EstimateBuilder:
+    def __init__(self):
+        self.total = 0
+
+    def add_room(self):
+        self.total += 100
+
+    def add_door(self):
+        self.total += 10
+
+
+def build_cottage(builder):
+    builder.add_room()
+    builder.add_room()
+    builder.add_door()
+```
+
+`build_cottage` knows the recipe. It does not know whether a step records a part or adds to an estimate. The builders supply compatible construction methods and expose their own result types.
+
+```python group=example role=run
+plan = PlanBuilder()
+build_cottage(plan)
+print(plan.result)  # ('room', 'room', 'door')
+
+estimate = EstimateBuilder()
+build_cottage(estimate)
+print(estimate.total)  # 210
+```
+
+The tuple is a snapshot of the plan's current parts. Later work on the builder does not change a previously returned tuple.
+
+</section>
+
+## Decide when a construction is complete
+
+These builders are deliberately small accumulators. They do not check whether a house has an entrance, and they do not reset after a result is read. Running the cottage recipe twice on the same estimate builder produces 420, not a fresh 210.
+
+A production builder should make its lifecycle explicit. It might be single-use, offer a deliberate reset, or return an immutable completed object from a final `Build` operation. Validation can occur at that final step so callers never receive an invalid completed product.
+
+That choice matters more than whether calls can be chained. Reusing a mutable builder across concurrent requests can mix their construction steps even if each individual method seems harmless.
+
+## When a constructor is enough
+
+For an object with two required values, a constructor or named factory usually communicates the work more directly. Builder adds value when construction has meaningful stages, a reusable recipe, or multiple representations worth separating from that recipe.
+
+Abstract Factory answers “which compatible family of objects should we create?” Builder answers “how should these assembly steps contribute to a finished result?” They can cooperate, but recognizing their different jobs keeps a creation API from becoming more elaborate than its problem.
+
+## Sources
+
+1. <span id="source-1"></span>[Douglas C. Schmidt — Design Patterns in Java](https://www.informit.com/store/design-patterns-in-java-9780321947925), the course author's treatment of Builder and related object-construction patterns.
+2. [Gamma, Helm, Johnson, and Vlissides — Design Patterns](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-software-9780201633610), the original Builder pattern.

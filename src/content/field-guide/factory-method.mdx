@@ -1,0 +1,141 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Factory Method
+description: "Factory Method lets a base class use an object while a subclass decides which concrete object to create."
+prerequisites: "Classes, inheritance, overriding, and interfaces or compatible methods."
+---
+
+export const checks = {"csharp":{"example":"Check.That(new PlainDialog().Render() == \"Dialog: [OK]\"); Check.That(new WarningDialog().Render() == \"Dialog: [! Confirm]\");"},"python":{"example":"assert PlainDialog().render() == 'Dialog: [OK]'\nassert WarningDialog().render() == 'Dialog: [! Confirm]'"}};
+
+**Factory Method** lets a base class use an object while a subclass decides which concrete object to create. The base class calls an overridable creation method instead of naming a particular constructor. [1](#source-1)
+
+That is more specific than “a method that creates an object.” An ordinary helper such as `CreateCustomer` can be a useful factory function without being this inheritance-based design pattern.
+
+## One dialog, different kinds of button
+
+Imagine a small interface toolkit. Every dialog displays a button. An ordinary dialog needs an OK button; a warning dialog needs a confirmation button. The overall rendering operation should stay the same.
+
+These examples return text rather than drawing actual controls. That makes the choice of button and the resulting output visible without introducing a graphics framework.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IButton
+{
+    string Draw();
+}
+
+public sealed class OkButton : IButton
+{
+    public string Draw() { return "[OK]"; }
+}
+
+public sealed class ConfirmButton : IButton
+{
+    public string Draw() { return "[! Confirm]"; }
+}
+
+public abstract class Dialog
+{
+    protected abstract IButton CreateButton();
+
+    public string Render()
+    {
+        IButton button = CreateButton();
+        return "Dialog: " + button.Draw();
+    }
+}
+
+public sealed class PlainDialog : Dialog
+{
+    protected override IButton CreateButton()
+    {
+        return new OkButton();
+    }
+}
+
+public sealed class WarningDialog : Dialog
+{
+    protected override IButton CreateButton()
+    {
+        return new ConfirmButton();
+    }
+}
+```
+
+`Dialog.Render` knows that it can call `Draw` on an `IButton`. It does not mention `OkButton` or `ConfirmButton`. Calling `CreateButton` dispatches to the implementation supplied by the dialog subclass.
+
+```csharp group=example role=run
+Dialog ordinary = new PlainDialog();
+Dialog warning = new WarningDialog();
+Console.WriteLine(ordinary.Render()); // Dialog: [OK]
+Console.WriteLine(warning.Render());  // Dialog: [! Confirm]
+```
+
+Both calls execute the same inherited `Render` method. They differ at the creation step. `CreateButton` is the factory method; the returned button is often called its *product*.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class OkButton:
+    def draw(self):
+        return "[OK]"
+
+
+class ConfirmButton:
+    def draw(self):
+        return "[! Confirm]"
+
+
+class Dialog:
+    def create_button(self):
+        raise NotImplementedError
+
+    def render(self):
+        button = self.create_button()
+        return "Dialog: " + button.draw()
+
+
+class PlainDialog(Dialog):
+    def create_button(self):
+        return OkButton()
+
+
+class WarningDialog(Dialog):
+    def create_button(self):
+        return ConfirmButton()
+```
+
+`Dialog.render` calls the creation method on `self`. A `PlainDialog` therefore supplies an `OkButton`; a `WarningDialog` supplies a `ConfirmButton`. Both products provide the `draw` method that rendering needs.
+
+```python group=example role=run
+ordinary = PlainDialog()
+warning = WarningDialog()
+print(ordinary.render())  # Dialog: [OK]
+print(warning.render())   # Dialog: [! Confirm]
+```
+
+The inherited rendering sequence remains the same. `create_button` is the factory method. The base implementation raises because this example expects subclasses to provide it; a base class could instead supply a useful default.
+
+</section>
+
+## What another dialog would change
+
+A dialog needing a retry button could supply another button class and another implementation of the creation method. The existing rendering method would continue to call the same button operation.
+
+The application still chooses which dialog to instantiate. Factory Method relocates a creation decision; it does not eliminate all decisions or promise that every future interface requirement can be accommodated without edits. If buttons now need asynchronous rendering, the shared contract itself may need to change.
+
+## When the inheritance is worth it
+
+This pattern fits a framework that already invites users to specialize a base class. The framework owns an operation, and subclasses customize the object used during that operation. The overridable creation method becomes an explicit extension point.
+
+For two buttons in a small application, passing a button or a creation function into the dialog may be simpler. That uses composition rather than subclassing the dialog. Choose based on where the variation belongs, not because calling a constructor directly is somehow bad.
+
+Also specify whether each call creates a fresh object. The examples do. A factory returning a cached control would have different identity and ownership behavior, especially if two dialogs tried to share mutable state. The name “factory” does not settle that contract for you.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Factories](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-factories), distinguishing Simple Factory, Factory Method, and Abstract Factory.
+2. [Gamma, Helm, Johnson, and Vlissides — Design Patterns](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-software-9780201633610), the original pattern catalog.

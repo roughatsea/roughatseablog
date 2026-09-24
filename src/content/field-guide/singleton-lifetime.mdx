@@ -1,0 +1,116 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Singleton Lifetime
+description: "A singleton lifetime reuses one service instance within a defined application or container lifetime; the service does not need to enforce global access or prevent normal construction."
+prerequisites: "Constructors, dependency injection, and object identity."
+---
+
+export const checks = {"csharp":{"example":"var firstRoot = new ApplicationRoot(); var a = firstRoot.CreatePanel(); var b = firstRoot.CreatePanel(); Check.That(!ReferenceEquals(a, b) && ReferenceEquals(a.Theme, b.Theme)); var secondRoot = new ApplicationRoot(); Check.That(!ReferenceEquals(a.Theme, secondRoot.CreatePanel().Theme)); Check.That(new Panel(new Theme(\"test\")).Theme.Name == \"test\");"},"python":{"example":"root = ApplicationRoot()\na = root.create_panel()\nb = root.create_panel()\nassert a is not b and a.theme is b.theme\nassert a.theme is not ApplicationRoot().create_panel().theme\nassert Panel(Theme('test')).theme.name == 'test'"}};
+
+A **singleton lifetime** means reusing one service instance within a defined application or container lifetime. The code managing that lifetime supplies the shared instance to its consumers. The service can remain an ordinary class with an ordinary constructor. [1](#source-1)
+
+The **Singleton pattern** is different: the class controls access to a globally reachable instance. A service registered with a dependency-injection container does not need that pattern simply because the container reuses it.
+
+## Two panels share one theme
+
+Imagine an application with several panels. They should receive the same theme object during this application run. A second application instance or an isolated test should be able to use a different object.
+
+The following code wires that arrangement manually so we can see exactly what is shared. It is not an implementation of a dependency-injection container; a container automates this kind of construction and lifetime management.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Theme
+{
+    public string Name { get; }
+    public Theme(string name) { Name = name; }
+}
+
+public sealed class Panel
+{
+    public Theme Theme { get; }
+    public Panel(Theme theme) { Theme = theme; }
+}
+
+public sealed class ApplicationRoot
+{
+    private readonly Theme sharedTheme = new Theme("night");
+
+    public Panel CreatePanel()
+    {
+        return new Panel(sharedTheme);
+    }
+}
+```
+
+`ApplicationRoot` creates one theme. Each call to `CreatePanel` creates a new panel, but passes the existing theme instead of constructing another. `Panel` depends on a constructor argument, not on a global lookup.
+
+```csharp group=example role=run
+var root = new ApplicationRoot();
+Panel left = root.CreatePanel();
+Panel right = root.CreatePanel();
+Console.WriteLine(ReferenceEquals(left, right));             // False
+Console.WriteLine(ReferenceEquals(left.Theme, right.Theme)); // True
+```
+
+The same service lifetime can be configured with the .NET container's singleton registration. Its reuse is scoped to the relevant container and registration, not to every possible instance of `Theme` in the process. A direct `new Theme(...)` is still allowed. [1](#source-1)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Theme:
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+
+
+class Panel:
+    def __init__(self, theme):
+        self.theme = theme
+
+
+class ApplicationRoot:
+    def __init__(self):
+        self._shared_theme = Theme("night")
+
+    def create_panel(self):
+        return Panel(self._shared_theme)
+```
+
+The application root owns one theme and supplies it to each new panel. Neither `Theme` nor `Panel` contains class-level instance storage or special construction logic.
+
+```python group=example role=run
+root = ApplicationRoot()
+left = root.create_panel()
+right = root.create_panel()
+print(left is right)              # False
+print(left.theme is right.theme)  # True
+```
+
+A test can construct `Panel(Theme("test"))` without resetting a global. A different root has its own theme. Python frameworks may provide their own lifetime containers, but the underlying object-sharing decision is visible without one.
+
+</section>
+
+## Sharing carries obligations
+
+An immutable theme is easy to share. A service with mutable request-specific fields is not. If the same instance serves concurrent requests, its operations need an appropriate concurrency design. Choosing a singleton lifetime does not serialize those requests automatically.
+
+A long-lived object can also accidentally retain a shorter-lived dependency. For example, keeping a request's database context inside an application-wide service can outlive the context's intended scope. Use an appropriate scope or factory at the operation boundary rather than silently promoting request data to application lifetime. [2](#source-2)
+
+Resource cleanup belongs to lifetime management too. Decide who disposes connections or subscriptions and when. Container-created objects and externally supplied instances may have different disposal rules; consult the container's contract instead of assuming that “singleton” means “never needs cleanup.”
+
+## Recognize the two independent choices
+
+Ask first **how many instances should this owner reuse, and for how long?** Then ask **how do consumers receive the instance?** The answer can be one long-lived instance supplied through constructors.
+
+That combination is useful for configuration snapshots, thread-safe shared caches, and expensive stateless services. It retains visible dependencies and isolated tests without making the service itself globally accessible. The object is shared because its owner chose to share it, not because the class made alternatives impossible.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Dependency injection service lifetimes](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/overview), including singleton reuse and scope boundaries.
+2. <span id="source-2"></span>[Microsoft — Dependency injection guidelines](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/guidelines), including thread safety, disposal, and captive dependencies.
