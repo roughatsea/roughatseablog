@@ -1,0 +1,107 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Comments
+description: "Comments are useful when they explain reasons, constraints, or public promises. They become a design warning when they continually translate confusing code that could explain itself."
+prerequisites: "Boolean values, function parameters, and return statements."
+---
+
+export const checks = {"csharp":{"before":"foreach(bool p in new[] {false,true}) foreach(bool a in new[] {false,true}) Check.That(Posts.CanShow(p,a) == (p || a));","after":"foreach(bool p in new[] {false,true}) foreach(bool a in new[] {false,true}) Check.That(Posts.CanShow(p,a) == (p || a));"},"python":{"before":"for p in [False, True]:\n    for a in [False, True]:\n        assert can_show(p, a) == (p or a)","after":"for published in [False, True]:\n    for author in [False, True]:\n        assert can_show(published, author) == (published or author)"}};
+
+**Comments** are useful explanations placed alongside code. They become a **code smell** when they repeatedly compensate for names, expressions, or structure that could be clearer. The concern is not that comments exist; it is that a reader needs a second description just to decipher the first. [1](#source-1)
+
+A good comment can preserve a reason that the code alone cannot tell you. A poor one can become an out-of-date translation of the code.
+
+## A comment acting as a dictionary
+
+Suppose a publishing application lets anyone read a published post and lets an author preview their own unpublished post. The following function receives two Boolean facts already established by the application. It does not perform authentication or decide who the author is.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Posts
+{
+    public static bool CanShow(bool p, bool a)
+    {
+        // p means the post is published; a means the viewer is its author.
+        // Return true if p or a is true.
+        return p || a;
+    }
+}
+```
+
+The first comment translates `p` and `a`. The second repeats the `||` expression. Neither needs to remain a separate piece of documentation.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def can_show(p, a):
+    # p means the post is published; a means the viewer is its author.
+    # Return true if p or a is true.
+    return p or a
+```
+
+The first comment translates `p` and `a`. The second repeats the `or` expression. Neither needs to remain a separate piece of documentation.
+
+</section>
+
+### Revised version: name the facts and explain the reason
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class Posts
+{
+    public static bool CanShow(bool isPublished, bool viewerIsAuthor)
+    {
+        // Authors can preview their own unpublished posts.
+        return isPublished || viewerIsAuthor;
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(Posts.CanShow(isPublished: false, viewerIsAuthor: true));
+// True
+```
+
+`isPublished` and `viewerIsAuthor` now identify the facts directly. The remaining comment explains why an unpublished post can pass the check, rather than translating a Boolean operator.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def can_show(is_published, viewer_is_author):
+    # Authors can preview their own unpublished posts.
+    return is_published or viewer_is_author
+```
+
+```python group=after role=run
+print(can_show(is_published=False, viewer_is_author=True))
+# True
+```
+
+`is_published` and `viewer_is_author` now identify the facts directly. The remaining comment explains why an unpublished post can pass the check, rather than translating a Boolean operator.
+
+</section>
+
+The Boolean results are unchanged. Renaming public parameters can still affect callers that use named or keyword arguments, so those callers need updating too. Improving a name does not make compatibility concerns disappear.
+
+## Comments worth keeping
+
+A performance workaround may need to explain the measurement that justified it. An unusual protocol value may need a link to the relevant specification. A public API may need to state which inputs it accepts and who owns a resource after a call. None of that is reliably conveyed by replacing a variable name.
+
+For complicated algorithms, a short explanation of the mathematical idea can be far more helpful than forcing every intermediate step into a method with a long name.
+
+The test is not “could this comment be deleted?” It is **“what does this comment tell a reader that clear code would not already tell them?”** If it only explains a cryptic name, improve the name. If it records a decision, limitation, or reason, preserve the information and keep it accurate.
+
+Commented-out old implementations are a different problem: version control can retain history without making readers decide which nearby version is real. Remove obsolete code rather than leaving it disguised as explanation.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Comments” in the code-smells discussion.
+2. [Andy Hunt and Dave Thomas — Pragmatic Programmer tips](https://pragprog.com/tips/), on clear code and documentation. The post-preview example is original and is not a complete access-control system.

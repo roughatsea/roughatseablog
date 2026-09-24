@@ -1,0 +1,107 @@
+name: Complete field guide publication gate
+on:
+  pull_request:
+    paths:
+      - 'src/content/field-guide/**'
+      - 'src/data/field-guide-revisions.ts'
+      - 'src/data/software-engineering-guide.js'
+      - 'src/data/code-guru/**'
+      - 'src/layouts/FieldGuidePilotLayout.astro'
+      - 'src/components/SoftwareEngineeringGuideIndex.astro'
+      - 'src/pages/guides/software-engineering/**'
+      - 'scripts/test-field-guide-*.py'
+      - 'experiments/field-guide-approved-manifest.json'
+      - '.github/workflows/field-guide-complete.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/field-guide/**'
+      - 'src/data/field-guide-revisions.ts'
+      - 'src/layouts/FieldGuidePilotLayout.astro'
+      - 'src/components/SoftwareEngineeringGuideIndex.astro'
+      - 'src/pages/guides/software-engineering/**'
+      - 'scripts/test-field-guide-complete*.py'
+      - 'experiments/field-guide-approved-manifest.json'
+      - '.github/workflows/field-guide-complete.yml'
+  workflow_dispatch:
+    inputs:
+      verify_live:
+        description: 'Also compare all production pages with this build (only after publication).'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: guide-complete-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  all-206-articles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install verification dependencies
+        run: python -m pip install beautifulsoup4==4.14.3 PyYAML==6.0.3 playwright==1.57.0
+      - name: Check the gate rejects known regressions
+        run: python scripts/test-field-guide-complete-contract.py
+      - name: Require all 206 sources and unchanged approved articles
+        run: python scripts/test-field-guide-complete.py --source-only
+      - name: Test the seven approved examples
+        run: |
+          python scripts/test-field-guide-pilots.py --require-dotnet
+          python scripts/test-field-guide-solid.py --require-dotnet
+      - name: Test every remaining displayed example and require complete scope
+        run: python scripts/test-field-guide-rewrite.py --complete --require-dotnet
+      - run: npm ci
+      - run: npm run build
+      - run: python -m playwright install --with-deps chromium
+      - name: Verify every built article, printed example, and language mode
+        run: python scripts/test-field-guide-complete.py --browser
+      - name: Verify production matches the complete build
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.verify_live)
+        run: python scripts/test-field-guide-complete.py --live
+      - name: Retain inspectable built pages and referenced assets, without font files
+        if: always()
+        shell: python
+        run: |
+          from pathlib import Path
+          from shutil import copy2, copytree
+          import re
+          source = Path('dist/guides/software-engineering')
+          destination = Path('verification/field-guide-complete/site/guides/software-engineering')
+          if source.exists():
+              copytree(source, destination, dirs_exist_ok=True)
+              assets = set()
+              for page in source.rglob('*.html'):
+                  assets.update(re.findall(r'(?:href|src)=["\'](/_astro/[^"\']+\.(?:css|js))["\']', page.read_text()))
+              for url in assets:
+                  original = Path('dist') / url.lstrip('/')
+                  target = Path('verification/field-guide-complete/site') / url.lstrip('/')
+                  if original.is_file():
+                      target.parent.mkdir(parents=True, exist_ok=True)
+                      copy2(original, target)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: field-guide-complete-evidence
+          retention-days: 14
+          path: |
+            verification/field-guide-complete
+            verification/field-guide-rewrite/examples.json
+            src/content/field-guide
+            src/pages/guides/software-engineering/pilot/*.mdx
+            src/pages/guides/software-engineering/review/solid-batch-1/*.mdx
+            scripts/test-field-guide-complete*.py
+            experiments/field-guide-approved-manifest.json

@@ -1,0 +1,104 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Singleton Pattern
+description: "The Singleton pattern makes a class provide one shared instance through a globally reachable access point while restricting ordinary creation of additional instances."
+prerequisites: "Objects, static or class-level data, references, and constructors."
+---
+
+export const checks = {"csharp":{"example":"Check.That(ReferenceEquals(Settings.Instance, Settings.Instance)); Check.That(Settings.Instance.Language == \"en\");"},"python":{"example":"first = Settings()\nsecond = Settings()\nassert first is second and first.language == 'en'\nfrom concurrent.futures import ThreadPoolExecutor\nwith ThreadPoolExecutor(max_workers=4) as pool:\n    objects = list(pool.map(lambda _: Settings(), range(20)))\nassert all(value is first for value in objects)"}};
+
+The **Singleton pattern** makes a class provide one shared instance through a globally reachable access point while restricting ordinary creation of additional instances. The class itself takes responsibility for access to that instance. [1](#source-1)
+
+This is not the same as deciding to reuse an ordinary object for the lifetime of an application. That separate choice is a **singleton lifetime**. The difference matters because a lifetime can be managed from outside a class without making consumers fetch a global instance.
+
+## One access point returns the same settings object
+
+The examples expose an immutable language setting to keep the creation issue separate from mutable shared state. They do not demonstrate loading configuration files.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Settings
+{
+    private static readonly Lazy<Settings> instance =
+        new Lazy<Settings>(() => new Settings());
+
+    private Settings() { }
+
+    public static Settings Instance
+    {
+        get { return instance.Value; }
+    }
+
+    public string Language { get; } = "en";
+}
+```
+
+The private constructor prevents ordinary external code from calling `new Settings()`. `Instance` is the public access point. The `Lazy` object creates a settings instance on first access and retains it for later accesses.
+
+```csharp group=example role=run
+Settings first = Settings.Instance;
+Settings second = Settings.Instance;
+Console.WriteLine(ReferenceEquals(first, second)); // True
+Console.WriteLine(first.Language);                // en
+```
+
+The default `Lazy` initialization mode coordinates concurrent initialization. That protects the construction step; it would not automatically make future mutable methods of `Settings` thread-safe. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from threading import Lock
+
+
+class Settings:
+    _instance = None
+    _lock = Lock()
+
+    def __new__(cls):
+        with cls._lock:
+            if cls._instance is None:
+                instance = super().__new__(cls)
+                instance._language = "en"
+                cls._instance = instance
+            return cls._instance
+
+    @property
+    def language(self):
+        return self._language
+```
+
+`__new__` controls which instance construction returns. The first call creates one under a lock; later calls return the stored object. Initialization is performed only in the creation branch rather than in an `__init__` method that would run again on every construction call.
+
+```python group=example role=run
+first = Settings()
+second = Settings()
+print(first is second)  # True
+print(first.language)   # en
+```
+
+This demonstration assumes normal construction and no subclassing, copying, or serialization tricks. Python callers can deliberately alter internal class attributes or bypass conventions; this is not a security restriction. A module-owned object is often simpler when strict construction control is unnecessary.
+
+</section>
+
+## “One” needs a boundary
+
+These examples do not coordinate across processes, servers, or separately loaded copies of an application. Running two service processes does not magically give them one common settings instance. A shared resource across machines requires another coordination mechanism.
+
+Even inside one application, separately loaded type definitions or deliberately bypassed construction can complicate what uniqueness means. Describe the intended scope instead of promising one instance everywhere.
+
+## The global access is often the larger cost
+
+A class that reads `Settings.Instance` has a dependency that is absent from its constructor. Tests cannot supply a different settings object through that ordinary API. If the singleton becomes mutable, one test or request can change what another observes.
+
+Passing a settings object into consumers leaves that dependency visible. Startup code can still construct it once and reuse it. This preserves the useful lifetime choice without requiring the Singleton pattern's global lookup.
+
+Singleton can be reasonable for a truly process-wide facility whose identity and access policy are deliberate. It should not be the default response to “creating this object repeatedly would be wasteful.” Reuse, construction control, global visibility, and thread safety are four separate decisions; the pattern does not make them interchangeable.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Solidify Your C# Application Architecture](https://learn.microsoft.com/en-us/archive/msdn-magazine/2001/july/design-patterns-solidify-your-csharp-application-architecture-with-design-patterns), the Singleton structure and global access.
+2. <span id="source-2"></span>[Microsoft — Lazy initialization](https://learn.microsoft.com/en-us/dotnet/framework/performance/lazy-initialization), especially initialization and thread-safety modes.
+3. [Python — Object.__new__](https://docs.python.org/3/reference/datamodel.html#object.__new__) and [threading locks](https://docs.python.org/3/library/threading.html#lock-objects), the construction and coordination mechanisms used here.

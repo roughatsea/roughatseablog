@@ -1,0 +1,128 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Lazy Class
+description: "A Lazy Class contributes too little to justify the extra object and navigation it introduces. Its remaining work may fit more clearly inside a caller."
+prerequisites: "Classes, fields, constructors, and method calls."
+---
+
+export const checks = {"csharp":{"before":"Check.That(new Receipt(50).Text() == \"50 tokens\"); Check.That(new Receipt(0).Text() == \"0 tokens\");","after":"Check.That(new Receipt(50).Text() == \"50 tokens\"); Check.That(new Receipt(0).Text() == \"0 tokens\");"},"python":{"before":"assert Receipt(50).text() == '50 tokens'\nassert Receipt(0).text() == '0 tokens'","after":"assert Receipt(50).text() == '50 tokens'\nassert Receipt(0).text() == '0 tokens'"}};
+
+A **Lazy Class** contributes too little to justify the extra object and navigation it introduces. It may once have done more, or it may have been created for flexibility that never became necessary.
+
+The name is not a criticism of short classes in general. A small value type or a tiny adapter can have a clear purpose. The question is what this particular class adds beyond another place to look. [1](#source-1)
+
+## A formatter with one caller and one expression
+
+Suppose a receipt contains a total measured in whole tokens. A separate formatter class exists only to add the word “tokens.” There are no alternative formats, other callers, or formatting rules beyond the expression shown.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class ReceiptFormatter
+{
+    public string Format(int total)
+    {
+        return $"{total} tokens";
+    }
+}
+
+public sealed class Receipt
+{
+    private readonly int total;
+
+    public Receipt(int total) { this.total = total; }
+
+    public string Text()
+    {
+        ReceiptFormatter formatter = new ReceiptFormatter();
+        return formatter.Format(total);
+    }
+}
+```
+
+`Receipt.Text` creates a formatter solely to evaluate one expression. A reader opening that class discovers no additional policy, state, or choice of implementation.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class ReceiptFormatter:
+    def format(self, total):
+        return f"{total} tokens"
+
+
+class Receipt:
+    def __init__(self, total):
+        self.total = total
+
+    def text(self):
+        formatter = ReceiptFormatter()
+        return formatter.format(self.total)
+```
+
+`Receipt.text` creates a formatter solely to evaluate one expression. A reader opening that class discovers no additional policy, state, or choice of implementation.
+
+</section>
+
+### Refactored version: keep the small operation where it is used
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class Receipt
+{
+    private readonly int total;
+
+    public Receipt(int total) { this.total = total; }
+
+    public string Text()
+    {
+        return $"{total} tokens";
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(new Receipt(50).Text()); // 50 tokens
+```
+
+The receipt keeps the same constructor and `Text` operation. Its implementation is now visible without constructing and opening another class.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class Receipt:
+    def __init__(self, total):
+        self.total = total
+
+    def text(self):
+        return f"{self.total} tokens"
+```
+
+```python group=after role=run
+print(Receipt(50).text())  # 50 tokens
+```
+
+The receipt keeps the same constructor and `text` operation. Its implementation is now visible without constructing and opening another class.
+
+</section>
+
+This is **Inline Class**: move a class's remaining work into another class and remove the unnecessary class. Before deleting it in a real application, confirm that other callers, configuration, or plug-ins do not depend on it. [2](#source-2)
+
+## Small can still be valuable
+
+If formatting must support several languages, if different screens use it, or if it hides an external library, a separate formatter may be worth keeping. A one-method class can make an important dependency replaceable. Counting methods does not decide that.
+
+Likewise, a tiny identifier type can prevent mixing customer IDs and order IDs even when it contains little code. Its value is the distinction it enforces, not the size of its body.
+
+Use this smell to question unnecessary indirection, not to demand that every class grow larger. A good small class earns its place through a clear responsibility; a lazy class merely survives after that responsibility has disappeared or never materialized.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Lazy Class” in the code-smells discussion.
+2. <span id="source-2"></span>[Martin Fowler — Inline Class](https://refactoring.com/catalog/inlineClass.html). The receipt example is original.

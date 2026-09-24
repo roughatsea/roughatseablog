@@ -1,0 +1,129 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Duplicate Observed Data
+description: "Move business data out of a user-interface control into a model, then keep the displayed copy synchronized with that model."
+prerequisites: "Objects, callbacks or events, and user-interface state."
+---
+
+export const checks = {"csharp":{"original":"var view = new CounterView(); view.Increment(); Check.That(view.Text == \"1\");","revised":"var model = new Counter(); var view = new CounterView(model); model.Increment(); Check.That(view.Text == \"1\" && model.Value == 1); view.Dispose(); model.Increment(); Check.That(view.Text == \"1\" && model.Value == 2);"},"python":{"original":"view = CounterView()\nview.increment()\nassert view.text == '1'","revised":"model = Counter()\nview = CounterView(model)\nmodel.increment()\nassert view.text == '1' and model.value == 1\nview.close()\nmodel.increment()\nassert view.text == '1' and model.value == 2"}};
+
+**Duplicate Observed Data** moves business data out of a user-interface control into a model, then keeps the displayed copy synchronized with that model. The name sounds like advice to duplicate business facts. The intended result is one authoritative model value and a UI representation that follows it. [1](#source-1)
+
+## Original version: the display is the only place the count exists
+
+These view classes stand in for a label and a button handler; no particular UI framework is required.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class CounterView
+{
+    public string Text { get; private set; } = "0";
+    public void Increment()
+    {
+        Text = (int.Parse(Text) + 1).ToString();
+    }
+}
+```
+
+The application must parse displayed text to discover the count. A second view or a non-UI operation would have to depend on this view.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class CounterView:
+    def __init__(self):
+        self.text = "0"
+
+    def increment(self):
+        self.text = str(int(self.text) + 1)
+```
+
+The count exists only as the view's text. The increment operation therefore mixes a numeric rule with presentation.
+
+</section>
+
+## Refactored version: a model changes, a view follows
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Counter
+{
+    public int Value { get; private set; }
+    public event Action<int>? Changed;
+    public void Increment()
+    {
+        Value++;
+        Changed?.Invoke(Value);
+    }
+}
+
+public sealed class CounterView : IDisposable
+{
+    private readonly Counter model;
+    public string Text { get; private set; }
+    public CounterView(Counter model)
+    {
+        this.model = model;
+        Text = model.Value.ToString();
+        model.Changed += Refresh;
+    }
+    private void Refresh(int value) { Text = value.ToString(); }
+    public void Increment() { model.Increment(); }
+    public void Dispose() { model.Changed -= Refresh; }
+}
+```
+
+`Counter.Value` is the numeric fact. `Changed` notifies the view after an increment. `Refresh` formats the new value but does not write it back, avoiding a notification loop. Disposal removes the event subscription.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Counter:
+    def __init__(self):
+        self.value = 0
+        self.listeners = []
+
+    def increment(self):
+        self.value += 1
+        for listener in tuple(self.listeners):
+            listener(self.value)
+
+
+class CounterView:
+    def __init__(self, model):
+        self._model = model
+        self.text = str(model.value)
+        model.listeners.append(self._refresh)
+
+    def _refresh(self, value):
+        self.text = str(value)
+
+    def increment(self):
+        self._model.increment()
+
+    def close(self):
+        self._model.listeners.remove(self._refresh)
+```
+
+The model holds the number, and the view subscribes to changes. Refreshing text does not recursively increment or reassign the model. The simple `close` method must be called once when this view is discarded.
+
+</section>
+
+## Synchronization is part of the design
+
+The revised model can be used without a view, and several views can observe it. However, every supported mutation must send the right notification. Directly assigning Python's public `value` bypasses notification; a production API should restrict or document that access.
+
+This is a synchronous, single-threaded example. UI frameworks may require dispatching notifications to the UI thread, and observer failures need an explicit policy. A real editable control also needs parsing and validation: invalid text is not automatically a valid model update.
+
+Framework data binding often performs this synchronization for you. The underlying idea remains useful even when you do not write the event plumbing yourself: business logic should not have to interrogate a textbox to discover the application's state.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Duplicate Observed Data](https://refactoring.com/catalog/duplicateObservedData.html).
+2. [Microsoft — Implement property change notification](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/data/how-to-implement-property-change-notification), a framework-specific realization of model-to-view updates.

@@ -1,0 +1,97 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Immutability
+description: "An immutable value does not change after it is created. An update produces a new value instead of altering the original."
+prerequisites: "Objects, properties or fields, and constructors."
+---
+
+export const checks = {"csharp":{"position":"var start = new Position(2, 3); var finish = start.Move(5, -1); Check.That(start.X == 2 && start.Y == 3); Check.That(finish.X == 7 && finish.Y == 2); Check.That(!ReferenceEquals(start, finish)); var same = start.Move(0, 0); Check.That(same.X == 2 && same.Y == 3 && !ReferenceEquals(start, same));"},"python":{"position":"from dataclasses import FrozenInstanceError\nstart = Position(2, 3)\nfinish = start.move(5, -1)\nassert start == Position(2, 3)\nassert finish == Position(7, 2)\nassert finish is not start\ntry:\n    start.x = 99\nexcept FrozenInstanceError:\n    pass\nelse:\n    raise AssertionError('ordinary reassignment accepted')"}};
+
+An **immutable value** does not change after it is created. To represent an update, you create another value instead of altering the original. [1](#source-1)
+
+That difference matters whenever two pieces of code hold references to the same object. With a mutable object, one piece can change what the other sees. With an immutable value, the original remains a reliable snapshot.
+
+## Move a position without moving the old position
+
+Suppose a game remembers where a character began a turn. Moving five units right and one unit down should produce a destination, while leaving the starting position available for an animation or an undo operation.
+
+<section data-pilot-language="csharp">
+
+```csharp group=position role=types
+public sealed class Position
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Position(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+
+    public Position Move(int dx, int dy)
+    {
+        return new Position(checked(X + dx), checked(Y + dy));
+    }
+}
+```
+
+```csharp group=position role=run
+Position start = new Position(2, 3);
+Position finish = start.Move(5, -1);
+Console.WriteLine($"Start: {start.X}, {start.Y}");   // Start: 2, 3
+Console.WriteLine($"Finish: {finish.X}, {finish.Y}"); // Finish: 7, 2
+```
+
+`X` and `Y` have no setters. `Move` returns a new `Position`; it never assigns to the original coordinates. `checked` makes an out-of-range integer addition fail instead of wrapping around. This ordinary class does not define value equality: two separate positions with equal coordinates still have ordinary reference-based `Equals` behavior.
+
+</section>
+
+<section data-pilot-language="python">
+
+A frozen dataclass is a concise way to reject ordinary reassignment of its fields. The decorator also generates the constructor and value-based equality. [2](#source-2)
+
+```python group=position role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Position:
+    x: int
+    y: int
+
+    def move(self, dx, dy):
+        return Position(self.x + dx, self.y + dy)
+```
+
+```python group=position role=run
+start = Position(2, 3)
+finish = start.move(5, -1)
+print(f"Start: {start.x}, {start.y}")    # Start: 2, 3
+print(f"Finish: {finish.x}, {finish.y}")  # Finish: 7, 2
+```
+
+`move` returns a new object. Assigning `start.x = 99` raises `FrozenInstanceError`. A frozen dataclass is a practical restriction on normal assignment, not an impenetrable security barrier. Unlike the C# class shown in the other language view, this dataclass also generates equality based on its field values.
+
+</section>
+
+## The return value is the update
+
+Calling the movement method and ignoring its result leaves you with the starting position. To track the current location, the caller must keep the returned value.
+
+The caller's variable can change which position it refers to even though each position is immutable. That is not a contradiction. Replacing a reference and mutating the referenced object are different operations.
+
+This makes old values useful for comparing changes, sending messages, or remembering earlier states. It does not make every operation involving them automatically thread-safe; shared variables and surrounding collections may still be mutable.
+
+## Look inside the value too
+
+A read-only field that contains a mutable list does not make the list immutable. Code might be unable to replace the field while remaining able to add an item to the same list. The position example avoids that complication because its coordinates are integer values, not mutable collections.
+
+For large data structures, copying an entire value for every small update may be expensive. Designs can use controlled mutation while building a result, or collections that share unchanged internal parts. Choose those techniques when the actual workload justifies them, rather than assuming every value must be copied in the same way.
+
+The question to ask at a call site is simple: **will this operation change an object someone else already holds, or return a new value?** Make that answer clear in both the API and its examples.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Functional programming concepts](https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/functional-programming-concepts), including immutable values.
+2. <span id="source-2"></span>[Python — dataclasses](https://docs.python.org/3/library/dataclasses.html), especially frozen instances and generated equality.

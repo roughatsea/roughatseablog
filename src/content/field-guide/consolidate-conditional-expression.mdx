@@ -1,0 +1,98 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Consolidate Conditional Expression
+description: "Combine several conditions that lead to the same outcome when they are parts of one meaningful decision."
+prerequisites: "Boolean expressions, short-circuit operators, and early returns."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Access.CanEnter(false, 12, true)); Check.That(!Access.CanEnter(true, 12, true)); Check.That(!Access.CanEnter(false, 9, true)); Check.That(!Access.CanEnter(false, 12, false));","revised":"Check.That(Access.CanEnter(false, 12, true)); Check.That(!Access.CanEnter(true, 12, true)); Check.That(!Access.CanEnter(false, 9, true)); Check.That(!Access.CanEnter(false, 12, false));"},"python":{"original":"assert can_enter(False, 12, True)\nassert not can_enter(True, 12, True)\nassert not can_enter(False, 9, True)\nassert not can_enter(False, 12, False)","revised":"assert can_enter(False, 12, True)\nassert not can_enter(True, 12, True)\nassert not can_enter(False, 9, True)\nassert not can_enter(False, 12, False)"}};
+
+**Consolidate Conditional Expression** combines conditions that lead to the same result. A named helper can then explain the combined decision. The conditions should belong together conceptually, not merely happen to return the same number today. [1](#source-1)
+
+## Original version: three reasons a game character cannot enter
+
+A dungeon requires an unbanned character of at least level 10 carrying a pass.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Access
+{
+    public static bool CanEnter(bool banned, int level, bool hasPass)
+    {
+        if (banned) return false;
+        if (level < 10) return false;
+        if (!hasPass) return false;
+        return true;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def can_enter(banned, level, has_pass):
+    if banned:
+        return False
+    if level < 10:
+        return False
+    if not has_pass:
+        return False
+    return True
+```
+
+</section>
+
+Each check asks whether entry is disallowed. They all have the same consequence, with no additional work between the checks.
+
+## Refactored version: express the combined restriction
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Access
+{
+    private static bool IsDisqualified(bool banned, int level, bool hasPass)
+    {
+        return banned || level < 10 || !hasPass;
+    }
+
+    public static bool CanEnter(bool banned, int level, bool hasPass)
+    {
+        return !IsDisqualified(banned, level, hasPass);
+    }
+}
+```
+
+`||` stops as soon as a disqualifying condition is true. The conditions remain in their original order.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def is_disqualified(banned, level, has_pass):
+    return banned or level < 10 or not has_pass
+
+
+def can_enter(banned, level, has_pass):
+    return not is_disqualified(banned, level, has_pass)
+```
+
+`or` stops at the first true condition. The helper names the single eligibility decision represented by the three checks.
+
+</section>
+
+## Preserve the information callers need
+
+The examples return only a Boolean. If the original branches returned different explanations—banned, too inexperienced, missing pass—combining them into one rejection would lose information. Keep separate branches when those distinctions matter.
+
+Be careful when conditions call methods. Short-circuiting, evaluation order, exceptions, and side effects are part of behavior. Replacing `||` with C# `|`, for instance, can evaluate checks that previously did not run.
+
+For three simple local values, the original guard clauses may already read well. Consolidation is valuable when it reveals one named rule or eliminates genuinely repetitive logic, not when it compresses several unrelated decisions into an opaque Boolean expression.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Consolidate Conditional Expression](https://refactoring.com/catalog/consolidateConditionalExpression.html).

@@ -1,0 +1,84 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Inline Temp
+description: "Inline Temp replaces an unnecessary temporary variable with the expression assigned to it."
+prerequisites: "Variables, assignment, and return values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Names.Clean(\" Mira \" ) == \"Mira\"); Check.That(Names.Clean(\"   \") == \"\");","revised":"Check.That(Names.Clean(\" Mira \" ) == \"Mira\"); Check.That(Names.Clean(\"   \") == \"\");"},"python":{"original":"assert clean_name(' Mira ') == 'Mira'\nassert clean_name('   ') == ''","revised":"assert clean_name(' Mira ') == 'Mira'\nassert clean_name('   ') == ''"}};
+
+**Inline Temp**, also called **Inline Variable**, replaces a temporary variable with the expression assigned to it. It is useful when the variable adds no explanation and is not needed to preserve one particular computed value. [1](#source-1)
+
+## Original version: store an answer only to return it
+
+A name-cleaning function removes leading and trailing whitespace. Assume a non-null string.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Names
+{
+    public static string Clean(string name)
+    {
+        string result = name.Trim();
+        return result;
+    }
+}
+```
+
+`result` is assigned once and immediately returned. Its name tells us nothing beyond what `return` already says.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def clean_name(name):
+    result = name.strip()
+    return result
+```
+
+`result` is assigned once and immediately returned. It has no other use, and no intervening operation can change what it represents.
+
+</section>
+
+## Refactored version: return the expression
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Names
+{
+    public static string Clean(string name)
+    {
+        return name.Trim();
+    }
+}
+```
+
+The trim operation still runs once. `Names.Clean(" Mira ")` still returns `Mira`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def clean_name(name):
+    return name.strip()
+```
+
+The strip operation still runs once. `clean_name(" Mira ")` still returns `Mira`.
+
+</section>
+
+## A temporary can preserve meaning or timing
+
+Do not replace every local variable simply because it can be replaced. `distanceMeters` may explain a formula; `now` may deliberately capture one clock reading for several comparisons.
+
+If a temporary stores the result of a database request and appears three times, replacing each use with the request would perform three requests. Even a property getter can have cost or side effects. A temporary assigned more than once also requires understanding which value reaches each use.
+
+In this example there is one assignment, one use, and no meaningful name to preserve. That is why inlining is safe and modestly clearer. The reverse refactoring, Extract Variable, is appropriate when naming an expression would teach the reader something.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Inline Variable](https://refactoring.com/catalog/inlineVariable.html), the modern name for Inline Temp.

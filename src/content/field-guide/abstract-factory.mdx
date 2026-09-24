@@ -1,0 +1,163 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Abstract Factory
+description: "Abstract Factory creates a family of related objects through one shared interface, so a caller can choose a compatible family without naming every concrete class."
+prerequisites: "Objects, interfaces or compatible methods, and object composition."
+---
+
+export const checks = {"csharp":{"example":"Check.That(new SettingsScreen(new DayTheme()).Draw() == \"day button | day checkbox\"); Check.That(new SettingsScreen(new NightTheme()).Draw() == \"night button | night checkbox\");"},"python":{"example":"assert SettingsScreen(DayTheme()).draw() == 'day button | day checkbox'\nassert SettingsScreen(NightTheme()).draw() == 'night button | night checkbox'"}};
+
+**Abstract Factory** creates a family of related objects through one shared interface. A caller selects a factory for the family it wants, then asks that factory to create its individual members. [1](#source-1)
+
+The important word is *family*. A function creating one object is not the whole idea. The pattern is useful when several different kinds of object should be selected together.
+
+## Buttons and checkboxes should agree about the theme
+
+Suppose a settings screen supports day and night themes. It needs a button and a checkbox. Creating each control independently makes it easy to combine a day button with a night checkbox by mistake.
+
+Instead, give the screen one theme factory. A day factory produces day controls; a night factory produces night controls. The screen requests the two capabilities without naming their implementations.
+
+The drawing methods below return labels rather than graphics. We are examining which objects are created, not implementing a UI toolkit.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IButton { string Draw(); }
+public interface ICheckbox { string Draw(); }
+
+public sealed class DayButton : IButton
+{
+    public string Draw() { return "day button"; }
+}
+public sealed class NightButton : IButton
+{
+    public string Draw() { return "night button"; }
+}
+public sealed class DayCheckbox : ICheckbox
+{
+    public string Draw() { return "day checkbox"; }
+}
+public sealed class NightCheckbox : ICheckbox
+{
+    public string Draw() { return "night checkbox"; }
+}
+
+public interface IThemeFactory
+{
+    IButton CreateButton();
+    ICheckbox CreateCheckbox();
+}
+
+public sealed class DayTheme : IThemeFactory
+{
+    public IButton CreateButton() { return new DayButton(); }
+    public ICheckbox CreateCheckbox() { return new DayCheckbox(); }
+}
+
+public sealed class NightTheme : IThemeFactory
+{
+    public IButton CreateButton() { return new NightButton(); }
+    public ICheckbox CreateCheckbox() { return new NightCheckbox(); }
+}
+
+public sealed class SettingsScreen
+{
+    private readonly IButton button;
+    private readonly ICheckbox checkbox;
+
+    public SettingsScreen(IThemeFactory theme)
+    {
+        button = theme.CreateButton();
+        checkbox = theme.CreateCheckbox();
+    }
+
+    public string Draw()
+    {
+        return button.Draw() + " | " + checkbox.Draw();
+    }
+}
+```
+
+`SettingsScreen` receives one `IThemeFactory` and obtains both controls from it. The two product interfaces remain separate: a button and a checkbox are different capabilities, even though this tiny example gives both a `Draw` method.
+
+```csharp group=example role=run
+var screen = new SettingsScreen(new NightTheme());
+Console.WriteLine(screen.Draw()); // night button | night checkbox
+```
+
+The creation decision is `new NightTheme()`. The screen's constructor and drawing method are unchanged when we instead pass `new DayTheme()`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class DayButton:
+    def draw(self):
+        return "day button"
+
+
+class NightButton:
+    def draw(self):
+        return "night button"
+
+
+class DayCheckbox:
+    def draw(self):
+        return "day checkbox"
+
+
+class NightCheckbox:
+    def draw(self):
+        return "night checkbox"
+
+
+class DayTheme:
+    def create_button(self):
+        return DayButton()
+
+    def create_checkbox(self):
+        return DayCheckbox()
+
+
+class NightTheme:
+    def create_button(self):
+        return NightButton()
+
+    def create_checkbox(self):
+        return NightCheckbox()
+
+
+class SettingsScreen:
+    def __init__(self, theme):
+        self._button = theme.create_button()
+        self._checkbox = theme.create_checkbox()
+
+    def draw(self):
+        return self._button.draw() + " | " + self._checkbox.draw()
+```
+
+Both factories provide the two methods the screen expects. Python does not require an explicit base class for that compatibility; the contract still needs to be understood and tested.
+
+```python group=example role=run
+screen = SettingsScreen(NightTheme())
+print(screen.draw())  # night button | night checkbox
+```
+
+The screen never constructs a day or night control itself. Its theme factory is the single place that selects the family.
+
+</section>
+
+## What becomes easier—and what becomes harder
+
+Adding another family, such as high-contrast controls, means implementing a factory and its products. The existing screen can use the new family without a chain of theme checks.
+
+Adding a new kind of product is a different change. If every theme must create a slider, the factory contract and every theme implementation need another operation. Abstract Factory makes the family dimension easy to extend; it does not make every dimension equally cheap. [1](#source-1)
+
+The interface also cannot prove that a factory returns a visually compatible family. A badly implemented night factory could return a day checkbox. The design puts responsibility in one place; tests verify that it has been fulfilled.
+
+For a site where themes only change colors, CSS variables may solve the problem without any factories. This pattern earns its extra types when the family members have genuinely different implementations, not merely different labels. The useful question is whether objects need to be created as a coordinated set.
+
+## Sources
+
+1. <span id="source-1"></span>[Gamma, Helm, Johnson, and Vlissides — Abstract Factory](https://www.informit.com/articles/article.aspx?p=1398599), the publisher's excerpt from the original catalog, including families and extension trade-offs.

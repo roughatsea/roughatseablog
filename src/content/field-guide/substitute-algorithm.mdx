@@ -1,0 +1,94 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Substitute Algorithm
+description: "Substitute Algorithm replaces the procedure used to calculate a result while preserving the result and other required behavior."
+prerequisites: "Loops, lists, sets, and return values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Visitors.CountUnique(new[] { 2, 1, 2, 3 }) == 3); Check.That(Visitors.CountUnique(Array.Empty<int>()) == 0);","revised":"Check.That(Visitors.CountUnique(new[] { 2, 1, 2, 3 }) == 3); Check.That(Visitors.CountUnique(Array.Empty<int>()) == 0);"},"python":{"original":"assert count_unique([2, 1, 2, 3]) == 3\nassert count_unique([]) == 0","revised":"assert count_unique([2, 1, 2, 3]) == 3\nassert count_unique([]) == 0"}};
+
+**Substitute Algorithm** replaces the procedure used to calculate a result while preserving the required behavior. The replacement may be clearer, faster, or better suited to the data. The name does not give permission to change what callers receive. [1](#source-1)
+
+## Original version: remember each visitor in a list
+
+A game counts distinct visitor identifiers. Repeated visits by the same identifier count once. The input is a sequence of integers; the result is only a count, not an ordered list of visitors.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Visitors
+{
+    public static int CountUnique(IEnumerable<int> ids)
+    {
+        var seen = new List<int>();
+        foreach (int id in ids)
+        {
+            if (!seen.Contains(id)) seen.Add(id);
+        }
+        return seen.Count;
+    }
+}
+```
+
+Each membership check searches the list accumulated so far. The code is correct for the stated inputs, but uniqueness is being implemented manually.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def count_unique(ids):
+    seen = []
+    for visitor_id in ids:
+        if visitor_id not in seen:
+            seen.append(visitor_id)
+    return len(seen)
+```
+
+The list stores each identifier once, with repeated searches to decide whether to append it.
+
+</section>
+
+## Refactored version: use a collection designed for uniqueness
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Visitors
+{
+    public static int CountUnique(IEnumerable<int> ids)
+    {
+        var seen = new HashSet<int>(ids);
+        return seen.Count;
+    }
+}
+```
+
+`HashSet` retains distinct integer values. For `2, 1, 2, 3`, the result remains 3. The empty sequence still produces zero.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def count_unique(ids):
+    seen = set(ids)
+    return len(seen)
+```
+
+The set performs the uniqueness work. `[2, 1, 2, 3]` still produces 3, and an empty input still produces zero.
+
+</section>
+
+## Write down what must remain the same
+
+This replacement is suitable because integer equality is the desired identity rule and callers do not need insertion order. A list-returning function would need an additional ordering decision. Python's set also requires hashable elements; substituting it for a list of mutable lists would fail.
+
+For a real algorithm change, compare normal, empty, duplicate, boundary, and error cases. Check side effects and whether a lazy input is consumed the same number of times. Measure performance on representative data rather than assuming a library call is always faster.
+
+A shorter implementation is helpful here because it directly states the operation: collect unique identifiers and count them. That clarity, not character count alone, is the reason to prefer it.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Substitute Algorithm](https://refactoring.com/catalog/substituteAlgorithm.html).
+2. [Microsoft — HashSet](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1) and [Python — Sets](https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset), documenting the collection behavior used here.

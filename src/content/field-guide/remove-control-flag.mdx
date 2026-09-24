@@ -1,0 +1,98 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Remove Control Flag
+description: "Replace a variable used only to steer a loop with direct control flow such as break or return."
+prerequisites: "Loops, Boolean variables, break, and return."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Search.Contains(new[] { 1, 2, 3 }, 2)); Check.That(!Search.Contains(Array.Empty<int>(), 2));","revised":"Check.That(Search.Contains(new[] { 1, 2, 3 }, 2)); Check.That(!Search.Contains(Array.Empty<int>(), 2));"},"python":{"original":"assert contains([1, 2, 3], 2)\nassert not contains([], 2)","revised":"assert contains([1, 2, 3], 2)\nassert not contains([], 2)"}};
+
+**Remove Control Flag** replaces a variable whose only job is to steer execution with direct control flow such as `break` or `return`. Instead of remembering that the loop should stop, the code stops at the point where that decision is made. [1](#source-1)
+
+## Original version: set a flag, check it on the next iteration
+
+This search operates on an ordinary in-memory array or list of integers.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Search
+{
+    public static bool Contains(int[] values, int target)
+    {
+        bool found = false;
+        int index = 0;
+        while (index < values.Length && !found)
+        {
+            if (values[index] == target) found = true;
+            index++;
+        }
+        return found;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def contains(values, target):
+    found = False
+    index = 0
+    while index < len(values) and not found:
+        if values[index] == target:
+            found = True
+        index += 1
+    return found
+```
+
+</section>
+
+`found` both records the answer and controls whether another iteration should occur. The reader must follow its assignment back to the loop condition.
+
+## Refactored version: return when the answer is known
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Search
+{
+    public static bool Contains(int[] values, int target)
+    {
+        foreach (int value in values)
+        {
+            if (value == target) return true;
+        }
+        return false;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def contains(values, target):
+    for value in values:
+        if value == target:
+            return True
+    return False
+```
+
+</section>
+
+The first match immediately determines the result. Reaching the end means no match exists. An empty collection returns false in either version.
+
+## Choose the right exit
+
+Use `break` when work after the loop must still run; use `return` when the whole function's answer is already known. An early return that skips required saving or cleanup is not equivalent to merely ending a loop. Resource-management constructs and `finally` blocks still deserve inspection.
+
+This example preserves which integer values are compared before a match. Replacing an index-based loop over a custom or lazily evaluated object may have additional consequences, so verify the actual collection semantics.
+
+A flag can also represent meaningful state rather than incidental control flow. A cancellation request shared between operations is not just a local loop flag to delete. The refactoring is useful when a variable restates control flow that the language can express more directly.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Control Flag with Break](https://refactoring.com/catalog/replaceControlFlagWithBreak.html), also known as Remove Control Flag.

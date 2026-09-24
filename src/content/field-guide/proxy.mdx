@@ -1,0 +1,137 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Proxy
+description: "A Proxy stands in for another object through the same interface and controls when or how the real object is accessed."
+prerequisites: "Objects, interfaces or compatible methods, and deferred creation."
+---
+
+export const checks = {"csharp":{"example":"int loads = 0; IImage image = new LazyImage(() => { loads++; return new LoadedImage(\"harbor\"); }); Check.That(loads == 0); Check.That(image.Describe() == \"image: harbor\" && image.Describe() == \"image: harbor\"); Check.That(loads == 1);"},"python":{"example":"loads = []\ndef load():\n    loads.append('load')\n    return LoadedImage('harbor')\nimage = LazyImage(load)\nassert loads == []\nassert image.describe() == image.describe() == 'image: harbor'\nassert loads == ['load']"}};
+
+A **Proxy** stands in for another object through the same interface and controls when or how the real object is accessed. It may delay expensive creation, check access, or represent an object reached over a network. [1](#source-1)
+
+The caller uses the ordinary operation. The proxy decides what must happen before that operation reaches the underlying object.
+
+## Do not load a preview until it is requested
+
+Imagine an asset browser with many entries. Opening the browser should not require loading every large preview immediately. Each entry can initially hold a small proxy that knows how to load its real image when needed.
+
+The sample loader creates a labeled object rather than decoding an image file. A load counter makes the important behavior visible: creation is delayed until first use, then the successful result is reused.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IImage
+{
+    string Describe();
+}
+
+public sealed class LoadedImage : IImage
+{
+    private readonly string name;
+    public LoadedImage(string name) { this.name = name; }
+    public string Describe() { return "image: " + name; }
+}
+
+public sealed class LazyImage : IImage
+{
+    private readonly Lazy<IImage> image;
+
+    public LazyImage(Func<IImage> load)
+    {
+        image = new Lazy<IImage>(load);
+    }
+
+    public string Describe()
+    {
+        return image.Value.Describe();
+    }
+}
+```
+
+`LazyImage` supports the same `IImage` operation as `LoadedImage`. Its `Lazy` field retains the loading function without calling it immediately.
+
+```csharp group=example role=run
+int loads = 0;
+IImage preview = new LazyImage(() =>
+{
+    loads++;
+    return new LoadedImage("harbor");
+});
+Console.WriteLine(loads);              // 0
+Console.WriteLine(preview.Describe()); // image: harbor
+Console.WriteLine(preview.Describe()); // image: harbor
+Console.WriteLine(loads);              // 1
+```
+
+The first access to `image.Value` loads the real object. Later accesses use it again. The default `Lazy` mode coordinates initialization, but does not make the resulting object's operations automatically thread-safe. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from threading import Lock
+
+
+class LoadedImage:
+    def __init__(self, name):
+        self._name = name
+
+    def describe(self):
+        return "image: " + self._name
+
+
+class LazyImage:
+    def __init__(self, load):
+        self._load = load
+        self._image = None
+        self._lock = Lock()
+
+    def describe(self):
+        with self._lock:
+            if self._image is None:
+                self._image = self._load()
+            image = self._image
+        return image.describe()
+```
+
+The proxy stores a loader and calls it only when no image has been loaded. The lock protects that creation decision. The actual image operation runs after the lock is released.
+
+```python group=example role=run
+loads = []
+
+def load_image():
+    loads.append("loaded")
+    return LoadedImage("harbor")
+
+preview = LazyImage(load_image)
+print(len(loads))          # 0
+print(preview.describe())  # image: harbor
+print(preview.describe())  # image: harbor
+print(len(loads))          # 1
+```
+
+Both callers use `describe`; they do not need a separate “load first” instruction. The loader is expected to return a compatible non-null image and not recursively call this same proxy while holding its lock.
+
+</section>
+
+## Delaying work also delays failures
+
+An unreadable image now fails on first use rather than when the browser entry is created. That can improve startup but move an error into an interaction that needs its own loading and failure UI.
+
+The examples also differ in failed-initialization policy. The C# `Lazy` configuration caches a factory exception. The Python proxy leaves its image unset after a failure, so a later call tries again. Neither policy should be chosen accidentally for an unreliable remote service. [2](#source-2)
+
+A real image may need disposal or eviction. Retaining it forever trades startup savings for long-lived memory use. Proxy does not decide that policy for the application.
+
+## The same interface is not the same cost
+
+A remote proxy may look like a local object while performing slow, fallible network operations. A protection proxy must enforce authorization on every relevant path, not merely make the interface look restricted.
+
+Decorator also wraps a common interface, but emphasizes composing additional behavior. Proxy emphasizes controlling access to a represented object. Their structures can resemble each other; the distinction describes the role the wrapper plays.
+
+Use a proxy when callers benefit from a stable interface while access needs deliberate control. If a plain lazy value or explicit asynchronous load is clearer, a separate proxy class may add no value.
+
+## Sources
+
+1. <span id="source-1"></span>[Gamma, Helm, Johnson, and Vlissides — Design Patterns](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-software-9780201633610), the Proxy pattern.
+2. <span id="source-2"></span>[Microsoft — Lazy initialization](https://learn.microsoft.com/en-us/dotnet/framework/performance/lazy-initialization), including exception caching and initialization semantics.

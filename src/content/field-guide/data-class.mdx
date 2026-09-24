@@ -1,0 +1,147 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Data Class
+description: "A Data Class stores values while other code repeatedly performs the operations and enforces the rules that belong to those values. That can be a missed opportunity for a useful object—or a perfectly good data-transfer design."
+prerequisites: "Classes, mutable fields, methods, and exceptions."
+---
+
+export const checks = {"csharp":{"before":"var wallet = new WalletData(20); Payments.Spend(wallet, 8); Check.That(wallet.Coins == 12); bool bad=false; try { Payments.Spend(wallet, 13); } catch (ArgumentOutOfRangeException) { bad=true; } Check.That(bad && wallet.Coins == 12);","after":"var wallet = new Wallet(20); wallet.Spend(8); Check.That(wallet.Coins == 12); bool bad=false; try { wallet.Spend(13); } catch (ArgumentOutOfRangeException) { bad=true; } Check.That(bad && wallet.Coins == 12);"},"python":{"before":"wallet = WalletData(20)\nspend(wallet, 8)\nassert wallet.coins == 12\ntry:\n    spend(wallet, 13)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('overspending accepted')\nassert wallet.coins == 12","after":"wallet = Wallet(20)\nwallet.spend(8)\nassert wallet.coins == 12\ntry:\n    wallet.spend(13)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('overspending accepted')\nassert wallet.coins == 12"}};
+
+A **Data Class** stores values but leaves other code to perform the operations and enforce the rules that belong to those values. In an object-oriented model, that can be a clue that useful behavior is living outside the object that owns its data. [1](#source-1)
+
+It is not a rule that all data needs methods. A message, database result, or immutable input record may be valuable precisely because it is plain data.
+
+## A wallet that cannot protect its balance
+
+Suppose a game wallet starts with a nonnegative number of coins. Spending must be positive and cannot exceed the current balance. The original wallet stores the balance publicly, while a separate function applies the spending rule.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class WalletData
+{
+    public int Coins;
+    public WalletData(int coins) { Coins = coins; }
+}
+
+public static class Payments
+{
+    public static void Spend(WalletData wallet, int amount)
+    {
+        if (amount <= 0 || amount > wallet.Coins)
+            throw new ArgumentOutOfRangeException(nameof(amount));
+        wallet.Coins -= amount;
+    }
+}
+```
+
+```csharp group=before role=run
+WalletData wallet = new WalletData(20);
+Payments.Spend(wallet, 8);
+Console.WriteLine(wallet.Coins); // 12
+```
+
+`Payments.Spend` checks the rule, but another caller can directly assign `wallet.Coins = -100`. The class itself cannot distinguish legitimate spending from an arbitrary field change.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class WalletData:
+    def __init__(self, coins):
+        self.coins = coins
+
+
+def spend(wallet, amount):
+    if amount <= 0 or amount > wallet.coins:
+        raise ValueError("invalid spending amount")
+    wallet.coins -= amount
+```
+
+```python group=before role=run
+wallet = WalletData(20)
+spend(wallet, 8)
+print(wallet.coins)  # 12
+```
+
+`spend` checks the rule, but another caller can directly assign `wallet.coins = -100`. The class itself cannot distinguish legitimate spending from an arbitrary attribute change.
+
+</section>
+
+### Revised version: let the wallet perform spending
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class Wallet
+{
+    private int coins;
+    public int Coins { get { return coins; } }
+
+    public Wallet(int coins) { this.coins = coins; }
+
+    public void Spend(int amount)
+    {
+        if (amount <= 0 || amount > coins)
+            throw new ArgumentOutOfRangeException(nameof(amount));
+        coins -= amount;
+    }
+}
+```
+
+```csharp group=after role=run
+Wallet wallet = new Wallet(20);
+wallet.Spend(8);
+Console.WriteLine(wallet.Coins); // 12
+```
+
+The check and subtraction moved into `Wallet.Spend`. The public property still permits reading, but not arbitrary assignment. Existing callers must switch from the external function to the wallet method; the supported spending outcomes remain the same.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class Wallet:
+    def __init__(self, coins):
+        self._coins = coins
+
+    @property
+    def coins(self):
+        return self._coins
+
+    def spend(self, amount):
+        if amount <= 0 or amount > self._coins:
+            raise ValueError("invalid spending amount")
+        self._coins -= amount
+```
+
+```python group=after role=run
+wallet = Wallet(20)
+wallet.spend(8)
+print(wallet.coins)  # 12
+```
+
+The check and subtraction moved into `Wallet.spend`. The property rejects ordinary assignment to `coins`, while `_coins` remains private by convention rather than enforcement. Existing callers must switch from the external function to the wallet method; the supported spending outcomes remain the same.
+
+</section>
+
+## Do not smuggle in a different rule
+
+Both examples assume a valid starting balance. Adding constructor validation would be a useful separate improvement if untrusted code creates wallets, but moving the spending method does not by itself implement that extra requirement.
+
+Neither version handles concurrent spending. Two simultaneous updates need a design that protects the balance as well as a method that expresses its rule.
+
+## A plain data object can be the right result
+
+A receipt sent to another program may be a simple record containing a total and a timestamp. It need not gain methods merely to avoid this label. A functional design may deliberately keep immutable data separate from pure calculations and still prevent invalid state at its boundaries.
+
+The warning is strongest when many callers repeatedly read an object's fields, reconstruct the same business rule, and modify the fields themselves. In that situation, ask whether the object should provide the operation those callers keep trying to assemble.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Code Smell](https://martinfowler.com/bliki/CodeSmell.html), including data classes as a prompt to investigate misplaced behavior.
+2. [Martin Fowler — Move Function](https://refactoring.com/catalog/moveFunction.html), for moving behavior to a more appropriate home. The wallet example is original.

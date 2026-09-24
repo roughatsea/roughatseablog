@@ -1,0 +1,85 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "YAGNI: You Aren't Gonna Need It"
+description: "YAGNI means not building a capability merely because you imagine needing it later. Meet the current need, and keep the code easy to change."
+prerequisites: "Functions, strings, and basic input validation."
+---
+
+export const checks = {"csharp":{"score":"Check.That(ScoreText.Format(\"Ada\", 120) == \"Ada: 120\"); Check.That(ScoreText.Format(\"Mira\", 0) == \"Mira: 0\"); bool rejected = false; try { ScoreText.Format(\"   \", 1); } catch (ArgumentException) { rejected = true; } Check.That(rejected); rejected = false; try { ScoreText.Format(\"Ada\", -1); } catch (ArgumentOutOfRangeException) { rejected = true; } Check.That(rejected);"},"python":{"score":"assert score_text('Ada', 120) == 'Ada: 120'\nassert score_text('Mira', 0) == 'Mira: 0'\nfor name, score in [('', 1), ('Ada', -1)]:\n    try:\n        score_text(name, score)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError('invalid score accepted')"}};
+
+**YAGNI** stands for **You Aren't Gonna Need It**. It advises against building a capability merely because you imagine needing it later. Implement the current need, while keeping the code clear enough to change when a real new requirement arrives. [1](#source-1)
+
+The point is not that the future never comes. It is that today's guess about the future may be wrong—and supporting the guess has a cost today.
+
+## The high-score line you actually need
+
+Suppose a game screen needs a player's name and score as one line of text. It does not yet export spreadsheets, email results, or load third-party score formatters.
+
+<section data-pilot-language="csharp">
+
+```csharp group=score role=types
+public static class ScoreText
+{
+    public static string Format(string player, int score)
+    {
+        if (string.IsNullOrWhiteSpace(player))
+        {
+            throw new ArgumentException("A player needs a name.", nameof(player));
+        }
+        if (score < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(score));
+        }
+        return $"{player}: {score}";
+    }
+}
+```
+
+```csharp group=score role=run
+Console.WriteLine(ScoreText.Format("Ada", 120)); // Ada: 120
+```
+
+`Format` meets the stated need. It does not construct a format registry or require callers to choose a provider. It still validates the inputs needed for a sensible score line.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=score role=types
+def score_text(player, score):
+    if not isinstance(player, str) or not player.strip():
+        raise ValueError("A player needs a name.")
+    if score < 0:
+        raise ValueError("score cannot be negative")
+    return f"{player}: {score}"
+```
+
+```python group=score role=run
+print(score_text("Ada", 120))  # Ada: 120
+```
+
+`score_text` meets the stated need for an integer score. It does not construct a format registry or require callers to choose a provider. It still validates the inputs needed for a sensible score line.
+
+</section>
+
+## The imagined second format
+
+It is tempting to add a formatter interface, plug-in discovery, configuration, and several unused implementations because “we will probably export this later.” Each addition needs code, tests, and explanations. Every reader must then determine which parts the current screen actually uses.
+
+If spreadsheet export really arrives, its requirements may differ from the imagined ones. It might need a whole leaderboard with timestamps and columns, not a second way to turn one score into a string. The earlier framework could be the wrong preparation.
+
+The direct function does not prevent that future. We can add another function, introduce an interface when callers need interchangeable formats, or build a separate exporter for a different task. None of those changes requires pretending the current requirement is larger than it is.
+
+## What YAGNI does not excuse
+
+It is not an argument against tests, understandable names, or necessary error handling. Those help the current program and make later changes safer. Nor does it mean ignoring known constraints such as a required file format or an external service you already have to support.
+
+Some decisions are costly to reverse. Thinking about them is not the same as implementing every speculative feature. You might keep data in a documented format or keep delivery code out of a calculation without building an entire extension system.
+
+Before adding unused flexibility, try describing the later change in concrete terms. If “add a second function when we need it” is sufficient, the elaborate preparation may not be earning its place.
+
+The code should be ready to change. It does not have to contain the change before anyone needs it.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — YAGNI](https://martinfowler.com/bliki/Yagni.html), including the distinction between speculative capabilities and work that keeps code changeable. The high-score example is original.

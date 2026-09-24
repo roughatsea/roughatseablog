@@ -1,0 +1,123 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Type Code with State/Strategy
+description: "Replace a behavior-selecting code with an object that supplies the behavior, so the choice can change without changing the containing object's class."
+prerequisites: "Objects, interfaces or compatible methods, and composition."
+---
+
+export const checks = {"csharp":{"original":"var player = new Player(); Check.That(player.Speed() == 3); player.Running = true; Check.That(player.Speed() == 6);","revised":"var player = new Player(new Walking()); Check.That(player.Speed() == 3); player.Use(new Running()); Check.That(player.Speed() == 6);"},"python":{"original":"player = Player()\nassert player.speed() == 3\nplayer.running = True\nassert player.speed() == 6","revised":"player = Player(Walking())\nassert player.speed() == 3\nplayer.use(Running())\nassert player.speed() == 6"}};
+
+**Replace Type Code with State/Strategy** replaces a code that selects behavior with an object that supplies that behavior. The containing object keeps its identity while the behavior object can be replaced. This is useful when the choice changes during the object's lifetime or does not belong in its inheritance hierarchy. [1](#source-1)
+
+## Original version: a player checks its movement flag
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Player
+{
+    public bool Running { get; set; }
+    public int Speed() { return Running ? 6 : 3; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Player:
+    def __init__(self):
+        self.running = False
+
+    def speed(self):
+        return 6 if self.running else 3
+```
+
+</section>
+
+Walking yields speed 3; running yields 6. A real movement mode might also determine stamina use, animation, or terrain restrictions. Repeating the same flag check for all those operations could become troublesome.
+
+## Refactored version: the movement object supplies the answer
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public interface IMovement
+{
+    int Speed();
+}
+public sealed class Walking : IMovement
+{
+    public int Speed() { return 3; }
+}
+public sealed class Running : IMovement
+{
+    public int Speed() { return 6; }
+}
+public sealed class Player
+{
+    private IMovement movement;
+    public Player(IMovement movement) { this.movement = movement; }
+    public void Use(IMovement movement) { this.movement = movement; }
+    public int Speed() { return movement.Speed(); }
+}
+```
+
+```csharp group=revised role=run
+var player = new Player(new Walking());
+Console.WriteLine(player.Speed()); // 3
+player.Use(new Running());
+Console.WriteLine(player.Speed()); // 6
+```
+
+The player is still the same object. Only its `movement` reference changes. `Speed` asks the current movement object for the result.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Walking:
+    def speed(self):
+        return 3
+
+
+class Running:
+    def speed(self):
+        return 6
+
+
+class Player:
+    def __init__(self, movement):
+        self._movement = movement
+
+    def use(self, movement):
+        self._movement = movement
+
+    def speed(self):
+        return self._movement.speed()
+```
+
+```python group=revised role=run
+player = Player(Walking())
+print(player.speed())  # 3
+player.use(Running())
+print(player.speed())  # 6
+```
+
+Compatible `speed` methods provide interchangeable behavior without requiring an explicit base class. Callers must supply an object honoring that expectation.
+
+</section>
+
+## State and Strategy emphasize different reasons for the choice
+
+This example is Strategy-like: outside code chooses how movement works. A State design would emphasize the player's current condition and permitted transitions—for example, running stops when stamina is exhausted. Merely naming a class `State` does not implement transition rules.
+
+For only two fixed speeds, the original flag or a numeric setting may remain clearer. The refactoring becomes useful when behavior varies in several meaningful ways. It adds objects and a selection step; it does not eliminate the need to decide which behavior applies.
+
+The examples assume non-null compatible movement objects. Validation, transition restrictions, shared-state safety, and resource ownership must be added deliberately if the domain needs them.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Type Code with Subclasses](https://refactoring.com/catalog/replaceTypeCodeWithSubclasses.html), whose catalog includes the State/Strategy variant in its earlier terminology.

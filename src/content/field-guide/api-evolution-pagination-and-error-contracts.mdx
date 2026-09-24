@@ -1,0 +1,91 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "API Evolution, Pagination, and Error Contracts"
+description: "Let clients navigate bounded results and recognize failures without relying on accidental field layouts, row positions, or human-readable messages."
+prerequisites: "Collections, JSON, identifiers, and client/server APIs."
+---
+
+export const checks = {"csharp":{"example":"var first = Pages.Read(new[] { 1, 2, 3, 4, 5 }, 0, 2); Check.That(first.Items.SequenceEqual(new[] { 1, 2 }) && first.Next == 2); var last = Pages.Read(new[] { 1, 2, 3, 4, 5 }, 4, 2); Check.That(last.Items.SequenceEqual(new[] { 5 }) && last.Next == null);"},"python":{"example":"assert read_page([1, 2, 3, 4, 5], 0, 2) == ([1, 2], 2)\nassert read_page([1, 2, 3, 4, 5], 4, 2) == ([5], None)\nassert read_page([], 0, 2) == ([], None)"}};
+
+**API evolution** changes a service without unnecessarily breaking existing clients. **Pagination** divides a result set into bounded pages. An **error contract** gives clients stable information about failures. All three concern what a client is entitled to rely on beyond one successful example response.
+
+Suppose a notes API begins by returning five notes. Years later it holds millions. Returning all of them is no longer a reasonable default, and changing an unbounded response into pages can surprise clients that assumed one call retrieved everything. Design the collection contract with growth in mind. [1](#source-1)
+
+## Resume from a position in a stable ordering
+
+This example orders records by unique positive integer identifier. The cursor is the last identifier returned, not a count of rows to skip. The page size must be between one and one hundred. Input identifiers are unique; the function does not attempt to repair duplicated database identities.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Page(int[] Items, int? Next);
+
+public static class Pages
+{
+    public static Page Read(IEnumerable<int> ids, int after, int size)
+    {
+        if (after < 0 || size < 1 || size > 100)
+            throw new ArgumentOutOfRangeException();
+        int[] candidates = ids.Where(id => id > after)
+            .OrderBy(id => id).Take(size + 1).ToArray();
+        int[] items = candidates.Take(size).ToArray();
+        int? next = candidates.Length > size ? items[^1] : null;
+        return new Page(items, next);
+    }
+}
+```
+
+```csharp group=example role=run
+Page page = Pages.Read(new[] { 1, 2, 3, 4, 5 }, after: 0, size: 2);
+Console.WriteLine(string.Join(", ", page.Items)); // 1, 2
+Console.WriteLine(page.Next);                      // 2
+```
+
+The function reads one extra candidate to discover whether another page exists. `Next` is absent at the end; returning the last identifier forever would tempt clients into unnecessary or infinite requests.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def read_page(ids, after, size):
+    if after < 0 or not 1 <= size <= 100:
+        raise ValueError("Invalid cursor or page size.")
+    candidates = sorted(value for value in ids if value > after)[:size + 1]
+    items = candidates[:size]
+    next_cursor = items[-1] if len(candidates) > size else None
+    return items, next_cursor
+```
+
+```python group=example role=run
+items, next_cursor = read_page([1, 2, 3, 4, 5], after=0, size=2)
+print(items)        # [1, 2]
+print(next_cursor)  # 2
+```
+
+The cursor follows the chosen ordering. These in-memory operations sort their input; they are not a scalable substitute for an indexed database query that applies ordering and a limit on the server.
+
+</section>
+
+## A cursor does not freeze the world
+
+If an older row is deleted, resuming after identifier two still starts above two; it does not shift backward because row positions changed. New rows may appear on later pages, however. This is not a consistent snapshot across the whole traversal.
+
+For timestamp ordering, include a unique tie-breaker so records with the same timestamp are not skipped. Public page tokens can encode the ordering and filter state opaquely, but encoding is not authorization. Validate tokens, reapply permissions, and bind them to the relevant query. Google's pagination guidance treats tokens as opaque navigation data, not access grants. [1](#source-1)
+
+## Make errors stable enough to handle
+
+A client should not decide whether to retry by parsing a sentence such as “Something went wrong.” Give failures stable machine-readable types or codes and a human-readable explanation. RFC 9457 defines a common problem-details format; it does not choose every application's error taxonomy for it. [2](#source-2)
+
+For example, an invalid cursor can be a client error with a documented problem type. A storage outage is different and should not be reported as “no more notes.” Avoid exposing stack traces or credentials in either response.
+
+## Additions can still break assumptions
+
+An added optional response field is often compatible with tolerant readers, but strict validators may reject it. Adding an enum member can break clients that assume an exhaustive set. Making an optional request field required is a clearer breaking change.
+
+Test old-client/new-server and new-client/old-server combinations that can actually coexist. Version when necessary, preserve semantics during transitions, and retire old contracts deliberately. Compatibility is about what clients do with the data, not only whether the JSON parses.
+
+## Sources
+
+1. <span id="source-1"></span>[Google — AIP-158 Pagination](https://google.aip.dev/158).
+2. <span id="source-2"></span>[IETF — RFC 9457, Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc9457.html).

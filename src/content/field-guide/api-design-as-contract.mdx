@@ -1,0 +1,94 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "API Design as a Contract"
+description: "An API contract describes what callers may request, what they can expect, and what happens when an operation cannot fulfill the request."
+prerequisites: "Functions, parameters, return values, and exceptions."
+---
+
+export const checks = {"csharp":{"example":"Check.That(Inventory.Reserve(5, 2) == 3); Check.That(Inventory.Reserve(2, 2) == 0); bool rejected = false; try { Inventory.Reserve(5, 0); } catch (ArgumentOutOfRangeException) { rejected = true; } Check.That(rejected); bool unavailable = false; try { Inventory.Reserve(1, 2); } catch (InvalidOperationException) { unavailable = true; } Check.That(unavailable);"},"python":{"example":"assert reserve(5, 2) == 3\nassert reserve(2, 2) == 0\ntry:\n    reserve(5, 0)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('zero request accepted')\ntry:\n    reserve(1, 2)\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('shortage hidden')"}};
+
+An **API contract** describes what callers may request, what they can expect in return, and what happens when an operation cannot fulfill a request. An API can be a local function, a library, or a network service. Its contract includes behavior, not just parameter types.
+
+A method named `Reserve` that accepts two integers leaves many questions unanswered. May the request be zero? Does a successful call change stored stock? Does the return value mean remaining items or reserved items? What happens when there is not enough stock?
+
+## Write the promises before examining the implementation
+
+For a deliberately small inventory calculation, choose these rules:
+
+| Part of the contract | Promise |
+| --- | --- |
+| Inputs | Availability is a nonnegative integer; the request is a positive integer |
+| Success | Return the remaining number of items |
+| Insufficient stock | Report a distinct failure instead of returning a negative count |
+| Side effects | None: this function only calculates a result |
+| Concurrency | No claim of reserving shared stock atomically |
+
+The last two rows are easy to omit. Without them, a reader might treat a subtraction function as a real reservation service. A remote API description can similarly document schemas and possible responses, but the meaning of those responses still needs explanation. [1](#source-1)
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Inventory
+{
+    public static int Reserve(int available, int requested)
+    {
+        if (available < 0)
+            throw new ArgumentOutOfRangeException(nameof(available));
+        if (requested <= 0)
+            throw new ArgumentOutOfRangeException(nameof(requested));
+        if (requested > available)
+            throw new InvalidOperationException("Insufficient stock.");
+        return available - requested;
+    }
+}
+```
+
+```csharp group=example role=run
+int remaining = Inventory.Reserve(5, 2);
+Console.WriteLine(remaining); // 3
+```
+
+The type system supplies integer inputs, and the method checks their permitted ranges. A request for two out of five returns three. A request for all five returns zero, which is a valid success result rather than a failure sentinel.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def reserve(available, requested):
+    if type(available) is not int or available < 0:
+        raise ValueError("Availability must be a nonnegative integer.")
+    if type(requested) is not int or requested <= 0:
+        raise ValueError("Request must be a positive integer.")
+    if requested > available:
+        raise RuntimeError("Insufficient stock.")
+    return available - requested
+```
+
+```python group=example role=run
+remaining = reserve(5, 2)
+print(remaining)  # 3
+```
+
+Python performs explicit type checks here, including rejecting Boolean values rather than treating them as counts. The two languages use different exception classes, but the same documented distinction between invalid input and unavailable stock.
+
+</section>
+
+## Design from a real call site
+
+A caller can now handle a shortage differently from a malformed request. It also knows it must save the result elsewhere. A true stock reservation API should take an item identifier, perform concurrency control in its storage layer, and describe whether retrying the same request repeats the reservation.
+
+Those are additional responsibilities, not details hidden by giving this function a more impressive name. A more accurate name for the isolated calculation might be `RemainingAfterReservation`. Names and documentation should agree about what has actually happened.
+
+## Compatibility includes the awkward cases
+
+Changing the return value from remaining count to reserved count keeps the integer type while breaking the contract. Accepting zero where it was previously invalid may affect validation expectations. Replacing a distinct shortage result with a generic server error can break a client's recovery behavior.
+
+Test representative successes, boundaries, and failures. Include effects and ordering when they matter. For a network API, also define authentication, authorization, units, serialization, timeouts, and version evolution at the relevant boundary.
+
+The useful question is **“Could another programmer use this correctly without reading its implementation?”** If the answer depends on guessing what zero, null, or a particular exception means, the contract is still incomplete.
+
+## Sources
+
+1. <span id="source-1"></span>[OpenAPI Specification — Operation and Response Objects](https://spec.openapis.org/oas/v3.1.1.html), for describing network operations and responses.
+2. [Microsoft — API design guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design), on resource interfaces and contract design.

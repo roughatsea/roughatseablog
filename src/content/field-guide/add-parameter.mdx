@@ -1,0 +1,89 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Add Parameter
+description: "Add Parameter lets callers supply information that a function previously obtained internally or could not receive."
+prerequisites: "Function declarations, arguments, and callers."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Greetings.For(\"Mira\") == \"Hello, Mira\");","revised":"Check.That(Greetings.For(\"Mira\", \"Hello\") == \"Hello, Mira\"); Check.That(Greetings.For(\"Mira\", \"Ahoy\") == \"Ahoy, Mira\");"},"python":{"original":"assert greeting('Mira') == 'Hello, Mira'","revised":"assert greeting('Mira', 'Hello') == 'Hello, Mira'\nassert greeting('Mira', 'Ahoy') == 'Ahoy, Mira'"}};
+
+**Add Parameter** lets callers provide another piece of information to a function. It can expose an existing internal choice, remove dependence on hidden state, or prepare the function for a new requirement. Every caller must receive a deliberate migration, not an arbitrary value that merely makes the code compile. [1](#source-1)
+
+## Original version: the greeting chooses its own prefix
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Greetings
+{
+    public static string For(string name)
+    {
+        return "Hello, " + name;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def greeting(name):
+    return "Hello, " + name
+```
+
+</section>
+
+All callers receive the same prefix. A harbor screen cannot request “Ahoy” without changing the function or rewriting the returned text.
+
+## Revised version: make the prefix an input
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Greetings
+{
+    public static string For(string name, string prefix)
+    {
+        return prefix + ", " + name;
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(Greetings.For("Mira", "Hello"));
+Console.WriteLine(Greetings.For("Mira", "Ahoy"));
+```
+
+Existing callers preserve their result by supplying `"Hello"`. A caller supplying `"Ahoy"` intentionally requests new behavior.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def greeting(name, prefix):
+    return prefix + ", " + name
+```
+
+```python group=revised role=run
+print(greeting("Mira", "Hello"))
+print(greeting("Mira", "Ahoy"))
+```
+
+The old behavior is represented by an explicit argument rather than a hard-coded choice. The new variation belongs to the caller.
+
+</section>
+
+## Separate the signature migration from the new feature
+
+Changing every old call to pass the existing prefix can preserve current output. Introducing different prefixes is the feature change that the new signature enables. Keeping those steps distinct makes a failure easier to diagnose.
+
+A default argument or compatibility overload can ease migration, but only when its meaning is unambiguous. In a public C# API, optional argument defaults are commonly embedded at compiled call sites; changing a default is not equivalent to changing a runtime lookup.
+
+Also ask whether the callee should receive this value. Passing a whole application context just to obtain one setting can hide the real dependency, while adding many unrelated flags can make an API harder to understand. Prefer the smallest input that expresses what the operation genuinely needs.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Change Function Declaration](https://refactoring.com/catalog/changeFunctionDeclaration.html), including Add Parameter.
+2. [Microsoft — Named and optional arguments](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/named-and-optional-arguments).

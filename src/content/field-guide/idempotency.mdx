@@ -1,0 +1,119 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Idempotency"
+description: "An idempotent operation has the same intended effect when repeated as when performed once. Retries need an explicit way to distinguish the same request from a new one."
+prerequisites: "Requests, retries, stored state, and locks."
+---
+
+export const checks = {"csharp":{"example":"var shop = new Purchases(); int first = shop.Place(\"customer7/request1\", 20); Check.That(shop.Place(\"customer7/request1\", 20) == first && shop.Count == 1); bool rejected = false; try { shop.Place(\"customer7/request1\", 21); } catch (InvalidOperationException) { rejected = true; } Check.That(rejected && shop.Count == 1); Check.That(shop.Place(\"customer7/request2\", 20) != first && shop.Count == 2);"},"python":{"example":"shop = Purchases()\nfirst = shop.place('customer7/request1', 20)\nassert shop.place('customer7/request1', 20) == first and shop.count == 1\ntry:\n    shop.place('customer7/request1', 21)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('key reused for a different request')\nassert shop.place('customer7/request2', 20) != first and shop.count == 2"}};
+
+An **idempotent operation** has the same intended effect when repeated as when performed once. Setting a note's title to “Harbor” is naturally idempotent; appending “Harbor” to a list is not. Repeating the append adds another item.
+
+This matters when a client does not know whether a request succeeded. Suppose an order was saved, but its response was lost. A retry should recover that order's result rather than create another order by accident.
+
+## Name the request, not merely its contents
+
+A customer may legitimately buy the same item twice. Comparing request contents alone cannot distinguish a retry from another intentional purchase. An idempotency key supplies a caller-chosen identity for one logical request. Reuse it for retries; choose a new one for a new action. [1](#source-1)
+
+The miniature shop below stores that key, the requested amount, and the resulting order identifier together. It rejects reuse of a key with a different amount.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Purchases
+{
+    private readonly object gate = new();
+    private readonly Dictionary<string, (int Amount, int OrderId)> requests = new();
+    private int count;
+    public int Count { get { lock (gate) { return count; } } }
+
+    public int Place(string key, int amount)
+    {
+        if (string.IsNullOrWhiteSpace(key) || amount <= 0)
+            throw new ArgumentException("A key and positive amount are required.");
+        lock (gate)
+        {
+            if (requests.TryGetValue(key, out var previous))
+            {
+                if (previous.Amount != amount)
+                    throw new InvalidOperationException("Key belongs to another request.");
+                return previous.OrderId;
+            }
+            int orderId = count + 1;
+            requests.Add(key, (amount, orderId));
+            count = orderId;
+            return orderId;
+        }
+    }
+}
+```
+
+```csharp group=example role=run
+var shop = new Purchases();
+Console.WriteLine(shop.Place("customer7/request1", 20)); // 1
+Console.WriteLine(shop.Place("customer7/request1", 20)); // 1, not another order
+```
+
+The lock covers lookup and creation together. Protecting only the dictionary write would allow two callers to observe a missing key and both perform the action first.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from threading import Lock
+
+
+class Purchases:
+    def __init__(self):
+        self._gate = Lock()
+        self._requests = {}
+        self._count = 0
+
+    @property
+    def count(self):
+        with self._gate:
+            return self._count
+
+    def place(self, key, amount):
+        if not isinstance(key, str) or not key.strip() or amount <= 0:
+            raise ValueError("A key and positive amount are required.")
+        with self._gate:
+            if key in self._requests:
+                old_amount, order_id = self._requests[key]
+                if old_amount != amount:
+                    raise ValueError("Key belongs to another request.")
+                return order_id
+            order_id = self._count + 1
+            self._requests[key] = (amount, order_id)
+            self._count = order_id
+            return order_id
+```
+
+```python group=example role=run
+shop = Purchases()
+print(shop.place("customer7/request1", 20))  # 1
+print(shop.place("customer7/request1", 20))  # 1
+```
+
+The request record represents the only effect in this in-memory example. There is no payment provider or external database call hidden inside it.
+
+</section>
+
+## Put the record and the effect in the same reliability boundary
+
+A process-local dictionary forgets everything after restart and does not coordinate other servers. Production storage needs a uniqueness rule and an atomic way to couple the request record with the protected business change.
+
+Recording a key before a remote payment can leave a key for a payment never made. Recording it afterward can leave an unrecorded payment when the process crashes. Use the remote provider's idempotency mechanism or another explicit recovery design; a local lock does not span the network.
+
+Scope keys to the authenticated caller and operation so one user cannot retrieve another's result. Store enough request identity to detect incompatible reuse. Decide how long records live: deleting them ends the guarantee for sufficiently late retries. Do not use an unlimited in-memory map as a production retention policy.
+
+## Same effect is not identical execution
+
+A retry can produce another access log entry or a response indicating that an earlier result was replayed. The business effect being protected is the order creation. State that boundary rather than claiming every instruction runs once.
+
+Idempotency does not make a failed operation succeed, nor does it replace validation or authorization. It makes a particular repeated request safe to recognize, which is what lets a client recover from an uncertain response without guessing whether it has purchased twice.
+
+## Sources
+
+1. <span id="source-1"></span>[AWS Builders' Library — Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/), for request identity, parameter mismatch, and late retries.

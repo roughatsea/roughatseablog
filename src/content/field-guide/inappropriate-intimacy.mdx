@@ -1,0 +1,150 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Inappropriate Intimacy
+description: "Inappropriate Intimacy occurs when classes rely on one another's internal details instead of cooperating through meaningful operations. Changes to those details then spread between the classes."
+prerequisites: "Classes, collections, access modifiers, and methods."
+---
+
+export const checks = {"csharp":{"before":"var guild = new Guild(); Check.That(Recruiter.Join(guild, \"Ada\")); Check.That(Recruiter.Join(guild, \"Mira\")); Check.That(Recruiter.Join(guild, \"Lea\")); Check.That(!Recruiter.Join(guild, \"Ona\")); Check.That(guild.Members.Count == 3);","after":"var guild = new Guild(); Check.That(Recruiter.Join(guild, \"Ada\")); Check.That(Recruiter.Join(guild, \"Mira\")); Check.That(Recruiter.Join(guild, \"Lea\")); Check.That(!Recruiter.Join(guild, \"Ona\")); Check.That(guild.Count == 3);"},"python":{"before":"guild = Guild()\nassert join_guild(guild, 'Ada')\nassert join_guild(guild, 'Mira')\nassert join_guild(guild, 'Lea')\nassert not join_guild(guild, 'Ona')\nassert len(guild._members) == 3","after":"guild = Guild()\nassert join_guild(guild, 'Ada')\nassert join_guild(guild, 'Mira')\nassert join_guild(guild, 'Lea')\nassert not join_guild(guild, 'Ona')\nassert guild.count == 3"}};
+
+**Inappropriate Intimacy** occurs when classes rely on one another's internal details instead of cooperating through meaningful operations. One class may inspect another's working fields, modify its collections directly, or depend on a precise sequence of internal updates.
+
+The classes become difficult to change independently because each knows more about the other than its job requires. Encapsulating the relevant operation can reduce that dependency. [1](#source-1)
+
+## The recruiter edits the guild's member list
+
+A small game guild allows three members. In the original design, recruitment code knows that members are stored in a mutable list and performs the capacity check itself. This example assumes valid names and sequential calls; it does not implement uniqueness or concurrency rules.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class Guild
+{
+    internal List<string> Members = new List<string>();
+}
+
+public static class Recruiter
+{
+    public static bool Join(Guild guild, string name)
+    {
+        if (guild.Members.Count >= 3)
+        {
+            return false;
+        }
+        guild.Members.Add(name);
+        return true;
+    }
+}
+```
+
+`internal` permits access from other code in the assembly. `Recruiter` uses that access to inspect and mutate the guild's storage. Another caller could add a member without the capacity check.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class Guild:
+    def __init__(self):
+        self._members = []
+
+
+def join_guild(guild, name):
+    if len(guild._members) >= 3:
+        return False
+    guild._members.append(name)
+    return True
+```
+
+The underscore signals that `_members` is an implementation detail, but `join_guild` reaches into it anyway. Another caller could append a member without the capacity check.
+
+</section>
+
+### Refactored version: request enrollment
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class Guild
+{
+    private readonly List<string> members = new List<string>();
+    public int Count { get { return members.Count; } }
+
+    public bool TryEnroll(string name)
+    {
+        if (members.Count >= 3)
+        {
+            return false;
+        }
+        members.Add(name);
+        return true;
+    }
+}
+
+public static class Recruiter
+{
+    public static bool Join(Guild guild, string name)
+    {
+        return guild.TryEnroll(name);
+    }
+}
+```
+
+```csharp group=after role=run
+Guild guild = new Guild();
+Console.WriteLine(Recruiter.Join(guild, "Ada")); // True
+Console.WriteLine(guild.Count);                // 1
+```
+
+`Recruiter` asks for enrollment rather than assembling it from the guild's list. The guild owns both the capacity decision and the update, and other classes no longer need direct access to the collection.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class Guild:
+    def __init__(self):
+        self._members = []
+
+    @property
+    def count(self):
+        return len(self._members)
+
+    def try_enroll(self, name):
+        if len(self._members) >= 3:
+            return False
+        self._members.append(name)
+        return True
+
+
+def join_guild(guild, name):
+    return guild.try_enroll(name)
+```
+
+```python group=after role=run
+guild = Guild()
+print(join_guild(guild, "Ada"))  # True
+print(guild.count)             # 1
+```
+
+`join_guild` asks for enrollment rather than assembling it from the guild's list. The guild owns both the capacity decision and the update. Python still permits a determined caller to reach `_members`; the revised interface establishes the supported way to cooperate, not a security barrier.
+
+</section>
+
+## What freedom did the change buy?
+
+The guild could later store richer membership records while keeping an enrollment operation. Recruitment would not need to learn the records' internal layout merely to request a new member.
+
+The capacity rule is also less likely to be forgotten by a new caller. This does not make concurrent enrollments atomic; that would require additional synchronization or transactional storage. Encapsulation and concurrency control solve different problems.
+
+Classes that cooperate closely are not automatically too intimate. Some internal components are intentionally designed together. The warning is a dependency on details that the caller should not own, especially when those details repeatedly change.
+
+Ask whether the caller can request a meaningful action instead of conducting surgery on another object's fields. If it can, that operation often gives both classes a clearer role.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Inappropriate Intimacy” in the code-smells discussion.
+2. [Microsoft — Object-oriented programming](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/), for encapsulation and access control. The guild example is original.

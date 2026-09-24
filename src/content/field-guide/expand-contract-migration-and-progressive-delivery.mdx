@@ -1,0 +1,110 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Expand–Contract Migration and Progressive Delivery
+description: "Support old and new representations together, migrate their users and data, and remove the old form only after compatibility is no longer needed."
+prerequisites: "Stored records, application versions, nullable values, and deployment."
+---
+
+export const checks = {"csharp":{"example":"var oldRow = new Dictionary<string, string?> { { \"name\", \"Mira\" } }; Check.That(Names.Read(oldRow) == \"Mira\"); Names.Backfill(oldRow); Check.That(oldRow[\"displayName\"] == \"Mira\"); Names.Write(oldRow, \"Sol\"); Check.That(oldRow[\"name\"] == \"Sol\" && Names.Read(oldRow) == \"Sol\"); var blank = new Dictionary<string, string?> { { \"name\", \"Old\" }, { \"displayName\", \"\" } }; Check.That(Names.Read(blank) == \"\");"},"python":{"example":"row = {'name': 'Mira'}\nassert read_name(row) == 'Mira'\nbackfill(row)\nassert row['displayName'] == 'Mira'\nwrite_name(row, 'Sol')\nassert row['name'] == read_name(row) == 'Sol'\nassert read_name({'name': 'Old', 'displayName': ''}) == ''"}};
+
+**Expand–contract** changes an interface or stored representation in stages: add support for the new form while retaining the old one, migrate users and data, then remove the old form. It is also called parallel change. [1](#source-1)
+
+**Progressive delivery** controls how widely new behavior is exposed, such as enabling it for a small cohort before expanding. Compatibility and exposure are different questions: a one-percent rollout can still break a shared database schema for everyone.
+
+## A field rename is not just a source-code rename
+
+Suppose user records store a field called `name`, and new code should call it `displayName`. During a rolling deployment, old and new application instances may run simultaneously. Removing `name` immediately would break old readers.
+
+An expanded schema retains both fields. A bridge release can understand either representation. The example chooses a precise rule: a missing or null `displayName` falls back to `name`; an empty string is a real stored value and does not fall back.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Names
+{
+    public static string Read(Dictionary<string, string?> row)
+    {
+        if (row.TryGetValue("displayName", out string? current) && current != null)
+            return current;
+        return row["name"] ?? throw new InvalidOperationException("Missing name.");
+    }
+
+    public static void Backfill(Dictionary<string, string?> row)
+    {
+        if (!row.TryGetValue("displayName", out string? current) || current == null)
+            row["displayName"] = row["name"];
+    }
+
+    public static void Write(Dictionary<string, string?> row, string name)
+    {
+        row["name"] = name;
+        row["displayName"] = name;
+    }
+}
+```
+
+```csharp group=example role=run
+var row = new Dictionary<string, string?> { { "name", "Mira" } };
+Console.WriteLine(Names.Read(row));
+Names.Backfill(row);
+Names.Write(row, "Mira Sol");
+Console.WriteLine(Names.Read(row));
+```
+
+The reader handles a legacy record. Backfill adds the new field without overwriting an existing non-null value. Bridge-version writes update both names. These dictionary assignments demonstrate the rule sequentially; they are not a database transaction.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def read_name(row):
+    current = row.get("displayName")
+    if current is not None:
+        return current
+    name = row["name"]
+    if name is None:
+        raise ValueError("Missing name.")
+    return name
+
+
+def backfill(row):
+    if row.get("displayName") is None:
+        row["displayName"] = row["name"]
+
+
+def write_name(row, name):
+    row["name"] = name
+    row["displayName"] = name
+```
+
+```python group=example role=run
+row = {"name": "Mira"}
+print(read_name(row))
+backfill(row)
+write_name(row, "Mira Sol")
+print(read_name(row))
+```
+
+The explicit `is not None` matters. Replacing it with a truthiness check would treat an empty string as missing and silently change the chosen compatibility rule.
+
+</section>
+
+## Order the releases around old writers
+
+The two-field state is unsafe if an old writer updates only `name` after `displayName` was populated: a new reader could then see a stale value. First deploy compatible writers everywhere, or provide database-level synchronization, before treating the new field as authoritative. Backfill must also coordinate with concurrent updates so it does not copy an old value over a newer one.
+
+In a database, update both fields atomically when they share a transaction boundary. If they live in different systems, two assignments cannot provide that guarantee; a reconciliation or messaging design is needed.
+
+After migration, verify that old readers and writers—including jobs and tools—are gone. Only then stop maintaining the old form and remove it. Removing a column closes some rollback options, so it belongs at the end rather than inside the first feature deployment.
+
+## Gradual exposure is another control
+
+A feature flag can expose the new reader to a small, stable group while compatibility remains in place. Observe errors and user-visible results, not just whether the new code path executed. Keep an explicit rollback criterion and retire obsolete flags.
+
+This example is a rename, so values can be represented in both formats. A lossy transformation may not permit an easy reverse migration. Data backups, restoration tests, backfill progress, and recovery procedures are part of the plan—not details made unnecessary by the words “expand–contract.”
+
+## Sources
+
+1. <span id="source-1"></span>[Danilo Sato — Parallel Change](https://martinfowler.com/bliki/ParallelChange.html).
+2. [Microsoft — Safe deployment practices](https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/safe-deployments), on staged exposure, monitoring, and recovery.

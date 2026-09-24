@@ -1,0 +1,111 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Move Method
+description: "Move Method relocates behavior to the class or module where it belongs, then updates callers to use its new home."
+prerequisites: "Objects, methods, fields, and parameters."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new FareCalculator().For(new Trip(8, 3)) == 24);","revised":"Check.That(new Trip(8, 3).Fare() == 24); Check.That(new Trip(0, 3).Fare() == 0);"},"python":{"original":"assert FareCalculator().for_trip(Trip(8, 3)) == 24","revised":"assert Trip(8, 3).fare() == 24\nassert Trip(0, 3).fare() == 0"}};
+
+**Move Method** relocates behavior to another class or module, then updates callers to use its new home. It is useful when a method works mainly with another object's data and naturally describes something that object does. [1](#source-1)
+
+## Original version: a fare calculator borrows everything
+
+A trip stores its distance and price per distance unit. A separate calculator reads both values to multiply them. Use small nonnegative integers here; currency rounding is not part of this example.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Trip
+{
+    public int Distance { get; }
+    public int PricePerUnit { get; }
+    public Trip(int distance, int pricePerUnit)
+    {
+        Distance = distance;
+        PricePerUnit = pricePerUnit;
+    }
+}
+
+public sealed class FareCalculator
+{
+    public int For(Trip trip)
+    {
+        return trip.Distance * trip.PricePerUnit;
+    }
+}
+```
+
+`FareCalculator` has no data of its own. Its method reads two properties of `Trip` and performs a trip-specific calculation.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Trip:
+    def __init__(self, distance, price_per_unit):
+        self.distance = distance
+        self.price_per_unit = price_per_unit
+
+
+class FareCalculator:
+    def for_trip(self, trip):
+        return trip.distance * trip.price_per_unit
+```
+
+The calculator uses only the trip's distance and rate. The calculation has a plausible home on the trip itself.
+
+</section>
+
+## Refactored version: ask the trip for its fare
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Trip
+{
+    public int Distance { get; }
+    public int PricePerUnit { get; }
+    public Trip(int distance, int pricePerUnit)
+    {
+        Distance = distance;
+        PricePerUnit = pricePerUnit;
+    }
+
+    public int Fare()
+    {
+        return Distance * PricePerUnit;
+    }
+}
+```
+
+The caller changes from `new FareCalculator().For(trip)` to `trip.Fare()`. The calculation and result remain the same.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Trip:
+    def __init__(self, distance, price_per_unit):
+        self.distance = distance
+        self.price_per_unit = price_per_unit
+
+    def fare(self):
+        return self.distance * self.price_per_unit
+```
+
+The caller changes from `FareCalculator().for_trip(trip)` to `trip.fare()`. For distance 8 and rate 3, either version returns 24.
+
+</section>
+
+## Move responsibility, not merely text
+
+Create the method at its destination, redirect the old method temporarily if callers need a gradual migration, then remove the forwarding method when it is safe. Check access to private fields, overridden methods, side effects, and external API users before deleting anything.
+
+A separate calculator can be appropriate when pricing is an independent policy used with many trip types, or when the model intentionally uses plain data and functions. Do not move a function into a class merely because it reads that class. Move it when the new home makes ownership and likely changes easier to understand.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Move Function](https://refactoring.com/catalog/moveFunction.html), also known as Move Method.

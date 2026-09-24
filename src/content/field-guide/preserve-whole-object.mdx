@@ -1,0 +1,120 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Preserve Whole Object
+description: "Pass an existing meaningful object instead of pulling several values out of it only to pass those values together."
+prerequisites: "Objects, properties, and function arguments."
+---
+
+export const checks = {"csharp":{"original":"var size = new Size(3, 4); Check.That(Frames.Fits(size.Width, size.Height));","revised":"Check.That(Frames.Fits(new Size(3, 4))); Check.That(!Frames.Fits(new Size(6, 4)));"},"python":{"original":"size = Size(3, 4)\nassert fits(size.width, size.height)","revised":"assert fits(Size(3, 4))\nassert not fits(Size(6, 4))"}};
+
+**Preserve Whole Object** passes an existing object instead of extracting several of its values just to pass them together. It can simplify callers and keep related information associated. The trade-off is that the callee now depends on that object's type and public behavior. [1](#source-1)
+
+## Original version: unpack the size at every call
+
+A frame accepts an image no wider than five units and no taller than eight.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Size
+{
+    public int Width { get; }
+    public int Height { get; }
+    public Size(int width, int height) { Width = width; Height = height; }
+}
+public static class Frames
+{
+    public static bool Fits(int width, int height)
+    {
+        return width <= 5 && height <= 8;
+    }
+}
+```
+
+```csharp group=original role=run
+var size = new Size(3, 4);
+Console.WriteLine(Frames.Fits(size.Width, size.Height));
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Size:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+
+def fits(width, height):
+    return width <= 5 and height <= 8
+```
+
+```python group=original role=run
+size = Size(3, 4)
+print(fits(size.width, size.height))
+```
+
+</section>
+
+The caller knows which properties the frame needs and in which argument positions they belong.
+
+## Refactored version: pass the size
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Size
+{
+    public int Width { get; }
+    public int Height { get; }
+    public Size(int width, int height) { Width = width; Height = height; }
+}
+public static class Frames
+{
+    public static bool Fits(Size size)
+    {
+        return size.Width <= 5 && size.Height <= 8;
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(Frames.Fits(new Size(3, 4))); // True
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Size:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+
+def fits(size):
+    return size.width <= 5 and size.height <= 8
+```
+
+```python group=revised role=run
+print(fits(Size(3, 4)))  # True
+```
+
+</section>
+
+The caller supplies a size. The frame owns the decision about which dimensions to inspect. The object already existed; unlike Introduce Parameter Object, this refactoring does not create a new grouping from unrelated parameters.
+
+## A shorter signature can create a larger dependency
+
+Passing a small `Size` is reasonable. Passing an entire customer, request, or application context just to obtain two numbers may expose much more than the callee needs. A narrow value object or separate parameters can be better across architectural boundaries.
+
+Also preserve timing. The original caller evaluates both property arguments before entering the function. The revised conditional may skip reading height when width is too large. That is harmless for the plain stored values shown here, but not necessarily for expensive or side-effecting getters.
+
+The example assumes nonnegative dimensions and adds no validation. Signature simplification should not silently introduce new rules or change whether values are snapshots versus live reads.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Preserve Whole Object](https://refactoring.com/catalog/preserveWholeObject.html).

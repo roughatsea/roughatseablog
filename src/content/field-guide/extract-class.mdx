@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Extract Class
+description: "Extract Class moves a coherent group of fields and methods into a new class with its own clear purpose."
+prerequisites: "Classes, constructors, and object composition."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Actor(\"Mira\", 3, 4).PositionLabel() == \"3,4\");","revised":"var actor = new Actor(\"Mira\", 3, 4); Check.That(actor.PositionLabel() == \"3,4\" && actor.Name == \"Mira\");"},"python":{"original":"assert Actor('Mira', 3, 4).position_label() == '3,4'","revised":"actor = Actor('Mira', 3, 4)\nassert actor.position_label() == '3,4' and actor.name == 'Mira'"}};
+
+**Extract Class** moves a coherent group of fields and methods into a new class. The original class keeps a reference to the new object and delegates the relevant work to it. [1](#source-1)
+
+## Original version: a position is hidden among actor fields
+
+An actor in a tile-based game has a name, a row, and a column. Position formatting belongs to the row and column together.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Actor
+{
+    public string Name { get; }
+    private readonly int row;
+    private readonly int column;
+    public Actor(string name, int row, int column)
+    {
+        Name = name;
+        this.row = row;
+        this.column = column;
+    }
+    public string PositionLabel() { return row + "," + column; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Actor:
+    def __init__(self, name, row, column):
+        self.name = name
+        self._row = row
+        self._column = column
+
+    def position_label(self):
+        return str(self._row) + "," + str(self._column)
+```
+
+</section>
+
+If positions also appear on treasure chests, doors, and map markers, each type would otherwise repeat the same grouping and formatting.
+
+## Refactored version: position becomes an explicit object
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class TilePosition
+{
+    private readonly int row;
+    private readonly int column;
+    public TilePosition(int row, int column)
+    {
+        this.row = row;
+        this.column = column;
+    }
+    public string Label() { return row + "," + column; }
+}
+
+public sealed class Actor
+{
+    public string Name { get; }
+    private readonly TilePosition position;
+    public Actor(string name, int row, int column)
+    {
+        Name = name;
+        position = new TilePosition(row, column);
+    }
+    public string PositionLabel() { return position.Label(); }
+}
+```
+
+`TilePosition` owns the paired coordinates and their formatting. `Actor.PositionLabel` preserves the old call while delegating to the new object.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class TilePosition:
+    def __init__(self, row, column):
+        self._row = row
+        self._column = column
+
+    def label(self):
+        return str(self._row) + "," + str(self._column)
+
+
+class Actor:
+    def __init__(self, name, row, column):
+        self.name = name
+        self._position = TilePosition(row, column)
+
+    def position_label(self):
+        return self._position.label()
+```
+
+The actor still produces `3,4` for row 3 and column 4. Other game objects can now use the same position concept without pretending to be actors.
+
+</section>
+
+## Extract a concept, not an arbitrary slice
+
+Move the fields and the behavior that belongs with them. If the new class constantly reaches back into the old one, reconsider whether the split follows a real responsibility.
+
+No map-boundary validation is added here, so negative coordinates retain their prior behavior. Adding validation could be sensible, but it would be a separate behavior change.
+
+For a single tiny class, extraction may cost more navigation than it saves. The stronger reason is that a group has its own meaning, rules, reuse, or independent changes. A name such as `TilePosition` explains the group; `ActorHelper2` does not.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Extract Class](https://refactoring.com/catalog/extractClass.html).

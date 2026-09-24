@@ -1,0 +1,129 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Move Field
+description: "Move Field relocates stored data to the object whose responsibilities it supports."
+prerequisites: "Objects, fields, constructors, and properties."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Video(\"Harbor\", 128).EncodingLabel() == \"opus 128\");","revised":"Check.That(new Video(\"Harbor\", 128).EncodingLabel() == \"opus 128\");"},"python":{"original":"assert Video('Harbor', 128).encoding_label() == 'opus 128'","revised":"assert Video('Harbor', 128).encoding_label() == 'opus 128'"}};
+
+**Move Field** relocates stored data to a more appropriate object and redirects the code that reads or writes it. The question is which object should own the value, not which file has spare room. [1](#source-1)
+
+## Original version: an encoding setting is stored on the video
+
+A video has a title and encoding settings. Its codec is in an encoding object, but its bitrate is stored separately on the video.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class EncodingOptions
+{
+    public string Codec { get; } = "opus";
+}
+
+public sealed class Video
+{
+    public string Title { get; }
+    private readonly int bitrate;
+    private readonly EncodingOptions encoding = new EncodingOptions();
+    public Video(string title, int bitrate)
+    {
+        Title = title;
+        this.bitrate = bitrate;
+    }
+    public string EncodingLabel()
+    {
+        return encoding.Codec + " " + bitrate;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class EncodingOptions:
+    codec = "opus"
+
+
+class Video:
+    def __init__(self, title, bitrate):
+        self.title = title
+        self._bitrate = bitrate
+        self._encoding = EncodingOptions()
+
+    def encoding_label(self):
+        return self._encoding.codec + " " + str(self._bitrate)
+```
+
+</section>
+
+The label combines two encoding facts stored in different objects. Any operation that needs the complete encoding choice must collect those facts again.
+
+## Refactored version: keep the encoding facts together
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class EncodingOptions
+{
+    public string Codec { get; } = "opus";
+    public int Bitrate { get; }
+    public EncodingOptions(int bitrate) { Bitrate = bitrate; }
+}
+
+public sealed class Video
+{
+    public string Title { get; }
+    private readonly EncodingOptions encoding;
+    public Video(string title, int bitrate)
+    {
+        Title = title;
+        encoding = new EncodingOptions(bitrate);
+    }
+    public string EncodingLabel()
+    {
+        return encoding.Codec + " " + encoding.Bitrate;
+    }
+}
+```
+
+The constructor still accepts the same arguments, but stores bitrate in `EncodingOptions`. `EncodingLabel` reads it from that new location.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class EncodingOptions:
+    codec = "opus"
+
+    def __init__(self, bitrate):
+        self.bitrate = bitrate
+
+
+class Video:
+    def __init__(self, title, bitrate):
+        self.title = title
+        self._encoding = EncodingOptions(bitrate)
+
+    def encoding_label(self):
+        return self._encoding.codec + " " + str(self._encoding.bitrate)
+```
+
+The public construction and label result stay the same. Bitrate now lives with the codec it configures.
+
+</section>
+
+## Keep one authoritative value
+
+Do not leave independently writable copies in both objects. During migration, an old property can forward to the new field; two separate values can drift apart.
+
+Check whether the receiving object is shared. Moving a per-video setting into one encoding object used by many videos could unintentionally make them share future edits. This example creates an encoding object for each video.
+
+Stored schemas, serialization, and external consumers may also need migration. Moving an in-memory field is not automatically a safe database change. The useful result is clearer ownership with the same required behavior, not simply a smaller class.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Move Field](https://refactoring.com/catalog/moveField.html).

@@ -1,0 +1,141 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Shotgun Surgery
+description: "Shotgun Surgery means one conceptual change requires many small edits across the codebase. A rule or decision has been scattered instead of given a clear home."
+prerequisites: "Functions, classes, and conditional expressions."
+---
+
+export const checks = {"csharp":{"before":"Check.That(CartQuote.Total(10) == 12); Check.That(Receipt.ServiceCharge(10) == 2); Check.That(CartQuote.Total(0) == 0); Check.That(Receipt.ServiceCharge(0) == 0);","after":"Check.That(CartQuote.Total(10) == 12); Check.That(Receipt.ServiceCharge(10) == 2); Check.That(CartQuote.Total(0) == 0); Check.That(Receipt.ServiceCharge(0) == 0);"},"python":{"before":"assert quote_total(10) == 12\nassert receipt_service_charge(10) == 2\nassert quote_total(0) == 0\nassert receipt_service_charge(0) == 0","after":"assert quote_total(10) == 12\nassert receipt_service_charge(10) == 2\nassert quote_total(0) == 0\nassert receipt_service_charge(0) == 0"}};
+
+**Shotgun Surgery** means one conceptual change requires many small edits across the codebase. A rule, calculation, or agreement has been scattered among different places, and all of them must be kept in sync.
+
+The inconvenience is not just the number of files. It is the risk of finding most copies and missing one. [1](#source-1)
+
+## Change one fee, remember two implementations
+
+A fictional marketplace charges a two-token service fee for a nonempty purchase. The cart quote adds the fee to the subtotal. A receipt separately calculates the fee so it can display a line item. Subtotals are nonnegative whole numbers within the integer range.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class CartQuote
+{
+    public static int Total(int subtotal)
+    {
+        int fee = subtotal > 0 ? 2 : 0;
+        return subtotal + fee;
+    }
+}
+
+public static class Receipt
+{
+    public static int ServiceCharge(int subtotal)
+    {
+        return subtotal > 0 ? 2 : 0;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def quote_total(subtotal):
+    fee = 2 if subtotal > 0 else 0
+    return subtotal + fee
+
+
+def receipt_service_charge(subtotal):
+    return 2 if subtotal > 0 else 0
+```
+
+</section>
+
+If the service fee rises to three tokens, both copies must change. Update only the quote and the receipt will describe a different fee from the one included in the total.
+
+This example has two locations so the problem fits on a page. In a large application, the same decision might also appear in previews, exports, refunds, and scheduled reports.
+
+### Refactored version: make the shared rule explicit
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class ServiceFee
+{
+    public static int ForSubtotal(int subtotal)
+    {
+        return subtotal > 0 ? 2 : 0;
+    }
+}
+
+public static class CartQuote
+{
+    public static int Total(int subtotal)
+    {
+        return subtotal + ServiceFee.ForSubtotal(subtotal);
+    }
+}
+
+public static class Receipt
+{
+    public static int ServiceCharge(int subtotal)
+    {
+        return ServiceFee.ForSubtotal(subtotal);
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(CartQuote.Total(10));        // 12
+Console.WriteLine(Receipt.ServiceCharge(10)); // 2
+```
+
+`ServiceFee.ForSubtotal` now contains the fee decision. The quote and receipt retain their own jobs, but ask the same function for the shared amount.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def service_fee(subtotal):
+    return 2 if subtotal > 0 else 0
+
+
+def quote_total(subtotal):
+    return subtotal + service_fee(subtotal)
+
+
+def receipt_service_charge(subtotal):
+    return service_fee(subtotal)
+```
+
+```python group=after role=run
+print(quote_total(10))              # 12
+print(receipt_service_charge(10))   # 2
+```
+
+`service_fee` now contains the fee decision. The quote and receipt retain their own jobs, but ask the same function for the shared amount.
+
+</section>
+
+The refactoring deliberately leaves the fee at two. Raising it to three is a later rule change. Separating those edits makes it possible to verify that consolidating the calculation did not itself alter prices.
+
+## Do not combine different rules by accident
+
+A different two-token charge for gift wrapping is not necessarily another copy of the service fee. If the two prices can change independently, they should not share one constant merely because their current values match.
+
+Similarly, historical receipts may need to store the fee actually charged at the time, not recalculate it using today's rate. Consolidating code does not mean rewriting past transactions whenever a business rule changes. The example concerns two calculations for the same current purchase, not historical accounting.
+
+## Follow the reason for the edit
+
+When a change repeatedly produces a list of “also remember to update…” files, inspect whether the files contain duplicate knowledge. The right correction might be one shared function, one owned data definition, generated representations, or an explicit compatibility contract.
+
+The inverse pattern is **Divergent Change**: many unrelated reasons force changes to one crowded class. Here, one reason is scattered across many places. Recognizing which direction the scattering runs helps avoid solving the wrong problem.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Shotgun Surgery” in the code-smells discussion.
+2. [Andy Hunt and Dave Thomas — Pragmatic Programmer tips](https://pragprog.com/tips/), for the related DRY principle. The fee example is original.

@@ -1,0 +1,117 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Array with Object
+description: "Replace Array with Object gives named fields to array positions that represent different kinds of information."
+prerequisites: "Arrays or lists, indexing, and classes."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Travel.Speed(new[] { 120, 2 }) == 60);","revised":"Check.That(Travel.Speed(new JourneyReading(120, 2)) == 60);"},"python":{"original":"assert speed([120, 2]) == 60","revised":"assert speed(JourneyReading(120, 2)) == 60"}};
+
+**Replace Array with Object** gives named fields to array positions that represent different information. Instead of remembering that element 0 means distance and element 1 means duration, the caller reads those meanings in the code. [1](#source-1)
+
+## Original version: two numbers and a private convention
+
+A journey reading contains distance in kilometers and elapsed time in hours. This example uses positive whole hours and distances divisible by the duration, so integer division gives an exact speed.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Travel
+{
+    public static int Speed(int[] reading)
+    {
+        return reading[0] / reading[1];
+    }
+}
+```
+
+```csharp group=original role=run
+Console.WriteLine(Travel.Speed(new[] { 120, 2 })); // 60
+```
+
+The compiler knows both elements are integers. It does not know which one is kilometers. Swapping them remains legal source code and produces a different answer.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def speed(reading):
+    return reading[0] // reading[1]
+```
+
+```python group=original role=run
+print(speed([120, 2]))  # 60
+```
+
+The meaning of each index is a convention callers must remember. A list of two values does not express what those values measure.
+
+</section>
+
+## Refactored version: name the parts
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class JourneyReading
+{
+    public int DistanceKm { get; }
+    public int DurationHours { get; }
+    public JourneyReading(int distanceKm, int durationHours)
+    {
+        DistanceKm = distanceKm;
+        DurationHours = durationHours;
+    }
+}
+
+public static class Travel
+{
+    public static int Speed(JourneyReading reading)
+    {
+        return reading.DistanceKm / reading.DurationHours;
+    }
+}
+```
+
+```csharp group=revised role=run
+var reading = new JourneyReading(distanceKm: 120, durationHours: 2);
+Console.WriteLine(Travel.Speed(reading)); // 60
+```
+
+The calculation now names both quantities. Named constructor arguments make the call easy to inspect too; the two parameter types alone still cannot prevent an accidental swap.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class JourneyReading:
+    def __init__(self, distance_km, duration_hours):
+        self.distance_km = distance_km
+        self.duration_hours = duration_hours
+
+
+def speed(reading):
+    return reading.distance_km // reading.duration_hours
+```
+
+```python group=revised role=run
+reading = JourneyReading(distance_km=120, duration_hours=2)
+print(speed(reading))  # 60
+```
+
+The field names expose units and intent. A dataclass or named tuple could supply a shorter declaration, but the explicit constructor shows the transformation directly.
+
+</section>
+
+## Keep arrays for collections of the same kind of thing
+
+A list of hourly temperatures is naturally a collection. A two-element array whose positions mean a temperature and a sensor identifier is a record disguised as a collection. This refactoring addresses the second situation, not every use of indexing.
+
+Migrate all indexed reads and writes together. If external input arrives as an array, convert it at that boundary and validate its shape there. This example adds no new duration validation; dividing by zero is still outside its stated input assumptions. Adding a friendly error would be a separate behavior change.
+
+The result should be a clearer data model, not a wrapper that preserves the same unexplained `Get(0)` calls inside another class.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Array with Object](https://refactoring.com/catalog/replaceArrayWithObject.html).

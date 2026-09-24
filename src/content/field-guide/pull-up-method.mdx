@@ -1,0 +1,114 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Pull Up Method
+description: "Move equivalent methods from subclasses into their common base class so one implementation supplies the shared behavior."
+prerequisites: "Inheritance, methods, and constructors."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new SalesReport(\"July\").Heading() == \"Report: July\"); Check.That(new StockReport(\"Parts\").Heading() == \"Report: Parts\");","revised":"Check.That(new SalesReport(\"July\").Heading() == \"Report: July\"); Check.That(new StockReport(\"Parts\").Heading() == \"Report: Parts\");"},"python":{"original":"assert SalesReport('July').heading() == 'Report: July'\nassert StockReport('Parts').heading() == 'Report: Parts'","revised":"assert SalesReport('July').heading() == 'Report: July'\nassert StockReport('Parts').heading() == 'Report: Parts'"}};
+
+**Pull Up Method** moves equivalent methods from subclasses into their common base class. One inherited implementation then supplies behavior that previously had to be kept consistent in several places. [1](#source-1)
+
+## Original version: report subclasses duplicate a heading rule
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public abstract class Report
+{
+    protected string Title { get; }
+    protected Report(string title) { Title = title; }
+}
+public sealed class SalesReport : Report
+{
+    public SalesReport(string title) : base(title) { }
+    public string Heading() { return "Report: " + Title; }
+}
+public sealed class StockReport : Report
+{
+    public StockReport(string title) : base(title) { }
+    public string Heading() { return "Report: " + Title; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Report:
+    def __init__(self, title):
+        self.title = title
+
+
+class SalesReport(Report):
+    def heading(self):
+        return "Report: " + self.title
+
+
+class StockReport(Report):
+    def heading(self):
+        return "Report: " + self.title
+```
+
+</section>
+
+Both methods use the same inherited title and the same prefix. A change to the shared heading convention should not require editing both subclasses.
+
+## Refactored version: reports inherit the common behavior
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class Report
+{
+    protected string Title { get; }
+    protected Report(string title) { Title = title; }
+    public string Heading() { return "Report: " + Title; }
+}
+public sealed class SalesReport : Report
+{
+    public SalesReport(string title) : base(title) { }
+}
+public sealed class StockReport : Report
+{
+    public StockReport(string title) : base(title) { }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Report:
+    def __init__(self, title):
+        self.title = title
+
+    def heading(self):
+        return "Report: " + self.title
+
+
+class SalesReport(Report):
+    pass
+
+
+class StockReport(Report):
+    pass
+```
+
+</section>
+
+The call sites and strings remain unchanged. The subclasses no longer own separate copies of the heading rule.
+
+## Equivalent behavior matters more than identical text
+
+Two methods can look different because they use different local names yet perform the same operation. Conversely, identical text can access subclass fields with different meanings. Confirm the inputs, side effects, exceptions, and dependencies before moving the method.
+
+The base class must have access to everything the method needs. Avoid pulling unrelated subclass-specific fields upward merely to force one method into a common implementation. A shared helper or composition may be a better fit.
+
+If the operation genuinely varies, a base algorithm with explicit overridden steps may be appropriate; that is Form Template Method. Pull Up Method is simpler: the shared operation itself is equivalent and can have one home.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Pull Up Method](https://refactoring.com/catalog/pullUpMethod.html).

@@ -1,0 +1,111 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Derived Variable with Query
+description: "Calculate a value from its authoritative inputs instead of storing a second value that must be updated whenever those inputs change."
+prerequisites: "Fields, computed values, methods, and state changes."
+---
+
+export const checks = {"csharp":{"original":"var rectangle = new Rectangle(3, 4); Check.That(rectangle.Area == 12); rectangle.SetWidth(5); Check.That(rectangle.Area == 20);","revised":"var rectangle = new Rectangle(3, 4); Check.That(rectangle.Area == 12); rectangle.SetWidth(5); Check.That(rectangle.Area == 20);"},"python":{"original":"rectangle = Rectangle(3, 4)\nassert rectangle.area == 12\nrectangle.set_width(5)\nassert rectangle.area == 20","revised":"rectangle = Rectangle(3, 4)\nassert rectangle.area == 12\nrectangle.set_width(5)\nassert rectangle.area == 20"}};
+
+**Replace Derived Variable with Query** calculates a value from its authoritative inputs instead of storing it separately. The class no longer has to keep two representations of the same fact synchronized. Here *query* means a read operation, not necessarily a database request. [1](#source-1)
+
+## Original version: width and area must be updated together
+
+A rectangle stores width, height, and their product. The original code updates the product correctly; the concern is the maintenance obligation, not an existing arithmetic defect.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Rectangle
+{
+    private int width;
+    private readonly int height;
+    public int Area { get; private set; }
+    public Rectangle(int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+        Area = width * height;
+    }
+    public void SetWidth(int width)
+    {
+        this.width = width;
+        Area = width * height;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Rectangle:
+    def __init__(self, width, height):
+        self._width = width
+        self._height = height
+        self.area = width * height
+
+    def set_width(self, width):
+        self._width = width
+        self.area = width * self._height
+```
+
+</section>
+
+Every operation that changes a dimension must also update area. Forgetting the second assignment in a future method would leave contradictory state.
+
+## Refactored version: derive area when asked
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Rectangle
+{
+    private int width;
+    private readonly int height;
+    public Rectangle(int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+    }
+    public int Area { get { return width * height; } }
+    public void SetWidth(int width) { this.width = width; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Rectangle:
+    def __init__(self, width, height):
+        self._width = width
+        self._height = height
+
+    @property
+    def area(self):
+        return self._width * self._height
+
+    def set_width(self, width):
+        self._width = width
+```
+
+</section>
+
+A three-by-four rectangle still reports twelve. After changing width to five, it reports twenty without an area-update statement. There is no stored area to become stale.
+
+## A cached value and a query make different promises
+
+Multiplication is cheap, and the example uses small sequentially accessed integers. An expensive calculation may justify caching, but then cache invalidation is an explicit responsibility rather than an accidental duplicate field.
+
+A saved historical result is also different from a derived current value. Replacing a recorded invoice total with a query against today's prices would change meaning. Preserve snapshots when they represent what happened at a particular time.
+
+The Python revision also removes ordinary assignment to the public `area` attribute. Callers that previously set area directly must migrate; preserving the shown dimension-based operations does not preserve every possible mutation of the old object.
+
+The useful question is whether this value is an independent fact or merely an inexpensive consequence of facts already stored. Derive the second kind when doing so makes consistency easier to maintain.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Derived Variable with Query](https://refactoring.com/catalog/replaceDerivedVariableWithQuery.html).

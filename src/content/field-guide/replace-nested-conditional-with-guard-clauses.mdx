@@ -1,0 +1,104 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Nested Conditional with Guard Clauses
+description: "Handle exceptional or disqualifying cases early so the normal path does not sit inside a growing pyramid of conditions."
+prerequisites: "Conditionals, early returns, and nullable values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Orders.Label(null, false) == \"Missing order\"); Check.That(Orders.Label(\"42\", true) == \"Cancelled\"); Check.That(Orders.Label(\"42\", false) == \"Order 42\");","revised":"Check.That(Orders.Label(null, true) == \"Missing order\"); Check.That(Orders.Label(\"42\", true) == \"Cancelled\"); Check.That(Orders.Label(\"42\", false) == \"Order 42\");"},"python":{"original":"assert label(None, False) == 'Missing order'\nassert label('42', True) == 'Cancelled'\nassert label('42', False) == 'Order 42'","revised":"assert label(None, True) == 'Missing order'\nassert label('42', True) == 'Cancelled'\nassert label('42', False) == 'Order 42'"}};
+
+A **guard clause** handles a special case immediately, often by returning or throwing. **Replace Nested Conditional with Guard Clauses** uses those early exits to leave the normal case outside unnecessary nesting. [1](#source-1)
+
+## Original version: the useful result is inside two conditions
+
+An order label reports a missing order first, a cancelled order second, and otherwise prints its number.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Orders
+{
+    public static string Label(string? number, bool cancelled)
+    {
+        if (number != null)
+        {
+            if (!cancelled)
+            {
+                return "Order " + number;
+            }
+            else
+            {
+                return "Cancelled";
+            }
+        }
+        else
+        {
+            return "Missing order";
+        }
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def label(number, cancelled):
+    if number is not None:
+        if not cancelled:
+            return "Order " + number
+        else:
+            return "Cancelled"
+    else:
+        return "Missing order"
+```
+
+</section>
+
+To read the normal result, we mentally carry both conditions: a number exists and the order is not cancelled.
+
+## Refactored version: finish the special cases first
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Orders
+{
+    public static string Label(string? number, bool cancelled)
+    {
+        if (number == null) return "Missing order";
+        if (cancelled) return "Cancelled";
+        return "Order " + number;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def label(number, cancelled):
+    if number is None:
+        return "Missing order"
+    if cancelled:
+        return "Cancelled"
+    return "Order " + number
+```
+
+</section>
+
+After the guards, the remaining path has a number and is not cancelled. The final line can express the ordinary result without further indentation.
+
+## The order of guards is part of behavior
+
+A missing number combined with `cancelled = true` still returns `Missing order`, because that check remains first. Reversing the guards would change the precedence of two conditions that can both hold.
+
+Also examine side effects and code after the original conditional. An early return must not skip work that previously ran for every case. Prefer structured cleanup rather than relying on readers to notice which return bypasses a resource release.
+
+Guard clauses are most useful when several cases clearly terminate the operation. Nested conditionals can still communicate a genuine decision tree well. The aim is to make the path easy to follow, not to enforce zero nesting in every method.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Nested Conditional with Guard Clauses](https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html).

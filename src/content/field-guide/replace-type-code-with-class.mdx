@@ -1,0 +1,104 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Type Code with Class
+description: "Replace a primitive category code with a named type so its meaning and permitted values are explicit."
+prerequisites: "Classes, constructors, constants, and primitive types."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Card(1).Suit == 1);","revised":"var card = new Card(Suit.Hearts); Check.That(card.Suit.Name == \"Hearts\"); Check.That(Suit.Clubs.Name == \"Clubs\");"},"python":{"original":"assert Card(1).suit == 1","revised":"assert Card(Suit.HEARTS).suit.value == 'Hearts'\nassert Card(Suit.CLUBS).suit.value == 'Clubs'"}};
+
+**Replace Type Code with Class** replaces a primitive category code with a named type. Instead of remembering that the integer 1 means hearts, a caller supplies a value that explicitly represents a suit. It is useful even when the categories do not require different algorithms. [1](#source-1)
+
+## Original version: a suit is any integer
+
+This miniature card application only models hearts and clubs.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Card
+{
+    public int Suit { get; }
+    public Card(int suit) { Suit = suit; }
+}
+```
+
+`new Card(1)` relies on a convention. `new Card(700)` is equally legal, although 700 represents no supported suit.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Card:
+    def __init__(self, suit):
+        self.suit = suit
+```
+
+The constructor accepts an arbitrary value. Each caller must know which codes are meaningful.
+
+</section>
+
+## Revised version: use named category values
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Suit
+{
+    public static readonly Suit Hearts = new Suit("Hearts");
+    public static readonly Suit Clubs = new Suit("Clubs");
+    public string Name { get; }
+    private Suit(string name) { Name = name; }
+}
+
+public sealed class Card
+{
+    public Suit Suit { get; }
+    public Card(Suit suit)
+    {
+        Suit = suit ?? throw new ArgumentNullException(nameof(suit));
+    }
+}
+```
+
+The caller writes `new Card(Suit.Hearts)`. The private constructor limits ordinary callers to the declared instances, and a null value is rejected. No subclass hierarchy is needed: the values differ only in their names.
+
+For many fixed categories, a C# enum is simpler. A class becomes useful when the category needs associated data or behavior, or when you want construction to restrict the values more tightly than an enum's underlying integer representation.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+from enum import Enum
+
+
+class Suit(Enum):
+    HEARTS = "Hearts"
+    CLUBS = "Clubs"
+
+
+class Card:
+    def __init__(self, suit):
+        if not isinstance(suit, Suit):
+            raise TypeError("Expected a Suit.")
+        self.suit = suit
+```
+
+`Card(Suit.HEARTS)` states the category directly. Python's enum class is a compact way to define named members, and the constructor checks that callers supply one. A type annotation alone would not perform that runtime check.
+
+</section>
+
+## Do not confuse naming a category with polymorphism
+
+This change gives the code a clearer vocabulary and rejects unsupported inputs. It does not automatically replace conditionals with dynamically selected methods. That is a separate refactoring, useful when different categories genuinely require different behavior.
+
+External storage may still use integers or strings. Translate and validate those representations at the boundary rather than letting arbitrary codes flow through the whole program.
+
+The valid category has the same meaning, but callers' signatures and invalid-input behavior have changed. Treat that as an API migration, and avoid inventing a class when a well-named enum or literal type already solves the problem.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Primitive with Object](https://refactoring.com/catalog/replacePrimitiveWithObject.html), including Replace Type Code with Class as earlier terminology.
+2. [Python — Enum](https://docs.python.org/3/library/enum.html) and [Microsoft — Enumeration types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum), for language-specific category representations.

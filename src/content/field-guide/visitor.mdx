@@ -1,0 +1,137 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Visitor
+description: "Visitor puts an operation over several object types in a separate visitor, while each object directs the visitor to its type-specific operation."
+prerequisites: "Interfaces or compatible methods, method dispatch, and generic return types for the C# example."
+---
+
+export const checks = {"csharp":{"example":"IShape square = new Rectangle(3, 4); IShape circle = new Circle(2); Check.That(square.Accept(new Area()) == 12); Check.That(Math.Abs(circle.Accept(new Area()) - 4 * Math.PI) < 0.000001); Check.That(circle.Accept(new Label()) == \"circle\"); Check.That(square.Accept(new Label()) == \"rectangle\");"},"python":{"example":"square = Rectangle(3, 4)\ncircle = Circle(2)\nassert square.accept(Area()) == 12\nassert abs(circle.accept(Area()) - 4 * math.pi) < 0.000001\nassert circle.accept(Label()) == 'circle'\nassert square.accept(Label()) == 'rectangle'"}};
+
+**Visitor** puts an operation over several object types in a separate object called a visitor. Each visited object directs that visitor to the operation appropriate for its own type. New operations can then be added without putting every operation into every visited class. [1](#source-1)
+
+## Keep geometry separate from the growing list of operations
+
+A drawing contains circles and rectangles. We want to calculate area and obtain a type label. Later we might add an export operation. Putting every operation directly on both shape classes would make those classes responsible for increasingly unrelated work.
+
+Give each shape an `Accept` operation. It calls the visitor's circle or rectangle method. The following design uses different visitors for area and labels; dimensions are nonnegative finite numbers in this example.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IVisitor<T>
+{
+    T VisitCircle(Circle circle);
+    T VisitRectangle(Rectangle rectangle);
+}
+
+public interface IShape
+{
+    T Accept<T>(IVisitor<T> visitor);
+}
+
+public sealed record Circle(double Radius) : IShape
+{
+    public T Accept<T>(IVisitor<T> visitor) { return visitor.VisitCircle(this); }
+}
+
+public sealed record Rectangle(double Width, double Height) : IShape
+{
+    public T Accept<T>(IVisitor<T> visitor) { return visitor.VisitRectangle(this); }
+}
+
+public sealed class Area : IVisitor<double>
+{
+    public double VisitCircle(Circle circle)
+    {
+        return Math.PI * circle.Radius * circle.Radius;
+    }
+    public double VisitRectangle(Rectangle rectangle)
+    {
+        return rectangle.Width * rectangle.Height;
+    }
+}
+
+public sealed class Label : IVisitor<string>
+{
+    public string VisitCircle(Circle circle) { return "circle"; }
+    public string VisitRectangle(Rectangle rectangle) { return "rectangle"; }
+}
+```
+
+`T` is the result type: area visitors return `double`, and label visitors return `string`. When a shape accepts the visitor, its own implementation selects the appropriate visit method.
+
+```csharp group=example role=run
+IShape shape = new Rectangle(3, 4);
+Console.WriteLine(shape.Accept(new Area()));  // 12
+Console.WriteLine(shape.Accept(new Label())); // rectangle
+```
+
+The caller holds an `IShape`. Dispatch first selects `Rectangle.Accept`, which then calls `VisitRectangle` on the supplied visitor. This two-step selection is why Visitor is associated with *double dispatch*.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import math
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Circle:
+    radius: float
+
+    def accept(self, visitor):
+        return visitor.visit_circle(self)
+
+
+@dataclass(frozen=True)
+class Rectangle:
+    width: float
+    height: float
+
+    def accept(self, visitor):
+        return visitor.visit_rectangle(self)
+
+
+class Area:
+    def visit_circle(self, circle):
+        return math.pi * circle.radius * circle.radius
+
+    def visit_rectangle(self, rectangle):
+        return rectangle.width * rectangle.height
+
+
+class Label:
+    def visit_circle(self, circle):
+        return "circle"
+
+    def visit_rectangle(self, rectangle):
+        return "rectangle"
+```
+
+The shape's `accept` method selects the corresponding method on the supplied visitor. Python does not require one return type across different visitors; the caller must know which result its chosen operation produces.
+
+```python group=example role=run
+shape = Rectangle(3, 4)
+print(shape.accept(Area()))   # 12
+print(shape.accept(Label()))  # rectangle
+```
+
+The area calculation and label logic live outside the shape definitions. Neither shape inspects the visitor's concrete type.
+
+</section>
+
+## One direction of extension gets easier
+
+Adding an exporter means implementing another visitor for the existing shapes. Adding a triangle is more intrusive: the visitor interface needs a triangle operation, and existing visitors need to decide what triangles mean for them.
+
+Visitor therefore fits a relatively stable set of element types with a growing set of operations. If new shapes arrive constantly, putting operations on shapes or using another dispatch mechanism may be easier.
+
+The pattern also gives visitors access to shape data. Exposing private representation merely to support visitors can weaken encapsulation. Offer the information the operations legitimately need rather than leaking the entire internal object graph.
+
+For two shapes and one operation, a straightforward method or pattern match is often clearer. A visitor should organize a real collection of operations, not add two layers of dispatch to an otherwise obvious calculation. Tests should cover every element type for every visitor; a new class with no visitor behavior is not a complete extension.
+
+## Sources
+
+1. <span id="source-1"></span>[Douglas C. Schmidt — Design Patterns in Java](https://www.informit.com/store/design-patterns-in-java-9780321947925), including Visitor's separation of operations from element classes.

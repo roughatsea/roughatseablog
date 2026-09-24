@@ -1,0 +1,130 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Dependency Cycles
+description: "A dependency cycle occurs when following what components depend on eventually leads back to the starting component."
+prerequisites: "Classes, method calls, and references between types."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Cart(12).Receipt() == \"Total: 12\");","revised":"Check.That(new Cart(12).Receipt() == \"Total: 12\"); Check.That(new ReceiptFormatter().Format(0) == \"Total: 0\");"},"python":{"original":"assert Cart(12).receipt() == 'Total: 12'","revised":"assert Cart(12).receipt() == 'Total: 12'\nassert ReceiptFormatter().format(0) == 'Total: 0'"}};
+
+A **dependency cycle** occurs when following what components depend on eventually leads back to the starting component: A needs B, and B needs A, possibly through other components. It can make components difficult to build, understand, or change independently. It does **not** necessarily mean that execution loops forever. [1](#source-1)
+
+## Original version: a cart and its formatter know each other
+
+A shopping cart asks a formatter to produce a receipt. The formatter takes the whole cart, even though it only needs the total.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Cart
+{
+    public int Total { get; }
+    public Cart(int total) { Total = total; }
+
+    public string Receipt()
+    {
+        return new ReceiptFormatter().Format(this);
+    }
+}
+
+public sealed class ReceiptFormatter
+{
+    public string Format(Cart cart)
+    {
+        return "Total: " + cart.Total;
+    }
+}
+```
+
+`Cart` names `ReceiptFormatter`, and `ReceiptFormatter` names `Cart`. The methods terminate normally: formatting reads `Total`, not another receipt. The cycle is in the type dependencies, not in repeated method execution.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Cart:
+    def __init__(self, total):
+        self.total = total
+
+    def receipt(self):
+        return ReceiptFormatter().format(self)
+
+
+class ReceiptFormatter:
+    def format(self, cart: Cart):
+        return "Total: " + str(cart.total)
+```
+
+`Cart` names `ReceiptFormatter`, and the formatter accepts a `Cart` and reads its `total`. These references are harmless to execute in this one file, but splitting the classes into mutually importing modules would introduce an additional import-order problem.
+
+</section>
+
+## Refactored version: pass what formatting needs
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Cart
+{
+    public int Total { get; }
+    public Cart(int total) { Total = total; }
+
+    public string Receipt()
+    {
+        return new ReceiptFormatter().Format(Total);
+    }
+}
+
+public sealed class ReceiptFormatter
+{
+    public string Format(int total)
+    {
+        return "Total: " + total;
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(new Cart(12).Receipt()); // Total: 12
+```
+
+The cart still uses the formatter. The formatter no longer mentions `Cart`; it receives an integer. We removed one dependency without changing the receipt text.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Cart:
+    def __init__(self, total):
+        self.total = total
+
+    def receipt(self):
+        return ReceiptFormatter().format(self.total)
+
+
+class ReceiptFormatter:
+    def format(self, total):
+        return "Total: " + str(total)
+```
+
+```python group=revised role=run
+print(Cart(12).receipt())  # Total: 12
+```
+
+The cart still uses the formatter. The formatter no longer needs a cart object; it receives the total. Moving it into its own module would no longer require an import of `Cart`.
+
+</section>
+
+## Find the dependency that does not belong
+
+For larger cycles, drawing the imports or project references often reveals a useful question: does a component need this entire dependency, or only a value, a narrow operation, or a notification?
+
+An interface owned by the caller can reverse a source dependency. A separate coordinating component can sometimes remove the need for two components to know each other. Moving genuinely shared types to a small module is another option, but a giant “common” package can merely conceal the original tangle.
+
+Mutual references between individual objects are not universally wrong. A parent and child may legitimately navigate to each other. The concern is whether the cycle crosses boundaries that ought to allow independent development or reuse. Diagnose the dependency graph you actually have, not every pair of objects that happen to collaborate.
+
+## Sources
+
+1. <span id="source-1"></span>[Robert C. Martin — The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), on source dependency direction and separating application rules from implementation details.

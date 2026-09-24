@@ -1,0 +1,149 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Race Conditions and Critical Sections
+description: "A race condition makes correctness depend on timing. Protect the complete operation that must be indivisible, not merely each individual read or write."
+prerequisites: "Shared variables, threads, assignment, and locks."
+---
+
+export const checks = {"csharp":{"original":"Check.That(LostUpdate.Simulate() == 1);","revised":"Check.That(await Counter.CheckConcurrentIncrements() == 2000);"},"python":{"original":"assert simulate_lost_update() == 1","revised":"assert check_concurrent_increments() == 2000"}};
+
+A **race condition** makes correctness depend on the relative timing of operations. A **critical section** is work that must not interleave with competing work on the same protected state. A lock is one way to enforce that exclusion. [1](#source-1)
+
+A familiar example is two workers incrementing one counter. “Add one” can involve reading the old value, calculating a new value, and writing it back. Protecting only the write does not make that entire sequence indivisible.
+
+## Original problem: two increments become one
+
+Start with a counter of zero. One possible ordering is:
+
+| Step | Worker A | Worker B | Stored counter |
+| --- | --- | --- | --- |
+| 1 | Reads zero | | 0 |
+| 2 | | Reads zero | 0 |
+| 3 | Writes zero plus one | | 1 |
+| 4 | | Writes zero plus one | 1 |
+
+Both workers performed their intended arithmetic, but one update was lost. We can reproduce this ordering directly without hoping a thread scheduler happens to choose it.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class LostUpdate
+{
+    public static int Simulate()
+    {
+        int counter = 0;
+        int readByA = counter;
+        int readByB = counter;
+        counter = readByA + 1;
+        counter = readByB + 1;
+        return counter;
+    }
+}
+```
+
+This is an execution model of the table, not a multithreaded stress test. Its result is deterministically one, showing why that interleaving would be wrong.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def simulate_lost_update():
+    counter = 0
+    read_by_a = counter
+    read_by_b = counter
+    counter = read_by_a + 1
+    counter = read_by_b + 1
+    return counter
+```
+
+The function deliberately spells out the interleaving. It does not claim that every Python interpreter executes an ordinary increment as these separately scheduled steps.
+
+</section>
+
+## Corrected version: protect the complete update
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Counter
+{
+    private readonly object gate = new object();
+    private int value;
+
+    public void Increment()
+    {
+        lock (gate) { value = value + 1; }
+    }
+
+    public int Read()
+    {
+        lock (gate) { return value; }
+    }
+
+    public static async Task<int> CheckConcurrentIncrements()
+    {
+        var counter = new Counter();
+        Task first = Task.Run(() => { for (int i = 0; i < 1000; i++) counter.Increment(); });
+        Task second = Task.Run(() => { for (int i = 0; i < 1000; i++) counter.Increment(); });
+        await Task.WhenAll(first, second);
+        return counter.Read();
+    }
+}
+```
+
+Both workers acquire the same `gate`. One cannot read the protected value in the middle of the other's increment. The test waits for both workers before expecting two thousand.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+from threading import Lock, Thread
+
+
+class Counter:
+    def __init__(self):
+        self._gate = Lock()
+        self._value = 0
+
+    def increment(self):
+        with self._gate:
+            self._value += 1
+
+    def read(self):
+        with self._gate:
+            return self._value
+
+
+def check_concurrent_increments():
+    counter = Counter()
+
+    def work():
+        for _ in range(1000):
+            counter.increment()
+
+    workers = [Thread(target=work), Thread(target=work)]
+    for worker in workers:
+        worker.start()
+    for worker in workers:
+        worker.join()
+    return counter.read()
+```
+
+The explicit lock protects the application's intended update regardless of assumptions about interpreter scheduling. Joining both threads establishes that their increments have completed before the final read.
+
+</section>
+
+## Protect a rule, not just a field
+
+For an inventory operation, “check that stock is available, then subtract” may need to be one critical section. Individually safe reads and writes can still permit two buyers to reserve the last item.
+
+An atomic increment such as C# `Interlocked.Increment` is a simpler choice for some counters. It does not automatically protect a larger multi-field rule. A process-local lock also does not coordinate other processes writing to the same database; that needs database-level concurrency control.
+
+Keep critical sections focused, ensure every relevant access follows the same policy, and avoid blocking external calls while holding a lock. Locks can introduce waiting and deadlock if acquired inconsistently. They solve an interleaving problem only when their scope matches the operation that needs protection.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — The lock statement](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock), for mutual exclusion and structured release.
+2. [Python — Lock objects](https://docs.python.org/3/library/threading.html#lock-objects).

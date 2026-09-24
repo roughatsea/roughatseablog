@@ -1,0 +1,147 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Data Clumps
+description: "Data Clumps are groups of values that repeatedly appear together. Their repeated pairing can reveal a useful concept that the code has not named."
+prerequisites: "Functions, coordinates, and simple objects."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Grid.Distance(1, 2, 4, 6) == 7); Check.That(Grid.SamePosition(1, 2, 1, 2)); Check.That(!Grid.SamePosition(1, 2, 2, 1));","after":"Check.That(Grid.Distance(new Position(1, 2), new Position(4, 6)) == 7); Check.That(Grid.SamePosition(new Position(1, 2), new Position(1, 2))); Check.That(!Grid.SamePosition(new Position(1, 2), new Position(2, 1)));"},"python":{"before":"assert grid_distance(1, 2, 4, 6) == 7\nassert same_position(1, 2, 1, 2)\nassert not same_position(1, 2, 2, 1)","after":"assert grid_distance(Position(1, 2), Position(4, 6)) == 7\nassert same_position(Position(1, 2), Position(1, 2))\nassert not same_position(Position(1, 2), Position(2, 1))"}};
+
+**Data Clumps** are groups of values that repeatedly appear together in parameters, fields, or local variables. A date range repeatedly travels as a start and end date; an address repeatedly travels as several strings. The repetition can reveal a concept the code has not yet named.
+
+The clue is the group, not just the number of arguments. Grouping related values into an object can make that concept explicit. [1](#source-1)
+
+## Two positions, or four unrelated numbers?
+
+A grid-based game measures distance by counting horizontal and vertical steps. Moving from `(1, 2)` to `(4, 6)` takes three horizontal steps plus four vertical steps: seven in total.
+
+Two functions use pairs of positions: one measures that distance, and another checks whether two positions match. Coordinates here are small integers so subtraction and absolute value fit safely in C# integers.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Grid
+{
+    public static int Distance(int fromX, int fromY, int toX, int toY)
+    {
+        return Math.Abs(toX - fromX) + Math.Abs(toY - fromY);
+    }
+
+    public static bool SamePosition(int firstX, int firstY, int secondX, int secondY)
+    {
+        return firstX == secondX && firstY == secondY;
+    }
+}
+```
+
+```csharp group=before role=run
+Console.WriteLine(Grid.Distance(1, 2, 4, 6)); // 7
+```
+
+The first two numbers describe one position; the last two describe another. Every signature must repeat that relationship, and the caller can accidentally mix the pairs.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def grid_distance(from_x, from_y, to_x, to_y):
+    return abs(to_x - from_x) + abs(to_y - from_y)
+
+
+def same_position(first_x, first_y, second_x, second_y):
+    return first_x == second_x and first_y == second_y
+```
+
+```python group=before role=run
+print(grid_distance(1, 2, 4, 6))  # 7
+```
+
+The first two numbers describe one position; the last two describe another. Every signature must repeat that relationship, and the caller can accidentally mix the pairs.
+
+</section>
+
+### Refactored version: make the positions visible
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class Position
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Position(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+public static class Grid
+{
+    public static int Distance(Position from, Position to)
+    {
+        return Math.Abs(to.X - from.X) + Math.Abs(to.Y - from.Y);
+    }
+
+    public static bool SamePosition(Position first, Position second)
+    {
+        return first.X == second.X && first.Y == second.Y;
+    }
+}
+```
+
+```csharp group=after role=run
+Position start = new Position(1, 2);
+Position finish = new Position(4, 6);
+Console.WriteLine(Grid.Distance(start, finish)); // 7
+```
+
+`Distance` now receives two positions rather than four interchangeable integers. The calculation is unchanged. `SamePosition` still compares coordinates explicitly; this ordinary class has not acquired value equality merely by grouping its fields.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Position:
+    x: int
+    y: int
+
+
+def grid_distance(start, finish):
+    return abs(finish.x - start.x) + abs(finish.y - start.y)
+
+
+def same_position(first, second):
+    return first.x == second.x and first.y == second.y
+```
+
+```python group=after role=run
+start = Position(1, 2)
+finish = Position(4, 6)
+print(grid_distance(start, finish))  # 7
+```
+
+`grid_distance` now receives two positions rather than four interchangeable integers. The calculation is unchanged. The dataclass also generates value equality, though `same_position` keeps its coordinate comparison visible for this example.
+
+</section>
+
+## Look for a name that explains the group
+
+The position object does not shorten every line. It tells us that the coordinates belong together, and that distance operates between two such values. A rule limiting positions to the map could later have a clear place to live, but the displayed object does not yet validate map boundaries.
+
+A useful grouping often appears in several signatures or several objects. One function taking a user name, a retry count, and a file path has not necessarily discovered a new concept called `UserRetryFileOptions`.
+
+Ask whether the values have meaning as one thing. If removing one coordinate makes the remaining value insufficient to describe a position, the pairing is meaningful. If the proposed object is only a bag for unrelated arguments, it may hide the original design difficulty rather than resolve it.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Introduce Parameter Object](https://refactoring.com/catalog/introduceParameterObject.html), for naming recurring groups of arguments. The two-position example is original.

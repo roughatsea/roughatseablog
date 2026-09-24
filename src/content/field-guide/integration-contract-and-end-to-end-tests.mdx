@@ -1,0 +1,156 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Integration, Contract, and End-to-End Tests
+description: "Integration tests check connections, contract tests check agreements, and end-to-end tests check a complete journey through a defined system."
+prerequisites: "Functions, JSON, files, and assertions."
+---
+
+export const checks = {"csharp":{"example":"Tests.StorageIntegration(); Tests.ResponseContract(); Tests.WholeApplication();"},"python":{"example":"test_storage_integration()\ntest_response_contract()\ntest_whole_application()"}};
+
+An **integration test** checks that components work together, such as an adapter writing to and reading from real storage. A **contract test** checks an agreement between a provider and a consumer: which requests are accepted, and what responses mean. An **end-to-end test** exercises a complete journey through a defined system, from an input boundary to an observable result. [1](#source-1)
+
+These names describe the questions tests ask, not three mutually exclusive kinds of code. A broad test crosses integrations too. The useful distinction is what a passing result establishes.
+
+## Define a whole application small enough to see
+
+Our application receives JSON containing a nonnegative integer `subtotal`. It calculates shipping, produces a JSON receipt, and writes that receipt to a file. Fifty or more qualifies for free shipping; otherwise the fee is five.
+
+There is no browser, HTTP server, payment processor, or background worker. The complete journey for **this** application is JSON input to a saved receipt. Naming those boundaries prevents an in-process test from being mistaken for evidence about infrastructure that does not exist here.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class PurchaseApp
+{
+    public static string Quote(string request)
+    {
+        using var document = System.Text.Json.JsonDocument.Parse(request);
+        int subtotal = document.RootElement.GetProperty("subtotal").GetInt32();
+        if (subtotal < 0) throw new ArgumentOutOfRangeException(nameof(subtotal));
+        int fee = subtotal >= 50 ? 0 : 5;
+        return System.Text.Json.JsonSerializer.Serialize(new { subtotal, fee });
+    }
+
+    public static void Save(string path, string receipt)
+    {
+        System.IO.File.WriteAllText(path, receipt);
+    }
+
+    public static void Run(string request, string outputPath)
+    {
+        Save(outputPath, Quote(request));
+    }
+}
+
+public static class Tests
+{
+    public static void StorageIntegration()
+    {
+        string path = System.IO.Path.GetTempFileName();
+        try
+        {
+            PurchaseApp.Save(path, "receipt text");
+            if (System.IO.File.ReadAllText(path) != "receipt text")
+                throw new Exception("Receipt storage changed the content.");
+        }
+        finally { System.IO.File.Delete(path); }
+    }
+
+    public static void ResponseContract()
+    {
+        string response = PurchaseApp.Quote("{\"subtotal\":49}");
+        using var document = System.Text.Json.JsonDocument.Parse(response);
+        var root = document.RootElement;
+        if (root.GetProperty("subtotal").GetInt32() != 49 ||
+            root.GetProperty("fee").GetInt32() != 5)
+            throw new Exception("Quote does not honor the consumer agreement.");
+    }
+
+    public static void WholeApplication()
+    {
+        string path = System.IO.Path.GetTempFileName();
+        try
+        {
+            PurchaseApp.Run("{\"subtotal\":50}", path);
+            using var receipt = System.Text.Json.JsonDocument.Parse(
+                System.IO.File.ReadAllText(path));
+            if (receipt.RootElement.GetProperty("fee").GetInt32() != 0)
+                throw new Exception("Saved receipt has the wrong shipping fee.");
+        }
+        finally { System.IO.File.Delete(path); }
+    }
+}
+```
+
+`StorageIntegration` uses the actual filesystem but does not calculate a fee. `ResponseContract` checks the serialized field names and values a consumer relies on, without storing anything. `WholeApplication` enters through `Run` and examines the saved result, exercising all of this miniature application's components.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+
+def quote(request):
+    subtotal = json.loads(request)["subtotal"]
+    if type(subtotal) is not int or subtotal < 0:
+        raise ValueError("Subtotal must be a nonnegative integer.")
+    fee = 0 if subtotal >= 50 else 5
+    return json.dumps({"subtotal": subtotal, "fee": fee})
+
+
+def save(path, receipt):
+    Path(path).write_text(receipt, encoding="utf-8")
+
+
+def run(request, output_path):
+    save(output_path, quote(request))
+
+
+def test_storage_integration():
+    with TemporaryDirectory() as directory:
+        path = Path(directory) / "receipt.txt"
+        save(path, "receipt text")
+        assert path.read_text(encoding="utf-8") == "receipt text"
+
+
+def test_response_contract():
+    response = json.loads(quote('{"subtotal":49}'))
+    assert type(response["fee"]) is int
+    assert response["subtotal"] == 49
+    assert response["fee"] == 5
+
+
+def test_whole_application():
+    with TemporaryDirectory() as directory:
+        path = Path(directory) / "receipt.json"
+        run('{"subtotal":50}', path)
+        receipt = json.loads(path.read_text(encoding="utf-8"))
+        assert receipt["fee"] == 0
+```
+
+The integration check crosses into the actual filesystem. The contract check examines the JSON agreement, not a file. The whole-application check enters through `run` and verifies the resulting receipt, with no application component replaced by a fake.
+
+</section>
+
+## What these tests still do not establish
+
+The contract check is a local provider check for one request. In a separately deployed system, consumers must agree on the same contract and providers must be verified against it. Hand-copying similar expectations into two repositories can let them drift. Tools such as Pact coordinate that agreement, but a matching schema alone still does not guarantee matching meaning. [2](#source-2)
+
+The whole-application check runs in the same process. It does not verify a command-line launcher, container permissions, network routing, or production deployment. Add those boundaries to an end-to-end journey when they are part of the product being claimed. A real browser checkout test should use the browser and the required backend path, not merely call the price function and rename the test.
+
+The storage test uses a local temporary directory. It says nothing about a production database driver's transaction behavior or a remote filesystem. Test the actual adapter and technology for the integration whose risks matter.
+
+## Choose the narrowest useful failure report
+
+If the fee comparison breaks, a focused unit test should tell us directly. If only storage breaks, the integration test should locate that problem. If every isolated component works but the application passes the wrong value between them, the complete journey earns its place.
+
+A broad test is valuable because it crosses boundaries. The same breadth makes a failure less specific. Keep the focused checks rather than asking one giant journey to explain every possible defect.
+
+## Sources
+
+1. <span id="source-1"></span>[Ham Vocke — The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html), distinguishing focused, integration, contract, and broad journey checks.
+2. <span id="source-2"></span>[Pact — Introduction](https://docs.pact.io/), for consumer-driven contract verification.

@@ -1,0 +1,118 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Temp with Query
+description: "Replace Temp with Query moves a calculation from a local variable into a method that returns the calculated value."
+prerequisites: "Classes, local variables, and methods that return values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new OrderLine(5, 20).Qualifies()); Check.That(!new OrderLine(4, 20).Qualifies());","revised":"Check.That(new OrderLine(5, 20).Qualifies()); Check.That(!new OrderLine(4, 20).Qualifies()); Check.That(new OrderLine(5, 20).Subtotal() == 100);"},"python":{"original":"assert OrderLine(5, 20).qualifies()\nassert not OrderLine(4, 20).qualifies()","revised":"assert OrderLine(5, 20).qualifies()\nassert not OrderLine(4, 20).qualifies()\nassert OrderLine(5, 20).subtotal() == 100"}};
+
+**Replace Temp with Query** moves a calculation from a local variable into a method that returns the value. Here *query* means an operation that asks for information without changing the object—not necessarily a database query. [1](#source-1)
+
+## Original version: a calculation belongs to one method
+
+An order line qualifies for a promotion when its subtotal reaches 100 coins. The quantity and unit price are nonnegative integers in this simplified example.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class OrderLine
+{
+    private readonly int quantity;
+    private readonly int unitPrice;
+    public OrderLine(int quantity, int unitPrice)
+    {
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
+    public bool Qualifies()
+    {
+        int subtotal = quantity * unitPrice;
+        return subtotal >= 100;
+    }
+}
+```
+
+The subtotal exists only as a local variable inside `Qualifies`. A second operation needing the same calculation would have to repeat it or move it somewhere reusable.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class OrderLine:
+    def __init__(self, quantity, unit_price):
+        self._quantity = quantity
+        self._unit_price = unit_price
+
+    def qualifies(self):
+        subtotal = self._quantity * self._unit_price
+        return subtotal >= 100
+```
+
+The subtotal exists only while `qualifies` runs. Its formula is not yet available through a named operation.
+
+</section>
+
+## Refactored version: ask the line for its subtotal
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class OrderLine
+{
+    private readonly int quantity;
+    private readonly int unitPrice;
+    public OrderLine(int quantity, int unitPrice)
+    {
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
+    public int Subtotal()
+    {
+        return quantity * unitPrice;
+    }
+
+    public bool Qualifies()
+    {
+        return Subtotal() >= 100;
+    }
+}
+```
+
+`Subtotal` owns the formula. `Qualifies` asks for its result. Five items at 20 coins still qualify, while four do not.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class OrderLine:
+    def __init__(self, quantity, unit_price):
+        self._quantity = quantity
+        self._unit_price = unit_price
+
+    def subtotal(self):
+        return self._quantity * self._unit_price
+
+    def qualifies(self):
+        return self.subtotal() >= 100
+```
+
+`subtotal` owns the formula, and `qualifies` uses its result. The promotion threshold has not changed.
+
+</section>
+
+## A query is not a cached value
+
+Calling the new method calculates the subtotal each time. The old temporary stored one result for the remainder of that invocation. Those are equivalent here because the inputs do not change during the calculation and multiplication is inexpensive.
+
+They need not be equivalent for a clock reading, a database lookup, an expensive traversal, or mutable inputs. Preserve a deliberate snapshot when later steps must use the same value. Do not turn one external request into repeated requests merely to remove a local variable.
+
+The method is public here to demonstrate reuse; keep it private when only the class needs it. Extracting a query is valuable when the named calculation clarifies several operations, not because local variables are inherently undesirable.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Temp with Query](https://refactoring.com/catalog/replaceTempWithQuery.html).

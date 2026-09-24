@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Cohesion and Coupling
+description: "Cohesion asks how well the contents of one component belong together. Coupling asks how strongly one component depends on another."
+prerequisites: "Classes, fields, methods, and passing values to functions."
+---
+
+export const checks = {"csharp":{"wallet":"var wallet = new Wallet(20); wallet.Deposit(5); wallet.Spend(8); Check.That(wallet.Coins == 17); Check.That(WalletLabel.Format(wallet.Coins) == \"17 coins\"); bool rejected = false; try { wallet.Spend(100); } catch (ArgumentOutOfRangeException) { rejected = true; } Check.That(rejected && wallet.Coins == 17);"},"python":{"wallet":"wallet = Wallet(20)\nwallet.deposit(5)\nwallet.spend(8)\nassert wallet.coins == 17\nassert wallet_label(wallet.coins) == '17 coins'\ntry:\n    wallet.spend(100)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('overspending accepted')\nassert wallet.coins == 17"}};
+
+**Cohesion** asks how well the contents of one component belong together. **Coupling** asks how strongly one component depends on another.
+
+A class that contains related operations has high cohesion. Two classes are tightly coupled when changing the details of one repeatedly forces changes to the other. These are two different questions: one looks inside a component; the other looks between components. [1](#source-1)
+
+## A wallet and the text beside it
+
+Consider a game's coin wallet. Adding coins, spending coins, and reporting the balance all concern the same state. Displaying that balance as an English sentence is a separate concern: the game's wording can change without changing how spending works.
+
+<section data-pilot-language="csharp">
+
+```csharp group=wallet role=types
+public sealed class Wallet
+{
+    private int coins;
+    public int Coins { get { return coins; } }
+
+    public Wallet(int startingCoins)
+    {
+        if (startingCoins < 0) throw new ArgumentOutOfRangeException(nameof(startingCoins));
+        coins = startingCoins;
+    }
+
+    public void Deposit(int amount)
+    {
+        if (amount < 0) throw new ArgumentOutOfRangeException(nameof(amount));
+        coins = checked(coins + amount);
+    }
+
+    public void Spend(int amount)
+    {
+        if (amount < 0 || amount > coins)
+            throw new ArgumentOutOfRangeException(nameof(amount));
+        coins -= amount;
+    }
+}
+
+public static class WalletLabel
+{
+    public static string Format(int coins)
+    {
+        return $"{coins} coins";
+    }
+}
+```
+
+```csharp group=wallet role=run
+Wallet wallet = new Wallet(20);
+wallet.Spend(8);
+Console.WriteLine(WalletLabel.Format(wallet.Coins)); // 12 coins
+```
+
+`Deposit`, `Spend`, and `Coins` all work with the wallet's balance. `WalletLabel.Format` receives just the number it needs. It does not inspect a private field or know how the wallet stores its balance. `checked` rejects an integer overflow instead of allowing a large deposit to wrap around.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=wallet role=types
+class Wallet:
+    def __init__(self, starting_coins):
+        if starting_coins < 0:
+            raise ValueError("starting coins cannot be negative")
+        self._coins = starting_coins
+
+    @property
+    def coins(self):
+        return self._coins
+
+    def deposit(self, amount):
+        if amount < 0:
+            raise ValueError("deposit cannot be negative")
+        self._coins += amount
+
+    def spend(self, amount):
+        if amount < 0 or amount > self._coins:
+            raise ValueError("invalid spending amount")
+        self._coins -= amount
+
+
+def wallet_label(coins):
+    return f"{coins} coins"
+```
+
+```python group=wallet role=run
+wallet = Wallet(20)
+wallet.spend(8)
+print(wallet_label(wallet.coins))  # 12 coins
+```
+
+`deposit`, `spend`, and `coins` all work with the wallet's balance. `wallet_label` receives just the number it needs. It does not inspect `_coins` or know how the wallet stores its balance. The underscore marks an implementation detail by convention, not an enforced access restriction.
+
+</section>
+
+## Follow two different changes
+
+Suppose the game starts calling its currency “crowns.” The text formatter changes; spending arithmetic does not. Suppose instead that the wallet must track individual transactions. The wallet's implementation could change while continuing to report a balance as a number. The formatter would not need to learn about transaction records.
+
+That is the benefit of the limited dependency. It does not mean the two pieces are completely unrelated: the calling code still connects them, and the formatter still expects an integer balance. Changing the currency to fractional amounts would require reconsidering that agreement.
+
+The wallet has high cohesion because its operations serve one recognizable purpose. Adding unrelated image resizing or network matchmaking to the same class would weaken that cohesion, even if the file remained short.
+
+## Neither measure is a competition
+
+A one-line function can have low cohesion if it somehow combines unrelated concerns. A large parser can have high cohesion if its pieces all implement one language. File size is evidence to inspect, not the definition.
+
+Likewise, zero coupling is not a practical goal for components that must cooperate. The aim is a dependency you can understand and sustain. Passing one balance to a formatter is a simpler agreement than letting the formatter explore and modify a wallet's internal records.
+
+Before introducing another interface or file, ask what change it would allow you to make independently. If the only answer is “there would be another layer,” the design may be adding navigation rather than reducing a real dependency.
+
+## Sources
+
+1. <span id="source-1"></span>[Andy Hunt and Dave Thomas — Pragmatic Programmer tips](https://pragprog.com/tips/), especially the discussions of unrelated effects and decoupled code. The wallet analysis and examples are original.
+2. [Microsoft — Object-oriented types](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/), for the C# class and member mechanisms used here.

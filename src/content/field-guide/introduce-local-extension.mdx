@@ -1,0 +1,101 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Introduce Local Extension
+description: "Introduce Local Extension groups extra operations around a library type you do not control, usually using a wrapper."
+prerequisites: "Classes, composition, and date arithmetic."
+---
+
+export const checks = {"csharp":{"example":"var friday = new WeekdayDate(new DateOnly(2026, 9, 25)); Check.That(!friday.IsWeekend); Check.That(friday.Next().Value == new DateOnly(2026, 9, 28)); Check.That(new WeekdayDate(new DateOnly(2026, 9, 26)).IsWeekend);"},"python":{"example":"friday = WeekdayDate(date(2026, 9, 25))\nassert not friday.is_weekend\nassert friday.next().value == date(2026, 9, 28)\nassert WeekdayDate(date(2026, 9, 26)).is_weekend"}};
+
+**Introduce Local Extension** creates a local type that adds useful operations around a library type you do not control. A wrapper stores the library value and supplies the extra behavior. Inheritance is another possibility only when the library type supports safe subclassing. [1](#source-1)
+
+## Give a group of date rules one home
+
+Suppose several screens need to identify weekends and advance to the next weekday. Rather than scattering that arithmetic across screens, create a small wrapper around the platform date.
+
+The rule here is specifically Monday through Friday. Holidays, time zones, and working hours are outside its scope.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class WeekdayDate
+{
+    public DateOnly Value { get; }
+    public WeekdayDate(DateOnly value) { Value = value; }
+
+    public bool IsWeekend
+    {
+        get
+        {
+            return Value.DayOfWeek == DayOfWeek.Saturday ||
+                   Value.DayOfWeek == DayOfWeek.Sunday;
+        }
+    }
+
+    public WeekdayDate Next()
+    {
+        var result = new WeekdayDate(Value.AddDays(1));
+        while (result.IsWeekend)
+        {
+            result = new WeekdayDate(result.Value.AddDays(1));
+        }
+        return result;
+    }
+}
+```
+
+```csharp group=example role=run
+var day = new WeekdayDate(new DateOnly(2026, 9, 25));
+Console.WriteLine(day.Next().Value); // Monday, September 28
+```
+
+`Value` retains the platform date. `IsWeekend` names one rule, and `Next` reuses it. Calling `Next` creates a new wrapper rather than modifying `day`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from datetime import date, timedelta
+
+
+class WeekdayDate:
+    def __init__(self, value):
+        self._value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    @property
+    def is_weekend(self):
+        return self._value.weekday() >= 5
+
+    def next(self):
+        result = WeekdayDate(self._value + timedelta(days=1))
+        while result.is_weekend:
+            result = WeekdayDate(result.value + timedelta(days=1))
+        return result
+```
+
+```python group=example role=run
+day = WeekdayDate(date(2026, 9, 25))
+print(day.next().value)  # 2026-09-28
+```
+
+The wrapper retains a `date`, adds named rules, and returns another wrapper for the next weekday. It does not modify Python's built-in date implementation.
+
+</section>
+
+## Decide whether a wrapper is worth carrying
+
+The alternative is ordinary functions accepting dates. With only these two operations, that may be simpler. A wrapper becomes more attractive when a larger, coherent set of operations belongs to a domain-specific date concept.
+
+Callers now distinguish the wrapper from the underlying date and may need to unwrap `Value` or `value` when calling a library. Decide how equality, formatting, serialization, and further arithmetic should work rather than assuming they are inherited automatically. This wrapper deliberately does not implement value equality.
+
+Unlike an Adapter, the primary purpose here is to add operations, not to translate an incompatible interface into an existing one. Keep the extension small and explicit; do not accidentally create an incomplete replacement for the standard date library.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Refactoring catalog](https://refactoring.com/catalog/), for the refactoring vocabulary.
+2. [Microsoft — DateOnly](https://learn.microsoft.com/en-us/dotnet/standard/datetime/how-to-use-dateonly-timeonly) and [Python — datetime](https://docs.python.org/3/library/datetime.html), for the wrapped date behavior.

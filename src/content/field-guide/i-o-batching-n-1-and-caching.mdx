@@ -1,0 +1,151 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: I/O Batching, N+1, and Caching
+description: "Batch related requests to reduce round trips, and reuse results only for a lifetime in which their freshness is acceptable."
+prerequisites: "Loops, dictionaries, external requests, and cache lifetime."
+---
+
+export const checks = {"csharp":{"example":"int[] ids = { 1, 2, 1, 3, 2 }; var original = new Store(ids); var cached = new Store(ids); var batched = new Store(ids); var expected = Loader.OneAtATime(original); Check.That(Loader.RequestCached(cached).SequenceEqual(expected)); Check.That(Loader.Batched(batched).SequenceEqual(expected)); Check.That(original.Calls == 6 && cached.Calls == 4 && batched.Calls == 2); var empty = new Store(Array.Empty<int>()); Check.That(Loader.Batched(empty).Length == 0 && empty.Calls == 1);"},"python":{"example":"ids = [1, 2, 1, 3, 2]\noriginal, cached, batched = Store(ids), Store(ids), Store(ids)\nexpected = one_at_a_time(original)\nassert request_cached(cached) == batched_load(batched) == expected\nassert (original.calls, cached.calls, batched.calls) == (6, 4, 2)\nempty = Store([])\nassert batched_load(empty) == [] and empty.calls == 1"}};
+
+**Batching** combines related input/output requests. **N+1** describes one request for a list followed by another request for every item. **Caching** reuses a result rather than retrieving or calculating it again. All three concern avoiding unnecessary work, but they change different parts of the operation. [1](#source-1)
+
+## A page asks for the same titles repeatedly
+
+An application first obtains the identifiers `1, 2, 1, 3, 2`, then displays their titles in that order. Repeated identifiers are intentional: the output must keep both their positions and their duplicates.
+
+The store below is an in-memory stand-in. Its counter represents calls that would cross a storage boundary; it does not simulate a network or measure real latency.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Store
+{
+    private readonly int[] ids;
+    private readonly Dictionary<int, string> titles = new Dictionary<int, string>
+    {
+        { 1, "Harbor" }, { 2, "Forest" }, { 3, "Mountain" }
+    };
+    public int Calls { get; private set; }
+    public Store(int[] ids) { this.ids = ids.ToArray(); }
+    public int[] GetIds() { Calls++; return ids.ToArray(); }
+    public string Read(int id) { Calls++; return titles[id]; }
+    public Dictionary<int, string> ReadMany(IEnumerable<int> requested)
+    {
+        Calls++;
+        return requested.Distinct().ToDictionary(id => id, id => titles[id]);
+    }
+}
+
+public static class Loader
+{
+    public static string[] OneAtATime(Store store)
+    {
+        return store.GetIds().Select(store.Read).ToArray();
+    }
+    public static string[] RequestCached(Store store)
+    {
+        var cache = new Dictionary<int, string>();
+        var result = new List<string>();
+        foreach (int id in store.GetIds())
+        {
+            if (!cache.TryGetValue(id, out string? title))
+            {
+                title = store.Read(id);
+                cache.Add(id, title);
+            }
+            result.Add(title);
+        }
+        return result.ToArray();
+    }
+    public static string[] Batched(Store store)
+    {
+        int[] ids = store.GetIds();
+        if (ids.Length == 0) return Array.Empty<string>();
+        var titles = store.ReadMany(ids);
+        return ids.Select(id => titles[id]).ToArray();
+    }
+}
+```
+
+```csharp group=example role=run
+int[] ids = { 1, 2, 1, 3, 2 };
+var store = new Store(ids);
+Console.WriteLine(string.Join(", ", Loader.Batched(store)));
+Console.WriteLine(store.Calls); // 2
+```
+
+The batch returns a mapping. The final projection follows the original identifier sequence, so neither order nor duplicates are lost. A store returning rows in a different order would not change that result.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Store:
+    def __init__(self, ids):
+        self._ids = list(ids)
+        self._titles = {1: "Harbor", 2: "Forest", 3: "Mountain"}
+        self.calls = 0
+
+    def get_ids(self):
+        self.calls += 1
+        return list(self._ids)
+
+    def read(self, item_id):
+        self.calls += 1
+        return self._titles[item_id]
+
+    def read_many(self, ids):
+        self.calls += 1
+        return {item_id: self._titles[item_id] for item_id in set(ids)}
+
+
+def one_at_a_time(store):
+    return [store.read(item_id) for item_id in store.get_ids()]
+
+
+def request_cached(store):
+    cache = {}
+    result = []
+    for item_id in store.get_ids():
+        if item_id not in cache:
+            cache[item_id] = store.read(item_id)
+        result.append(cache[item_id])
+    return result
+
+
+def batched_load(store):
+    ids = store.get_ids()
+    if not ids:
+        return []
+    titles = store.read_many(ids)
+    return [titles[item_id] for item_id in ids]
+```
+
+```python group=example role=run
+store = Store([1, 2, 1, 3, 2])
+print(batched_load(store))
+print(store.calls)  # 2
+```
+
+The cache lives for one loader call. The batch instead requests all distinct titles together. Both still return `Harbor, Forest, Harbor, Mountain, Forest`.
+
+</section>
+
+## Compare the requests that actually remain
+
+The original makes six calls: one list request plus five title requests. The request-local cache makes four: the list plus three distinct titles. The batch makes two: the list plus one multi-title request. A query that directly returns the required projected data might do the task in one call; that capability is not implemented by this store.
+
+Putting the original loop in another helper would still make six requests. Running the five reads concurrently could overlap waiting, but would not remove them or their load on the provider.
+
+## Limit both batch size and cache lifetime
+
+A huge batch can exceed query-parameter limits or consume excessive memory. Use bounded batches when necessary, and inspect the actual commands produced by an ORM rather than assuming one source-level call means one database round trip.
+
+A longer-lived cache needs a freshness and invalidation policy. A price or permission copied indefinitely can become wrong even though its lookup is fast. Request-local caching avoids cross-request retention, but still assumes reusing a value within that request is acceptable. A transaction or snapshot may be needed when several values must describe the same moment.
+
+The example assumes known identifiers and stable titles during a call. Real batch APIs must define missing items, partial failures, and retry behavior. Measure real query count and user-visible latency after the change; fewer simulated calls are evidence of the algorithm's shape, not a production performance benchmark.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Efficient Querying in EF Core](https://learn.microsoft.com/en-us/ef/core/performance/efficient-querying), on N+1, projection, buffering, and query trade-offs.

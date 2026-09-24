@@ -1,0 +1,97 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Inline Class
+description: "Inline Class moves a class's remaining data and behavior into another class when the separate type no longer has a useful job."
+prerequisites: "Classes, constructors, and fields."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Parcel(\"Dock 4\").Label() == \"Dock 4\");","revised":"Check.That(new Parcel(\"Dock 4\").Label() == \"Dock 4\"); Check.That(new Parcel(\"\").Label() == \"\");"},"python":{"original":"assert Parcel('Dock 4').label() == 'Dock 4'","revised":"assert Parcel('Dock 4').label() == 'Dock 4'\nassert Parcel('').label() == ''"}};
+
+**Inline Class** moves a class's remaining fields and behavior into a class that uses it, then removes the redundant type. It is the reverse of Extract Class. [1](#source-1)
+
+## Original version: a class that only carries text
+
+In this small application, a parcel has a label. An internal label class stores one string, performs no validation or formatting, and is not used anywhere else.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+internal sealed class DeliveryLabel
+{
+    public string Text { get; }
+    public DeliveryLabel(string text) { Text = text; }
+}
+
+public sealed class Parcel
+{
+    private readonly DeliveryLabel label;
+    public Parcel(string text) { label = new DeliveryLabel(text); }
+    public string Label() { return label.Text; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class _DeliveryLabel:
+    def __init__(self, text):
+        self.text = text
+
+
+class Parcel:
+    def __init__(self, text):
+        self._label = _DeliveryLabel(text)
+
+    def label(self):
+        return self._label.text
+```
+
+</section>
+
+The extra object contributes neither a rule nor a meaningful operation. It is just one more place to visit while understanding a parcel.
+
+## Refactored version: store the text directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Parcel
+{
+    private readonly string label;
+    public Parcel(string text) { label = text; }
+    public string Label() { return label; }
+}
+```
+
+The public constructor and `Label` method are unchanged. The internal object is gone.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Parcel:
+    def __init__(self, text):
+        self._label = text
+
+    def label(self):
+        return self._label
+```
+
+`Parcel("Dock 4").label()` still returns `Dock 4`; the parcel no longer forwards through another object.
+
+</section>
+
+## A small class may still matter
+
+A one-field type can prevent mixing a customer identifier with an order identifier, validate a currency, or enforce a security boundary. Those are real responsibilities. Size alone is not a reason to inline it.
+
+Check other consumers, serialization, identity comparisons, and extension points before deleting a type. The example assumes the label wrapper is internal and unshared. If external code constructs or recognizes it, removing it changes an API and needs a migration plan.
+
+Extraction and inlining are not rival philosophies. As requirements evolve, a class can acquire a useful role or lose one. Keep the separate type when its meaning and behavior justify it; remove it when it only adds navigation.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Inline Class](https://refactoring.com/catalog/inlineClass.html).

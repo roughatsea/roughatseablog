@@ -1,0 +1,93 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Security Audit Logging
+description: "Security audit logging records important security-relevant actions with enough trustworthy context to investigate what happened, without leaking the secrets it is meant to protect."
+prerequisites: "Structured events, authenticated identities, JSON, and log storage."
+---
+
+export const checks = {"csharp":{"example":"string resource = \"N-7\" + (char)10 + \"forged record\"; string line = Audit.Format(\"E-7\", \"Mira\", resource, false); Check.That(!line.Contains((char)10)); using var parsed = System.Text.Json.JsonDocument.Parse(line); Check.That(parsed.RootElement.GetProperty(\"outcome\").GetString() == \"denied\"); Check.That(parsed.RootElement.GetProperty(\"resource\").GetString() == resource); Check.That(!line.Contains(\"password\"));"},"python":{"example":"resource = 'N-7' + chr(10) + 'forged record'\nline = format_event('E-7', 'Mira', resource, False)\nassert chr(10) not in line\nparsed = json.loads(line)\nassert parsed['outcome'] == 'denied'\nassert parsed['resource'] == resource\nassert 'password' not in parsed"}};
+
+**Security audit logging** records important security-relevant actions with enough trustworthy context to investigate what happened. It should identify the action, actor, resource, outcome, and relevant time or request context without exposing passwords, tokens, or private content unnecessarily. [1](#source-1)
+
+An audit trail has a different purpose from a developer's temporary debug print. It needs a defined event policy, protected storage, and a retention and access plan.
+
+## Record the denied read, not the private note
+
+Suppose a user requests a note they do not own. A useful event can record an internal actor identifier, the requested resource identifier, a denial outcome, and an event identifier. It should not copy the session cookie or the note body into a message.
+
+The actor is supplied by trusted authentication, and the outcome is produced by the authorization decision—not accepted from fields the requester sends. The following function demonstrates a compact structured event, not the entire collection and storage pipeline.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Audit
+{
+    public static string Format(string eventId, string actor, string resource, bool allowed)
+    {
+        if (eventId.Length > 128 || actor.Length > 128 || resource.Length > 256)
+            throw new ArgumentException("Audit identifier exceeds its limit.");
+        return System.Text.Json.JsonSerializer.Serialize(new
+        {
+            eventId,
+            actor,
+            action = "note.read",
+            resource,
+            outcome = allowed ? "allowed" : "denied"
+        });
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(Audit.Format("E-7", "Mira", "N-8", false));
+```
+
+The serializer escapes a newline inside a field instead of treating it as a second log record. The approved fields do not include credentials or content. Strings are assumed non-null and identifiers are bounded by the schema.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import json
+
+
+def format_event(event_id, actor, resource, allowed):
+    if len(event_id) > 128 or len(actor) > 128 or len(resource) > 256:
+        raise ValueError("Audit identifier exceeds its limit.")
+    return json.dumps({
+        "eventId": event_id,
+        "actor": actor,
+        "action": "note.read",
+        "resource": resource,
+        "outcome": "allowed" if allowed else "denied",
+    }, separators=(",", ":"))
+```
+
+```python group=example role=run
+print(format_event("E-7", "Mira", "N-8", False))
+```
+
+The JSON representation keeps field boundaries intact even when an identifier contains newline text. That is not a substitute for validating identifiers at the request boundary or escaping them appropriately in a log-viewing UI.
+
+</section>
+
+## The surrounding system supplies the rest of the evidence
+
+Add a trusted event time, service identity, and correlation or trace identifier where appropriate. Distinguish the time an action occurred from the time a collector received it. Record outcomes accurately: an attempted operation, a successful operation, and a later rollback are not the same event.
+
+Decide which events need recording: access denials, privilege changes, credential administration, sensitive exports, and relevant configuration changes are common candidates. Avoid logging everything indiscriminately. Excess private data creates another exposure, and excessive volume can make important events harder to find.
+
+Restrict who can write, read, alter, and delete the trail. Append-oriented storage, remote collection, integrity controls, and monitored gaps can improve evidence quality, but a list of JSON strings is not tamper-proof. An event identifier also does not, by itself, provide exactly-once delivery. [1](#source-1)
+
+## Define failure policy instead of hoping logs always work
+
+What happens if the audit destination is unavailable? Some operations may need durable local buffering or a transactional outbox; others may be required to refuse the action if no compliant audit record can be produced. Choose the policy from the operation's risk and obligations, then test the failure path.
+
+Do not silently claim that every action was audited when a buffer can drop entries. Conversely, an attacker should not be able to exhaust a disk with uncontrolled diagnostic input and take down the service unnecessarily.
+
+The displayed checks verify event shape and newline handling. They do not establish retention, trusted identity, complete route coverage, or successful delivery to protected storage. Those are essential parts of an actual audit system and require their own evidence.
+
+## Sources
+
+1. <span id="source-1"></span>[OWASP — Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html), including event content, sensitive-data exclusions, integrity, and failure handling.

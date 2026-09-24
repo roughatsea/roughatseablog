@@ -1,0 +1,68 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Introduce Assertion
+description: "An assertion states a condition the programmer believes must already be true at a particular point, making an internal assumption visible and checkable."
+prerequisites: "Conditions, invariants, and the difference between a programming defect and invalid input."
+---
+
+export const checks = {"csharp":{"example":"Check.That(Ranges.Width(3, 8) == 5); Check.That(Ranges.Width(4, 4) == 0);"},"python":{"example":"assert width(3, 8) == 5\nassert width(4, 4) == 0\ntry:\n    width(8, 3)\nexcept AssertionError:\n    pass\nelse:\n    raise AssertionError('internal assumption not checked')"}};
+
+An **assertion** states a condition the programmer believes must already be true at a particular point. **Introduce Assertion** turns an implicit internal assumption into an explicit check. A failed assertion indicates a programming mistake or violated internal contract, not an ordinary user mistake to recover from. [1](#source-1)
+
+## Make an internal ordering assumption visible
+
+Suppose earlier code sorts two endpoints before passing them to an internal width calculation. The calculation assumes the end is not before the start. Without an assertion, a defect in that earlier step could quietly produce a negative width.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Ranges
+{
+    public static int Width(int start, int end)
+    {
+        System.Diagnostics.Debug.Assert(
+            end >= start, "Endpoints should already be ordered.");
+        return end - start;
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(Ranges.Width(3, 8)); // 5
+```
+
+`Debug.Assert` documents and checks the assumption in builds where the `DEBUG` conditional symbol enables the call. It is not a reliable runtime validation boundary, and its failure handling is not equivalent to throwing a normal argument exception. This example's automated C# execution checks valid widths; it does not claim that a Release build rejects reversed endpoints. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def width(start, end):
+    assert end >= start, "Endpoints should already be ordered."
+    return end - start
+```
+
+```python group=example role=run
+print(width(3, 8))  # 5
+```
+
+With assertions enabled, reversed endpoints raise `AssertionError` at the point where the assumption is violated. Python's optimization option can remove assertion statements, so callers must not rely on this assertion to validate untrusted input. [3](#source-3)
+
+</section>
+
+## Assertions must not perform required work
+
+An assertion expression should inspect state, not change it. Placing a database write, increment, or necessary function call inside an assertion can make program behavior depend on whether assertions are enabled.
+
+For public input, write an ordinary validation branch and return or raise the documented error. For security checks, use enforced authorization logic. “The user should never submit this” is not an internal invariant.
+
+Assertions also do not prove that a condition always holds. They expose violations only when execution reaches the check in a configuration that runs it. Combine them with tests and a design that makes invalid states difficult to construct.
+
+The benefit is a precise statement of programmer intent: this value is expected to be ordered **already**. The difference between checking an established invariant and establishing validity is what makes an assertion useful rather than misleading.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Introduce Assertion](https://refactoring.com/catalog/introduceAssertion.html).
+2. <span id="source-2"></span>[Microsoft — Debug.Assert](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.debug.assert).
+3. <span id="source-3"></span>[Python — The assert statement](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement).

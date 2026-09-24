@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Form Template Method
+description: "Extract the differing steps of similar algorithms, then put their common sequence in a base method that calls those steps."
+prerequisites: "Inheritance, overriding, and ordered method calls."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new PlainReport().Render(\" Mira \") == \"Mira\\nEND\"); Check.That(new BracketReport().Render(\" Mira \") == \"[Mira]\\nEND\");","revised":"Check.That(new PlainReport().Render(\" Mira \") == \"Mira\\nEND\"); Check.That(new BracketReport().Render(\" Mira \") == \"[Mira]\\nEND\");"},"python":{"original":"assert PlainReport().render(' Mira ') == 'Mira\\nEND'\nassert BracketReport().render(' Mira ') == '[Mira]\\nEND'","revised":"assert PlainReport().render(' Mira ') == 'Mira\\nEND'\nassert BracketReport().render(' Mira ') == '[Mira]\\nEND'"}};
+
+**Form Template Method** reorganizes similar algorithms so their common sequence lives in one base method while differing steps are supplied by subclasses. The resulting structure is the Template Method pattern; this refactoring describes how to get there from duplicated algorithms. [1](#source-1)
+
+## Original version: two reports repeat the same sequence
+
+Both reports trim a title, format it, and append an end marker. Only the title decoration differs. The examples assume a non-null string.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class PlainReport
+{
+    public string Render(string title)
+    {
+        string clean = title.Trim();
+        return clean + "\nEND";
+    }
+}
+public sealed class BracketReport
+{
+    public string Render(string title)
+    {
+        string clean = title.Trim();
+        return "[" + clean + "]\nEND";
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class PlainReport:
+    def render(self, title):
+        clean = title.strip()
+        return clean + "\nEND"
+
+
+class BracketReport:
+    def render(self, title):
+        clean = title.strip()
+        return "[" + clean + "]\nEND"
+```
+
+</section>
+
+If normalization or the end marker changes, both algorithms must stay aligned.
+
+## Refactored version: one sequence, one replaceable step
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class Report
+{
+    public string Render(string title)
+    {
+        string clean = title.Trim();
+        return Decorate(clean) + "\nEND";
+    }
+    protected abstract string Decorate(string title);
+}
+public sealed class PlainReport : Report
+{
+    protected override string Decorate(string title) { return title; }
+}
+public sealed class BracketReport : Report
+{
+    protected override string Decorate(string title) { return "[" + title + "]"; }
+}
+```
+
+`Render` fixes the order: trim, decorate, append. Subclasses only supply `Decorate`. The nonvirtual public method is not itself an override point in this C# design.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Report:
+    def render(self, title):
+        clean = title.strip()
+        return self._decorate(clean) + "\nEND"
+
+    def _decorate(self, title):
+        raise NotImplementedError
+
+
+class PlainReport(Report):
+    def _decorate(self, title):
+        return title
+
+
+class BracketReport(Report):
+    def _decorate(self, title):
+        return "[" + title + "]"
+```
+
+Subclasses inherit `render` and provide `_decorate`. Python still allows a subclass to override `render`; the intended extension contract is a design convention unless additional tooling enforces it.
+
+</section>
+
+## Extract the real shared algorithm
+
+The common steps must occur in the same meaningful order. Do not force two merely similar workflows into a base class full of flags and empty hook methods.
+
+Here the texts before and after are identical, including the newline. In a larger operation, tests should also observe exceptions and side effects around the varying steps.
+
+For one small variation, passing a formatting function may be simpler and more flexible than inheritance. Template Method is useful when the stable sequence itself is an important reusable contract and the allowed variation can be expressed through a few understandable steps.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Form Template Method](https://refactoring.com/catalog/formTemplateMethod.html).

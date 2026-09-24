@@ -1,0 +1,124 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Split Loop
+description: "Separate a loop doing unrelated jobs into one loop per job, making each calculation easier to understand and change."
+prerequisites: "Loops, collections, and accumulation."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Stock.Summary(new[] { new Item(\"Potion\", 5), new Item(\"Map\", 3) }) == \"Potion,Map: 8\"); Check.That(Stock.Summary(Array.Empty<Item>()) == \": 0\");","revised":"Check.That(Stock.Summary(new[] { new Item(\"Potion\", 5), new Item(\"Map\", 3) }) == \"Potion,Map: 8\"); Check.That(Stock.Summary(Array.Empty<Item>()) == \": 0\");"},"python":{"original":"assert summary([Item('Potion', 5), Item('Map', 3)]) == 'Potion,Map: 8'\nassert summary([]) == ': 0'","revised":"assert summary([Item('Potion', 5), Item('Map', 3)]) == 'Potion,Map: 8'\nassert summary([]) == ': 0'"}};
+
+**Split Loop** separates a loop doing several jobs into one loop per job. Each loop then has a clearer purpose and can be changed or extracted independently. It trades one traversal for several, so the collection's behavior and the actual performance requirements matter. [1](#source-1)
+
+## Original version: collect names and add prices together
+
+A stock summary lists item names and totals their prices. The input is an ordinary materialized array or list, and its item values do not change during this operation.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed record Item(string Name, int Price);
+public static class Stock
+{
+    public static string Summary(Item[] items)
+    {
+        var names = new List<string>();
+        int total = 0;
+        foreach (Item item in items)
+        {
+            names.Add(item.Name);
+            total += item.Price;
+        }
+        return string.Join(",", names) + ": " + total;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Item:
+    name: str
+    price: int
+
+
+def summary(items):
+    names = []
+    total = 0
+    for item in items:
+        names.append(item.name)
+        total += item.price
+    return ",".join(names) + ": " + str(total)
+```
+
+</section>
+
+The two accumulators do not depend on one another. They simply happen to use the same collection.
+
+## Refactored version: one purpose per traversal
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed record Item(string Name, int Price);
+public static class Stock
+{
+    public static string Summary(Item[] items)
+    {
+        var names = new List<string>();
+        foreach (Item item in items) names.Add(item.Name);
+
+        int total = 0;
+        foreach (Item item in items) total += item.Price;
+
+        return string.Join(",", names) + ": " + total;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Item:
+    name: str
+    price: int
+
+
+def summary(items):
+    names = []
+    for item in items:
+        names.append(item.name)
+
+    total = 0
+    for item in items:
+        total += item.price
+
+    return ",".join(names) + ": " + str(total)
+```
+
+</section>
+
+The first loop builds the name list in the original order. The second computes the same total. Two items named Potion and Map, priced five and three, still produce `Potion,Map: 8`.
+
+## Traversing twice is a real change in execution
+
+This is not safe for every input. A one-shot Python generator may be exhausted after the first loop. A database-backed sequence may perform a second query, and mutable data may differ between traversals. Materializing the input can address some cases, but it introduces memory and timing choices of its own.
+
+The example also changes the order in which name and price fields are read. That is harmless for the fixed stored values shown here, not necessarily for side-effecting getters.
+
+Both versions perform work proportional to the number of items, but that does not make their real costs identical. Measure hot paths. For a tiny loop, the original may already be clear; splitting is useful when independent jobs have grown complicated enough that combining them obscures both.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Split Loop](https://refactoring.com/catalog/splitLoop.html).

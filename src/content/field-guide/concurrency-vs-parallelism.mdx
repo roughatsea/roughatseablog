@@ -1,0 +1,112 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Concurrency versus Parallelism
+description: "Concurrency means work overlaps in progress. Parallelism means work executes at the same time. A program can be concurrent on one thread."
+prerequisites: "Functions, tasks, and the idea of waiting for a result."
+---
+
+export const checks = {"csharp":{"example":"var trace = await Demo.Overlap(); Check.That(trace.Take(2).SequenceEqual(new[] { \"A started\", \"B started\" })); Check.That(trace.Length == 4);"},"python":{"example":"trace = asyncio.run(overlap())\nassert trace[:2] == ['A started', 'B started']\nassert len(trace) == 4"}};
+
+**Concurrency** means several operations can be in progress during overlapping periods. **Parallelism** means operations execute at the same time, for example on different CPU cores. A program can be concurrent without running its own instructions in parallel. [1](#source-1)
+
+Imagine requesting two images. After starting the first request, the application can start the second while the first is waiting for a response. One thread can manage both waits. By contrast, calculating two expensive image transformations simultaneously on separate cores is parallel computation.
+
+## Overlap does not require simultaneous instructions
+
+Here is a possible single-threaded sequence:
+
+| Moment | Operation A | Operation B |
+| --- | --- | --- |
+| 1 | Starts and begins waiting | Not started |
+| 2 | Waiting | Starts and begins waiting |
+| 3 | Resumes and finishes | Waiting |
+| 4 | Finished | Resumes and finishes |
+
+Both operations were in progress between moments two and three. Their application code did not need to execute at the same instant.
+
+## Hold two operations at a visible waiting point
+
+Instead of making real network requests, this example uses a gate. Both operations announce that they started, then wait for the gate to open. We can verify overlap without depending on network timing.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Demo
+{
+    public static async Task<string[]> Overlap()
+    {
+        var events = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        var gate = new TaskCompletionSource<bool>(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+
+        async Task Work(string name)
+        {
+            events.Enqueue(name + " started");
+            await gate.Task;
+            events.Enqueue(name + " finished");
+        }
+
+        Task first = Work("A");
+        Task second = Work("B");
+        if (events.Count != 2) throw new Exception("Both operations should be waiting.");
+        gate.SetResult(true);
+        await Task.WhenAll(first, second);
+        return events.ToArray();
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(string.Join("\n", await Demo.Overlap()));
+```
+
+Calling each asynchronous method starts it and takes it to the incomplete gate wait. Both started messages are recorded before the gate opens. Their continuations can finish in either order; a thread-safe queue avoids making that unspecified order a data race.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import asyncio
+
+
+async def overlap():
+    events = []
+    gate = asyncio.Event()
+
+    async def work(name):
+        events.append(name + " started")
+        await gate.wait()
+        events.append(name + " finished")
+
+    async with asyncio.TaskGroup() as group:
+        group.create_task(work("A"))
+        group.create_task(work("B"))
+        await asyncio.sleep(0)
+        assert events == ["A started", "B started"]
+        gate.set()
+    return events
+```
+
+```python group=example role=run
+print("\n".join(asyncio.run(overlap())))
+```
+
+The event loop runs both tasks to their waiting points. `sleep(0)` yields control so they can start. They overlap while waiting even though this event loop executes one task's Python code at a time. The task group waits for both before returning the trace.
+
+</section>
+
+## Choose the mechanism for the bottleneck
+
+Waiting for I/O and spending CPU time are different situations. Asynchronous I/O can keep an application responsive while it waits. It does not make a long ordinary calculation stop occupying the thread on which it runs.
+
+For parallel CPU work, choose an appropriate worker mechanism and measure the cost of splitting, scheduling, and combining results. Python's options depend on the interpreter build and the libraries doing the work; do not treat “threads can never run Python in parallel” as a timeless language rule. Standard CPython threading documentation describes the usual GIL constraint and optional free-threaded builds. [2](#source-2)
+
+More concurrent operations can also make a system slower by overwhelming a dependency. Put limits on active work and waiting work rather than assuming that starting everything immediately is optimal.
+
+The code above establishes overlap, not a speedup or a guarantee of multicore execution. Keeping those claims separate is the central distinction.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Asynchronous programming scenarios](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/async-scenarios), distinguishing I/O waiting from CPU work.
+2. <span id="source-2"></span>[Python — threading](https://docs.python.org/3/library/threading.html), including GIL and free-threaded implementation notes.

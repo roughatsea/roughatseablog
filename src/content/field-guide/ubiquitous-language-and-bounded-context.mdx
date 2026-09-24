@@ -1,0 +1,105 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Ubiquitous Language and Bounded Context
+description: "Use shared, precise domain terms within a defined part of the system, and translate explicitly when another part uses a different model."
+prerequisites: "Data models, classes, and communication between modules."
+---
+
+export const checks = {"csharp":{"example":"var purchase = new SalesOrder(\"O-7\", 2, true); var request = Handoff.ForShipping(purchase); Check.That(request.OrderId == \"O-7\" && request.Parcels == 2); bool rejected = false; try { Handoff.ForShipping(new SalesOrder(\"O-8\", 1, false)); } catch (InvalidOperationException) { rejected = true; } Check.That(rejected);"},"python":{"example":"request = for_shipping(SalesOrder('O-7', 2, True))\nassert request.order_id == 'O-7' and request.parcels == 2\ntry:\n    for_shipping(SalesOrder('O-8', 1, False))\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('unpaid order handed off')"}};
+
+A **ubiquitous language** is a shared vocabulary used by domain experts and developers in discussion, tests, and code. A **bounded context** defines where one particular model and vocabulary apply. Outside that boundary, another team may legitimately use the same word differently. [1](#source-1)
+
+“Use consistent names” is only half the lesson. The other half is recognizing where forcing one meaning on everyone would create confusion.
+
+## Two teams say “order” and mean different things
+
+In sales, an order includes purchased items, prices, and payment status. In shipping, the immediate concern is an instruction to dispatch parcels. Shipping should not need to interpret sales' internal payment-state flags just to understand its work.
+
+For this deliberately simplified shop, each purchased unit becomes one parcel and only paid orders can be handed off. That packing rule is an example assumption, not a general rule of commerce.
+
+| Sales model | Handoff | Shipping model |
+|---|---|---|
+| Purchased unit count | Convert using the shop's packing rule | Parcel count |
+| Payment status | Check readiness before handoff | No payment-state field required |
+| Sales order identifier | Retain a correlation identifier | Link back to the purchase |
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record SalesOrder(string Id, int PurchasedUnits, bool Paid);
+public sealed record DispatchRequest(string OrderId, int Parcels);
+
+public static class Handoff
+{
+    public static DispatchRequest ForShipping(SalesOrder order)
+    {
+        if (!order.Paid)
+        {
+            throw new InvalidOperationException("Payment required before dispatch.");
+        }
+        return new DispatchRequest(order.Id, order.PurchasedUnits);
+    }
+}
+```
+
+```csharp group=example role=run
+var sale = new SalesOrder("O-7", 2, true);
+DispatchRequest dispatch = Handoff.ForShipping(sale);
+Console.WriteLine(dispatch.Parcels); // 2
+```
+
+The two records are not aliases for one enormous shared `Order`. The handoff explicitly translates the information shipping needs. Future changes to sales' pricing model need not expand the dispatch request.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class SalesOrder:
+    id: str
+    purchased_units: int
+    paid: bool
+
+
+@dataclass(frozen=True)
+class DispatchRequest:
+    order_id: str
+    parcels: int
+
+
+def for_shipping(order):
+    if not order.paid:
+        raise RuntimeError("Payment required before dispatch.")
+    return DispatchRequest(order.id, order.purchased_units)
+```
+
+```python group=example role=run
+sale = SalesOrder("O-7", 2, True)
+dispatch = for_shipping(sale)
+print(dispatch.parcels)  # 2
+```
+
+The conversion is a visible place to discuss the business relationship. Assume validated positive unit counts; the dataclass annotations do not validate external input automatically.
+
+</section>
+
+## A boundary is more than a folder name
+
+The examples demonstrate model translation, not deployment isolation or durable messaging. The two contexts could live inside one application or in separate services. A bounded context is a boundary of model meaning, not automatically a microservice or one database.
+
+Document which side owns each rule and what crosses the boundary. A context map can describe relationships between teams and models. A shared identifier can connect related records without requiring a single shared class containing every team's fields.
+
+Within sales, agree what “paid,” “confirmed,” and “cancelled” mean. Use those words consistently in operations and tests. Do not quietly use “confirmed” for payment in one method and inventory reservation in another. A glossary helps only when the model and actual conversations follow it.
+
+Across contexts, translation should preserve meaning rather than merely copy similarly named fields. If shipping later packs several units into a parcel, this handoff must change; renaming `PurchasedUnits` to `Parcels` would not solve the mismatch.
+
+These boundaries should emerge from real differences in language, rules, and ownership. Splitting a small, coherent feature into many contexts can create needless integration work. The objective is local clarity with explicit relationships—not universal terminology imposed on incompatible models.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Bounded Context](https://martinfowler.com/bliki/BoundedContext.html), on locally unified models and their relationships.
+2. [Martin Fowler — Ubiquitous Language](https://martinfowler.com/bliki/UbiquitousLanguage.html), on language shared between domain experts and developers.

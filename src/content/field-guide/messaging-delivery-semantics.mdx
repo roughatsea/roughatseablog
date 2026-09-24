@@ -1,0 +1,120 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Messaging Delivery Semantics"
+description: "A message can be lost, retried, or delivered more than once. Delivery guarantees need a stated boundary, and a consumer must protect the business effects it performs."
+prerequisites: "Queues, messages, acknowledgements, and stored state."
+---
+
+export const checks = {"csharp":{"example":"var points = new Points(); Check.That(points.Apply(\"event-1\", 20)); Check.That(!points.Apply(\"event-1\", 20)); Check.That(points.Apply(\"event-2\", 20)); Check.That(points.Total == 40);"},"python":{"example":"points = Points()\nassert points.apply('event-1', 20)\nassert not points.apply('event-1', 20)\nassert points.apply('event-2', 20)\nassert points.total == 40"}};
+
+**Delivery semantics** describes what a messaging system promises about loss, duplication, and processing. The crucial question is the boundary of that promise: reaching a broker, reaching a consumer, or committing a business effect are not the same event.
+
+In an **at-most-once** arrangement, a message is not retried after certain failures, so it may be lost. **At-least-once** delivery uses redelivery under its stated assumptions, so duplicates are possible. An **exactly-once** claim needs precise scope; a broker or stream processor's guarantee does not automatically make an external email or payment happen exactly once. [1](#source-1)
+
+## Why a duplicate can be the correct delivery behavior
+
+A worker receives an event awarding twenty points. It saves the points, then crashes before acknowledging the event. The broker cannot know that the save finished, so it may redeliver. If the worker simply adds another twenty, the business effect is duplicated.
+
+Acknowledging before saving changes the risk: a crash after acknowledgement but before saving can lose the award. Moving the acknowledgement does not make the two systems one transaction.
+
+## Remember the effect's event identity
+
+The following local model keeps applied event identifiers and the score in one locked operation. A repeated event identifier does not award points again; a different event with the same amount still does.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Points
+{
+    private readonly object gate = new();
+    private readonly HashSet<string> applied = new();
+    private int total;
+    public int Total { get { lock (gate) { return total; } } }
+
+    public bool Apply(string eventId, int amount)
+    {
+        if (string.IsNullOrWhiteSpace(eventId) || amount <= 0)
+            throw new ArgumentException("Invalid award.");
+        lock (gate)
+        {
+            if (applied.Contains(eventId)) return false;
+            int next = checked(total + amount);
+            applied.Add(eventId);
+            total = next;
+            return true;
+        }
+    }
+}
+```
+
+```csharp group=example role=run
+var points = new Points();
+points.Apply("event-1", 20);
+points.Apply("event-1", 20);
+Console.WriteLine(points.Total); // 20
+```
+
+The overflow check occurs before recording an identifier, so an invalid addition is not marked as processed. The lock handles competing threads in this process, not other servers or crashes.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from threading import Lock
+
+
+class Points:
+    def __init__(self):
+        self._gate = Lock()
+        self._applied = set()
+        self._total = 0
+
+    @property
+    def total(self):
+        with self._gate:
+            return self._total
+
+    def apply(self, event_id, amount):
+        if not event_id or type(amount) is not int or amount <= 0:
+            raise ValueError("Invalid award.")
+        with self._gate:
+            if event_id in self._applied:
+                return False
+            next_total = self._total + amount
+            self._applied.add(event_id)
+            self._total = next_total
+            return True
+```
+
+```python group=example role=run
+points = Points()
+points.apply("event-1", 20)
+points.apply("event-1", 20)
+print(points.total)  # 20
+```
+
+The set is an in-memory teaching stand-in for durable processing records. Restarting this object forgets its deduplication history.
+
+</section>
+
+## Couple deduplication with the business commit
+
+A real consumer often records the event identifier and updates its business state in the same database transaction, with a uniqueness constraint on that identifier. It acknowledges only after committing. Duplicate deliveries can then find the committed record instead of repeating the effect.
+
+Event identity must be trustworthy and scoped to the relevant producer and operation. This example assumes one event identifier always describes the same award; systems receiving conflicting payloads should detect that mismatch rather than quietly accept it.
+
+An external side effect outside the transaction needs additional handling. Writing a processed-event row does not atomically send an email. Use an outbox, provider idempotency, or another recovery design appropriate to that boundary.
+
+## Delivery count is not the only concern
+
+Retries can change order. A partitioned log may preserve order within a partition without supplying one total order across all producers. Decide how consumers handle stale updates and missing predecessors.
+
+Bound retries for permanently invalid messages, isolate them for diagnosis, and monitor queue age as well as depth. Deleting an old deduplication record permits sufficiently late duplicates to repeat an effect; retention must match the promised retry window.
+
+The reliable design starts by asking what can fail between each pair of steps. The label “at least once” tells you to expect duplicates; it does not tell you what your application will do with them.
+
+## Sources
+
+1. <span id="source-1"></span>[RabbitMQ — Reliability Guide](https://www.rabbitmq.com/docs/reliability), for acknowledgement, redelivery, and deduplication responsibilities.
+2. [Apache Kafka — Delivery semantics](https://kafka.apache.org/documentation/#semantics), including the scope of transactional guarantees.

@@ -1,0 +1,91 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Input Validation and Output Encoding
+description: "Validation decides whether input is acceptable for the operation. Output encoding represents accepted data safely in the specific syntax where it will be displayed."
+prerequisites: "Strings, HTML text, user input, and exceptions."
+---
+
+export const checks = {"csharp":{"example":"Check.That(Titles.Render(\"<script>alert(1)</script>\").Contains(\"&lt;script&gt;\")); Check.That(!Titles.Render(\"<b>Hi</b>\").Contains(\"<b>\")); Check.That(Titles.Render(\"Mira & Sol\").Contains(\"&amp;\")); bool rejected = false; try { Titles.Render(new string('x', 81)); } catch (ArgumentException) { rejected = true; } Check.That(rejected);"},"python":{"example":"assert '&lt;script&gt;' in render_title('<script>alert(1)</script>')\nassert '<b>' not in render_title('<b>Hi</b>')\nassert '&amp;' in render_title('Mira & Sol')\ntry:\n    render_title('x' * 81)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('oversized title accepted')"}};
+
+**Input validation** decides whether data is acceptable for an operation. **Output encoding** represents data safely in the syntax where it will be used. A valid title can contain an ampersand or angle brackets; those characters still need appropriate treatment when inserted into HTML. [1](#source-1) [2](#source-2)
+
+Validation and encoding answer different questions. Neither is a universal replacement for the other.
+
+## Accept a title as text, not as markup
+
+A note title must contain non-whitespace text and be at most 80 units long. The interface displays it as plain text inside an HTML heading. Users are not being offered a rich-text editor.
+
+The example permits a title such as `Mira & Sol` or even the literal text `<b>Hi</b>`. It rejects invalid length, then uses a library encoder at the output boundary.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Titles
+{
+    public static string Validate(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title) || title.Length > 80)
+            throw new ArgumentException("Title must contain text and fit the length limit.");
+        return title;
+    }
+
+    public static string Render(string title)
+    {
+        string accepted = Validate(title);
+        string encoded = System.Text.Encodings.Web.HtmlEncoder.Default.Encode(accepted);
+        return "<h1>" + encoded + "</h1>";
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(Titles.Render("Mira & Sol")); // <h1>Mira &amp; Sol</h1>
+```
+
+The encoder handles HTML-special characters as data. It is used for the heading's text content, not as a general-purpose sanitizer for JavaScript, CSS, or an arbitrary URL.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import html
+
+
+def validate_title(title):
+    if not isinstance(title, str) or not title.strip() or len(title) > 80:
+        raise ValueError("Title must contain text and fit the length limit.")
+    return title
+
+
+def render_title(title):
+    accepted = validate_title(title)
+    return "<h1>" + html.escape(accepted, quote=True) + "</h1>"
+```
+
+```python group=example role=run
+print(render_title("Mira & Sol"))  # <h1>Mira &amp; Sol</h1>
+```
+
+The length semantics differ for some Unicode text: Python counts Unicode code points here, while C# `Length` counts UTF-16 code units. A product requiring a precise user-perceived character limit must define that rule rather than assume both examples count identically.
+
+</section>
+
+## The destination determines the defense
+
+An HTML encoder is appropriate for ordinary HTML text and supported attribute contexts. It does not make a string safe to concatenate into SQL or shell commands. Use parameterized database queries and argument-based process APIs instead of attempting to escape every possible dangerous character yourself.
+
+Prefer the framework's automatic template escaping or a DOM text operation. Do not mark untrusted strings as raw HTML after encoding elsewhere. Encoding too early can produce double-encoded output or leave data incorrectly prepared for a different destination.
+
+For rich HTML, the requirement changes: an established HTML sanitizer with an explicit allowed-element policy is needed. Rejecting only the word `script` misses many ways markup can execute or alter a page. [2](#source-2)
+
+## Validate structure and meaning
+
+A quantity can be syntactically an integer yet invalid because it is negative or exceeds an order limit. Validate type, range, size, and relationships at a trusted boundary. Browser validation improves usability but can be bypassed.
+
+The string-length check also does not prevent a server from receiving an enormous request before reaching this helper. Configure request-size and processing limits in the actual server. The displayed tests verify the helper's accepted output and rejection behavior; deployed browser execution, server limits, and all other rendering paths require separate checks.
+
+## Sources
+
+1. <span id="source-1"></span>[OWASP — Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html).
+2. <span id="source-2"></span>[OWASP — Cross Site Scripting Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html), on context-specific encoding and safe output methods.

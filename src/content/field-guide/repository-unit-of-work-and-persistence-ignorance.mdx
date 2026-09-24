@@ -1,0 +1,163 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Repository, Unit of Work, and Persistence Ignorance
+description: "A repository provides domain-oriented storage access, a unit of work coordinates a set of changes, and persistence ignorance keeps storage machinery out of domain behavior."
+prerequisites: "Objects, dictionaries, transactions, and dependency boundaries."
+---
+
+export const checks = {"csharp":{"example":"var database = new MemoryDatabase(); var work = new UnitOfWork(database); var note = work.Notes.Get(1); note.Rename(\"New\"); work.Notes.Save(note); Check.That(database.Snapshot()[1] == \"Old\"); bool failed = false; try { work.Commit(true); } catch (InvalidOperationException) { failed = true; } Check.That(failed && database.Snapshot()[1] == \"Old\"); work.Commit(); Check.That(database.Snapshot()[1] == \"New\");"},"python":{"example":"database = MemoryDatabase()\nwork = UnitOfWork(database)\nnote = work.notes.get(1)\nnote.rename('New')\nwork.notes.save(note)\nassert database.snapshot()[1] == 'Old'\ntry:\n    work.commit(fail=True)\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('failure not raised')\nassert database.snapshot()[1] == 'Old'\nwork.commit()\nassert database.snapshot()[1] == 'New'"}};
+
+A **repository** provides domain-oriented access to stored objects. A **unit of work** coordinates changes made during one operation and their eventual persistence. **Persistence ignorance** means the domain's rules do not directly depend on database APIs or an object-relational mapper's lifecycle machinery. These ideas cooperate, but each answers a different question. [1](#source-1) [2](#source-2)
+
+## Rename a note without teaching it SQL
+
+A note's title must contain non-whitespace text. The note knows that rule. A repository retrieves and saves notes. A unit of work stages the changes and commits them together.
+
+The example uses a copied dictionary to model staging. It has no durable storage, concurrent transactions, or crash recovery. The explicit failure switch is test instrumentation, allowing us to observe a failure before the staged state becomes visible.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Note
+{
+    public int Id { get; }
+    public string Title { get; private set; }
+    public Note(int id, string title) { Id = id; Title = title; }
+    public void Rename(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Title required.");
+        Title = title;
+    }
+}
+
+public sealed class MemoryDatabase
+{
+    private Dictionary<int, string> rows = new Dictionary<int, string> { { 1, "Old" } };
+    public Dictionary<int, string> Snapshot() { return new Dictionary<int, string>(rows); }
+    public void Replace(Dictionary<int, string> changes) { rows = new Dictionary<int, string>(changes); }
+}
+
+public sealed class NoteRepository
+{
+    private readonly Dictionary<int, string> working;
+    public NoteRepository(Dictionary<int, string> working) { this.working = working; }
+    public Note Get(int id) { return new Note(id, working[id]); }
+    public void Save(Note note) { working[note.Id] = note.Title; }
+}
+
+public sealed class UnitOfWork
+{
+    private readonly MemoryDatabase database;
+    private readonly Dictionary<int, string> working;
+    public NoteRepository Notes { get; }
+    public UnitOfWork(MemoryDatabase database)
+    {
+        this.database = database;
+        working = database.Snapshot();
+        Notes = new NoteRepository(working);
+    }
+    public void Commit(bool simulateFailure = false)
+    {
+        if (simulateFailure) throw new InvalidOperationException("Commit failed.");
+        database.Replace(working);
+    }
+}
+```
+
+```csharp group=example role=run
+var database = new MemoryDatabase();
+var work = new UnitOfWork(database);
+Note note = work.Notes.Get(1);
+note.Rename("Harbor notes");
+work.Notes.Save(note);
+Console.WriteLine(database.Snapshot()[1]); // Old
+work.Commit();
+Console.WriteLine(database.Snapshot()[1]); // Harbor notes
+```
+
+`Save` updates the working copy; `Commit` publishes it to this in-memory store. `Note.Rename` knows neither operation and has no database reference. That is the persistence-ignorance distinction.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Note:
+    def __init__(self, note_id, title):
+        self.id = note_id
+        self.title = title
+
+    def rename(self, title):
+        if not isinstance(title, str) or not title.strip():
+            raise ValueError("Title required.")
+        self.title = title
+
+
+class MemoryDatabase:
+    def __init__(self):
+        self._rows = {1: "Old"}
+
+    def snapshot(self):
+        return dict(self._rows)
+
+    def replace(self, changes):
+        self._rows = dict(changes)
+
+
+class NoteRepository:
+    def __init__(self, working):
+        self._working = working
+
+    def get(self, note_id):
+        return Note(note_id, self._working[note_id])
+
+    def save(self, note):
+        self._working[note.id] = note.title
+
+
+class UnitOfWork:
+    def __init__(self, database):
+        self._database = database
+        self._working = database.snapshot()
+        self.notes = NoteRepository(self._working)
+
+    def commit(self, fail=False):
+        if fail:
+            raise RuntimeError("Commit failed.")
+        self._database.replace(self._working)
+```
+
+```python group=example role=run
+database = MemoryDatabase()
+work = UnitOfWork(database)
+note = work.notes.get(1)
+note.rename("Harbor notes")
+work.notes.save(note)
+print(database.snapshot()[1])  # Old
+work.commit()
+print(database.snapshot()[1])  # Harbor notes
+```
+
+The domain operation is testable without a store. The repository translates between stored rows and note objects. Python's public fields do not enforce domain access rules; callers are expected to use the supported operation.
+
+</section>
+
+## Three distinct responsibilities
+
+The repository answers **how do I find and store the objects this application understands?** Its API should reflect meaningful retrieval needs rather than automatically expose every database table and query operator.
+
+The unit of work answers **which changes belong to this operation, and when are they persisted?** In a real relational implementation, an appropriate database transaction supplies atomicity. A sequence of independent writes is not made atomic by putting them in a method called `Commit`. ORM facilities may already implement much of this behavior. [3](#source-3)
+
+Persistence ignorance answers **can domain behavior be understood without understanding storage technology?** It does not mean database constraints, concurrency, and performance can be ignored when designing the system.
+
+## Where the demonstration stops
+
+Two units of work here could overwrite each other's snapshots. Missing records raise lookup errors, and object changes require explicit `Save`. There is no identity map or automatic change tracking. These choices make the teaching mechanism visible, not production-ready.
+
+When adopting an ORM, avoid adding a generic repository that merely duplicates its existing API. Introduce a boundary when it expresses application ownership, a meaningful contract, or useful isolation. Test the actual storage implementation for transactions, query behavior, and conflicts; an in-memory substitute cannot establish those properties.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Repository](https://martinfowler.com/eaaCatalog/repository.html).
+2. <span id="source-2"></span>[Martin Fowler — Unit of Work](https://martinfowler.com/eaaCatalog/unitOfWork.html).
+3. <span id="source-3"></span>[Microsoft — EF Core transactions](https://learn.microsoft.com/en-us/ef/core/saving/transactions), including transaction behavior and provider limitations.

@@ -1,0 +1,94 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Remove Parameter
+description: "Remove an argument the function no longer needs, updating callers and preserving any required work previously performed while producing that argument."
+prerequisites: "Parameters, arguments, and evaluation of function calls."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Labels.For(\"Mira\", \"blue\") == \"Player: Mira\");","revised":"Check.That(Labels.For(\"Mira\") == \"Player: Mira\");"},"python":{"original":"assert label('Mira', 'blue') == 'Player: Mira'","revised":"assert label('Mira') == 'Player: Mira'"}};
+
+**Remove Parameter** removes an input a function no longer needs. The declaration becomes more honest, and callers stop supplying irrelevant information. The important check is not only whether the parameter is read, but whether evaluating the old argument performed any required work. [1](#source-1)
+
+## Original version: an obsolete color argument
+
+A label once depended on a display color. It now returns plain text, but its signature still asks for the old color.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Labels
+{
+    public static string For(string name, string color)
+    {
+        return "Player: " + name;
+    }
+}
+```
+
+```csharp group=original role=run
+Console.WriteLine(Labels.For("Mira", "blue"));
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def label(name, color):
+    return "Player: " + name
+```
+
+```python group=original role=run
+print(label("Mira", "blue"))
+```
+
+</section>
+
+Nothing in the function uses the color. Its presence misleadingly suggests that changing it might affect the result.
+
+## Refactored version: ask only for the name
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Labels
+{
+    public static string For(string name)
+    {
+        return "Player: " + name;
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(Labels.For("Mira"));
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def label(name):
+    return "Player: " + name
+```
+
+```python group=revised role=run
+print(label("Mira"))
+```
+
+</section>
+
+The result remains `Player: Mira`. Callers no longer need to invent or look up a color that will be ignored.
+
+## An unused parameter can still have an effect at the call site
+
+A call such as `label(name, load_color())` evaluates `load_color()` before calling the function. Removing that argument also removes the evaluation, including any exceptions or side effects it produced. That may be desirable, but it is not automatically behavior-preserving. Retain required work explicitly or remove it as a deliberate separate change.
+
+Check interface implementations, overridden methods, callbacks, and external callers before changing the signature. A parameter can be unused in one implementation but required by the shared interface. In that case, removing it only from one method would break compatibility.
+
+Avoid replacing an unnecessary argument with an implicit global lookup. The objective is to remove a dependency the operation does not need, not hide a dependency it still has.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Change Function Declaration](https://refactoring.com/catalog/changeFunctionDeclaration.html), including Remove Parameter.

@@ -1,0 +1,176 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Retries, Circuit Breakers, and Bulkheads"
+description: "Retries repeat recoverable work, circuit breakers stop repeated calls to a failing dependency, and bulkheads keep one dependency from consuming everyone else's resources."
+prerequisites: "Exceptions, requests, resource limits, and elapsed time."
+---
+
+export const checks = {"csharp":{"retry":"int calls = 0; string value = Retry.Run(() => { calls++; if (calls < 3) throw new TemporaryFailure(); return \"ready\"; }); Check.That(value == \"ready\" && calls == 3);","breaker":"var circuit = new Circuit(); circuit.Record(false, 0); circuit.Record(false, 1); Check.That(!circuit.Allow(5)); Check.That(circuit.Allow(11)); Check.That(!circuit.Allow(11)); circuit.Record(true, 11); Check.That(circuit.Allow(11));","bulkhead":"using var images = new System.Threading.SemaphoreSlim(1, 1); using var checkout = new System.Threading.SemaphoreSlim(1, 1); Check.That(images.Wait(0)); Check.That(!images.Wait(0)); Check.That(checkout.Wait(0)); images.Release(); checkout.Release();"},"python":{"retry":"calls = 0\ndef fetch():\n    global calls\n    calls += 1\n    if calls < 3:\n        raise TemporaryFailure()\n    return 'ready'\nassert retry(fetch) == 'ready' and calls == 3","breaker":"circuit = Circuit()\ncircuit.record(False, 0)\ncircuit.record(False, 1)\nassert not circuit.allow(5)\nassert circuit.allow(11)\nassert not circuit.allow(11)\ncircuit.record(True, 11)\nassert circuit.allow(11)","bulkhead":"images = BoundedSemaphore(1)\ncheckout = BoundedSemaphore(1)\nassert images.acquire(blocking=False)\nassert not images.acquire(blocking=False)\nassert checkout.acquire(blocking=False)\nimages.release()\ncheckout.release()"}};
+
+A **retry** repeats an operation after a failure that might be temporary. A **circuit breaker** stops sending ordinary requests to a dependency that appears persistently unhealthy. A **bulkhead** reserves separate resource capacity so trouble in one area does not consume everything. These mechanisms address different problems; none makes a failing dependency healthy by itself.
+
+Imagine a shop whose image service becomes slow. A retry might recover an occasional failed image fetch. Continual retries during an outage add load. A breaker can stop those calls, and a separate image-worker pool can keep them from occupying the capacity needed by checkout. [1](#source-1)
+
+## Retry only a failure that another attempt might fix
+
+This small retry loop permits three total attempts. The designated exception represents a known temporary failure. The example deliberately omits real waiting; a production policy needs bounded backoff, jitter, cancellation, and an overall deadline.
+
+<section data-pilot-language="csharp">
+
+```csharp group=retry role=types
+public sealed class TemporaryFailure : Exception { }
+public static class Retry
+{
+    public static string Run(Func<string> operation)
+    {
+        for (int attempt = 1; ; attempt++)
+        {
+            try { return operation(); }
+            catch (TemporaryFailure) when (attempt < 3) { }
+        }
+    }
+}
+```
+
+The third failure propagates rather than silently becoming success. An unrelated validation or programming exception is not retried.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=retry role=types
+class TemporaryFailure(Exception):
+    pass
+
+
+def retry(operation):
+    for attempt in range(1, 4):
+        try:
+            return operation()
+        except TemporaryFailure:
+            if attempt == 3:
+                raise
+```
+
+The loop stops at the first success and propagates a third temporary failure. Retrying a write also requires a safe-retry contract; an uncertain first result may already have committed.
+
+</section>
+
+## Stop ordinary calls while a dependency recovers
+
+A breaker commonly distinguishes closed, open, and half-open states: allow traffic, reject traffic, then permit a limited probe. The following sequential state model opens after two consecutive failures and allows one probe after ten time units. Time is supplied explicitly for deterministic tests. [2](#source-2)
+
+<section data-pilot-language="csharp">
+
+```csharp group=breaker role=types
+public sealed class Circuit
+{
+    private int failures;
+    private int reopenAt;
+    private bool probe;
+
+    public bool Allow(int now)
+    {
+        if (failures < 2) return true;
+        if (now < reopenAt || probe) return false;
+        probe = true;
+        return true;
+    }
+
+    public void Record(bool success, int now)
+    {
+        probe = false;
+        if (success) failures = 0;
+        else if (++failures >= 2) reopenAt = now + 10;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=breaker role=types
+class Circuit:
+    def __init__(self):
+        self.failures = 0
+        self.reopen_at = 0
+        self.probe = False
+
+    def allow(self, now):
+        if self.failures < 2:
+            return True
+        if now < self.reopen_at or self.probe:
+            return False
+        self.probe = True
+        return True
+
+    def record(self, success, now):
+        self.probe = False
+        if success:
+            self.failures = 0
+        else:
+            self.failures += 1
+            if self.failures >= 2:
+                self.reopen_at = now + 10
+```
+
+</section>
+
+The caller must record the outcome of an admitted attempt. This model is not a thread-safe production breaker: overlapping completions, rolling windows, abandoned probes, and per-dependency state need deliberate handling. Use a maintained resilience implementation rather than copying this state sketch into a busy service unchanged.
+
+## Keep separate capacity for unrelated work
+
+<section data-pilot-language="csharp">
+
+```csharp group=bulkhead role=run
+using var images = new System.Threading.SemaphoreSlim(1, 1);
+using var checkout = new System.Threading.SemaphoreSlim(1, 1);
+images.Wait(); // One image operation occupies its only slot.
+try
+{
+    Console.WriteLine(images.Wait(0));   // False: image capacity is full.
+    bool admitted = checkout.Wait(0);    // Separate capacity is available.
+    Console.WriteLine(admitted);        // True
+    if (admitted) checkout.Release();
+}
+finally { images.Release(); }
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=bulkhead role=types
+from threading import BoundedSemaphore
+```
+
+```python group=bulkhead role=run
+images = BoundedSemaphore(1)
+checkout = BoundedSemaphore(1)
+images.acquire()
+try:
+    print(images.acquire(blocking=False))  # False
+    admitted = checkout.acquire(blocking=False)
+    print(admitted)                        # True
+    if admitted:
+        checkout.release()
+finally:
+    images.release()
+```
+
+</section>
+
+A full image pool does not consume the checkout pool's slot. Real isolation also depends on shared CPU, memory, database connections, and downstream capacity; two semaphore objects are not separate machines. Decide whether excess work waits in a bounded queue or is rejected. [3](#source-3)
+
+## Combine policies without multiplying failure
+
+Do not retry requests rejected by an open breaker as though each rejection were a new transient network failure. Avoid holding scarce slots through long backoff delays unless the policy explicitly requires it. Instrument attempts, breaker state, rejections, and queue delay separately so a successful final response does not hide a storm of failed attempts.
+
+The point is controlled recovery and failure isolation, not attaching all three patterns to every method.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Retry pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/retry).
+2. <span id="source-2"></span>[Microsoft — Circuit Breaker pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker).
+3. <span id="source-3"></span>[Microsoft — Bulkhead pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead).

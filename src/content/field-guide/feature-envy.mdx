@@ -1,0 +1,148 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Feature Envy
+description: "Feature Envy describes a method that is more concerned with another object's data than with the responsibilities of its own class. Part of the behavior may belong with that data."
+prerequisites: "Objects, properties, methods, and multiplying dimensions."
+---
+
+export const checks = {"csharp":{"before":"Check.That(ParcelLabel.Describe(new Parcel(2, 3, 4)) == \"Volume: 24\"); Check.That(ParcelLabel.Describe(new Parcel(0, 3, 4)) == \"Volume: 0\");","after":"Check.That(ParcelLabel.Describe(new Parcel(2, 3, 4)) == \"Volume: 24\"); Check.That(new Parcel(2, 3, 4).Volume() == 24); Check.That(ParcelLabel.Describe(new Parcel(0, 3, 4)) == \"Volume: 0\");"},"python":{"before":"assert parcel_label(Parcel(2, 3, 4)) == 'Volume: 24'\nassert parcel_label(Parcel(0, 3, 4)) == 'Volume: 0'","after":"assert parcel_label(Parcel(2, 3, 4)) == 'Volume: 24'\nassert Parcel(2, 3, 4).volume() == 24\nassert parcel_label(Parcel(0, 3, 4)) == 'Volume: 0'"}};
+
+**Feature Envy** describes a method that spends much of its effort working with another object's data. The method may be trying to perform a job that would fit more naturally on that other object.
+
+The name is a metaphor, not a metric: do not count property accesses and declare a violation. Ask whether a piece of behavior has a clearer owner. **Move Function**, also called **Move Method**, is one possible response. [1](#source-1)
+
+## The label knows how a parcel's volume works
+
+A box-shaped parcel stores three dimensions. A labeling function reaches into all three properties to calculate volume and then writes a description. Dimensions are small, nonnegative whole numbers in the same unit; their product fits in an integer.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class Parcel
+{
+    public int Length { get; }
+    public int Width { get; }
+    public int Height { get; }
+
+    public Parcel(int length, int width, int height)
+    {
+        Length = length;
+        Width = width;
+        Height = height;
+    }
+}
+
+public static class ParcelLabel
+{
+    public static string Describe(Parcel parcel)
+    {
+        int volume = parcel.Length * parcel.Width * parcel.Height;
+        return $"Volume: {volume}";
+    }
+}
+```
+
+`Describe` contains two jobs: it knows the parcel's volume formula and it knows the label's wording. Those jobs need not live together.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class Parcel:
+    def __init__(self, length, width, height):
+        self.length = length
+        self.width = width
+        self.height = height
+
+
+def parcel_label(parcel):
+    volume = parcel.length * parcel.width * parcel.height
+    return f"Volume: {volume}"
+```
+
+`parcel_label` contains two jobs: it knows the parcel's volume formula and it knows the label's wording. Those jobs need not live together.
+
+</section>
+
+### Refactored version: move the calculation, not the whole label
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class Parcel
+{
+    public int Length { get; }
+    public int Width { get; }
+    public int Height { get; }
+
+    public Parcel(int length, int width, int height)
+    {
+        Length = length;
+        Width = width;
+        Height = height;
+    }
+
+    public int Volume()
+    {
+        return Length * Width * Height;
+    }
+}
+
+public static class ParcelLabel
+{
+    public static string Describe(Parcel parcel)
+    {
+        return $"Volume: {parcel.Volume()}";
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(ParcelLabel.Describe(new Parcel(2, 3, 4)));
+// Volume: 24
+```
+
+`Parcel.Volume` owns the dimension calculation. `ParcelLabel.Describe` owns the text. Another calculation needing volume can ask the parcel rather than duplicate its formula.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+class Parcel:
+    def __init__(self, length, width, height):
+        self.length = length
+        self.width = width
+        self.height = height
+
+    def volume(self):
+        return self.length * self.width * self.height
+
+
+def parcel_label(parcel):
+    return f"Volume: {parcel.volume()}"
+```
+
+```python group=after role=run
+print(parcel_label(Parcel(2, 3, 4)))
+# Volume: 24
+```
+
+`Parcel.volume` owns the dimension calculation. `parcel_label` owns the text. Another calculation needing volume can ask the parcel rather than duplicate its formula.
+
+</section>
+
+## Why not move everything?
+
+Making the parcel responsible for every label, report, or file format would give it unrelated presentation responsibilities. The better move is the calculation that naturally belongs with its dimensions, not every line that happens to mention a parcel.
+
+A serializer, mapper, or reporting function may legitimately inspect many fields of another object. Its job can be to translate data, not to enforce the object's rules. Likewise, a functional design may deliberately keep data and calculations separate without creating confusion or duplicated rules.
+
+Use Feature Envy when the current placement obscures ownership or spreads knowledge that should be kept together. The useful question is: **what operation does this caller keep assembling from someone else's fields, and should that object provide it directly?**
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Move Function](https://refactoring.com/catalog/moveFunction.html), including the Move Method alias. The parcel example and ownership analysis are original.

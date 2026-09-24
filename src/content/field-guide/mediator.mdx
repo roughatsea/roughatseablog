@@ -1,0 +1,132 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Mediator
+description: "A Mediator coordinates interactions between components so those components do not have to know and control one another directly."
+prerequisites: "Objects, callbacks or events, and user-interface controls."
+---
+
+export const checks = {"csharp":{"example":"using var dialog = new SignupDialog(); Check.That(!dialog.Submit.Enabled); dialog.Name.SetText(\"Mira\"); Check.That(dialog.Submit.Enabled); dialog.Name.SetText(\"  \"); Check.That(!dialog.Submit.Enabled);"},"python":{"example":"dialog = SignupDialog()\nassert not dialog.submit.enabled\ndialog.name.set_text('Mira')\nassert dialog.submit.enabled\ndialog.name.set_text('  ')\nassert not dialog.submit.enabled\ndialog.close()"}};
+
+A **Mediator** coordinates interactions between components so they do not have to know and control one another directly. The interaction rules live in the mediator rather than being scattered across the participating objects. [1](#source-1)
+
+## The text box should not know about the submit button
+
+A signup dialog enables its submit button when the name contains something besides whitespace. The text box could hold a reference to the button and update it, but that would make a general-purpose text box responsible for one particular form's behavior.
+
+Instead, the dialog listens for text changes and decides whether submission is enabled. These are in-memory control stand-ins, not a complete GUI framework or an account-validation system.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class TextInput
+{
+    public string Text { get; private set; } = "";
+    public event Action? Changed;
+
+    public void SetText(string text)
+    {
+        Text = text;
+        Changed?.Invoke();
+    }
+}
+
+public sealed class Button
+{
+    public bool Enabled { get; set; }
+}
+
+public sealed class SignupDialog : IDisposable
+{
+    public TextInput Name { get; } = new TextInput();
+    public Button Submit { get; } = new Button();
+
+    public SignupDialog()
+    {
+        Name.Changed += UpdateSubmission;
+        UpdateSubmission();
+    }
+
+    private void UpdateSubmission()
+    {
+        Submit.Enabled = !string.IsNullOrWhiteSpace(Name.Text);
+    }
+
+    public void Dispose() { Name.Changed -= UpdateSubmission; }
+}
+```
+
+`TextInput` announces a change but never names `Button`. The dialog owns the rule connecting those two controls. It also applies the rule during construction, so the initially empty field starts with submission disabled.
+
+```csharp group=example role=run
+using var dialog = new SignupDialog();
+dialog.Name.SetText("Mira");
+Console.WriteLine(dialog.Submit.Enabled); // True
+dialog.Name.SetText(" ");
+Console.WriteLine(dialog.Submit.Enabled); // False
+```
+
+The event delivers the notification. The mediator decides what that notification means for this form. Those are related but separate responsibilities.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class TextInput:
+    def __init__(self):
+        self.text = ""
+        self.changed = None
+
+    def set_text(self, text):
+        self.text = text
+        if self.changed is not None:
+            self.changed()
+
+
+class Button:
+    def __init__(self):
+        self.enabled = False
+
+
+class SignupDialog:
+    def __init__(self):
+        self.name = TextInput()
+        self.submit = Button()
+        self.name.changed = self._update_submission
+        self._update_submission()
+
+    def _update_submission(self):
+        self.submit.enabled = bool(self.name.text.strip())
+
+    def close(self):
+        self.name.changed = None
+```
+
+The input supports one callback for this small example. It has no knowledge of the button. The dialog wires the callback and owns the form-specific rule; assume text inputs are strings.
+
+```python group=example role=run
+dialog = SignupDialog()
+dialog.name.set_text("Mira")
+print(dialog.submit.enabled)  # True
+dialog.name.set_text(" ")
+print(dialog.submit.enabled)  # False
+dialog.close()
+```
+
+The explicit close operation disconnects the callback. A framework would normally tie that cleanup to its own component lifecycle.
+
+</section>
+
+## Centralize an interaction, not the whole application
+
+The controls can be reused in another form with different rules. That form supplies another mediator rather than changing the text box. The dialog, however, is deliberately coupled to its controls and its signup behavior. Mediator reduces connections among participants; it does not remove all coupling.
+
+A mediator that handles every interaction in an entire application can become an oversized controller. Keep it focused on a coherent conversation or operation, and extract independent rules where appropriate.
+
+For two tightly related controls, an ordinary callback in the parent component may be all the mediator you need. No framework named “Mediator” is required. Conversely, a request-dispatch library with that name is not automatically an implementation of every aspect of this object-interaction pattern.
+
+Finally, disabling a button is a usability rule, not authorization or server-side validation. A real submission must validate its input again at a trusted boundary. The example teaches who coordinates the controls; it does not make the UI a security barrier.
+
+## Sources
+
+1. <span id="source-1"></span>[Gamma, Helm, Johnson, and Vlissides — Design Patterns](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-software-9780201633610), the Mediator pattern.

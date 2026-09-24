@@ -1,0 +1,118 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Metrics, Traces, and Correlation Context"
+description: "Metrics summarize activity, traces show the work behind individual operations, and correlation context connects records belonging to the same request."
+prerequisites: "Requests, elapsed time, records, and function calls."
+---
+
+export const checks = {"csharp":{"example":"var telemetry = new Telemetry(); Check.That(telemetry.Read(() => \"Harbor\") == \"Harbor\"); Check.That(telemetry.Requests == 1 && telemetry.Spans.Count == 2); Check.That(telemetry.Spans[0].TraceId == telemetry.Spans[1].TraceId); Check.That(telemetry.Spans[0].ParentId == telemetry.Spans[1].Id); Check.That(telemetry.Spans.All(s => s.DurationMs >= 0));"},"python":{"example":"telemetry = Telemetry()\nassert telemetry.read(lambda: 'Harbor') == 'Harbor'\nassert telemetry.requests == 1 and len(telemetry.spans) == 2\nchild, parent = telemetry.spans\nassert child['trace_id'] == parent['trace_id']\nassert child['parent_id'] == parent['id']\nassert all(s['duration_ms'] >= 0 for s in telemetry.spans)"}};
+
+A **metric** summarizes activity numerically, such as request count or a distribution of response times. A **trace** describes work belonging to an individual operation. Each timed part of that work is a **span**. **Correlation context** carries identifiers and related information so records from the same operation can be connected. [1](#source-1)
+
+A metric might tell you that note requests became slower. A trace can show that one slow request spent most of its time looking up a note. A log linked to that trace can supply the specific error returned by the lookup. None of the three replaces the others.
+
+## Record a request and the lookup inside it
+
+This small recorder counts requests and records two timed spans for each one. It runs the supplied lookup function and returns its result. Identifiers are generated locally; this is a teaching model, not an implementation of a telemetry wire protocol or an exporter.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record SpanRecord(string Name, string TraceId, string Id,
+    string? ParentId, double DurationMs);
+
+public sealed class Telemetry
+{
+    public int Requests { get; private set; }
+    public List<SpanRecord> Spans { get; } = new();
+
+    public string Read(Func<string> lookup)
+    {
+        Requests++;
+        string traceId = Guid.NewGuid().ToString("N");
+        string requestId = Guid.NewGuid().ToString("N");
+        var whole = System.Diagnostics.Stopwatch.StartNew();
+        try
+        {
+            var child = System.Diagnostics.Stopwatch.StartNew();
+            try { return lookup(); }
+            finally
+            {
+                Spans.Add(new SpanRecord("catalog.lookup", traceId,
+                    Guid.NewGuid().ToString("N"), requestId,
+                    child.Elapsed.TotalMilliseconds));
+            }
+        }
+        finally
+        {
+            Spans.Add(new SpanRecord("GET /notes/{id}", traceId,
+                requestId, null, whole.Elapsed.TotalMilliseconds));
+        }
+    }
+}
+```
+
+The child and parent share a trace identifier. The child's `ParentId` identifies the request span. The `finally` blocks also record durations when the lookup fails. Production instrumentation should record failure status as well, using `ActivitySource`, metrics instruments, and an appropriate telemetry SDK rather than this unbounded list. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from time import perf_counter
+from uuid import uuid4
+
+
+class Telemetry:
+    def __init__(self):
+        self.requests = 0
+        self.spans = []
+
+    def read(self, lookup):
+        self.requests += 1
+        trace_id = uuid4().hex
+        request_id = uuid4().hex
+        whole_start = perf_counter()
+        try:
+            child_start = perf_counter()
+            try:
+                return lookup()
+            finally:
+                self.spans.append({
+                    "name": "catalog.lookup", "trace_id": trace_id,
+                    "id": uuid4().hex, "parent_id": request_id,
+                    "duration_ms": (perf_counter() - child_start) * 1000,
+                })
+        finally:
+            self.spans.append({
+                "name": "GET /notes/{id}", "trace_id": trace_id,
+                "id": request_id, "parent_id": None,
+                "duration_ms": (perf_counter() - whole_start) * 1000,
+            })
+```
+
+The request counter summarizes how often `read` was invoked. The two span records preserve one invocation's relationship and durations. They remain local data; a production SDK supplies context propagation, sampling, and export rather than leaving every request in memory.
+
+</section>
+
+## Carry context across the boundary
+
+A new service call needs to receive the originating trace context. If every component creates an unrelated root trace, the records cannot form one distributed request tree. Standard propagation formats let instrumented services connect their spans. OpenTelemetry describes how context travels with requests and messages. [3](#source-3)
+
+Do not store a current request identifier in one process-global mutable variable. Overlapping requests can overwrite it and mislabel each other's logs. Use framework-supported scoped context or pass it explicitly.
+
+Context is not authority. An incoming trace header must not grant access or be trusted as an authenticated user identity. Avoid propagating secrets or private data simply because a metadata carrier is convenient.
+
+## Keep metrics small enough to aggregate
+
+A metric labeled with the route template `/notes/{id}` can summarize that operation. A separate time series for every note identifier or user can produce excessive cardinality and storage cost. Put high-cardinality investigation identifiers in controlled logs or traces where appropriate instead of blindly turning them into metric labels.
+
+Sampling means not every trace will be retained. Aggregate metrics and a few successful traces therefore cannot prove that an individual user's failed request never happened. Know what the collection pipeline records, drops, and exports.
+
+The toy recorder is sequential and has unbounded storage. Its purpose is to make count, duration, parent-child relation, and request identity visible—not to replace the operational safeguards of a real instrumentation library.
+
+## Sources
+
+1. <span id="source-1"></span>[OpenTelemetry — Signals](https://opentelemetry.io/docs/concepts/signals/).
+2. <span id="source-2"></span>[Microsoft — Add distributed tracing instrumentation](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing-instrumentation-walkthroughs).
+3. <span id="source-3"></span>[OpenTelemetry — Context propagation](https://opentelemetry.io/docs/concepts/context-propagation/).

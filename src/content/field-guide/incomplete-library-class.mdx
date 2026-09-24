@@ -1,0 +1,149 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Incomplete Library Class
+description: "An Incomplete Library Class provides most of what an application needs but lacks a useful operation, and its source is outside the application's control. Add the missing behavior without scattering workarounds."
+prerequisites: "Classes, methods, and the distinction between application code and a third-party library."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Label.For(new LibraryRectangle(3, 4)) == \"Area: 12\"); Check.That(Label.For(new LibraryRectangle(0, 4)) == \"Area: 0\");","after":"Check.That(Label.For(new LibraryRectangle(3, 4)) == \"Area: 12\"); Check.That(new LibraryRectangle(3, 4).Area() == 12); Check.That(Label.For(new LibraryRectangle(0, 4)) == \"Area: 0\");"},"python":{"before":"assert rectangle_label(LibraryRectangle(3, 4)) == 'Area: 12'\nassert rectangle_label(LibraryRectangle(0, 4)) == 'Area: 0'","after":"assert rectangle_label(LibraryRectangle(3, 4)) == 'Area: 12'\nassert rectangle_area(LibraryRectangle(3, 4)) == 12\nassert rectangle_label(LibraryRectangle(0, 4)) == 'Area: 0'"}};
+
+An **Incomplete Library Class** provides most of what an application needs but lacks a useful operation, and its source is outside the application's control. Callers may begin repeating little workarounds around it.
+
+“Incomplete” is relative to your task, not a verdict on the library. You can often add a focused helper, wrapper, or extension method without changing the library's source. [1](#source-1)
+
+## A rectangle without an area operation
+
+Suppose a graphics library gives us rectangles with width and height, but no area calculation. The class below stands in for that external type; assume we cannot edit the real library. Dimensions are nonnegative integers with products in range.
+
+### Original version: the caller supplies the missing calculation
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public sealed class LibraryRectangle
+{
+    public int Width { get; }
+    public int Height { get; }
+    public LibraryRectangle(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+}
+
+public static class Label
+{
+    public static string For(LibraryRectangle rectangle)
+    {
+        int area = rectangle.Width * rectangle.Height;
+        return $"Area: {area}";
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+class LibraryRectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+
+def rectangle_label(rectangle):
+    area = rectangle.width * rectangle.height
+    return f"Area: {area}"
+```
+
+</section>
+
+One multiplication is not a serious problem. The concern appears when several callers need the same missing operation and each reconstructs it. We can give that operation one home in application code.
+
+### Revised version: add behavior alongside the library
+
+<section data-pilot-language="csharp">
+
+An extension method is a static method that C# allows callers to invoke with instance-method syntax. The `this` modifier on its first parameter identifies the type being extended. It does not edit the original class or gain access to its private fields.
+
+```csharp group=after role=types
+public sealed class LibraryRectangle
+{
+    public int Width { get; }
+    public int Height { get; }
+    public LibraryRectangle(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+}
+
+public static class RectangleExtensions
+{
+    public static int Area(this LibraryRectangle rectangle)
+    {
+        return rectangle.Width * rectangle.Height;
+    }
+}
+
+public static class Label
+{
+    public static string For(LibraryRectangle rectangle)
+    {
+        return $"Area: {rectangle.Area()}";
+    }
+}
+```
+
+```csharp group=after role=run
+LibraryRectangle rectangle = new LibraryRectangle(3, 4);
+Console.WriteLine(rectangle.Area()); // 12
+Console.WriteLine(Label.For(rectangle)); // Area: 12
+```
+
+`LibraryRectangle` is unchanged. `RectangleExtensions.Area` contains the missing calculation, and the label asks for it by name. In a multi-namespace project, callers must import the extension method's namespace.
+
+</section>
+
+<section data-pilot-language="python">
+
+A standalone function can provide the missing operation without modifying the library class at runtime.
+
+```python group=after role=types
+class LibraryRectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+
+def rectangle_area(rectangle):
+    return rectangle.width * rectangle.height
+
+
+def rectangle_label(rectangle):
+    return f"Area: {rectangle_area(rectangle)}"
+```
+
+```python group=after role=run
+rectangle = LibraryRectangle(3, 4)
+print(rectangle_area(rectangle))   # 12
+print(rectangle_label(rectangle))  # Area: 12
+```
+
+`LibraryRectangle` is unchanged. `rectangle_area` contains the missing calculation, and the label asks for it by name. There is no need to attach a new method to the third-party class through monkey-patching.
+
+</section>
+
+## Choose the smallest addition that fits
+
+One missing calculation may need only a helper. Several related operations, different data conventions, or resource-management requirements may justify a wrapper object. Inheritance is only appropriate when the library supports it and the subclass can keep the base class's promises.
+
+Do not use an extension as an excuse to depend on undocumented internal details. It should work through the library's supported public API. When the library later adds the operation, review whether your helper still has a purpose and whether method resolution or semantics have changed.
+
+This smell resembles Feature Envy, but there is an important constraint: the natural home for the behavior is a class you cannot directly change. The correction should respect that ownership rather than turning every caller into a maintenance patch for the library.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Incomplete Library Class” and the related Introduce Foreign Method refactoring.
+2. [Microsoft — Extension members](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods), including the traditional `this`-parameter extension-method syntax used here.

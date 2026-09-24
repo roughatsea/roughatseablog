@@ -1,0 +1,140 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Refactoring
+description: "Refactoring changes how existing code is organized without changing what it does for its callers."
+prerequisites: "Functions, loops, arrays or lists, and return values."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Receipt.Format(new int[] {20, 30}) == \"Total: 50 tokens\"); Check.That(Receipt.Format(Array.Empty<int>()) == \"Total: 0 tokens\");","after":"Check.That(Receipt.Format(new int[] {20, 30}) == \"Total: 50 tokens\"); Check.That(Receipt.Format(Array.Empty<int>()) == \"Total: 0 tokens\"); var input = new int[] {0, 5, 8}; Check.That(Receipt.Format(input) == \"Total: 13 tokens\"); Check.That(input.SequenceEqual(new int[] {0, 5, 8}));"},"python":{"before":"assert receipt([20, 30]) == 'Total: 50 tokens'\nassert receipt([]) == 'Total: 0 tokens'","after":"assert receipt([20, 30]) == 'Total: 50 tokens'\nassert receipt([]) == 'Total: 0 tokens'\nprices = [0, 5, 8]\nassert receipt(prices) == 'Total: 13 tokens'\nassert prices == [0, 5, 8]"}};
+
+**Refactoring changes how existing code is organized without changing what it does for its callers.** You might rename a confusing variable, move a calculation into a function, or split a class. Existing callers should still receive the results they relied on before the change. [1](#source-1)
+
+That last condition is what separates refactoring from adding a feature or fixing a bug. Refactoring changes the arrangement; a feature changes the possibilities.
+
+## A receipt that does two jobs
+
+Imagine a game shop whose prices are whole numbers of tokens. A receipt function adds the prices and produces a line of text. The examples use non-null collections and totals small enough to fit in a C# integer.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Receipt
+{
+    public static string Format(int[] prices)
+    {
+        int total = 0;
+        foreach (int price in prices)
+        {
+            total += price;
+        }
+        return $"Total: {total} tokens";
+    }
+}
+```
+
+```csharp group=before role=run
+Console.WriteLine(Receipt.Format(new int[] {20, 30}));
+```
+
+`Format` performs the addition and writes the receipt text. Calling it with 20 and 30 prints `Total: 50 tokens`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def receipt(prices):
+    total = 0
+    for price in prices:
+        total += price
+    return f"Total: {total} tokens"
+```
+
+```python group=before role=run
+print(receipt([20, 30]))
+```
+
+`receipt` performs the addition and writes the receipt text. Calling it with 20 and 30 prints `Total: 50 tokens`.
+
+</section>
+
+There is nothing disastrous about this little function. But suppose another screen needs the total without the receipt text. Giving the calculation its own function will let us reuse it without also producing a sentence.
+
+### Refactored version
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class Receipt
+{
+    public static int CalculateTotal(int[] prices)
+    {
+        int total = 0;
+        foreach (int price in prices)
+        {
+            total += price;
+        }
+        return total;
+    }
+
+    public static string Format(int[] prices)
+    {
+        int total = CalculateTotal(prices);
+        return $"Total: {total} tokens";
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(Receipt.Format(new int[] {20, 30}));
+```
+
+The loop moved into `CalculateTotal`. `Format` calls that function, then produces exactly the same text. Existing calls to `Format` need no changes; the other screen can now call `CalculateTotal` directly.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def calculate_total(prices):
+    total = 0
+    for price in prices:
+        total += price
+    return total
+
+
+def receipt(prices):
+    total = calculate_total(prices)
+    return f"Total: {total} tokens"
+```
+
+```python group=after role=run
+print(receipt([20, 30]))
+```
+
+The loop moved into `calculate_total`. `receipt` calls that function, then produces exactly the same text. Existing calls to `receipt` need no changes; the other screen can now call `calculate_total` directly.
+
+</section>
+
+This particular change is called **Extract Method**, or **Extract Function**. Refactoring is the larger practice; extraction is one operation within it. [2](#source-2)
+
+## What stayed the same?
+
+Both versions add the same prices in the same order and produce the same receipt. An empty collection still produces a total of zero. Neither version changes the supplied collection. The new version is longer, yet the addition is easier to find and reuse. Fewer lines are not the objective.
+
+A useful check is to run the same inputs through the original and refactored code. Include ordinary purchases, an empty purchase, and zero-priced items. Those checks establish the cases they cover, not a mathematical proof about every possible program behavior.
+
+## Make the next change separately
+
+Now imagine adding a ten-percent discount. The receipt would show a different amount. That would be a feature change, even if it happened in the newly extracted function.
+
+Keeping the extraction and the discount in separate changes gives a failing test a clearer meaning. During extraction, a different total means something went wrong. During the discount change, a different total may be exactly what you intended.
+
+Refactor when the current organization gets in the way of a real task. Do not rearrange a clear, stable function simply because a catalog offers another shape for it. The useful question is: **what will become easier to understand or change after this edit?**
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Refactoring](https://refactoring.com/), including the distinction between structural changes and changes to observable behavior.
+2. <span id="source-2"></span>[Martin Fowler — Extract Function](https://refactoring.com/catalog/extractFunction.html). The shop and code examples here are original.

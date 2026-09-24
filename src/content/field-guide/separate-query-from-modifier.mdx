@@ -1,0 +1,107 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Separate Query from Modifier
+description: "Separate a method that returns information and changes state into a query that observes and an operation that performs the change."
+prerequisites: "Objects, state changes, and return values."
+---
+
+export const checks = {"csharp":{"original":"var score = new Score(12); Check.That(score.ReadAndReset() == 12); Check.That(score.ReadAndReset() == 0);","revised":"var score = new Score(12); Check.That(score.Read() == 12 && score.Read() == 12); score.Reset(); Check.That(score.Read() == 0);"},"python":{"original":"score = Score(12)\nassert score.read_and_reset() == 12\nassert score.read_and_reset() == 0","revised":"score = Score(12)\nassert score.read() == score.read() == 12\nscore.reset()\nassert score.read() == 0"}};
+
+**Separate Query from Modifier** splits an operation that both returns information and changes state. A **query** observes; a **modifier** performs a change. Separating them lets callers inspect a value without accidentally triggering an update. [1](#source-1)
+
+## Original version: looking at the score clears it
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Score
+{
+    private int value;
+    public Score(int value) { this.value = value; }
+    public int ReadAndReset()
+    {
+        int result = value;
+        value = 0;
+        return result;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Score:
+    def __init__(self, value):
+        self._value = value
+
+    def read_and_reset(self):
+        result = self._value
+        self._value = 0
+        return result
+```
+
+</section>
+
+The name admits both effects, but a screen that only wants to display the current score cannot use this operation safely. Reading twice returns different results.
+
+## Refactored version: reading and resetting are separate choices
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Score
+{
+    private int value;
+    public Score(int value) { this.value = value; }
+    public int Read() { return value; }
+    public void Reset() { value = 0; }
+}
+```
+
+```csharp group=revised role=run
+var score = new Score(12);
+int result = score.Read();
+score.Reset();
+Console.WriteLine(result); // 12
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Score:
+    def __init__(self, value):
+        self._value = value
+
+    def read(self):
+        return self._value
+
+    def reset(self):
+        self._value = 0
+```
+
+```python group=revised role=run
+score = Score(12)
+result = score.read()
+score.reset()
+print(result)  # 12
+```
+
+</section>
+
+A caller that needs the old behavior reads first and resets second. A display-only caller just reads. In this sequential example, the old sequence's result and final state are preserved.
+
+## Do not split an operation that must be atomic
+
+If other threads can update the score between the read and reset, two separate calls may lose an update or return an inconsistent result. An atomic exchange, queue removal, or database change-and-return operation can legitimately combine a mutation with a result. Preserve that atomicity rather than obeying separation mechanically.
+
+The original example has no synchronization, and the revision adds none. Its purpose is to show an API distinction, not a concurrent counter implementation.
+
+For a public API, a compatibility method can call the separate operations while consumers migrate. Tests should check both returned information and final state. A query that returns the expected number but still secretly resets the score has not accomplished the refactoring.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Separate Query from Modifier](https://refactoring.com/catalog/separateQueryFromModifier.html).

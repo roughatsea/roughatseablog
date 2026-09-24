@@ -1,0 +1,110 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Prototype
+description: "Prototype creates a new object by copying a configured example, with an explicit decision about which nested values are copied and which are shared."
+prerequisites: "Objects, references, constructors, and mutable collections."
+---
+
+export const checks = {"csharp":{"example":"var template = new Monster(\"Wisp\", 30, new[] { \"Glow\" }); var first = template.Copy(); var second = template.Copy(); first.Health = 1; first.Moves.Add(\"Dash\"); Check.That(!ReferenceEquals(first, template)); Check.That(template.Health == 30 && second.Health == 30); Check.That(template.Moves.SequenceEqual(new[] { \"Glow\" }) && second.Moves.Count == 1);"},"python":{"example":"template = Monster('Wisp', 30, ['Glow'])\nfirst = template.copy()\nsecond = template.copy()\nfirst.health = 1\nfirst.moves.append('Dash')\nassert first is not template and first is not second\nassert template.health == second.health == 30\nassert template.moves == second.moves == ['Glow']"}};
+
+**Prototype** creates a new object by copying a configured example. Instead of rebuilding the example's settings at every creation site, a caller asks the example for another instance with the same starting configuration. [1](#source-1)
+
+The critical question is what “copy” means. A new outer object can still share mutable objects inside it. Prototype is useful only when its copying contract matches the intended ownership.
+
+## Spawn two wisps from one configured example
+
+A level editor has a wisp configured with 30 health and a `Glow` move. Spawning a wisp should preserve those settings but give the new monster its own health and move list.
+
+The monster's name is a descriptive label here, not a unique entity identifier. A real game would normally assign a new identity to each spawned entity rather than copying the template's identity.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Monster
+{
+    public string Name { get; }
+    public int Health { get; set; }
+    public List<string> Moves { get; }
+
+    public Monster(string name, int health, IEnumerable<string> moves)
+    {
+        Name = name;
+        Health = health;
+        Moves = moves.ToList();
+    }
+
+    public Monster Copy()
+    {
+        return new Monster(Name, Health, Moves);
+    }
+}
+```
+
+`Copy` passes the existing configuration to a constructor that creates a new list. The list's entries are strings, which cannot themselves be mutated. Sharing those strings is safe for the independence this example requires.
+
+```csharp group=example role=run
+var template = new Monster("Wisp", 30, new[] { "Glow" });
+Monster first = template.Copy();
+Monster second = template.Copy();
+
+first.Health = 1;
+first.Moves.Add("Dash");
+Console.WriteLine(second.Health);                  // 30
+Console.WriteLine(string.Join(", ", second.Moves)); // Glow
+```
+
+Damaging or teaching the first monster does not change the second monster or the template. Assigning `first = template` would not have created that independence; it would only have copied a reference.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Monster:
+    def __init__(self, name, health, moves):
+        self.name = name
+        self.health = health
+        self.moves = list(moves)
+
+    def copy(self):
+        return Monster(self.name, self.health, self.moves)
+```
+
+The constructor copies the move list. The contained strings may be shared because they are immutable. Merely assigning the existing list to `self.moves` would make the monsters share later list changes.
+
+```python group=example role=run
+template = Monster("Wisp", 30, ["Glow"])
+first = template.copy()
+second = template.copy()
+
+first.health = 1
+first.moves.append("Dash")
+print(second.health)  # 30
+print(second.moves)   # ['Glow']
+```
+
+Each copy is a new monster with its own list. Python's standard `copy` module supports shallow and deep copying, but choosing an appropriate copy is still an application decision. [2](#source-2)
+
+</section>
+
+## Copy ownership, not blindly every reachable object
+
+If moves were mutable objects with cooldowns, copying only the list would still share each move object. A per-monster cooldown would need independent storage. A large immutable animation asset might be deliberately shared to avoid duplicating it.
+
+A generic deep copy is therefore not automatically the best implementation. Sockets, database connections, locks, event subscriptions, and external resources do not become sensible independent resources just because the surrounding object is copied. State the rule for each owned part. [2](#source-2)
+
+The explicit constructor call makes the rule visible in this example. A shallow memberwise copy would not provide the same move-list independence unless the list were replaced afterward.
+
+## Recognize the creation technique, not the word alone
+
+A registry of configured templates can let an editor add monster variants without giving every creation site another switch statement. The registry selects the example; the example supplies the copied configuration. Prototype may be valuable when configuration is elaborate or chosen dynamically.
+
+For a small object with obvious constructor arguments, a constructor or factory is usually sufficient. Copying also has no universal speed advantage: it can duplicate expensive state or retain values that should have been reinitialized.
+
+Finally, this design pattern is not JavaScript's prototype-chain inheritance. The shared word does not make cloning an object and looking up properties through a prototype chain the same operation.
+
+## Sources
+
+1. <span id="source-1"></span>[Gamma, Helm, Johnson, and Vlissides — Design Patterns](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-software-9780201633610), the original Prototype pattern.
+2. <span id="source-2"></span>[Python — Shallow and deep copy operations](https://docs.python.org/3/library/copy.html), including shared nested objects and objects that should not be blindly copied.
+3. [Microsoft — Object.MemberwiseClone](https://learn.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone), documenting shallow copying.

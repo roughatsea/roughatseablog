@@ -1,0 +1,106 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Characterization and Golden-Master Tests
+description: "Characterization tests record what existing code actually does. A golden master stores a reviewed output so later changes can be compared against it."
+prerequisites: "Functions, tests, strings, and the difference between current behavior and intended behavior."
+---
+
+export const checks = {"csharp":{"example":"Tests.ReceiptMatchesRecordedOutput(); Check.That(LegacyReceipt.Render(\"Mira\", 2) == LegacyReceipt.Render(\"Mira\", 2));"},"python":{"example":"test_receipt_matches_recorded_output()"}};
+
+A **characterization test** records what an existing system actually does, especially when its requirements are poorly understood. It can warn that a refactoring changed an important behavior before anyone has decided whether that behavior should change.
+
+A **golden master**, also called an approved output or snapshot, stores a reviewed example of a larger result. A test compares a fresh result with that saved output and shows differences. Approval-testing tools automate that comparison and review workflow. [1](#source-1)
+
+The important word is **reviewed**. Copying today's output into a file does not prove that today's output is correct.
+
+## First observe, then record
+
+Suppose an old receipt generator produces this text for Mira buying two items:
+
+```text
+CUSTOMER: Mira
+ITEMS: 2
+TOTAL:  10 coins
+```
+
+There are two spaces after `TOTAL:`. Perhaps a printer template depends on the alignment. Perhaps nobody does. Before reorganizing the function, we want to notice a change rather than unknowingly tidy it away.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class LegacyReceipt
+{
+    public static string Render(string name, int items)
+    {
+        return "CUSTOMER: " + name + "\n" +
+               "ITEMS: " + items + "\n" +
+               "TOTAL:  " + (items * 5) + " coins\n";
+    }
+}
+
+public static class Tests
+{
+    public static void ReceiptMatchesRecordedOutput()
+    {
+        const string approved =
+            "CUSTOMER: Mira\nITEMS: 2\nTOTAL:  10 coins\n";
+        string actual = LegacyReceipt.Render("Mira", 2);
+        if (actual != approved)
+            throw new Exception("Receipt differs from the reviewed output.");
+    }
+}
+```
+
+```csharp group=example role=run
+Tests.ReceiptMatchesRecordedOutput();
+```
+
+The expected text is a literal observation, not another call to the implementation. It preserves the newline and spacing. A larger snapshot would usually live in a separate text file so a comparison tool could show exactly which lines changed.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def render_legacy_receipt(name, items):
+    return (
+        "CUSTOMER: " + name + "\n"
+        + "ITEMS: " + str(items) + "\n"
+        + "TOTAL:  " + str(items * 5) + " coins\n"
+    )
+
+
+def test_receipt_matches_recorded_output():
+    approved = "CUSTOMER: Mira\nITEMS: 2\nTOTAL:  10 coins\n"
+    actual = render_legacy_receipt("Mira", 2)
+    assert actual == approved
+```
+
+```python group=example role=run
+test_receipt_matches_recorded_output()
+```
+
+The expected string is fixed. If the test calculated it by calling `render_legacy_receipt` again, both sides would change together and the comparison would detect nothing.
+
+</section>
+
+## A difference asks for a decision
+
+If a rewrite removes the extra space, inspect whether that change was intended. For a behavior-preserving refactoring, restore the old output. For an approved formatting change, update the expected output deliberately and record the reason.
+
+Do not use “update all snapshots” as an automatic repair for a failing suite. That can approve a missing customer name, an incorrect total, and a valid formatting change together. A smaller test for the total can help distinguish a business-rule failure from a presentation difference.
+
+Characterization also applies to exceptions, ordering, side effects, and accepted inputs—not just printable output. An old parser accepting blank fields or an API returning a particular error may be behavior existing users rely on. Capture the relevant cases before changing them.
+
+## Stabilize noise without hiding meaning
+
+Timestamps, random identifiers, temporary paths, and unordered output can make snapshots change on every run. Supply a fixed clock or deterministic input where practical. If comparison normalizes an irrelevant field, state exactly what is removed and why.
+
+A normalizer that deletes every number would also erase evidence that the total changed. A snapshot should preserve the information the test is supposed to protect.
+
+Finally, one receipt is one observed case. It says nothing about zero items, Unicode names, or unusual quantities. Select representative inputs and meaningful boundaries. The goal is a useful safety net around existing behavior, not a museum that makes every legacy bug untouchable.
+
+## Sources
+
+1. <span id="source-1"></span>[ApprovalTests](https://approvaltests.com/), tools and documentation for reviewed-output comparisons.
+2. [Martin Fowler — Self-Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), on automated regression checks as support for change.

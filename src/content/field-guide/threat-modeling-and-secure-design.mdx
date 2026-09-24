@@ -1,0 +1,110 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Threat Modeling and Secure Design
+description: "Threat modeling examines what a system protects, who can influence it, how it could be abused, and which controls and tests address those risks."
+prerequisites: "Web requests, authentication, data storage, and trust boundaries."
+---
+
+export const checks = {"csharp":{"example":"var app = new Notes(); Check.That(app.Read(\"Mira\", \"N-7\") == \"Private draft\"); Check.That(app.Read(\"Sol\", \"N-7\") == null); Check.That(app.Read(null, \"N-7\") == null); Check.That(app.Read(\"Mira\", \"missing\") == null);"},"python":{"example":"app = Notes()\nassert app.read('Mira', 'N-7') == 'Private draft'\nassert app.read('Sol', 'N-7') is None\nassert app.read(None, 'N-7') is None\nassert app.read('Mira', 'missing') is None"}};
+
+**Threat modeling** examines what a system protects, who can influence it, how it could be abused, and which controls address those risks. The result should guide design and verification, not merely produce a document saying that security was considered. [1](#source-1)
+
+A vulnerability scanner can find some known weaknesses. A threat model also asks application-specific questions, such as whether changing a note identifier lets one customer read another customer's draft.
+
+## Model a private-note application
+
+Assume a browser sends note requests to an API. Trusted authentication middleware establishes the user's identity. The API reads a private note store and returns content to the browser. It also sends operational events to a logging service.
+
+The browser, its request fields, and note text are not trusted simply because a user signed in. The API-to-store connection and the log destination have separate credentials and access policies.
+
+| What we want to protect | Plausible abuse | Design response | Evidence to obtain |
+|---|---|---|---|
+| Private note contents | A signed-in user requests another user's note identifier | Check resource ownership on the server for each read | Change only the requested identifier and verify that no foreign content is returned |
+| Browser execution | A saved note is interpreted as executable HTML | Render plain text with context-appropriate encoding | Display hostile-looking text and verify it remains text |
+| Service availability | A request supplies an enormous note | Bound request size and processing cost | Exercise limits through the actual HTTP server, not just a helper function |
+| Secrets and private text | An exception or log entry exposes tokens or note contents | Use approved event fields and safe public errors | Inspect failure responses and recorded events |
+
+This table is a small threat model: concrete assets, a stated system boundary, abuse paths, controls, and verification. It is not a complete security assessment of every possible deployment.
+
+## Implement and test one identified control
+
+The code below addresses the first row only. The `user` argument represents an identity already established by trusted server authentication. It must not be copied from a request's claimed owner field.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Note(string Owner, string Text);
+
+public sealed class Notes
+{
+    private readonly Dictionary<string, Note> records = new Dictionary<string, Note>
+    {
+        { "N-7", new Note("Mira", "Private draft") }
+    };
+
+    public string? Read(string? authenticatedUser, string noteId)
+    {
+        if (authenticatedUser == null) return null;
+        if (!records.TryGetValue(noteId, out Note? note)) return null;
+        if (note.Owner != authenticatedUser) return null;
+        return note.Text;
+    }
+}
+```
+
+```csharp group=example role=run
+var app = new Notes();
+Console.WriteLine(app.Read("Mira", "N-7"));             // Private draft
+Console.WriteLine(app.Read("Sol", "N-7") ?? "Not found"); // Not found
+```
+
+The same absent result is used for a missing note and a note this user may not read. A real API should deliberately choose its external status and timing behavior; returning null here is not an implementation of the whole HTTP security boundary.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Note:
+    owner: str
+    text: str
+
+
+class Notes:
+    def __init__(self):
+        self._records = {"N-7": Note("Mira", "Private draft")}
+
+    def read(self, authenticated_user, note_id):
+        if authenticated_user is None:
+            return None
+        note = self._records.get(note_id)
+        if note is None or note.owner != authenticated_user:
+            return None
+        return note.text
+```
+
+```python group=example role=run
+app = Notes()
+print(app.read("Mira", "N-7"))  # Private draft
+print(app.read("Sol", "N-7"))   # None
+```
+
+The local tests show that the ownership decision rejects a different identity. They do not establish that the real authentication middleware resists forged credentials or that every deployed route calls this operation.
+
+</section>
+
+## Turn the model into continuing work
+
+Record who owns each mitigation and which tests verify it. Revisit the model when the design changes: sharing links, file attachments, administrator tools, and third-party integrations each add new relationships to examine.
+
+A threat can be avoided by removing a feature, reduced by a control, or accepted through an explicit risk decision. Do not describe an unimplemented control as protection already provided. The last three rows above still need their own implementations and system-level checks.
+
+Secure design starts by making consequential assumptions visible. “Users cannot reach that button” is not the same as a server enforcing permission. “The database is private” is not the same as its credentials having minimal privileges. A useful threat model helps the team find those gaps before an attacker does.
+
+## Sources
+
+1. <span id="source-1"></span>[OWASP — Threat Modeling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html), on system models, trust boundaries, threats, and verification.

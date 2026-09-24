@@ -1,0 +1,118 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Functional Core, Imperative Shell
+description: "Keep calculations that decide what a result should be separate from the code that reads, writes, and acts on the outside world."
+prerequisites: "Functions, return values, and reading or writing a file."
+---
+
+export const checks = {"csharp":{"receipt":"Check.That(Pricing.Total(new[] {2, 3, 5}) == 10); Check.That(Pricing.Total(Array.Empty<int>()) == 0); string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()); try { ReceiptFile.Save(new[] {2, 3, 5}, testPath); Check.That(File.ReadAllText(testPath) == \"Total: 10 tokens\"); } finally { if (File.Exists(testPath)) File.Delete(testPath); }"},"python":{"receipt":"from tempfile import TemporaryDirectory\nassert calculate_total([2, 3, 5]) == 10\nassert calculate_total([]) == 0\nwith TemporaryDirectory() as directory:\n    path = Path(directory) / 'receipt.txt'\n    save_receipt([2, 3, 5], path)\n    assert path.read_text(encoding='utf-8') == 'Total: 10 tokens'"}};
+
+**Functional core, imperative shell** means keeping calculations separate from actions such as reading files, writing to a database, or sending messages.
+
+The **core** decides what a result should be. Given the same inputs, a pure calculation returns the same result without changing something outside itself. The **shell** obtains inputs and performs the necessary actions. “Pure” describes that behavior, not a special keyword. [1](#source-1)
+
+## Start with the part that needs no file
+
+Suppose a shop saves a receipt containing the sum of several whole-token prices. Adding prices does not require a disk. Writing the resulting receipt does.
+
+First, give the addition its own function. The C# example assumes the sum fits in an integer; neither version changes the input collection.
+
+<section data-pilot-language="csharp">
+
+```csharp group=receipt role=types
+public static class Pricing
+{
+    public static int Total(int[] prices)
+    {
+        int total = 0;
+        foreach (int price in prices)
+        {
+            total += price;
+        }
+        return total;
+    }
+}
+```
+
+`Pricing.Total` only uses its argument and local variables. It does not read a path, inspect the time, or write a receipt. That is the functional core.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=receipt role=types
+def calculate_total(prices):
+    total = 0
+    for price in prices:
+        total += price
+    return total
+```
+
+`calculate_total` only uses its argument and local variables. It does not read a path, inspect the time, or write a receipt. That is the functional core.
+
+</section>
+
+## Put the file operation around it
+
+The next function calls the calculation, formats its answer, and writes the text. These are the actions this little shell coordinates.
+
+<section data-pilot-language="csharp">
+
+```csharp group=receipt role=types
+public static class ReceiptFile
+{
+    public static void Save(int[] prices, string path)
+    {
+        int total = Pricing.Total(prices);
+        string text = $"Total: {total} tokens";
+        File.WriteAllText(path, text);
+    }
+}
+```
+
+```csharp group=receipt role=run
+Console.WriteLine(Pricing.Total(new int[] {2, 3, 5})); // 10
+```
+
+Call `ReceiptFile.Save` with the same prices and a path chosen by the application to write `Total: 10 tokens`. An error opening that file is a file-operation failure, not a pricing result. The method lets the error reach its caller instead of pretending the receipt was saved.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=receipt role=types
+from pathlib import Path
+
+
+def save_receipt(prices, path):
+    total = calculate_total(prices)
+    text = f"Total: {total} tokens"
+    Path(path).write_text(text, encoding="utf-8")
+```
+
+```python group=receipt role=run
+print(calculate_total([2, 3, 5]))  # 10
+```
+
+Call `save_receipt` with the same prices and a path chosen by the application to write `Total: 10 tokens`. An error opening that file is a file-operation failure, not a pricing result. The function lets the error reach its caller instead of pretending the receipt was saved.
+
+</section>
+
+## Two different tests become possible
+
+Most pricing cases can call the calculation directly with lists of numbers. Those tests need no temporary directory, mock disk, or permission setup. They ask whether the arithmetic is right.
+
+A smaller integration test can supply a temporary path, save a receipt, and read the file back. That test asks whether the calculation and file operation are connected correctly. The displayed examples are checked both ways.
+
+The separation does not remove failures. Disk access can still fail, and an application still needs to decide how to report or recover from that failure. It gives the failure a clear place to handle it, instead of mixing file recovery into the arithmetic.
+
+## This can be small
+
+You do not need a new project, a framework, or a directory named “core.” Two functions can express the idea. A more complicated shell might load records, pass their values to calculations, and save a result, but the useful boundary is still between deciding and doing.
+
+Do not label a function “pure” if it reads a global clock or writes a hidden cache. And do not push every line into a separate function. Separate the decisions that benefit from ordinary input/output tests from the actions that need interaction with the outside world.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Functional programming concepts](https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/functional-programming-concepts), for pure calculations, values, and effects.
+2. Gary Bernhardt, *Boundaries*, Destroy All Software talk, for the functional-core/imperative-shell arrangement. The receipt program here is an original small-scale example.

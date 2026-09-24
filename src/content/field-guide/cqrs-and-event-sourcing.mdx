@@ -1,0 +1,159 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: CQRS and Event Sourcing
+description: "CQRS separates models for changing and reading state. Event sourcing records state-changing facts as the source from which state can be rebuilt. Either can be used without the other."
+prerequisites: "Commands, queries, immutable records, and sequential processing."
+---
+
+export const checks = {"csharp":{"example":"var stock = new StockHistory(); stock.Receive(5); stock.Reserve(2); var summary = StockSummary.From(stock.Events); Check.That(summary.Available == 3 && summary.Reserved == 2); Check.That(StockSummary.From(stock.Events.Take(1)).Available == 5); int before = stock.Events.Length; bool rejected = false; try { stock.Reserve(4); } catch (InvalidOperationException) { rejected = true; } Check.That(rejected && stock.Events.Length == before);"},"python":{"example":"stock = StockHistory()\nstock.receive(5)\nstock.reserve(2)\nsummary = StockSummary.from_events(stock.events)\nassert summary.available == 3 and summary.reserved == 2\nassert StockSummary.from_events(stock.events[:1]).available == 5\nbefore = stock.events\ntry:\n    stock.reserve(4)\nexcept RuntimeError:\n    pass\nelse:\n    raise AssertionError('shortage accepted')\nassert stock.events == before"}};
+
+**CQRS**, or **Command Query Responsibility Segregation**, uses separate models for changing information and reading it. **Event sourcing** records the facts that changed state and uses those events to reconstruct the state. They are often combined, but neither requires the other. [1](#source-1) [2](#source-2)
+
+Separating two method names, `Get` and `Set`, is not the whole CQRS idea. The read model can be shaped for a screen or report, while the write model is shaped around permitted changes.
+
+## A stock history and a summary screen
+
+A shop receives five potions, then reserves two. The write side must reject a request to reserve four more. The read side wants a summary containing both available and reserved quantities.
+
+Instead of storing only the final number three, the event-sourced demonstration retains two facts: `received 5` and `reserved 2`. A projection processes those facts to produce the summary. The event list is in memory here; durable event storage is deliberately not implemented.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record StockEvent(string Kind, int Quantity);
+public sealed record StockSummary(int Available, int Reserved)
+{
+    public static StockSummary From(IEnumerable<StockEvent> events)
+    {
+        int available = 0;
+        int reserved = 0;
+        foreach (StockEvent item in events)
+        {
+            if (item.Kind == "received") available += item.Quantity;
+            else if (item.Kind == "reserved")
+            {
+                available -= item.Quantity;
+                reserved += item.Quantity;
+            }
+            else throw new ArgumentException("Unknown event.");
+        }
+        return new StockSummary(available, reserved);
+    }
+}
+
+public sealed class StockHistory
+{
+    private readonly List<StockEvent> events = new List<StockEvent>();
+    public StockEvent[] Events { get { return events.ToArray(); } }
+    public void Receive(int quantity)
+    {
+        if (quantity < 1) throw new ArgumentOutOfRangeException(nameof(quantity));
+        events.Add(new StockEvent("received", quantity));
+    }
+    public void Reserve(int quantity)
+    {
+        if (quantity < 1) throw new ArgumentOutOfRangeException(nameof(quantity));
+        if (quantity > StockSummary.From(events).Available)
+            throw new InvalidOperationException("Insufficient stock.");
+        events.Add(new StockEvent("reserved", quantity));
+    }
+}
+```
+
+```csharp group=example role=run
+var stock = new StockHistory();
+stock.Receive(5);
+stock.Reserve(2);
+StockSummary summary = StockSummary.From(stock.Events);
+Console.WriteLine(summary.Available); // 3
+Console.WriteLine(summary.Reserved);  // 2
+```
+
+`Reserve` is a request that can fail. A `reserved` event is a fact appended only after the rule succeeds. The summary contains data for reading, not methods that mutate stock.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class StockEvent:
+    kind: str
+    quantity: int
+
+
+@dataclass(frozen=True)
+class StockSummary:
+    available: int
+    reserved: int
+
+    @staticmethod
+    def from_events(events):
+        available = 0
+        reserved = 0
+        for event in events:
+            if event.kind == "received":
+                available += event.quantity
+            elif event.kind == "reserved":
+                available -= event.quantity
+                reserved += event.quantity
+            else:
+                raise ValueError("Unknown event.")
+        return StockSummary(available, reserved)
+
+
+class StockHistory:
+    def __init__(self):
+        self._events = []
+
+    @property
+    def events(self):
+        return tuple(self._events)
+
+    def receive(self, quantity):
+        if type(quantity) is not int or quantity < 1:
+            raise ValueError("Quantity must be positive.")
+        self._events.append(StockEvent("received", quantity))
+
+    def reserve(self, quantity):
+        if type(quantity) is not int or quantity < 1:
+            raise ValueError("Quantity must be positive.")
+        if quantity > StockSummary.from_events(self._events).available:
+            raise RuntimeError("Insufficient stock.")
+        self._events.append(StockEvent("reserved", quantity))
+```
+
+```python group=example role=run
+stock = StockHistory()
+stock.receive(5)
+stock.reserve(2)
+summary = StockSummary.from_events(stock.events)
+print(summary.available)  # 3
+print(summary.reserved)   # 2
+```
+
+Replaying only the first event gives the earlier available count of five. Replaying both gives three. The projection assumes valid events from the writer; it is not a validator for arbitrary imported histories.
+
+</section>
+
+## Separate the two decisions
+
+The demonstration combines a command-oriented writer, a separate summary representation, and an event history. CQRS could instead use ordinary current-state tables, with specialized read queries over those tables. Event sourcing could support one model used for both reading and writing.
+
+Neither choice requires separate services or a message broker. When projections are updated asynchronously, readers may lag behind successful writes. An application needs a user-visible policy for that lag rather than assuming immediate read-after-write consistency.
+
+## A history is not just another log file
+
+A production event stream must preserve order and reject conflicting appends. Events need stable schemas, identities, and enough data for deterministic replay. Rebuilding a projection must not resend emails or repeat payments that originally accompanied those facts. Snapshots can shorten replay, but the underlying history and snapshot version must agree. [2](#source-2)
+
+The example recalculates from the entire list on each reservation, assumes small integer quantities, and has no concurrent writers. It demonstrates reconstruction and rejected commands, not a scalable event store.
+
+Use these techniques when different read/write needs or historical reconstruction justify their complexity. For a simple data-entry application, current-state records with a clear audit trail may be far easier to operate. Keeping an audit log does not by itself make the application event-sourced; the decisive question is whether the recorded events are sufficient and authoritative for rebuilding its state.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — CQRS](https://martinfowler.com/bliki/CQRS.html), including separate models and complexity trade-offs.
+2. <span id="source-2"></span>[Martin Fowler — Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html), on replay, history, and external side effects.

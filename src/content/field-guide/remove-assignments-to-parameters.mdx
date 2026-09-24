@@ -1,0 +1,92 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Remove Assignments to Parameters
+description: "Keep an input parameter's meaning stable by storing an adjusted value in a separate local variable."
+prerequisites: "Parameters, local assignment, and return values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Prices.AfterCoupon(100, 20) == 80); Check.That(Prices.AfterCoupon(10, 20) == 0); int price = 100; Prices.AfterCoupon(price, 20); Check.That(price == 100);","revised":"Check.That(Prices.AfterCoupon(100, 20) == 80); Check.That(Prices.AfterCoupon(10, 20) == 0);"},"python":{"original":"assert after_coupon(100, 20) == 80\nassert after_coupon(10, 20) == 0\nprice = 100\nafter_coupon(price, 20)\nassert price == 100","revised":"assert after_coupon(100, 20) == 80\nassert after_coupon(10, 20) == 0"}};
+
+**Remove Assignments to Parameters** keeps an input parameter's meaning stable by putting an adjusted value in a separate local variable. It is a specific use of Split Variable. [1](#source-1)
+
+## Original version: the price stops meaning the original price
+
+A coupon reduces a price, but the result must not fall below zero. Assume nonnegative whole-coin inputs.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Prices
+{
+    public static int AfterCoupon(int price, int coupon)
+    {
+        price = price - coupon;
+        if (price < 0) price = 0;
+        return price;
+    }
+}
+```
+
+After the first assignment, `price` is no longer the amount received from the caller. A later statement cannot refer to that original amount through this name.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def after_coupon(price, coupon):
+    price = price - coupon
+    if price < 0:
+        price = 0
+    return price
+```
+
+`price` begins as the input and then becomes the discounted result. Anyone adding logic later must remember that change in meaning.
+
+</section>
+
+## Refactored version: name the adjusted amount
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Prices
+{
+    public static int AfterCoupon(int price, int coupon)
+    {
+        int discountedPrice = price - coupon;
+        if (discountedPrice < 0) discountedPrice = 0;
+        return discountedPrice;
+    }
+}
+```
+
+`price` remains the input; `discountedPrice` is the result being calculated. `AfterCoupon(100, 20)` still returns 80.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def after_coupon(price, coupon):
+    discounted_price = price - coupon
+    if discounted_price < 0:
+        discounted_price = 0
+    return discounted_price
+```
+
+The input name remains available, and the adjusted amount has its own name. A coupon larger than the price still produces zero.
+
+</section>
+
+## This was not mutating the caller's integer
+
+Neither original example changes an integer variable in the caller. C# passes this integer by value, and Python rebinds a local name to another integer. The refactoring improves local meaning; it does not fix a caller-mutation bug that never existed.
+
+Changing a property on a passed object, modifying a list, or using C# `ref` parameters is a different situation. Those operations can affect caller-visible state and require separate analysis.
+
+Parameter reassignment is not universally confusing. A tiny normalization step can be readable. Prefer a separate variable when later code needs both the original and adjusted value, or when one name would otherwise carry several meanings.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Split Variable](https://refactoring.com/catalog/splitVariable.html), which includes Remove Assignments to Parameters as an alias.

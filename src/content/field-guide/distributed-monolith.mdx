@@ -1,0 +1,84 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Distributed Monolith
+description: "A distributed monolith runs in separate services but remains so tightly coupled that changes and releases must move together."
+prerequisites: "Functions, APIs, and deploying separate applications."
+---
+
+export const checks = {"csharp":{"example":"var old = new Dictionary<string, int> { { \"subtotal\", 20 } }; var newer = new Dictionary<string, int> { { \"subtotal\", 20 }, { \"itemCount\", 2 } }; Check.That(Consumer.Strict(old) == 20 && Consumer.Tolerant(newer) == 20); bool failed = false; try { Consumer.Strict(newer); } catch (ArgumentException) { failed = true; } Check.That(failed);"},"python":{"example":"old = {'subtotal': 20}\nnewer = {'subtotal': 20, 'itemCount': 2}\nassert strict(old) == tolerant(newer) == 20\ntry:\n    strict(newer)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('strict consumer accepted new field')"}};
+
+A **distributed monolith** runs as separate services but remains so tightly coupled that changes, deployments, or failures must move together. Splitting a program across network addresses has not necessarily made its parts independent. Independent deployment is an important characteristic of the microservice approach, not an automatic consequence of using HTTP. [1](#source-1)
+
+## A release that needs three teams
+
+Imagine a checkout service, a catalog service, and a billing service. The catalog adds a response field. Checkout rejects the changed response. Billing shares checkout's internal data classes and must update too. All three teams now coordinate a release for a change that should have belonged to the catalog.
+
+That is one possible symptom. Others include several services updating the same tables, a minor operation requiring a chain of synchronous calls, or every repository needing the same version of a shared business library.
+
+The following code isolates just the first problem: an unnecessarily strict response consumer. It is not a runnable distributed system.
+
+## One small source of release coupling
+
+The response contract says `subtotal` is an integer and consumers should ignore additional fields.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Consumer
+{
+    public static int Strict(Dictionary<string, int> response)
+    {
+        if (response.Count != 1 || !response.ContainsKey("subtotal"))
+        {
+            throw new ArgumentException("Unexpected response shape.");
+        }
+        return response["subtotal"];
+    }
+
+    public static int Tolerant(Dictionary<string, int> response)
+    {
+        if (!response.TryGetValue("subtotal", out int subtotal))
+        {
+            throw new ArgumentException("Missing subtotal.");
+        }
+        return subtotal;
+    }
+}
+```
+
+`Strict` rejects a response containing `itemCount` as well as `subtotal`. `Tolerant` requires the field it actually uses and accepts the extra field. The producer can make that additive change without forcing this consumer to change.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+def strict(response):
+    if set(response) != {"subtotal"}:
+        raise ValueError("Unexpected response shape.")
+    return response["subtotal"]
+
+
+def tolerant(response):
+    if "subtotal" not in response:
+        raise ValueError("Missing subtotal.")
+    if type(response["subtotal"]) is not int:
+        raise ValueError("Subtotal must be an integer.")
+    return response["subtotal"]
+```
+
+`tolerant` validates the required field while allowing unrelated additions. It does not accept a missing subtotal or silently convert invalid text into money. C#'s typed dictionary already restricts values to integers; Python checks that condition explicitly here.
+
+</section>
+
+## This does not cure an architecture by itself
+
+Tolerating an additive field solves one compatibility problem. It does not make changing the meaning or type of `subtotal` safe. Tests between producers and consumers should cover those promises, and deployment plans must allow old and new versions to coexist.
+
+Likewise, replacing synchronous calls with messages does not automatically make services independent. Shared ownership of data, distributed transactions, and coordinated schema changes can preserve the same coupling in another form.
+
+When services constantly change together, reconsider the boundaries. Keeping a closely related capability inside one modular application may be simpler than maintaining separate deployments that cannot act independently. Split where ownership, change, and operational needs justify it—not merely because a diagram looks more modern with more boxes.
+
+## Sources
+
+1. <span id="source-1"></span>[James Lewis and Martin Fowler — Microservices](https://martinfowler.com/articles/microservices.html), especially independent deployment, business capabilities, and decentralized data ownership.

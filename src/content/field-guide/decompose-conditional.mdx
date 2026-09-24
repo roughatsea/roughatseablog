@@ -1,0 +1,108 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Decompose Conditional
+description: "Decompose Conditional gives meaningful names to a condition and its branch calculations so the decision reads in domain language."
+prerequisites: "Conditions, functions, and return values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Fares.Price(6, 4) == 8); Check.That(Fares.Price(9, 4) == 15);","revised":"Check.That(Fares.Price(6, 4) == 8); Check.That(Fares.Price(9, 4) == 15);"},"python":{"original":"assert price(6, 4) == 8\nassert price(9, 4) == 15","revised":"assert price(6, 4) == 8\nassert price(9, 4) == 15"}};
+
+**Decompose Conditional** extracts a condition and its branch calculations into named operations. It lets a reader understand the decision before studying the details of each branch. [1](#source-1)
+
+## Original version: infer the season from month numbers
+
+A fictional ferry charges two coins per passenger in June through August. At other times it charges three per passenger plus a three-coin booking fee. The input month is between 1 and 12.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Fares
+{
+    public static int Price(int month, int passengers)
+    {
+        if (month >= 6 && month <= 8)
+        {
+            return passengers * 2;
+        }
+        return passengers * 3 + 3;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def price(month, passengers):
+    if month >= 6 and month <= 8:
+        return passengers * 2
+    return passengers * 3 + 3
+```
+
+</section>
+
+The expression is not difficult arithmetic. The missing information is what the month range and the two formulas mean to the ferry service.
+
+## Refactored version: name the decision and its outcomes
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Fares
+{
+    private static bool IsSummer(int month)
+    {
+        return month >= 6 && month <= 8;
+    }
+    private static int SummerFare(int passengers) { return passengers * 2; }
+    private static int RegularFare(int passengers) { return passengers * 3 + 3; }
+
+    public static int Price(int month, int passengers)
+    {
+        if (IsSummer(month)) return SummerFare(passengers);
+        return RegularFare(passengers);
+    }
+}
+```
+
+`Price` reads as a choice between two named fares. Opening `IsSummer` reveals the exact inclusive month range, while the two fare methods retain their formulas.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def is_summer(month):
+    return month >= 6 and month <= 8
+
+
+def summer_fare(passengers):
+    return passengers * 2
+
+
+def regular_fare(passengers):
+    return passengers * 3 + 3
+
+
+def price(month, passengers):
+    if is_summer(month):
+        return summer_fare(passengers)
+    return regular_fare(passengers)
+```
+
+The main function communicates the decision without requiring a reader to interpret both formulas at once. The helpers explain details when needed.
+
+</section>
+
+## A name must add information
+
+`CheckMonth` would say less than `IsSummer`; `CalculateA` would say less than `SummerFare`. Good names identify the rule, not the syntax that implements it.
+
+The same condition still executes first, and only the selected fare calculation runs. Preserve that property when branch calculations have side effects or can fail. Do not compute both branches in advance merely to give them variables.
+
+This small example becomes longer after decomposition. Use the move when naming the rule makes reading or future changes easier, not as a ritual for every `if`. A direct comparison with two obvious results may already be the clearest explanation.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Decompose Conditional](https://refactoring.com/catalog/decomposeConditional.html).

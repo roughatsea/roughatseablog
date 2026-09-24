@@ -1,0 +1,107 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Extract Method
+description: "Extract Method moves a piece of code into a named method and replaces the original statements with a call to it."
+prerequisites: "Functions, parameters, return values, and loops."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Rewards.Label(new[] { 3, 7 }) == \"Coins: 10\"); Check.That(Rewards.Label(Array.Empty<int>()) == \"Coins: 0\");","revised":"Check.That(Rewards.Label(new[] { 3, 7 }) == \"Coins: 10\"); Check.That(Rewards.Label(Array.Empty<int>()) == \"Coins: 0\");"},"python":{"original":"assert label([3, 7]) == 'Coins: 10'\nassert label([]) == 'Coins: 0'","revised":"assert label([3, 7]) == 'Coins: 10'\nassert label([]) == 'Coins: 0'"}};
+
+**Extract Method** moves a piece of code into a named method and replaces the original statements with a call to that method. Outside a class, the same move is usually called **Extract Function**. The goal is to explain a step or make it reusable without changing its behavior. [1](#source-1)
+
+## Original version: calculation inside a label
+
+A game totals coins from several rewards and produces a label. Assume ordinary integer amounts whose sum fits in a C# integer.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Rewards
+{
+    public static string Label(int[] amounts)
+    {
+        int total = 0;
+        foreach (int amount in amounts)
+        {
+            total += amount;
+        }
+        return "Coins: " + total;
+    }
+}
+```
+
+`Label` contains both the loop and the text formatting. The loop is one coherent calculation we can name.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def label(amounts):
+    total = 0
+    for amount in amounts:
+        total += amount
+    return "Coins: " + str(total)
+```
+
+`label` contains both the loop and the text formatting. The loop is one coherent calculation we can name.
+
+</section>
+
+## Refactored version: give the calculation a name
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Rewards
+{
+    private static int TotalCoins(int[] amounts)
+    {
+        int total = 0;
+        foreach (int amount in amounts)
+        {
+            total += amount;
+        }
+        return total;
+    }
+
+    public static string Label(int[] amounts)
+    {
+        return "Coins: " + TotalCoins(amounts);
+    }
+}
+```
+
+`TotalCoins` receives the array the loop needs and returns the value formatting needs. `Rewards.Label(new[] { 3, 7 })` still returns `Coins: 10`.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def total_coins(amounts):
+    total = 0
+    for amount in amounts:
+        total += amount
+    return total
+
+
+def label(amounts):
+    return "Coins: " + str(total_coins(amounts))
+```
+
+`total_coins` receives the values the loop needs and returns the value formatting needs. `label([3, 7])` still returns `Coins: 10`.
+
+</section>
+
+## Check the move, not just the final number
+
+The iteration order, additions, and formatting are unchanged. The empty array or list still yields `Coins: 0`. Those comparisons are useful checks, though a few examples do not prove equivalence for every possible input.
+
+Before extracting, identify values read from outside the selected statements and values used afterward. Pass required inputs and return required results. Be careful with mutations, early returns, exceptions, and evaluation order; a helper call must not quietly duplicate a side effect.
+
+There is no rule that every three-line loop needs a method. Extract when the name saves the reader work, separates a meaningful calculation, or supports reuse. A helper named `DoTheNextThreeLines` has moved the code without explaining it.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Extract Function](https://refactoring.com/catalog/extractFunction.html), also known as Extract Method.

@@ -1,0 +1,116 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Collapse Interface
+subtitle: Removing a redundant interface
+description: "Remove an interface that adds no useful contract or boundary, letting local callers use the concrete component directly."
+prerequisites: "Interfaces, implementations, and dependency boundaries."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new CounterView(new LocalCounter()).Value() == 0);","revised":"Check.That(new CounterView(new LocalCounter()).Value() == 0);"},"python":{"original":"assert CounterView(LocalCounter()).value() == 0","revised":"assert CounterView(LocalCounter()).value() == 0"}};
+
+This guide uses **Collapse Interface** to mean removing an interface that contributes no useful contract or boundary. Local callers depend directly on the concrete component instead. Do not confuse this label with Fowler's **Collapse Hierarchy**, which removes a redundant level in a class inheritance hierarchy. [1](#source-1)
+
+## Original version: an interface repeats a tiny local component
+
+Assume the counter and its view are maintained together, no alternative implementation is needed, and the interface provides no architectural or testing separation.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public interface ILocalCounter
+{
+    int Value();
+}
+public sealed class LocalCounter : ILocalCounter
+{
+    public int Value() { return 0; }
+}
+public sealed class CounterView
+{
+    private readonly ILocalCounter counter;
+    public CounterView(ILocalCounter counter) { this.counter = counter; }
+    public int Value() { return counter.Value(); }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+from typing import Protocol
+
+
+class Counter(Protocol):
+    def value(self) -> int:
+        ...
+
+
+class LocalCounter:
+    def value(self) -> int:
+        return 0
+
+
+class CounterView:
+    def __init__(self, counter: Counter):
+        self._counter = counter
+
+    def value(self):
+        return self._counter.value()
+```
+
+</section>
+
+Under these stated assumptions, the interface is another declaration to maintain without a distinct role to explain.
+
+## Revised version: use the local component directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class LocalCounter
+{
+    public int Value() { return 0; }
+}
+public sealed class CounterView
+{
+    private readonly LocalCounter counter;
+    public CounterView(LocalCounter counter) { this.counter = counter; }
+    public int Value() { return counter.Value(); }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class LocalCounter:
+    def value(self) -> int:
+        return 0
+
+
+class CounterView:
+    def __init__(self, counter: LocalCounter):
+        self._counter = counter
+
+    def value(self):
+        return self._counter.value()
+```
+
+</section>
+
+The call and result are unchanged. The reader follows one fewer type declaration. Python's runtime dispatch remains structural; the annotation now names the concrete component.
+
+## One implementation does not prove an interface is redundant
+
+A clock, database port, or external-service adapter can deserve an interface before a second production implementation exists. The interface may protect a dependency direction, permit controlled testing, or express a smaller contract than the concrete library.
+
+Therefore the decision cannot be made by counting implementations. Ask what consumers are insulated from and whether that insulation matters. Removing a public interface also breaks implementers and callers outside the code you control.
+
+The related Collapse Hierarchy refactoring follows a similar judgment about unnecessary levels, but it is not an interchangeable technical name for every interface removal. Keeping that distinction explicit is more useful than preserving an impressive-sounding catalog label without explaining its scope.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Collapse Hierarchy](https://refactoring.com/catalog/collapseHierarchy.html), the related but distinct class-hierarchy refactoring.
+2. [Microsoft — Dependency injection guidelines](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/guidelines), for the value of deliberate dependency boundaries.

@@ -1,0 +1,86 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Exception with Test
+description: "Use an explicit precondition check for a predictable local condition instead of deliberately triggering and catching an exception."
+prerequisites: "Collections, conditionals, and exceptions."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Names.FirstOrDefault(new List<string>()) == \"Nobody\"); Check.That(Names.FirstOrDefault(new List<string> { \"Mira\" }) == \"Mira\");","revised":"Check.That(Names.FirstOrDefault(new List<string>()) == \"Nobody\"); Check.That(Names.FirstOrDefault(new List<string> { \"Mira\" }) == \"Mira\");"},"python":{"original":"assert first_or_default([]) == 'Nobody'\nassert first_or_default(['Mira']) == 'Mira'","revised":"assert first_or_default([]) == 'Nobody'\nassert first_or_default(['Mira']) == 'Mira'"}};
+
+**Replace Exception with Test** checks a predictable condition before an operation instead of deliberately causing an exception to discover that condition. Here *test* means a conditional check in the program, not a unit test. The modern name is **Replace Exception with Precheck**. [1](#source-1)
+
+## Original version: indexing discovers an empty list
+
+The function returns the first name or a fallback for an empty, ordinary in-memory list.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Names
+{
+    public static string FirstOrDefault(List<string> names)
+    {
+        try { return names[0]; }
+        catch (ArgumentOutOfRangeException) { return "Nobody"; }
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def first_or_default(names):
+    try:
+        return names[0]
+    except IndexError:
+        return "Nobody"
+```
+
+</section>
+
+An empty list is expected and easy to inspect. Using an exception here can make the ordinary decision less visible.
+
+## Refactored version: state the empty-list case
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Names
+{
+    public static string FirstOrDefault(List<string> names)
+    {
+        if (names.Count == 0) return "Nobody";
+        return names[0];
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def first_or_default(names):
+    if len(names) == 0:
+        return "Nobody"
+    return names[0]
+```
+
+</section>
+
+Both versions return `Nobody` for an empty list and `Mira` for a list beginning with Mira. The revised branch names the ordinary condition instead of relying on a failed access.
+
+## A precheck does not make the later operation safe forever
+
+The examples assume no concurrent mutation between checking the count and reading the element. With shared mutable data, that gap can create a race. Prefer an atomic operation or appropriate synchronization when the state can change.
+
+Likewise, checking that a file exists does not guarantee it will still exist—or be readable—when opened. The open operation can still fail, so exception handling remains necessary. Remote services and permissions introduce similar gaps.
+
+Python often uses direct operations with exception handling intentionally, especially for mappings and protocol-based objects. Do not turn that idiom into a universal violation. Choose a precheck when it accurately expresses a local, stable condition without duplicating work or creating a check-then-act bug.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Exception with Precheck](https://refactoring.com/catalog/replaceExceptionWithPrecheck.html).
+2. [Python — Errors and exceptions](https://docs.python.org/3/tutorial/errors.html).

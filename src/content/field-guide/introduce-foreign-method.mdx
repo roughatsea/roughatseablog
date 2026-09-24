@@ -1,0 +1,105 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Introduce Foreign Method
+description: "Introduce Foreign Method puts a missing operation for a type you cannot edit into a clearly named helper that accepts that type."
+prerequisites: "Functions, date values, and loops."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Scheduling.Next(new DateOnly(2026, 9, 25)) == new DateOnly(2026, 9, 28));","revised":"Check.That(BusinessDates.NextWeekday(new DateOnly(2026, 9, 25)) == new DateOnly(2026, 9, 28)); Check.That(BusinessDates.NextWeekday(new DateOnly(2026, 9, 23)) == new DateOnly(2026, 9, 24));"},"python":{"original":"assert next_date(date(2026, 9, 25)) == date(2026, 9, 28)","revised":"assert next_weekday(date(2026, 9, 25)) == date(2026, 9, 28)\nassert next_weekday(date(2026, 9, 23)) == date(2026, 9, 24)"}};
+
+**Introduce Foreign Method** creates a helper for an operation that belongs with a type you cannot conveniently change. The helper accepts an instance of that type and clearly identifies the added operation. It does not modify the library itself. [1](#source-1)
+
+## Original version: scheduling repeats date arithmetic
+
+A scheduler needs the next Monday-through-Friday date. This is a weekday rule, not a complete business calendar: it deliberately ignores public holidays.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Scheduling
+{
+    public static DateOnly Next(DateOnly current)
+    {
+        DateOnly next = current.AddDays(1);
+        while (next.DayOfWeek == DayOfWeek.Saturday ||
+               next.DayOfWeek == DayOfWeek.Sunday)
+        {
+            next = next.AddDays(1);
+        }
+        return next;
+    }
+}
+```
+
+The platform's `DateOnly` supplies day arithmetic, but not this application's weekday rule. Copying the loop into another scheduler would duplicate that rule.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+from datetime import date, timedelta
+
+
+def next_date(current):
+    next_day = current + timedelta(days=1)
+    while next_day.weekday() >= 5:
+        next_day += timedelta(days=1)
+    return next_day
+```
+
+Python numbers Monday as 0 and Sunday as 6. The loop skips 5 and 6, but its location and generic name do not advertise a reusable weekday operation.
+
+</section>
+
+## Refactored version: name the missing operation beside the library
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class BusinessDates
+{
+    public static DateOnly NextWeekday(DateOnly current)
+    {
+        DateOnly next = current.AddDays(1);
+        while (next.DayOfWeek == DayOfWeek.Saturday ||
+               next.DayOfWeek == DayOfWeek.Sunday)
+        {
+            next = next.AddDays(1);
+        }
+        return next;
+    }
+}
+```
+
+A scheduler now calls `BusinessDates.NextWeekday(current)`. The helper is ordinary application code operating on a library type; no inheritance or runtime modification is involved.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+from datetime import date, timedelta
+
+
+def next_weekday(current):
+    next_day = current + timedelta(days=1)
+    while next_day.weekday() >= 5:
+        next_day += timedelta(days=1)
+    return next_day
+```
+
+Place `next_weekday` in a date-helper module and import it where needed. Its name states the added rule; the built-in `date` type stays unchanged.
+
+</section>
+
+## One helper, not a replacement standard library
+
+Friday September 25, 2026 becomes Monday September 28 in both versions. The calculation is moved and named, not altered. Dates at the platform's maximum representable value can still overflow; that limitation has not been removed.
+
+For several related operations, a wrapper type may be useful; that is Introduce Local Extension. For one small rule, a helper is often enough. Prefer a platform-provided operation when it already has the semantics you need, and document domain assumptions such as weekends and holidays explicitly.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Refactoring catalog](https://refactoring.com/catalog/), including the first-edition vocabulary.
+2. [Microsoft — DateOnly.AddDays](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly.adddays) and [Python — datetime](https://docs.python.org/3/library/datetime.html), for the underlying date operations.

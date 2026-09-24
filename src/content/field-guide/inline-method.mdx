@@ -1,0 +1,91 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Inline Method
+description: "Inline Method replaces a call with the called method's body when the extra method no longer adds useful meaning."
+prerequisites: "Methods, arguments, and return values."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Rewards.Total(10, 5) == 15); Check.That(Rewards.Total(0, 0) == 0);","revised":"Check.That(Rewards.Total(10, 5) == 15); Check.That(Rewards.Total(0, 0) == 0);"},"python":{"original":"assert total_reward(10, 5) == 15\nassert total_reward(0, 0) == 0","revised":"assert total_reward(10, 5) == 15\nassert total_reward(0, 0) == 0"}};
+
+**Inline Method** replaces a method call with the called method's body. Once all relevant callers have been updated, the unnecessary method can be removed. It is the reverse of Extract Method. [1](#source-1)
+
+## Original version: follow a call to discover the same idea
+
+A reward combines a base amount and a bonus. One helper adds another name but no distinct rule.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Rewards
+{
+    public static int Total(int baseAmount, int bonus)
+    {
+        return ComputeTotal(baseAmount, bonus);
+    }
+
+    private static int ComputeTotal(int baseAmount, int bonus)
+    {
+        return baseAmount + bonus;
+    }
+}
+```
+
+`Total` and `ComputeTotal` both name the same operation. The private helper has no other caller or independently useful responsibility in this example.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def _compute_total(base_amount, bonus):
+    return base_amount + bonus
+
+
+def total_reward(base_amount, bonus):
+    return _compute_total(base_amount, bonus)
+```
+
+Reading `total_reward` sends us to `_compute_total`, which contains only the addition. Nothing else uses the helper in this example.
+
+</section>
+
+## Refactored version: put the addition where it is used
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Rewards
+{
+    public static int Total(int baseAmount, int bonus)
+    {
+        return baseAmount + bonus;
+    }
+}
+```
+
+`Rewards.Total(10, 5)` still returns 15. The public method and its parameters remain; only the private forwarding step disappears.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def total_reward(base_amount, bonus):
+    return base_amount + bonus
+```
+
+`total_reward(10, 5)` still returns 15. The public function remains; the internal forwarding step disappears.
+
+</section>
+
+## Short is not the same as unnecessary
+
+A one-line method can encode valuable knowledge. A method named `QualifiesForFreeShipping` may tell a reader far more than the comparison inside it. Inlining such a method everywhere can duplicate a business rule and make changes harder.
+
+Also check for overridden methods, public API consumers, decorators, logging, and argument evaluation. Substituting a body for a call is unsafe if it bypasses dynamic dispatch or evaluates a side-effecting argument more than once.
+
+Use inlining when the method's name and boundary no longer earn their place, or as an intermediate step before reorganizing code differently. The objective is fewer unnecessary detours, not the fewest possible methods.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Inline Function](https://refactoring.com/catalog/inlineFunction.html), also known as Inline Method.

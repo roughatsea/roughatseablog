@@ -1,0 +1,100 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Parameter with Explicit Methods
+description: "Replace a parameter that selects different operations with separate method names that state which operation the caller intends."
+prerequisites: "Methods, string parameters, and state changes."
+---
+
+export const checks = {"csharp":{"original":"var settings = new Settings(); settings.Set(\"volume\", 30); Check.That(settings.Volume == 30 && settings.Brightness == 0);","revised":"var settings = new Settings(); settings.SetVolume(30); settings.SetBrightness(80); Check.That(settings.Volume == 30 && settings.Brightness == 80);"},"python":{"original":"settings = Settings()\nsettings.set('volume', 30)\nassert settings.volume == 30 and settings.brightness == 0","revised":"settings = Settings()\nsettings.set_volume(30)\nsettings.set_brightness(80)\nassert settings.volume == 30 and settings.brightness == 80"}};
+
+**Replace Parameter with Explicit Methods** replaces a parameter that chooses an operation with separate method names. The call itself then says what will happen. It is a form of Remove Flag Argument, even when the flag is a string rather than a Boolean. [1](#source-1)
+
+## Original version: a string chooses which setting changes
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Settings
+{
+    public int Volume { get; private set; }
+    public int Brightness { get; private set; }
+    public void Set(string setting, int value)
+    {
+        if (setting == "volume") Volume = value;
+        else if (setting == "brightness") Brightness = value;
+        else throw new ArgumentException("Unknown setting.");
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Settings:
+    def __init__(self):
+        self.volume = 0
+        self.brightness = 0
+
+    def set(self, setting, value):
+        if setting == "volume":
+            self.volume = value
+        elif setting == "brightness":
+            self.brightness = value
+        else:
+            raise ValueError("Unknown setting.")
+```
+
+</section>
+
+A typo in the string becomes a runtime error. A caller that knows it is adjusting volume still has to express that operation through a generic dispatcher.
+
+## Refactored version: name the operation directly
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Settings
+{
+    public int Volume { get; private set; }
+    public int Brightness { get; private set; }
+    public void SetVolume(int value) { Volume = value; }
+    public void SetBrightness(int value) { Brightness = value; }
+}
+```
+
+`settings.SetVolume(30)` makes the target explicit and discoverable as a method. The implementation no longer checks a string to decide which field to write.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Settings:
+    def __init__(self):
+        self.volume = 0
+        self.brightness = 0
+
+    def set_volume(self, value):
+        self.volume = value
+
+    def set_brightness(self, value):
+        self.brightness = value
+```
+
+`settings.set_volume(30)` states the operation directly. The public attributes remain mutable as in the original; this example changes operation selection, not Python access enforcement.
+
+</section>
+
+## Keep dynamic selection at the boundary that needs it
+
+A configuration file may genuinely contain setting names. Its parser can still translate those names into explicit operations and reject unknown names. The point is to avoid making every ordinary caller speak the parser's generic protocol.
+
+If a user interface treats hundreds of settings uniformly, a data-driven API may be more appropriate than hundreds of methods. Use explicit methods when the operations deserve distinct names and contracts.
+
+No range validation is added here; valid numeric ranges are a separate concern. Preserving the old valid assignments while migrating callers is the refactoring. Changing allowed values or error reporting should be reviewed separately.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Remove Flag Argument](https://refactoring.com/catalog/removeFlagArgument.html), including Replace Parameter with Explicit Methods.

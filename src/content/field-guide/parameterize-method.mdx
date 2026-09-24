@@ -1,0 +1,90 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Parameterize Method
+description: "Combine methods that perform the same operation with different fixed values by making the varying value a parameter."
+prerequisites: "Methods, parameters, and arithmetic."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Volume.UpOne(98) == 99 && Volume.UpFive(98) == 100);","revised":"Check.That(Volume.Increase(98, 1) == 99 && Volume.Increase(98, 5) == 100);"},"python":{"original":"assert up_one(98) == 99 and up_five(98) == 100","revised":"assert increase(98, 1) == 99 and increase(98, 5) == 100"}};
+
+**Parameterize Method** combines methods that perform the same operation but use different fixed values. The varying value becomes an argument, while the shared calculation has one implementation. [1](#source-1)
+
+## Original version: two volume adjustments with the same rule
+
+A volume setting ranges from zero to 100. One button raises it by one point; another raises it by five. Both stop at 100.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Volume
+{
+    public static int UpOne(int current) { return Math.Min(100, current + 1); }
+    public static int UpFive(int current) { return Math.Min(100, current + 5); }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def up_one(current):
+    return min(100, current + 1)
+
+
+def up_five(current):
+    return min(100, current + 5)
+```
+
+</section>
+
+The only difference is the increment. Fixing the ceiling rule would otherwise require keeping both methods consistent.
+
+## Refactored version: one adjustment operation
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Volume
+{
+    public static int Increase(int current, int amount)
+    {
+        return Math.Min(100, current + amount);
+    }
+}
+```
+
+```csharp group=revised role=run
+Console.WriteLine(Volume.Increase(98, 1)); // 99
+Console.WriteLine(Volume.Increase(98, 5)); // 100
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def increase(current, amount):
+    return min(100, current + amount)
+```
+
+```python group=revised role=run
+print(increase(98, 1))  # 99
+print(increase(98, 5))  # 100
+```
+
+</section>
+
+The old operations correspond to arguments 1 and 5. The same ceiling calculation now serves both.
+
+## Generalize only the part that is truly the same
+
+These examples assume a valid current setting and a small nonnegative increment. The new signature can express inputs the old methods could not, such as a negative amount. Add validation or restrict callers when the API must reject those values; do not mistake a generalized signature for a fully specified new contract.
+
+Named convenience methods can remain useful at call sites. They can forward to the parameterized implementation instead of duplicating its rule.
+
+Do not combine methods merely because they look alike. Increasing volume and increasing brightness may have different future rules even if both currently add five. Parameterization works best when the varying value is genuinely an input to one operation, not a flag selecting unrelated behaviors.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Parameterize Function](https://refactoring.com/catalog/parameterizeFunction.html), also called Parameterize Method.

@@ -1,0 +1,112 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Pull Up Constructor Body
+description: "Move duplicated initialization from subclass constructors into a common base constructor, preserving the order in which state is established."
+prerequisites: "Constructors, inheritance, and initialization order."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Editor(\" Mira \").Name == \"Mira\"); Check.That(new Viewer(\" Sol \").Name == \"Sol\");","revised":"Check.That(new Editor(\" Mira \").Name == \"Mira\"); Check.That(new Viewer(\" Sol \").Name == \"Sol\");"},"python":{"original":"assert Editor(' Mira ').name == 'Mira'\nassert Viewer(' Sol ').name == 'Sol'","revised":"assert Editor(' Mira ').name == 'Mira'\nassert Viewer(' Sol ').name == 'Sol'"}};
+
+**Pull Up Constructor Body** moves duplicated initialization from subclass constructors into their common base constructor. Each subclass supplies the necessary arguments instead of repeating the same setup statements. [1](#source-1)
+
+## Original version: every subtype trims its name
+
+A small application has editor and viewer objects. Both inherit a name field and normalize incoming names by trimming surrounding whitespace. Inputs are non-null strings.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public abstract class User
+{
+    public string Name { get; protected set; } = "";
+}
+public sealed class Editor : User
+{
+    public Editor(string name) { Name = name.Trim(); }
+}
+public sealed class Viewer : User
+{
+    public Viewer(string name) { Name = name.Trim(); }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class User:
+    pass
+
+
+class Editor(User):
+    def __init__(self, name):
+        self.name = name.strip()
+
+
+class Viewer(User):
+    def __init__(self, name):
+        self.name = name.strip()
+```
+
+</section>
+
+The normalization belongs to all users, but every subclass is responsible for remembering it.
+
+## Refactored version: initialize the shared state once
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class User
+{
+    public string Name { get; }
+    protected User(string name) { Name = name.Trim(); }
+}
+public sealed class Editor : User
+{
+    public Editor(string name) : base(name) { }
+}
+public sealed class Viewer : User
+{
+    public Viewer(string name) : base(name) { }
+}
+```
+
+The `base(name)` call establishes `Name` before the subclass constructor body runs. The property no longer needs a protected setter because the base constructor initializes it directly.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class User:
+    def __init__(self, name):
+        self.name = name.strip()
+
+
+class Editor(User):
+    def __init__(self, name):
+        super().__init__(name)
+
+
+class Viewer(User):
+    def __init__(self, name):
+        super().__init__(name)
+```
+
+`super().__init__` performs the shared setup. Any subtype-specific initialization can then follow it explicitly.
+
+</section>
+
+## Construction order is not cosmetic
+
+Move only work that the base constructor can perform with the values available at that point. If initialization depends on a subclass field that has not been set yet, pulling it upward can introduce a defect.
+
+Avoid invoking overridable methods from a base constructor unless the design explicitly accounts for partially initialized subclasses. Shared validation also needs consistent exception behavior: centralizing it should not silently change which invalid input is reported first.
+
+The shown constructors still turn `" Mira "` into `"Mira"`. Their visible normalization is unchanged. The migration narrows protected mutation in the C# hierarchy, so unshown subclasses relying on that setter would need review before adopting this exact implementation.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Pull Up Constructor Body](https://refactoring.com/catalog/pullUpConstructorBody.html).

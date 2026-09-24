@@ -1,0 +1,112 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Command
+description: "A Command represents a request as an object, retaining the information needed to execute the request later."
+prerequisites: "Objects, method calls, and queues."
+---
+
+export const checks = {"csharp":{"example":"var document = new Document(); var command = new AppendText(document, \"Hi\"); Check.That(document.Text == \"\"); command.Execute(); Check.That(document.Text == \"Hi\"); command.Execute(); Check.That(document.Text == \"HiHi\");"},"python":{"example":"document = Document()\ncommand = AppendText(document, 'Hi')\nassert document.text == ''\ncommand.execute()\nassert document.text == 'Hi'\ncommand.execute()\nassert document.text == 'HiHi'"}};
+
+A **Command** represents a request as an object. It retains the information needed to execute the request, allowing another part of the program to store, queue, or trigger it without knowing the details of the operation. [1](#source-1)
+
+Creating a command and executing it are separate events. That separation is the useful idea—not giving every small function a class.
+
+## Put an edit in a queue
+
+A text editor needs to append text to a document. A toolbar might request the edit, while an event loop decides when to execute queued edits. The queue should not need to know how documents work.
+
+The command below holds the document to edit and the text to append. The document is the *receiver*: the object that performs the requested work.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Document
+{
+    public string Text { get; private set; } = "";
+    public void Append(string text) { Text += text; }
+}
+
+public interface ICommand
+{
+    void Execute();
+}
+
+public sealed class AppendText : ICommand
+{
+    private readonly Document document;
+    private readonly string text;
+
+    public AppendText(Document document, string text)
+    {
+        this.document = document;
+        this.text = text;
+    }
+
+    public void Execute() { document.Append(text); }
+}
+```
+
+```csharp group=example role=run
+var document = new Document();
+var pending = new Queue<ICommand>();
+pending.Enqueue(new AppendText(document, "Hi"));
+pending.Enqueue(new AppendText(document, "!"));
+Console.WriteLine(document.Text.Length); // 0
+while (pending.Count > 0) pending.Dequeue().Execute();
+Console.WriteLine(document.Text); // Hi!
+```
+
+Constructing the commands did not edit the document. The queue later calls the shared `Execute` method. It does not inspect command types or recover their arguments itself.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from collections import deque
+
+
+class Document:
+    def __init__(self):
+        self.text = ""
+
+    def append(self, text):
+        self.text += text
+
+
+class AppendText:
+    def __init__(self, document, text):
+        self._document = document
+        self._text = text
+
+    def execute(self):
+        self._document.append(self._text)
+```
+
+```python group=example role=run
+document = Document()
+pending = deque([AppendText(document, "Hi"), AppendText(document, "!")])
+print(len(document.text))  # 0
+while pending:
+    pending.popleft().execute()
+print(document.text)  # Hi!
+```
+
+The queue works with objects providing `execute`. Each object retains the particular document and argument needed for its edit. A closure could capture those values too; a command object becomes useful when requests need additional metadata or operations.
+
+</section>
+
+## Deferred execution is not automatically safe replay
+
+Execute the same `AppendText` twice and the text is appended twice. Nothing here provides deduplication, durable queues, transactions, or exactly-once delivery. A retried payment command needs more than an `Execute` method to avoid charging twice.
+
+The receiver is also a live reference, not a snapshot. The document may have changed between command creation and execution. Decide whether a delayed command should act on current state, require a particular version, or be rejected as stale.
+
+Undo is a possible addition, not an automatic property. A command might retain the previous document text or a reversible edit. Once work has an external effect—such as sending email—an inverse local method cannot erase that effect. Memento can help preserve local state, but does not reverse the outside world.
+
+Use Command when requests need a life separate from their immediate execution: queuing, history, configurable actions, or scheduling. For a direct one-off call, `document.Append(text)` is often the clearest design.
+
+## Sources
+
+1. <span id="source-1"></span>[Robert Nystrom — Command](https://gameprogrammingpatterns.com/command.html), on requests as objects, receivers, queues, and closures.
+2. [Microsoft — Command/Memento](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-commandmemento), distinguishing executable requests from saved state.

@@ -1,0 +1,112 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Data Value with Object
+description: "Replace a primitive value with a small object when the value has a distinct meaning or rules that deserve one home."
+prerequisites: "Classes, constructors, primitive types, and validation."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new CartLine(3).Quantity == 3); bool failed = false; try { new CartLine(-1); } catch (ArgumentOutOfRangeException) { failed = true; } Check.That(failed);","revised":"Check.That(new CartLine(new Quantity(3)).Quantity.Value == 3); bool failed = false; try { new Quantity(-1); } catch (ArgumentOutOfRangeException) { failed = true; } Check.That(failed);"},"python":{"original":"assert CartLine(3).quantity == 3\ntry:\n    CartLine(-1)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('negative quantity accepted')","revised":"assert CartLine(Quantity(3)).quantity.value == 3\ntry:\n    Quantity(-1)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('negative quantity accepted')"}};
+
+**Replace Data Value with Object** replaces a primitive such as a string or integer with a small object representing its meaning. The object can give related validation and operations one home. The modern catalog calls this **Replace Primitive with Object**. [1](#source-1)
+
+## Original version: every owner checks a quantity
+
+A cart line permits a nonnegative integer quantity. Other parts of the application also use that same quantity rule.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class CartLine
+{
+    public int Quantity { get; }
+    public CartLine(int quantity)
+    {
+        if (quantity < 0) throw new ArgumentOutOfRangeException(nameof(quantity));
+        Quantity = quantity;
+    }
+}
+```
+
+The field has the same language-level type as a customer identifier or a temperature. Its specific rule lives in the cart constructor.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class CartLine:
+    def __init__(self, quantity):
+        if type(quantity) is not int or quantity < 0:
+            raise ValueError("Quantity must be a nonnegative integer.")
+        self.quantity = quantity
+```
+
+The constructor checks the rule, but another class accepting a quantity would have to repeat or share that validation somehow.
+
+</section>
+
+## Refactored version: construct a quantity first
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Quantity
+{
+    public int Value { get; }
+    public Quantity(int value)
+    {
+        if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
+        Value = value;
+    }
+}
+
+public sealed class CartLine
+{
+    public Quantity Quantity { get; }
+    public CartLine(Quantity quantity)
+    {
+        Quantity = quantity ?? throw new ArgumentNullException(nameof(quantity));
+    }
+}
+```
+
+The caller writes `new CartLine(new Quantity(3))`. The quantity object establishes its own rule; the cart only needs a non-null quantity.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Quantity:
+    def __init__(self, value):
+        if type(value) is not int or value < 0:
+            raise ValueError("Quantity must be a nonnegative integer.")
+        self._value = value
+
+    @property
+    def value(self):
+        return self._value
+
+
+class CartLine:
+    def __init__(self, quantity):
+        if not isinstance(quantity, Quantity):
+            raise TypeError("Expected a Quantity.")
+        self.quantity = quantity
+```
+
+`CartLine(Quantity(3))` makes the intended concept visible. The public property does not permit assigning a new numeric value to the quantity, though Python's private attribute remains accessible by convention.
+
+</section>
+
+## Add meaning, not packaging
+
+The valid quantity and its numeric result are preserved, but invalid input now fails while constructing `Quantity`. Public signatures and some exception details change, so callers and tests need migration.
+
+This example does not implement value-based equality; two quantity objects are distinct objects even when their numbers match. Add equality deliberately when the domain requires it.
+
+A loop counter does not need this wrapper. A quantity shared by several APIs may benefit when one named type prevents mistakes or centralizes rules. Avoid wrappers that merely force everyone to type `.Value` without providing any useful meaning or protection.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Primitive with Object](https://refactoring.com/catalog/replacePrimitiveWithObject.html), formerly Replace Data Value with Object.

@@ -1,0 +1,127 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Adapter
+description: "An Adapter translates an existing component's interface into the interface a caller needs, including any necessary conversion of meaning or units."
+prerequisites: "Objects, interfaces or compatible methods, and unit conversions."
+---
+
+export const checks = {"csharp":{"example":"var sensor = new FahrenheitSensor(86); var adapter = new CelsiusAdapter(sensor); Check.That(Math.Abs(adapter.ReadCelsius() - 30) < 0.000001); Check.That(Math.Abs(new CelsiusAdapter(new FahrenheitSensor(32)).ReadCelsius()) < 0.000001); Check.That(new Display(adapter).Reading() == 30);"},"python":{"example":"sensor = FahrenheitSensor(86)\nadapter = CelsiusAdapter(sensor)\nassert abs(adapter.read_celsius() - 30) < 0.000001\nassert abs(CelsiusAdapter(FahrenheitSensor(32)).read_celsius()) < 0.000001\nassert Display(adapter).reading() == 30"}};
+
+An **Adapter** translates an existing component's interface into the interface a caller needs. It lets the two work together without rewriting either the caller's expectations or the existing component's implementation. [1](#source-1)
+
+Translation can involve more than a method name. Units, return shapes, and error meanings must agree too. Calling a Fahrenheit reading “Celsius” would be a renamed mistake, not a successful adapter.
+
+## A display expects Celsius; the sensor reports Fahrenheit
+
+A weather display expects an operation returning degrees Celsius. A supplied sensor has a `ReadFahrenheit` operation instead. Treat the sensor as a library we cannot edit.
+
+For a deterministic example, the sensor stores a supplied reading rather than contacting hardware. An 86°F reading should become 30°C. The arithmetic is `(fahrenheit - 32) × 5 / 9`.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class FahrenheitSensor
+{
+    private readonly double reading;
+    public FahrenheitSensor(double reading) { this.reading = reading; }
+    public double ReadFahrenheit() { return reading; }
+}
+
+public interface ICelsiusSensor
+{
+    double ReadCelsius();
+}
+
+public sealed class CelsiusAdapter : ICelsiusSensor
+{
+    private readonly FahrenheitSensor sensor;
+
+    public CelsiusAdapter(FahrenheitSensor sensor)
+    {
+        this.sensor = sensor;
+    }
+
+    public double ReadCelsius()
+    {
+        double fahrenheit = sensor.ReadFahrenheit();
+        return (fahrenheit - 32) * 5.0 / 9.0;
+    }
+}
+
+public sealed class Display
+{
+    private readonly ICelsiusSensor sensor;
+    public Display(ICelsiusSensor sensor) { this.sensor = sensor; }
+    public double Reading() { return sensor.ReadCelsius(); }
+}
+```
+
+`CelsiusAdapter` holds the existing sensor. It implements the operation the display expects, calls the old operation, and converts the result. The display only depends on `ICelsiusSensor`.
+
+```csharp group=example role=run
+var legacySensor = new FahrenheitSensor(86);
+var display = new Display(new CelsiusAdapter(legacySensor));
+Console.WriteLine(display.Reading()); // 30
+```
+
+The adapter sits at the connection between two contracts. It does not require `Display` to add a check for this particular sensor type.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class FahrenheitSensor:
+    def __init__(self, reading):
+        self._reading = reading
+
+    def read_fahrenheit(self):
+        return self._reading
+
+
+class CelsiusAdapter:
+    def __init__(self, sensor):
+        self._sensor = sensor
+
+    def read_celsius(self):
+        fahrenheit = self._sensor.read_fahrenheit()
+        return (fahrenheit - 32) * 5.0 / 9.0
+
+
+class Display:
+    def __init__(self, sensor):
+        self._sensor = sensor
+
+    def reading(self):
+        return self._sensor.read_celsius()
+```
+
+The display expects an object providing `read_celsius`. The adapter provides that method while delegating to the old sensor. No shared base class is required for ordinary Python method calls.
+
+```python group=example role=run
+legacy_sensor = FahrenheitSensor(86)
+display = Display(CelsiusAdapter(legacy_sensor))
+print(display.reading())  # 30.0
+```
+
+The old sensor still reports Fahrenheit. The conversion happens once at the adapter, rather than being repeated by every screen using it.
+
+</section>
+
+## Preserve the promise, not just the shape
+
+A real sensor may return a stale value, an error code, or a missing reading. An adapter must not turn those into a plausible temperature by accident. Define how missing data and failures map into the target contract.
+
+The sample accepts finite numeric readings and performs no caching. Each read calls the underlying sensor. Caching would add a freshness policy and change when the hardware is consulted; that deserves an explicit decision rather than being hidden in “translation.”
+
+## Nearby patterns solve different problems
+
+A Decorator usually keeps the same interface while adding behavior around it. A Facade offers a simpler entry point to a subsystem. This adapter exists because two interfaces do not match.
+
+These examples use an *object adapter*: it contains the adapted object. Some languages also allow adapters based on inheritance. Composition is especially convenient when the old class is sealed, has an inconvenient hierarchy, or should remain replaceable as an ordinary dependency.
+
+Use an adapter where integration genuinely needs translation. If both classes are under your control and the disagreement is only an unfortunate name, changing the original API may be simpler than preserving a permanent layer of conversion.
+
+## Sources
+
+1. <span id="source-1"></span>[Gamma, Helm, Johnson, and Vlissides — Adapter](https://www.informit.com/articles/article.aspx?p=1398600), the original pattern's interface-conversion role and implementation variants.

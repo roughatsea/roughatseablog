@@ -1,0 +1,121 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Memento
+description: "A Memento captures an object's state so that object can restore it later, without making the history manager interpret the state itself."
+prerequisites: "Objects, snapshots, stacks, and immutable values."
+---
+
+export const checks = {"csharp":{"example":"var editor = new Editor(); editor.Append(\"Hello\"); var snapshot = editor.Capture(); editor.Append(\"!\"); editor.Restore(snapshot); Check.That(editor.Text == \"Hello\"); bool rejected = false; try { new Editor().Restore(snapshot); } catch (ArgumentException) { rejected = true; } Check.That(rejected);"},"python":{"example":"editor = Editor()\neditor.append('Hello')\nsnapshot = editor.capture()\neditor.append('!')\neditor.restore(snapshot)\nassert editor.text == 'Hello'\ntry:\n    Editor().restore(snapshot)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('foreign snapshot accepted')"}};
+
+A **Memento** captures an object's state so that object can restore it later. Another component can retain the snapshot without interpreting or editing the state inside it. This separates managing history from knowing how an object represents itself. [1](#source-1)
+
+## Save an editor state, then undo an edit
+
+A text editor knows how to append text and restore an earlier state. A history stack only needs to keep snapshots in order. It should not have to know whether a future editor stores plain text, cursor positions, or formatting runs.
+
+This example snapshots only text. Strings are immutable, so retaining the old string preserves its value without a deep copy.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IEditorSnapshot { }
+
+public sealed class Editor
+{
+    private sealed record Snapshot(Editor Owner, string Text) : IEditorSnapshot;
+    public string Text { get; private set; } = "";
+
+    public void Append(string text) { Text += text; }
+
+    public IEditorSnapshot Capture()
+    {
+        return new Snapshot(this, Text);
+    }
+
+    public void Restore(IEditorSnapshot saved)
+    {
+        if (saved is not Snapshot snapshot || snapshot.Owner != this)
+        {
+            throw new ArgumentException("Snapshot belongs to another editor.");
+        }
+        Text = snapshot.Text;
+    }
+}
+```
+
+The public snapshot interface reveals no editor fields. The private nested record contains the actual saved representation. `Restore` verifies that this editor created the snapshot rather than accepting arbitrary state from another instance.
+
+```csharp group=example role=run
+var editor = new Editor();
+var history = new Stack<IEditorSnapshot>();
+editor.Append("Hello");
+history.Push(editor.Capture());
+editor.Append("!");
+Console.WriteLine(editor.Text); // Hello!
+editor.Restore(history.Pop());
+Console.WriteLine(editor.Text); // Hello
+```
+
+The history stack pushes and pops snapshots without reading their contents. Pattern descriptions call that history-management role the *caretaker* and the editor the *originator*.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class _Snapshot:
+    owner: object
+    text: str
+
+
+class Editor:
+    def __init__(self):
+        self.text = ""
+
+    def append(self, text):
+        self.text += text
+
+    def capture(self):
+        return _Snapshot(self, self.text)
+
+    def restore(self, saved):
+        if not isinstance(saved, _Snapshot) or saved.owner is not self:
+            raise ValueError("Snapshot belongs to another editor.")
+        self.text = saved.text
+```
+
+The frozen dataclass resists ordinary reassignment. Its underscore marks it as an internal representation, not inaccessible data. Python callers could still inspect or deliberately forge it; this is an encapsulation convention, not a security boundary.
+
+```python group=example role=run
+editor = Editor()
+history = []
+editor.append("Hello")
+history.append(editor.capture())
+editor.append("!")
+print(editor.text)  # Hello!
+editor.restore(history.pop())
+print(editor.text)  # Hello
+```
+
+The history code knows when to capture and restore, but does not construct the editor's saved fields itself. A revised snapshot representation can therefore remain the editor's responsibility.
+
+</section>
+
+## A snapshot must actually preserve the old state
+
+If the editor stored mutable lists, retaining those same lists would not preserve an earlier version. Copy owned mutable state or use persistent immutable structures. Also decide whether a snapshot includes selection, cursor location, and other state users expect undo to restore.
+
+History consumes memory and may retain references to the original object. Bound its size or use a deliberate retention policy. Long-term persisted snapshots need versioning; a private in-memory record is not automatically a durable file format.
+
+Memento captures state, whereas Command captures a request to perform work. They can cooperate: a command can retain a memento to support undo. Neither makes external side effects reversible. Restoring editor text does not recall an email that the editor already sent.
+
+For a tiny immutable value, keeping previous values directly may be enough. Memento becomes useful when the object should control what is captured and how it is restored while another component manages the history.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Command/Memento](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-commandmemento), on requests and restoration of previous state.
+2. [Gamma, Helm, Johnson, and Vlissides — Design Patterns](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-software-9780201633610), including Memento's originator and caretaker roles.

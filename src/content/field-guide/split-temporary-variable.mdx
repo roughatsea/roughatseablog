@@ -1,0 +1,94 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Split Temporary Variable
+description: "Split Temporary Variable gives separate names to unrelated values that previously reused one local variable."
+prerequisites: "Local variables, assignment, and arithmetic."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Journey.Describe(100, 50, 3) == \"2 hours; 300 coins\");","revised":"Check.That(Journey.Describe(100, 50, 3) == \"2 hours; 300 coins\");"},"python":{"original":"assert describe(100, 50, 3) == '2 hours; 300 coins'","revised":"assert describe(100, 50, 3) == '2 hours; 300 coins'"}};
+
+**Split Temporary Variable** gives separate names to unrelated values that previously reused one local variable. Each name can then keep one meaning throughout its lifetime. [1](#source-1)
+
+## Original version: one variable changes its meaning
+
+A route planner describes travel time and cost. To keep the arithmetic simple, distance is an exact multiple of speed, speed is positive, and prices are whole coins.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Journey
+{
+    public static string Describe(int distance, int speed, int pricePerUnit)
+    {
+        int value = distance / speed;
+        string timeText = value + " hours";
+        value = distance * pricePerUnit;
+        return timeText + "; " + value + " coins";
+    }
+}
+```
+
+`value` first means hours, then coins. The assignment is legal, but the reader must track which meaning is active at each line.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def describe(distance, speed, price_per_unit):
+    value = distance // speed
+    time_text = str(value) + " hours"
+    value = distance * price_per_unit
+    return time_text + "; " + str(value) + " coins"
+```
+
+The same name first denotes hours, then coins. `//` performs integer division; the stated exact-multiple assumption avoids rounding differences between languages.
+
+</section>
+
+## Refactored version: one name for each quantity
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Journey
+{
+    public static string Describe(int distance, int speed, int pricePerUnit)
+    {
+        int hours = distance / speed;
+        string timeText = hours + " hours";
+        int cost = distance * pricePerUnit;
+        return timeText + "; " + cost + " coins";
+    }
+}
+```
+
+`hours` remains a duration and `cost` remains an amount. The calculations and their order stay the same.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+def describe(distance, speed, price_per_unit):
+    hours = distance // speed
+    time_text = str(hours) + " hours"
+    cost = distance * price_per_unit
+    return time_text + "; " + str(cost) + " coins"
+```
+
+The names now identify stable meanings. `describe(100, 50, 3)` still returns `2 hours; 300 coins`.
+
+</section>
+
+## Do not split a value that is genuinely being accumulated
+
+A running total legitimately changes as each item is added. A loop counter legitimately advances. Those assignments update one concept rather than assigning unrelated concepts to the same name.
+
+Follow the values reaching each use before renaming. Split at the assignment where the meaning changes, and update only the uses belonging to that value. A compiler or editor can help, but blindly renaming every occurrence would recreate the original confusion under a different name.
+
+The improvement is modest but cumulative: a reader no longer has to remember that a variable called `value` stopped meaning time three lines ago.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Split Variable](https://refactoring.com/catalog/splitVariable.html), including the older Split Temp terminology.

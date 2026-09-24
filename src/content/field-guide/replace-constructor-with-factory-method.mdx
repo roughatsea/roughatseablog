@@ -1,0 +1,105 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Constructor with Factory Method
+description: "Put object creation behind a named function so callers can state how the object is being created rather than relying only on constructor arguments."
+prerequisites: "Constructors, static methods, and units of measurement."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Distance(3 * 1000).Meters == 3000);","revised":"Check.That(Distance.FromKilometers(3).Meters == 3000); Check.That(Distance.FromMeters(30).Meters == 30);"},"python":{"original":"assert Distance(3 * 1000).meters == 3000","revised":"assert Distance.from_kilometers(3).meters == 3000\nassert Distance.from_meters(30).meters == 30"}};
+
+**Replace Constructor with Factory Method** puts creation behind a named operation. The modern refactoring name, **Replace Constructor with Factory Function**, helps distinguish it from the separate Gang of Four Factory Method design pattern. A named factory does not require subclassing. [1](#source-1)
+
+## Original version: what unit does the constructor expect?
+
+The distance class stores whole meters. Callers holding kilometers perform the conversion themselves. Values in this example are small enough to avoid integer overflow.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Distance
+{
+    public int Meters { get; }
+    public Distance(int meters) { Meters = meters; }
+}
+```
+
+```csharp group=original role=run
+var distance = new Distance(3 * 1000);
+Console.WriteLine(distance.Meters); // 3000
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Distance:
+    def __init__(self, meters):
+        self.meters = meters
+```
+
+```python group=original role=run
+distance = Distance(3 * 1000)
+print(distance.meters)  # 3000
+```
+
+</section>
+
+The constructor name cannot tell the reader whether a bare 3 means meters or kilometers. Its parameter declaration can, but the call requires extra knowledge.
+
+## Refactored version: the creation name states the unit
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Distance
+{
+    public int Meters { get; }
+    private Distance(int meters) { Meters = meters; }
+    public static Distance FromMeters(int meters)
+    {
+        return new Distance(meters);
+    }
+    public static Distance FromKilometers(int kilometers)
+    {
+        return new Distance(kilometers * 1000);
+    }
+}
+```
+
+`Distance.FromKilometers(3)` names the conversion and performs it in one place. The private constructor directs ordinary callers through the named factories.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Distance:
+    def __init__(self, meters):
+        self.meters = meters
+
+    @classmethod
+    def from_meters(cls, meters):
+        return cls(meters)
+
+    @classmethod
+    def from_kilometers(cls, kilometers):
+        return cls(kilometers * 1000)
+```
+
+`Distance.from_kilometers(3)` states the input unit. `classmethod` receives the class as `cls`, allowing the factory to construct an instance. Python's direct constructor remains callable; the factories provide the preferred explicit vocabulary.
+
+</section>
+
+## A factory creates flexibility, not a requirement to use all of it
+
+Factories can validate input, choose an implementation, or return a cached instance. Each choice has consequences. Returning a shared mutable object instead of a fresh instance, for example, changes identity and ownership behavior.
+
+This example only centralizes construction and conversion. It does not introduce caching or different subtypes. Existing calls for three kilometers preserve their 3,000-meter result.
+
+Use a named factory when creation has meaningful alternatives or the constructor's arguments are ambiguous. A plain constructor is still appropriate when it already communicates the operation clearly.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Constructor with Factory Function](https://refactoring.com/catalog/replaceConstructorWithFactoryFunction.html).
+2. [Python — classmethod](https://docs.python.org/3/library/functions.html#classmethod).

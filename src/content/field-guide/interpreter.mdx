@@ -1,0 +1,120 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Interpreter
+description: "Interpreter represents a small language's expressions as objects that know how to evaluate themselves in a supplied context."
+prerequisites: "Expression trees, recursion, dictionaries, and integer arithmetic."
+---
+
+export const checks = {"csharp":{"example":"IExpression expression = new Add(new Variable(\"coins\"), new Number(3)); Check.That(expression.Evaluate(new Dictionary<string, int> { { \"coins\", 4 } }) == 7); Check.That(expression.Evaluate(new Dictionary<string, int> { { \"coins\", 10 } }) == 13); bool missing = false; try { expression.Evaluate(new Dictionary<string, int>()); } catch (KeyNotFoundException) { missing = true; } Check.That(missing);"},"python":{"example":"expression = Add(Variable('coins'), Number(3))\nassert expression.evaluate({'coins': 4}) == 7\nassert expression.evaluate({'coins': 10}) == 13\ntry:\n    expression.evaluate({})\nexcept KeyError:\n    pass\nelse:\n    raise AssertionError('missing variable silently accepted')"}};
+
+**Interpreter** represents a small language's expressions as objects that evaluate themselves in a supplied context. Simple expression objects return values; compound expressions obtain values from their child expressions and combine them. [1](#source-1)
+
+This is not a recommendation to feed arbitrary text to a programming language's `eval` function. The permitted language and its operations should be explicit.
+
+## A tiny formula language
+
+Suppose a game designer needs formulas containing whole numbers, variable names, and addition. One formula means “the current coin count plus three.” We can represent it as an addition node with two children: a variable node named `coins` and a number node holding 3.
+
+The context is a dictionary supplying values for variable names. The same expression can be evaluated with different dictionaries without rebuilding its structure.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IExpression
+{
+    int Evaluate(IReadOnlyDictionary<string, int> values);
+}
+
+public sealed record Number(int Value) : IExpression
+{
+    public int Evaluate(IReadOnlyDictionary<string, int> values) { return Value; }
+}
+
+public sealed record Variable(string Name) : IExpression
+{
+    public int Evaluate(IReadOnlyDictionary<string, int> values) { return values[Name]; }
+}
+
+public sealed record Add(IExpression Left, IExpression Right) : IExpression
+{
+    public int Evaluate(IReadOnlyDictionary<string, int> values)
+    {
+        return checked(Left.Evaluate(values) + Right.Evaluate(values));
+    }
+}
+```
+
+`Number` is a literal expression. `Variable` looks up a named value. `Add` evaluates its two children and adds their results. The checked addition makes integer overflow an explicit failure rather than a wrapped number.
+
+```csharp group=example role=run
+IExpression formula = new Add(new Variable("coins"), new Number(3));
+var values = new Dictionary<string, int> { { "coins", 4 } };
+Console.WriteLine(formula.Evaluate(values)); // 7
+values["coins"] = 10;
+Console.WriteLine(formula.Evaluate(values)); // 13
+```
+
+The formula object is unchanged between calls. Its variable gets a different value from the supplied context.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Number:
+    value: int
+
+    def evaluate(self, values):
+        return self.value
+
+
+@dataclass(frozen=True)
+class Variable:
+    name: str
+
+    def evaluate(self, values):
+        return values[self.name]
+
+
+@dataclass(frozen=True)
+class Add:
+    left: object
+    right: object
+
+    def evaluate(self, values):
+        return self.left.evaluate(values) + self.right.evaluate(values)
+```
+
+The language is defined by the expression types we provide. A missing variable raises `KeyError`; it is not silently treated as zero. Python integers do not have C#'s fixed-width overflow behavior.
+
+```python group=example role=run
+formula = Add(Variable("coins"), Number(3))
+values = {"coins": 4}
+print(formula.evaluate(values))  # 7
+values["coins"] = 10
+print(formula.evaluate(values))  # 13
+```
+
+Nested `Add` objects can represent larger formulas. Evaluation follows the tree, asking each child for its meaning in the same context.
+
+</section>
+
+## Parsing is a separate task
+
+The example constructs expression objects directly. It does not parse the string `coins + 3`. A textual language additionally needs tokenization, a grammar, precedence rules, useful syntax errors, and validation before constructing this tree.
+
+A language this small can be convenient for configuration or rules. As the grammar grows, one class per language construct can become difficult to maintain. A parser generator, established expression library, or purpose-built interpreter may be more appropriate than extending a homemade evaluator indefinitely.
+
+## Constrain both meaning and work
+
+Only supported expression types should be accepted from untrusted input. Do not expose arbitrary object methods, filesystem access, or host-language evaluation merely to make formulas flexible. Even a language containing only arithmetic needs bounds on input size, nesting, and computation when users control its programs.
+
+The displayed code assumes well-formed acyclic expression objects and appropriately typed numeric values. It is not a sandbox. Its purpose is to show the Interpreter pattern's recursive evaluation clearly: a language construct is an object, and that object defines how to obtain its result from a context.
+
+## Sources
+
+1. <span id="source-1"></span>[Douglas C. Schmidt — Design Patterns in Java](https://www.informit.com/store/design-patterns-in-java-9780321947925), including the Interpreter representation and evaluation of a small language.

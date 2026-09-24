@@ -1,0 +1,123 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Sync-over-Async
+description: "Sync-over-async turns an asynchronous operation into a blocking call, potentially wasting threads or preventing the operation from completing."
+prerequisites: "Functions, threads, and the basic purpose of async and await."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Reader.Read() == \"ready\");","revised":"Check.That(await Reader.ReadAsync() == \"ready\");"},"python":{"original":"assert read() == 'ready'","revised":"assert asyncio.run(read_async()) == 'ready'"}};
+
+**Sync-over-async** means synchronously waiting for an operation designed to complete asynchronously. Instead of returning control while the operation is unfinished, the caller blocks. That can waste a worker thread; in some environments it can also prevent the awaited work from making progress. [1](#source-1)
+
+The important distinction is between **suspending an operation** and **blocking the thread that operation is running on**.
+
+## Original version: hide an asynchronous operation inside a blocking call
+
+These examples use a tiny asynchronous stand-in rather than a network request, so the return value is predictable.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Reader
+{
+    private static async Task<string> FetchAsync()
+    {
+        await Task.Yield();
+        return "ready";
+    }
+
+    public static string Read()
+    {
+        return FetchAsync().GetAwaiter().GetResult();
+    }
+}
+```
+
+`Read` promises a string immediately, so it blocks until `FetchAsync` finishes. In an ordinary console test this can succeed. That does not establish that it is safe in a UI event handler.
+
+For example, a UI thread can block inside `Read` while `FetchAsync` needs to resume on that same thread. The UI thread is waiting for the operation, and the operation is waiting for the UI thread. Replacing `.Result` with `.GetAwaiter().GetResult()` changes exception handling, not the fact that the wait blocks.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+import asyncio
+
+
+async def fetch():
+    await asyncio.sleep(0)
+    return "ready"
+
+
+def read():
+    return asyncio.run(fetch())
+```
+
+`read` creates and runs an event loop, then returns a string after the coroutine finishes. This is valid at a synchronous program boundary. It is not a general-purpose wrapper for use inside asynchronous code: `asyncio.run` cannot run inside an already running event loop in the same thread. [2](#source-2)
+
+Python's particular failure differs from the C# UI deadlock. The common mistake is pretending that a synchronous wrapper can be inserted anywhere without considering who is responsible for running asynchronous work.
+
+</section>
+
+## Revised version: let asynchronous callers await
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public static class Reader
+{
+    public static async Task<string> ReadAsync()
+    {
+        await Task.Yield();
+        return "ready";
+    }
+}
+```
+
+```csharp group=revised role=run
+string result = await Reader.ReadAsync();
+Console.WriteLine(result);
+```
+
+The caller awaits a task. When it is incomplete, the method can suspend rather than holding the thread in a blocking wait. The surrounding call chain must accommodate that asynchronous result too.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+import asyncio
+
+
+async def read_async():
+    await asyncio.sleep(0)
+    return "ready"
+
+
+async def main():
+    result = await read_async()
+    print(result)
+```
+
+```python group=revised role=run
+asyncio.run(main())
+```
+
+There is one runner at the program boundary. Inside it, `main` awaits the operation instead of starting another event loop. The same arrangement works when an application framework already supplies the outer event loop: its asynchronous handler should await `read_async`.
+
+</section>
+
+## What this does not mean
+
+Not every synchronous wait deadlocks. A completed task needs no wait, and execution context matters. Thread-pool starvation and UI deadlock are also different failure modes.
+
+Nor does adding `async` make CPU-intensive work nonblocking. Code still runs until it reaches a suspension point, and ordinary blocking calls still block. Use genuinely asynchronous I/O where available; move suitable CPU work off a UI thread deliberately, rather than wrapping every call in more tasks.
+
+At an unavoidable synchronous boundary, understand the platform and library's documented behavior. A successful console example is not evidence that every synchronization context is safe.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Asynchronous programming scenarios](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/async-scenarios), particularly awaiting rather than blocking.
+2. <span id="source-2"></span>[Python — Running an asyncio program](https://docs.python.org/3/library/asyncio-runner.html), documenting the restriction on nested runners.
+3. [Stephen Toub — Await, and UI, and deadlocks](https://devblogs.microsoft.com/dotnet/await-and-ui-and-deadlocks-oh-my/), explaining the UI-thread dependency cycle.

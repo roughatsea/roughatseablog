@@ -1,0 +1,121 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Design Pattern
+description: "A design pattern is a reusable approach to a recurring kind of programming problem, not a block of code to paste into every program."
+prerequisites: "Classes, objects, constructors, and method calls. An interface is introduced in the example."
+---
+
+export const checks = {"csharp":{"adapter":"Check.That(Math.Abs(new CelsiusAdapter(new OldThermometer(68)).ReadCelsius() - 20) < 0.000001); Check.That(new CelsiusAdapter(new OldThermometer(32)).ReadCelsius() == 0); Check.That(new CelsiusAdapter(new OldThermometer(212)).ReadCelsius() == 100);"},"python":{"adapter":"assert abs(CelsiusAdapter(OldThermometer(68)).read_celsius() - 20) < 0.000001\nassert CelsiusAdapter(OldThermometer(32)).read_celsius() == 0\nassert CelsiusAdapter(OldThermometer(212)).read_celsius() == 100"}};
+
+A **design pattern** is a reusable approach to a recurring kind of programming problem. It describes how pieces of code can work together. It is not a finished library, a particular language feature, or a badge that makes a program better. [1](#source-1)
+
+The easiest way to understand a pattern is to meet the problem first.
+
+## A thermometer that speaks the wrong units
+
+Suppose your application expects temperatures in Celsius, but an older thermometer provides Fahrenheit through a differently named method. You cannot change the thermometer's library. You can, however, put a small object between the library and your application.
+
+The object will call the old method, convert the value, and present the method your application expects. That arrangement is the **Adapter** pattern: a small piece of code translates an existing interface into a usable one.
+
+<section data-pilot-language="csharp">
+
+`IThermometer` is an interface: it says that an object must provide `ReadCelsius`. The example's `OldThermometer` stands in for a library object whose reading we can set for a demonstration.
+
+```csharp group=adapter role=types
+public interface IThermometer
+{
+    double ReadCelsius();
+}
+
+public sealed class OldThermometer
+{
+    private readonly double reading;
+
+    public OldThermometer(double reading)
+    {
+        this.reading = reading;
+    }
+
+    public double ReadFahrenheit()
+    {
+        return reading;
+    }
+}
+
+public sealed class CelsiusAdapter : IThermometer
+{
+    private readonly OldThermometer thermometer;
+
+    public CelsiusAdapter(OldThermometer thermometer)
+    {
+        this.thermometer = thermometer;
+    }
+
+    public double ReadCelsius()
+    {
+        double fahrenheit = thermometer.ReadFahrenheit();
+        return (fahrenheit - 32) * 5 / 9;
+    }
+}
+```
+
+```csharp group=adapter role=run
+IThermometer thermometer = new CelsiusAdapter(new OldThermometer(68));
+Console.WriteLine(thermometer.ReadCelsius()); // 20
+```
+
+The calling code uses `ReadCelsius`. Only `CelsiusAdapter` knows about `ReadFahrenheit` and the conversion. The older object has not been modified or made into a subclass.
+
+</section>
+
+<section data-pilot-language="python">
+
+The application expects an object with `read_celsius`. Python does not require a declared interface for that method call. The example's `OldThermometer` stands in for a library object whose reading we can set for a demonstration.
+
+```python group=adapter role=types
+class OldThermometer:
+    def __init__(self, reading):
+        self.reading = reading
+
+    def read_fahrenheit(self):
+        return self.reading
+
+
+class CelsiusAdapter:
+    def __init__(self, thermometer):
+        self.thermometer = thermometer
+
+    def read_celsius(self):
+        fahrenheit = self.thermometer.read_fahrenheit()
+        return (fahrenheit - 32) * 5 / 9
+```
+
+```python group=adapter role=run
+thermometer = CelsiusAdapter(OldThermometer(68))
+print(thermometer.read_celsius())  # 20.0
+```
+
+The calling code uses `read_celsius`. Only `CelsiusAdapter` knows about `read_fahrenheit` and the conversion. The older object has not been modified or made into a subclass.
+
+</section>
+
+## What makes this a pattern?
+
+The temperature formula is not the pattern. The reusable idea is **translating between what an existing component provides and what its caller needs**.
+
+The same arrangement could translate a vendor's `FetchText` operation into your application's `Read` operation, or turn a payment provider's response into your own result type. The details differ, but the participants have recognizable jobs: a caller, an existing component, and something that translates between them.
+
+A pattern name lets programmers discuss that arrangement without describing it from scratch every time. But the name is useful only after everyone understands the jobs it refers to.
+
+## A pattern still has a cost
+
+The adapter adds another object and another method call to follow. That is useful when several callers need the translation or when you want to keep vendor-specific details out of the application. If one small function reads a thermometer once, a direct conversion in that function may be sufficient.
+
+You also need to check meaning, not just method names. A temperature source that returns yesterday's reading is not interchangeable with one promising a current reading merely because both return numbers.
+
+Learn patterns as explanations of possible designs. Start with the difficulty in front of you, choose an arrangement that addresses it, and use the name to communicate what you did. Starting with “which pattern can I put here?” reverses that order.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Cloud design patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns/), examples of patterns described through problems, solutions, and trade-offs.
+2. Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides, *Design Patterns: Elements of Reusable Object-Oriented Software*, Adapter chapter. The thermometer example here is original.

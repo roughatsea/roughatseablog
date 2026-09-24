@@ -1,0 +1,161 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Load, Stress, Soak, and Capacity Testing
+description: "Use workload experiments to examine expected traffic, overload behavior, long-running degradation, and the volume a system can sustain while meeting its requirements."
+prerequisites: "Asynchronous operations, concurrency limits, elapsed time, and error rates."
+---
+
+export const checks = {"csharp":{"example":"var report = await Load.Run(12, 3, async (id, token) => { await Task.Delay(1, token); if (id == 4) throw new System.IO.IOException(\"simulated\"); }); Check.That(report.Successful == 11 && report.Failed == 1 && report.LatenciesMs.Length == 12); Check.That(report.PeakInFlight >= 1 && report.PeakInFlight <= 3 && report.ElapsedMs >= 0); using var stop = new System.Threading.CancellationTokenSource(); stop.Cancel(); bool cancelled = false; try { await Load.Run(1, 1, (id, token) => Task.CompletedTask, stop.Token); } catch (OperationCanceledException) { cancelled = true; } Check.That(cancelled);"},"python":{"example":"async def verify():\n    async def operation(item_id):\n        await asyncio.sleep(0.001)\n        if item_id == 4:\n            raise OSError('simulated')\n    report = await run_load(12, 3, operation)\n    assert report['successful'] == 11 and report['failed'] == 1\n    assert len(report['latencies_ms']) == 12\n    assert 1 <= report['peak_in_flight'] <= 3 and report['elapsed_ms'] >= 0\nasyncio.run(verify())"}};
+
+**Load testing** examines behavior under an expected workload. **Stress testing** pushes beyond normal limits to examine overload and recovery. **Soak testing** runs sustained work long enough to reveal accumulating problems. **Capacity testing** finds a workload the system can sustain while still meeting explicit performance and reliability requirements. [1](#source-1)
+
+The names are useful only when the experiment specifies what it sends, for how long, and what counts as acceptable behavior.
+
+## Choose the question before choosing the request count
+
+For a hypothetical API, a team might design these separate experiments:
+
+| Question | Workload | What to watch |
+|---|---|---|
+| Does expected traffic work? | A representative mix at the expected arrival rate | Successful-request latency and error rate |
+| How does overload behave? | Increase traffic beyond the supported rate, then reduce it | Queue growth, rejection, and recovery |
+| Does it degrade over time? | Sustained representative traffic for an extended period | Memory retention, connection leaks, storage growth |
+| What capacity can we promise? | Repeat several sustained rates with realistic data | Highest supported rate meeting the stated latency and error limits, with headroom |
+
+These are experiment designs, not claimed measurements of a production service.
+
+## A small bounded harness for one burst
+
+The following runner admits a fixed number of operations with a concurrency limit. It records successes, failures, maximum in-flight work, and elapsed durations. Each duration starts before waiting for a slot, so it includes the harness's admission queue.
+
+It drives only a supplied local operation in the demonstration. The brief delay represents waiting; it is not a benchmark of a network service. Limits keep an accidental test invocation bounded.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Sample(bool Successful, double Milliseconds);
+public sealed record LoadReport(int Successful, int Failed, int PeakInFlight,
+    double ElapsedMs, double[] LatenciesMs);
+
+public static class Load
+{
+    public static async Task<LoadReport> Run(int requests, int concurrency,
+        Func<int, System.Threading.CancellationToken, Task> operation,
+        System.Threading.CancellationToken cancellation = default)
+    {
+        if (requests < 1 || requests > 1000 || concurrency < 1 || concurrency > 32)
+            throw new ArgumentOutOfRangeException("Use 1–1000 requests and 1–32 workers.");
+        using var slots = new System.Threading.SemaphoreSlim(concurrency);
+        object guard = new object();
+        int active = 0, peak = 0;
+        var total = System.Diagnostics.Stopwatch.StartNew();
+        Task<Sample>[] tasks = Enumerable.Range(0, requests).Select(async id =>
+        {
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+            await slots.WaitAsync(cancellation);
+            lock (guard) { active++; peak = Math.Max(peak, active); }
+            bool succeeded = true;
+            try { await operation(id, cancellation); }
+            catch (Exception error) when (error is not OperationCanceledException)
+            { succeeded = false; }
+            finally
+            {
+                lock (guard) { active--; }
+                slots.Release();
+            }
+            return new Sample(succeeded, timer.Elapsed.TotalMilliseconds);
+        }).ToArray();
+        Sample[] samples = await Task.WhenAll(tasks);
+        total.Stop();
+        int successful = samples.Count(sample => sample.Successful);
+        return new LoadReport(successful, requests - successful, peak,
+            total.Elapsed.TotalMilliseconds, samples.Select(sample => sample.Milliseconds).ToArray());
+    }
+}
+```
+
+```csharp group=example role=run
+using var stop = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(5));
+LoadReport report = await Load.Run(20, 3,
+    (id, token) => Task.Delay(2, token), stop.Token);
+Console.WriteLine($"Completed: {report.Successful}; failed: {report.Failed}");
+Console.WriteLine($"Peak in flight: {report.PeakInFlight}; elapsed: {report.ElapsedMs:F2} ms");
+```
+
+Twenty operations complete when the local delay succeeds. At most three execute at once. The timeout is propagated to the wait and the operation; cancellation is not counted as an ordinary completed failure. `WhenAll` observes completion of the child tasks before returning or throwing.
+
+</section>
+
+<section data-pilot-language="python">
+
+The Python example uses `TaskGroup`, available in Python 3.11 and later.
+
+```python group=example role=types
+import asyncio
+from time import perf_counter
+
+
+async def run_load(requests, concurrency, operation):
+    if not 1 <= requests <= 1000 or not 1 <= concurrency <= 32:
+        raise ValueError("Use 1–1000 requests and 1–32 workers.")
+    slots = asyncio.Semaphore(concurrency)
+    active = 0
+    peak = 0
+    started = perf_counter()
+
+    async def one(item_id):
+        nonlocal active, peak
+        item_started = perf_counter()
+        async with slots:
+            active += 1
+            peak = max(peak, active)
+            succeeded = True
+            try:
+                await operation(item_id)
+            except Exception:
+                succeeded = False
+            finally:
+                active -= 1
+        return succeeded, (perf_counter() - item_started) * 1000
+
+    async with asyncio.TaskGroup() as group:
+        tasks = [group.create_task(one(i)) for i in range(requests)]
+    samples = [task.result() for task in tasks]
+    successful = sum(1 for succeeded, _ in samples if succeeded)
+    return {
+        "successful": successful,
+        "failed": requests - successful,
+        "peak_in_flight": peak,
+        "elapsed_ms": (perf_counter() - started) * 1000,
+        "latencies_ms": [elapsed for _, elapsed in samples],
+    }
+```
+
+```python group=example role=run
+async def demonstration():
+    async def operation(item_id):
+        await asyncio.sleep(0.002)
+    async with asyncio.timeout(5):
+        report = await run_load(20, 3, operation)
+    print(report["successful"], report["failed"])
+    print(report["peak_in_flight"], report["elapsed_ms"])
+
+asyncio.run(demonstration())
+```
+
+The counters run on one event loop with no suspension between incrementing and updating the peak. They are not shared-thread counters. `CancelledError` is not swallowed by the ordinary exception handler, and the task group manages the child tasks' lifetime.
+
+</section>
+
+## A burst is not a sustained arrival rate
+
+All these operations are submitted together. The harness does not hold a constant requests-per-second rate, generate realistic user behavior, or run for hours. A fixed number of workers can also reduce the offered load when responses slow down, hiding overload that would appear under independent arrivals. Choose an appropriate open or closed workload model in a real load-testing tool. [1](#source-1)
+
+Measure the load generator too: a saturated generator cannot demonstrate the server's capacity. Use an authorized test environment, representative data and dependency behavior, and explicit stopping conditions. A soak test that starts every request from a tiny empty database may miss growth-related problems entirely.
+
+Record errors and cancelled work alongside latency, and test recovery after overload. Passing one short burst establishes neither sustainable capacity nor long-term stability. The useful deliverable is a reproducible workload, observed limits, and evidence that the system meets its stated requirements within those limits—not a single impressive requests-per-second number.
+
+## Sources
+
+1. <span id="source-1"></span>[Grafana k6 — Load test types](https://grafana.com/docs/k6/latest/testing-guides/test-types/), on workload shapes and different performance-test goals.
+2. [Python — Task groups](https://docs.python.org/3/library/asyncio-task.html#task-groups), for child-task lifetime and cancellation behavior.

@@ -1,0 +1,114 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Remove Middle Man
+description: "Remove Middle Man lets callers use a collaborator directly when a forwarding class adds little beyond repetitive wrappers."
+prerequisites: "Objects, properties, and delegation."
+---
+
+export const checks = {"csharp":{"original":"var team = new Team(new Manager(\"Mira\", \"mira@example.test\")); Check.That(team.ManagerName == \"Mira\" && team.ManagerEmail == \"mira@example.test\");","revised":"var team = new Team(new Manager(\"Mira\", \"mira@example.test\")); Check.That(team.Manager.Name == \"Mira\" && team.Manager.Email == \"mira@example.test\");"},"python":{"original":"team = Team(Manager('Mira', 'mira@example.test'))\nassert team.manager_name == 'Mira' and team.manager_email == 'mira@example.test'","revised":"team = Team(Manager('Mira', 'mira@example.test'))\nassert team.manager.name == 'Mira' and team.manager.email == 'mira@example.test'"}};
+
+**Remove Middle Man** lets callers use a collaborator directly when an intermediate object only forwards requests. It can undo Hide Delegate when the growing collection of forwarding methods costs more than the hidden relationship is worth. [1](#source-1)
+
+## Original version: the team repeats its manager's interface
+
+A team has a manager. Screens legitimately need the manager's contact details, but the team exposes them one at a time.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public sealed class Manager
+{
+    public string Name { get; }
+    public string Email { get; }
+    public Manager(string name, string email) { Name = name; Email = email; }
+}
+
+public sealed class Team
+{
+    private readonly Manager manager;
+    public Team(Manager manager) { this.manager = manager; }
+    public string ManagerName { get { return manager.Name; } }
+    public string ManagerEmail { get { return manager.Email; } }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class Manager:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+
+class Team:
+    def __init__(self, manager):
+        self._manager = manager
+
+    @property
+    def manager_name(self):
+        return self._manager.name
+
+    @property
+    def manager_email(self):
+        return self._manager.email
+```
+
+</section>
+
+Adding a phone number, calendar link, and department would invite more team properties that do nothing except forward reads.
+
+## Refactored version: expose the relevant collaborator
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public sealed class Manager
+{
+    public string Name { get; }
+    public string Email { get; }
+    public Manager(string name, string email) { Name = name; Email = email; }
+}
+
+public sealed class Team
+{
+    public Manager Manager { get; }
+    public Team(Manager manager) { Manager = manager; }
+}
+```
+
+The call changes from `team.ManagerEmail` to `team.Manager.Email`. The manager remains the owner of contact information; the team stops duplicating its interface.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class Manager:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+
+class Team:
+    def __init__(self, manager):
+        self.manager = manager
+```
+
+The call changes from `team.manager_email` to `team.manager.email`. No contact value changes merely because the forwarding property disappears.
+
+</section>
+
+## Exposing an object is a design decision
+
+Callers now know the team-manager relationship. That dependency is acceptable in this example because contact screens already work with managers as a meaningful concept.
+
+Do not expose a database connection, a mutable collection, or a privileged service merely to delete wrappers. In Python, the exposed manager also has writable attributes; a read-only view may be necessary when callers should only inspect it.
+
+A forwarding method can still be valuable when it expresses a team-level operation such as “request approval,” rather than merely repeating a manager's getter. Keep meaningful behavior at its proper level and remove only forwarding that adds no useful contract.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Remove Middle Man](https://refactoring.com/catalog/removeMiddleMan.html).

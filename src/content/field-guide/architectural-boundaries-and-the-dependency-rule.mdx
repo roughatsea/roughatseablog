@@ -1,0 +1,115 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Architectural Boundaries and the Dependency Rule
+description: "Keep application rules independent of external implementation details by directing source dependencies toward the rules and their contracts."
+prerequisites: "Interfaces or protocols, imports, and dependency injection."
+---
+
+export const checks = {"csharp":{"example":"var sink = new RecordingSink(); new Completion(sink).Finish(\"Q-7\"); Check.That(sink.Messages.SequenceEqual(new[] { \"Completed Q-7\" }));"},"python":{"example":"sink = RecordingSink()\nCompletion(sink).finish('Q-7')\nassert sink.messages == ['Completed Q-7']"}};
+
+An **architectural boundary** separates parts of a system that should not depend on each other's internal details. In Clean Architecture, the **Dependency Rule** directs source-code dependencies toward application rules and their contracts, rather than making those rules import UI, database, or delivery implementations. [1](#source-1)
+
+“Toward” refers to imports, type references, and project dependencies. It does not mean every runtime call must travel in the same direction.
+
+## Completion requests an announcement without importing a delivery library
+
+A tiny application operation creates a completion announcement. It needs somewhere to send the message, but should not know whether the final destination is a console, a test recorder, or a network service.
+
+Define the required operation beside the application code. External implementations depend on that contract.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+// Application-side contract and operation.
+public interface IMessageSink
+{
+    void Send(string message);
+}
+
+public sealed class Completion
+{
+    private readonly IMessageSink sink;
+    public Completion(IMessageSink sink) { this.sink = sink; }
+
+    public void Finish(string questId)
+    {
+        sink.Send("Completed " + questId);
+    }
+}
+
+// An implementation supplied from outside the application core.
+public sealed class RecordingSink : IMessageSink
+{
+    public List<string> Messages { get; } = new List<string>();
+    public void Send(string message) { Messages.Add(message); }
+}
+```
+
+```csharp group=example role=run
+var sink = new RecordingSink();
+var completion = new Completion(sink);
+completion.Finish("Q-7");
+Console.WriteLine(sink.Messages[0]); // Completed Q-7
+```
+
+`Completion` names `IMessageSink`, not `RecordingSink`. The implementation names the application-owned interface. Startup code knows both and connects them. Put the application types in a project that does not reference the implementation project to make that direction enforceable.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from typing import Protocol
+
+
+class MessageSink(Protocol):
+    def send(self, message: str) -> None:
+        ...
+
+
+class Completion:
+    def __init__(self, sink: MessageSink):
+        self._sink = sink
+
+    def finish(self, quest_id):
+        self._sink.send("Completed " + quest_id)
+
+
+class RecordingSink:
+    def __init__(self):
+        self.messages = []
+
+    def send(self, message):
+        self.messages.append(message)
+```
+
+```python group=example role=run
+sink = RecordingSink()
+completion = Completion(sink)
+completion.finish("Q-7")
+print(sink.messages[0])  # Completed Q-7
+```
+
+The protocol describes the application requirement. In separate files, the application module should not import its adapters. Startup code imports both sides. Python's type annotation documents compatibility; it does not prevent a future developer from adding an inappropriate import.
+
+</section>
+
+## Source dependencies and runtime calls differ
+
+At runtime, `Completion.Finish` reaches code inside `RecordingSink.Send`. In source, the application depends only on its interface. That difference is possible because the implementation is supplied through the interface rather than constructed inside the application operation.
+
+The printed example puts the classes together for reading. Comments are not an enforced architectural boundary. Separate projects or packages, dependency rules in CI, and tests that run the core without infrastructure provide stronger evidence than a diagram alone.
+
+Also inspect the values crossing the boundary. An interface returning a vendor database row still makes application code understand that vendor's representation. Prefer data whose meaning belongs to the application, with translation outside it.
+
+## Independence is useful, not magical
+
+A new delivery implementation can be supplied without editing this operation, but changing the completion rule itself still requires application changes. Changing synchronous delivery to asynchronous delivery can affect the contract. Replacing databases can require substantial adapter and migration work even when the core remains isolated.
+
+Do not introduce an interface for every local helper simply to make arrows point a fashionable way. Draw boundaries around meaningful volatility, ownership, and testing needs. A small application may need only a few such boundaries, not a stack of nearly empty layers.
+
+The example tests message construction and a local adapter. It does not demonstrate durable delivery, authorization to complete a quest, or transactionally updating quest state. Those are separate application promises that must be designed explicitly.
+
+## Sources
+
+1. <span id="source-1"></span>[Robert C. Martin — The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), especially source dependencies, boundary data, and runtime control flow.

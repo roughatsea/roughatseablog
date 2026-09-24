@@ -1,0 +1,120 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Abstraction and Indirection
+description: "An abstraction describes a capability without exposing all its details. Indirection reaches a capability through another object, function, or reference."
+prerequisites: "Objects, interfaces or compatible methods, and comparing times."
+---
+
+export const checks = {"csharp":{"clock":"var now = DateTimeOffset.UnixEpoch; IClock clock = new FixedClock(now); Check.That(Coupon.IsExpired(now, clock)); Check.That(!Coupon.IsExpired(now.AddSeconds(1), clock)); Check.That(Coupon.IsExpired(now.AddSeconds(-1), clock));"},"python":{"clock":"from datetime import timedelta\nnow = datetime(2026, 1, 1, tzinfo=timezone.utc)\nclock = FixedClock(now)\nassert is_expired(now, clock)\nassert not is_expired(now + timedelta(seconds=1), clock)\nassert is_expired(now - timedelta(seconds=1), clock)"}};
+
+An **abstraction** describes a capability without exposing all its details. **Indirection** means reaching something through another object, function, or reference instead of reaching it directly.
+
+They often appear together, but they are not synonyms. A method named “get the current time” can be a useful abstraction. Giving a caller a clock object through which it obtains that time adds indirection. The extra step is worthwhile when it solves a problem you actually have. [1](#source-1)
+
+## A coupon that expires while you test it
+
+Suppose a coupon expires at a particular instant. To decide whether it is expired, we compare that instant with the current time. Calling the system clock directly works in production, but makes it awkward to test an instant just before or exactly at expiration.
+
+Let the expiration check ask a supplied clock for the time. A real clock can read the system time. A fixed clock can return an instant selected by a test.
+
+<section data-pilot-language="csharp">
+
+`IClock` describes one operation, `Now`. Neither the interface nor the coupon rule specifies where that time comes from.
+
+```csharp group=clock role=types
+public interface IClock
+{
+    DateTimeOffset Now();
+}
+
+public sealed class SystemClock : IClock
+{
+    public DateTimeOffset Now()
+    {
+        return DateTimeOffset.UtcNow;
+    }
+}
+
+public sealed class FixedClock : IClock
+{
+    private readonly DateTimeOffset instant;
+
+    public FixedClock(DateTimeOffset instant)
+    {
+        this.instant = instant;
+    }
+
+    public DateTimeOffset Now()
+    {
+        return instant;
+    }
+}
+
+public static class Coupon
+{
+    public static bool IsExpired(DateTimeOffset expiresAt, IClock clock)
+    {
+        return clock.Now() >= expiresAt;
+    }
+}
+```
+
+```csharp group=clock role=run
+DateTimeOffset deadline = DateTimeOffset.UnixEpoch.AddHours(1);
+IClock clock = new FixedClock(deadline.AddSeconds(-1));
+Console.WriteLine(Coupon.IsExpired(deadline, clock)); // False
+```
+
+`IClock` is the abstraction: the operation the rule needs. The call through `clock` is the indirection. `FixedClock` lets the test choose a time without changing `IsExpired` or waiting for an actual deadline.
+
+</section>
+
+<section data-pilot-language="python">
+
+Both clock classes provide `now`. Python can call that method without a declared interface; the application still has an agreement about what the method returns.
+
+```python group=clock role=types
+from datetime import datetime, timezone
+
+
+class SystemClock:
+    def now(self):
+        return datetime.now(timezone.utc)
+
+
+class FixedClock:
+    def __init__(self, instant):
+        self.instant = instant
+
+    def now(self):
+        return self.instant
+
+
+def is_expired(expires_at, clock):
+    return clock.now() >= expires_at
+```
+
+```python group=clock role=run
+from datetime import timedelta
+
+deadline = datetime(2026, 1, 1, tzinfo=timezone.utc)
+clock = FixedClock(deadline - timedelta(seconds=1))
+print(is_expired(deadline, clock))  # False
+```
+
+The `now` operation is the abstraction: the capability the rule needs. The call through `clock` is the indirection. `FixedClock` lets the test choose a time without changing `is_expired` or waiting for an actual deadline. Use timezone-aware times consistently; mixing aware and naive datetimes is not supported by this comparison.
+
+</section>
+
+## The simpler alternative is sometimes better
+
+If this function only needs one time value, you could pass the current time itself rather than a clock object. That would make the comparison a plain calculation with no extra object at all.
+
+A clock becomes useful when an operation must obtain time as it proceeds, or when several operations need a consistent way to obtain it. The example is a way to understand the distinction, not a requirement to invent a clock interface in every application. Platform-provided time abstractions may also fit an actual project.
+
+An interface that merely copies every method of a vendor library can add indirection without giving callers a simpler understanding. Ask what the caller genuinely needs and describe that capability. Then ask whether the extra route to it buys test control, independence from a changing dependency, or another concrete benefit.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Dependency injection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/overview), for explicit dependencies and replaceable implementations.
+2. [Python — datetime](https://docs.python.org/3/library/datetime.html), for aware datetime comparisons.

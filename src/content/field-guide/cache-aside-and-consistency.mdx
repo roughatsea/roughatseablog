@@ -1,0 +1,113 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: "Cache-Aside and Consistency"
+description: "Read from a cache first, load missing data from its authoritative store, and decide explicitly how stale a cached answer may be."
+prerequisites: "Dictionaries, data stores, reads, writes, and elapsed time."
+---
+
+export const checks = {"csharp":{"example":"var data = new Catalog(); Check.That(data.Read(0) == \"Old title\"); data.ExternalWrite(\"New title\"); Check.That(data.Read(4) == \"Old title\"); Check.That(data.Read(5) == \"New title\"); data.Write(\"Newest\"); Check.That(data.Read(5) == \"Newest\");"},"python":{"example":"data = Catalog()\nassert data.read(0) == 'Old title'\ndata.external_write('New title')\nassert data.read(4) == 'Old title'\nassert data.read(5) == 'New title'\ndata.write('Newest')\nassert data.read(5) == 'Newest'"}};
+
+**Cache-aside** means the application checks a cache before loading data from an authoritative store. On a miss, it loads the value, caches it, and returns it. On a hit, it avoids the storage request.
+
+**Consistency** asks which version of the data a caller sees. A cached answer can be fast and obsolete at the same time. Expiration and invalidation are policies for managing that possibility, not proof that stale reads are impossible. [1](#source-1)
+
+## Make a stale answer visible
+
+A catalog contains one title. Its cache keeps a value for five units of monotonic elapsed time. The caller supplies time explicitly so the example can cross the expiration boundary without sleeping.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Catalog
+{
+    private string stored = "Old title";
+    private string? cached;
+    private int expiresAt;
+
+    public string Read(int now)
+    {
+        if (cached != null && now < expiresAt) return cached;
+        cached = stored;
+        expiresAt = now + 5;
+        return cached;
+    }
+
+    public void ExternalWrite(string title) { stored = title; }
+
+    public void Write(string title)
+    {
+        stored = title;
+        cached = null;
+    }
+}
+```
+
+```csharp group=example role=run
+var catalog = new Catalog();
+Console.WriteLine(catalog.Read(0)); // Old title: fills cache.
+catalog.ExternalWrite("New title");
+Console.WriteLine(catalog.Read(4)); // Old title: still cached.
+Console.WriteLine(catalog.Read(5)); // New title: expiration triggers reload.
+```
+
+`ExternalWrite` represents another writer that does not notify this cache. `Write` represents the local update path: change the store, then invalidate the cached answer. The store itself is just a field here, not a database.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Catalog:
+    def __init__(self):
+        self._stored = "Old title"
+        self._cached = None
+        self._expires_at = 0
+
+    def read(self, now):
+        if self._cached is not None and now < self._expires_at:
+            return self._cached
+        self._cached = self._stored
+        self._expires_at = now + 5
+        return self._cached
+
+    def external_write(self, title):
+        self._stored = title
+
+    def write(self, title):
+        self._stored = title
+        self._cached = None
+```
+
+```python group=example role=run
+catalog = Catalog()
+print(catalog.read(0))  # Old title
+catalog.external_write("New title")
+print(catalog.read(4))  # Old title
+print(catalog.read(5))  # New title
+```
+
+The comparisons distinguish cache lifetime from freshness. A four-unit-old entry can still be within its lifetime even though the underlying value changed moments ago.
+
+</section>
+
+## Invalidation can race with an earlier read
+
+Consider a reader loading the old title from storage. Before it inserts that answer into the cache, a writer saves a new title and invalidates the cache. The earlier reader then inserts its old answer after invalidation. Reordering the two write statements alone does not eliminate this concurrent race.
+
+The sample runs sequentially and therefore does not solve it. Depending on the required guarantee, use version checks, coordinated access, change notifications, or bypass caching for the sensitive decision. Authentication revocation and remaining inventory may demand stronger freshness than a decorative catalog heading.
+
+## Keys must include what changes the answer
+
+A multilingual catalog cannot cache only by product identifier if its answer depends on language. A user-specific response must not be reused for a different user merely because both requested the same URL. Include the necessary context without exposing secrets in keys or metrics.
+
+Also decide how missing values are cached. A null-as-miss convention can repeatedly query a missing record; caching absence avoids that load but can conceal a newly created record until expiration. Both behaviors need a contract.
+
+## Plan for a cold cache
+
+Simultaneous misses can trigger many copies of the same expensive load. Coalescing loads per key can help, but failures and abandoned requests must not leave a permanently blocked entry. Capacity limits and eviction matter too: an unlimited dictionary is not a production cache.
+
+Measure hit rate alongside actual latency, stale-result impact, and backing-store load. A high hit rate is not a success if the cached answers are the wrong ones. Cache-aside changes the path to data; it does not change which system owns the truth.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Cache-Aside pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside), including expiration, invalidation order, and consistency limits.

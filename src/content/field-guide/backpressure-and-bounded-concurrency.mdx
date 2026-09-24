@@ -1,0 +1,96 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Backpressure and Bounded Concurrency
+description: "Limit active work and control how much unfinished work can accumulate. A semaphore alone does not make an unlimited queue safe."
+prerequisites: "Tasks, async/await, queues, and resource limits."
+---
+
+export const checks = {"csharp":{"example":"var result = await Thumbnails.BuildAsync(); Check.That(result.SequenceEqual(new[] { 0, 1, 4, 9, 16 }));"},"python":{"example":"assert asyncio.run(build_thumbnails()) == [0, 1, 4, 9, 16]"}};
+
+**Bounded concurrency** limits how many operations may be active at once. **Backpressure** prevents a producer from getting indefinitely ahead of a consumer, for example by making it wait when a bounded queue is full. Limiting active work and limiting waiting work are separate decisions. [1](#source-1)
+
+Imagine ten thousand thumbnail requests arriving at an image service. A semaphore allowing four active conversions protects conversion capacity, but creating ten thousand waiting tasks still consumes memory. A backlog also adds latency before processing even begins.
+
+## Pull another item only when a worker is ready
+
+One simple option is a fixed number of workers that pull from an input sequence. The following examples have five items and at most two operations in progress. Squaring an integer stands in for producing a thumbnail; a short asynchronous wait makes the scheduling behavior visible without loading images.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Thumbnails
+{
+    public static async Task<int[]> BuildAsync()
+    {
+        var results = new System.Collections.Concurrent.ConcurrentBag<int>();
+        var options = new ParallelOptions { MaxDegreeOfParallelism = 2 };
+
+        await Parallel.ForEachAsync(Enumerable.Range(0, 5), options,
+            async (item, cancellationToken) =>
+            {
+                await Task.Delay(1, cancellationToken);
+                results.Add(item * item);
+            });
+
+        return results.OrderBy(value => value).ToArray();
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(string.Join(", ", await Thumbnails.BuildAsync()));
+```
+
+`MaxDegreeOfParallelism` limits active loop bodies. There is no task created by our code for every item in advance. The concurrent bag permits workers to finish in any order; sorting afterward establishes the output order required by this demonstration. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import asyncio
+
+
+async def build_thumbnails():
+    pending = iter(range(5))
+    results = []
+
+    async def worker():
+        for item in pending:
+            await asyncio.sleep(0.001)
+            results.append(item * item)
+
+    async with asyncio.TaskGroup() as group:
+        group.create_task(worker())
+        group.create_task(worker())
+    return sorted(results)
+```
+
+```python group=example role=run
+print(asyncio.run(build_thumbnails()))
+```
+
+Only two worker tasks exist. Each pulls another item after completing its current one. Access to this ordinary iterator occurs on one event-loop thread without an intervening await, so workers do not take the same item. This arrangement is not intended for workers accessing the iterator from multiple threads.
+
+</section>
+
+## A pushed workload needs a waiting policy too
+
+For a producer that cannot simply be pulled, use an explicitly bounded queue. When full, choose deliberately: wait for room, reject new work, drop work under a documented policy, or send it to a durable queue with its own capacity limits. Python's `asyncio.Queue(maxsize=...)` and .NET bounded channels provide waiting behavior for this purpose. [1](#source-1)
+
+A queue of four waiting jobs plus two active workers has a different resource bound from a queue of ten thousand plus the same two workers. Measure both queue depth and queue age. An old job can violate a user deadline before a worker touches it.
+
+The examples keep all results in memory, so they do not bound total result storage. A large export should stream results to a bounded consumer instead of collecting an unbounded output list.
+
+## Set limits for the actual dependency
+
+A limit of two here is illustrative. In production, consider database connections, remote rate limits, memory per operation, and the latency you are trying to preserve. More workers can reduce waiting only until they saturate a shared resource; beyond that, they can increase contention and failure.
+
+Also plan failures. If a consumer stops, producers must not wait forever for a queue that will never drain. Owned tasks need cancellation and cleanup, and rejected requests need an honest result.
+
+Backpressure is not merely another word for “slower.” It is an agreement about what happens when work arrives faster than the system can complete it.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Channels](https://learn.microsoft.com/en-us/dotnet/core/extensions/channels) and [Python — asyncio queues](https://docs.python.org/3/library/asyncio-queue.html), for bounded buffers and producer waiting.
+2. <span id="source-2"></span>[Microsoft — Parallel.ForEachAsync](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.parallel.foreachasync).

@@ -1,0 +1,127 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Divergent Change
+description: "Divergent Change means one class or module must repeatedly change for unrelated kinds of requirement. Different jobs have collected in the same place."
+prerequisites: "Classes, methods, and passing calculated values between functions."
+---
+
+export const checks = {"csharp":{"before":"Check.That(TripReport.Build(3, 20, \"Harbor\") == \"Trip to Harbor: 60 tokens\"); Check.That(TripReport.Build(0, 20, \"Harbor\") == \"Trip to Harbor: 0 tokens\");","after":"Check.That(TripReport.Build(3, 20, \"Harbor\") == \"Trip to Harbor: 60 tokens\"); Check.That(TripReport.Build(0, 20, \"Harbor\") == \"Trip to Harbor: 0 tokens\"); Check.That(TripCost.Calculate(3, 20) == 60);"},"python":{"before":"assert trip_report(3, 20, 'Harbor') == 'Trip to Harbor: 60 tokens'\nassert trip_report(0, 20, 'Harbor') == 'Trip to Harbor: 0 tokens'","after":"assert trip_report(3, 20, 'Harbor') == 'Trip to Harbor: 60 tokens'\nassert trip_report(0, 20, 'Harbor') == 'Trip to Harbor: 0 tokens'\nassert trip_cost(3, 20) == 60"}};
+
+**Divergent Change** means one class or module must repeatedly change for unrelated kinds of requirement. For example, a pricing change, a file-format change, and a notification-wording change all require edits to different parts of the same class.
+
+The strongest evidence is often the change history. A single snapshot can suggest mixed jobs; repeated unrelated edits show that the mixture is costing real effort. [1](#source-1)
+
+## Two requests, one report method
+
+Suppose a fictional travel service prices a trip by multiplying the number of nights by a whole-token nightly rate. Its report method also writes an English description. Inputs are nonnegative and small enough for integer arithmetic.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class TripReport
+{
+    public static string Build(int nights, int nightlyRate, string destination)
+    {
+        int total = nights * nightlyRate;
+        return $"Trip to {destination}: {total} tokens";
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def trip_report(nights, nightly_rate, destination):
+    total = nights * nightly_rate
+    return f"Trip to {destination}: {total} tokens"
+```
+
+</section>
+
+At this size, the method is easy to read. Now imagine its history: pricing adds a long-stay discount, communications changes the wording, pricing adds a seasonal rule, and communications adds another language. Each request reopens the same method, but for a different reason.
+
+We do not need to implement those imagined features to see where their existing responsibilities sit. The calculation and the text can be given separate homes while preserving today's behavior.
+
+### Refactored version
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public static class TripCost
+{
+    public static int Calculate(int nights, int nightlyRate)
+    {
+        return nights * nightlyRate;
+    }
+}
+
+public static class TripText
+{
+    public static string Format(string destination, int total)
+    {
+        return $"Trip to {destination}: {total} tokens";
+    }
+}
+
+public static class TripReport
+{
+    public static string Build(int nights, int nightlyRate, string destination)
+    {
+        int total = TripCost.Calculate(nights, nightlyRate);
+        return TripText.Format(destination, total);
+    }
+}
+```
+
+```csharp group=after role=run
+Console.WriteLine(TripReport.Build(3, 20, "Harbor"));
+// Trip to Harbor: 60 tokens
+```
+
+`TripCost.Calculate` owns the arithmetic. `TripText.Format` owns the wording. `TripReport.Build` still connects the two, so existing callers keep their entry point without forcing the report method to contain both sets of details.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+def trip_cost(nights, nightly_rate):
+    return nights * nightly_rate
+
+
+def trip_text(destination, total):
+    return f"Trip to {destination}: {total} tokens"
+
+
+def trip_report(nights, nightly_rate, destination):
+    total = trip_cost(nights, nightly_rate)
+    return trip_text(destination, total)
+```
+
+```python group=after role=run
+print(trip_report(3, 20, "Harbor"))
+# Trip to Harbor: 60 tokens
+```
+
+`trip_cost` owns the arithmetic. `trip_text` owns the wording. `trip_report` still connects the two, so existing callers keep their entry point without forcing the report function to contain both sets of details. The helpers can live in separate modules if their real size and ownership justify it; separate functions already make their jobs visible.
+
+</section>
+
+## One class changes for many reasons
+
+That phrase distinguishes Divergent Change from **Shotgun Surgery**, where one reason for change requires edits in many places. A large report class receiving unrelated requests is divergent change. A single surcharge formula copied across a dozen files is shotgun surgery.
+
+The small example is not evidence that every multiplication deserves a separate class. Its extraction becomes worthwhile when pricing and presentation really evolve independently, or when one needs to be tested without the other.
+
+Moving code into fashionable folders called “services,” “managers,” and “helpers” does not by itself resolve the problem. The separation should correspond to a responsibility you can name and a change you can make without reopening unrelated details.
+
+Look at the last several changes to a troublesome class. If they form different, recognizable groups, those groups may be better guides to a split than the class's line count.
+
+## Sources
+
+1. <span id="source-1"></span>Martin Fowler, *Refactoring*, “Divergent Change” in the code-smells discussion.
+2. [Martin Fowler — Extract Class](https://refactoring.com/catalog/extractClass.html), one way to separate responsibilities. The trip example and hypothetical change history are original.

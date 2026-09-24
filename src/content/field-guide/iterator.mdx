@@ -1,0 +1,95 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Iterator
+description: "An Iterator keeps track of a traversal so callers can visit a collection's elements without managing its internal representation."
+prerequisites: "Collections, loops, and object state."
+---
+
+export const checks = {"csharp":{"example":"var roster = new Roster(new[] { \"Mira\", \"Sol\" }); using var a = roster.GetEnumerator(); using var b = roster.GetEnumerator(); Check.That(a.MoveNext() && a.Current == \"Mira\"); Check.That(a.MoveNext() && a.Current == \"Sol\"); Check.That(b.MoveNext() && b.Current == \"Mira\"); Check.That(!a.MoveNext()); Check.That(roster.SequenceEqual(new[] { \"Mira\", \"Sol\" }));"},"python":{"example":"roster = Roster(['Mira', 'Sol'])\na = iter(roster)\nb = iter(roster)\nassert next(a) == 'Mira' and next(a) == 'Sol'\nassert next(b) == 'Mira'\nassert list(a) == []\nassert list(roster) == ['Mira', 'Sol']"}};
+
+An **Iterator** keeps track of a traversal through a collection. Callers request the next element without managing the collection's internal representation. The collection can provide independent iterators so two traversals do not overwrite each other's position. [1](#source-1)
+
+## Two readers should not share one cursor
+
+A party roster stores names. One part of the program may be listing members while another starts its own pass. Storing a single “current member” field on the roster would make those traversals interfere.
+
+Instead, each traversal gets its own iterator. These examples capture the names at roster construction and do not expose mutation operations, keeping the iteration contract simple.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed class Roster : IEnumerable<string>
+{
+    private readonly string[] names;
+
+    public Roster(IEnumerable<string> names)
+    {
+        this.names = names.ToArray();
+    }
+
+    public IEnumerator<string> GetEnumerator()
+    {
+        foreach (string name in names)
+        {
+            yield return name;
+        }
+    }
+
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
+```
+
+`IEnumerable<string>` means the roster can supply an enumerator. `yield return` lets the compiler generate an enumerator that remembers where execution was suspended. Each `GetEnumerator` call produces an independent traversal. [2](#source-2)
+
+```csharp group=example role=run
+var roster = new Roster(new[] { "Mira", "Sol" });
+foreach (string name in roster) Console.WriteLine(name);
+```
+
+The loop obtains an enumerator, advances it, reads its current element, and disposes it when appropriate. It does not need access to the private array. The explicit nongeneric implementation satisfies the older enumeration interface too.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class Roster:
+    def __init__(self, names):
+        self._names = tuple(names)
+
+    def __iter__(self):
+        for name in self._names:
+            yield name
+```
+
+`Roster` is an *iterable*: calling `iter(roster)` obtains an iterator. This generator method creates a fresh traversal each time. `next(iterator)` advances that traversal until it raises `StopIteration`. [3](#source-3)
+
+```python group=example role=run
+roster = Roster(["Mira", "Sol"])
+first = iter(roster)
+second = iter(roster)
+print(next(first))   # Mira
+print(next(first))   # Sol
+print(next(second))  # Mira
+```
+
+The second iterator begins at the first name even though the first iterator has already reached the second. A generator object itself is normally one-shot; obtaining another iterator from the same generator does not create an independent copy.
+
+</section>
+
+## Traversal has a contract too
+
+The roster visits names in insertion order and permits repeated names. It takes a snapshot at construction, so later changes to the input list do not affect either traversal. Other collections may provide live views or reject mutation during iteration. State that behavior instead of assuming every `for` loop means the same thing.
+
+An iterator can generate values lazily, read files, or fetch pages. In those cases the next step may be expensive or fail. A familiar loop does not mean every value is already in memory. Resources and cancellation also need deliberate ownership.
+
+Usually the language's collection and generator facilities already provide the pattern. Write a custom iterator when you need a specific traversal contract, not because every array needs another wrapper. Its value is a stable way to visit elements while keeping traversal state separate from the collection and from other readers.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Discovering the Design Patterns You're Already Using in .NET](https://learn.microsoft.com/en-us/archive/msdn-magazine/2005/july/discovering-the-design-patterns-you-re-already-using-in-net), including Iterator.
+2. <span id="source-2"></span>[Microsoft — yield statement](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/yield).
+3. <span id="source-3"></span>[Python — Iterator types](https://docs.python.org/3/library/stdtypes.html#iterator-types).

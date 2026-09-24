@@ -1,0 +1,105 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Replace Conditional with Polymorphism
+description: "Move behavior selected by an object's kind into separate implementations, then let callers invoke the shared operation."
+prerequisites: "Classes, interfaces or compatible methods, and method calls."
+---
+
+export const checks = {"csharp":{"original":"Check.That(Alerts.Render(\"warning\", \"Low fuel\") == \"WARNING: Low fuel\"); Check.That(Alerts.Render(\"info\", \"Ready\") == \"Ready\");","revised":"Check.That(new WarningAlert().Render(\"Low fuel\") == \"WARNING: Low fuel\"); Check.That(new InfoAlert().Render(\"Ready\") == \"Ready\");"},"python":{"original":"assert render('warning', 'Low fuel') == 'WARNING: Low fuel'\nassert render('info', 'Ready') == 'Ready'","revised":"assert WarningAlert().render('Low fuel') == 'WARNING: Low fuel'\nassert InfoAlert().render('Ready') == 'Ready'"}};
+
+**Replace Conditional with Polymorphism** moves behavior selected by an object's kind into separate implementations. Callers invoke the same operation on whichever implementation they receive. *Polymorphism* here means that one operation name can produce the behavior appropriate to different object types. [1](#source-1)
+
+## Original version: rendering checks a category string
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public static class Alerts
+{
+    public static string Render(string kind, string message)
+    {
+        if (kind == "warning") return "WARNING: " + message;
+        if (kind == "info") return message;
+        throw new ArgumentException("Unknown alert kind.");
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+def render(kind, message):
+    if kind == "warning":
+        return "WARNING: " + message
+    if kind == "info":
+        return message
+    raise ValueError("Unknown alert kind.")
+```
+
+</section>
+
+The rendering function chooses the behavior itself. Adding another kind means editing this conditional.
+
+## Refactored version: the alert object supplies its rendering
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public interface IAlert
+{
+    string Render(string message);
+}
+public sealed class WarningAlert : IAlert
+{
+    public string Render(string message) { return "WARNING: " + message; }
+}
+public sealed class InfoAlert : IAlert
+{
+    public string Render(string message) { return message; }
+}
+```
+
+```csharp group=revised role=run
+IAlert alert = new WarningAlert();
+Console.WriteLine(alert.Render("Low fuel"));
+```
+
+`IAlert` states the shared operation. `WarningAlert` and `InfoAlert` contain the old branch bodies. The caller invokes `Render` without checking a category code.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class WarningAlert:
+    def render(self, message):
+        return "WARNING: " + message
+
+
+class InfoAlert:
+    def render(self, message):
+        return message
+```
+
+```python group=revised role=run
+alert = WarningAlert()
+print(alert.render("Low fuel"))
+```
+
+Both objects provide `render`, so the caller can use either. Python does not require an explicit interface declaration for this method-call behavior.
+
+</section>
+
+## The choice still has to be made somewhere
+
+The example chooses `WarningAlert` explicitly. If an external request still contains a string such as `"warning"`, creation code must translate and validate it. Moving that choice to construction is not the same as making every conditional disappear.
+
+For two tiny rendering rules, the original function may be better. Separate implementations become more useful when the behaviors are substantial, recur across operations, or need independent extension. A fixed mapping of codes to labels can often remain a dictionary or switch.
+
+Preserve branch results, error behavior, and shared calculations when moving the code. If implementations use inheritance, they must still honor the same caller expectations. The refactoring is a relocation of a decision's behavior—not permission for a subclass to surprise callers with unrelated preconditions or side effects.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Conditional with Polymorphism](https://refactoring.com/catalog/replaceConditionalWithPolymorphism.html).

@@ -1,0 +1,133 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Bridge
+description: "Bridge separates two dimensions of variation into cooperating object families instead of creating a subclass for every combination."
+prerequisites: "Inheritance, object composition, and interfaces or compatible methods."
+---
+
+export const checks = {"csharp":{"example":"Check.That(new Notice(new EmailChannel()).Send(\"Ready\") == \"email: Ready\"); Check.That(new UrgentNotice(new EmailChannel()).Send(\"Ready\") == \"email: URGENT Ready\"); Check.That(new Notice(new ConsoleChannel()).Send(\"Ready\") == \"console: Ready\"); Check.That(new UrgentNotice(new ConsoleChannel()).Send(\"Ready\") == \"console: URGENT Ready\");"},"python":{"example":"assert Notice(EmailChannel()).send('Ready') == 'email: Ready'\nassert UrgentNotice(EmailChannel()).send('Ready') == 'email: URGENT Ready'\nassert Notice(ConsoleChannel()).send('Ready') == 'console: Ready'\nassert UrgentNotice(ConsoleChannel()).send('Ready') == 'console: URGENT Ready'"}};
+
+**Bridge** separates two dimensions of variation into cooperating object families. One object handles the higher-level operation and holds another object that supplies the underlying implementation. They can then vary independently. [1](#source-1)
+
+That description becomes useful when we name the two things that vary. In a notification feature, **what kind of notice is this?** and **which channel delivers it?** are different questions.
+
+## Avoid a class for every combination
+
+Suppose notices can be ordinary or urgent, and delivery can be email or console. A hierarchy organized around every combination would need ordinary-email, urgent-email, ordinary-console, and urgent-console classes. A third channel would require another pair.
+
+Instead, let notices decide their message wording and let channels decide how delivery works. Each notice receives a channel. This example returns a delivery description rather than sending real email, so the composition can be tested without external effects.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public interface IChannel
+{
+    string Deliver(string message);
+}
+
+public sealed class EmailChannel : IChannel
+{
+    public string Deliver(string message) { return "email: " + message; }
+}
+
+public sealed class ConsoleChannel : IChannel
+{
+    public string Deliver(string message) { return "console: " + message; }
+}
+
+public class Notice
+{
+    private readonly IChannel channel;
+    public Notice(IChannel channel) { this.channel = channel; }
+
+    protected virtual string Prepare(string message) { return message; }
+
+    public string Send(string message)
+    {
+        return channel.Deliver(Prepare(message));
+    }
+}
+
+public sealed class UrgentNotice : Notice
+{
+    public UrgentNotice(IChannel channel) : base(channel) { }
+
+    protected override string Prepare(string message)
+    {
+        return "URGENT " + message;
+    }
+}
+```
+
+`Notice.Send` prepares a message, then asks its channel to deliver it. `UrgentNotice` changes preparation. The two channel classes know nothing about the notice hierarchy; they receive already prepared text.
+
+```csharp group=example role=run
+var notice = new UrgentNotice(new EmailChannel());
+Console.WriteLine(notice.Send("Low fuel")); // email: URGENT Low fuel
+
+var localNotice = new UrgentNotice(new ConsoleChannel());
+Console.WriteLine(localNotice.Send("Low fuel")); // console: URGENT Low fuel
+```
+
+We selected urgency and channel separately. No `UrgentEmailNotice` class was needed.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+class EmailChannel:
+    def deliver(self, message):
+        return "email: " + message
+
+
+class ConsoleChannel:
+    def deliver(self, message):
+        return "console: " + message
+
+
+class Notice:
+    def __init__(self, channel):
+        self._channel = channel
+
+    def _prepare(self, message):
+        return message
+
+    def send(self, message):
+        return self._channel.deliver(self._prepare(message))
+
+
+class UrgentNotice(Notice):
+    def _prepare(self, message):
+        return "URGENT " + message
+```
+
+A notice uses a channel through `deliver`. Urgency affects `_prepare`, while the channel remains responsible for its own delivery implementation.
+
+```python group=example role=run
+notice = UrgentNotice(EmailChannel())
+print(notice.send("Low fuel"))  # email: URGENT Low fuel
+
+local_notice = UrgentNotice(ConsoleChannel())
+print(local_notice.send("Low fuel"))  # console: URGENT Low fuel
+```
+
+The same urgent-notice class works with both channels. A new channel can be supplied to existing notice classes, provided it honors their delivery contract.
+
+</section>
+
+## What is actually independent?
+
+Adding a text-message channel should not require duplicating urgent-message preparation. Adding another notice kind should not require reimplementing every channel. The shared channel interface is the connection between those two sets of classes—the bridge.
+
+Independence has limits. If email can fail or complete asynchronously, the channel contract must explain those outcomes. A caller cannot safely pretend a remote delivery behaves exactly like returning a local string. The example deliberately isolates class organization, not delivery reliability.
+
+## Distinguish the design reason from the class diagram
+
+Strategy also places interchangeable behavior behind a common operation. Its emphasis is selecting a way to perform a task. Bridge emphasizes two families that would otherwise grow into a combination hierarchy. The code shapes can resemble each other because composition is useful in both situations.
+
+For one notice type and one channel, a plain function may be enough. Even with two dimensions, simple data parameters may work when the variation is just a label. Choose Bridge when the separate families have meaningful behavior and are expected to evolve independently—not because every constructor parameter deserves a pattern name.
+
+## Sources
+
+1. <span id="source-1"></span>[Douglas C. Schmidt — Design Patterns in Java](https://www.informit.com/store/design-patterns-in-java-9780321947925), including Bridge's independent abstraction and implementation dimensions.

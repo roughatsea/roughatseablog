@@ -1,0 +1,146 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Primitive Obsession
+description: "Primitive Obsession uses plain strings or numbers for concepts that have their own rules, units, or behavior, leaving callers to repeatedly reconstruct that meaning."
+prerequisites: "Strings, integers, objects, and input validation."
+---
+
+export const checks = {"csharp":{"before":"Check.That(Battery.Label(40) == \"40%\"); Check.That(!Battery.IsLow(40)); Check.That(Battery.IsLow(14)); bool bad=false; try { Battery.Label(101); } catch (ArgumentOutOfRangeException) { bad=true; } Check.That(bad);","after":"Check.That(new BatteryLevel(40).Label() == \"40%\"); Check.That(!new BatteryLevel(40).IsLow()); Check.That(new BatteryLevel(14).IsLow()); Check.That(!new BatteryLevel(15).IsLow()); bool bad=false; try { new BatteryLevel(101); } catch (ArgumentOutOfRangeException) { bad=true; } Check.That(bad);"},"python":{"before":"assert battery_label(40) == '40%'\nassert not battery_is_low(40)\nassert battery_is_low(14)\ntry:\n    battery_label(101)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('invalid level accepted')","after":"assert BatteryLevel(40).label() == '40%'\nassert not BatteryLevel(40).is_low()\nassert BatteryLevel(14).is_low()\nassert not BatteryLevel(15).is_low()\nfor value in [-1, 101]:\n    try:\n        BatteryLevel(value)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError('invalid level accepted')"}};
+
+**Primitive Obsession** means representing a meaningful concept with a plain string, number, or Boolean even after that concept has acquired rules of its own. Callers then have to repeat its validation, remember its units, or reconstruct its meaning.
+
+An integer is not a bad choice simply because it is an integer. The smell appears when “just a number” repeatedly needs the same explanation. Replacing that primitive with a small object is one possible correction. [1](#source-1)
+
+## Is 140 a battery percentage?
+
+A device screen displays a whole-number battery percentage from zero to 100. It also warns when the level is below 15 percent. The original functions accept any integer and repeat the same range check.
+
+### Original version
+
+<section data-pilot-language="csharp">
+
+```csharp group=before role=types
+public static class Battery
+{
+    public static string Label(int percent)
+    {
+        if (percent < 0 || percent > 100)
+            throw new ArgumentOutOfRangeException(nameof(percent));
+        return $"{percent}%";
+    }
+
+    public static bool IsLow(int percent)
+    {
+        if (percent < 0 || percent > 100)
+            throw new ArgumentOutOfRangeException(nameof(percent));
+        return percent < 15;
+    }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=before role=types
+def battery_label(percent):
+    if percent < 0 or percent > 100:
+        raise ValueError("percent must be between 0 and 100")
+    return f"{percent}%"
+
+
+def battery_is_low(percent):
+    if percent < 0 or percent > 100:
+        raise ValueError("percent must be between 0 and 100")
+    return percent < 15
+```
+
+</section>
+
+The range belongs to the battery-level concept, not separately to its label and warning. More operations would mean more opportunities to forget that rule.
+
+### Revised version: construct a valid level once
+
+<section data-pilot-language="csharp">
+
+```csharp group=after role=types
+public sealed class BatteryLevel
+{
+    public int Percent { get; }
+
+    public BatteryLevel(int percent)
+    {
+        if (percent < 0 || percent > 100)
+            throw new ArgumentOutOfRangeException(nameof(percent));
+        Percent = percent;
+    }
+
+    public string Label()
+    {
+        return $"{Percent}%";
+    }
+
+    public bool IsLow()
+    {
+        return Percent < 15;
+    }
+}
+```
+
+```csharp group=after role=run
+BatteryLevel level = new BatteryLevel(40);
+Console.WriteLine(level.Label()); // 40%
+Console.WriteLine(level.IsLow()); // False
+```
+
+`BatteryLevel` checks the range during construction. Its read-only `Percent` property cannot be assigned an invalid number afterward. The methods no longer need separate range checks.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=after role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class BatteryLevel:
+    percent: int
+
+    def __post_init__(self):
+        if self.percent < 0 or self.percent > 100:
+            raise ValueError("percent must be between 0 and 100")
+
+    def label(self):
+        return f"{self.percent}%"
+
+    def is_low(self):
+        return self.percent < 15
+```
+
+```python group=after role=run
+level = BatteryLevel(40)
+print(level.label())   # 40%
+print(level.is_low())  # False
+```
+
+The dataclass calls `__post_init__` after setting its fields, so construction checks the range. `frozen=True` rejects ordinary reassignment afterward. The annotation documents an integer; it does not validate types at runtime. These examples use integer inputs throughout.
+
+</section>
+
+## What changed, and what did not?
+
+Forty still formats as `40%`, and the warning still begins below 15. An out-of-range level still raises an error, but it now does so when the level object is constructed rather than inside a later formatting call. That timing matters to callers and must be accounted for during migration.
+
+The new type also tells a reader what an argument means. A method requiring a battery level is more specific than one accepting an arbitrary integer. It could later distinguish battery percentage from a brightness percentage even though both use numbers from zero to 100.
+
+## Do not wrap every scalar
+
+A loop index usually does not need a class. One small private function may be clearer with an ordinary number and a good parameter name. The object earns its place when it centralizes real rules, prevents likely confusion, or provides operations that belong to the concept.
+
+A class containing only a public mutable integer, with every caller still doing its own validation, has added a type name without solving the problem shown here.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Replace Primitive with Object](https://refactoring.com/catalog/replacePrimitiveWithObject.html).
+2. [Python — dataclasses](https://docs.python.org/3/library/dataclasses.html), for frozen instances and post-initialization checks. The battery example is original.

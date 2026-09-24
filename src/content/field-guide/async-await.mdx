@@ -1,0 +1,102 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Async and Await
+description: "Async and await let a function suspend while an operation is incomplete, then continue with its result without turning every wait into a blocked thread."
+prerequisites: "Functions, return values, and the difference between waiting and computing."
+---
+
+export const checks = {"csharp":{"example":"Check.That(await Screen.LoadAsync() == \"Hello, Mira\");"},"python":{"example":"assert asyncio.run(load_screen()) == 'Hello, Mira'"}};
+
+**Async and await** let you write an operation that can suspend while it is waiting for an unfinished result. When the result becomes available, execution continues after the await. The method's local values are retained across that suspension. [1](#source-1)
+
+The useful mental picture is a paused operation, not a thread created for every asynchronous call. A network request may be outstanding while the application thread handles other work.
+
+## Read the sequence from top to bottom
+
+A welcome screen needs a player name. The function below uses a short asynchronous delay as a stand-in for a delayed data source. It never contacts a server.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Screen
+{
+    private static async Task<string> ReadNameAsync()
+    {
+        await Task.Delay(1);
+        return "Mira";
+    }
+
+    public static async Task<string> LoadAsync()
+    {
+        string prefix = "Hello, ";
+        string name = await ReadNameAsync();
+        return prefix + name;
+    }
+}
+```
+
+```csharp group=example role=run
+Task<string> loading = Screen.LoadAsync();
+Console.WriteLine("Loading screen...");
+string text = await loading;
+Console.WriteLine(text);
+```
+
+`LoadAsync` starts when it is called. If the name task is unfinished, awaiting it suspends `LoadAsync`. The calling code can print its loading message, then await the same task. The local `prefix` remains available when the method resumes.
+
+If a task is already complete, `await` can continue immediately instead of suspending. The keyword is not a mandatory scheduling break and does not promise to switch threads.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import asyncio
+
+
+async def read_name():
+    await asyncio.sleep(0.001)
+    return "Mira"
+
+
+async def load_screen():
+    prefix = "Hello, "
+    name = await read_name()
+    return prefix + name
+
+
+async def main():
+    loading = asyncio.create_task(load_screen())
+    print("Loading screen...")
+    text = await loading
+    print(text)
+```
+
+```python group=example role=run
+asyncio.run(main())
+```
+
+Calling an `async def` function produces a coroutine object; that call alone does not execute the function's body. `create_task` schedules the coroutine on the running event loop. Awaiting the task waits for its result while allowing other eligible tasks to run. [2](#source-2)
+
+The distinction from C# matters: superficially similar asynchronous function calls do not necessarily start work at the same moment in both languages.
+
+</section>
+
+## Sequential awaits can be exactly right
+
+If one request needs the result of another, awaiting them in sequence expresses a real dependency. If two requests are independent, starting both and then awaiting their results can overlap their waiting time. Overlap is a design choice, not something the compiler infers from adjacent `await` expressions.
+
+Keep ownership of every started operation. A forgotten task can fail without the caller handling its error, or continue after the request that created it has ended. Await completion, arrange cancellation where appropriate, and use a task group or explicit supervision for related tasks.
+
+## Async does not turn blocking work into nonblocking work
+
+A long calculation before the first await still occupies its thread. A synchronous file or HTTP call inside an async method still blocks. Use an asynchronous API for waiting where available; move CPU work deliberately when responsiveness or parallel computation requires it.
+
+Errors also remain errors. Awaiting a failed operation reports its failure to the awaiting code. Handle failures at a point that can make an informed decision, and use structured cleanup for resources that must be released during success, failure, or cancellation.
+
+The result is ordinary-looking control flow with explicit suspension points. That makes waiting easier to express; it does not remove dependencies, failure modes, or the need to know who is responsible for the work.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Asynchronous programming](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/), for C# task and await behavior.
+2. <span id="source-2"></span>[Python — Coroutines and tasks](https://docs.python.org/3/library/asyncio-task.html), for coroutine scheduling and awaiting.

@@ -1,0 +1,113 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Measure, Profile, and Benchmark
+description: "Measure the experience that matters, profile where its resources go, then benchmark proposed changes under controlled conditions."
+prerequisites: "Functions, collections, elapsed time, and repeated experiments."
+---
+
+export const checks = {"csharp":{"example":"int calls = 0; var result = Timing.Measure(() => { calls++; return 3; }, 5); Check.That(calls == 6 && result.Checksum == 15 && result.Milliseconds >= 0); Check.That(Work.CountUnique(new[] { 1, 1, 2 }) == 2);"},"python":{"example":"calls = []\nelapsed, checksum = measure(lambda: (calls.append(1), 3)[1], 5)\nassert len(calls) == 6 and checksum == 15 and elapsed >= 0\nassert count_unique([1, 1, 2]) == 2"}};
+
+**Measurement** tells you what happened to an operation you care about. **Profiling** helps locate where time, allocation, or other resources were spent. **Benchmarking** compares an implementation under a specified workload and environment. Use them in that order of purpose: discover a meaningful problem, locate it, then evaluate a proposed improvement. [1](#source-1)
+
+A method that looks inefficient may occupy a negligible part of a slow request. Making it twice as fast will not fix the database wait that dominates the user's experience.
+
+## Measure one operation without timing its setup
+
+Suppose an import repeatedly counts distinct identifiers. Prepare the input once, check the answer, then measure repeated executions. Do not include printing inside the timed loop: console output would add unrelated work.
+
+The following is a small timing harness, not a statistically rigorous benchmarking framework. It performs one untimed warm-up and retains a checksum so the measured results are actually used.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Measurement(double Milliseconds, long Checksum);
+
+public static class Timing
+{
+    public static Measurement Measure(Func<int> work, int repetitions)
+    {
+        if (repetitions < 1) throw new ArgumentOutOfRangeException(nameof(repetitions));
+        work(); // Untimed warm-up; not a guarantee of a fully warmed runtime.
+        long checksum = 0;
+        var timer = System.Diagnostics.Stopwatch.StartNew();
+        for (int i = 0; i < repetitions; i++) checksum += work();
+        timer.Stop();
+        return new Measurement(timer.Elapsed.TotalMilliseconds, checksum);
+    }
+}
+
+public static class Work
+{
+    public static int CountUnique(int[] values)
+    {
+        return new HashSet<int>(values).Count;
+    }
+}
+```
+
+```csharp group=example role=run
+int[] values = Enumerable.Range(0, 2000).Select(i => i % 100).ToArray();
+if (Work.CountUnique(values) != 100) throw new Exception("Wrong result.");
+for (int trial = 0; trial < 5; trial++)
+{
+    Measurement result = Timing.Measure(() => Work.CountUnique(values), 100);
+    Console.WriteLine($"{result.Milliseconds:F3} ms; checksum {result.Checksum}");
+}
+```
+
+Each checksum should be 10,000: one hundred executions, each finding one hundred distinct values. Elapsed times will vary. Run optimized code without a debugger when that represents the environment being evaluated. For serious .NET microbenchmarks, BenchmarkDotNet manages substantially more warm-up, iteration, and environment detail. [2](#source-2)
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from time import perf_counter
+
+
+def measure(work, repetitions):
+    if repetitions < 1:
+        raise ValueError("Repetitions must be positive.")
+    work()  # Untimed warm-up.
+    checksum = 0
+    started = perf_counter()
+    for _ in range(repetitions):
+        checksum += work()
+    elapsed_ms = (perf_counter() - started) * 1000
+    return elapsed_ms, checksum
+
+
+def count_unique(values):
+    return len(set(values))
+```
+
+```python group=example role=run
+values = [i % 100 for i in range(2000)]
+assert count_unique(values) == 100
+for _ in range(5):
+    elapsed_ms, checksum = measure(lambda: count_unique(values), 100)
+    print(f"{elapsed_ms:.3f} ms; checksum {checksum}")
+```
+
+The timer measures elapsed duration, not wall-clock date. Python's `timeit` supplies a more established runner for small comparisons. Its setup and garbage-collection behavior need to match the question being asked; default settings are not automatically representative of a long-lived service. [3](#source-3)
+
+</section>
+
+## Find the expensive part before changing it
+
+If the full import is slow, use a profiler to distinguish repeated calls, expensive computation, allocation, and waiting. Python's `cProfile` reports function-level activity; .NET diagnostic tools can expose CPU, allocation, and runtime behavior. A profiler's instrumentation can add overhead, so its results locate candidates rather than replace an uninstrumented end-to-end measurement. [4](#source-4)
+
+Then compare a candidate change using the same input distribution, output checks, runtime, build mode, and machine conditions. Include input sizes and edge cases that resemble actual use. A benchmark using an already populated cache answers a different question from a first request after startup.
+
+## Do not turn noise into a performance claim
+
+The sample verifies that the expected work ran; it makes no assertion that one duration must be smaller than another. Background processes, compilation, scheduling, caches, and garbage collection can move short timings substantially. A fixed “must finish in one millisecond” unit test is often a test of the machine rather than the algorithm.
+
+Repeat measurements, report the workload and variation, and check the full application after a local improvement. Retain a change when it improves the relevant outcome enough to justify its complexity—not merely because one run printed a pleasing number.
+
+## Sources
+
+1. <span id="source-1"></span>[Sedgewick and Wayne — Analysis of Algorithms](https://algs4.cs.princeton.edu/14analysis/), on reproducible observations and cost models.
+2. <span id="source-2"></span>[BenchmarkDotNet — How it works](https://benchmarkdotnet.org/articles/guides/how-it-works.html).
+3. <span id="source-3"></span>[Python — timeit](https://docs.python.org/3/library/timeit.html).
+4. <span id="source-4"></span>[Python — Profilers](https://docs.python.org/3/library/profile.html) and [Microsoft — dotnet-counters](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-counters).

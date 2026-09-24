@@ -1,0 +1,109 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Pull Up Field
+description: "Move a field duplicated across subclasses into their common base class when it represents the same concept in every subclass."
+prerequisites: "Inheritance, fields, and constructors."
+---
+
+export const checks = {"csharp":{"original":"Check.That(new Door(\"Harbor\").Name == \"Harbor\" && new Chest(\"Supplies\").Name == \"Supplies\");","revised":"WorldObject door = new Door(\"Harbor\"); WorldObject chest = new Chest(\"Supplies\"); Check.That(door.Name == \"Harbor\" && chest.Name == \"Supplies\");"},"python":{"original":"assert Door('Harbor').name == 'Harbor' and Chest('Supplies').name == 'Supplies'","revised":"assert Door('Harbor').name == 'Harbor' and Chest('Supplies').name == 'Supplies'"}};
+
+**Pull Up Field** moves a field duplicated across subclasses into their common base class. The fields must represent the same concept, not merely share a spelling or type. [1](#source-1)
+
+## Original version: each world object repeats its name storage
+
+Doors and chests already belong to a common game-object hierarchy. Both have a display name, but each subclass declares it separately.
+
+<section data-pilot-language="csharp">
+
+```csharp group=original role=types
+public abstract class WorldObject { }
+public sealed class Door : WorldObject
+{
+    public string Name { get; }
+    public Door(string name) { Name = name; }
+}
+public sealed class Chest : WorldObject
+{
+    public string Name { get; }
+    public Chest(string name) { Name = name; }
+}
+```
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=original role=types
+class WorldObject:
+    pass
+
+
+class Door(WorldObject):
+    def __init__(self, name):
+        self.name = name
+
+
+class Chest(WorldObject):
+    def __init__(self, name):
+        self.name = name
+```
+
+</section>
+
+The base class does not yet express the shared name requirement. Code working with either subtype must rediscover the same fact.
+
+## Refactored version: one inherited name
+
+<section data-pilot-language="csharp">
+
+```csharp group=revised role=types
+public abstract class WorldObject
+{
+    public string Name { get; }
+    protected WorldObject(string name) { Name = name; }
+}
+public sealed class Door : WorldObject
+{
+    public Door(string name) : base(name) { }
+}
+public sealed class Chest : WorldObject
+{
+    public Chest(string name) : base(name) { }
+}
+```
+
+The auto-property's backing storage now belongs to `WorldObject`. Each subclass passes its name to the base constructor. A caller holding a `WorldObject` can read the common property.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=revised role=types
+class WorldObject:
+    def __init__(self, name):
+        self.name = name
+
+
+class Door(WorldObject):
+    pass
+
+
+class Chest(WorldObject):
+    pass
+```
+
+The subclasses inherit the constructor that establishes `name`. In Python the instance still holds its attribute; the shared declaration and initialization now live in the base class.
+
+</section>
+
+## Check meaning before moving storage
+
+Moving readonly storage can require moving initialization too, as the C# example shows. Preserve validation, defaults, and construction order. Do not leave a second field with the same name in a subclass and accidentally create two independent values.
+
+If one subclass's `name` means a file path while another's means a user's display label, a shared string type does not establish a shared concept. Likewise, adding a field to a base class makes it part of every subtype's representation and contract.
+
+Use this move within a justified hierarchy. Creating a new superclass solely because two unrelated classes each contain a string can make the design worse. Extracting a shared value object or leaving the small duplication may be more appropriate.
+
+## Sources
+
+1. <span id="source-1"></span>[Martin Fowler — Pull Up Field](https://refactoring.com/catalog/pullUpField.html).
