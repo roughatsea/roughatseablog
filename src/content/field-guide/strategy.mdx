@@ -1,0 +1,131 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Strategy
+description: "Strategy puts interchangeable ways of performing one operation behind a common interface, then lets a caller choose which implementation to supply."
+prerequisites: "Objects, interfaces or compatible methods, sorting, and composition."
+---
+
+export const checks = {"csharp":{"example":"var input = new[] { new Player(\"Sol\", 8), new Player(\"Mira\", 3), new Player(\"Tess\", 10) }; Check.That(new Board(new ByName()).Show(input) == \"Mira, Sol, Tess\"); Check.That(new Board(new ByScore()).Show(input) == \"Tess, Sol, Mira\"); Check.That(input[0].Name == \"Sol\");"},"python":{"example":"players = [Player('Sol', 8), Player('Mira', 3), Player('Tess', 10)]\nassert Board(ByName()).show(players) == 'Mira, Sol, Tess'\nassert Board(ByScore()).show(players) == 'Tess, Sol, Mira'\nassert players[0].name == 'Sol'"}};
+
+**Strategy** puts interchangeable ways of performing one operation behind a common interface. A caller chooses an implementation and supplies it to the object that needs the operation. [1](#source-1)
+
+Here, a strategy is not a metaphorical battle plan. It is a concrete object or function implementing a particular way to do a task—for example, ordering players alphabetically rather than by score.
+
+## A leaderboard with two useful orders
+
+A leaderboard displays player names. Sometimes the reader wants alphabetical order; sometimes the highest score first. The board should not need another conditional every time an ordering option is added.
+
+Give it an object that knows how to order players. The board still owns display formatting; the ordering object supplies one selected behavior.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Player(string Name, int Score);
+
+public interface IPlayerOrder
+{
+    Player[] Order(IEnumerable<Player> players);
+}
+
+public sealed class ByName : IPlayerOrder
+{
+    public Player[] Order(IEnumerable<Player> players)
+    {
+        return players.OrderBy(player => player.Name, StringComparer.Ordinal).ToArray();
+    }
+}
+
+public sealed class ByScore : IPlayerOrder
+{
+    public Player[] Order(IEnumerable<Player> players)
+    {
+        return players.OrderByDescending(player => player.Score).ToArray();
+    }
+}
+
+public sealed class Board
+{
+    private readonly IPlayerOrder order;
+    public Board(IPlayerOrder order) { this.order = order; }
+
+    public string Show(IEnumerable<Player> players)
+    {
+        Player[] ordered = order.Order(players);
+        return string.Join(", ", ordered.Select(player => player.Name));
+    }
+}
+```
+
+`ByName` and `ByScore` are the strategies. `Board.Show` calls the selected strategy and formats the resulting names. Both implementations create a result array rather than reorder the input collection.
+
+```csharp group=example role=run
+var players = new[] { new Player("Sol", 8), new Player("Mira", 3) };
+Console.WriteLine(new Board(new ByName()).Show(players));  // Mira, Sol
+Console.WriteLine(new Board(new ByScore()).Show(players)); // Sol, Mira
+```
+
+The caller selects behavior by constructing the board with a different ordering object. The board's implementation is unchanged.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Player:
+    name: str
+    score: int
+
+
+class ByName:
+    def order(self, players):
+        return sorted(players, key=lambda player: player.name)
+
+
+class ByScore:
+    def order(self, players):
+        return sorted(players, key=lambda player: player.score, reverse=True)
+
+
+class Board:
+    def __init__(self, order):
+        self._order = order
+
+    def show(self, players):
+        ordered = self._order.order(players)
+        return ", ".join(player.name for player in ordered)
+```
+
+Each strategy provides `order` and returns a new list. The board only depends on that operation and on the returned players having names.
+
+```python group=example role=run
+players = [Player("Sol", 8), Player("Mira", 3)]
+print(Board(ByName()).show(players))   # Mira, Sol
+print(Board(ByScore()).show(players))  # Sol, Mira
+```
+
+The lambdas here describe sort keys inside the strategies. A function could also replace the entire strategy object when a single operation is all that is needed.
+
+</section>
+
+## Interchangeable means sharing a promise
+
+Both strategies accept players and return them in a chosen order without removing entries or changing the input. If one strategy unexpectedly discarded low scorers, it would no longer merely choose an ordering. The shared interface needs a behavioral contract as well as a matching method name.
+
+These examples use simple names and stable sorting: ties retain their input order. Internationalized name ordering requires an explicit collation choice; C# ordinal comparison and Python's string ordering are not a promise of identical behavior for every Unicode string.
+
+A new ordering, such as earliest join date, could be another strategy once that data exists. The application still needs to decide which option the user requested and supply it. Strategy moves that choice out of the board's algorithm; it does not make selection disappear.
+
+## Objects are optional; a clear variation is not
+
+For one stable ordering, calling the sort directly may be simplest. For a single comparison, a function parameter may provide all the flexibility needed. A strategy object becomes useful when the behavior has meaningful configuration, dependencies, or several related operations.
+
+State uses a similar delegation shape but emphasizes lifecycle conditions and transitions. Strategy emphasizes choosing among ways to perform a task. Neither term should appear as a prerequisite to understanding a simpler principle: first identify the concrete operation that varies, then name the arrangement.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Strategy](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-strategy).
+2. [Microsoft — Discovering Design Patterns in .NET](https://learn.microsoft.com/en-us/archive/msdn-magazine/2005/july/discovering-the-design-patterns-you-re-already-using-in-net), including comparison strategies and their distinction from Template Method.

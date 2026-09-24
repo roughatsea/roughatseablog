@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Template Method
+description: "Template Method puts an algorithm's overall sequence in a base class and lets subclasses provide particular steps."
+prerequisites: "Inheritance, overriding, methods, and execution order."
+---
+
+export const checks = {"csharp":{"example":"Check.That(new PlainReport().Render(\" Mira \") == \"BEGIN\\nMira\\nEND\"); Check.That(new BracketReport().Render(\" Mira \") == \"BEGIN\\n[Mira]\\nEND\");"},"python":{"example":"assert PlainReport().render(' Mira ') == 'BEGIN\\nMira\\nEND'\nassert BracketReport().render(' Mira ') == 'BEGIN\\n[Mira]\\nEND'"}};
+
+**Template Method** puts an algorithm's overall sequence in a base class and lets subclasses provide particular steps. The template is a real method that calls those steps in order—not a code-generation template or a document file. [1](#source-1)
+
+## A report sequence with one customizable step
+
+Two report formats share the same process: remove outside whitespace from a title, decorate that title, then place it between a beginning and an ending marker. The plain report leaves the title alone; the bracket report surrounds it with square brackets.
+
+The base class should own the common order. Subclasses should only implement the differing decoration step.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public abstract class Report
+{
+    public string Render(string title)
+    {
+        string clean = title.Trim();
+        string decorated = Decorate(clean);
+        return "BEGIN\n" + decorated + "\nEND";
+    }
+
+    protected abstract string Decorate(string title);
+}
+
+public sealed class PlainReport : Report
+{
+    protected override string Decorate(string title)
+    {
+        return title;
+    }
+}
+
+public sealed class BracketReport : Report
+{
+    protected override string Decorate(string title)
+    {
+        return "[" + title + "]";
+    }
+}
+```
+
+`Render` is the template method. It is not virtual, so the intended override point is the protected `Decorate` step rather than the entire sequence. The compiler requires each concrete subclass to implement that abstract step.
+
+```csharp group=example role=run
+Report report = new BracketReport();
+Console.WriteLine(report.Render(" Mira "));
+// BEGIN
+// [Mira]
+// END
+```
+
+Trimming happens before decoration. Reversing those steps would leave the spaces inside the brackets, so the common ordering is meaningful behavior.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from abc import ABC, abstractmethod
+
+
+class Report(ABC):
+    def render(self, title):
+        clean = title.strip()
+        decorated = self._decorate(clean)
+        return "BEGIN\n" + decorated + "\nEND"
+
+    @abstractmethod
+    def _decorate(self, title):
+        raise NotImplementedError
+
+
+class PlainReport(Report):
+    def _decorate(self, title):
+        return title
+
+
+class BracketReport(Report):
+    def _decorate(self, title):
+        return "[" + title + "]"
+```
+
+The abstract base class requires concrete subclasses to supply `_decorate`. They inherit `render`, which owns the sequence. Python still permits overriding `render`; the intended extension boundary remains part of the design contract.
+
+```python group=example role=run
+report = BracketReport()
+print(report.render(" Mira "))
+# BEGIN
+# [Mira]
+# END
+```
+
+The subclass receives the cleaned title and returns only its decoration. It does not append markers or repeat trimming.
+
+</section>
+
+## Decide which steps may vary
+
+A template can provide default implementations for optional hooks or require abstract steps. Too many hooks can make a base class difficult to understand: a reader has to reconstruct a different algorithm for every subclass. Keep the stable sequence small enough to describe clearly.
+
+Subclasses must honor the step's contract. Here decoration returns a string and does not perform delivery or mutate the report. Adding a network call inside decoration would introduce costs and failure modes the base algorithm has not prepared for.
+
+Construction also deserves care. Calling an overridable step from a base constructor can reach subclass state before initialization finishes. The examples call the template only after construction.
+
+## The neighboring alternatives
+
+Strategy supplies behavior through another object or function rather than through inherited methods. For one formatting step, accepting a formatter function may be simpler and easier to change at runtime. Template Method fits a framework that already has meaningful subclasses and owns a common lifecycle.
+
+Form Template Method is the refactoring used to extract this structure from similar existing algorithms. Template Method is the resulting design pattern. The distinction matters when deciding whether to reorganize working code: a recognizable pattern is not, by itself, evidence that the original duplication is costly enough to justify the change.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Design Patterns: Template Method](https://learn.microsoft.com/en-us/shows/visual-studio-toolbox/design-patterns-template-method).
+2. [Python — Abstract base classes](https://docs.python.org/3/library/abc.html), for the explicit abstract step used here.
