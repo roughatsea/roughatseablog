@@ -1,0 +1,110 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Structured Concurrency and Task Ownership
+description: "Give related tasks an owner that waits for completion, handles failures, and coordinates cancellation before the operation leaves its scope."
+prerequisites: "Tasks, async/await, exceptions, and cancellation."
+---
+
+export const checks = {"csharp":{"example":"var cleaned = new System.Collections.Concurrent.ConcurrentBag<string>(); bool failed = false; try { await Owned.RunAsync(cleaned); } catch (InvalidOperationException) { failed = true; } Check.That(failed && cleaned.OrderBy(x => x).SequenceEqual(new[] { \"lookup\", \"preview\" }));"},"python":{"example":"cleaned = []\ntry:\n    asyncio.run(run_owned(cleaned))\nexcept ExceptionGroup as error:\n    assert any(isinstance(item, ValueError) for item in error.exceptions)\nelse:\n    raise AssertionError('child failure was hidden')\nassert sorted(cleaned) == ['lookup', 'preview']"}};
+
+**Structured concurrency** gives related asynchronous tasks a bounded lifetime under an owning operation. That owner does not simply launch work and forget it: it waits for the children, observes their failures, and coordinates cancellation and cleanup. Python's task groups provide a language-library mechanism for that relationship. [1](#source-1)
+
+Suppose opening a document starts a metadata lookup and a preview calculation. If the lookup fails, the application should not leave an unnecessary preview task running after it has already reported failure to the user.
+
+## A parent needs a failure policy
+
+The examples start two operations. The lookup fails deliberately. The preview waits until cancelled and records cleanup. No real files or services are used; the point is the lifetime relationship.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Owned
+{
+    public static async Task RunAsync(
+        System.Collections.Concurrent.ConcurrentBag<string> cleaned)
+    {
+        using var scope = new System.Threading.CancellationTokenSource();
+
+        async Task Preview()
+        {
+            try
+            {
+                await Task.Delay(System.Threading.Timeout.Infinite, scope.Token);
+            }
+            finally { cleaned.Add("preview"); }
+        }
+
+        async Task Lookup()
+        {
+            try
+            {
+                await Task.Yield();
+                throw new InvalidOperationException("Metadata unavailable.");
+            }
+            finally { cleaned.Add("lookup"); }
+        }
+
+        async Task Supervise(Func<Task> operation)
+        {
+            try { await operation(); }
+            catch { scope.Cancel(); throw; }
+        }
+
+        Task preview = Supervise(Preview);
+        Task lookup = Supervise(Lookup);
+        await Task.WhenAll(preview, lookup);
+    }
+}
+```
+
+`Supervise` requests sibling cancellation when a child fails. `WhenAll` waits until both children have finished, including their cleanup. It does **not** cancel siblings automatically; that is why the wrapper is present. In a real operation, link this cancellation source to the caller's token too. [2](#source-2)
+
+If several children fail, the task returned by `WhenAll` retains their exceptions even though an ordinary await surfaces one. An owner that needs to report all failures must inspect that combined task's exception information.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import asyncio
+
+
+async def run_owned(cleaned):
+    async def preview():
+        try:
+            await asyncio.Event().wait()
+        finally:
+            cleaned.append("preview")
+
+    async def lookup():
+        try:
+            await asyncio.sleep(0)
+            raise ValueError("Metadata unavailable.")
+        finally:
+            cleaned.append("lookup")
+
+    async with asyncio.TaskGroup() as group:
+        group.create_task(preview())
+        group.create_task(lookup())
+```
+
+The task group cancels remaining children after a non-cancellation failure, waits for them, and reports the collected failures through an exception group. The preview's cleanup runs before the scope has finished handling its children. The worker does not swallow its cancellation and pretend to complete normally.
+
+</section>
+
+## A timeout cannot force arbitrary work to cooperate
+
+Both examples use waits that observe cancellation. A child that ignores cancellation, performs a blocking call, or never yields can delay scope exit. Structured ownership makes responsibility explicit; it is not permission to claim every child can be stopped instantly.
+
+Cancellation also does not undo a completed remote write. If one child commits a purchase before another fails, the parent needs a business-level recovery policy rather than merely cancelling local tasks.
+
+## Detached work needs another owner
+
+Some work should outlive the request that started it, such as a durable report-generation job. Transfer it to a real background service or queue that owns retries, shutdown, observability, and persistence. Starting an unobserved task from a request handler is not the same as transferring it safely.
+
+For each new task, ask who waits for it, who handles its exception, who may cancel it, and what happens when its caller goes away. Those questions are often more useful than arguing over which task API looks shortest.
+
+## Sources
+
+1. <span id="source-1"></span>[Python — Task groups](https://docs.python.org/3/library/asyncio-task.html#task-groups), including cancellation and exception-group behavior.
+2. <span id="source-2"></span>[Microsoft — Task.WhenAll](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall), for completion and exception semantics.

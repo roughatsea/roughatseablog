@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Cancellation and Timeouts
+description: "Cancellation asks work to stop. A timeout limits how long a caller will wait. Neither automatically undoes work that has already happened."
+prerequisites: "Async/await, exceptions, and resource cleanup."
+---
+
+export const checks = {"csharp":{"example":"Check.That(await Demo.CancelRequest()); Check.That(await Demo.StopWaitingAndCleanUp());"},"python":{"example":"assert asyncio.run(cancel_request())\nassert asyncio.run(stop_waiting_and_clean_up())"}};
+
+**Cancellation** asks an operation to stop because its result is no longer needed or the application is shutting down. A **timeout** sets a limit on waiting. A caller can stop waiting while the underlying operation continues, so these are related but different controls. [1](#source-1)
+
+Neither one means “undo everything.” A server may have saved an order just before a client timed out. Retrying blindly can create another order unless the operation has appropriate duplicate handling.
+
+## Cancellation needs cooperation
+
+The examples wait for an event that will never arrive, then cancel that wait deliberately. No real remote operation is involved.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class Demo
+{
+    public static async Task<bool> CancelRequest()
+    {
+        using var source = new System.Threading.CancellationTokenSource();
+        Task work = Task.Delay(System.Threading.Timeout.Infinite, source.Token);
+        source.Cancel();
+        try { await work; }
+        catch (OperationCanceledException) when (source.IsCancellationRequested)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static async Task<bool> StopWaitingAndCleanUp()
+    {
+        using var source = new System.Threading.CancellationTokenSource();
+        Task work = Task.Delay(System.Threading.Timeout.Infinite, source.Token);
+        bool timedOut = false;
+        try { await work.WaitAsync(TimeSpan.FromMilliseconds(5)); }
+        catch (TimeoutException) { timedOut = true; }
+        finally
+        {
+            source.Cancel();
+            try { await work; }
+            catch (OperationCanceledException) when (source.IsCancellationRequested) { }
+        }
+        return timedOut;
+    }
+}
+```
+
+`CancelRequest` supplies a token to an operation that observes it. `StopWaitingAndCleanUp` first limits the caller's wait using `WaitAsync`. That timeout does not cancel the original task; the `finally` block requests cancellation and then observes the task's completion. [2](#source-2)
+
+An operation that ignores its token may not finish promptly. This cleanup is bounded by the behavior of `Task.Delay`, not a universal guarantee for arbitrary work.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import asyncio
+
+
+async def cancel_request():
+    started = asyncio.Event()
+    cleaned = asyncio.Event()
+
+    async def work():
+        try:
+            started.set()
+            await asyncio.Event().wait()
+        finally:
+            cleaned.set()
+
+    task = asyncio.create_task(work())
+    await started.wait()
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
+    return cleaned.is_set()
+
+
+async def stop_waiting_and_clean_up():
+    cleaned = False
+    try:
+        async with asyncio.timeout(0.005):
+            try:
+                await asyncio.Event().wait()
+            finally:
+                cleaned = True
+    except TimeoutError:
+        return cleaned
+    return False
+```
+
+`task.cancel()` requests cancellation; awaiting the task lets its `finally` block run. The timeout context cancels its enclosed waiting operation and converts its own cancellation into `TimeoutError` outside the context. Do not routinely swallow `CancelledError` inside worker code; doing so can defeat task-group and timeout behavior. [3](#source-3)
+
+</section>
+
+## Carry the deadline through the whole request
+
+Suppose a user action has a two-second budget. Spending 1.8 seconds on a lookup leaves roughly 0.2 seconds, not another two seconds, for the next call. Retrying or invoking dependencies with fresh full-length timeouts can greatly exceed the user's original budget.
+
+Use a monotonic elapsed-time source for local deadlines so a wall-clock correction does not unexpectedly lengthen a wait. Pass cancellation to APIs that support it, and account for time spent queued as well as time spent executing.
+
+The five-millisecond examples are tests of control flow, not recommended production timeout values. Real deadlines depend on measured latency and the product's needs.
+
+## Decide what outcome is still known
+
+After a timed-out read, retrying may be straightforward. After a timed-out write, distinguish “definitely not attempted,” “definitely committed,” and “outcome unknown.” Cancellation of a local task does not prove the remote side rolled back.
+
+Close resources in structured cleanup, observe failures from owned tasks, and decide which cancellation requests are safe to honor after a commit. A good cancellation design describes both when work stops and which effects may already exist.
+
+## Sources
+
+1. <span id="source-1"></span>[Microsoft — Cancellation in managed threads](https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads), for cooperative cancellation.
+2. <span id="source-2"></span>[Microsoft — Task.WaitAsync](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.waitasync), for waiting-task semantics.
+3. <span id="source-3"></span>[Python — Task cancellation and timeouts](https://docs.python.org/3/library/asyncio-task.html).
