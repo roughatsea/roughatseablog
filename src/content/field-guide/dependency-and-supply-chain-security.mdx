@@ -1,0 +1,85 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Dependency and Supply-Chain Security
+description: "Protect the code, dependencies, build systems, and release artifacts your application relies on—not just the source files your team writes."
+prerequisites: "Package managers, build pipelines, hashes, and release artifacts."
+---
+
+export const checks = {"csharp":{"example":"Check.That(ArtifactCheck.Matches(System.Text.Encoding.UTF8.GetBytes(\"approved artifact\" + (char)10), ArtifactCheck.ApprovedHash)); Check.That(!ArtifactCheck.Matches(System.Text.Encoding.UTF8.GetBytes(\"modified artifact\" + (char)10), ArtifactCheck.ApprovedHash));"},"python":{"example":"assert matches(b'approved artifact' + bytes([10]), APPROVED_HASH)\nassert not matches(b'modified artifact' + bytes([10]), APPROVED_HASH)"}};
+
+**Dependency security** examines the external components an application uses. **Software supply-chain security** also protects how source, dependencies, build tools, credentials, and release artifacts are selected and transformed on their way to production. A secure function cannot compensate for a build pipeline that substitutes a malicious package. [1](#source-1)
+
+## Follow one dependency all the way to deployment
+
+Before adding a library, identify its intended publisher, maintenance practices, permissions, and transitive dependencies. Review changes to dependency declarations and lockfiles. A familiar package name is not proof that a similarly spelled package is the same project.
+
+A lockfile records particular dependency resolutions. Reproducible installation and verified artifact integrity reduce accidental or malicious substitution. They do not establish that the selected version contains no vulnerabilities or malicious behavior.
+
+After installation, the build pipeline needs its own protection: minimal credentials, controlled execution of untrusted contributions, reviewable build scripts, and isolated artifacts. In GitHub Actions, pinning third-party actions to full commit identifiers avoids relying on a movable tag; the selected commit must still be reviewed and updated responsibly. [2](#source-2)
+
+## Verify bytes against an independently trusted expectation
+
+This example checks the bytes of a tiny pretend artifact against a SHA-256 value recorded in an already trusted manifest. The expected value was computed for the exact UTF-8 text `approved artifact` followed by a newline.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public static class ArtifactCheck
+{
+    public const string ApprovedHash =
+        "94a6d31f9921e60fc9df1c4ef87e389e12cef1ab2f458eb82e9b58520cf9e878";
+
+    public static bool Matches(byte[] artifact, string trustedHash)
+    {
+        byte[] digest = System.Security.Cryptography.SHA256.HashData(artifact);
+        string actual = Convert.ToHexString(digest);
+        return string.Equals(actual, trustedHash, StringComparison.OrdinalIgnoreCase);
+    }
+}
+```
+
+```csharp group=example role=run
+byte[] downloaded = System.Text.Encoding.UTF8.GetBytes("approved artifact\n");
+Console.WriteLine(ArtifactCheck.Matches(downloaded, ArtifactCheck.ApprovedHash)); // True
+```
+
+The function never executes the artifact. Changing its contents makes the check fail. A hash from an untrusted source, however, would let an attacker supply both malicious bytes and their matching hash.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+import hashlib
+
+APPROVED_HASH = "94a6d31f9921e60fc9df1c4ef87e389e12cef1ab2f458eb82e9b58520cf9e878"
+
+
+def matches(artifact, trusted_hash):
+    actual = hashlib.sha256(artifact).hexdigest()
+    return actual == trusted_hash.lower()
+```
+
+```python group=example role=run
+downloaded = b"approved artifact\n"
+print(matches(downloaded, APPROVED_HASH))  # True
+```
+
+This establishes equality with a trusted byte-level expectation. It does not authenticate a publisher, verify a signature, inspect source, or prove that the approved bytes are safe.
+
+</section>
+
+## Inventory, provenance, and vulnerability checks answer different questions
+
+A software bill of materials records included components. It helps determine whether a newly disclosed issue affects a deployed release, but is not a clean bill of health.
+
+Provenance records how an artifact was built. Its signature and identity must be verified against a trusted policy; merely attaching a provenance file proves nothing. Vulnerability scanning compares components with known issues, while review and testing address other risks. Unknown vulnerabilities and compromised legitimate publishers remain possible. [1](#source-1)
+
+Keep a process for updates, emergency revocation, and rebuilding affected releases. Pinning forever can preserve known vulnerable software just as reliably as it preserves good software.
+
+The sample hash check is one small part of this chain. The complete protection comes from maintaining trustworthy relationships between reviewed source, selected dependencies, authorized builds, and the exact artifact deployed—not from treating any single scanner badge as a guarantee.
+
+## Sources
+
+1. <span id="source-1"></span>[OWASP — Software Supply Chain Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Software_Supply_Chain_Security_Cheat_Sheet.html).
+2. <span id="source-2"></span>[GitHub — Secure use reference](https://docs.github.com/en/actions/reference/security/secure-use), including immutable action references and workflow permissions.

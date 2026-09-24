@@ -1,0 +1,113 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Least Privilege, Authentication, and Authorization
+description: "Authentication establishes identity, authorization decides which actions that identity may perform, and least privilege limits access to what is actually needed."
+prerequisites: "User identities, requests, permissions, and resource ownership."
+---
+
+export const checks = {"csharp":{"example":"var note = new Note(\"team-a\", \"Mira\"); var reader = new Actor(\"Mira\", \"team-a\", new HashSet<string> { \"notes:read\" }); Check.That(Access.CanRead(reader, note)); Check.That(!Access.CanWrite(reader, note)); Check.That(!Access.CanRead(null, note)); Check.That(!Access.CanRead(reader with { Tenant = \"team-b\" }, note)); Check.That(!Access.CanRead(reader with { Subject = \"Sol\" }, note));"},"python":{"example":"note = Note('team-a', 'Mira')\nreader = Actor('Mira', 'team-a', frozenset({'notes:read'}))\nassert can_read(reader, note) and not can_write(reader, note)\nassert not can_read(None, note)\nassert not can_read(Actor('Mira', 'team-b', reader.permissions), note)\nassert not can_read(Actor('Sol', 'team-a', reader.permissions), note)"}};
+
+**Authentication** establishes who is making a request. **Authorization** decides whether that identity may perform a particular action on a particular resource. **Least privilege** gives users and services only the access needed for their tasks, rather than broad permissions that happen to make the application work. [1](#source-1)
+
+Being signed in answers the first question, not the other two.
+
+## A read-only user still needs the right note
+
+Suppose private notes belong to a team and an owner. Reading requires the `notes:read` permission, membership in the note's team, and ownership of that note. Editing additionally requires the separate write permission.
+
+The identity and permissions below are **trusted server-side inputs produced after authentication and policy lookup**. The example does not verify passwords, sessions, or signed tokens. Accepting an arbitrary request body as an `Actor` would defeat the premise.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Actor(string Subject, string Tenant, IReadOnlySet<string> Permissions);
+public sealed record Note(string Tenant, string Owner);
+
+public static class Access
+{
+    private static bool Owns(Actor? actor, Note note)
+    {
+        return actor != null && actor.Tenant == note.Tenant && actor.Subject == note.Owner;
+    }
+    public static bool CanRead(Actor? actor, Note note)
+    {
+        return Owns(actor, note) && actor!.Permissions.Contains("notes:read");
+    }
+    public static bool CanWrite(Actor? actor, Note note)
+    {
+        return Owns(actor, note) && actor!.Permissions.Contains("notes:write");
+    }
+}
+```
+
+```csharp group=example role=run
+var actor = new Actor("Mira", "team-a", new HashSet<string> { "notes:read" });
+var note = new Note("team-a", "Mira");
+Console.WriteLine(Access.CanRead(actor, note));  // True
+Console.WriteLine(Access.CanWrite(actor, note)); // False
+```
+
+The permission alone is insufficient: the resource relationship is checked too. `Owns` rejects a missing actor before the permission expression executes. Callers must actually enforce the decision before returning content or applying a write.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Actor:
+    subject: str
+    tenant: str
+    permissions: frozenset[str]
+
+
+@dataclass(frozen=True)
+class Note:
+    tenant: str
+    owner: str
+
+
+def owns(actor, note):
+    return actor is not None and actor.tenant == note.tenant and actor.subject == note.owner
+
+
+def can_read(actor, note):
+    return owns(actor, note) and "notes:read" in actor.permissions
+
+
+def can_write(actor, note):
+    return owns(actor, note) and "notes:write" in actor.permissions
+```
+
+```python group=example role=run
+actor = Actor("Mira", "team-a", frozenset({"notes:read"}))
+note = Note("team-a", "Mira")
+print(can_read(actor, note))   # True
+print(can_write(actor, note))  # False
+```
+
+The frozen data records make the sample inputs stable; they do not make a fabricated actor authentic. The server must derive identity from a validated authentication mechanism, not a user-supplied name.
+
+</section>
+
+## Enforce the decision at the real boundary
+
+Hiding an edit button is useful feedback, not enforcement. Check permission for each protected operation, including alternate routes, background jobs, exports, and object identifiers supplied by clients. A hard-to-guess identifier is not a substitute for authorization.
+
+When ownership or permissions can change concurrently, ensure the authorization decision and protected operation do not accidentally use incompatible versions of that state. Database access scoped to the authorized subject can be stronger than loading unrestricted data and hoping every caller filters it afterward.
+
+Least privilege also applies below the application. A reporting service should not receive schema-administrator credentials just because they are convenient. Restrict database, storage, deployment, and service identities to their required operations and lifetime.
+
+## Authentication has its own responsibilities
+
+A production login or token validator must establish identity through a supported security mechanism, with appropriate session protection, expiration, and verification. This helper does none of that. Reimplementing authentication from a small code example is not a safe shortcut.
+
+The useful tests include denials: another owner, another team, a missing permission, and no authenticated identity. Success-only tests cannot show that access is properly restricted. Unknown actions should not silently become allowed because no rule happened to reject them.
+
+## Sources
+
+1. <span id="source-1"></span>[OWASP — Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html), on least privilege, deny-by-default, and resource-level checks.
+2. [OWASP — Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html), covering the separate identity-establishment boundary.

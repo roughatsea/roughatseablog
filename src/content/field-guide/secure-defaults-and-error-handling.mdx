@@ -1,0 +1,109 @@
+---
+layout: ../../layouts/FieldGuidePilotLayout.astro
+title: Secure Defaults and Error Handling
+description: "Secure defaults avoid granting access without an explicit decision, and safe error handling reports failure without exposing sensitive internals or turning uncertainty into permission."
+prerequisites: "Configuration, authorization decisions, exceptions, and responses."
+---
+
+export const checks = {"csharp":{"example":"Check.That(!Downloads.PublicAccess(null) && !Downloads.PublicAccess(false) && Downloads.PublicAccess(true)); int reads = 0; var denied = Downloads.Read(() => false, () => { reads++; return \"secret\"; }); Check.That(denied.Status == 403 && reads == 0); var failed = Downloads.Read(() => throw new System.IO.IOException(\"internal secret\"), () => \"secret\"); Check.That(failed.Status == 503 && !failed.Body.Contains(\"secret\"));"},"python":{"example":"assert not public_access(None) and not public_access(False) and public_access(True)\nreads = []\nresponse = read_download(lambda: False, lambda: reads.append('read'))\nassert response.status == 403 and reads == []\ndef unavailable():\n    raise OSError('internal secret')\nresponse = read_download(unavailable, lambda: 'secret')\nassert response.status == 503 and 'secret' not in response.body"}};
+
+**Secure defaults** avoid granting access without an explicit decision. **Safe error handling** reports failure without exposing sensitive internals or turning an uncertain authorization result into permission. A missing setting and a failed permission lookup should not silently make private data public. [1](#source-1)
+
+## Missing configuration is not consent to publish
+
+Suppose downloads are private unless public access has been explicitly enabled. An absent configuration value should leave them private. Likewise, if the permission service cannot answer, the application should not proceed as though access was granted.
+
+The example returns response objects, not real HTTP responses. An HTTP adapter would map the status and body into its framework's response mechanism.
+
+<section data-pilot-language="csharp">
+
+```csharp group=example role=types
+public sealed record Response(int Status, string Body);
+
+public static class Downloads
+{
+    public static bool PublicAccess(bool? configured)
+    {
+        return configured == true;
+    }
+
+    public static Response Read(Func<bool> authorized, Func<string> load)
+    {
+        try
+        {
+            if (!authorized()) return new Response(403, "Access denied.");
+            return new Response(200, load());
+        }
+        catch (System.IO.IOException)
+        {
+            return new Response(503, "Service temporarily unavailable.");
+        }
+    }
+}
+```
+
+```csharp group=example role=run
+Console.WriteLine(Downloads.PublicAccess(null)); // False
+Response response = Downloads.Read(() => false, () => "private contents");
+Console.WriteLine(response.Status); // 403
+```
+
+The content loader is not called after denial. An I/O failure from either permission lookup or loading produces a failure response, not private content or the exception message.
+
+</section>
+
+<section data-pilot-language="python">
+
+```python group=example role=types
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Response:
+    status: int
+    body: str
+
+
+def public_access(configured):
+    return configured is True
+
+
+def read_download(authorized, load):
+    try:
+        if not authorized():
+            return Response(403, "Access denied.")
+        return Response(200, load())
+    except OSError:
+        return Response(503, "Service temporarily unavailable.")
+```
+
+```python group=example role=run
+print(public_access(None))  # False
+response = read_download(lambda: False, lambda: "private contents")
+print(response.status)  # 403
+```
+
+The configuration check requires an actual Boolean `True`, not a truthy string such as `"false"`. Parse configuration into validated types before using it; malformed settings should be reported at startup rather than interpreted opportunistically.
+
+</section>
+
+## Fail closed, but preserve useful diagnosis
+
+The code handles one documented family of I/O failures. Unanticipated exceptions still need a safe framework-level handler. A public response should not reveal stack traces, connection strings, local paths, or private records. Authorized operators need separate diagnostics with a correlation identifier and appropriately restricted access. [1](#source-1)
+
+A generic client message should not mean silently discarding every error. Nor should a broad catch return an empty success result that hides lost work. Distinguish rejection, temporary unavailability, cancellation, and unexpected failure in the internal contract.
+
+Failing closed means refusing protected work when permission cannot be established. It does not mean every application operation must stop whenever any unrelated logging service is down. Decide failure policy according to the operation's risk and requirements, and test it explicitly.
+
+## Defaults belong at more than one layer
+
+Keep development diagnostics off in production, restrict initial account permissions, and require deliberate exposure of administrative endpoints. Do not rely on users to discover and disable unsafe defaults after installation.
+
+The example's `public_access` helper is not wired into the separate authorization callback; it illustrates configuration policy independently. A real endpoint needs a coherent access rule, and tests must verify the deployed route uses it. Safe helpers that callers bypass provide no protection.
+
+The most revealing tests are often failure tests: omitted settings, unavailable dependencies, invalid configuration, and denied identities. A successful request alone says little about what the program does when its assumptions stop holding.
+
+## Sources
+
+1. <span id="source-1"></span>[OWASP — Error Handling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html).
+2. [OWASP — Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html), including deny-by-default behavior.
