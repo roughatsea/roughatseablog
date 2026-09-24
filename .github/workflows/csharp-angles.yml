@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/content/notes/every-angle-in-csharp.md'
       - 'scripts/test-csharp-angles.py'
+      - '.github/workflows/csharp-angles.yml'
   pull_request:
     paths:
       - 'src/content/notes/every-angle-in-csharp.md'
@@ -41,3 +42,88 @@ jobs:
       - run: npm ci
       - name: Build the site with the published manuscript
         run: npm run build
+
+  live-publication:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify public article, every rendered code block, anchors, image, and homepage
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          import time
+          from urllib.request import Request, urlopen
+
+          root = 'https://roughatsea.com'
+          route = '/notes/every-angle-in-csharp/'
+          source = Path('src/content/notes/every-angle-in-csharp.md').read_text(encoding='utf-8')
+          expected_blocks = re.findall(r'^```[^\n]*\n(.*?)^```[ \t]*$', source, re.M | re.S)
+          expected_ids = set(re.findall(r'<a id="([^"]+)"', source))
+          hero = re.search(r'^heroImage: "([^"]+)"', source, re.M).group(1)
+
+          class Page(HTMLParser):
+              def __init__(self, text):
+                  super().__init__(convert_charrefs=True)
+                  self.ids = set()
+                  self.links = []
+                  self.blocks = []
+                  self.h1 = 0
+                  self.in_pre = False
+                  self.buffer = []
+                  self.feed(text)
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if 'id' in attrs:
+                      self.ids.add(attrs['id'])
+                  if tag == 'a' and 'href' in attrs:
+                      self.links.append(attrs['href'])
+                  if tag == 'h1':
+                      self.h1 += 1
+                  if tag == 'pre':
+                      self.in_pre = True
+                      self.buffer = []
+              def handle_data(self, data):
+                  if self.in_pre:
+                      self.buffer.append(data)
+              def handle_endtag(self, tag):
+                  if tag == 'pre' and self.in_pre:
+                      self.blocks.append(''.join(self.buffer))
+                      self.in_pre = False
+
+          def fetch(path):
+              request = Request(root + path, headers={'User-Agent': 'RoughAtSea-Publication-Check/1.0', 'Cache-Control': 'no-cache'})
+              with urlopen(request, timeout=30) as response:
+                  assert response.status == 200, (path, response.status)
+                  return response.read(), response.headers.get_content_type()
+
+          normalize = lambda text: text.replace('\r\n', '\n').rstrip('\n')
+          for attempt in range(12):
+              try:
+                  article_bytes, content_type = fetch(route)
+                  assert content_type == 'text/html', content_type
+                  article_text = article_bytes.decode('utf-8')
+                  article = Page(article_text)
+                  assert article.h1 == 1, f'Expected one title, found {article.h1}'
+                  assert expected_ids <= article.ids, f'Missing anchors: {expected_ids - article.ids}'
+                  assert len(expected_blocks) == len(article.blocks), (len(expected_blocks), len(article.blocks))
+                  for index, (expected, rendered) in enumerate(zip(expected_blocks, article.blocks), 1):
+                      assert normalize(expected) == normalize(rendered), f'Code block {index} differs from the manuscript'
+                  assert 'neither choice now requires guessing where the missing information lives' in article_text
+                  homepage_bytes, _ = fetch('/')
+                  homepage = Page(homepage_bytes.decode('utf-8'))
+                  assert any(link.rstrip('/') == route.rstrip('/') for link in homepage.links), 'Article missing from homepage'
+                  image_bytes, image_type = fetch(hero)
+                  assert image_type.startswith('image/') and image_bytes, 'Missing hero image'
+                  print(f'PASS {root + route}: HTTP 200; {len(article.blocks)} code/output blocks match the manuscript; {len(expected_ids)} anchors; one title')
+                  print('PASS homepage links to the article; hero image returns HTTP 200')
+                  break
+              except Exception as error:
+                  print(f'Attempt {attempt + 1}: {error}', flush=True)
+                  if attempt == 11:
+                      raise
+                  time.sleep(5)
+          PY
