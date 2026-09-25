@@ -47,7 +47,7 @@ The table below proposes the same basic session on both strength days. Repetitio
 
 The pushing and pulling exercises involve the arms as well as larger muscle groups. The overall selection is intended to distribute work across the body rather than devote both days to one favored area. This is a conventional application of all-major-muscle-group guidance, not a claim that each listed exercise is necessary or that the menu is a rehabilitation prescription. [C01](/guides/long-game/evidence/#C01) [R02](/guides/long-game/evidence/#R02)
 
-Start with loads that permit controlled repetitions without needing to force an unsuccessful repetition. For this example, the reader stops a set while they believe roughly two further controlled repetitions would still be possible. This estimate is a practical effort cue, not a precision instrument or a proven universal optimum. ACSM’s 2026 summary does not make momentary muscle failure a requirement for the average healthy adult. [C02](/guides/long-game/evidence/#C02) [R02](/guides/long-game/evidence/#R02)
+Start with loads that permit controlled repetitions without needing to force an unsuccessful repetition. For this example, the reader stops a set while they believe roughly two further controlled repetitions would still be possible. This estimate is a practical effort cue, not a precision instrument or a proven universal optimum. ACSM’s 2026 guidance does not make momentary muscle failure a requirement for the average healthy adult. [C02](/guides/long-game/evidence/#C02) [R02](/guides/long-game/evidence/#R02)
 
 Allow roughly two minutes between working sets as a planning assumption, and longer when necessary to perform the next set appropriately. Preparation and lighter practice sets are included in the session’s time allowance but not in the working-set counts. If the session consistently takes longer than the allotted time, revise the schedule rather than pretending the extra time is free. The rest interval and estimated duration are illustrative logistics, not experimentally determined optima. [R02](/guides/long-game/evidence/#R02)
 
@@ -55,13 +55,21 @@ Machines are used here to make one example concrete. They are not a purchasing r
 
 ## Know what changes at the next session
 
+**Progression means increasing the training demand over time.** ACSM distinguishes obtaining benefits from pursuing continued longer-term gains; it does not require a weight increase at every session. Its discussion also cautions that very light introductory loads may need to increase before they provide a meaningful stimulus. An unchanged program is not thereby proven sufficient indefinitely. [C14](/guides/long-game/evidence/#C14)
+
 Here is an illustrative progression rule. Suppose the chest press is performed for eight controlled repetitions in each set. At a later session, with the same load and the same stopping rule, the reader might complete nine. The immediate task is to add a repetition when feasible, not to increase the weight automatically every Tuesday.
 
 Once the reader reaches twelve repetitions in both sets with the intended control and effort, they can try the smallest available load increase and return toward the lower end of the range. If the increment is too large, there is no obligation to force it. Continuing to practice with the previous load is an available choice. This “repetitions first, then load” procedure is an explicit coaching synthesis; the cited sources support resistance training, not the superiority of this exact algorithm. [R02](/guides/long-game/evidence/#R02)
 
 Record only enough to inform that decision: exercise, load, repetitions, and a short note when something unusual affected the session. A notebook line such as “chest press, same load, 10 and 9, controlled” is sufficient for the example. No claim is being made that detailed tracking is necessary for every reader.
 
-This is a **starting plan**, not a promise of maximal hypertrophy. ACSM’s summary points toward higher weekly volume for a muscle-growth emphasis. Adding work should be a later, explicit decision about the reader’s goal and capacity, not an assumption that a beginner must immediately adopt a high-volume routine. [C02](/guides/long-game/evidence/#C02)
+### Count weekly work before adding more
+
+This is a **starting plan**, not a promise of maximal hypertrophy. ACSM’s summary points toward higher weekly volume for a muscle-growth emphasis, around ten sets per muscle group. That is not a universal minimum required for training to count. [C02](/guides/long-game/evidence/#C02)
+
+For this example, two chest-press sets on Tuesday plus two on Thursday make **four chest-press sets per week**. That counts an exercise; it is not a complete accounting of every muscle involved in all seven movements. Do not mistake the total sets in a whole-body workout for the dose received by each muscle. The arithmetic helps make the example legible; it does not establish a uniquely correct way to count indirect work. [R02](/guides/long-game/evidence/#R02)
+
+Adding sets is a separate planning decision, not an automatic instruction to expand this schedule. Specify the goal, the additional time and the activity it would displace. The two strength days, aerobic sessions and protein illustration remain unchanged. The guide’s health-first purpose does not oblige every reader to pursue the highest feasible training volume. [R02](/guides/long-game/evidence/#R02)
 
 ## Do the aerobic sessions undermine the lifting?
 

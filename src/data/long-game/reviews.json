@@ -1,5 +1,30 @@
 [
   {
+    "date": "2026-09-25",
+    "version": "0.1.1",
+    "title": "Full-text resistance-training check; prepared for manual merge",
+    "outcome": "held",
+    "summary": "Prepared a bounded explanatory update: added the full-text ACSM record, clarified progression and weekly-set counting, and removed stale summary-only access language. Held here means awaiting the user’s requested pull-request review and merge, not a new safety-sensitive recommendation.",
+    "scope": "Read all seven guide pages, the complete register, prior history, layout and verification scripts, with the current style rules and daily contract. Inspected ACSM’s official 2026 summary and relevant HTML sections of the full position stand (methods, hypertrophy results, progression, limitations). S04 and S14 share an evidence group. Searches included \"2026 ACSM resistance training position stand progressive resistance training hypertrophy volume progression PMC12965823 correction\" and \"10.1249/MSS.0000000000003897 correction erratum retraction\". A progression trial was identified by a further search but not used as inspected support. No exhaustive search, supplement review or reappraisal of every constituent review is claimed. Existing non-ACSM sources were not freshly reverified.",
+    "recommendationChange": "No change to the example’s exercises, frequency, set counts, aerobic schedule or protein target. Clarified the distinction between a starting plan and additional hypertrophy work, and between progression over time and compulsory weight increases each session. R02 remains a coaching synthesis. H01 remains unconfirmed, outside default advice. Existing confidence labels were not upgraded.",
+    "verification": "Source-to-claim and whole-guide consistency review completed. Local registry and transition checks passed, along with all 16 rehearsal tests. Full-site build and generated-page checks are delegated to the existing branch/PR workflow because a full networked local checkout is unavailable. This is a review-branch candidate, not a verified production release; no independent clinical review or visual browser verification is claimed.",
+    "next": "Complete the user’s manual pull-request review and merge only after the existing checks pass. Then verify the production release separately. Further research priorities remain dietary-pattern adequacy, constituent evidence for progression and hypertrophy dose, and adaptations across age and ability.",
+    "reviewedClaims": [
+      "C02",
+      "C14",
+      "R02",
+      "H01"
+    ],
+    "reviewedChapters": [
+      "priorities",
+      "a-workable-week",
+      "longevity-evidence",
+      "methods"
+    ],
+    "confidenceChanges": [],
+    "heldRisks": []
+  },
+  {
     "date": "2026-09-24",
     "version": "0.1.0",
     "title": "The founding edition",

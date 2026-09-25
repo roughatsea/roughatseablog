@@ -7,7 +7,7 @@ readingTime: 8–10 minutes
 
 **The Long Game is a living reference for nutrition and fitness.** Its governing priority is lifelong health, physical capability, and quality of life. Hypertrophy—muscle development—is a major supporting goal, not the criterion that decides every tradeoff.
 
-Version 0.1.0 is a foundation: three reader-facing chapters, this founding specification, an evidence register, and a revision history. It is not a complete encyclopedia, a formally conducted systematic review, or an independently reviewed clinical guideline. The initial research and writing are AI-assisted. No independent clinical or specialist review has been completed.
+The founding edition introduced three reader-facing chapters, this specification, an evidence register, and a revision history. The guide remains a foundation as those chapters are revised. It is not a complete encyclopedia, a formally conducted systematic review, or an independently reviewed clinical guideline. The initial research and writing are AI-assisted. No independent clinical or specialist review has been completed.
 
 The daily process is intended to improve the same guide. It is not a requirement to produce a new recommendation every day. A recorded search that does not justify a change is a legitimate result.
 
@@ -81,6 +81,6 @@ This section does not collect personal health measurements or offer personalized
 
 No paid source access, subscription, or additional recurring service is authorized by the editorial process alone. An inaccessible source may limit what can be concluded. The reviewer should document that limit or pursue an appropriate alternative, not invent access.
 
-The first development priorities are deeper appraisal of the 2026 resistance-training position stand; a fuller treatment of dietary patterns and food adequacy; progression and hypertrophy dose across experience levels; and adapting activity through older age and different physical capabilities. Body-composition change, recovery, supplements, and monitoring also need dedicated treatment. These are acknowledged gaps, not empty chapters presented as finished coverage.
+A targeted full-text review of the 2026 resistance-training position stand is now recorded in [S14](/guides/long-game/evidence/#S14). This does not complete appraisal of its constituent reviews. The next development priorities are that deeper evidence work; a fuller treatment of dietary patterns and food adequacy; progression and hypertrophy dose across experience levels; and adapting activity through older age and different physical capabilities. Body-composition change, recovery, supplements, and monitoring also need dedicated treatment. These are acknowledged gaps, not empty chapters presented as finished coverage.
 
 Success is not a growing word count. It is a reader finding a useful answer, understanding why it is offered, seeing where it stops applying, and being able to inspect the support. When a revision fails those tests, the right outcome is to hold it and record the reason.

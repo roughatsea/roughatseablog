@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "title": "The Long Game",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishedOn": "2026-09-24",
-  "lastEdited": "2026-09-24",
-  "lastEvidenceReview": "2026-09-24",
+  "lastEdited": "2026-09-25",
+  "lastEvidenceReview": "2026-09-25",
   "priority": "Lifelong health, capability and quality of life; hypertrophy is a major supporting goal.",
   "reviewStatus": "AI-assisted foundation; no independent clinical or specialist review has been completed.",
   "sources": [
@@ -46,8 +46,8 @@
       "title": "ACSM — 2026 resistance-training guidance: official summary",
       "url": "https://acsm.org/resistance-training-guidelines-update-2026/",
       "published": "2026-03-17",
-      "access": "Official summary inspected; underlying position-stand full text not inspected",
-      "reviewedOn": "2026-09-24",
+      "access": "Official summary inspected; the corresponding full-text position stand is separately recorded as S14",
+      "reviewedOn": "2026-09-25",
       "status": "active",
       "evidenceGroup": "S04",
       "limitations": "The organization summarizes its overview of reviews. We have not independently appraised its 137 constituent reviews; overlapping reviews are not independent experiments."
@@ -150,6 +150,17 @@
       "status": "active",
       "evidenceGroup": "S13",
       "limitations": "Broad guidance covers populations needing adaptations. It does not validate the particular gym examples in this guide."
+    },
+    {
+      "id": "S14",
+      "title": "Currier et al. — ACSM 2026 resistance-training position stand",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "published": "2026-03-05 (online); April 2026 journal issue; DOI 10.1249/MSS.0000000000003897",
+      "access": "Full HTML available; methods, hypertrophy results, progression discussion and limitations inspected. Supplements and the complete set of constituent reviews were not appraised.",
+      "reviewedOn": "2026-09-25",
+      "status": "active",
+      "evidenceGroup": "S04",
+      "limitations": "An overview of reviews in healthy adults, not a trial of this guide. S04 summarizes the same work; these are not independent confirmations. No lifespan effect or individually optimal dose is established here."
     }
   ],
   "claims": [
@@ -171,17 +182,18 @@
     },
     {
       "id": "C02",
-      "statement": "ACSM’s 2026 summary supports regular resistance training and reports that training to momentary failure, a particular equipment type, and complex periodization do not consistently change outcomes for the average healthy adult. Higher volume can serve a hypertrophy-focused goal.",
+      "statement": "ACSM’s 2026 guidance supports regular resistance training. Its summary reports no consistent advantage from momentary failure, particular equipment or complex periodization for the average healthy adult. The position stand reports enhanced hypertrophy with higher weekly set volume.",
       "kind": "finding",
       "confidence": "qualified",
       "sources": [
-        "S04"
+        "S04",
+        "S14"
       ],
       "dependsOn": [],
       "population": "Generally healthy adults; not automatically competitive athletes or rehabilitation patients",
       "outcome": "Strength, muscle size and physical performance",
-      "limitations": "Official summary only. Its approximate ten-set hypertrophy pointer is not a universal minimum, ceiling or individualized optimum.",
-      "reviewedOn": "2026-09-24",
+      "limitations": "The hypertrophy discussion includes at least ten sets per muscle group per week, not a universal entry requirement, ceiling or individualized optimum. Group-level findings do not establish equivalence between every program. Relevant full-text sections inspected; constituent reviews not comprehensively reappraised.",
+      "reviewedOn": "2026-09-25",
       "defaultAdvice": false,
       "status": "active"
     },
@@ -362,6 +374,22 @@
       "status": "active"
     },
     {
+      "id": "C14",
+      "statement": "ACSM distinguishes benefits obtainable without progression from continued longer-term gains, for which increasing the training stimulus is likely needed. Very light starting loads may require progression toward a meaningful stimulus.",
+      "kind": "finding",
+      "confidence": "qualified",
+      "sources": [
+        "S14"
+      ],
+      "dependsOn": [],
+      "population": "Generally healthy adults; goals, experience and starting stimulus matter",
+      "outcome": "Interpretation of resistance-training progression",
+      "limitations": "This is the position stand’s interpretation, not a controlled test of lifelong maintenance or the guide’s exact progression rule. It does not require increasing weight at every session.",
+      "reviewedOn": "2026-09-25",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
       "id": "R01",
       "statement": "Use a small set of repeatable nutrition, aerobic-activity and resistance-training decisions before adding specialized optimization tasks.",
       "kind": "synthesis",
@@ -393,19 +421,21 @@
         "S01",
         "S03",
         "S04",
-        "S07"
+        "S07",
+        "S14"
       ],
       "dependsOn": [
         "C01",
         "C02",
         "C03",
         "C04",
-        "C07"
+        "C07",
+        "C14"
       ],
       "population": "A fictional generally healthy adult already able to tolerate the specified activity",
       "outcome": "A concrete way to organize training",
-      "limitations": "The complete program has not been tested in a trial and is not an individualized prescription. Its time budget excludes travel and changing.",
-      "reviewedOn": "2026-09-24",
+      "limitations": "The complete program has not been tested in a trial and is not an individualized prescription. Its time budget excludes travel and changing. The repetition-then-load rule remains a practical synthesis, not a proven superior algorithm.",
+      "reviewedOn": "2026-09-25",
       "defaultAdvice": true,
       "status": "active"
     },
@@ -443,7 +473,7 @@
       "population": "Adults whose routines are interrupted by ordinary time constraints",
       "outcome": "Proposed long-term adherence advantage",
       "limitations": "Untested here. Component guidance does not validate the comparative prediction. A randomized comparison with prespecified adherence and function outcomes could test it; no superiority claim belongs in default advice.",
-      "reviewedOn": "2026-09-24",
+      "reviewedOn": "2026-09-25",
       "defaultAdvice": false,
       "status": "active"
     }
@@ -462,8 +492,8 @@
         "C13",
         "R01"
       ],
-      "reviewedOn": "2026-09-24",
-      "contentSha256": "6ca953474075fb0e5f72e7d9674c587781a378b0f9a9fd892a4eeba2458e605f"
+      "reviewedOn": "2026-09-25",
+      "contentSha256": "632af45bda4c49918626ffc832a9e47497c5bbdeea508b02190128e677562881"
     },
     {
       "slug": "a-workable-week",
@@ -478,11 +508,12 @@
         "C06",
         "C07",
         "C13",
+        "C14",
         "R02",
         "R03"
       ],
-      "reviewedOn": "2026-09-24",
-      "contentSha256": "9cc5823b741914ee10da617efa9d453ef587af09bed96c1501cb05caca89b3ed"
+      "reviewedOn": "2026-09-25",
+      "contentSha256": "10458fb6243b5258adfb745654ca9561ece1f0af980f1c67307d6ebd6bf9e27f"
     },
     {
       "slug": "longevity-evidence",
@@ -495,7 +526,7 @@
         "C10",
         "C11"
       ],
-      "reviewedOn": "2026-09-24",
+      "reviewedOn": "2026-09-25",
       "contentSha256": "2bca4f1317e753088e79c0ba1464c84310aea60cde2d7857d9a30f3087a27e82"
     },
     {
@@ -507,8 +538,8 @@
         "C10",
         "H01"
       ],
-      "reviewedOn": "2026-09-24",
-      "contentSha256": "168f75092f40c7b7351864425fadd3417593ebc9ffdde93fca50f142bb28d888"
+      "reviewedOn": "2026-09-25",
+      "contentSha256": "c1d3e26d704599d43439db4aff5959aaabf7760bfc78a590d0036b3dc29c2c6a"
     }
   ]
 }
