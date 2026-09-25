@@ -1,0 +1,35 @@
+---
+import Layout from '../../../layouts/LongGameLayout.astro';
+import registry from '../../../data/long-game/registry.json';
+const sourceMap = new Map(registry.sources.map((s) => [s.id, s]));
+---
+<Layout title="The evidence register" description="Trace each consequential claim to its sources, applicability, limitations, and dependent chapters.">
+  <p>This is an auditable register, not a formal systematic review. Labels describe this project’s assessment; they are not GRADE ratings. Source inspection ranges from official guidance and selected full-text sections to an explicitly identified abstract-only record.</p>
+  <p><a href="#claims">Claim records</a> · <a href="#sources">Source records</a> · <a href="/guides/long-game/methods/">Appraisal and revision rules</a></p>
+  <h2 id="claims">Claim records</h2>
+  {registry.claims.map((claim) => <section class="evidence-record" id={claim.id}>
+    <p class="record-label"><strong>{claim.id}</strong> · {claim.kind} · {claim.confidence}</p>
+    <h3>{claim.statement}</h3>
+    <p><strong>Applies to:</strong> {claim.population}<br /><strong>Outcome:</strong> {claim.outcome}</p>
+    <p><strong>Limitations:</strong> {claim.limitations}</p>
+    <p><strong>Sources:</strong> {claim.sources.map((id, index) => <>{index > 0 && '; '}<a href={`#${id}`}>{id} — {sourceMap.get(id)?.title}</a></>)}</p>
+    {claim.dependsOn.length > 0 && <p><strong>Also depends on:</strong> {claim.dependsOn.map((id, index) => <>{index > 0 && ', '}<a href={`#${id}`}>{id}</a></>)}</p>}
+    <p><strong>Used in:</strong> {registry.chapters.filter((c) => c.claims.includes(claim.id)).map((c, index) => <>{index > 0 && '; '}<a href={`/guides/long-game/${c.slug}/`}>{c.title}</a></>)}</p>
+    <p class="record-date">Reviewed {claim.reviewedOn}. {claim.defaultAdvice ? 'Practical example or default planning advice; its stated limitations still apply.' : 'Not independently a default prescription.'}</p>
+  </section>)}
+  <h2 id="sources">Source records</h2>
+  {registry.sources.map((source) => <section class="evidence-record" id={source.id}>
+    <p class="record-label"><strong>{source.id}</strong> · {source.status}</p>
+    <h3><a href={source.url} rel="noreferrer">{source.title}</a></h3>
+    <p><strong>Publication:</strong> {source.published}<br /><strong>Access:</strong> {source.access}<br /><strong>Inspected:</strong> {source.reviewedOn}</p>
+    <p>{source.limitations}</p>
+    <p class="record-date">Evidence-group identifier: {source.evidenceGroup}. Grouping records does not prove that all overlaps between reviews have been resolved.</p>
+  </section>)}
+</Layout>
+<style>
+  .evidence-record { padding: 1.4rem 0; border-bottom: 1px solid var(--border-color); scroll-margin-top: 7rem; }
+  .evidence-record h3 { margin: .35rem 0 .8rem; font-size: 1.09rem; line-height: 1.55; }
+  .evidence-record p { font-size: .9rem; line-height: 1.75; }
+  .record-label { color: var(--link-color); text-transform: uppercase; letter-spacing: .04em; font-size: .73rem !important; }
+  .record-date { font-size: .76rem !important; color: var(--text-secondary); }
+</style>

@@ -1,0 +1,18 @@
+---
+import Layout from '../../../layouts/LongGameLayout.astro';
+import reviews from '../../../data/long-game/reviews.json';
+---
+<Layout title="Revision history" description="Actual reviews, recommendation changes, access limitations, and the guide’s unresolved work.">
+  <p>A publication date, an evidence-review date, and a recommendation change are different events. This record keeps them separate. A daily review may correctly conclude that no recommendation should change.</p>
+  <p>Historical text and data remain available in the <a href="https://github.com/roughatsea/roughatseablog/commits/main/src/pages/guides/long-game/">repository history</a>. The dates below do not imply that every cited source received a fresh full-text appraisal.</p>
+  {reviews.map((review) => <section class="review-entry">
+    <h2>{review.date} · {review.title}</h2>
+    <p><strong>Version:</strong> {review.version}<br /><strong>Outcome:</strong> {review.outcome}</p>
+    <p>{review.summary}</p>
+    <h3>Scope of this review</h3><p>{review.scope}</p>
+    <h3>Practical recommendations</h3><p>{review.recommendationChange}</p>
+    <h3>Checks and limitations</h3><p>{review.verification}</p>
+    <h3>Next unresolved work</h3><p>{review.next}</p>
+  </section>)}
+</Layout>
+<style>.review-entry { border-top: 1px solid var(--border-color); padding-top: .5rem; margin-top: 2rem; }.review-entry h3 { font-size: 1rem; }</style>

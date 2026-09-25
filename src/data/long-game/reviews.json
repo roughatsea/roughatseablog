@@ -1,0 +1,17 @@
+[
+  {
+    "date": "2026-09-24",
+    "version": "0.1.0",
+    "title": "The founding edition",
+    "outcome": "published",
+    "summary": "Established the health-first charter, three connected chapters, an explicit worked week, a protein-arithmetic example, source-access records, and whole-guide dependency checks. This is a pilot foundation rather than completed coverage of nutrition and fitness.",
+    "scope": "Read the complete initial guide and inspected 13 institutional or research sources through targeted lookup. Included current ACSM and WHO summaries, concurrent-training research, and methods guidance. This was not an exhaustive database search or a formal systematic review; source-specific access limitations are recorded. The mortality meta-analysis was inspected at abstract level only.",
+    "recommendationChange": "Initial publication; there is no previous guide recommendation to reverse. The sample week and 128-gram protein calculation are practical illustrations, not validated optima or lifespan prescriptions. The fallback-adherence hypothesis remains unconfirmed and is not used to justify a superiority claim.",
+    "verification": "The repository contains executable registry checks and 16 rehearsal tests. They test traceability and release mechanics, not medical accuracy. Build and test execution results are recorded by the Long Game checks workflow; no independent clinical review has occurred.",
+    "next": "Inspect the full 2026 resistance-training position stand and its relevant constituent evidence; deepen dietary-pattern and food-adequacy coverage; examine progression and hypertrophy volume; develop evidence-supported adaptations for older adults and differing physical capabilities.",
+    "reviewedClaims": ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13", "R01", "R02", "R03", "H01"],
+    "reviewedChapters": ["priorities", "a-workable-week", "longevity-evidence", "methods"],
+    "confidenceChanges": [],
+    "heldRisks": []
+  }
+]

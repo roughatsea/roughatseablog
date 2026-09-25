@@ -1,0 +1,41 @@
+---
+import Layout from '../../../layouts/LongGameLayout.astro';
+import registry from '../../../data/long-game/registry.json';
+const chapters = registry.chapters.filter((c) => c.slug !== 'methods');
+---
+<Layout title="The Long Game" description="Nutrition and fitness for a life worth living. A growing, evidence-linked handbook with lifelong health first and muscle development as a major supporting goal.">
+  <div class="lg-intro">
+    <p>You should not have to assemble a health plan from isolated claims about protein, lifting, cardio, and aging. This guide connects those decisions, explains their evidence, and shows where judgment begins.</p>
+    <p><strong>Read the guide, not a daily feed.</strong> The same work is reviewed and improved over time. Recommendations change when the evidence or reasoning justifies a change—not because the calendar demands a new tip.</p>
+    <a class="lg-start" href="/guides/long-game/priorities/">Begin with what deserves your attention →</a>
+  </div>
+  <h2>The first reading path</h2>
+  <div class="lg-chapters">
+    {chapters.map((chapter, index) => <a class="lg-chapter" href={`/guides/long-game/${chapter.slug}/`}><span class="lg-number">0{index+1}</span><div><h3>{chapter.title}</h3><p>{chapter.description}</p></div><span aria-hidden="true">→</span></a>)}
+  </div>
+  <h2>Know what supports the advice</h2>
+  <p>Every consequential claim has a stable record. Research findings, practical syntheses, and original hypotheses remain distinguishable. A worked example is not presented as a trial-proven optimum.</p>
+  <div class="lg-resources">
+    <a href="/guides/long-game/evidence/"><strong>Evidence register</strong><span>{registry.claims.length} bounded claim records · {registry.sources.length} inspected sources, with access limits</span></a>
+    <a href="/guides/long-game/methods/"><strong>Founding specification</strong><span>Scope, safeguards, open questions, and the daily review contract</span></a>
+    <a href="/guides/long-game/changes/"><strong>Revision history</strong><span>What actually changed, what was reviewed, and what remains unresolved</span></a>
+  </div>
+  <h2>A foundation, not a finished encyclopedia</h2>
+  <p>This first edition establishes a useful starting path. It does not yet provide dedicated chapters on body-composition change, advanced hypertrophy programming, detailed dietary adequacy, supplements, or adaptation across all ages and abilities. Those gaps are recorded rather than disguised as completed coverage.</p>
+  <p><strong>No independent clinical or specialist review has been completed.</strong> The guide is AI-assisted general education. The public records distinguish official guidance, directly inspected research sections, and abstract-only access. Software checks support consistency; they do not certify medical truth.</p>
+</Layout>
+<style>
+  .lg-intro { padding: .1rem 1.4rem 1.2rem; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 1rem; }
+  .lg-start { display: inline-block; font-weight: 600; font-size: .9rem; }
+  .lg-chapters { display: grid; gap: .7rem; }
+  .lg-chapter { display: grid; grid-template-columns: 2rem 1fr 1rem; gap: 1rem; border: 1px solid var(--border-color); border-radius: .8rem; padding: 1rem; text-decoration: none !important; color: var(--text-primary); }
+  .lg-chapter:hover { background: var(--surface-color); }
+  .lg-chapter h3 { margin: 0; font-size: 1.1rem; }
+  .lg-chapter p { margin: .4rem 0 0; color: var(--text-secondary); font-size: .87rem; line-height: 1.55; }
+  .lg-number { color: var(--link-color); font-size: .85rem; letter-spacing: .1em; }
+  .lg-resources { display: grid; gap: .65rem; }
+  .lg-resources a { padding: .8rem 0; border-bottom: 1px solid var(--border-color); text-decoration: none !important; }
+  .lg-resources strong,.lg-resources span { display: block; }
+  .lg-resources span { font-size: .85rem; color: var(--text-secondary); }
+  @media(max-width: 500px) { .lg-intro { padding: .1rem 1rem 1rem; } .lg-chapter { gap: .6rem; grid-template-columns: 1.6rem 1fr .8rem; } }
+</style>

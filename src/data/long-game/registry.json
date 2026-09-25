@@ -1,0 +1,514 @@
+{
+  "schemaVersion": 1,
+  "title": "The Long Game",
+  "version": "0.1.0",
+  "publishedOn": "2026-09-24",
+  "lastEdited": "2026-09-24",
+  "lastEvidenceReview": "2026-09-24",
+  "priority": "Lifelong health, capability and quality of life; hypertrophy is a major supporting goal.",
+  "reviewStatus": "AI-assisted foundation; no independent clinical or specialist review has been completed.",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "CDC — Adult Activity: An Overview",
+      "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html",
+      "published": "2023-12-20",
+      "access": "Official public-health guidance inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S01",
+      "limitations": "A population-level recommendation, not an individualized prescription or a trial of our sample week."
+    },
+    {
+      "id": "S02",
+      "title": "CDC — Measuring Physical Activity Intensity",
+      "url": "https://www.cdc.gov/physical-activity-basics/measuring/index.html",
+      "published": "2025-12-04",
+      "access": "Official public-health guidance inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S02",
+      "limitations": "The talk test describes aerobic intensity; it is not a measure of effort in a lifting set."
+    },
+    {
+      "id": "S03",
+      "title": "CDC — What Counts as Physical Activity for Adults",
+      "url": "https://www.cdc.gov/physical-activity-basics/adding-adults/what-counts.html",
+      "published": "2023-12-06",
+      "access": "Official public-health guidance inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S03",
+      "limitations": "General starting guidance, not a comparison establishing the best exercise selection or hypertrophy dose."
+    },
+    {
+      "id": "S04",
+      "title": "ACSM — 2026 resistance-training guidance: official summary",
+      "url": "https://acsm.org/resistance-training-guidelines-update-2026/",
+      "published": "2026-03-17",
+      "access": "Official summary inspected; underlying position-stand full text not inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S04",
+      "limitations": "The organization summarizes its overview of reviews. We have not independently appraised its 137 constituent reviews; overlapping reviews are not independent experiments."
+    },
+    {
+      "id": "S05",
+      "title": "WHO — Healthy diet",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+      "published": "2026-01-26",
+      "access": "Official public-health guidance inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S05",
+      "limitations": "General dietary guidance. A menu assembled from these principles is not automatically nutritionally complete."
+    },
+    {
+      "id": "S06",
+      "title": "NIH Office of Dietary Supplements — Exercise and Athletic Performance",
+      "url": "https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-HealthProfessional/",
+      "published": "Living fact sheet; publication date not asserted",
+      "access": "Relevant protein and dietary-foundation sections inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S06",
+      "limitations": "An institutional evidence summary. Athlete protein guidance is not evidence of a lifespan benefit, and it is not automatically applicable to kidney disease or every body size."
+    },
+    {
+      "id": "S07",
+      "title": "Schumann et al. — Compatibility of Concurrent Aerobic and Strength Training",
+      "url": "https://link.springer.com/article/10.1007/s40279-021-01587-7",
+      "published": "2021-11-10 (online); 2022 journal volume",
+      "access": "Full text accessible; abstract, methods and results inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S07",
+      "limitations": "43 studies, 1,090 participants; supervised interventions lasting at least four weeks. Study quality and specific training demands limit generalization. Pooled non-significance does not establish equivalence for every program."
+    },
+    {
+      "id": "S08",
+      "title": "Momma et al. — Muscle-strengthening activities and major non-communicable diseases",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35228201/",
+      "published": "2022-02-28 (online)",
+      "access": "Abstract and bibliographic record inspected; full text not inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S08",
+      "limitations": "A meta-analysis of 16 prospective cohort studies. Used only to illustrate an observational association; not to infer an optimal lifting-duration ceiling or a causal effect of maximizing muscle mass."
+    },
+    {
+      "id": "S09",
+      "title": "FDA — Surrogate Endpoint Resources",
+      "url": "https://www.fda.gov/drugs/development-resources/surrogate-endpoint-resources-drug-and-biologic-development",
+      "published": "Living resource; publication date not asserted",
+      "access": "Official methods resource inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S09",
+      "limitations": "Endpoint validation is context-specific. This framework does not by itself evaluate a particular commercial aging test."
+    },
+    {
+      "id": "S10",
+      "title": "Cochrane Handbook, Chapter 14 — Certainty of the evidence",
+      "url": "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-14",
+      "published": "Current online handbook accessed 2026-09-24",
+      "access": "Relevant certainty and applicability sections inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S10",
+      "limitations": "This guide borrows appraisal questions; its labels are not a formal GRADE assessment or a claim to be a systematic review."
+    },
+    {
+      "id": "S11",
+      "title": "Cochrane Handbook, Chapter 15 — Interpreting results",
+      "url": "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-15",
+      "published": "Current online handbook accessed 2026-09-24",
+      "access": "Relevant interpretation guidance inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S11",
+      "limitations": "The guide’s numerical risk example is invented for teaching and is not a result from this handbook."
+    },
+    {
+      "id": "S12",
+      "title": "CDC — About Sleep",
+      "url": "https://www.cdc.gov/sleep/about/index.html",
+      "published": "2024-05-15",
+      "access": "Official public-health guidance inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S12",
+      "limitations": "Sleep recommendations differ by age; duration alone does not establish sleep quality or diagnose a disorder."
+    },
+    {
+      "id": "S13",
+      "title": "WHO — Physical activity",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/physical-activity",
+      "published": "2024-06-26",
+      "access": "Official public-health guidance inspected",
+      "reviewedOn": "2026-09-24",
+      "status": "active",
+      "evidenceGroup": "S13",
+      "limitations": "Broad guidance covers populations needing adaptations. It does not validate the particular gym examples in this guide."
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "statement": "Adult guidance combines at least 150 minutes of moderate aerobic activity (or 75 vigorous, or an equivalent mix) with strengthening all major muscle groups on at least two days per week.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S01"
+      ],
+      "dependsOn": [],
+      "population": "Adults; individual capacity and clinical context can require adaptation",
+      "outcome": "Physical-activity guideline targets",
+      "limitations": "Not a biological threshold below which activity has no value, nor a schedule proven optimal for every reader.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C02",
+      "statement": "ACSM’s 2026 summary supports regular resistance training and reports that training to momentary failure, a particular equipment type, and complex periodization do not consistently change outcomes for the average healthy adult. Higher volume can serve a hypertrophy-focused goal.",
+      "kind": "finding",
+      "confidence": "qualified",
+      "sources": [
+        "S04"
+      ],
+      "dependsOn": [],
+      "population": "Generally healthy adults; not automatically competitive athletes or rehabilitation patients",
+      "outcome": "Strength, muscle size and physical performance",
+      "limitations": "Official summary only. Its approximate ten-set hypertrophy pointer is not a universal minimum, ceiling or individualized optimum.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C03",
+      "statement": "Being able to talk but not sing is a practical indicator of moderate aerobic intensity; intensity is relative to the person.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S02"
+      ],
+      "dependsOn": [],
+      "population": "Adults doing aerobic activity",
+      "outcome": "Intensity classification",
+      "limitations": "This does not prescribe lifting effort or replace clinical exercise testing.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C04",
+      "statement": "CDC describes a repetition as one complete movement, a set as a group of repetitions, and 8–12 repetitions for an activity with at least one set and two or three for additional benefits as general strength guidance.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S03"
+      ],
+      "dependsOn": [],
+      "population": "Adults doing muscle-strengthening activity",
+      "outcome": "General resistance-training organization",
+      "limitations": "Not proof of a unique hypertrophy repetition range; exercise skill and load selection still matter.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C05",
+      "statement": "WHO recommends a varied diet emphasizing minimally processed foods including whole grains, vegetables, fruit and pulses, with at least 400 grams of fruit and vegetables and 25 grams of naturally occurring food fiber daily for people over ten, and unsaturated fats favored over saturated and trans fats.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S05"
+      ],
+      "dependsOn": [],
+      "population": "General population over ten; this guide applies the guidance to adults",
+      "outcome": "Dietary pattern and nutritional adequacy",
+      "limitations": "Targets need context. They do not establish a complete diet, individual calorie needs, or a treatment for gastrointestinal or other disease.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C06",
+      "statement": "NIH ODS reports expert recommendations of 1.2–2.0 grams of protein per kilogram of body weight per day for athletes and stresses adequate food, fluids and nutrients as the foundation of performance nutrition.",
+      "kind": "finding",
+      "confidence": "qualified",
+      "sources": [
+        "S06"
+      ],
+      "dependsOn": [],
+      "population": "Athletes; translation to a recreational adult is an explicit synthesis",
+      "outcome": "Protein intake in support of training",
+      "limitations": "Not a longevity dose; do not extrapolate mechanically to kidney disease, pregnancy, substantial obesity or special clinical circumstances.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C07",
+      "statement": "A 43-study meta-analysis found no statistically significant average reduction in hypertrophy or maximal strength from concurrent aerobic and resistance training versus matched resistance training alone; explosive-strength gains were more vulnerable.",
+      "kind": "finding",
+      "confidence": "qualified",
+      "sources": [
+        "S07"
+      ],
+      "dependsOn": [],
+      "population": "Healthy adults in supervised training studies lasting at least four weeks",
+      "outcome": "Measured muscle size, maximal strength, explosive strength",
+      "limitations": "An average finding, not a guarantee for every dose, schedule or athlete. It did not test survival.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C08",
+      "statement": "A meta-analysis of 16 prospective cohorts reported an association between muscle-strengthening activity and lower risk of several mortality or disease outcomes.",
+      "kind": "finding",
+      "confidence": "qualified",
+      "sources": [
+        "S08"
+      ],
+      "dependsOn": [],
+      "population": "Adults in observational cohorts",
+      "outcome": "Mortality and disease associations",
+      "limitations": "Abstract-level inspection only; confounding and reverse causation remain possible. The exposure was activity, not experimentally induced maximal muscle size.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C09",
+      "statement": "A biomarker can be informative without being a validated substitute for how a person feels, functions or survives; surrogate validation depends on the intervention and context.",
+      "kind": "methodology",
+      "confidence": "methods-based",
+      "sources": [
+        "S09"
+      ],
+      "dependsOn": [],
+      "population": "Interpretation of health research",
+      "outcome": "Clinical versus surrogate outcomes",
+      "limitations": "A critique of unsupported translation, not a claim that all biomarkers or risk factors are useless.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C10",
+      "statement": "Confidence in a body of evidence depends on bias, consistency, directness, precision and missing evidence, and must be considered for a particular outcome.",
+      "kind": "methodology",
+      "confidence": "methods-based",
+      "sources": [
+        "S10"
+      ],
+      "dependsOn": [],
+      "population": "Interpretation of research across populations and outcomes",
+      "outcome": "Evidence appraisal",
+      "limitations": "Project confidence labels are descriptive, not formal GRADE ratings.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C11",
+      "statement": "Relative effects, absolute effects, time horizons and uncertainty answer different questions and should be made explicit when interpreting results.",
+      "kind": "methodology",
+      "confidence": "methods-based",
+      "sources": [
+        "S11"
+      ],
+      "dependsOn": [],
+      "population": "Interpretation of quantitative health findings",
+      "outcome": "Magnitude and applicability of effects",
+      "limitations": "The teaching example uses fictional event counts, not an observed intervention effect.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C12",
+      "statement": "CDC recommends at least seven hours of sleep for adults aged 18–60 and different ranges at older ages; sleep quality also matters.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S12"
+      ],
+      "dependsOn": [],
+      "population": "Age-specific adult groups",
+      "outcome": "Sleep-duration guidance",
+      "limitations": "Not a diagnosis or an exact sleep requirement for each person.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C13",
+      "statement": "WHO emphasizes that some activity is better than none, all activity counts, sedentary time should be limited, and guidance needs population-appropriate application.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S13"
+      ],
+      "dependsOn": [],
+      "population": "Adults with differing abilities and circumstances",
+      "outcome": "Physical activity and sedentary behavior",
+      "limitations": "Adaptations are necessary; a generic gym schedule is not a rehabilitation protocol.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "R01",
+      "statement": "Use a small set of repeatable nutrition, aerobic-activity and resistance-training decisions before adding specialized optimization tasks.",
+      "kind": "synthesis",
+      "confidence": "reasoned",
+      "sources": [
+        "S01",
+        "S05",
+        "S12"
+      ],
+      "dependsOn": [
+        "C01",
+        "C05",
+        "C12",
+        "C13"
+      ],
+      "population": "Adult general readers",
+      "outcome": "Feasibility and alignment with the guide’s health-first purpose",
+      "limitations": "An editorial priority rule, not a tested ranking of every health intervention.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": true,
+      "status": "active"
+    },
+    {
+      "id": "R02",
+      "statement": "The worked week combines two whole-body resistance sessions with five 30-minute moderate aerobic sessions; its exercises, rest intervals and progression rule are illustrative choices.",
+      "kind": "synthesis",
+      "confidence": "reasoned",
+      "sources": [
+        "S01",
+        "S03",
+        "S04",
+        "S07"
+      ],
+      "dependsOn": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C07"
+      ],
+      "population": "A fictional generally healthy adult already able to tolerate the specified activity",
+      "outcome": "A concrete way to organize training",
+      "limitations": "The complete program has not been tested in a trial and is not an individualized prescription. Its time budget excludes travel and changing.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": true,
+      "status": "active"
+    },
+    {
+      "id": "R03",
+      "statement": "For an illustrative healthy 80-kilogram recreational trainee, 1.6 g/kg/day gives 128 g/day; dividing that total into four 32-g portions is bookkeeping, not an established optimal meal schedule.",
+      "kind": "synthesis",
+      "confidence": "reasoned",
+      "sources": [
+        "S06"
+      ],
+      "dependsOn": [
+        "C06"
+      ],
+      "population": "A fictional 80-kilogram adult without a condition requiring a different target",
+      "outcome": "Demonstration of protein-target arithmetic",
+      "limitations": "Choice of 1.6 is an example within the cited athlete range, not a lifespan recommendation or proof of the best dose for this person.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": true,
+      "status": "active"
+    },
+    {
+      "id": "H01",
+      "statement": "A preplanned reduced-demand fallback might improve long-term participation compared with an equally detailed plan that offers only its full schedule.",
+      "kind": "hypothesis",
+      "confidence": "unconfirmed",
+      "sources": [
+        "S04",
+        "S13"
+      ],
+      "dependsOn": [
+        "C02",
+        "C13"
+      ],
+      "population": "Adults whose routines are interrupted by ordinary time constraints",
+      "outcome": "Proposed long-term adherence advantage",
+      "limitations": "Untested here. Component guidance does not validate the comparative prediction. A randomized comparison with prespecified adherence and function outcomes could test it; no superiority claim belongs in default advice.",
+      "reviewedOn": "2026-09-24",
+      "defaultAdvice": false,
+      "status": "active"
+    }
+  ],
+  "chapters": [
+    {
+      "slug": "priorities",
+      "title": "What deserves your attention first?",
+      "description": "Choose the decisions that matter without making health a second job.",
+      "claims": [
+        "C01",
+        "C02",
+        "C05",
+        "C06",
+        "C12",
+        "C13",
+        "R01"
+      ],
+      "reviewedOn": "2026-09-24",
+      "contentSha256": "6ca953474075fb0e5f72e7d9674c587781a378b0f9a9fd892a4eeba2458e605f"
+    },
+    {
+      "slug": "a-workable-week",
+      "title": "Building a week for health and muscle",
+      "description": "A fully explained training week, its real time cost, and a food-planning example.",
+      "claims": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C13",
+        "R02",
+        "R03"
+      ],
+      "reviewedOn": "2026-09-24",
+      "contentSha256": "9cc5823b741914ee10da617efa9d453ef587af09bed96c1501cb05caca89b3ed"
+    },
+    {
+      "slug": "longevity-evidence",
+      "title": "What can we honestly claim about living longer?",
+      "description": "Separate measured health outcomes from associations, mechanisms and promises.",
+      "claims": [
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11"
+      ],
+      "reviewedOn": "2026-09-24",
+      "contentSha256": "2bca4f1317e753088e79c0ba1464c84310aea60cde2d7857d9a30f3087a27e82"
+    },
+    {
+      "slug": "methods",
+      "title": "How this guide is built and revised",
+      "description": "The founding specification, evidence rules, open questions and release gates.",
+      "claims": [
+        "C09",
+        "C10",
+        "H01"
+      ],
+      "reviewedOn": "2026-09-24",
+      "contentSha256": "168f75092f40c7b7351864425fadd3417593ebc9ffdde93fca50f142bb28d888"
+    }
+  ]
+}

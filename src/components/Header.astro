@@ -29,6 +29,7 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
           <div class="nav-menu">
             <a href="/content/" aria-current={pathname === '/content/' ? 'page' : undefined}><strong>All writing</strong><span>The complete archive</span></a>
             <a href="/guides/software-engineering/" aria-current={pathname.startsWith('/guides/software-engineering/') ? 'page' : undefined}><strong>Field Guide</strong><span>Software engineering, made legible</span></a>
+          <a href="/guides/long-game/" aria-current={pathname.startsWith('/guides/long-game/') ? 'page' : undefined}><strong>The Long Game</strong><span>Health, nutrition, and strength for life</span></a>
           </div>
         </details>
         <details class:list={['nav-group', { 'is-current': isDaily }]}>
