@@ -23,7 +23,7 @@ A person already training consistently has a different next question: which part
 
 ## Take muscle development seriously without making it the only outcome
 
-**Hypertrophy means an increase in muscle size.** It is related to, but not identical with, strength, which concerns producing force. A program can be assessed on either outcome, and a result for one should not silently become a result for the other. The American College of Sports Medicine’s March 2026 summary treats strength, hypertrophy, power, and physical performance as distinct training goals. [C02](/guides/long-game/evidence/#C02)
+**Hypertrophy means an increase in muscle size.** It is related to, but not identical with, strength, which concerns producing force. A program can be assessed on either outcome, and a result for one should not silently become a result for the other. The American College of Sports Medicine’s 2026 position stand—a research-based statement of recommendations—treats strength, hypertrophy, power, and physical performance as distinct training goals. [C02](/guides/long-game/evidence/#C02)
 
 ACSM emphasizes regular resistance training and describes benefits from machines, free weights, bands, and body-weight exercise. Its summary also reports that momentary muscle failure and complicated program variation do not consistently change results for the average healthy adult. That is permission to begin without mastering an elaborate training system—not proof that every program produces identical results. [C02](/guides/long-game/evidence/#C02)
 
@@ -65,4 +65,4 @@ The first successful version of your plan does not have to answer every question
 
 ### Source access
 
-The linked claim records identify the exact guidance used, its population, and its limitations. This chapter uses institutional guidance rather than an independently conducted systematic review. The ACSM source is its official 2026 summary; we have not inspected the full underlying position stand.
+The linked claim records identify the exact guidance used, its population, and its limitations. This chapter uses institutional guidance rather than an independently conducted systematic review. The ACSM evidence now includes its official summary and the relevant sections of the full position stand. Those are two reports of the same work, not independent confirmations. The constituent reviews and supplementary appendices have not been comprehensively appraised; the access record is [S14](/guides/long-game/evidence/#S14).
