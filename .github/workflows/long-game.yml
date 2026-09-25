@@ -1,0 +1,55 @@
+name: Long Game checks
+on:
+  push:
+    branches: [main, 'long-game-review-*']
+    paths:
+      - 'src/pages/guides/long-game/**'
+      - 'src/data/long-game/**'
+      - 'src/layouts/LongGameLayout.astro'
+      - 'scripts/*long-game*'
+      - 'automation/daily-long-game.md'
+      - '.github/workflows/long-game.yml'
+      - 'package.json'
+      - 'package-lock.json'
+  pull_request:
+    paths:
+      - 'src/pages/guides/long-game/**'
+      - 'src/data/long-game/**'
+      - 'src/layouts/LongGameLayout.astro'
+      - 'scripts/*long-game*'
+      - 'automation/daily-long-game.md'
+      - '.github/workflows/long-game.yml'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Check declared source and claim dependencies
+        run: node scripts/long-game.mjs
+      - name: Rehearse failure and revision scenarios
+        run: node --test scripts/long-game.test.mjs
+      - name: Check transition from previous guide
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] && git cat-file -e "$BASE_SHA:src/data/long-game/registry.json" 2>/dev/null; then
+            git show "$BASE_SHA:src/data/long-game/registry.json" > /tmp/long-game-base.json
+            node scripts/long-game.mjs --base /tmp/long-game-base.json
+          else
+            echo 'No previous guide registry at the event base; validating the foundation.'
+          fi
+      - name: Full production build and generated-page checks
+        run: npm run build

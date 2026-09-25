@@ -1,0 +1,65 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import registry from '../data/long-game/registry.json';
+interface PageMeta { title?: string; description?: string; readingTime?: string; }
+interface Props extends PageMeta { frontmatter?: PageMeta; }
+const meta = Astro.props.frontmatter ?? Astro.props;
+const title = meta.title ?? registry.title;
+const description = meta.description ?? 'A living, evidence-linked guide to lifelong health, nutrition, and muscle development.';
+const path = Astro.url.pathname.replace(/\/$/, '');
+const root = '/guides/long-game';
+const links = [
+  ['', 'Start here'], ['/priorities', 'Priorities'], ['/a-workable-week', 'A workable week'],
+  ['/longevity-evidence', 'Living longer'], ['/evidence', 'Evidence'], ['/methods', 'Methods'], ['/changes', 'Changes'],
+];
+---
+<BaseLayout title={title === registry.title ? title : `${title} · ${registry.title}`} description={description}>
+  <div class="long-game">
+    <a class="lg-series" href={`${root}/`}>THE LONG GAME <span>· A living guide</span></a>
+    <nav class="lg-nav" aria-label="The Long Game chapters">
+      {links.map(([suffix, label]) => <a href={`${root}${suffix}/`} aria-current={path === `${root}${suffix}` ? 'page' : undefined}>{label}</a>)}
+    </nav>
+    <header class="lg-heading">
+      <p class="lg-eyebrow">Lifelong health first. Muscle development in service of it.</p>
+      <h1>{title}</h1>
+      <p class="lg-description">{description}</p>
+      <p class="lg-meta">Foundation {registry.version} <span>·</span> Last edited <time datetime={registry.lastEdited}>{registry.lastEdited}</time>{meta.readingTime && <> <span>·</span> {meta.readingTime}</>}</p>
+    </header>
+    <article class="lg-prose"><slot /></article>
+    <aside class="lg-review-note" aria-label="Evidence review status">
+      <strong>Evidence review: {registry.lastEvidenceReview}.</strong>
+      <p>{registry.reviewStatus} General education, not personalized medical advice. Source access and applicability are disclosed in the <a href={`${root}/evidence/`}>evidence register</a>.</p>
+      <p><a href={`${root}/changes/`}>Read the revision history</a> · <a href={`${root}/methods/`}>How this guide changes</a></p>
+    </aside>
+  </div>
+</BaseLayout>
+<style>
+  .long-game { max-width: 960px; margin: 0 auto 4rem; }
+  .lg-series { display: inline-block; font-size: .76rem; letter-spacing: .13em; font-weight: 700; margin-bottom: 1rem; }
+  .lg-series span { color: var(--text-secondary); font-weight: 400; letter-spacing: .02em; }
+  .lg-nav { display: flex; flex-wrap: wrap; gap: .4rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--border-color); }
+  .lg-nav a { color: var(--text-secondary); font-size: .82rem; padding: .4rem .65rem; border: 1px solid transparent; border-radius: .5rem; }
+  .lg-nav a[aria-current='page'] { border-color: var(--border-color); color: var(--text-primary); background: var(--surface-color); }
+  .lg-nav a:focus-visible,.long-game :global(a:focus-visible) { outline: 2px solid var(--link-color); outline-offset: 3px; }
+  .lg-heading { margin: 2.4rem 0 2rem; max-width: 780px; }
+  .lg-eyebrow { color: var(--link-color); font-size: .78rem; letter-spacing: .035em; }
+  h1 { font-family: var(--font-serif); font-size: clamp(2rem,5vw,3.7rem); line-height: 1.08; margin: .65rem 0 1rem; text-wrap: balance; }
+  .lg-description { font-size: 1.13rem; color: var(--text-secondary); line-height: 1.6; max-width: 65ch; }
+  .lg-meta { color: var(--text-secondary); font-size: .76rem; line-height: 1.8; }
+  .lg-meta span { padding: 0 .3rem; }
+  .lg-prose { max-width: 76ch; font-size: 1.03rem; line-height: 1.85; overflow-wrap: anywhere; }
+  .lg-prose :global(p) { margin: 1.1em 0; }
+  .lg-prose :global(h2) { font-family: var(--font-serif); font-size: 1.65rem; line-height: 1.25; margin: 2.5rem 0 1rem; scroll-margin-top: 7rem; }
+  .lg-prose :global(h3) { font-size: 1.13rem; line-height: 1.4; margin: 1.8rem 0 .6rem; scroll-margin-top: 7rem; }
+  .lg-prose :global(a) { text-decoration: underline; text-underline-offset: .16em; }
+  .lg-prose :global(a[href*='/evidence/#']) { font-family: var(--font-sans); font-size: .76em; white-space: nowrap; }
+  .lg-prose :global(table) { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; font-size: .87rem; line-height: 1.6; margin: 1.5rem 0; }
+  .lg-prose :global(th),.lg-prose :global(td) { min-width: 9rem; padding: .8rem; border-bottom: 1px solid var(--border-color); text-align: left; vertical-align: top; }
+  .lg-prose :global(th) { background: var(--surface-color); }
+  .lg-prose :global(blockquote) { margin: 1.5rem 0; padding: .1rem 1rem; border-left: 3px solid var(--link-color); }
+  .lg-prose :global(ul),.lg-prose :global(ol) { padding-left: 1.5rem; }
+  .lg-review-note { max-width: 76ch; font-size: .8rem; line-height: 1.7; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 3rem; padding-top: 1.25rem; }
+  .lg-review-note p { margin: .5rem 0; }
+  @media(max-width: 560px) { .lg-heading { margin-top: 1.6rem; } .lg-prose { font-size: 1rem; } .lg-nav { gap: .15rem; } .lg-nav a { padding: .4rem .5rem; font-size: .76rem; } }
+  @media print { :global(body > header),:global(body > footer),.lg-nav { display: none !important; } .long-game { max-width: none; } .lg-prose { max-width: none; font-size: 10.5pt; } .lg-prose :global(table) { display: table; font-size: 9pt; } .lg-prose :global(th),.lg-prose :global(td) { min-width: 0; } .lg-prose :global(h2) { break-after: avoid; } }
+</style>
