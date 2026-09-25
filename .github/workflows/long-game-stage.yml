@@ -1,0 +1,68 @@
+name: Stage Long Game foundation
+on:
+  push:
+    branches: [long-game-foundation]
+    paths:
+      - '.long-game-staging/**'
+      - '.github/workflows/long-game-stage.yml'
+permissions:
+  contents: write
+jobs:
+  prepare-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Materialize the checksummed foundation and integrate navigation
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, lzma
+          from pathlib import Path
+          parts = sorted(Path('.long-game-staging').glob('*.b64'))
+          assert len(parts) == 6, 'Expected six verified publication chunks'
+          encoded = ''.join(p.read_text().strip() for p in parts)
+          raw = lzma.decompress(base64.b64decode(encoded, validate=True))
+          assert hashlib.sha256(raw).hexdigest() == '22415e14ed234ee3b3f8eb261a592226bf2da2e4a773fc5f18f313874c6cc8db', 'Publication checksum mismatch'
+          files = json.loads(raw)
+          allowed = {'.github/workflows/long-game.yml', 'automation/daily-long-game.md', 'scripts/check-long-game-build.mjs', 'scripts/long-game.mjs', 'scripts/long-game.test.mjs', 'src/data/long-game/registry.json', 'src/data/long-game/reviews.json', 'src/layouts/LongGameLayout.astro', 'src/pages/guides/long-game/a-workable-week.md', 'src/pages/guides/long-game/changes.astro', 'src/pages/guides/long-game/evidence.astro', 'src/pages/guides/long-game/index.astro', 'src/pages/guides/long-game/longevity-evidence.md', 'src/pages/guides/long-game/methods.md', 'src/pages/guides/long-game/priorities.md'}
+          assert set(files) == allowed, 'Unexpected publication path'
+          for name, content in files.items():
+              p = Path(name)
+              if p.exists():
+                  assert p.read_text() == content, f'Refusing to overwrite an existing file: {name}'
+              p.parent.mkdir(parents=True, exist_ok=True)
+              p.write_text(content)
+          header = Path('src/components/Header.astro')
+          text = header.read_text()
+          marker = '<strong>Field Guide</strong><span>Software engineering, made legible</span></a>'
+          assert text.count(marker) == 1 and '/guides/long-game/' not in text, 'Navigation changed; inspect before patching'
+          addition = '\n          <a href="/guides/long-game/" aria-current={pathname.startsWith(\'/guides/long-game/\') ? \'page\' : undefined}><strong>The Long Game</strong><span>Health, nutrition, and strength for life</span></a>'
+          header.write_text(text.replace(marker, marker + addition))
+          package = Path('package.json')
+          data = json.loads(package.read_text())
+          assert 'validate:long-game' not in data['scripts'], 'Guide integration already exists'
+          data['scripts']['validate:long-game'] = 'node scripts/long-game.mjs'
+          data['scripts']['test:long-game'] = 'node --test scripts/long-game.test.mjs'
+          data['scripts']['build'] = 'npm run validate:long-game && npm run test:long-game && ' + data['scripts']['build'] + ' && node scripts/check-long-game-build.mjs'
+          package.write_text(json.dumps(data, indent=2) + '\n')
+          print('Prepared 15 exact publication files and bounded navigation/build integrations.')
+          PY
+      - run: npm ci
+      - name: Full production build, rehearsal tests and generated routes
+        run: npm run build
+      - name: Save the validated candidate on this staging branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- src/pages/guides/long-game src/data/long-game src/layouts/LongGameLayout.astro scripts/check-long-game-build.mjs scripts/long-game.mjs scripts/long-game.test.mjs automation/daily-long-game.md src/components/Header.astro package.json
+          git diff --cached --check
+          git commit -m 'Prepare validated Long Game foundation and publication safeguards'
+          git push origin HEAD:long-game-foundation
+          echo "Validated candidate: $(git rev-parse HEAD)"
+          echo "Validated tree: $(git rev-parse HEAD^{tree})"
