@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A square transformed into a signed-area parallelogram</title>
+  <desc id="desc">A dark maritime blueprint shows a pale unit square on the left flowing through four luminous matrix cells into a cyan-and-magenta parallelogram on the right. Green hatched light fills the transformed area, while a curved compass arrow marks its counterclockwise orientation.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020b16" />
+      <stop offset="0.55" stop-color="#061629" />
+      <stop offset="1" stop-color="#03101d" />
+    </linearGradient>
+    <radialGradient id="glow" cx="71%" cy="46%" r="48%">
+      <stop offset="0" stop-color="#93ff14" stop-opacity="0.16" />
+      <stop offset="0.48" stop-color="#1493ff" stop-opacity="0.08" />
+      <stop offset="1" stop-color="#020b16" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="small-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#6ca9ce" stroke-opacity="0.08" stroke-width="1" />
+    </pattern>
+    <pattern id="large-grid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M200 0H0V200" fill="none" stroke="#6ca9ce" stroke-opacity="0.12" stroke-width="1.5" />
+    </pattern>
+    <pattern id="hatch" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <rect width="20" height="20" fill="#93ff14" fill-opacity="0.09" />
+      <path d="M0 0V20" stroke="#93ff14" stroke-opacity="0.42" stroke-width="5" />
+    </pattern>
+    <filter id="blue-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="green-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <marker id="blue-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0L10 5 0 10z" fill="#1493ff" />
+    </marker>
+    <marker id="pink-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0L10 5 0 10z" fill="#ff1493" />
+    </marker>
+    <marker id="green-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0L10 5 0 10z" fill="#93ff14" />
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)" />
+  <rect width="1600" height="900" fill="url(#glow)" />
+  <rect width="1600" height="900" fill="url(#small-grid)" />
+  <rect width="1600" height="900" fill="url(#large-grid)" />
+
+  <g opacity="0.48" fill="none" stroke="#7fb8d8" stroke-width="2">
+    <path d="M82 119H280M82 119V317" />
+    <path d="M1518 782h-198M1518 782V584" />
+    <circle cx="136" cy="746" r="52" />
+    <path d="M136 672v148M62 746h148" />
+    <path d="M1440 118c-46 26-77 75-77 130s31 104 77 130" stroke-dasharray="9 13" />
+  </g>
+
+  <g transform="translate(185 275)">
+    <path d="M0 0H350V350H0Z" fill="#a8cde3" fill-opacity="0.055" stroke="#a8cde3" stroke-opacity="0.75" stroke-width="4" />
+    <g stroke="#a8cde3" stroke-opacity="0.18" stroke-width="2">
+      <path d="M87.5 0V350M175 0V350M262.5 0V350" />
+      <path d="M0 87.5H350M0 175H350M0 262.5H350" />
+    </g>
+    <circle cx="0" cy="350" r="8" fill="#e3f4ff" />
+    <path d="M0 350H350" fill="none" stroke="#1493ff" stroke-width="8" marker-end="url(#blue-arrow)" filter="url(#blue-glow)" />
+    <path d="M0 350V0" fill="none" stroke="#ff1493" stroke-dasharray="18 13" stroke-width="8" marker-end="url(#pink-arrow)" filter="url(#pink-glow)" />
+  </g>
+
+  <g transform="translate(662 340)" stroke="#86b9d7" stroke-opacity="0.7" stroke-width="4" fill="#071827">
+    <path d="M20 0H0V220h20M250 0h20v220h-20" fill="none" />
+    <rect x="36" y="16" width="82" height="82" rx="8" />
+    <rect x="132" y="16" width="82" height="82" rx="8" />
+    <rect x="36" y="118" width="82" height="82" rx="8" />
+    <rect x="132" y="118" width="82" height="82" rx="8" />
+    <circle cx="77" cy="57" r="13" fill="#1493ff" stroke="none" filter="url(#blue-glow)" />
+    <circle cx="173" cy="57" r="13" fill="#ff1493" stroke="none" filter="url(#pink-glow)" />
+    <circle cx="77" cy="159" r="13" fill="#1493ff" stroke="none" filter="url(#blue-glow)" />
+    <circle cx="173" cy="159" r="13" fill="#ff1493" stroke="none" filter="url(#pink-glow)" />
+  </g>
+
+  <g fill="none" stroke="#86b9d7" stroke-opacity="0.36" stroke-width="3">
+    <path d="M560 450H632" />
+    <path d="M960 450h76" />
+    <path d="M610 428l22 22-22 22M1014 428l22 22-22 22" />
+  </g>
+
+  <g transform="translate(1078 190)">
+    <polygon points="0,500 320,420 165,0 -155,80" fill="url(#hatch)" stroke="#93ff14" stroke-opacity="0.85" stroke-width="4" filter="url(#green-glow)" />
+    <g stroke="#93ff14" stroke-opacity="0.18" stroke-width="2">
+      <path d="M64 484L-91 64M128 468L-27 48M192 452L37 32M256 436L101 16" />
+      <path d="M-31 416L289 336M-62 332L258 252M-93 248L227 168M-124 164L196 84" />
+    </g>
+    <path d="M0 500L320 420" fill="none" stroke="#1493ff" stroke-width="9" marker-end="url(#blue-arrow)" filter="url(#blue-glow)" />
+    <path d="M0 500L-155 80" fill="none" stroke="#ff1493" stroke-dasharray="20 14" stroke-width="9" marker-end="url(#pink-arrow)" filter="url(#pink-glow)" />
+    <path d="M-155 80L165 0" fill="none" stroke="#1493ff" stroke-opacity="0.68" stroke-width="5" />
+    <path d="M320 420L165 0" fill="none" stroke="#ff1493" stroke-dasharray="16 12" stroke-opacity="0.68" stroke-width="5" />
+    <circle cx="0" cy="500" r="9" fill="#e3f4ff" />
+    <path d="M-62 464A78 78 0 0 1 30 420" stroke="#93ff14" stroke-width="6" marker-end="url(#green-arrow)" filter="url(#green-glow)" />
+  </g>
+
+  <g opacity="0.65" fill="none" stroke="#1493ff" stroke-width="2">
+    <path d="M890 166c100-74 236-108 374-88" stroke-dasharray="7 12" />
+    <path d="M703 700c126 72 288 98 430 61" stroke-dasharray="7 12" />
+  </g>
+</svg>

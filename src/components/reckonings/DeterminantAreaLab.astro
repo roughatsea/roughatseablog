@@ -1,0 +1,255 @@
+---
+const plot = { originX: 350, originY: 270, scale: 40 };
+const point = (x: number, y: number) => `${plot.originX + plot.scale * x},${plot.originY - plot.scale * y}`;
+const initial = { a: 2, c: 1, b: -1, d: 3 };
+---
+
+<figure class="determinant-lab reckoning-visual" data-determinant-lab>
+  <header>
+    <p>Signed-area explorer</p>
+    <h3>Move two vectors; watch one number track the parallelogram</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 940 540" role="img" aria-labelledby="determinant-title determinant-desc">
+      <title id="determinant-title">Two vectors form a counterclockwise parallelogram with signed area seven</title>
+      <desc id="determinant-desc">The solid cyan vector two comma one and dashed magenta vector negative one comma three enclose a hatched parallelogram. The determinant two times three minus negative one times one equals seven.</desc>
+
+      <defs>
+        <pattern id="det-area-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="12" height="12" class="hatch-bg" />
+          <path d="M0 0V12" class="hatch-line" />
+        </pattern>
+        <marker id="det-arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0L10 5 0 10z" class="blue-tip" />
+        </marker>
+        <marker id="det-arrow-pink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0L10 5 0 10z" class="pink-tip" />
+        </marker>
+      </defs>
+
+      <g class="grid" aria-hidden="true">
+        {[-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6].map((value) => (
+          <path d={`M${plot.originX + plot.scale * value} 24V516`} />
+        ))}
+        {[-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6].map((value) => (
+          <path d={`M70 ${plot.originY - plot.scale * value}H630`} />
+        ))}
+      </g>
+
+      <g class="axes" aria-hidden="true">
+        <path d="M70 270H630M350 24V516" />
+        <text x="620" y="260">x</text>
+        <text x="360" y="38">y</text>
+      </g>
+
+      <polygon
+        class="area"
+        data-area
+        points={`${point(0, 0)} ${point(initial.a, initial.c)} ${point(initial.a + initial.b, initial.c + initial.d)} ${point(initial.b, initial.d)}`}
+      />
+      <path class="far-edge u-edge" data-u-edge d={`M${point(initial.b, initial.d)}L${point(initial.a + initial.b, initial.c + initial.d)}`} />
+      <path class="far-edge v-edge" data-v-edge d={`M${point(initial.a, initial.c)}L${point(initial.a + initial.b, initial.c + initial.d)}`} />
+      <path class="u-vector" data-u d={`M${point(0, 0)}L${point(initial.a, initial.c)}`} marker-end="url(#det-arrow-blue)" />
+      <path class="v-vector" data-v d={`M${point(0, 0)}L${point(initial.b, initial.d)}`} marker-end="url(#det-arrow-pink)" />
+
+      <g class="vector-label u-label" data-u-label transform={`translate(${plot.originX + plot.scale * initial.a + 12} ${plot.originY - plot.scale * initial.c - 8})`}>
+        <circle r="13" />
+        <text text-anchor="middle" y="5">u</text>
+      </g>
+      <g class="vector-label v-label" data-v-label transform={`translate(${plot.originX + plot.scale * initial.b - 12} ${plot.originY - plot.scale * initial.d - 8})`}>
+        <circle r="13" />
+        <text text-anchor="middle" y="5">v</text>
+      </g>
+      <circle class="origin" cx={plot.originX} cy={plot.originY} r="5" />
+
+      <g class="formula-panel">
+        <text class="panel-label" x="690" y="82">CURRENT MATRIX</text>
+        <path class="bracket" d="M700 112h-12v104h12M866 112h12v104h-12" />
+        <text data-a x="738" y="153" text-anchor="middle">2</text>
+        <text data-b x="828" y="153" text-anchor="middle">−1</text>
+        <text data-c x="738" y="197" text-anchor="middle">1</text>
+        <text data-d x="828" y="197" text-anchor="middle">3</text>
+        <text class="panel-label" x="690" y="268">SIGNED AREA</text>
+        <text class="formula" data-formula x="690" y="310">(2)(3) − (−1)(1)</text>
+        <text class="det-value" data-det x="690" y="371">det = 7.00</text>
+        <path class="orientation-icon" data-orientation-icon d="M712 434a34 34 0 1 1 26-55" />
+        <path class="orientation-tip" data-orientation-tip d="M741 376l-2 16-14-8z" />
+        <text class="orientation-label" data-orientation x="760" y="416">counterclockwise</text>
+        <text class="area-label" data-area-label x="760" y="443">ordinary area = 7.00</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls" aria-label="Vector coordinates">
+    <fieldset>
+      <legend><span class="solid-key"></span>Vector u = (a, c)</legend>
+      <label for="det-a">a <input id="det-a" data-value="a" type="range" min="-3" max="3" step="0.25" value="2" /><output for="det-a" data-output="a">2.00</output></label>
+      <label for="det-c">c <input id="det-c" data-value="c" type="range" min="-3" max="3" step="0.25" value="1" /><output for="det-c" data-output="c">1.00</output></label>
+    </fieldset>
+    <fieldset>
+      <legend><span class="dashed-key"></span>Vector v = (b, d)</legend>
+      <label for="det-b">b <input id="det-b" data-value="b" type="range" min="-3" max="3" step="0.25" value="-1" /><output for="det-b" data-output="b">−1.00</output></label>
+      <label for="det-d">d <input id="det-d" data-value="d" type="range" min="-3" max="3" step="0.25" value="3" /><output for="det-d" data-output="d">3.00</output></label>
+    </fieldset>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div><span>Signed area</span><strong data-live-det>7.00</strong></div>
+    <div><span>Ordinary area</span><strong data-live-area>7.00 square units</strong></div>
+    <div><span>Orientation</span><strong data-live-orientation>counterclockwise</strong></div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the hatched parallelogram collapses exactly when the two arrows lie on one line. Crossing that line changes the arrow order from counterclockwise to clockwise, so the determinant changes sign while the ordinary area remains nonnegative.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-determinant-lab]').forEach((figure) => {
+    const inputs = [...figure.querySelectorAll('[data-value]')].filter((node): node is HTMLInputElement => node instanceof HTMLInputElement);
+    const area = figure.querySelector('[data-area]');
+    const u = figure.querySelector('[data-u]');
+    const v = figure.querySelector('[data-v]');
+    const uEdge = figure.querySelector('[data-u-edge]');
+    const vEdge = figure.querySelector('[data-v-edge]');
+    const uLabel = figure.querySelector('[data-u-label]');
+    const vLabel = figure.querySelector('[data-v-label]');
+    const title = figure.querySelector('#determinant-title');
+    const desc = figure.querySelector('#determinant-desc');
+    if (!(area instanceof SVGPolygonElement) || !(u instanceof SVGPathElement) || !(v instanceof SVGPathElement) || !(uEdge instanceof SVGPathElement) || !(vEdge instanceof SVGPathElement) || !(uLabel instanceof SVGGElement) || !(vLabel instanceof SVGGElement) || !title || !desc) return;
+
+    const originX = 350;
+    const originY = 270;
+    const scale = 40;
+    const point = (x: number, y: number) => `${originX + scale * x},${originY - scale * y}`;
+    const display = (value: number) => {
+      const cleaned = Math.abs(value) < 0.0001 ? 0 : value;
+      return cleaned.toFixed(2).replace('-', '−');
+    };
+
+    const render = () => {
+      const values = Object.fromEntries(inputs.map((input) => [input.dataset.value, Number(input.value)])) as Record<'a' | 'b' | 'c' | 'd', number>;
+      const { a, b, c, d } = values;
+      const determinant = a * d - b * c;
+      const orientation = determinant > 0.0001 ? 'counterclockwise' : determinant < -0.0001 ? 'clockwise' : 'collapsed';
+      const sumX = a + b;
+      const sumY = c + d;
+
+      area.setAttribute('points', `${point(0, 0)} ${point(a, c)} ${point(sumX, sumY)} ${point(b, d)}`);
+      u.setAttribute('d', `M${point(0, 0)}L${point(a, c)}`);
+      v.setAttribute('d', `M${point(0, 0)}L${point(b, d)}`);
+      uEdge.setAttribute('d', `M${point(b, d)}L${point(sumX, sumY)}`);
+      vEdge.setAttribute('d', `M${point(a, c)}L${point(sumX, sumY)}`);
+      uLabel.setAttribute('transform', `translate(${originX + scale * a + 12} ${originY - scale * c - 8})`);
+      vLabel.setAttribute('transform', `translate(${originX + scale * b - 12} ${originY - scale * d - 8})`);
+
+      (['a', 'b', 'c', 'd'] as const).forEach((key) => {
+        const matrixValue = figure.querySelector(`[data-${key}]`);
+        const output = figure.querySelector(`[data-output="${key}"]`);
+        if (matrixValue) matrixValue.textContent = display(values[key]);
+        if (output instanceof HTMLOutputElement) output.value = display(values[key]);
+      });
+
+      const formula = figure.querySelector('[data-formula]');
+      const detValue = figure.querySelector('[data-det]');
+      const orientationLabel = figure.querySelector('[data-orientation]');
+      const areaLabel = figure.querySelector('[data-area-label]');
+      const liveDet = figure.querySelector('[data-live-det]');
+      const liveArea = figure.querySelector('[data-live-area]');
+      const liveOrientation = figure.querySelector('[data-live-orientation]');
+      const orientationIcon = figure.querySelector('[data-orientation-icon]');
+      const orientationTip = figure.querySelector('[data-orientation-tip]');
+      if (formula) formula.textContent = `(${display(a)})(${display(d)}) − (${display(b)})(${display(c)})`;
+      if (detValue) detValue.textContent = `det = ${display(determinant)}`;
+      if (orientationLabel) orientationLabel.textContent = orientation;
+      if (areaLabel) areaLabel.textContent = `ordinary area = ${Math.abs(determinant).toFixed(2)}`;
+      if (liveDet) liveDet.textContent = display(determinant);
+      if (liveArea) liveArea.textContent = `${Math.abs(determinant).toFixed(2)} square units`;
+      if (liveOrientation) liveOrientation.textContent = orientation;
+      if (orientationIcon instanceof SVGPathElement && orientationTip instanceof SVGPathElement) {
+        const clockwise = determinant < -0.0001;
+        orientationIcon.setAttribute('d', clockwise ? 'M738 434a34 34 0 1 0-26-55' : 'M712 434a34 34 0 1 1 26-55');
+        orientationTip.setAttribute('d', clockwise ? 'M709 376l2 16 14-8z' : 'M741 376l-2 16-14-8z');
+        orientationIcon.style.opacity = orientation === 'collapsed' ? '0.25' : '1';
+        orientationTip.style.opacity = orientation === 'collapsed' ? '0.25' : '1';
+      }
+
+      title.textContent = `Vectors u equals ${display(a)}, ${display(c)} and v equals ${display(b)}, ${display(d)} form a ${orientation} parallelogram with signed area ${display(determinant)}`;
+      desc.textContent = `A solid vector and a dashed vector enclose a hatched parallelogram. The determinant is ${display(a)} times ${display(d)} minus ${display(b)} times ${display(c)}, which equals ${display(determinant)}. The ordinary area is ${Math.abs(determinant).toFixed(2)} square units.`;
+    };
+
+    inputs.forEach((input) => input.addEventListener('input', render));
+    render();
+  });
+</script>
+
+<style>
+  .determinant-lab {
+    --dt-blue: #087dcc;
+    --dt-green: #4f9300;
+    --dt-pink: #d9007e;
+    background: radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--dt-green) 12%, transparent), transparent 22rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .determinant-lab { --dt-blue: #1493ff; --dt-green: #93ff14; --dt-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 720px; width: 100%; }
+  svg text { fill: var(--text-secondary); font-family: var(--font-sans); }
+  .grid path { fill: none; stroke: var(--border-color); stroke-width: 1; }
+  .axes path { fill: none; stroke: var(--text-secondary); stroke-width: 1.5; }
+  .axes text { font-size: 13px; font-style: italic; }
+  .hatch-bg { fill: color-mix(in srgb, var(--dt-green) 15%, var(--bg-color)); }
+  .hatch-line { stroke: color-mix(in srgb, var(--dt-green) 55%, transparent); stroke-width: 3; }
+  .area { fill: url(#det-area-hatch); stroke: var(--dt-green); stroke-width: 2; }
+  .u-vector, .u-edge { fill: none; stroke: var(--dt-blue); stroke-linecap: round; stroke-width: 4; }
+  .v-vector, .v-edge { fill: none; stroke: var(--dt-pink); stroke-dasharray: 10 7; stroke-linecap: round; stroke-width: 4; }
+  .far-edge { opacity: .7; stroke-width: 2; }
+  .blue-tip { fill: var(--dt-blue); }
+  .pink-tip { fill: var(--dt-pink); }
+  .vector-label circle { fill: var(--bg-color); stroke-width: 2; }
+  .u-label circle { stroke: var(--dt-blue); }
+  .v-label circle { stroke: var(--dt-pink); }
+  .vector-label text { fill: var(--text-primary); font-size: 13px; font-weight: 800; }
+  .origin { fill: var(--text-primary); stroke: var(--bg-color); stroke-width: 2; }
+  .formula-panel { font-variant-numeric: tabular-nums; }
+  .panel-label { fill: var(--text-primary); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+  .bracket { fill: none; stroke: var(--text-primary); stroke-width: 2; }
+  .formula-panel > text:not(.panel-label):not(.orientation-label):not(.area-label) { fill: var(--text-primary); }
+  .formula { font-size: 19px; }
+  .det-value { font-size: 30px; font-weight: 800; }
+  .orientation-icon { fill: none; stroke: var(--dt-green); stroke-linecap: round; stroke-width: 4; }
+  .orientation-tip { fill: var(--dt-green); }
+  .orientation-label { fill: var(--text-primary); font-size: 14px; font-weight: 750; }
+  .area-label { font-size: 13px; }
+  .controls { display: grid; gap: .8rem; grid-template-columns: 1fr 1fr; margin-top: .9rem; }
+  fieldset { border: 1px solid var(--border-color); border-radius: 9px; margin: 0; min-width: 0; padding: .75rem .85rem .85rem; }
+  legend { color: var(--text-primary); font-size: .74rem; font-weight: 800; padding: 0 .25rem; }
+  legend span { display: inline-block; margin: 0 .45rem 3px 0; width: 1.5rem; }
+  .solid-key { border-top: 3px solid var(--dt-blue); }
+  .dashed-key { border-top: 3px dashed var(--dt-pink); }
+  label { align-items: center; color: var(--text-secondary); display: grid; font-size: .78rem; font-weight: 750; gap: .5rem; grid-template-columns: 1rem minmax(0, 1fr) 3.5rem; margin-top: .45rem; }
+  input[type='range'] { accent-color: var(--dt-blue); cursor: pointer; width: 100%; }
+  fieldset:nth-child(2) input[type='range'] { accent-color: var(--dt-pink); }
+  input[type='range']:focus-visible { outline: 3px solid color-mix(in srgb, var(--dt-green) 65%, transparent); outline-offset: 3px; }
+  output { font-variant-numeric: tabular-nums; text-align: right; }
+  .readout { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; display: grid; gap: .75rem; grid-template-columns: repeat(3, 1fr); margin-top: .8rem; padding: .85rem 1rem; }
+  .readout div { display: grid; gap: .16rem; }
+  .readout span { color: var(--text-secondary); font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .readout strong { color: var(--text-primary); font-size: .84rem; font-variant-numeric: tabular-nums; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 720px) {
+    .determinant-lab { width: calc(100vw - 1.5rem); }
+    .controls, .readout { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .determinant-lab * { transition: none !important; } }
+</style>

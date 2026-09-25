@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-24T06:00:00-07:00",
+  "updatedAt": "2026-09-25T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -602,6 +602,34 @@
         "daily-reckoning-2026-08-29",
         "daily-reckoning-2026-09-06",
         "daily-reckoning-2026-09-14"
+      ]
+    },
+    {
+      "date": "2026-09-25",
+      "slug": "daily-reckoning-2026-09-25",
+      "title": "Why Does ad − bc Measure Area?",
+      "area": "Linear algebra and geometry",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Coordinates in the plane",
+        "Area of a parallelogram",
+        "Dot products and vector length"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "determinants",
+        "signed area",
+        "linear transformations",
+        "orientation",
+        "invertibility",
+        "Jacobian determinant",
+        "computational geometry",
+        "history of linear algebra"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-02",
+        "daily-reckoning-2026-09-04",
+        "daily-reckoning-2026-09-17"
       ]
     }
   ]
