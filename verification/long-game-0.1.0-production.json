@@ -1,0 +1,72 @@
+{
+  "verifiedAt": "2026-09-25T07:10:39.937331+00:00",
+  "releaseCommit": "45b2b0cdeb31fa5d385854bf3cdf7cbf9236c4b3",
+  "origin": "https://www.roughatsea.com",
+  "checks": "Live HTTP, intended version, review disclosure, navigation, unique IDs, seven routes, 17 claim anchors, and all internal guide links. HTML verification, not a visual browser inspection.",
+  "passed": true,
+  "pages": [
+    {
+      "path": "/guides/long-game/",
+      "status": 200,
+      "finalUrl": "https://roughatsea.com/guides/long-game/",
+      "version": "0.1.0",
+      "sha256": "1fcc268c483c1e0aadd094f620752f5f280e47333c6427fa8fb2ce8ce07f7d67",
+      "idsUnique": true,
+      "reviewLimitationPresent": true
+    },
+    {
+      "path": "/guides/long-game/priorities/",
+      "status": 200,
+      "finalUrl": "https://roughatsea.com/guides/long-game/priorities/",
+      "version": "0.1.0",
+      "sha256": "6b6aef92b1ba62c947073600680677f9a360910dee71d974550ba62600e0b4a5",
+      "idsUnique": true,
+      "reviewLimitationPresent": true
+    },
+    {
+      "path": "/guides/long-game/a-workable-week/",
+      "status": 200,
+      "finalUrl": "https://roughatsea.com/guides/long-game/a-workable-week/",
+      "version": "0.1.0",
+      "sha256": "a12deff3c55c6faeb51b13a042605adf2c6f43939d32d3434918f90fab3d953d",
+      "idsUnique": true,
+      "reviewLimitationPresent": true
+    },
+    {
+      "path": "/guides/long-game/longevity-evidence/",
+      "status": 200,
+      "finalUrl": "https://roughatsea.com/guides/long-game/longevity-evidence/",
+      "version": "0.1.0",
+      "sha256": "9f9d76320fddce5a339a3acad0789fee83298d89a40f13734871551d1568122c",
+      "idsUnique": true,
+      "reviewLimitationPresent": true
+    },
+    {
+      "path": "/guides/long-game/methods/",
+      "status": 200,
+      "finalUrl": "https://roughatsea.com/guides/long-game/methods/",
+      "version": "0.1.0",
+      "sha256": "c01dc9da9b3ad77644210b8143e891cec953d8bc8c093fb8b721017cf55bd402",
+      "idsUnique": true,
+      "reviewLimitationPresent": true
+    },
+    {
+      "path": "/guides/long-game/evidence/",
+      "status": 200,
+      "finalUrl": "https://roughatsea.com/guides/long-game/evidence/",
+      "version": "0.1.0",
+      "sha256": "7d71160c0b636cd229e1d26699bea4fa7134b603b83a404d9b18306ef2cd642a",
+      "idsUnique": true,
+      "reviewLimitationPresent": true
+    },
+    {
+      "path": "/guides/long-game/changes/",
+      "status": 200,
+      "finalUrl": "https://roughatsea.com/guides/long-game/changes/",
+      "version": "0.1.0",
+      "sha256": "c2e431a861534416e24fe3292a542404722f65c35063d658f9d1213039ab0113",
+      "idsUnique": true,
+      "reviewLimitationPresent": true
+    }
+  ]
+}
