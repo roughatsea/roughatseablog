@@ -1,0 +1,77 @@
+name: Verify Long Game production
+on:
+  push:
+    branches: [long-game-live-check]
+    paths: ['.github/workflows/long-game-live-check.yml']
+permissions:
+  contents: write
+jobs:
+  production-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify live routes, versions, navigation and internal anchors
+        run: |
+          python3 - <<'PY'
+          import collections, datetime, hashlib, json, time, urllib.request
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urljoin, urlparse, unquote
+          class Page(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.ids=[]; self.links=[]; self.text=[]
+              def handle_starttag(self, tag, attrs):
+                  a=dict(attrs)
+                  if 'id' in a: self.ids.append(a['id'])
+                  if tag == 'a' and 'href' in a: self.links.append(a['href'])
+              def handle_data(self, data): self.text.append(data)
+          origin='https://www.roughatsea.com'
+          root='/guides/long-game/'
+          slugs=['','priorities/','a-workable-week/','longevity-evidence/','methods/','evidence/','changes/']
+          pages={}; results=[]
+          for slug in slugs:
+              path=root+slug; last_error=None
+              for attempt in range(5):
+                  try:
+                      req=urllib.request.Request(origin+path, headers={'User-Agent':'RoughAtSea-Publication-Verification/1.0'})
+                      with urllib.request.urlopen(req, timeout=30) as response:
+                          status=response.status; final_url=response.url; raw=response.read()
+                      html=raw.decode('utf-8'); page=Page(); page.feed(html)
+                      text=' '.join(page.text)
+                      assert status == 200, f'HTTP {status}'
+                      assert 'The Long Game' in text, 'Guide title absent'
+                      assert 'Foundation 0.1.0' in text, 'Intended version absent'
+                      assert 'no independent clinical' in text.lower(), 'Review limitation absent'
+                      assert root in page.links, 'Writing/guide navigation absent'
+                      duplicates=[k for k,v in collections.Counter(page.ids).items() if v>1]
+                      assert not duplicates, f'Duplicate IDs: {duplicates}'
+                      pages[path]=page
+                      results.append({'path':path,'status':status,'finalUrl':final_url,'version':'0.1.0','sha256':hashlib.sha256(raw).hexdigest(),'idsUnique':True,'reviewLimitationPresent':True})
+                      print(f'PASS {path} HTTP {status} version 0.1.0')
+                      break
+                  except Exception as exc:
+                      last_error=exc
+                      if attempt == 4: raise
+                      time.sleep(10)
+              assert path in pages, str(last_error)
+          for path,page in pages.items():
+              for href in page.links:
+                  u=urlparse(urljoin(origin+path,href))
+                  if u.netloc not in {'www.roughatsea.com','roughatsea.com'} or not u.path.startswith(root): continue
+                  target=u.path.rstrip('/')+'/'
+                  assert target in pages, f'Unverified route: {href}'
+                  if u.fragment: assert unquote(u.fragment) in pages[target].ids, f'Missing live anchor {href}'
+          for claim in ['C01','C02','C03','C04','C05','C06','C07','C08','C09','C10','C11','C12','C13','R01','R02','R03','H01']:
+              assert claim in pages[root+'evidence/'].ids, f'Missing claim record {claim}'
+          report={'verifiedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'releaseCommit':'45b2b0cdeb31fa5d385854bf3cdf7cbf9236c4b3','origin':origin,'checks':'Live HTTP, intended version, review disclosure, navigation, unique IDs, seven routes, 17 claim anchors, and all internal guide links. HTML verification, not a visual browser inspection.','passed':True,'pages':results}
+          p=Path('verification/long-game-0.1.0-production.json'); p.parent.mkdir(exist_ok=True); p.write_text(json.dumps(report,indent=2)+'\n')
+          print('All seven production pages and their guide links verified.')
+          PY
+      - name: Preserve verification evidence on this branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add verification/long-game-0.1.0-production.json
+          git commit -m 'Record verified Long Game v0.1.0 production pages'
+          git push origin HEAD:long-game-live-check
