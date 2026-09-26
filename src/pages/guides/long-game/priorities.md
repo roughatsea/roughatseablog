@@ -41,6 +41,8 @@ For a concrete example, imagine lunch is usually a sandwich eaten at work. One p
 
 Protein deserves attention when training for muscle growth, but it is not the only nutritional requirement. NIH’s Office of Dietary Supplements places adequate food, fluids, and nutrients ahead of performance supplements as the foundation of sports nutrition. The [worked-week chapter](/guides/long-game/a-workable-week/#a-protein-target-you-can-actually-interpret) demonstrates protein arithmetic without allowing the number to replace the rest of the meal. [C06](/guides/long-game/evidence/#C06)
 
+The worked example uses 128 grams of protein for a fictional 80-kilogram trainee. Treat it as a training-oriented planning choice, not a daily pass-or-fail test for everyone. Its rationale and limits are explained alongside the calculation. [R03](/guides/long-game/evidence/#R03)
+
 This edition does not prescribe a calorie deficit, an intentional surplus, fasting, or a target body-fat percentage. Those choices require separate consideration. Wanting more muscle does not, by itself, settle whether weight gain is appropriate.
 
 ## Protect a workable recovery routine

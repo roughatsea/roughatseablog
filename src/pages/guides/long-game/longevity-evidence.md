@@ -19,6 +19,8 @@ Likewise, a study of walking and mortality does not directly compare every possi
 
 This is why the concurrent-training research in the [worked week](/guides/long-game/a-workable-week/) is relevant but limited. Its measured outcomes include muscle size and strength, not survival. It informs how aerobic and resistance training can coexist; it does not demonstrate that our exact weekly schedule extends life. [C07](/guides/long-game/evidence/#C07)
 
+Protein research provides another example: lean mass includes more than skeletal muscle. The protein review used in the worked week did not measure lifespan, so a body-composition finding cannot establish a life-extension dose. [C17](/guides/long-game/evidence/#C17)
+
 A useful question to write beside a claim is therefore: **what would we have to observe for this sentence to be true?** “Improves a strength test” requires different evidence from “prevents disability,” even if stronger muscles could plausibly contribute to the latter.
 
 ## An association is useful evidence—but it is not an intervention

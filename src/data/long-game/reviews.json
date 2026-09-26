@@ -1,5 +1,31 @@
 [
   {
+    "date": "2026-09-26",
+    "version": "0.1.2",
+    "title": "Protein targets: guidance, training and applicability",
+    "outcome": "held",
+    "summary": "Prepared for the user’s manual pull-request review. Added population-guidance and research context to the existing protein illustration, with related explanations in the priorities and longevity chapters. The 128-gram example and all training prescriptions remain unchanged.",
+    "scope": "Reconstructed the proposed update after confirming the staging branch matched main. Compared current source hashes with the available guide files and considered all seven routes, chapter map, registry, history and verification code. Fresh research was limited to protein: inspected the federal guideline (printed page 2), scientific report (Chapter 6, pages 37–38), Nunes et al. full HTML methods/results/discussion/disclosures, and NIH ODS protein guidance. PDF pages were visually checked. Searches covered the current guideline, the 74-trial review, and DOI/guideline correction queries; this was not an exhaustive search. No appendices or individual trials were reappraised; unrelated sources were not freshly verified.",
+    "recommendationChange": "The fictional 80-kilogram trainee still uses 1.6 g/kg/day = 128 g/day. The rationale now distinguishes population guidance, training research and practical synthesis. It does not create a universal minimum, general-health threshold, precise optimum or longevity dose. No new supplement, restrictive diet or disease-specific advice is introduced. Existing confidence labels and H01 remain unchanged.",
+    "verification": "Local registry and transition validation and all 16 rehearsal tests passed. The full site build and generated-page checks use the existing branch/PR workflow because local GitHub DNS resolution failed. This record is a review candidate, not a claim of publication, production verification, independent clinical review or browser-based visual review.",
+    "next": "User review and merge, followed by separate production verification. Expand dietary-pattern and food-adequacy coverage; investigate protein source and longer-term outcomes. Preserve the previous review entries as the history recorded at preparation time.",
+    "reviewedClaims": [
+      "C06",
+      "C15",
+      "C16",
+      "C17",
+      "R03"
+    ],
+    "reviewedChapters": [
+      "priorities",
+      "a-workable-week",
+      "longevity-evidence",
+      "methods"
+    ],
+    "confidenceChanges": [],
+    "heldRisks": []
+  },
+  {
     "date": "2026-09-25",
     "version": "0.1.1",
     "title": "Full-text resistance-training check; prepared for manual merge",
