@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-25T06:00:00-07:00",
+  "updatedAt": "2026-09-26T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -630,6 +630,33 @@
         "daily-reckoning-2026-09-02",
         "daily-reckoning-2026-09-04",
         "daily-reckoning-2026-09-17"
+      ]
+    },
+    {
+      "date": "2026-09-26",
+      "slug": "daily-reckoning-2026-09-26",
+      "title": "How Can a Tangent Line Find √2?",
+      "area": "Calculus and numerical analysis",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Derivatives of polynomials",
+        "Tangent lines",
+        "Algebra with fractions"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Newton's method",
+        "root finding",
+        "square roots",
+        "quadratic convergence",
+        "tangent-line approximation",
+        "numerical stability",
+        "history of numerical analysis"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-29",
+        "daily-reckoning-2026-08-30",
+        "daily-reckoning-2026-09-23"
       ]
     }
   ]

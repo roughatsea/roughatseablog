@@ -1,0 +1,292 @@
+---
+const plot = { left: 72, right: 620, top: 24, bottom: 500, xMax: 2.6, yMin: -2.2, yMax: 5 };
+const toX = (x: number) => plot.left + (x / plot.xMax) * (plot.right - plot.left);
+const toY = (y: number) => plot.top + ((plot.yMax - y) / (plot.yMax - plot.yMin)) * (plot.bottom - plot.top);
+const curvePath = Array.from({ length: 131 }, (_, index) => {
+  const x = (plot.xMax * index) / 130;
+  const command = index === 0 ? 'M' : 'L';
+  return `${command}${toX(x).toFixed(2)} ${toY(x * x - 2).toFixed(2)}`;
+}).join(' ');
+const rootX = toX(Math.sqrt(2));
+const axisY = toY(0);
+const initialSequence = [1, 1.5, 17 / 12, 577 / 408, 665857 / 470832, Math.sqrt(2)];
+---
+
+<figure class="newton-lab reckoning-visual" data-newton-lab>
+  <header>
+    <p>Tangent-step explorer</p>
+    <h3>Climb to the curve; follow the tangent back to zero</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 940 540" role="img" aria-labelledby="newton-title newton-desc">
+      <title id="newton-title">The first Newton step moves from one to one point five</title>
+      <desc id="newton-desc">A dashed vertical line rises from x equals one to the parabola y equals x squared minus two. A magenta tangent segment returns to the x-axis at x equals one point five, closer to the positive root square root of two.</desc>
+
+      <defs>
+        <marker id="newton-arrow-pink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0L10 5 0 10z" class="pink-tip" />
+        </marker>
+        <filter id="newton-glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+
+      <g class="grid" aria-hidden="true">
+        {[0, 0.5, 1, 1.5, 2, 2.5].map((x) => <path d={`M${toX(x)} ${plot.top}V${plot.bottom}`} />)}
+        {[-2, -1, 0, 1, 2, 3, 4, 5].map((y) => <path d={`M${plot.left} ${toY(y)}H${plot.right}`} />)}
+      </g>
+
+      <g class="axes" aria-hidden="true">
+        <path d={`M${plot.left} ${axisY}H${plot.right}M${plot.left} ${plot.top}V${plot.bottom}`} />
+        {[0.5, 1, 1.5, 2, 2.5].map((x) => <text x={toX(x)} y={axisY + 21} text-anchor="middle">{x}</text>)}
+        {[-2, -1, 1, 2, 3, 4, 5].map((y) => <text x={plot.left - 12} y={toY(y) + 4} text-anchor="end">{y}</text>)}
+        <text x={plot.right - 4} y={axisY - 11} text-anchor="end">x</text>
+        <text x={plot.left + 12} y={plot.top + 15}>y</text>
+      </g>
+
+      <path class="parabola" d={curvePath} />
+      <path class="root-guide" d={`M${rootX} ${plot.top}V${plot.bottom}`} />
+      <circle class="root" cx={rootX} cy={axisY} r="7" />
+      <text class="root-label" x={rootX + 11} y={axisY - 13}>√2</text>
+
+      <g class="history" aria-hidden="true">
+        {initialSequence.map((x, index) => (
+          <circle data-sequence-point={index} cx={toX(x)} cy={axisY} r={index === 0 ? 5 : 4} />
+        ))}
+      </g>
+
+      <path class="climb" data-climb d={`M${toX(1)} ${axisY}V${toY(-1)}`} />
+      <path class="tangent" data-tangent d={`M${toX(1)} ${toY(-1)}L${toX(1.5)} ${axisY}`} marker-end="url(#newton-arrow-pink)" />
+      <circle class="curve-point" data-curve-point cx={toX(1)} cy={toY(-1)} r="7" />
+      <circle class="next-point" data-next-point cx={toX(1.5)} cy={axisY} r="7" />
+      <text class="current-label" data-current-label x={toX(1) - 10} y={toY(-1) - 13} text-anchor="end">x₀</text>
+      <text class="next-label" data-next-label x={toX(1.5) + 9} y={axisY + 28}>x₁</text>
+
+      <g class="formula-panel">
+        <text class="panel-label" x="675" y="68">CURRENT TANGENT STEP</text>
+        <text class="iteration" data-iteration x="675" y="112">n = 0 → 1</text>
+        <text class="formula" x="675" y="158">xₙ₊₁ = ½(xₙ + 2/xₙ)</text>
+        <path class="panel-rule" d="M675 185H895" />
+        <text class="panel-label" x="675" y="224">CURRENT GUESS</text>
+        <text class="value" data-current-value x="675" y="263">1.0000000000</text>
+        <text class="panel-label" x="675" y="310">NEXT GUESS</text>
+        <text class="value next-value" data-next-value x="675" y="349">1.5000000000</text>
+        <text class="panel-label" x="675" y="396">NEXT ERROR</text>
+        <text class="error-value" data-error-value x="675" y="432">0.0857864376</text>
+        <text class="status" data-status x="675" y="475">tangent meets x-axis</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <label for="newton-start">
+      Starting guess x₀
+      <input id="newton-start" type="range" min="0.75" max="2.5" step="0.05" value="1" data-start />
+      <output for="newton-start" data-start-output>1.00</output>
+    </label>
+    <div class="step-controls" aria-label="Iteration controls">
+      <button type="button" data-back disabled>Previous step</button>
+      <button type="button" data-next>Next step</button>
+      <button type="button" data-reset>Reset</button>
+    </div>
+  </div>
+
+  <div class="sequence-shell">
+    <table>
+      <thead><tr><th>Step</th><th>Approximation</th><th>Absolute error</th></tr></thead>
+      <tbody>
+        {initialSequence.map((x, index) => (
+          <tr data-step-row={index} class={index === 0 ? 'active' : ''}>
+            <th scope="row">x<sub>{index}</sub></th>
+            <td data-step-value>{x.toFixed(10)}</td>
+            <td data-step-error>{Math.abs(x - Math.sqrt(2)).toExponential(3)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <span>After <strong data-live-steps>1 tangent step</strong>, the estimate is <strong data-live-value>1.5000000000</strong>.</span>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> each dashed climb evaluates the curve at the current guess. The solid magenta tangent then predicts where the curve reaches zero. Near the root, each prediction has roughly twice as many correct digits as the one before it.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-newton-lab]').forEach((figure) => {
+    const start = figure.querySelector('[data-start]');
+    const startOutput = figure.querySelector('[data-start-output]');
+    const back = figure.querySelector('[data-back]');
+    const next = figure.querySelector('[data-next]');
+    const reset = figure.querySelector('[data-reset]');
+    const climb = figure.querySelector('[data-climb]');
+    const tangent = figure.querySelector('[data-tangent]');
+    const curvePoint = figure.querySelector('[data-curve-point]');
+    const nextPoint = figure.querySelector('[data-next-point]');
+    const currentLabel = figure.querySelector('[data-current-label]');
+    const nextLabel = figure.querySelector('[data-next-label]');
+    const title = figure.querySelector('#newton-title');
+    const desc = figure.querySelector('#newton-desc');
+    if (!(start instanceof HTMLInputElement) || !(startOutput instanceof HTMLOutputElement) || !(back instanceof HTMLButtonElement) || !(next instanceof HTMLButtonElement) || !(reset instanceof HTMLButtonElement) || !(climb instanceof SVGPathElement) || !(tangent instanceof SVGPathElement) || !(curvePoint instanceof SVGCircleElement) || !(nextPoint instanceof SVGCircleElement) || !(currentLabel instanceof SVGTextElement) || !(nextLabel instanceof SVGTextElement) || !title || !desc) return;
+
+    const plot = { left: 72, right: 620, top: 24, bottom: 500, xMax: 2.6, yMin: -2.2, yMax: 5 };
+    const toX = (x: number) => plot.left + (x / plot.xMax) * (plot.right - plot.left);
+    const toY = (y: number) => plot.top + ((plot.yMax - y) / (plot.yMax - plot.yMin)) * (plot.bottom - plot.top);
+    const axisY = toY(0);
+    const root = Math.sqrt(2);
+    let stage = 0;
+
+    const makeSequence = (x0: number) => {
+      const values = [x0];
+      for (let index = 0; index < 5; index += 1) {
+        const current = values[index];
+        values.push(0.5 * (current + 2 / current));
+      }
+      return values;
+    };
+
+    const subscript = (value: number) => ['₀', '₁', '₂', '₃', '₄', '₅'][value] ?? String(value);
+    const render = () => {
+      const sequence = makeSequence(Number(start.value));
+      const current = sequence[stage];
+      const following = sequence[stage + 1];
+      const y = current * current - 2;
+      const currentX = toX(current);
+      const currentY = toY(y);
+      const followingX = toX(following);
+
+      climb.setAttribute('d', `M${currentX} ${axisY}V${currentY}`);
+      tangent.setAttribute('d', `M${currentX} ${currentY}L${followingX} ${axisY}`);
+      curvePoint.setAttribute('cx', String(currentX));
+      curvePoint.setAttribute('cy', String(currentY));
+      nextPoint.setAttribute('cx', String(followingX));
+      nextPoint.setAttribute('cy', String(axisY));
+      currentLabel.setAttribute('x', String(currentX - 10));
+      currentLabel.setAttribute('y', String(currentY - 13));
+      currentLabel.textContent = `x${subscript(stage)}`;
+      nextLabel.setAttribute('x', String(followingX + 9));
+      nextLabel.setAttribute('y', String(axisY + 28));
+      nextLabel.textContent = `x${subscript(stage + 1)}`;
+
+      const iteration = figure.querySelector('[data-iteration]');
+      const currentValue = figure.querySelector('[data-current-value]');
+      const nextValue = figure.querySelector('[data-next-value]');
+      const errorValue = figure.querySelector('[data-error-value]');
+      const status = figure.querySelector('[data-status]');
+      const liveSteps = figure.querySelector('[data-live-steps]');
+      const liveValue = figure.querySelector('[data-live-value]');
+      if (iteration) iteration.textContent = `n = ${stage} → ${stage + 1}`;
+      if (currentValue) currentValue.textContent = current.toFixed(10);
+      if (nextValue) nextValue.textContent = following.toFixed(10);
+      if (errorValue) errorValue.textContent = Math.abs(following - root).toExponential(4);
+      if (status) status.textContent = stage === 4 ? 'ten displayed digits agree' : 'tangent meets x-axis';
+      if (liveSteps) liveSteps.textContent = `${stage + 1} tangent ${stage === 0 ? 'step' : 'steps'}`;
+      if (liveValue) liveValue.textContent = following.toFixed(10);
+
+      startOutput.value = Number(start.value).toFixed(2);
+      back.disabled = stage === 0;
+      next.disabled = stage === 4;
+
+      figure.querySelectorAll('[data-sequence-point]').forEach((node, index) => {
+        if (!(node instanceof SVGCircleElement)) return;
+        node.setAttribute('cx', String(toX(sequence[index])));
+        node.setAttribute('cy', String(axisY));
+        node.classList.toggle('reached', index <= stage + 1);
+      });
+      figure.querySelectorAll('[data-step-row]').forEach((row, index) => {
+        const valueCell = row.querySelector('[data-step-value]');
+        const errorCell = row.querySelector('[data-step-error]');
+        if (valueCell) valueCell.textContent = sequence[index].toFixed(10);
+        if (errorCell) errorCell.textContent = Math.abs(sequence[index] - root).toExponential(3);
+        row.classList.toggle('active', index === stage || index === stage + 1);
+      });
+
+      title.textContent = `Newton step ${stage + 1} moves from ${current.toFixed(6)} to ${following.toFixed(6)}`;
+      desc.textContent = `A dashed vertical line rises at x equals ${current.toFixed(6)} to the parabola y equals x squared minus two. A solid tangent segment meets the x-axis at ${following.toFixed(6)}, whose absolute error from square root of two is ${Math.abs(following - root).toExponential(3)}.`;
+    };
+
+    start.addEventListener('input', () => { stage = 0; render(); });
+    back.addEventListener('click', () => { stage = Math.max(0, stage - 1); render(); });
+    next.addEventListener('click', () => { stage = Math.min(4, stage + 1); render(); });
+    reset.addEventListener('click', () => { start.value = '1'; stage = 0; render(); });
+    render();
+  });
+</script>
+
+<style>
+  .newton-lab {
+    --nt-blue: #087dcc;
+    --nt-green: #4f9300;
+    --nt-pink: #d9007e;
+    background: radial-gradient(circle at 82% 10%, color-mix(in srgb, var(--nt-blue) 11%, transparent), transparent 24rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .newton-lab { --nt-blue: #1493ff; --nt-green: #93ff14; --nt-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 720px; width: 100%; }
+  svg text { fill: var(--text-secondary); font-family: var(--font-sans); }
+  .grid path { fill: none; stroke: var(--border-color); stroke-width: 1; }
+  .axes path { fill: none; stroke: var(--text-secondary); stroke-width: 1.5; }
+  .axes text { font-size: 12px; }
+  .parabola { fill: none; stroke: var(--nt-blue); stroke-linecap: round; stroke-width: 4; }
+  .root-guide { fill: none; stroke: var(--nt-green); stroke-dasharray: 7 7; stroke-width: 2; }
+  .root { fill: var(--nt-green); filter: url(#newton-glow); stroke: var(--bg-color); stroke-width: 2; }
+  .root-label { fill: var(--nt-green); font-size: 14px; font-weight: 800; }
+  .history circle { fill: var(--text-secondary); opacity: .18; }
+  .history circle.reached { fill: var(--nt-green); opacity: .75; }
+  .climb { fill: none; stroke: var(--nt-blue); stroke-dasharray: 7 6; stroke-width: 2.5; }
+  .tangent { fill: none; stroke: var(--nt-pink); stroke-linecap: round; stroke-width: 4; }
+  .pink-tip { fill: var(--nt-pink); }
+  .curve-point { fill: var(--nt-blue); stroke: var(--bg-color); stroke-width: 2; }
+  .next-point { fill: var(--nt-pink); filter: url(#newton-glow); stroke: var(--bg-color); stroke-width: 2; }
+  .current-label, .next-label { fill: var(--text-primary); font-size: 14px; font-weight: 800; }
+  .formula-panel { font-variant-numeric: tabular-nums; }
+  .panel-label { fill: var(--text-primary); font-size: 11px; font-weight: 800; letter-spacing: .12em; }
+  .iteration { fill: var(--nt-green); font-size: 25px; font-weight: 800; }
+  .formula { fill: var(--text-primary); font-size: 16px; }
+  .panel-rule { stroke: var(--border-color); }
+  .value { fill: var(--text-primary); font-size: 20px; font-weight: 750; }
+  .next-value { fill: var(--nt-pink); }
+  .error-value { fill: var(--nt-green); font-size: 19px; font-weight: 750; }
+  .status { font-size: 12px; }
+  .controls { align-items: end; display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr) auto; margin-top: .9rem; }
+  .controls label { color: var(--text-primary); display: grid; font-size: .77rem; font-weight: 800; gap: .45rem; grid-template-columns: auto minmax(10rem, 1fr) 3.5rem; }
+  input[type='range'] { accent-color: var(--nt-blue); cursor: pointer; width: 100%; }
+  input[type='range']:focus-visible, button:focus-visible { outline: 3px solid color-mix(in srgb, var(--nt-green) 65%, transparent); outline-offset: 3px; }
+  output { color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+  .step-controls { display: flex; flex-wrap: wrap; gap: .45rem; }
+  button { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); cursor: pointer; font: inherit; font-size: .72rem; font-weight: 750; padding: .5rem .65rem; }
+  button:hover:not(:disabled) { border-color: var(--nt-blue); }
+  button:disabled { cursor: default; opacity: .4; }
+  .sequence-shell { overflow-x: auto; }
+  table { border-collapse: collapse; font-size: .75rem; font-variant-numeric: tabular-nums; margin: .9rem 0 0; width: 100%; }
+  th, td { border-bottom: 1px solid var(--border-color); padding: .42rem .55rem; text-align: right; }
+  th:first-child { text-align: left; }
+  thead th { color: var(--text-secondary); font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
+  tbody tr { opacity: .5; }
+  tbody tr.active { background: color-mix(in srgb, var(--nt-blue) 8%, transparent); opacity: 1; }
+  .readout { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary); font-size: .8rem; margin-top: .85rem; padding: .75rem .85rem; }
+  .readout strong { color: var(--text-primary); }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 720px) {
+    .newton-lab { width: calc(100vw - 1.5rem); }
+    .controls { grid-template-columns: 1fr; }
+    .controls label { grid-template-columns: 1fr; }
+    output { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) { .newton-lab * { transition: none !important; } }
+</style>

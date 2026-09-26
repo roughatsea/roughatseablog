@@ -1,0 +1,318 @@
+---
+title: "How Can a Tangent Line Find √2?"
+description: "Newton’s method replaces a hard curve with an easy tangent, then repeats. For square roots, the error nearly squares itself away at every step."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-26.svg"
+heroImageAlt: "On a dark maritime blueprint, a cyan parabola crosses a horizontal axis above rolling contour lines. Successive dashed climbs and solid magenta tangent segments close in on one glowing green root."
+date: 2026-09-26
+publishedAt: 2026-09-26T06:00:00-07:00
+area: "Calculus and numerical analysis"
+difficulty: "Intermediate"
+prerequisites:
+  - "Derivatives of polynomials"
+  - "Tangent lines"
+  - "Algebra with fractions"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - calculus
+  - numerical-analysis
+  - newtons-method
+  - root-finding
+  - square-roots
+  - convergence
+  - history-of-mathematics
+---
+
+import NewtonTangentLab from '../../components/reckonings/NewtonTangentLab.astro';
+
+Suppose a calculator must produce $\sqrt2$, but its arithmetic unit can only add, subtract, multiply, and divide. How can those four operations find a number whose decimal expansion never ends?
+
+Begin with a poor guess:
+
+$$
+x_0=1.
+$$
+
+If $x_0$ were exactly $\sqrt2$, then $2/x_0$ would be the same number. Instead, $x_0=1$ is too small and $2/x_0=2$ is too large. Average the two:
+
+$$
+x_1=\frac12\left(1+\frac21\right)=1.5.
+$$
+
+Repeat the same arithmetic and the estimate improves with startling speed:
+
+$$
+1,\quad 1.5,\quad 1.416666\ldots,\quad 1.414215\ldots,\quad 1.41421356237\ldots
+$$
+
+The familiar square-root average is one case of **Newton's method**, an algorithm that searches for a zero of a function by repeatedly drawing a tangent line.
+
+## Walk the tangent steps
+
+The diagram uses the function $f(x)=x^2-2$. Its positive zero is $\sqrt2$ because $f(\sqrt2)=0$. Change the starting guess, then use the buttons to follow successive tangent lines.
+
+<NewtonTangentLab />
+
+The method climbs vertically from the current estimate $x_n$ to the point $(x_n,f(x_n))$. The tangent at that point meets the horizontal axis at the next estimate $x_{n+1}$. Near $\sqrt2$, the axis crossings crowd together so tightly that the last steps become almost invisible.
+
+## The rule, with its conditions exposed
+
+Let $f$ be a differentiable function, and suppose the equation
+
+$$
+f(x)=0
+$$
+
+has a solution. A number that makes $f(x)$ equal zero is called a **root** or **zero** of $f$.
+
+Choose an initial estimate $x_0$. At step $n$, the tangent line to the graph of $f$ at $x_n$ has equation
+
+$$
+y=f(x_n)+f'(x_n)(x-x_n),
+$$
+
+where $f'(x_n)$ is the derivative of $f$ evaluated at $x_n$. To find where the tangent crosses the horizontal axis, set $y=0$:
+
+$$
+0=f(x_n)+f'(x_n)(x_{n+1}-x_n).
+$$
+
+Solving for the next estimate gives the Newton update
+
+$$
+\boxed{x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}}.
+$$
+
+The division requires $f'(x_n)\ne0$. The update also needs a starting estimate from which the sequence actually approaches the intended root. The [National Institute of Standards and Technology Digital Library of Mathematical Functions](https://dlmf.nist.gov/3.8.ii) states the result precisely: near a simple zero, Newton's rule converges locally and quadratically. “Locally” means that sufficiently close starting values work. “Quadratically” describes how the error behaves once the estimates are close.
+
+## Why the square-root average is a tangent calculation
+
+To compute $\sqrt2$, use
+
+$$
+f(x)=x^2-2.
+$$
+
+Its derivative is
+
+$$
+f'(x)=2x.
+$$
+
+Insert those two expressions into the general Newton update:
+
+$$
+\begin{aligned}
+x_{n+1}
+&=x_n-\frac{x_n^2-2}{2x_n}\\
+&=\frac{2x_n^2-(x_n^2-2)}{2x_n}\\
+&=\frac{x_n^2+2}{2x_n}\\
+&=\frac12\left(x_n+\frac2{x_n}\right).
+\end{aligned}
+$$
+
+The tangent construction and the “average a guess with $2$ divided by that guess” rule are the same algorithm written in two forms.
+
+## Worked example: from one digit to twelve
+
+Start at $x_0=1$. The first update is
+
+$$
+x_1=\frac12\left(1+\frac21\right)=\frac32.
+$$
+
+For the second update, keep the fraction exact:
+
+$$
+\begin{aligned}
+x_2
+&=\frac12\left(\frac32+\frac{2}{3/2}\right)\\
+&=\frac12\left(\frac32+\frac43\right)\\
+&=\frac12\left(\frac{9+8}{6}\right)\\
+&=\frac{17}{12}\\
+&=1.4166666667\ldots
+\end{aligned}
+$$
+
+The third update is
+
+$$
+\begin{aligned}
+x_3
+&=\frac12\left(\frac{17}{12}+\frac{24}{17}\right)\\
+&=\frac12\left(\frac{289+288}{204}\right)\\
+&=\frac{577}{408}\\
+&=1.4142156863\ldots
+\end{aligned}
+$$
+
+One more update gives
+
+$$
+x_4=\frac{665857}{470832}=1.4142135623746899\ldots
+$$
+
+The true value begins
+
+$$
+\sqrt2=1.4142135623730950\ldots,
+$$
+
+so four tangent steps after the initial guess agree with $\sqrt2$ through 11 decimal places.
+
+The speed is not luck. Let $r=\sqrt2$ and define the error after step $n$ by
+
+$$
+e_n=x_n-r.
+$$
+
+Because $r^2=2$, the next error satisfies an exact identity:
+
+$$
+\begin{aligned}
+e_{n+1}
+&=\frac12\left(x_n+\frac{r^2}{x_n}\right)-r\\
+&=\frac{x_n^2-2rx_n+r^2}{2x_n}\\
+&=\boxed{\frac{(x_n-r)^2}{2x_n}}\\
+&=\frac{e_n^2}{2x_n}.
+\end{aligned}
+$$
+
+Once $x_n$ is close to $r$, the denominator is close to $2r$, while the numerator is the previous error squared. Squaring a small number makes it much smaller. That is why the number of correct digits roughly doubles at each successful late step.
+
+## Fast does not mean foolproof
+
+For $x^2-2$, every positive starting guess produces positive updates and converges to $\sqrt2$. The starting value $x_0=0$ is forbidden because the update divides by $2x_0$. A negative starting guess converges to the other root, $-\sqrt2$.
+
+General functions can behave worse. Consider
+
+$$
+f(x)=x^3-2x+2,
+\qquad
+f'(x)=3x^2-2.
+$$
+
+Start at $x_0=0$:
+
+$$
+x_1=0-\frac{f(0)}{f'(0)}=0-\frac{2}{-2}=1.
+$$
+
+The next step returns to zero:
+
+$$
+x_2=1-\frac{f(1)}{f'(1)}=1-\frac{1}{1}=0.
+$$
+
+The sequence then repeats $0,1,0,1,\ldots$ and never reaches the real root. A production root finder usually watches for small derivatives, stalled progress, cycles, and estimates that leave a trusted interval. Newton's method is powerful because local linear approximations are powerful; it can fail because a tangent line only describes the curve near the point of contact.
+
+## Try the update
+
+### Problem 1
+
+Use the square-root update to approximate $\sqrt{10}$. Begin with $x_0=3$ and compute $x_1$ and $x_2$ exactly as fractions.
+
+<details>
+<summary>Reveal the solution</summary>
+
+For $\sqrt{10}$, replace $2$ in the update by $10$:
+
+$$
+x_{n+1}=\frac12\left(x_n+\frac{10}{x_n}\right).
+$$
+
+The first step is
+
+$$
+x_1=\frac12\left(3+\frac{10}{3}\right)
+=\frac12\left(\frac{19}{3}\right)
+=\frac{19}{6}.
+$$
+
+The second step is
+
+$$
+\begin{aligned}
+x_2
+&=\frac12\left(\frac{19}{6}+\frac{60}{19}\right)\\
+&=\frac12\left(\frac{361+360}{114}\right)\\
+&=\frac{721}{228}\\
+&\approx3.1622807018.
+\end{aligned}
+$$
+
+Squaring the exact fraction gives
+
+$$
+\left(\frac{721}{228}\right)^2
+=\frac{519841}{51984}
+\approx 10.0000192367,
+$$
+
+already close to $10$.
+
+</details>
+
+### Problem 2
+
+Apply one Newton step to $f(x)=x^3-5$ starting from $x_0=2$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Differentiate first:
+
+$$
+f'(x)=3x^2.
+$$
+
+At $x_0=2$,
+
+$$
+f(2)=8-5=3
+\qquad\text{and}\qquad
+f'(2)=3(2^2)=12.
+$$
+
+Therefore
+
+$$
+x_1=2-\frac{3}{12}=2-\frac14=\frac74=1.75.
+$$
+
+The target root is $\sqrt[3]{5}\approx1.710$, so the tangent step moved the estimate closer.
+
+</details>
+
+## A method with more than one inventor
+
+The need to extract square roots predates calculus by millennia. The Old Babylonian artifact known as Yale Babylonian Collection (YBC) tablet 7289, dated to the nineteenth through seventeenth centuries before the Common Era (BCE), records an approximation to $\sqrt2$ accurate to about six decimal places, according to the [Yale Peabody Museum](https://peabody.yale.edu/explore/exhibitions/ancient-egypt-mesopotamia). A [New York University Institute for the Study of the Ancient World exhibit](https://isaw.nyu.edu/exhibitions/before-pythagoras/items/ybc-7289/) says the tablet shows that Babylonian scribes possessed a method for accurate square-root estimates. Historians David Fowler and Eleanor Robson argue that this particular tablet was probably a trainee scribe's school exercise copied from a coefficient list; their [1998 study](https://wrap.warwick.ac.uk/15003/) reconstructs an algorithm consistent with the broader Old Babylonian evidence without claiming to know the tablet writer's exact calculation.
+
+In seventh-century India, Brahmagupta presented a square-root algorithm in the *Brāhmasphuṭasiddhānta*. The [MacTutor biography of Brahmagupta](https://mathshistory.st-andrews.ac.uk/Biographies/Brahmagupta/) reports that the algorithm is equivalent to the iteration now associated with Newton and Raphson. Brahmagupta's mathematical work belonged to a treatise on astronomy as well as arithmetic and algebra; accurate computation served calendars, planetary models, and eclipse calculations.
+
+The European history adds another layer. Isaac Newton had devised a method for approximating polynomial roots by 1669. Joseph Raphson published a streamlined modification in 1690. The derivative-based update displayed in this lesson, however, appeared in Thomas Simpson's 1740 work. A [historical study in the *British Journal for the History of Science*](https://doi.org/10.1017/S0007087400029150) argues that attributing the modern formula directly to Newton is a durable historical transposition; the [MacTutor biography of Simpson](https://mathshistory.st-andrews.ac.uk/Biographies/Simpson/) likewise credits Simpson with the present iterative form.
+
+“Newton's method” is therefore a convenient name for a long development, not a complete account of its invention.
+
+## Where tangent steps are used
+
+Many equations that arise in science and engineering have no useful closed-form solution. A numerical root finder turns “solve $f(x)=0$” into arithmetic a computer can repeat. The [NIST Digital Library of Mathematical Functions](https://dlmf.nist.gov/3.8.ii) treats Newton's rule as a standard method for nonlinear equations and links it throughout its chapters for computing zeros of special functions.
+
+The same update appears in more than one mathematical disguise. To locate a stationary point of a function $g$, solve $g'(x)=0$; Newton's method applied to the derivative uses both $g'$ and $g''$. For several unknowns, the scalar derivative becomes a Jacobian matrix and each step solves a linear system. Those extensions support parameter fitting, equilibrium calculations, implicit simulation steps, and optimization. Practical software often combines Newton steps with slower safeguards because the two-cycle above is not an academic curiosity: a fast local method still needs a plan for bad starting values.
+
+## One idea to remember
+
+Newton's method asks a curve an easier question. Instead of solving $f(x)=0$ directly, it solves the tangent line's equation, moves to that answer, and asks again.
+
+To continue, revisit [how a derivative captures instantaneous change](/reckonings/daily-reckoning-2026-08-29/) and [how mathematics makes convergence exact](/reckonings/daily-reckoning-2026-08-30/). The next numerical-analysis question is how to bracket a root so that an iteration cannot wander away.
+
+## Sources
+
+- National Institute of Standards and Technology, [“§3.8 Nonlinear Equations”](https://dlmf.nist.gov/3.8), *Digital Library of Mathematical Functions*.
+- Eric W. Weisstein, [“Newton's Iteration”](https://mathworld.wolfram.com/NewtonsIteration.html), Wolfram MathWorld.
+- Yale Peabody Museum, [“Ancient Egypt and Mesopotamia”](https://peabody.yale.edu/explore/exhibitions/ancient-egypt-mesopotamia), YBC 7289 exhibit note.
+- New York University Institute for the Study of the Ancient World, [“Tablet illustrating Pythagoras' Theorem and the square root of 2”](https://isaw.nyu.edu/exhibitions/before-pythagoras/items/ybc-7289/).
+- David Fowler and Eleanor Robson, [“Square Root Approximations in Old Babylonian Mathematics: YBC 7289 in Context”](https://wrap.warwick.ac.uk/15003/), *Historia Mathematica*, volume 25, issue 4, 1998, pages 366–378.
+- J. J. O'Connor and E. F. Robertson, [“Brahmagupta”](https://mathshistory.st-andrews.ac.uk/Biographies/Brahmagupta/), MacTutor History of Mathematics, University of St Andrews.
+- Nick Kollerstrom, [“Thomas Simpson and ‘Newton's method of approximation’: an enduring myth”](https://doi.org/10.1017/S0007087400029150), *British Journal for the History of Science*, volume 25, issue 3, 1992, pages 347–354.
+- J. J. O'Connor and E. F. Robertson, [“Thomas Simpson”](https://mathshistory.st-andrews.ac.uk/Biographies/Simpson/), MacTutor History of Mathematics, University of St Andrews.
