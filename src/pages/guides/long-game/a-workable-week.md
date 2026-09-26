@@ -81,7 +81,13 @@ That is a reason not to assume that aerobic activity must be sacrificed whenever
 
 For food planning, give the fictional reader a body weight of **80 kilograms**. NIH’s Office of Dietary Supplements reports athlete protein recommendations of **1.2–2.0 grams per kilogram per day**. Applying that range to this example produces 96–160 grams per day. Translation from athlete guidance to a recreational trainee is a judgment, and the range is not a longevity prescription. [C06](/guides/long-game/evidence/#C06)
 
-Choose **1.6 grams per kilogram** solely to demonstrate the calculation:
+The **2025–2030 Dietary Guidelines for Americans** give a population protein goal of **1.2–1.6 grams per kilogram per day**, adjusted for individual caloric requirements. That corresponds to 96–128 grams for this fictional reader. The athlete range and population range describe different guidance; neither makes its upper end a universal minimum. [C15](/guides/long-game/evidence/#C15) [R03](/guides/long-game/evidence/#R03)
+
+The federal scientific report explains that its 30-trial body-composition review mainly involved adults with overweight or obesity eating fewer calories, alongside smaller studies in weight-stable adults. Preserving lean mass during weight loss is not the same question as maximizing growth without weight loss, and neither result establishes longer survival. We use that report to clarify applicability, not to declare one intake best for everyone. [C16](/guides/long-game/evidence/#C16)
+
+A separate review by Nunes and colleagues covered 74 randomized trials in healthy, non-obese adults. Additional protein produced a small average lean-mass benefit with resistance training; evidence without training was sparse. Most trials lasted 8–12 weeks. These results do not establish a lifelong-health threshold or a compulsory dose. [C17](/guides/long-game/evidence/#C17)
+
+For this example, retain **1.6 grams per kilogram** as a reasonable training-oriented choice at the upper end of the population range and within the athlete range. That choice is our practical synthesis, not a precisely established optimum or proof of a longevity benefit. The arithmetic remains: [R03](/guides/long-game/evidence/#R03)
 
 **80 kilograms × 1.6 grams per kilogram = 128 grams of protein per day.**
 

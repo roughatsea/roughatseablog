@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "title": "The Long Game",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishedOn": "2026-09-24",
-  "lastEdited": "2026-09-25",
-  "lastEvidenceReview": "2026-09-25",
+  "lastEdited": "2026-09-26",
+  "lastEvidenceReview": "2026-09-26",
   "priority": "Lifelong health, capability and quality of life; hypertrophy is a major supporting goal.",
   "reviewStatus": "AI-assisted foundation; no independent clinical or specialist review has been completed.",
   "sources": [
@@ -69,7 +69,7 @@
       "url": "https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-HealthProfessional/",
       "published": "Living fact sheet; publication date not asserted",
       "access": "Relevant protein and dietary-foundation sections inspected",
-      "reviewedOn": "2026-09-24",
+      "reviewedOn": "2026-09-26",
       "status": "active",
       "evidenceGroup": "S06",
       "limitations": "An institutional evidence summary. Athlete protein guidance is not evidence of a lifespan benefit, and it is not automatically applicable to kidney disease or every body size."
@@ -161,6 +161,39 @@
       "status": "active",
       "evidenceGroup": "S04",
       "limitations": "An overview of reviews in healthy adults, not a trial of this guide. S04 summarizes the same work; these are not independent confirmations. No lifespan effect or individually optimal dose is established here."
+    },
+    {
+      "id": "S15",
+      "title": "USDA and HHS — Dietary Guidelines for Americans, 2025–2030",
+      "url": "https://cdn.realfood.gov/DGA.pdf",
+      "published": "2025–2030 edition",
+      "access": "Protein guidance on printed page 2 inspected in parsed text and a PDF screenshot.",
+      "reviewedOn": "2026-09-26",
+      "status": "active",
+      "evidenceGroup": "S15",
+      "limitations": "Population guidance, not a randomized test of a universal minimum, individualized optimum or lifespan effect. S16 is its companion scientific report, not independent confirmation."
+    },
+    {
+      "id": "S16",
+      "title": "USDA and HHS — Scientific Foundation, Chapter 6: Dietary Protein",
+      "url": "https://cdn.realfood.gov/Scientific%20Report_508.pdf",
+      "published": "Companion to the 2025–2030 Dietary Guidelines",
+      "access": "Relevant Chapter 6 passages, printed pages 37–38, inspected in parsed text and PDF screenshots; Appendix 4.9 and underlying trials not independently appraised.",
+      "reviewedOn": "2026-09-26",
+      "status": "active",
+      "evidenceGroup": "S15",
+      "limitations": "The described body-composition review mainly concerns calorie-restricted adults with overweight or obesity. Its applicability is not identical to weight-stable recreational training. We do not adopt its effect-size or universal-safety claims without further appraisal."
+    },
+    {
+      "id": "S17",
+      "title": "Nunes et al. — Protein intake, muscle mass and function in healthy adults",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/jcsm.12922",
+      "published": "2022-02-20; DOI 10.1002/jcsm.12922",
+      "access": "Full HTML methods, results, discussion and disclosures inspected; supplements and individual trials not reappraised.",
+      "reviewedOn": "2026-09-26",
+      "status": "active",
+      "evidenceGroup": "S17",
+      "limitations": "Search through September 2020; heterogeneous doses and measurements. ILSI Europe funding and industry relationships are disclosed. A separate review is not necessarily an independent evidence base; overlap has not been fully mapped."
     }
   ],
   "claims": [
@@ -257,7 +290,7 @@
       "population": "Athletes; translation to a recreational adult is an explicit synthesis",
       "outcome": "Protein intake in support of training",
       "limitations": "Not a longevity dose; do not extrapolate mechanically to kidney disease, pregnancy, substantial obesity or special clinical circumstances.",
-      "reviewedOn": "2026-09-24",
+      "reviewedOn": "2026-09-26",
       "defaultAdvice": false,
       "status": "active"
     },
@@ -390,6 +423,54 @@
       "status": "active"
     },
     {
+      "id": "C15",
+      "statement": "The 2025–2030 US Dietary Guidelines state a protein goal of 1.2–1.6 g/kg/day, adjusted for individual caloric requirements.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S15"
+      ],
+      "dependsOn": [],
+      "population": "General population guidance; this guide discusses adult applicability",
+      "outcome": "Published protein-intake guidance",
+      "limitations": "Not a trial establishing a universal minimum or longevity dose.",
+      "reviewedOn": "2026-09-26",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C16",
+      "statement": "The federal scientific report describes a 30-trial body-composition review mainly in calorie-restricted adults with overweight or obesity, with smaller weight-stable studies.",
+      "kind": "finding",
+      "confidence": "qualified",
+      "sources": [
+        "S16"
+      ],
+      "dependsOn": [],
+      "population": "Predominantly adults with overweight or obesity during calorie restriction",
+      "outcome": "Applicability of the report’s body-composition evidence",
+      "limitations": "Report-level appraisal only; not a fresh pooled analysis or a mortality finding.",
+      "reviewedOn": "2026-09-26",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C17",
+      "statement": "A 74-trial review found a small additional lean-mass benefit with protein plus resistance training; protein-only evidence was limited.",
+      "kind": "finding",
+      "confidence": "qualified",
+      "sources": [
+        "S17"
+      ],
+      "dependsOn": [],
+      "population": "Healthy non-obese adults; weight-loss protocols excluded",
+      "outcome": "Lean mass and function, not survival",
+      "limitations": "Most trials were short; lean mass is not identical to skeletal muscle. This does not establish an exact intake threshold.",
+      "reviewedOn": "2026-09-26",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
       "id": "R01",
       "statement": "Use a small set of repeatable nutrition, aerobic-activity and resistance-training decisions before adding specialized optimization tasks.",
       "kind": "synthesis",
@@ -441,19 +522,25 @@
     },
     {
       "id": "R03",
-      "statement": "For an illustrative healthy 80-kilogram recreational trainee, 1.6 g/kg/day gives 128 g/day; dividing that total into four 32-g portions is bookkeeping, not an established optimal meal schedule.",
+      "statement": "Retain 1.6 g/kg/day (128 g/day) for the fictional 80-kilogram recreational trainee as a training-oriented example within athlete guidance and at the upper end of current US population guidance; four 32-g portions remain arithmetic, not an optimal meal schedule.",
       "kind": "synthesis",
       "confidence": "reasoned",
       "sources": [
-        "S06"
+        "S06",
+        "S15",
+        "S16",
+        "S17"
       ],
       "dependsOn": [
-        "C06"
+        "C06",
+        "C15",
+        "C16",
+        "C17"
       ],
       "population": "A fictional 80-kilogram adult without a condition requiring a different target",
       "outcome": "Demonstration of protein-target arithmetic",
-      "limitations": "Choice of 1.6 is an example within the cited athlete range, not a lifespan recommendation or proof of the best dose for this person.",
-      "reviewedOn": "2026-09-24",
+      "limitations": "A practical synthesis, not a universal minimum, individually established optimum or longevity dose. Whole-diet quality, applicability and burden still matter.",
+      "reviewedOn": "2026-09-26",
       "defaultAdvice": true,
       "status": "active"
     },
@@ -490,10 +577,11 @@
         "C06",
         "C12",
         "C13",
-        "R01"
+        "R01",
+        "R03"
       ],
-      "reviewedOn": "2026-09-25",
-      "contentSha256": "632af45bda4c49918626ffc832a9e47497c5bbdeea508b02190128e677562881"
+      "reviewedOn": "2026-09-26",
+      "contentSha256": "50cefaee406d88a57204153472d3ec6dfe6679d628eac8a267b8fe675a0b559b"
     },
     {
       "slug": "a-workable-week",
@@ -509,11 +597,14 @@
         "C07",
         "C13",
         "C14",
+        "C15",
+        "C16",
+        "C17",
         "R02",
         "R03"
       ],
-      "reviewedOn": "2026-09-25",
-      "contentSha256": "10458fb6243b5258adfb745654ca9561ece1f0af980f1c67307d6ebd6bf9e27f"
+      "reviewedOn": "2026-09-26",
+      "contentSha256": "8456d5a7815e1f61b0fa95a73e5ee08e88879ff4990d5370ccc1504d3e9677d6"
     },
     {
       "slug": "longevity-evidence",
@@ -524,10 +615,11 @@
         "C08",
         "C09",
         "C10",
-        "C11"
+        "C11",
+        "C17"
       ],
-      "reviewedOn": "2026-09-25",
-      "contentSha256": "2bca4f1317e753088e79c0ba1464c84310aea60cde2d7857d9a30f3087a27e82"
+      "reviewedOn": "2026-09-26",
+      "contentSha256": "77d6e59ee94120c5ede113e39010ee485980276393e079c95bb2502511d37f85"
     },
     {
       "slug": "methods",
@@ -538,7 +630,7 @@
         "C10",
         "H01"
       ],
-      "reviewedOn": "2026-09-25",
+      "reviewedOn": "2026-09-26",
       "contentSha256": "c1d3e26d704599d43439db4aff5959aaabf7760bfc78a590d0036b3dc29c2c6a"
     }
   ]
