@@ -1,5 +1,33 @@
 [
   {
+    "date": "2026-09-27",
+    "version": "0.1.3",
+    "title": "A food foundation within the living guide",
+    "outcome": "held",
+    "summary": "Prepared for manual pull-request review. Added a dedicated food-foundation chapter, integrated it into the reading path and navigation, linked related chapters, and expanded generated-page checks to cover its route. Held denotes awaiting the user’s review and merge, not a clinical safety objection.",
+    "scope": "Reconstructed current files and verified their Git blob hashes against fresh main before editing. Read the seven existing guide routes and considered all claims, dependencies, history, style guidance, layout and checks. The Sunday structural review identified whole-diet coverage as a gap beside the detailed training and protein example. Fresh evidence work inspected WHO’s January 26, 2026 fact sheet, the complete AHA official summary and relevant sections of its March 31 explanatory release. Searches included WHO healthy diet 2026; AHA dietary guidance 2026; and DOI 10.1161/CIR.0000000000001435 with processing and correction/erratum/retraction terms. The journal full-text request returned HTTP 403. No exhaustive search, full-paper appraisal, processing-classification review or reassessment of unrelated sources is claimed.",
+    "recommendationChange": "No change to the worked training schedule, exercises, loads, progression rule, or 128-gram protein illustration. Added labeled meal-building synthesis and ordinary food-selection guidance, without introducing calorie targets, fasting, supplements or disease-specific diets. Existing claim confidence labels and the unconfirmed H01 hypothesis remain unchanged.",
+    "verification": "Local registry and transition checks and all 16 existing rehearsal tests passed. Full-site build results are recorded separately in the pull request after existing CI completes. The generated-page check now includes the new eighth route without removing existing checks. A full local clone failed because GitHub DNS resolution was unavailable; the full production build uses existing branch/PR CI. This record does not claim production publication, independent clinical review or visual browser verification.",
+    "next": "Complete the user’s PR review and merge, then verify production separately. Deepen nutrient adequacy, dietary-pattern trials, processing evidence and adaptations across age and ability. Prior held entries remain preserved as their preparation-time history, not rewritten as retrospective release receipts.",
+    "reviewedClaims": [
+      "C05",
+      "C18",
+      "C19",
+      "C20",
+      "R01",
+      "R04"
+    ],
+    "reviewedChapters": [
+      "priorities",
+      "food-foundation",
+      "a-workable-week",
+      "longevity-evidence",
+      "methods"
+    ],
+    "confidenceChanges": [],
+    "heldRisks": []
+  },
+  {
     "date": "2026-09-26",
     "version": "0.1.2",
     "title": "Protein targets: guidance, training and applicability",

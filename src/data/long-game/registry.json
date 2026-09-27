@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "title": "The Long Game",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publishedOn": "2026-09-24",
-  "lastEdited": "2026-09-26",
-  "lastEvidenceReview": "2026-09-26",
+  "lastEdited": "2026-09-27",
+  "lastEvidenceReview": "2026-09-27",
   "priority": "Lifelong health, capability and quality of life; hypertrophy is a major supporting goal.",
   "reviewStatus": "AI-assisted foundation; no independent clinical or specialist review has been completed.",
   "sources": [
@@ -58,7 +58,7 @@
       "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
       "published": "2026-01-26",
       "access": "Official public-health guidance inspected",
-      "reviewedOn": "2026-09-24",
+      "reviewedOn": "2026-09-27",
       "status": "active",
       "evidenceGroup": "S05",
       "limitations": "General dietary guidance. A menu assembled from these principles is not automatically nutritionally complete."
@@ -194,6 +194,28 @@
       "status": "active",
       "evidenceGroup": "S17",
       "limitations": "Search through September 2020; heterogeneous doses and measurements. ILSI Europe funding and industry relationships are disclosed. A separate review is not necessarily an independent evidence base; overlap has not been fully mapped."
+    },
+    {
+      "id": "S18",
+      "title": "AHA — 2026 Dietary Guidance: official scientific-statement summary",
+      "url": "https://professional.heart.org/en/science-news/2026-dietary-guidance-to-improve-cardiovascular-health/top-things-to-know",
+      "published": "2026-03-31",
+      "access": "Official summary read in full. The journal article at DOI 10.1161/CIR.0000000000001435 returned HTTP 403; full text and constituent research were not inspected.",
+      "reviewedOn": "2026-09-27",
+      "status": "active",
+      "evidenceGroup": "S18",
+      "limitations": "An institutional summary of cardiovascular dietary guidance, not a trial of the meal examples or a quantified lifespan effect. S19 explains the same statement and is not independent confirmation."
+    },
+    {
+      "id": "S19",
+      "title": "AHA — Following 9 key steps for a lifetime of eating well",
+      "url": "https://newsroom.heart.org/news/following-9-key-steps-for-a-lifetime-of-eating-well-can-support-heart-health",
+      "published": "2026-03-31",
+      "access": "Official explanatory release inspected, including food choices, dairy uncertainty, convenience and flexibility. Its accompanying media and the journal full text were not appraised.",
+      "reviewedOn": "2026-09-27",
+      "status": "active",
+      "evidenceGroup": "S18",
+      "limitations": "A second account of the same statement as S18. Used for bounded guidance and its stated qualifications, not causal estimates, exhaustive processing classifications, or independent study appraisal."
     }
   ],
   "claims": [
@@ -274,7 +296,7 @@
       "population": "General population over ten; this guide applies the guidance to adults",
       "outcome": "Dietary pattern and nutritional adequacy",
       "limitations": "Targets need context. They do not establish a complete diet, individual calorie needs, or a treatment for gastrointestinal or other disease.",
-      "reviewedOn": "2026-09-24",
+      "reviewedOn": "2026-09-27",
       "defaultAdvice": false,
       "status": "active"
     },
@@ -471,6 +493,56 @@
       "status": "active"
     },
     {
+      "id": "C18",
+      "statement": "WHO describes adequacy, balance, moderation and diversity as foundations of a healthy diet, with its composition adapted to personal and cultural circumstances and available foods.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S05"
+      ],
+      "dependsOn": [],
+      "population": "General dietary guidance; applied here to adult education",
+      "outcome": "Principles for constructing a dietary pattern",
+      "limitations": "A framework for guidance, not a validated score or an individualized menu.",
+      "reviewedOn": "2026-09-27",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C19",
+      "statement": "AHA’s 2026 guidance emphasizes the overall dietary pattern: varied produce, mostly whole grains, suitable protein foods, unsaturated in place of saturated fats, and less sodium and added sugar. Its preferred protein foods and dairy qualifications are explained in the official release.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S18",
+        "S19"
+      ],
+      "dependsOn": [],
+      "population": "Adults considering general cardiovascular-health guidance",
+      "outcome": "Food-based dietary recommendations",
+      "limitations": "Summary-level access only. These recommendations do not establish a causal effect of the constructed meals, settle every food comparison, or quantify added years of life.",
+      "reviewedOn": "2026-09-27",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
+      "id": "C20",
+      "statement": "WHO accepts frozen and canned produce without added sugars or excess sodium. AHA also includes these options while preferring minimally processed foods.",
+      "kind": "finding",
+      "confidence": "guideline-based",
+      "sources": [
+        "S05",
+        "S19"
+      ],
+      "dependsOn": [],
+      "population": "Adults selecting practical food options",
+      "outcome": "Convenience within dietary-pattern guidance",
+      "limitations": "Not an endorsement of every packaged food, proof of nutrient equivalence, or a causal appraisal of ultraprocessed-food research.",
+      "reviewedOn": "2026-09-27",
+      "defaultAdvice": false,
+      "status": "active"
+    },
+    {
       "id": "R01",
       "statement": "Use a small set of repeatable nutrition, aerobic-activity and resistance-training decisions before adding specialized optimization tasks.",
       "kind": "synthesis",
@@ -489,7 +561,7 @@
       "population": "Adult general readers",
       "outcome": "Feasibility and alignment with the guide’s health-first purpose",
       "limitations": "An editorial priority rule, not a tested ranking of every health intervention.",
-      "reviewedOn": "2026-09-24",
+      "reviewedOn": "2026-09-27",
       "defaultAdvice": true,
       "status": "active"
     },
@@ -545,6 +617,29 @@
       "status": "active"
     },
     {
+      "id": "R04",
+      "statement": "Use an ordinary-day meal review to choose feasible food changes, considering produce, fiber-containing staples, protein foods, fat replacement, drinks and condiments. Treat the examples as options rather than a compulsory checklist.",
+      "kind": "synthesis",
+      "confidence": "reasoned",
+      "sources": [
+        "S05",
+        "S18",
+        "S19"
+      ],
+      "dependsOn": [
+        "C05",
+        "C18",
+        "C19",
+        "C20"
+      ],
+      "population": "Adult general readers; individual needs and prescribed diets take precedence",
+      "outcome": "Translating dietary-pattern guidance into practical meals",
+      "limitations": "Not a validated adherence intervention, nutritionally complete menu, calorie prescription or claim of longevity benefit. Exact portions and substitutions require context.",
+      "reviewedOn": "2026-09-27",
+      "defaultAdvice": true,
+      "status": "active"
+    },
+    {
       "id": "H01",
       "statement": "A preplanned reduced-demand fallback might improve long-term participation compared with an equally detailed plan that offers only its full schedule.",
       "kind": "hypothesis",
@@ -580,8 +675,22 @@
         "R01",
         "R03"
       ],
-      "reviewedOn": "2026-09-26",
-      "contentSha256": "50cefaee406d88a57204153472d3ec6dfe6679d628eac8a267b8fe675a0b559b"
+      "reviewedOn": "2026-09-27",
+      "contentSha256": "36bf9f28cff75ae53c80824b32b1f9be74413eb20c9bd2870398be98c119dba5"
+    },
+    {
+      "slug": "food-foundation",
+      "title": "Build a diet before you optimize one",
+      "description": "Make ordinary meals work: food quality, convenient options, and clear limits.",
+      "claims": [
+        "C05",
+        "C18",
+        "C19",
+        "C20",
+        "R04"
+      ],
+      "reviewedOn": "2026-09-27",
+      "contentSha256": "1ca64aba74f9c8ea6f815a71bbf58185e37f9233605940570fe39eee8b7b0361"
     },
     {
       "slug": "a-workable-week",
@@ -603,8 +712,8 @@
         "R02",
         "R03"
       ],
-      "reviewedOn": "2026-09-26",
-      "contentSha256": "8456d5a7815e1f61b0fa95a73e5ee08e88879ff4990d5370ccc1504d3e9677d6"
+      "reviewedOn": "2026-09-27",
+      "contentSha256": "38248356d89959b2961c1fbd9cdf8131b9106b2d6f4cd024b02757f98462f79c"
     },
     {
       "slug": "longevity-evidence",
@@ -618,7 +727,7 @@
         "C11",
         "C17"
       ],
-      "reviewedOn": "2026-09-26",
+      "reviewedOn": "2026-09-27",
       "contentSha256": "77d6e59ee94120c5ede113e39010ee485980276393e079c95bb2502511d37f85"
     },
     {
@@ -630,8 +739,8 @@
         "C10",
         "H01"
       ],
-      "reviewedOn": "2026-09-26",
-      "contentSha256": "c1d3e26d704599d43439db4aff5959aaabf7760bfc78a590d0036b3dc29c2c6a"
+      "reviewedOn": "2026-09-27",
+      "contentSha256": "fa8a213c6a4f8bbe9eeb2846a3ed38dcd488ac0aecbdf18c9c1601cf70777cef"
     }
   ]
 }
