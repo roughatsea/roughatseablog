@@ -95,6 +95,8 @@ The kilograms cancel, leaving grams. Four portions of 32 grams would sum to 128 
 
 A meal-planning illustration might use yogurt or a suitable alternative at breakfast, beans and another protein-containing food at lunch, tofu or fish at dinner, and an additional food as needed. Check actual portions and labels rather than borrowing invented protein counts from this example. Pair the protein choices with a varied pattern of vegetables, fruit, whole grains, pulses, and appropriate fats. These foods illustrate the pattern, not a verified complete menu. [C05](/guides/long-game/evidence/#C05) [R03](/guides/long-game/evidence/#R03)
 
+For help assembling the rest of the meal, see [the food-foundation chapter](/guides/long-game/food-foundation/). It develops whole-diet choices and convenient alternatives without changing this protein calculation or the training schedule.
+
 Do not mechanically apply this body-weight calculation to every reader. Kidney disease, substantial obesity, pregnancy, and other clinical contexts can change the assessment; they are outside this example. Nor does the calculation decide calorie intake. A protein target is one input to a diet, not the diet itself.
 
 ## Have a smaller version without pretending it is equivalent

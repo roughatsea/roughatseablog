@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-const routes = ['', 'priorities', 'a-workable-week', 'longevity-evidence', 'methods', 'evidence', 'changes'];
+const routes = ['', 'priorities', 'food-foundation', 'a-workable-week', 'longevity-evidence', 'methods', 'evidence', 'changes'];
 const root = '/guides/long-game/';
 const registry = JSON.parse(readFileSync('src/data/long-game/registry.json','utf8'));
 const pages = new Map();

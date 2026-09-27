@@ -43,6 +43,8 @@ Protein deserves attention when training for muscle growth, but it is not the on
 
 The worked example uses 128 grams of protein for a fictional 80-kilogram trainee. Treat it as a training-oriented planning choice, not a daily pass-or-fail test for everyone. Its rationale and limits are explained alongside the calculation. [R03](/guides/long-game/evidence/#R03)
 
+For a fuller meal-building example, including convenient ingredients and the distinction between food weight and fiber, read [Build a diet before you optimize one](/guides/long-game/food-foundation/).
+
 This edition does not prescribe a calorie deficit, an intentional surplus, fasting, or a target body-fat percentage. Those choices require separate consideration. Wanting more muscle does not, by itself, settle whether weight gain is appropriate.
 
 ## Protect a workable recovery routine
@@ -63,7 +65,7 @@ This one-change approach is an organizational suggestion, not a proven universal
 
 Some circumstances require more than a general guide. New or concerning symptoms, an injury, a medical condition affecting food or activity, pregnancy, or major limitations in exercise tolerance deserve appropriate individualized assessment. This guide’s scope is education; its examples are not clearance to train through an unexplained problem.
 
-The first successful version of your plan does not have to answer every question in nutrition and exercise science. It needs to make the coming week more workable. The next chapter shows one such week and exposes the decisions behind it.
+The first successful version of your plan does not have to answer every question in nutrition and exercise science. It needs to make the coming week more workable. Continue with [the food foundation](/guides/long-game/food-foundation/) to turn nutrition priorities into meals, or go directly to [the worked week](/guides/long-game/a-workable-week/) for an explained training schedule.
 
 ### Source access
 
