@@ -1,0 +1,322 @@
+---
+const people = [
+  { id: 'A', x: 330, y: 78 },
+  { id: 'B', x: 120, y: 238 },
+  { id: 'C', x: 205, y: 475 },
+  { id: 'D', x: 455, y: 475 },
+  { id: 'E', x: 540, y: 238 },
+  { id: 'F', x: 330, y: 330 },
+];
+
+const pairs = people.flatMap((person, index) =>
+  people.slice(index + 1).map((other) => ({ from: person, to: other, key: `${person.id}${other.id}` })),
+);
+
+const spokes = new Set(['AB', 'AC', 'AD', 'AE', 'AF']);
+const chosenFriendSpokes = new Set(['AB', 'AC', 'AD']);
+const innerTriangle = new Set(['BC', 'BD', 'CD']);
+---
+
+<figure class="ramsey-proof reckoning-visual" data-ramsey-proof>
+  <header>
+    <p>Six-person proof</p>
+    <h3>One person forces the argument into two cases</h3>
+  </header>
+
+  <div class="proof-grid">
+    <div class="diagram-shell">
+      <svg viewBox="0 0 660 550" role="img" aria-labelledby="ramsey-title ramsey-desc">
+        <title id="ramsey-title">Six people joined by fifteen possible relationships</title>
+        <desc id="ramsey-desc">Six labeled circles form a network. The first view shows every pair. The controls reveal why three relationships from person A must share a type and why either choice produces a monochromatic triangle.</desc>
+
+        <defs>
+          <filter id="ramsey-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+
+        <g class="edge-field" aria-hidden="true">
+          {pairs.map(({ from, to, key }) => (
+            <line
+              x1={from.x}
+              y1={from.y}
+              x2={to.x}
+              y2={to.y}
+              data-edge={key}
+              class:list={[
+                'edge',
+                spokes.has(key) && 'spoke',
+                chosenFriendSpokes.has(key) && 'chosen-friend',
+                innerTriangle.has(key) && 'inner-edge',
+              ]}
+            />
+          ))}
+        </g>
+
+        <g class="people">
+          {people.map((person) => (
+            <g class:list={['person', person.id === 'A' && 'pivot']} data-person={person.id}>
+              <circle cx={person.x} cy={person.y} r="28" />
+              <text x={person.x} y={person.y + 7} text-anchor="middle">{person.id}</text>
+            </g>
+          ))}
+        </g>
+
+        <g class="legend" transform="translate(466 412)" aria-hidden="true">
+          <line class="friend-sample" x1="0" y1="0" x2="45" y2="0" />
+          <text x="56" y="5">friend</text>
+          <line class="stranger-sample" x1="0" y1="34" x2="45" y2="34" />
+          <text x="56" y="39">stranger</text>
+          <line class="unknown-sample" x1="0" y1="68" x2="45" y2="68" />
+          <text x="56" y="73">not needed yet</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="argument-panel">
+      <p class="eyebrow">Argument map</p>
+      <ol>
+        <li data-copy-stage="0" class="active">
+          <strong>Count the five pairs from A.</strong>
+          <span>Every line will be classified as friend or stranger.</span>
+        </li>
+        <li data-copy-stage="1">
+          <strong>Keep three lines of one type.</strong>
+          <span>At least three of A’s five relationships match. The diagram calls that type “friend”; swapping the two labels changes nothing.</span>
+        </li>
+        <li data-copy-stage="2">
+          <strong>Case 1: an inside line is a friendship.</strong>
+          <span>If B and C are friends, A–B–C is a friend triangle.</span>
+        </li>
+        <li data-copy-stage="3">
+          <strong>Case 2: no inside line is a friendship.</strong>
+          <span>Then B–C, C–D, and D–B are all stranger relationships, so B–C–D is a stranger triangle.</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="controls" aria-label="Proof stages">
+    <button type="button" class="active" data-stage="0" aria-pressed="true">1. Count A’s pairs</button>
+    <button type="button" data-stage="1" aria-pressed="false">2. Keep three</button>
+    <button type="button" data-stage="2" aria-pressed="false">3A. One friend edge</button>
+    <button type="button" data-stage="3" aria-pressed="false">3B. No friend edge</button>
+  </div>
+
+  <p class="readout" aria-live="polite" data-readout>
+    Person A has five relationships. With only two possible types, at least three relationships share a type.
+  </p>
+
+  <figcaption>
+    <strong>What to notice:</strong> solid lines mean friend and dashed lines mean stranger, so color is not the only cue. The final two buttons are alternative cases. Both cases end with a triangle whose three edges have the same type.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-ramsey-proof]').forEach((figure) => {
+    const buttons = [...figure.querySelectorAll('[data-stage]')];
+    const title = figure.querySelector('#ramsey-title');
+    const desc = figure.querySelector('#ramsey-desc');
+    const readout = figure.querySelector('[data-readout]');
+    const stageText = [
+      'Person A has five relationships. With only two possible types, at least three relationships share a type.',
+      'Assume A is friends with B, C, and D. If the repeated type were stranger instead, the same argument would work after exchanging the two labels.',
+      'Case 1: B and C are friends. The solid edges A–B, A–C, and B–C form a friend triangle.',
+      'Case 2: none of B, C, and D are friends with one another. The dashed edges B–C, C–D, and D–B form a stranger triangle.',
+    ];
+    const stageTitles = [
+      'Six people joined by fifteen possible relationships',
+      'Three relationships from A share one type',
+      'A, B, and C form a friend triangle',
+      'B, C, and D form a stranger triangle',
+    ];
+    const stageDescriptions = [
+      'Every pair among six people is joined by a faint line. Five lines meet person A.',
+      'The solid lines from A to B, C, and D show three relationships of one type. Dashed lines join A to E and F. Other relationships remain faint.',
+      'Solid edges from A to B, A to C, and B to C glow, making the friend triangle A B C.',
+      'Dashed edges from B to C, C to D, and D to B glow, making the stranger triangle B C D.',
+    ];
+
+    const render = (stage: number) => {
+      figure.setAttribute('data-current-stage', String(stage));
+      buttons.forEach((button, index) => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        const selected = index === stage;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      figure.querySelectorAll('[data-copy-stage]').forEach((item) => {
+        item.classList.toggle('active', Number(item.getAttribute('data-copy-stage')) === stage);
+      });
+      if (title) title.textContent = stageTitles[stage];
+      if (desc) desc.textContent = stageDescriptions[stage];
+      if (readout) readout.textContent = stageText[stage];
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => render(Number(button.getAttribute('data-stage'))));
+    });
+    render(0);
+  });
+</script>
+
+<style>
+  .ramsey-proof {
+    --rp-blue: #087dcc;
+    --rp-green: #4f9300;
+    --rp-pink: #d9007e;
+    background:
+      radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--rp-blue) 10%, transparent), transparent 25rem),
+      var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1040px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .ramsey-proof {
+    --rp-blue: #1493ff;
+    --rp-green: #93ff14;
+    --rp-pink: #ff1493;
+  }
+  header > p,
+  .eyebrow {
+    color: var(--link-color);
+    font-size: .67rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    margin: 0 0 .2rem;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+  }
+  .proof-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1.7fr) minmax(230px, .9fr);
+  }
+  .diagram-shell {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  svg { display: block; height: auto; width: 100%; }
+  svg text { fill: var(--text-secondary); font-family: var(--font-sans); }
+  .edge {
+    stroke: var(--text-secondary);
+    stroke-width: 2;
+    opacity: .16;
+    transition: opacity .2s ease, stroke .2s ease, stroke-width .2s ease;
+  }
+  .person circle {
+    fill: var(--surface-color);
+    stroke: var(--border-color);
+    stroke-width: 2;
+  }
+  .person text { fill: var(--text-primary); font-size: 22px; font-weight: 850; }
+  .pivot circle { stroke: var(--rp-green); stroke-width: 4; }
+  .legend { opacity: 0; transition: opacity .2s ease; }
+  .legend text { font-size: 13px; }
+  .friend-sample { stroke: var(--rp-pink); stroke-width: 5; }
+  .stranger-sample { stroke: var(--rp-blue); stroke-dasharray: 9 7; stroke-width: 5; }
+  .unknown-sample { stroke: var(--text-secondary); stroke-width: 2; opacity: .4; }
+
+  [data-current-stage='0'] .spoke { opacity: .75; stroke: var(--rp-green); stroke-width: 4; }
+  [data-current-stage='1'] .legend,
+  [data-current-stage='2'] .legend,
+  [data-current-stage='3'] .legend { opacity: 1; }
+  [data-current-stage='1'] .chosen-friend,
+  [data-current-stage='2'] .chosen-friend,
+  [data-current-stage='3'] .chosen-friend { opacity: 1; stroke: var(--rp-pink); stroke-width: 5; }
+  [data-current-stage='1'] [data-edge='AE'],
+  [data-current-stage='1'] [data-edge='AF'],
+  [data-current-stage='2'] [data-edge='AE'],
+  [data-current-stage='2'] [data-edge='AF'],
+  [data-current-stage='3'] [data-edge='AE'],
+  [data-current-stage='3'] [data-edge='AF'] {
+    opacity: .72;
+    stroke: var(--rp-blue);
+    stroke-dasharray: 9 7;
+    stroke-width: 4;
+  }
+  [data-current-stage='2'] [data-edge='AB'],
+  [data-current-stage='2'] [data-edge='AC'],
+  [data-current-stage='2'] [data-edge='BC'] {
+    filter: url(#ramsey-glow);
+    opacity: 1;
+    stroke: var(--rp-pink);
+    stroke-dasharray: none;
+    stroke-width: 7;
+  }
+  [data-current-stage='3'] .chosen-friend { opacity: .35; }
+  [data-current-stage='3'] .inner-edge {
+    filter: url(#ramsey-glow);
+    opacity: 1;
+    stroke: var(--rp-blue);
+    stroke-dasharray: 12 8;
+    stroke-width: 7;
+  }
+
+  .argument-panel {
+    background: color-mix(in srgb, var(--bg-color) 85%, transparent);
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    padding: 1rem;
+  }
+  .argument-panel ol { list-style: none; margin: .7rem 0 0; padding: 0; }
+  .argument-panel li {
+    border-left: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    margin: 0;
+    opacity: .45;
+    padding: .45rem 0 .7rem .8rem;
+  }
+  .argument-panel li.active { border-left-color: var(--rp-green); color: var(--text-primary); opacity: 1; }
+  .argument-panel strong,
+  .argument-panel span { display: block; }
+  .argument-panel strong { font-size: .88rem; }
+  .argument-panel span { font-size: .78rem; line-height: 1.45; margin-top: .22rem; }
+  .controls { display: grid; gap: .55rem; grid-template-columns: repeat(4, 1fr); margin-top: 1rem; }
+  button {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font: 700 .78rem/1.2 var(--font-sans);
+    min-height: 2.6rem;
+    padding: .55rem .7rem;
+  }
+  button:hover { border-color: var(--rp-blue); }
+  button:focus-visible { outline: 3px solid color-mix(in srgb, var(--rp-blue) 45%, transparent); outline-offset: 2px; }
+  button.active { background: var(--rp-green); border-color: var(--rp-green); color: #071109; }
+  .readout {
+    background: var(--bg-color);
+    border-left: 3px solid var(--rp-green);
+    color: var(--text-primary);
+    font-size: .9rem;
+    line-height: 1.55;
+    margin: .85rem 0 0;
+    min-height: 3.5rem;
+    padding: .7rem .85rem;
+  }
+  figcaption { color: var(--text-secondary); font-size: .78rem; line-height: 1.55; margin-top: .85rem; }
+
+  @media (max-width: 760px) {
+    .proof-grid { grid-template-columns: 1fr; }
+    .controls { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 460px) {
+    .controls { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .edge, .legend { transition: none; }
+  }
+</style>

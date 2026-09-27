@@ -1,0 +1,171 @@
+---
+title: "Can Six People Avoid a Friend-or-Stranger Triangle?"
+description: "Classify every pair as friends or strangers. With six people, one three-person pattern becomes unavoidable—and five people show why the number is exact."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-27.svg"
+heroImageAlt: "A complete network of six glowing points floats above dark blueprint waves. Three solid magenta edges form a bright triangle among dashed cyan connections."
+date: 2026-09-27
+publishedAt: 2026-09-27T06:00:00-07:00
+area: "Discrete mathematics and computation"
+difficulty: "Foundational"
+prerequisites:
+  - "Counting pairs"
+  - "Odd and even numbers"
+  - "Following a proof by cases"
+readTimeMinutes: 8
+tags:
+  - daily-reckoning
+  - combinatorics
+  - graph-theory
+  - ramsey-theory
+  - pigeonhole-principle
+  - complete-graphs
+  - proof-by-cases
+  - history-of-mathematics
+---
+
+import RamseyPartyProof from '../../components/reckonings/RamseyPartyProof.astro';
+
+Six people arrive at a small party. For the sake of one precise puzzle, classify every pair in exactly one of two ways: the two people are friends, or they are strangers.
+
+Must the party contain either three mutual friends or three mutual strangers?
+
+The answer is yes. The claim does not depend on who attends or how the relationships are arranged. Six people are enough to make one of those two triangles unavoidable.
+
+Real relationships are not binary, of course. “Friend or stranger” is the puzzle's mathematical model, not a serious account of social life. The model is useful because it strips the question down to a pattern of pairs.
+
+## Turn the party into a graph
+
+Represent each person by a point, called a **vertex**. Join every pair of vertices by a line, called an **edge**. Use a solid edge for a friendship and a dashed edge for a stranger relationship.
+
+A graph containing an edge between every pair of vertices is a **complete graph**. The complete graph on six vertices is written $K_6$. It has
+
+$$
+\binom{6}{2}=\frac{6\cdot5}{2}=15
+$$
+
+edges, one for each pair of people. The symbol $\binom{6}{2}$ means “the number of ways to choose two objects from six.”
+
+The diagram begins with those fifteen pairs. Use the four buttons to follow the proof and to compare its two final cases.
+
+<RamseyPartyProof />
+
+The diagram marks friendship with a solid line and strangerhood with a dashed line. Those line styles carry the argument even if the colors are unavailable.
+
+## The proof, one decision at a time
+
+Choose one person and call that person $A$. Person $A$ has five relationships, one with each of the other five people.
+
+Only two relationship types are available. Split the five relationships into a friend group and a stranger group. Because $5$ is odd, one group must contain at least three relationships. In symbols,
+
+$$
+\left\lceil\frac{5}{2}\right\rceil=3,
+$$
+
+where $\lceil x\rceil$ means the smallest integer greater than or equal to $x$.
+
+This counting move is the **pigeonhole principle**: if five objects go into two boxes, at least one box receives three objects. Here, the objects are $A$'s five relationships and the boxes are “friend” and “stranger.”
+
+Suppose $A$ has at least three friends. Name three of those friends $B$, $C$, and $D$. Now inspect the three relationships among $B$, $C$, and $D$.
+
+1. If at least one of those relationships is a friendship—say $B$ and $C$ are friends—then $A$, $B$, and $C$ are three mutual friends.
+2. If none of those three relationships is a friendship, then $B$, $C$, and $D$ are three mutual strangers.
+
+The two cases exhaust every possibility. If $A$ instead has at least three strangers, exchange the words “friend” and “stranger” throughout the same argument. Either way, the six-person party contains a triangle whose three edges have the same type.
+
+## Why six is the first number that works
+
+The proof shows that six people are sufficient. To show that six is the **smallest** sufficient number, five people must be able to avoid both kinds of triangle.
+
+Place five people at the corners of a regular pentagon. Declare adjacent corners to be friends, so the five sides of the pentagon are friendship edges. Declare every nonadjacent pair to be strangers, so the five diagonals are stranger edges.
+
+Now check both relationship types:
+
+- The five friendship edges make one cycle around the pentagon. No three sides form a triangle.
+- The five stranger edges make a five-pointed star. No three diagonals form a triangle either.
+
+That construction gives a five-person party with no three mutual friends and no three mutual strangers. Five can avoid the pattern; six cannot.
+
+## The precise statement: $R(3,3)=6$
+
+Let $R(s,t)$ denote the smallest positive integer $N$ with this property: every red-and-blue coloring of the edges of $K_N$ contains either a red complete graph on $s$ vertices or a blue complete graph on $t$ vertices.
+
+The letters $s$ and $t$ specify the two target group sizes. The letter $N$ is the number of vertices needed to force one target. A subgraph is **monochromatic** when all of its edges have one color.
+
+For the party puzzle, red means friend, blue means stranger, and both targets have size three. The six-person proof supplies the upper bound
+
+$$
+R(3,3)\le 6.
+$$
+
+The pentagon construction supplies the lower bound
+
+$$
+R(3,3)>5.
+$$
+
+Together, the two inequalities give the exact value
+
+$$
+\boxed{R(3,3)=6}.
+$$
+
+Notice what an exact extremal result requires. A guarantee at six is only half the job. The five-person counterexample proves that no smaller number could have worked.
+
+## Where the idea came from
+
+The party story is a friendly doorway into a theorem that began somewhere less festive. Frank Ramsey proved a much broader result while studying a decision problem in mathematical logic. His paper, [“On a Problem of Formal Logic”](https://doi.org/10.1112/plms/s2-30.1.264), was received by the London Mathematical Society in 1928 and published in 1930. Ramsey's combinatorial theorem was a tool inside that logical investigation, not a theorem originally devised for social networks.
+
+The subject soon moved beyond logic. A 1935 paper by Paul Erdős and George Szekeres, [“A Combinatorial Problem in Geometry”](https://www.numdam.org/item/CM_1935__2__463_0/), credits a question from Esther Klein and uses Ramsey's theorem to prove that a sufficiently large collection of points must contain points in convex position. Their paper gives a new proof of Ramsey's theorem as part of the geometric argument. That path—from Ramsey's logic problem, through Klein's geometric question, to Erdős and Szekeres's work—is a better account of the field's early development than a lone-genius party anecdote.
+
+## What larger Ramsey theorems do
+
+The six-person theorem is mainly a teaching-sized specimen. Larger Ramsey theorems guarantee that sufficiently large structures contain an organized substructure even when the original structure is colored or divided arbitrarily. The theorem supplies a worst-case guarantee; it does not say that the guaranteed pattern is common, easy to find, or useful in every dataset.
+
+A peer-reviewed [survey of Ramsey theory applications](https://www.combinatorics.org/ojs/index.php/eljc/article/view/DS13) documents uses across number theory, geometry, topology, logic, information theory, and theoretical computer science. The computer-science examples include lower-bound arguments for parallel sorting and Boolean computation, questions about information-channel capacity, approximation algorithms, and automated theorem proving. Those applications use stronger Ramsey-type results and related techniques, not the six-person party puzzle by itself.
+
+Ramsey theory also exposes a computational challenge. A small value such as $R(3,3)$ yields to a short proof, but most exact Ramsey numbers are difficult to determine. The guarantee that some finite number exists can be much easier to prove than the number's exact value.
+
+## Try two small cases
+
+### Problem 1
+
+Four people sit at the corners of a square. Let neighboring corners be friends and opposite corners be strangers. Does this arrangement contain three mutual friends or three mutual strangers?
+
+<details>
+<summary>Reveal the solution</summary>
+
+No. The four friendship edges run around the square, so any set of three vertices is missing at least one friendship edge. The two stranger edges are the square's diagonals; two edges cannot form a three-edge triangle.
+
+This four-person arrangement is another counterexample below the six-person threshold.
+
+</details>
+
+### Problem 2
+
+A complete graph has eight vertices. How many edges does it have?
+
+<details>
+<summary>Reveal the solution</summary>
+
+Each of the eight vertices can pair with seven others, producing $8\cdot7=56$ ordered counts. That multiplication counts every edge twice: once from each endpoint. Divide by two:
+
+$$
+\binom{8}{2}=\frac{8\cdot7}{2}=28.
+$$
+
+The complete graph $K_8$ has $28$ edges.
+
+</details>
+
+## The idea to keep
+
+When every pair receives one of two labels, enough vertices force a single-label pattern. For triangles, the exact threshold is six: $R(3,3)=6$.
+
+Continue with [Euler's bridge graph](/reckonings/daily-reckoning-2026-08-31/) for another way to translate a concrete puzzle into vertices and edges, or with [Hamming's error-correcting code](/reckonings/daily-reckoning-2026-09-18/) for a different example of discrete structure turning local bits into a global guarantee.
+
+## Sources
+
+- F. P. Ramsey, [“On a Problem of Formal Logic,”](https://doi.org/10.1112/plms/s2-30.1.264) *Proceedings of the London Mathematical Society* 30 (1930), 264–286.
+- P. Erdős and G. Szekeres, [“A Combinatorial Problem in Geometry,”](https://www.numdam.org/item/CM_1935__2__463_0/) *Compositio Mathematica* 2 (1935), 463–470.
+- Vera Rosta, [“Ramsey Theory Applications,”](https://www.combinatorics.org/ojs/index.php/eljc/article/view/DS13) *The Electronic Journal of Combinatorics*, Dynamic Survey 13 (2004).
+- University of St Andrews MacTutor History of Mathematics Archive, [“Frank P. Ramsey and Ramsey Theory,”](https://mathshistory.st-andrews.ac.uk/SH/ramsey_sh.pdf) updated December 15, 2025.
