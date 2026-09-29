@@ -266,9 +266,10 @@ const sy = (value: number) => drawing.y + value * initialScale;
         readout.textContent = `${division.q} square${division.q === 1 ? '' : 's'} of side ${division.b} fill the final region exactly. The greatest common divisor is ${gcd}.`;
       }
       title.textContent = `Division step ${stage + 1} for a ${width} by ${height} rectangle`;
+      const squareLabel = `square${division.q === 1 ? '' : 's'}`;
       desc.textContent = division.r > 0
-        ? `${division.q} squares of side ${division.b} fit in the current region, leaving a hatched remainder ${division.r} units wide. Earlier square groups remain visible with different line patterns.`
-        : `${division.q} squares of side ${division.b} fill the final region exactly. The smallest squares have side ${gcd}, the greatest common divisor.`;
+        ? `${division.q} ${squareLabel} of side ${division.b} fit in the current region, leaving a hatched remainder ${division.r} units wide. Earlier square groups remain visible with different line patterns.`
+        : `${division.q} ${squareLabel} of side ${division.b} fill the final region exactly. The smallest squares have side ${gcd}, the greatest common divisor.`;
     };
 
     figure.querySelectorAll('[data-preset]').forEach((button) => {
