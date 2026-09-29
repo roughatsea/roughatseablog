@@ -1,0 +1,350 @@
+---
+type Tile = { x: number; y: number; size: number; step: number; index: number };
+type Region = { x: number; y: number; width: number; height: number };
+
+const layout = (first: number, second: number) => {
+  const tiles: Tile[] = [];
+  const regions: Region[] = [];
+  const divisions: Array<{ a: number; b: number; q: number; r: number }> = [];
+  let a = Math.max(first, second);
+  let b = Math.min(first, second);
+  let region: Region = { x: 0, y: 0, width: a, height: b };
+  let step = 0;
+
+  while (b > 0) {
+    const q = Math.floor(a / b);
+    const r = a % b;
+    regions.push({ ...region });
+    divisions.push({ a, b, q, r });
+
+    if (region.width >= region.height) {
+      for (let index = 0; index < q; index += 1) {
+        tiles.push({ x: region.x + index * region.height, y: region.y, size: region.height, step, index });
+      }
+      region = {
+        x: region.x + q * region.height,
+        y: region.y,
+        width: region.width - q * region.height,
+        height: region.height,
+      };
+    } else {
+      for (let index = 0; index < q; index += 1) {
+        tiles.push({ x: region.x, y: region.y + index * region.width, size: region.width, step, index });
+      }
+      region = {
+        x: region.x,
+        y: region.y + q * region.width,
+        width: region.width,
+        height: region.height - q * region.width,
+      };
+    }
+
+    a = b;
+    b = r;
+    step += 1;
+  }
+
+  return { tiles, regions, divisions };
+};
+
+const initial = layout(1071, 462);
+const drawing = { x: 42, y: 48, width: 738, height: 314 };
+const initialScale = Math.min(drawing.width / 1071, drawing.height / 462);
+const sx = (value: number) => drawing.x + value * initialScale;
+const sy = (value: number) => drawing.y + value * initialScale;
+---
+
+<figure class="euclid-lab reckoning-visual" data-euclid-lab>
+  <header>
+    <p>Remainder explorer</p>
+    <h3>A rectangle remembers its common measure</h3>
+  </header>
+
+  <div class="presets" aria-label="Choose a pair of side lengths">
+    <button type="button" class="active" data-preset="1071,462" aria-pressed="true">1,071 × 462</button>
+    <button type="button" data-preset="252,105" aria-pressed="false">252 × 105</button>
+    <button type="button" data-preset="55,34" aria-pressed="false">55 × 34</button>
+  </div>
+
+  <div class="lab-grid">
+    <div class="diagram-shell">
+      <svg viewBox="0 0 840 420" role="img" aria-labelledby="euclid-title euclid-desc">
+        <title id="euclid-title">The first division step for a 1,071 by 462 rectangle</title>
+        <desc id="euclid-desc">Two 462-unit squares fit along the long side. A hatched rectangle 147 units wide remains. The controls reveal how the same operation continues inside that remainder.</desc>
+        <defs>
+          <pattern id="euclid-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="10" class="hatch-line" />
+          </pattern>
+        </defs>
+        <g class="blueprint-grid" aria-hidden="true">
+          {Array.from({ length: 17 }, (_, index) => <path d={`M${20 + index * 50} 20V400`} />)}
+          {Array.from({ length: 8 }, (_, index) => <path d={`M20 ${25 + index * 50}H820`} />)}
+        </g>
+        <g data-tiles>
+          {initial.tiles.filter((tile) => tile.step === 0).map((tile) => (
+            <g class="tile step-0">
+              <rect x={sx(tile.x)} y={sy(tile.y)} width={tile.size * initialScale} height={tile.size * initialScale} />
+              {tile.index === 0 && <text x={sx(tile.x) + 12} y={sy(tile.y) + 24}>462 × 462</text>}
+            </g>
+          ))}
+        </g>
+        <g data-remainder class="remainder">
+          <rect
+            x={sx(initial.regions[0].x + 2 * initial.regions[0].height)}
+            y={sy(initial.regions[0].y)}
+            width={147 * initialScale}
+            height={462 * initialScale}
+          />
+          <text
+            x={sx(initial.regions[0].x + 2 * initial.regions[0].height) + (147 * initialScale) / 2}
+            y={sy(initial.regions[0].y) + (462 * initialScale) / 2}
+            text-anchor="middle"
+          >147 left</text>
+        </g>
+        <g class="dimensions" data-dimensions aria-hidden="true">
+          <text x="411" y="32" text-anchor="middle">1,071</text>
+          <text x="802" y="210" text-anchor="middle" transform="rotate(90 802 210)">462</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="division-panel">
+      <p class="eyebrow">Division chain</p>
+      <ol data-chain>
+        {initial.divisions.map((division, index) => (
+          <li class={index === 0 ? 'active' : ''} data-row={index}>
+            <span>{division.a} = {division.q} × {division.b} + {division.r}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="result" data-result>The last nonzero remainder is <strong>21</strong>.</p>
+    </div>
+  </div>
+
+  <div class="step-controls" aria-label="Euclidean algorithm steps">
+    <button type="button" data-back disabled>Previous division</button>
+    <button type="button" data-next>Next division</button>
+    <button type="button" data-finish>Show all tiles</button>
+  </div>
+
+  <p class="readout" aria-live="polite" data-readout>
+    Two 462-unit squares use 924 units of the long side; a 147-by-462 rectangle remains.
+  </p>
+
+  <figcaption>
+    <strong>What to notice:</strong> each division removes equal squares from the current remainder. Solid, dashed, and dotted outlines distinguish the three stages without relying on color. The side of the smallest final squares is the greatest common divisor.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-euclid-lab]').forEach((figure) => {
+    const svg = figure.querySelector('svg');
+    const tileGroup = figure.querySelector('[data-tiles]');
+    const remainderGroup = figure.querySelector('[data-remainder]');
+    const dimensions = figure.querySelector('[data-dimensions]');
+    const chain = figure.querySelector('[data-chain]');
+    const result = figure.querySelector('[data-result]');
+    const readout = figure.querySelector('[data-readout]');
+    const back = figure.querySelector('[data-back]');
+    const next = figure.querySelector('[data-next]');
+    const finish = figure.querySelector('[data-finish]');
+    const title = figure.querySelector('#euclid-title');
+    const desc = figure.querySelector('#euclid-desc');
+    if (!(svg instanceof SVGElement) || !(tileGroup instanceof SVGGElement) || !(remainderGroup instanceof SVGGElement) || !(dimensions instanceof SVGGElement) || !chain || !result || !readout || !(back instanceof HTMLButtonElement) || !(next instanceof HTMLButtonElement) || !(finish instanceof HTMLButtonElement) || !title || !desc) return;
+
+    const ns = 'http://www.w3.org/2000/svg';
+    const frame = { x: 42, y: 48, width: 738, height: 314 };
+    let pair = [1071, 462];
+    let stage = 0;
+
+    const makeLayout = (first: number, second: number) => {
+      const tiles = [];
+      const regions = [];
+      const divisions = [];
+      let a = Math.max(first, second);
+      let b = Math.min(first, second);
+      let region = { x: 0, y: 0, width: a, height: b };
+      let step = 0;
+      while (b > 0) {
+        const q = Math.floor(a / b);
+        const r = a % b;
+        regions.push({ ...region });
+        divisions.push({ a, b, q, r });
+        if (region.width >= region.height) {
+          for (let index = 0; index < q; index += 1) tiles.push({ x: region.x + index * region.height, y: region.y, size: region.height, step, index });
+          region = { x: region.x + q * region.height, y: region.y, width: region.width - q * region.height, height: region.height };
+        } else {
+          for (let index = 0; index < q; index += 1) tiles.push({ x: region.x, y: region.y + index * region.width, size: region.width, step, index });
+          region = { x: region.x, y: region.y + q * region.width, width: region.width, height: region.height - q * region.width };
+        }
+        a = b;
+        b = r;
+        step += 1;
+      }
+      return { tiles, regions, divisions };
+    };
+
+    const addText = (parent: Element, x: number, y: number, value: string, className = '') => {
+      const node = document.createElementNS(ns, 'text');
+      node.setAttribute('x', String(x));
+      node.setAttribute('y', String(y));
+      if (className) node.setAttribute('class', className);
+      node.textContent = value;
+      parent.append(node);
+      return node;
+    };
+
+    const render = () => {
+      const data = makeLayout(pair[0], pair[1]);
+      const width = Math.max(...pair);
+      const height = Math.min(...pair);
+      const scale = Math.min(frame.width / width, frame.height / height);
+      const offsetX = frame.x + (frame.width - width * scale) / 2;
+      const offsetY = frame.y + (frame.height - height * scale) / 2;
+      const x = (value: number) => offsetX + value * scale;
+      const y = (value: number) => offsetY + value * scale;
+
+      tileGroup.replaceChildren();
+      data.tiles.filter((tile) => tile.step <= stage).forEach((tile) => {
+        const group = document.createElementNS(ns, 'g');
+        group.setAttribute('class', `tile step-${tile.step}${tile.step === stage ? ' current' : ''}`);
+        const rect = document.createElementNS(ns, 'rect');
+        rect.setAttribute('x', String(x(tile.x)));
+        rect.setAttribute('y', String(y(tile.y)));
+        rect.setAttribute('width', String(tile.size * scale));
+        rect.setAttribute('height', String(tile.size * scale));
+        group.append(rect);
+        if (tile.index === 0 && tile.size * scale > 46) addText(group, x(tile.x) + 10, y(tile.y) + 22, `${tile.size} × ${tile.size}`);
+        tileGroup.append(group);
+      });
+
+      remainderGroup.replaceChildren();
+      const division = data.divisions[stage];
+      const region = data.regions[stage];
+      if (division.r > 0) {
+        const remainder = document.createElementNS(ns, 'rect');
+        const remX = region.width >= region.height ? region.x + division.q * region.height : region.x;
+        const remY = region.width >= region.height ? region.y : region.y + division.q * region.width;
+        const remWidth = region.width >= region.height ? division.r : region.width;
+        const remHeight = region.width >= region.height ? region.height : division.r;
+        remainder.setAttribute('x', String(x(remX)));
+        remainder.setAttribute('y', String(y(remY)));
+        remainder.setAttribute('width', String(remWidth * scale));
+        remainder.setAttribute('height', String(remHeight * scale));
+        remainderGroup.append(remainder);
+        if (Math.min(remWidth, remHeight) * scale > 26) {
+          const label = addText(remainderGroup, x(remX) + (remWidth * scale) / 2, y(remY) + (remHeight * scale) / 2, `${division.r} left`, 'remainder-label');
+          label.setAttribute('text-anchor', 'middle');
+        }
+      }
+
+      dimensions.replaceChildren();
+      const topLabel = addText(dimensions, offsetX + (width * scale) / 2, offsetY - 16, String(width));
+      topLabel.setAttribute('text-anchor', 'middle');
+      const sideLabel = addText(dimensions, offsetX + width * scale + 22, offsetY + (height * scale) / 2, String(height));
+      sideLabel.setAttribute('text-anchor', 'middle');
+      sideLabel.setAttribute('transform', `rotate(90 ${offsetX + width * scale + 22} ${offsetY + (height * scale) / 2})`);
+
+      chain.replaceChildren();
+      data.divisions.forEach((entry, index) => {
+        const item = document.createElement('li');
+        if (index === stage) item.className = 'active';
+        if (index < stage) item.className = 'done';
+        item.textContent = `${entry.a} = ${entry.q} × ${entry.b} + ${entry.r}`;
+        chain.append(item);
+      });
+
+      const gcd = data.divisions[data.divisions.length - 1].b;
+      result.innerHTML = `The last nonzero remainder is <strong>${gcd}</strong>.`;
+      back.disabled = stage === 0;
+      next.disabled = stage === data.divisions.length - 1;
+      finish.disabled = stage === data.divisions.length - 1;
+
+      if (division.r > 0) {
+        readout.textContent = `${division.q} square${division.q === 1 ? '' : 's'} of side ${division.b} fit in the current region; a remainder of width ${division.r} survives.`;
+      } else {
+        readout.textContent = `${division.q} square${division.q === 1 ? '' : 's'} of side ${division.b} fill the final region exactly. The greatest common divisor is ${gcd}.`;
+      }
+      title.textContent = `Division step ${stage + 1} for a ${width} by ${height} rectangle`;
+      desc.textContent = division.r > 0
+        ? `${division.q} squares of side ${division.b} fit in the current region, leaving a hatched remainder ${division.r} units wide. Earlier square groups remain visible with different line patterns.`
+        : `${division.q} squares of side ${division.b} fill the final region exactly. The smallest squares have side ${gcd}, the greatest common divisor.`;
+    };
+
+    figure.querySelectorAll('[data-preset]').forEach((button) => {
+      button.addEventListener('click', () => {
+        pair = (button.getAttribute('data-preset') ?? '1071,462').split(',').map(Number);
+        stage = 0;
+        figure.querySelectorAll('[data-preset]').forEach((candidate) => {
+          const selected = candidate === button;
+          candidate.classList.toggle('active', selected);
+          candidate.setAttribute('aria-pressed', String(selected));
+        });
+        render();
+      });
+    });
+    back.addEventListener('click', () => { stage = Math.max(0, stage - 1); render(); });
+    next.addEventListener('click', () => { stage += 1; render(); });
+    finish.addEventListener('click', () => { stage = makeLayout(pair[0], pair[1]).divisions.length - 1; render(); });
+    render();
+  });
+</script>
+
+<style is:global>
+  .euclid-lab {
+    --euclid-blue: #087dcc;
+    --euclid-green: #4f9300;
+    --euclid-pink: #d9007e;
+    background: radial-gradient(circle at 84% 8%, color-mix(in srgb, var(--euclid-blue) 11%, transparent), transparent 25rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1040px, calc(100vw - 3rem));
+  }
+  [data-theme='dark'] .euclid-lab { --euclid-blue: #1493ff; --euclid-green: #93ff14; --euclid-pink: #ff1493; }
+  .euclid-lab header > p, .euclid-lab .eyebrow { color: var(--link-color); font-size: .67rem; font-weight: 800; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  .euclid-lab h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .euclid-lab .presets, .euclid-lab .step-controls { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .euclid-lab .presets { margin-bottom: .85rem; }
+  .euclid-lab button { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-primary); cursor: pointer; font: 750 .75rem/1.2 var(--font-sans); min-height: 2.45rem; padding: .5rem .75rem; }
+  .euclid-lab button:hover:not(:disabled) { border-color: var(--euclid-blue); }
+  .euclid-lab button:focus-visible { outline: 3px solid color-mix(in srgb, var(--euclid-green) 55%, transparent); outline-offset: 2px; }
+  .euclid-lab button.active { background: var(--euclid-green); border-color: var(--euclid-green); color: #071109; }
+  .euclid-lab button:disabled { cursor: default; opacity: .42; }
+  .euclid-lab .lab-grid { display: grid; gap: 1rem; grid-template-columns: minmax(0, 2fr) minmax(240px, .85fr); }
+  .euclid-lab .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  .euclid-lab svg { display: block; height: auto; min-width: 620px; width: 100%; }
+  .euclid-lab svg text { fill: var(--text-primary); font: 750 15px var(--font-sans); }
+  .euclid-lab .blueprint-grid path { fill: none; opacity: .3; stroke: var(--border-color); stroke-width: 1; }
+  .euclid-lab .tile rect { fill: color-mix(in srgb, var(--euclid-pink) 9%, transparent); stroke: var(--euclid-pink); stroke-width: 3; }
+  .euclid-lab .tile.step-1 rect { fill: color-mix(in srgb, var(--euclid-blue) 9%, transparent); stroke: var(--euclid-blue); stroke-dasharray: 10 6; }
+  .euclid-lab .tile.step-2 rect, .euclid-lab .tile.step-5 rect { fill: color-mix(in srgb, var(--euclid-green) 8%, transparent); stroke: var(--euclid-green); stroke-dasharray: 2 5; }
+  .euclid-lab .tile.step-3 rect, .euclid-lab .tile.step-6 rect { fill: color-mix(in srgb, var(--euclid-pink) 7%, transparent); stroke: var(--euclid-pink); stroke-dasharray: 13 5 2 5; }
+  .euclid-lab .tile.step-4 rect, .euclid-lab .tile.step-7 rect { fill: color-mix(in srgb, var(--euclid-blue) 7%, transparent); stroke: var(--euclid-blue); stroke-dasharray: 6 4; }
+  .euclid-lab .tile:not(.current) { opacity: .55; }
+  .euclid-lab .tile.current rect { stroke-width: 5; }
+  .euclid-lab .tile text { font-size: 13px; }
+  .euclid-lab .remainder rect { fill: url(#euclid-hatch); stroke: var(--euclid-green); stroke-width: 3; }
+  .euclid-lab .hatch-line { stroke: var(--euclid-green); stroke-width: 2; }
+  .euclid-lab .remainder-label { dominant-baseline: middle; font-size: 13px; }
+  .euclid-lab .dimensions text { fill: var(--text-secondary); font-size: 13px; }
+  .euclid-lab .division-panel { background: color-mix(in srgb, var(--bg-color) 86%, transparent); border: 1px solid var(--border-color); border-radius: 9px; padding: 1rem; }
+  .euclid-lab .division-panel ol { list-style: none; margin: .7rem 0 1rem; padding: 0; }
+  .euclid-lab .division-panel li { border-left: 2px solid var(--border-color); color: var(--text-secondary); font-variant-numeric: tabular-nums; margin: 0; opacity: .45; padding: .48rem 0 .48rem .75rem; }
+  .euclid-lab .division-panel li.done { opacity: .72; }
+  .euclid-lab .division-panel li.active { border-left-color: var(--euclid-green); color: var(--text-primary); font-weight: 800; opacity: 1; }
+  .euclid-lab .result { color: var(--text-secondary); font-size: .82rem; line-height: 1.5; margin: 0; }
+  .euclid-lab .result strong { color: var(--euclid-green); font-size: 1rem; }
+  .euclid-lab .step-controls { margin-top: .9rem; }
+  .euclid-lab .readout { background: var(--bg-color); border-left: 3px solid var(--euclid-green); color: var(--text-primary); font-size: .86rem; line-height: 1.55; margin: .8rem 0 0; min-height: 3.1rem; padding: .7rem .85rem; }
+  .euclid-lab figcaption { color: var(--text-secondary); font-size: .8rem; line-height: 1.55; margin-top: .8rem; }
+  .euclid-lab figcaption strong { color: var(--text-primary); }
+  @media (max-width: 760px) {
+    .euclid-lab { width: calc(100vw - 1.5rem); }
+    .euclid-lab .lab-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .euclid-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-26T06:00:00-07:00",
+  "updatedAt": "2026-09-29T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -685,6 +685,33 @@
         "daily-reckoning-2026-08-31",
         "daily-reckoning-2026-09-18",
         "daily-reckoning-2026-09-22"
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "slug": "daily-reckoning-2026-09-29",
+      "title": "How Can Remainders Find the Greatest Common Divisor?",
+      "area": "Numbers and algebra",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Whole-number division with remainders",
+        "Factors and multiples"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Euclidean algorithm",
+        "greatest common divisor",
+        "division algorithm",
+        "coprime integers",
+        "fraction reduction",
+        "modular inverses",
+        "public-key cryptography",
+        "history of algorithms"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-09",
+        "daily-reckoning-2026-09-10",
+        "daily-reckoning-2026-09-11"
       ]
     }
   ]

@@ -1,0 +1,243 @@
+---
+title: "How Can Remainders Find the Greatest Common Divisor?"
+description: "The Euclidean algorithm keeps replacing two numbers with a divisor and remainder. Nothing common is lost, and the last remainder settles the question."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-29.svg"
+heroImageAlt: "A dark maritime blueprint shows a long cyan-outlined rectangle cut into successively smaller magenta, blue, and acid-green squares. The smallest squares continue toward a glowing corner above contour lines like waves."
+date: 2026-09-29
+publishedAt: 2026-09-29T06:00:00-07:00
+area: "Numbers and algebra"
+difficulty: "Foundational"
+prerequisites:
+  - "Whole-number division with remainders"
+  - "Factors and multiples"
+readTimeMinutes: 8
+tags:
+  - daily-reckoning
+  - number-theory
+  - euclidean-algorithm
+  - greatest-common-divisor
+  - division
+  - modular-arithmetic
+  - cryptography
+  - history-of-mathematics
+---
+
+import EuclideanRemainderLab from '../../components/reckonings/EuclideanRemainderLab.astro';
+
+Two ropes measure 1,071 centimeters and 462 centimeters. You want to cut both ropes into pieces of one common length, with no waste. What is the longest possible piece?
+
+Testing every factor would work, eventually. A faster route begins with a different question: how many 462-centimeter pieces fit inside 1,071 centimeters, and what remains?
+
+$$
+1071=2\cdot462+147.
+$$
+
+Any length that divides both original ropes must divide the leftover 147 centimeters too. The pair $1071,462$ can therefore be replaced by the smaller pair $462,147$ without changing the answer. Repeat that replacement, and the numbers collapse.
+
+## Watch the remainder shrink
+
+The diagram treats the rope lengths as the sides of a rectangle. Removing a square corresponds to subtracting one side length from the other. Removing several equal squares at once corresponds to division with a remainder.
+
+<EuclideanRemainderLab />
+
+The colors mark successive divisions, while solid, dashed, and dotted outlines repeat the same information without color. Choose another rectangle or reveal the divisions one at a time. Every remainder becomes the shorter side of the next rectangle.
+
+## The rule
+
+Let $a$ and $b$ be positive integers with $a\ge b$. Whole-number division writes $a$ in exactly one form
+
+$$
+a=qb+r,
+$$
+
+where $q$ is a nonnegative integer called the **quotient**, and the **remainder** $r$ satisfies
+
+$$
+0\le r<b.
+$$
+
+The **greatest common divisor** of $a$ and $b$, written $\gcd(a,b)$, is the largest positive integer that divides both numbers without a remainder.
+
+The Euclidean algorithm rests on one identity:
+
+$$
+\boxed{\gcd(a,b)=\gcd(b,r)}
+\qquad\text{when }a=qb+r.
+$$
+
+Why can the remainder replace the larger number? Take any common divisor $d$ of $a$ and $b$. Because $d$ divides both terms in $a-qb$, the same $d$ divides
+
+$$
+r=a-qb.
+$$
+
+Now run the reasoning backward. If $d$ divides $b$ and $r$, then $d$ divides
+
+$$
+qb+r=a.
+$$
+
+The pairs $(a,b)$ and $(b,r)$ have exactly the same common divisors. Their greatest common divisor must be the same.
+
+If $r$ is not zero, divide again. Each positive remainder is smaller than the divisor immediately before it, so the decreasing sequence cannot continue forever. When a division finally has remainder zero, its divisor is the answer.
+
+## Worked example: 1,071 and 462
+
+Start by dividing the larger number by the smaller:
+
+$$
+1071=2\cdot462+147.
+$$
+
+The identity gives
+
+$$
+\gcd(1071,462)=\gcd(462,147).
+$$
+
+Now divide 462 by 147:
+
+$$
+462=3\cdot147+21,
+$$
+
+so
+
+$$
+\gcd(462,147)=\gcd(147,21).
+$$
+
+One more division finishes the chain:
+
+$$
+147=7\cdot21+0.
+$$
+
+The last nonzero remainder is 21. Therefore
+
+$$
+\boxed{\gcd(1071,462)=21}.
+$$
+
+The answer passes the original test:
+
+$$
+1071=51\cdot21,
+\qquad
+462=22\cdot21.
+$$
+
+Both ropes split into 21-centimeter pieces. No longer common length can work, because every common divisor survived each replacement and the final pair, $(147,21)$, has 21 as its largest common divisor.
+
+## What the rectangle proves
+
+The rectangle is more than a picture of the arithmetic. Suppose a square tile has an integer side length that covers an $a$-by-$b$ rectangle exactly. The tile's side must divide both $a$ and $b$. The largest possible square tile therefore has side length $\gcd(a,b)$.
+
+For the 1,071-by-462 rectangle, two 462-by-462 squares leave a 147-by-462 strip. Three 147-by-147 squares leave a 147-by-21 strip. Seven 21-by-21 squares fill that strip. The final square side, 21, is the largest length capable of tiling every earlier region.
+
+The same logic explains a practical habit: reduce a fraction by dividing its numerator and denominator by their greatest common divisor. Because $\gcd(1071,462)=21$,
+
+$$
+\frac{1071}{462}=\frac{1071\div21}{462\div21}=\frac{51}{22}.
+$$
+
+The reduced fraction preserves the ratio while removing every factor shared by the two terms.
+
+## Two ancient records, two mathematical settings
+
+The procedure carries Euclid's name because Book VII, Proposition 2 of the *Elements*, composed around 300 BCE, gives a method for finding the “greatest common measure” of two numbers. [David Joyce's edition of Proposition VII.2](https://aleph0.clarku.edu/~djoyce/elements/bookVII/propVII2.html) preserves Euclid's geometric language. A [Mathematical Association of America study of the source](https://old.maa.org/press/periodicals/convergence/euclids-algorithm-for-the-greatest-common-divisor) notes that Euclid described numbers as lengths and that historians can read the repeated removals as subtraction or as the larger division steps used today.
+
+A related greatest-common-divisor procedure survives in China's *Nine Chapters on the Mathematical Art*. The text's authors and exact date are unknown; evidence inside the work suggests compilation shortly after 200 BCE. Its first chapter uses repeated subtraction while reducing fractions. Liu Hui added explanations in a commentary dated 263 CE. The [Mathematical Association of America's history of the *Nine Chapters*](https://old.maa.org/node/1635411) places those rules among calculations for fields, grain exchange, construction, wages, and taxes. The book later served mathematical education connected to China's imperial bureaucracy.
+
+The surviving Greek and Chinese texts embed a similar operation in different projects. Euclid's *Elements* organizes propositions into deductive number theory. The *Nine Chapters* organizes worked rules around administrative and economic problems. The records do not justify a story in which one named person invented every version of the idea.
+
+The English word **algorithm** has a separate lineage. It comes through medieval Latin versions of the name al-Khwārizmī, the ninth-century scholar whose writings helped transmit Hindu-Arabic arithmetic. The [MacTutor biography of al-Khwārizmī](https://mathshistory.st-andrews.ac.uk/Biographies/Al-Khwarizmi/) traces that word history. “Euclidean algorithm” therefore joins a Greek attribution to a word whose route into European languages runs through a Persian scholar working in Abbasid Baghdad.
+
+## Where the same remainder chain works now
+
+Computers use greatest common divisors to reduce exact fractions, normalize ratios, and decide whether two integers are **coprime**, meaning that their greatest common divisor is 1.
+
+An extended version of the algorithm tracks how each remainder was assembled from the original numbers. That bookkeeping can find a **modular inverse**: a number that reverses multiplication when only remainders modulo a fixed integer matter. The connection is not historical decoration. Appendix B.1 of the current [National Institute of Standards and Technology Digital Signature Standard](https://doi.org/10.6028/NIST.FIPS.186-5) gives a reference inverse routine built from successive quotients and remainders. The standard uses such inverses in public-key signature procedures.
+
+The site's lesson on [RSA encryption](/reckonings/daily-reckoning-2026-09-11/) shows why an inverse exponent can unlock a message. The Euclidean algorithm supplies the arithmetic needed to find inverses of that kind when they exist.
+
+## Try the chain yourself
+
+### Problem 1
+
+Find $\gcd(252,198)$ with the Euclidean algorithm.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Divide repeatedly:
+
+$$
+\begin{aligned}
+252&=1\cdot198+54,\\
+198&=3\cdot54+36,\\
+54&=1\cdot36+18,\\
+36&=2\cdot18+0.
+\end{aligned}
+$$
+
+The last nonzero remainder is 18, so
+
+$$
+\gcd(252,198)=18.
+$$
+
+As a check, $252=14\cdot18$ and $198=11\cdot18$.
+
+</details>
+
+### Problem 2
+
+What is the side length of the largest integer-sided square that can tile a 391-by-299 rectangle? How many of those largest squares cover the rectangle?
+
+<details>
+<summary>Reveal the solution</summary>
+
+The square's side is $\gcd(391,299)$. Compute it:
+
+$$
+\begin{aligned}
+391&=1\cdot299+92,\\
+299&=3\cdot92+23,\\
+92&=4\cdot23+0.
+\end{aligned}
+$$
+
+The largest square has side length 23. The rectangle is
+
+$$
+391\div23=17
+$$
+
+squares long and
+
+$$
+299\div23=13
+$$
+
+squares wide. The total number is
+
+$$
+17\cdot13=221.
+$$
+
+</details>
+
+## The idea to keep
+
+Replacing $(a,b)$ by $(b,r)$ keeps every common divisor and makes the numbers smaller. The last nonzero remainder is therefore the greatest common divisor.
+
+Continue with [modular arithmetic on a clock](/reckonings/daily-reckoning-2026-09-09/) to see how remainders become their own number system, then follow the [RSA round trip](/reckonings/daily-reckoning-2026-09-11/) to see why coprimality and modular inverses matter.
+
+## Sources
+
+- Euclid, [*Elements*, Book VII, Proposition 2](https://aleph0.clarku.edu/~djoyce/elements/bookVII/propVII2.html), translated and edited by David E. Joyce, Clark University.
+- Jerry Lodder, David Pengelley, and Desh Ranjan, [“Euclid's Algorithm for the Greatest Common Divisor,”](https://old.maa.org/press/periodicals/convergence/euclids-algorithm-for-the-greatest-common-divisor) *Convergence*, Mathematical Association of America, July 2013.
+- Randy K. Schwartz, [“A Classic from China: The Nine Chapters — Introduction and History,”](https://old.maa.org/node/1635411) *Convergence*, Mathematical Association of America, December 2018.
+- National Institute of Standards and Technology, [*Digital Signature Standard (DSS)*](https://doi.org/10.6028/NIST.FIPS.186-5), FIPS 186-5, February 3, 2023, especially Appendix B.1.
+- University of St Andrews MacTutor History of Mathematics Archive, [“Abu Ja'far Muhammad ibn Musa Al-Khwarizmi.”](https://mathshistory.st-andrews.ac.uk/Biographies/Al-Khwarizmi/)
