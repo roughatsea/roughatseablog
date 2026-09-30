@@ -1,0 +1,216 @@
+---
+title: "Why Is a Fair Coin Worth One Bit?"
+description: "Binary entropy turns a coin's bias into a precise measure of uncertainty—and explains why one fair toss carries the most information possible from two outcomes."
+heroImage: "/images/reckonings/daily-reckoning-2026-09-30.svg"
+heroImageAlt: "A dark maritime blueprint shows a luminous coin balanced at the crest of a cyan entropy curve. Equal magenta and acid-green signal paths branch toward binary pulses on opposite sides, above contour lines resembling waves."
+date: 2026-09-30
+publishedAt: 2026-09-30T06:00:00-07:00
+area: "Probability and information theory"
+difficulty: "Intermediate"
+prerequisites:
+  - "Probabilities between 0 and 1"
+  - "Logarithms base 2"
+  - "Weighted averages"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - probability
+  - information-theory
+  - binary-entropy
+  - shannon-entropy
+  - logarithms
+  - data-compression
+  - communication
+  - history-of-mathematics
+---
+
+import BinaryEntropyLab from '../../components/reckonings/BinaryEntropyLab.astro';
+
+Suppose a distant buoy tosses a coin once every minute and sends you the result. If the coin is fair, either result is plausible. If the coin lands heads 99 times out of 100, the next head tells you very little; the rare tail does nearly all the surprising.
+
+How many binary digits should one toss be worth on average?
+
+The answer is not automatically one. A fair coin carries exactly one **bit** per toss, but a predictable coin carries less. The quantity that measures the difference is **binary entropy**.
+
+## Surprise first, then an average
+
+An event with probability $q$ has **self-information**
+
+$$
+I(q)=-\log_2 q=\log_2\!\left(\frac{1}{q}\right)
+$$
+
+bits. Here $q$ is a number between $0$ and $1$, and $\log_2$ is the logarithm base $2$.
+
+The logarithm gives the right behavior for independent events. If two events have probabilities $q_1$ and $q_2$, their joint probability is $q_1q_2$, and
+
+$$
+-\log_2(q_1q_2)=-\log_2 q_1-\log_2 q_2.
+$$
+
+Independent surprises add.
+
+For a coin, let $p$ be the probability of heads. The probability of tails is $1-p$. A head contributes $-\log_2p$ bits when it occurs, while a tail contributes $-\log_2(1-p)$ bits. Average those two possible contributions using their probabilities as weights:
+
+$$
+\boxed{H(p)=-p\log_2p-(1-p)\log_2(1-p)}.
+$$
+
+The function $H$ is the **binary entropy function**. Its value $H(p)$ is measured in bits per toss. At $p=0$ or $p=1$, the expression uses the limiting convention $0\log_2 0=0$. A coin that never changes carries zero bits because its next result is already known.
+
+The diagram below plots $H(p)$ for every possible bias. Move the slider or use the preset buttons. The solid curve and the cross-shaped marker provide shape cues in addition to color.
+
+<BinaryEntropyLab />
+
+The curve is symmetric because changing the labels “heads” and “tails” changes $p$ to $1-p$ without changing the uncertainty. Its highest point occurs at $p=1/2$:
+
+$$
+H\!\left(\frac12\right)
+=-\frac12\log_2\frac12-\frac12\log_2\frac12
+=\frac12+\frac12
+=1.
+$$
+
+One fair toss resolves one evenly balanced yes-or-no question. That is the unit called a bit.
+
+## Worked example: a coin with one-quarter heads
+
+Now take $p=1/4$. Substitute the two outcome probabilities into the definition:
+
+$$
+H\!\left(\frac14\right)
+=-\frac14\log_2\frac14-\frac34\log_2\frac34.
+$$
+
+Evaluate the heads term first. Because $1/4=2^{-2}$,
+
+$$
+-\frac14\log_2\frac14
+=-\frac14(-2)
+=\frac12.
+$$
+
+For the tails term, $\log_2(3/4)\approx-0.4150375$, so
+
+$$
+-\frac34\log_2\frac34
+\approx-\frac34(-0.4150375)
+\approx0.3112781.
+$$
+
+Add the weighted contributions:
+
+$$
+H\!\left(\frac14\right)
+\approx0.5+0.3112781
+=0.8112781\text{ bits per toss}.
+$$
+
+The answer is below one bit because heads and tails are not equally uncertain. A head is more surprising than a tail, but heads occur only one-quarter of the time. Entropy accounts for both the surprise of an outcome and how often that outcome appears.
+
+## Why the fair coin is the maximum
+
+The graph suggests that $H(p)$ peaks at $p=1/2$. A derivative verifies the claim. For $0<p<1$,
+
+$$
+H'(p)=\log_2\!\left(\frac{1-p}{p}\right).
+$$
+
+When $p<1/2$, the fraction $(1-p)/p$ is greater than $1$, so $H'(p)>0$ and the curve rises. At $p=1/2$, the fraction equals $1$, so $H'(p)=0$. When $p>1/2$, the fraction is less than $1$, so $H'(p)<0$ and the curve falls. Therefore the fair coin gives the largest possible binary entropy.
+
+There is also a counting intuition. A string of $n$ fair tosses has $2^n$ equally likely possibilities. Naming one possibility requires $n$ yes-or-no digits because
+
+$$
+\log_2(2^n)=n.
+$$
+
+For a biased coin, most long strings cluster around the usual proportion of heads. Those probable strings occupy a much smaller part of the full set of $2^n$ strings. A well-designed lossless code can give shorter descriptions to the probable strings and longer descriptions to rare strings.
+
+Shannon's source-coding theorem makes the last idea precise: for a long sequence of independent tosses with fixed heads probability $p$, the average length of a uniquely decodable lossless code can approach $H(p)$ bits per toss, but cannot remain below that limit. The claim concerns long-run average length. It does not say that every individual message can be compressed.
+
+## From telegraph choices to information theory
+
+Engineers were quantifying communication before entropy received its modern formula. In 1928, Bell Telephone Laboratories researcher Ralph Hartley published [“Transmission of Information”](https://archive.org/details/bstj7-3-535) in the *Bell System Technical Journal*. Hartley proposed a logarithmic measure for a message selected from a fixed number of alternatives. The measure treated the alternatives as equally available and connected information to the physical limits of telegraph and telephone systems.
+
+Claude Shannon worked at Bell Labs from 1941 to 1972. During World War II, he studied cryptography and secrecy systems as part of the laboratory's military communications work; an [MIT account of Shannon's career](https://news.mit.edu/2001/shannon) also records his team's work on anti-aircraft fire-control systems. Wartime research did not create every ingredient of information theory, but secrecy, noise, signaling, and reliable transmission were concrete problems in Shannon's working environment.
+
+Shannon's 1948 paper [“A Mathematical Theory of Communication”](https://doi.org/10.1002/j.1538-7305.1948.tb01338.x) acknowledged earlier work by Hartley and Harry Nyquist, then built a theory that allowed symbols to have unequal probabilities. Shannon named the weighted logarithmic quantity **entropy** and proved fundamental limits for data compression and reliable communication through noise. The paper appeared in the July and October issues of the *Bell System Technical Journal*; [MIT OpenCourseWare's historical notes](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/processes/) preserve that publication history.
+
+The institutional setting mattered. Bell Labs was the research arm of the regulated Bell telephone system, whose nationwide network created both the money and the engineering problems for sustained research on communication. Bell Labs research on communication crossed military and civilian uses. After the war, Shannon's mathematics became a foundation for digital telephony, computer storage, satellite links, and the internet.
+
+## Where entropy earns its keep
+
+Lossless compressors exploit unequal probabilities. Text compressors, for example, can represent frequent patterns with shorter codewords and reserve longer codewords for rarer patterns. The achievable average length is governed by the entropy of the source model, although practical files also contain structure, headers, and model errors that the single-coin formula does not capture.
+
+Communication engineers use entropy when separating two jobs. **Source coding** removes predictable redundancy so that a message uses fewer bits on average. **Channel coding** adds carefully structured redundancy so that a receiver can detect or repair damage. The earlier Reckoning on [Hamming's seven-bit code](/reckonings/daily-reckoning-2026-09-18/) studies the second job. Shannon's theory supplies limits for both jobs, while practical codes determine how closely a real system approaches those limits.
+
+Entropy also appears in statistical inference, machine learning, cryptography, and the study of random processes. In each setting, the probability model must be stated. “The entropy of the data” is not a complete quantity until the possible outcomes and their probabilities are specified.
+
+## Test the measure
+
+### Problem 1
+
+A coin lands heads with probability $1/8$. Find its binary entropy to three decimal places.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Here $p=1/8$ and $1-p=7/8$. Substitute:
+
+$$
+H\!\left(\frac18\right)
+=-\frac18\log_2\frac18-\frac78\log_2\frac78.
+$$
+
+Because $\log_2(1/8)=-3$, the first term is
+
+$$
+-\frac18(-3)=\frac38=0.375.
+$$
+
+Also, $\log_2(7/8)\approx-0.1926451$, so the second term is
+
+$$
+-\frac78(-0.1926451)\approx0.1685645.
+$$
+
+Therefore
+
+$$
+H\!\left(\frac18\right)\approx0.375+0.1685645=0.5435645,
+$$
+
+or $0.544$ bits per toss to three decimal places.
+
+</details>
+
+### Problem 2
+
+Without calculating two separate logarithmic expressions, compare the entropy of a coin with $p=0.1$ to the entropy of a coin with $p=0.9$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+The two entropies are equal. Replacing $p$ by $1-p$ swaps the two terms in
+
+$$
+H(p)=-p\log_2p-(1-p)\log_2(1-p)
+$$
+
+without changing their sum. The coin with $p=0.9$ is as predictable as the coin with $p=0.1$; only the labels of the common and rare outcomes have changed. Both entropies are approximately $0.469$ bits per toss.
+
+</details>
+
+## One idea to remember
+
+Information measures resolved uncertainty, not the mere presence of a symbol. A fair binary choice carries one bit because neither result is favored; prediction squeezes the average information below one.
+
+A useful next step is to derive entropy for three or more outcomes, where the binary formula becomes $H=-\sum_i p_i\log_2p_i$, or to study prefix codes that turn those probabilities into decodable bit strings.
+
+## Sources
+
+- Claude E. Shannon, [“A Mathematical Theory of Communication”](https://doi.org/10.1002/j.1538-7305.1948.tb01338.x), *Bell System Technical Journal* 27 (July and October 1948), 379–423 and 623–656.
+- Ralph V. L. Hartley, [“Transmission of Information”](https://archive.org/details/bstj7-3-535), *Bell System Technical Journal* 7, no. 3 (July 1928), 535–563.
+- Massachusetts Institute of Technology News Office, [“Professor Emeritus Claude Shannon, founder of digital communications, dies at 84”](https://news.mit.edu/2001/shannon), February 27, 2001.
+- Massachusetts Institute of Technology OpenCourseWare, [“Claude Shannon and ‘A Mathematical Theory of Communication’”](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/processes/), from *Information and Entropy*, Spring 2008.
+- Larry Hardesty, [“Explained: The Shannon limit”](https://news.mit.edu/2010/explained-shannon-0115), MIT News, January 19, 2010.

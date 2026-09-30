@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A fair coin at the crest of an information curve</title>
+  <desc id="desc">A dark maritime blueprint shows a luminous coin balanced at the crest of a cyan entropy curve. Equal magenta and acid-green signal paths branch toward binary pulses on opposite sides, above contour lines resembling waves.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#04111f"/>
+      <stop offset="0.55" stop-color="#071c2c"/>
+      <stop offset="1" stop-color="#020912"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="35%" r="55%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".24"/>
+      <stop offset=".5" stop-color="#ff1493" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#020912" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#53b7e8" stroke-opacity=".09" stroke-width="1"/>
+      <circle cx="0" cy="0" r="2" fill="#93ff14" fill-opacity=".14"/>
+    </pattern>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="coinClip"><circle cx="800" cy="294" r="98"/></clipPath>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#halo)"/>
+  <rect x="40" y="40" width="1520" height="820" rx="18" fill="url(#grid)" stroke="#1493ff" stroke-opacity=".22" stroke-width="2"/>
+
+  <g fill="none" stroke="#58c9f8" stroke-opacity=".15">
+    <path d="M40 690C170 633 278 757 419 702S667 629 800 703s255 54 389-7 249-38 371 27"/>
+    <path d="M40 730c139-61 249 57 389 4s252-83 377-15 247 81 372 15 256-50 382 12"/>
+    <path d="M40 770c133-54 250 45 385 3s247-76 379-17 246 91 384 28 252-47 372 4"/>
+    <path d="M40 810c143-46 245 38 383 7s250-74 381-22 248 88 385 41 246-46 371-4"/>
+  </g>
+
+  <g aria-hidden="true" opacity=".68">
+    <path d="M185 620C340 618 397 527 490 463" fill="none" stroke="#ff1493" stroke-width="8" stroke-linecap="round"/>
+    <path d="M1115 463c91 62 150 153 300 157" fill="none" stroke="#93ff14" stroke-width="8" stroke-linecap="round"/>
+    <path d="M185 620h-64m64 0h36m-100 0v-50m32 50v-78m32 78v-33" fill="none" stroke="#ff1493" stroke-width="7"/>
+    <path d="M1415 620h64m-64 0h-36m100 0v-50m-32 50v-78m-32 78v-33" fill="none" stroke="#93ff14" stroke-width="7"/>
+  </g>
+
+  <path d="M250 654C444 651 523 579 592 451 653 338 710 298 800 298s147 40 208 153c69 128 148 200 342 203" fill="none" stroke="#1493ff" stroke-opacity=".22" stroke-width="28" filter="url(#glow)"/>
+  <path d="M250 654C444 651 523 579 592 451 653 338 710 298 800 298s147 40 208 153c69 128 148 200 342 203" fill="none" stroke="#29b6ff" stroke-width="6"/>
+  <path d="M250 654H1350" fill="none" stroke="#78d5ff" stroke-opacity=".28" stroke-width="2" stroke-dasharray="10 16"/>
+  <path d="M800 292V654" fill="none" stroke="#ff1493" stroke-opacity=".66" stroke-width="3" stroke-dasharray="10 12"/>
+
+  <g filter="url(#glow)">
+    <circle cx="800" cy="294" r="105" fill="#081827" stroke="#93ff14" stroke-opacity=".36" stroke-width="10"/>
+    <circle cx="800" cy="294" r="91" fill="#0b2236" stroke="#dfffa9" stroke-width="3"/>
+    <g clip-path="url(#coinClip)">
+      <path d="M702 196h98v196h-98z" fill="#ff1493" fill-opacity=".23"/>
+      <path d="M800 196h98v196h-98z" fill="#93ff14" fill-opacity=".2"/>
+      <path d="M800 205v178" stroke="#dfffa9" stroke-opacity=".7" stroke-width="3"/>
+    </g>
+    <circle cx="800" cy="294" r="60" fill="none" stroke="#64cfff" stroke-opacity=".75" stroke-width="3" stroke-dasharray="8 10"/>
+    <circle cx="800" cy="294" r="12" fill="#dfffa9"/>
+  </g>
+
+  <g fill="none" stroke-width="3">
+    <path d="M490 463C585 391 642 336 700 310" stroke="#ff1493" stroke-dasharray="8 10"/>
+    <path d="M900 310c60 27 117 82 215 153" stroke="#93ff14" stroke-dasharray="8 10"/>
+  </g>
+  <g fill="#dfffa9">
+    <circle cx="615" cy="413" r="5"/><circle cx="985" cy="413" r="5"/>
+    <circle cx="545" cy="490" r="4"/><circle cx="1055" cy="490" r="4"/>
+  </g>
+  <g fill="none" stroke="#58c9f8" stroke-opacity=".38" stroke-width="2">
+    <circle cx="800" cy="294" r="142" stroke-dasharray="3 15"/>
+    <path d="M660 154h54m226 0h-54M660 434h54m226 0h-54"/>
+  </g>
+</svg>

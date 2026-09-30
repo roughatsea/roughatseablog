@@ -1,0 +1,213 @@
+---
+const initialP = 0.5;
+const chart = { left: 74, right: 866, top: 42, bottom: 330 };
+const entropy = (p: number) => {
+  if (p === 0 || p === 1) return 0;
+  return -p * Math.log2(p) - (1 - p) * Math.log2(1 - p);
+};
+const x = (p: number) => chart.left + p * (chart.right - chart.left);
+const y = (h: number) => chart.bottom - h * (chart.bottom - chart.top);
+const curve = Array.from({ length: 201 }, (_, index) => {
+  const p = index / 200;
+  return `${index === 0 ? 'M' : 'L'}${x(p).toFixed(2)} ${y(entropy(p)).toFixed(2)}`;
+}).join(' ');
+---
+
+<figure class="entropy-lab reckoning-visual" data-entropy-lab>
+  <header>
+    <p>Binary entropy explorer</p>
+    <h3>Move the bias; measure the uncertainty</h3>
+  </header>
+
+  <div class="controls">
+    <label for="heads-probability">Probability of heads, <i>p</i></label>
+    <div class="slider-row">
+      <input id="heads-probability" data-probability type="range" min="0" max="100" step="1" value="50" />
+      <output for="heads-probability" data-probability-output>0.50</output>
+    </div>
+    <div class="presets" aria-label="Choose a probability of heads">
+      {[0, 25, 50, 75, 100].map((percent) => (
+        <button type="button" class:list={{ active: percent === 50 }} data-preset={percent} aria-pressed={percent === 50 ? 'true' : 'false'}>
+          {percent}%
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 940 420" role="img" aria-labelledby="entropy-title entropy-desc">
+      <title id="entropy-title">Binary entropy when heads has probability one half</title>
+      <desc id="entropy-desc">The entropy curve rises from zero, reaches one bit at a one-half probability of heads, and falls symmetrically to zero. A marker sits at the highest point.</desc>
+      <defs>
+        <pattern id="entropy-stripes" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <path d="M0 0V8" />
+        </pattern>
+      </defs>
+
+      <g class="grid" aria-hidden="true">
+        {[0, 0.25, 0.5, 0.75, 1].map((value) => (
+          <g>
+            <path d={`M${chart.left} ${y(value)}H${chart.right}`} />
+            <text x="62" y={y(value) + 5} text-anchor="end">{value.toFixed(2)}</text>
+          </g>
+        ))}
+      </g>
+      <g class="axes" aria-hidden="true">
+        <path d={`M${chart.left} ${chart.top}V${chart.bottom}H${chart.right}`} />
+        {[0, 0.25, 0.5, 0.75, 1].map((value) => (
+          <g>
+            <path d={`M${x(value)} ${chart.bottom}v7`} />
+            <text x={x(value)} y="355" text-anchor="middle">{value.toFixed(2)}</text>
+          </g>
+        ))}
+        <text class="axis-title" x="470" y="397" text-anchor="middle">probability of heads, p</text>
+        <text class="axis-title y-title" x="19" y="186" text-anchor="middle">entropy H(p), bits</text>
+      </g>
+
+      <path class="entropy-curve" d={curve} aria-hidden="true" />
+      <path class="guide" data-guide d={`M${x(initialP)} ${y(entropy(initialP))}V${chart.bottom}`} aria-hidden="true" />
+      <g class="marker" data-marker transform={`translate(${x(initialP)} ${y(entropy(initialP))})`} aria-hidden="true">
+        <circle r="9" />
+        <path d="M-12 0H12M0-12V12" />
+      </g>
+      <g class="peak-label" aria-hidden="true">
+        <path d={`M${x(0.5) - 12} ${y(1) + 22}l-44 28`} />
+        <text x={x(0.5) - 62} y={y(1) + 58} text-anchor="end">fair coin: 1 bit</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="readout" aria-live="polite" data-readout>
+    <div>
+      <span>Heads</span>
+      <strong data-heads>0.50</strong>
+    </div>
+    <div>
+      <span>Tails</span>
+      <strong data-tails>0.50</strong>
+    </div>
+    <div>
+      <span>Entropy per toss</span>
+      <strong data-entropy>1.000 bit</strong>
+    </div>
+    <div>
+      <span>Most uncertainty?</span>
+      <strong data-comparison>Yes — the maximum</strong>
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> exchanging heads and tails reflects the marker across <i>p</i> = 0.5 but leaves the entropy unchanged. The fair coin reaches one bit per toss; a coin that always lands the same way has zero entropy.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-entropy-lab]').forEach((figure) => {
+    const slider = figure.querySelector('[data-probability]');
+    const probabilityOutput = figure.querySelector('[data-probability-output]');
+    const marker = figure.querySelector('[data-marker]');
+    const guide = figure.querySelector('[data-guide]');
+    const heads = figure.querySelector('[data-heads]');
+    const tails = figure.querySelector('[data-tails]');
+    const entropyOutput = figure.querySelector('[data-entropy]');
+    const comparison = figure.querySelector('[data-comparison]');
+    const title = figure.querySelector('#entropy-title');
+    const desc = figure.querySelector('#entropy-desc');
+    if (!(slider instanceof HTMLInputElement) || !(probabilityOutput instanceof HTMLOutputElement) || !(marker instanceof SVGGElement) || !(guide instanceof SVGPathElement) || !heads || !tails || !entropyOutput || !comparison || !title || !desc) return;
+
+    const left = 74;
+    const right = 866;
+    const top = 42;
+    const bottom = 330;
+    const chartX = (p: number) => left + p * (right - left);
+    const chartY = (h: number) => bottom - h * (bottom - top);
+    const binaryEntropy = (p: number) => p === 0 || p === 1 ? 0 : -p * Math.log2(p) - (1 - p) * Math.log2(1 - p);
+
+    const render = (percent: number) => {
+      const p = percent / 100;
+      const h = binaryEntropy(p);
+      const markerX = chartX(p);
+      const markerY = chartY(h);
+      slider.value = String(percent);
+      probabilityOutput.value = p.toFixed(2);
+      probabilityOutput.textContent = p.toFixed(2);
+      heads.textContent = p.toFixed(2);
+      tails.textContent = (1 - p).toFixed(2);
+      entropyOutput.textContent = `${h.toFixed(3)} ${Math.abs(h - 1) < 0.0005 ? 'bit' : 'bits'}`;
+      comparison.textContent = percent === 50 ? 'Yes — the maximum' : percent === 0 || percent === 100 ? 'No — no uncertainty' : 'No — below 1 bit';
+      marker.setAttribute('transform', `translate(${markerX} ${markerY})`);
+      guide.setAttribute('d', `M${markerX} ${markerY}V${bottom}`);
+
+      figure.querySelectorAll('[data-preset]').forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        const active = Number(button.dataset.preset) === percent;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      title.textContent = `Binary entropy when heads has probability ${p.toFixed(2)}`;
+      const position = percent === 50 ? 'at the one-bit maximum' : percent === 0 || percent === 100 ? 'at zero bits' : `at ${h.toFixed(3)} bits`;
+      desc.textContent = `The entropy curve rises from zero, reaches one bit at a one-half probability of heads, and falls symmetrically to zero. The marker is ${position}.`;
+    };
+
+    slider.addEventListener('input', () => render(Number(slider.value)));
+    figure.querySelectorAll('[data-preset]').forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      button.addEventListener('click', () => render(Number(button.dataset.preset)));
+    });
+    render(50);
+  });
+</script>
+
+<style>
+  .entropy-lab {
+    --entropy-blue: #087dcc;
+    --entropy-green: #4f9300;
+    --entropy-pink: #d9007e;
+    background: radial-gradient(circle at 92% 5%, color-mix(in srgb, var(--entropy-pink) 12%, transparent), transparent 22rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(980px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .entropy-lab { --entropy-blue: #1493ff; --entropy-green: #93ff14; --entropy-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .controls { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; margin-bottom: .75rem; padding: .85rem 1rem; }
+  .controls label { color: var(--text-primary); display: block; font-size: .8rem; font-weight: 700; margin-bottom: .45rem; }
+  .slider-row { align-items: center; display: grid; gap: .75rem; grid-template-columns: 1fr 4.5rem; }
+  input[type='range'] { accent-color: var(--entropy-blue); cursor: pointer; width: 100%; }
+  input[type='range']:focus-visible { outline: 3px solid color-mix(in srgb, var(--entropy-green) 65%, transparent); outline-offset: 3px; }
+  output { color: var(--entropy-pink); font-family: var(--font-mono); font-size: .95rem; font-weight: 800; text-align: right; }
+  .presets { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .65rem; }
+  .presets button { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: .72rem; font-weight: 700; padding: .38rem .68rem; }
+  .presets button.active { background: var(--entropy-blue); border-color: var(--entropy-blue); color: #fff; }
+  .presets button:focus-visible { outline: 3px solid color-mix(in srgb, var(--entropy-green) 65%, transparent); outline-offset: 2px; }
+  .diagram-shell { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; overflow-x: auto; }
+  svg { display: block; height: auto; min-width: 680px; width: 100%; }
+  .grid path { stroke: var(--border-color); stroke-width: 1; }
+  .grid text, .axes text, .peak-label text { fill: var(--text-secondary); font-size: 12px; }
+  .axes path { fill: none; stroke: var(--text-secondary); stroke-width: 1.5; }
+  .axis-title { font-weight: 700; letter-spacing: .04em; }
+  .y-title { transform: rotate(-90deg); transform-box: fill-box; transform-origin: center; }
+  .entropy-curve { fill: none; stroke: var(--entropy-blue); stroke-linecap: round; stroke-linejoin: round; stroke-width: 4; }
+  .guide { fill: none; stroke: var(--entropy-pink); stroke-dasharray: 7 7; stroke-width: 2; }
+  .marker circle { fill: var(--bg-color); stroke: var(--entropy-green); stroke-width: 4; }
+  .marker path { stroke: var(--entropy-pink); stroke-width: 2; }
+  .peak-label path { fill: none; stroke: var(--text-secondary); stroke-dasharray: 3 4; }
+  .readout { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; display: grid; gap: .75rem; grid-template-columns: repeat(4, 1fr); margin-top: .75rem; padding: .9rem 1rem; }
+  .readout div { display: grid; gap: .18rem; }
+  .readout span { color: var(--text-secondary); font-size: .64rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .readout strong { color: var(--text-primary); font-size: .86rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 720px) {
+    .entropy-lab { width: calc(100vw - 1.5rem); }
+    .readout { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 430px) { .readout { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .entropy-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

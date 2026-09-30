@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-29T06:00:00-07:00",
+  "updatedAt": "2026-09-30T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -712,6 +712,34 @@
         "daily-reckoning-2026-09-09",
         "daily-reckoning-2026-09-10",
         "daily-reckoning-2026-09-11"
+      ]
+    },
+    {
+      "date": "2026-09-30",
+      "slug": "daily-reckoning-2026-09-30",
+      "title": "Why Is a Fair Coin Worth One Bit?",
+      "area": "Probability and information theory",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Probabilities between 0 and 1",
+        "Logarithms base 2",
+        "Weighted averages"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "binary entropy",
+        "Shannon entropy",
+        "self-information",
+        "bits",
+        "Bernoulli trials",
+        "source coding",
+        "lossless compression",
+        "history of information theory"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-05",
+        "daily-reckoning-2026-09-18",
+        "daily-reckoning-2026-09-21"
       ]
     }
   ]
