@@ -1,0 +1,207 @@
+---
+const under = [0.27091852045622017, 2.365313622849648, 4.459708725390167];
+const gap = 0.025;
+const scale = 94;
+const center = { x: 310, y: 245 };
+const point = (t: number) => ({
+  x: center.x + scale * (Math.sin(t) + 2 * Math.sin(2 * t)),
+  y: center.y - scale * (Math.cos(t) - 2 * Math.cos(2 * t)),
+});
+const segment = (start: number, end: number) => {
+  const steps = 180;
+  return Array.from({ length: steps + 1 }, (_, index) => {
+    const p = point(start + (end - start) * index / steps);
+    return `${index === 0 ? 'M' : 'L'}${p.x.toFixed(2)} ${p.y.toFixed(2)}`;
+  }).join(' ');
+};
+const arcs = [
+  segment(under[0] + gap, under[1] - gap),
+  segment(under[1] + gap, under[2] - gap),
+  segment(under[2] + gap, Math.PI * 2 + under[0] - gap),
+];
+const labels = [point(1.03), point(3.13), point(5.23)];
+const colors = ['#1493ff', '#ff1493', '#93ff14'];
+---
+
+<figure class="tricolor-lab reckoning-visual" data-tricolor-lab>
+  <header>
+    <p>Trefoil coloring desk</p>
+    <h3>Three arcs, three crossing checks</h3>
+  </header>
+
+  <div class="layout">
+    <div class="diagram-shell">
+      <svg viewBox="0 0 620 500" role="img" aria-labelledby="trefoil-title trefoil-desc">
+        <title id="trefoil-title">A valid three-coloring of a trefoil knot diagram</title>
+        <desc id="trefoil-desc">The trefoil has three arcs. Arc A is blue and solid, arc B is pink and long-dashed, and arc C is green and dotted. At each of the three crossings, all three colors meet.</desc>
+        <defs>
+          <pattern id="knot-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+            <path d="M28 0H0V28" />
+          </pattern>
+          <filter id="knot-glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+        <rect width="620" height="500" rx="12" class="plot-bg" />
+        <rect width="620" height="500" rx="12" fill="url(#knot-grid)" class="grid" />
+        <g class="knot" filter="url(#knot-glow)">
+          <path data-arc="0" d={arcs[0]} style={`--arc-color:${colors[0]}`} />
+          <path data-arc="1" d={arcs[1]} style={`--arc-color:${colors[1]}`} />
+          <path data-arc="2" d={arcs[2]} style={`--arc-color:${colors[2]}`} />
+        </g>
+        {labels.map((label, index) => (
+          <g class="arc-label" transform={`translate(${label.x} ${label.y})`}>
+            <circle r="18" />
+            <text text-anchor="middle" y="6">{String.fromCharCode(65 + index)}</text>
+          </g>
+        ))}
+        <g class="crossing-labels" aria-hidden="true">
+          <text x="430" y="330">1</text>
+          <text x="310" y="78">2</text>
+          <text x="172" y="330">3</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="workbench">
+      <div class="presets" aria-label="Coloring presets">
+        <button type="button" data-preset="proof">Proof coloring</button>
+        <button type="button" data-preset="plain">One color</button>
+        <button type="button" data-preset="broken">Broken rule</button>
+      </div>
+
+      <div class="arc-controls">
+        {['A · solid', 'B · dashed', 'C · dotted'].map((label, index) => (
+          <label>
+            <span>{label}</span>
+            <select data-select={index} aria-label={`Color for arc ${String.fromCharCode(65 + index)}`}>
+              <option value="0" selected={index === 0}>Blue ●</option>
+              <option value="1" selected={index === 1}>Pink ■</option>
+              <option value="2" selected={index === 2}>Green ▲</option>
+            </select>
+          </label>
+        ))}
+      </div>
+
+      <ol class="checks" aria-label="Crossing rule checks">
+        <li data-crossing="0"><span>Crossing 1</span><strong>all different</strong></li>
+        <li data-crossing="1"><span>Crossing 2</span><strong>all different</strong></li>
+        <li data-crossing="2"><span>Crossing 3</span><strong>all different</strong></li>
+      </ol>
+
+      <p class="verdict" data-verdict aria-live="polite">
+        <strong>Nontrivial tricoloring.</strong> Every crossing passes, and all three colors are used.
+      </p>
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the gaps mark where one arc passes under another. The solid, dashed, and dotted strokes identify arcs A, B, and C without relying on color. A proof coloring needs every crossing to show either one color or all three—and the whole diagram must use at least two colors.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-tricolor-lab]').forEach((figure) => {
+    const palette = ['#1493ff', '#ff1493', '#93ff14'];
+    const names = ['blue circle', 'pink square', 'green triangle'];
+    const selects = Array.from(figure.querySelectorAll('[data-select]')).filter((element): element is HTMLSelectElement => element instanceof HTMLSelectElement);
+    const paths = Array.from(figure.querySelectorAll('[data-arc]')).filter((element): element is SVGPathElement => element instanceof SVGPathElement);
+    const checks = Array.from(figure.querySelectorAll('[data-crossing]'));
+    const verdict = figure.querySelector('[data-verdict]');
+    const title = figure.querySelector('#trefoil-title');
+    const desc = figure.querySelector('#trefoil-desc');
+    if (selects.length !== 3 || paths.length !== 3 || checks.length !== 3 || !verdict || !title || !desc) return;
+
+    const crossings = [[2, 0, 1], [0, 1, 2], [1, 2, 0]];
+    const render = () => {
+      const assignment = selects.map((select) => Number(select.value));
+      paths.forEach((path, index) => path.style.setProperty('--arc-color', palette[assignment[index]]));
+
+      let allPass = true;
+      crossings.forEach((arcIndexes, index) => {
+        const values = arcIndexes.map((arcIndex) => assignment[arcIndex]);
+        const distinct = new Set(values).size;
+        const passes = distinct === 1 || distinct === 3;
+        allPass &&= passes;
+        const strong = checks[index].querySelector('strong');
+        if (strong) strong.textContent = distinct === 1 ? 'all the same' : distinct === 3 ? 'all different' : 'two same, one different';
+        checks[index].classList.toggle('fail', !passes);
+      });
+
+      const used = new Set(assignment).size;
+      if (!allPass) {
+        verdict.innerHTML = '<strong>Not a tricoloring.</strong> At least one crossing has exactly two colors.';
+      } else if (used === 1) {
+        verdict.innerHTML = '<strong>Trivial coloring only.</strong> The crossing rule passes, but the diagram uses just one color.';
+      } else {
+        verdict.innerHTML = '<strong>Nontrivial tricoloring.</strong> Every crossing passes, and the diagram uses more than one color.';
+      }
+
+      title.textContent = allPass && used > 1 ? 'A valid nontrivial three-coloring of a trefoil knot diagram' : 'A trefoil knot diagram with a tested arc coloring';
+      desc.textContent = `Arc A is ${names[assignment[0]]}, arc B is ${names[assignment[1]]}, and arc C is ${names[assignment[2]]}. ${allPass ? 'Every crossing obeys the coloring rule.' : 'At least one crossing has exactly two colors and fails the coloring rule.'}`;
+    };
+
+    selects.forEach((select) => select.addEventListener('change', render));
+    figure.querySelectorAll('[data-preset]').forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      button.addEventListener('click', () => {
+        const assignments: Record<string, number[]> = { proof: [0, 1, 2], plain: [0, 0, 0], broken: [0, 0, 1] };
+        const chosen = assignments[button.dataset.preset || 'proof'];
+        selects.forEach((select, index) => { select.value = String(chosen[index]); });
+        render();
+      });
+    });
+    render();
+  });
+</script>
+
+<style>
+  .tricolor-lab {
+    --knot-blue: #087dcc;
+    --knot-green: #4f9300;
+    --knot-pink: #d9007e;
+    background: radial-gradient(circle at 95% 8%, color-mix(in srgb, var(--knot-pink) 12%, transparent), transparent 24rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1040px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .tricolor-lab { --knot-blue: #1493ff; --knot-green: #93ff14; --knot-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .layout { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1.35fr) minmax(18rem, .85fr); }
+  .diagram-shell, .workbench { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; }
+  .diagram-shell { overflow: hidden; }
+  svg { display: block; height: auto; width: 100%; }
+  .plot-bg { fill: var(--bg-color); }
+  .grid { opacity: .38; stroke: var(--border-color); stroke-width: 1; }
+  .knot path { fill: none; stroke: var(--arc-color); stroke-linecap: round; stroke-linejoin: round; stroke-width: 15; }
+  .knot path[data-arc='1'] { stroke-dasharray: 30 12; }
+  .knot path[data-arc='2'] { stroke-dasharray: 3 16; }
+  .arc-label circle { fill: var(--bg-color); stroke: var(--text-primary); stroke-width: 2; }
+  .arc-label text { fill: var(--text-primary); font-size: 16px; font-weight: 800; }
+  .crossing-labels text { fill: var(--text-secondary); font-size: 13px; font-weight: 800; }
+  .workbench { padding: 1rem; }
+  .presets { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+  button { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: .72rem; font-weight: 700; padding: .4rem .68rem; }
+  button:hover { border-color: var(--link-color); color: var(--text-primary); }
+  button:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--knot-green) 65%, transparent); outline-offset: 2px; }
+  .arc-controls { display: grid; gap: .65rem; }
+  .arc-controls label { align-items: center; display: grid; gap: .75rem; grid-template-columns: 1fr 8rem; }
+  .arc-controls span { color: var(--text-primary); font-size: .78rem; font-weight: 700; }
+  select { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); font: inherit; font-size: .75rem; padding: .42rem; width: 100%; }
+  .checks { display: grid; gap: .45rem; list-style: none; margin: 1rem 0 !important; padding: 0; }
+  .checks li { align-items: center; border-left: 3px solid var(--knot-green); display: flex; gap: .6rem; justify-content: space-between; margin: 0; padding: .45rem .5rem; }
+  .checks li.fail { border-left-color: var(--knot-pink); }
+  .checks span { color: var(--text-secondary); font-size: .72rem; }
+  .checks strong { font-size: .72rem; text-align: right; }
+  .verdict { background: var(--surface-color); border-radius: 7px; font-size: .78rem; line-height: 1.45; margin: 0; padding: .7rem .75rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 780px) { .layout { grid-template-columns: 1fr; } .tricolor-lab { width: calc(100vw - 1.5rem); } }
+  @media (prefers-reduced-motion: reduce) { .tricolor-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

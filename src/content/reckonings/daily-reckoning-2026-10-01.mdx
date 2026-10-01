@@ -1,0 +1,211 @@
+---
+title: "Can Three Colors Prove a Knot Won’t Untie?"
+description: "Fox tricoloring turns a knot diagram into arithmetic modulo 3. A valid coloring survives every legal deformation, so the trefoil cannot become an unknotted loop."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-01.svg"
+heroImageAlt: "A luminous trefoil knot rises above dark ocean-contour lines on a maritime blueprint. Cyan, magenta, and acid-green arcs cross with small gaps that identify the underpassing strands, while faint arithmetic modulo 3 surrounds the knot."
+date: 2026-10-01
+publishedAt: 2026-10-01T06:00:00-07:00
+area: "Geometry and topology"
+difficulty: "Intermediate"
+prerequisites:
+  - "Remainders modulo 3"
+  - "Reading overcrossings and undercrossings in a knot diagram"
+  - "Following a proof by invariance"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - topology
+  - knot-theory
+  - fox-tricoloring
+  - modular-arithmetic
+  - invariants
+  - trefoil-knot
+  - reidemeister-moves
+  - dna-topology
+  - history-of-mathematics
+---
+
+import TrefoilTricoloringLab from '../../components/reckonings/TrefoilTricoloringLab.astro';
+
+Tie an overhand knot in a cord, join the two ends, and hide the join. You may stretch the loop, shrink it, or slide one part around another. You may not cut the cord or pass one strand through another.
+
+Could enough patient motion turn that knotted loop into a plain circle?
+
+A picture alone does not settle the question. A knot diagram can acquire extra crossings or lose them as the loop moves. To prove that a trefoil knot cannot become an unknotted loop, we need a feature that survives every allowed motion. **Fox tricoloring** supplies one with three colors and arithmetic modulo $3$.
+
+## Turn the cord into arcs
+
+A **knot** is a closed loop embedded in three-dimensional space. Two knots count as the same knot type when one loop can be continuously deformed into the other without cutting the loop or letting it pass through itself.
+
+A **knot diagram** is a projection of the loop onto a plane. A small gap at each crossing records which strand passes underneath. Split the diagram at every undercrossing. Each piece from one undercrossing to the next is an **arc**; an arc may pass over other strands on its way.
+
+Now color every arc with one of three colors. The coloring is a **nontrivial Fox tricoloring** when two rules hold:
+
+1. At least two colors appear somewhere in the diagram.
+2. At each crossing, the three incident arcs are either all the same color or all three different colors.
+
+The second rule forbids exactly two colors at one crossing. The interactive diagram below uses blue circles, pink squares, and green triangles in its controls. Solid, dashed, and dotted strokes distinguish the three arcs without making color carry the whole explanation.
+
+<TrefoilTricoloringLab />
+
+The proof preset gives the trefoil all three colors. Every crossing sees one solid, one dashed, and one dotted arc, so every crossing passes. The one-color preset passes the local crossing rule but fails the requirement that at least two colors be used. Try changing one arc without changing the others: some crossing will contain two equal colors and a third different color.
+
+## The same rule as an equation
+
+Replace the three colors by the remainders $0$, $1$, and $2$. At one crossing, let $x$ and $z$ be the colors on the two underpassing arc ends, and let $y$ be the color on the overpassing arc. The coloring rule becomes
+
+$$
+\boxed{x+z\equiv 2y\pmod 3}.
+$$
+
+The symbol $\equiv$ means that the two sides have the same remainder after division by $3$.
+
+Why does the equation encode the color rule? If all three colors are equal, then $x+z=2y$, so the congruence holds. If the colors are $0$, $1$, and $2$ in some order, their sum is congruent to $0$ modulo $3$. Since $2y$ and $-y$ have the same remainder modulo $3$, the equation $x+z\equiv2y$ is equivalent to
+
+$$
+x+y+z\equiv0\pmod3.
+$$
+
+The three distinct residues also add to $0+1+2=3\equiv0\pmod3$.
+
+There are only $3^3=27$ possible triples $(x,y,z)$. The triples that satisfy the equation are precisely the three all-equal triples and the six permutations of $(0,1,2)$. No triple containing exactly two colors passes.
+
+## Worked example: check the trefoil
+
+Name the trefoil's three arcs $A$, $B$, and $C$. Assign
+
+$$
+A=0,\qquad B=1,\qquad C=2.
+$$
+
+Each crossing has one arc passing over and the other two ending underneath. Read the three crossings in turn.
+
+At crossing 1, arc $B$ passes over arcs $A$ and $C$. The equation is
+
+$$
+A+C\equiv2B\pmod3.
+$$
+
+Substitution gives
+
+$$
+0+2\equiv2\cdot1\pmod3,
+$$
+
+so both sides have remainder $2$.
+
+At crossing 2, arc $C$ passes over arcs $A$ and $B$:
+
+$$
+A+B\equiv2C\pmod3.
+$$
+
+Now
+
+$$
+0+1\equiv2\cdot2\pmod3.
+$$
+
+The left side is $1$. The right side is $4$, which also has remainder $1$ modulo $3$.
+
+At crossing 3, arc $A$ passes over arcs $B$ and $C$:
+
+$$
+B+C\equiv2A\pmod3.
+$$
+
+Here
+
+$$
+1+2\equiv2\cdot0\pmod3.
+$$
+
+The left side is $3$, and both sides have remainder $0$. All three crossings pass, and all three colors appear. The trefoil therefore has a nontrivial tricoloring.
+
+## Why the colors survive motion
+
+A knot diagram can change even when the physical loop does not pass through itself. The changes can be assembled from three local operations called **Reidemeister moves**: make or remove a kink, make or remove a pair of crossings, and slide a strand across a crossing.
+
+For each move, a coloring outside the small changed region determines a coloring inside that region. A kink forces its new short arc to keep the existing color. A two-crossing move propagates one consistent color through both new crossings. In the three-crossing move, the same equations appear before and after the slide, only in a different order. Reversing a move reverses the same color assignment.
+
+Therefore a diagram has a nontrivial tricoloring before a Reidemeister move exactly when the resulting diagram has one afterward. In the language of topology, tricolorability is a **knot invariant**: a property that depends on the knot type rather than on one drawing.
+
+The unknot—a plain closed loop—has a diagram with one arc and no crossings. Its only colorings use one color, so the unknot has no nontrivial tricoloring. The trefoil does have a nontrivial tricoloring. Because allowed deformations cannot change that fact,
+
+$$
+\boxed{\text{the trefoil is not the unknot}.}
+$$
+
+The conclusion is one-way. Failure to find a tricoloring does not prove that a knot is unknotted. The figure-eight knot is genuinely knotted, but every Fox tricoloring of it is monochromatic. One invariant can separate two knot types without separating every pair.
+
+## From vortex atoms to classroom colors
+
+Knots became a systematic mathematical subject partly through a physical theory that turned out to be wrong. In 1867, William Thomson—later Lord Kelvin—proposed that atoms might be knotted vortex tubes in an all-pervading fluid called the ether. Peter Guthrie Tait began tabulating knots in hope that different knot types might correspond to different chemical elements. The [MacTutor history of knots and physics](https://mathshistory.st-andrews.ac.uk/HistTopics/Knots_and_physics/) records how Tait's diagrams entered Thomson's 1869 paper on vortex atoms, while [MacTutor's Tait biography](https://mathshistory.st-andrews.ac.uk/Biographies/Tait/) traces the collaboration among Tait, Thomson, and James Clerk Maxwell.
+
+The vortex-atom theory failed as physics. Tait's classification problem survived: how can two drawings be proved to represent different knots?
+
+James Waddell Alexander and Garland Briggs in [1926–27](https://doi.org/10.2307/1968399), and Kurt Reidemeister [independently in 1927](https://doi.org/10.1007/BF02952507), showed that the three local moves now called Reidemeister moves connect any two diagrams of the same knot. Their result turned diagram tests into knot invariants: prove that a quantity or property survives the three moves, and it survives every allowed deformation.
+
+American topologist Ralph Fox developed $n$-colorings around 1956 while making knot theory accessible to undergraduate students at Haverford College. The [Encyclopedia of Mathematics entry on Fox $n$-coloring](https://encyclopediaofmath.org/wiki/Fox-n-colouring) gives that origin and the general equation modulo $n$. Fox's Haverford lectures, later expanded with Richard Crowell into *Introduction to Knot Theory*, helped bring diagram-based knot theory to a broader mathematical audience; [MacTutor's biography of Fox](https://mathshistory.st-andrews.ac.uk/Biographies/Fox_Ralph/) places the lectures within the postwar Princeton school of topology.
+
+## What knot invariants do outside a diagram
+
+Closed DNA molecules can become knotted or linked during replication and recombination. Enzymes called **topoisomerases** briefly cleave one or both DNA strands, allow controlled strand motion, and reseal the break. Those operations change DNA topology. A review in *Nature Reviews Molecular Cell Biology* explains that topoisomerases are involved in transcription, replication, chromosome segregation, and genome stability ([Pommier and colleagues, 2016](https://pmc.ncbi.nlm.nih.gov/articles/PMC9248348/)).
+
+Researchers studying DNA use stronger invariants and statistical models to identify complicated knot types. Fox tricoloring is best understood as a small example of this algebraic strategy: translate a flexible geometric object into algebra that does not change under the allowed motions. The same strategy supports knot polynomials, knot groups, and invariants used in the study of polymers, fluid vortices, and quantum topology.
+
+## Try the invariant
+
+### Problem 1
+
+How many Fox tricolorings does the standard three-arc trefoil diagram have? Count monochromatic and nontrivial colorings separately.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Choose a color for arc $A$. There are three choices.
+
+If arc $B$ has the same color as $A$, each crossing rule forces arc $C$ to have that color too. This produces three monochromatic colorings, one for each color.
+
+If arc $B$ has a different color, there are two choices for $B$. At the crossing containing $A$ and $B$, the rule forbids exactly two colors, so arc $C$ must take the third color. Every permutation of the three colors then satisfies all crossings. The number of nontrivial colorings is
+
+$$
+3\cdot2=6.
+$$
+
+Altogether, the diagram has
+
+$$
+3+6=9
+$$
+
+Fox tricolorings.
+
+</details>
+
+### Problem 2
+
+You test a knot diagram and find only the three monochromatic colorings. May you conclude that the knot is the unknot?
+
+<details>
+<summary>Reveal the solution</summary>
+
+No. A nontrivial tricoloring proves that a knot is not the unknot, but the absence of one does not prove the converse. The figure-eight knot supplies a counterexample: it is knotted and has no nontrivial Fox tricoloring. Another invariant is needed to distinguish the figure-eight knot from the unknot.
+
+</details>
+
+## The idea to keep
+
+An invariant turns permitted motion into a conservation law. The trefoil keeps a nontrivial three-coloring through every Reidemeister move; the unknot never has one. Three colors are enough to prove that those two loops cannot be the same knot.
+
+Continue with [modular arithmetic on a clock](/reckonings/daily-reckoning-2026-09-09/) for the remainder arithmetic behind the crossing equation, or with [Cantor's diagonal argument](/reckonings/daily-reckoning-2026-09-22/) for another example of a small construction that proves a global impossibility.
+
+## Sources
+
+- American Mathematical Society, [*Knots, Links, and Their Invariants*, Chapter 1 preview](https://www.ams.org/bookstore/pspdf/stml-74-prev.pdf), especially the proof that tricolorability is preserved by Reidemeister moves.
+- Encyclopedia of Mathematics, [“Fox $n$-colouring”](https://encyclopediaofmath.org/wiki/Fox-n-colouring), on the modular coloring rule and Fox's development of the idea around 1956.
+- J. H. Przytycki, [“3-coloring and other elementary invariants of knots”](https://arxiv.org/abs/math/0608172), 2006, on Fox colorings and their history.
+- J. W. Alexander and G. B. Briggs, [“On Types of Knotted Curves”](https://doi.org/10.2307/1968399), *Annals of Mathematics* 28 (1926–27), 562–586; and Kurt Reidemeister, [“Elementare Begründung der Knotentheorie”](https://doi.org/10.1007/BF02952507), *Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg* 5 (1927), 24–32.
+- University of St Andrews MacTutor History of Mathematics Archive, [“Knots and physics”](https://mathshistory.st-andrews.ac.uk/HistTopics/Knots_and_physics/) and [“P. G. Tait”](https://mathshistory.st-andrews.ac.uk/Biographies/Tait/).
+- University of St Andrews MacTutor History of Mathematics Archive, [“Ralph Fox”](https://mathshistory.st-andrews.ac.uk/Biographies/Fox_Ralph/).
+- Yves Pommier, Yilun Sun, Shar-yin N. Huang, and John L. Nitiss, [“Roles of eukaryotic topoisomerases in transcription, replication and genomic stability”](https://pmc.ncbi.nlm.nih.gov/articles/PMC9248348/), *Nature Reviews Molecular Cell Biology* 17 (2016), 703–721.

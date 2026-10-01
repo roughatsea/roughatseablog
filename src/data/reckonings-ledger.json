@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-30T06:00:00-07:00",
+  "updatedAt": "2026-10-01T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -740,6 +740,35 @@
         "daily-reckoning-2026-09-05",
         "daily-reckoning-2026-09-18",
         "daily-reckoning-2026-09-21"
+      ]
+    },
+    {
+      "date": "2026-10-01",
+      "slug": "daily-reckoning-2026-10-01",
+      "title": "Can Three Colors Prove a Knot Won’t Untie?",
+      "area": "Geometry and topology",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Remainders modulo 3",
+        "Reading overcrossings and undercrossings in a knot diagram",
+        "Following a proof by invariance"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "knot theory",
+        "Fox tricoloring",
+        "knot invariants",
+        "Reidemeister moves",
+        "modular arithmetic",
+        "trefoil knot",
+        "DNA topology",
+        "history of topology"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-04",
+        "daily-reckoning-2026-09-09",
+        "daily-reckoning-2026-09-22",
+        "daily-reckoning-2026-09-23"
       ]
     }
   ]
