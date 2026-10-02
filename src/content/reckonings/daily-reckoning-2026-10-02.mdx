@@ -1,0 +1,259 @@
+---
+title: "How Can Infinitely Many Halves Stop at One?"
+description: "A geometric series can contain endlessly many positive terms and still have a finite sum. The remaining gap, rather than the growing list of terms, explains why."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-02.svg"
+heroImageAlt: "A dark maritime blueprint shows a luminous unit-long channel partitioned into successive halves. Cyan and acid-green sections shrink toward a dashed magenta remainder, above ocean contour lines and a curving neon sounding path."
+date: 2026-10-02
+publishedAt: 2026-10-02T06:00:00-07:00
+area: "Calculus and analysis"
+difficulty: "Foundational"
+prerequisites:
+  - "Fractions"
+  - "Exponents with positive whole-number powers"
+  - "Finite sums"
+readTimeMinutes: 8
+tags:
+  - daily-reckoning
+  - geometric-series
+  - infinite-series
+  - limits
+  - convergence
+  - zenos-paradox
+  - archimedes
+  - perpetuities
+  - mipmaps
+  - history-of-mathematics
+---
+
+import GeometricSeriesExplorer from '../../components/reckonings/GeometricSeriesExplorer.astro';
+
+Stand one metre from a wall. Walk half the remaining distance: $1/2$ metre. Walk half of what remains: $1/4$ metre. Continue with $1/8$, then $1/16$, then $1/32$.
+
+The instructions never run out. The distance does.
+
+After finitely many steps, you have not reached the wall. Yet the endless list
+
+$$
+\frac12+\frac14+\frac18+\frac1{16}+\cdots
+$$
+
+has the finite sum $1$. An infinite series can stop at a finite value because its later terms become small fast enough. The decisive quantity is the distance still missing.
+
+## Watch the gap, not the step count
+
+After the first step, $1/2$ metre remains. After the second, $1/4$ metre remains. After $n$ steps, where $n$ is a positive whole number, the remaining distance is
+
+$$
+\frac{1}{2^n}.
+$$
+
+The partial sum $S_n$ is the total distance covered by the first $n$ steps:
+
+$$
+S_n=\sum_{k=1}^{n}\left(\frac12\right)^k
+=1-\frac{1}{2^n}.
+$$
+
+Here $k$ counts the steps, and the symbol $\sum$ means to add the displayed terms as $k$ runs from $1$ through $n$. The equation says that the distance covered plus the distance remaining always equals $1$.
+
+The diagram below turns the walk into a unit interval. Every new patterned segment fills half of the current gap. Use the slider to change the finite number of terms; the readout reports both the partial sum and the exact remainder.
+
+<GeometricSeriesExplorer />
+
+No finite slider setting reaches $1$. Instead, the remainder can be made smaller than any positive tolerance. For example, ten terms leave $1/1024$, which is less than one thousandth. Twenty terms leave $1/1{,}048{,}576$, which is less than one millionth.
+
+Mathematicians describe that behavior by saying $S_n$ **converges** to $1$ as $n$ grows without bound. The word *converges* does not mean that one finite partial sum suddenly becomes the infinite sum. It means that the gap $|1-S_n|=1/2^n$ can be forced below any positive target by taking enough terms.
+
+The walking story is an illustration, not a model of human motion at arbitrarily tiny distances or times. The mathematical claim concerns numbers: the sequence of partial sums has a limit.
+
+## The general geometric series
+
+A **geometric series** begins with a number $a$ and multiplies each term by the same number $r$ to obtain the next term:
+
+$$
+a+ar+ar^2+ar^3+\cdots.
+$$
+
+The number $a$ is the first term. The number $r$ is the common ratio. The finite sum of the first $n$ terms is
+
+$$
+S_n=a+ar+ar^2+\cdots+ar^{n-1}.
+$$
+
+Multiplying every term by $r$ shifts the list one place:
+
+$$
+rS_n=ar+ar^2+ar^3+\cdots+ar^n.
+$$
+
+Subtract the second equation from the first. Every middle term cancels:
+
+$$
+\begin{aligned}
+S_n-rS_n&=a-ar^n,\\
+(1-r)S_n&=a(1-r^n).
+\end{aligned}
+$$
+
+When $r\ne1$, division by $1-r$ gives the finite geometric-sum formula recorded in the [National Institute of Standards and Technology's Digital Library of Mathematical Functions](https://dlmf.nist.gov/1.2#E3):
+
+$$
+\boxed{S_n=\frac{a(1-r^n)}{1-r}}.
+$$
+
+If $|r|<1$, the powers $r^n$ approach $0$. The infinite geometric series therefore converges to
+
+$$
+\boxed{a+ar+ar^2+\cdots=\frac{a}{1-r}}.
+$$
+
+The condition $|r|<1$ matters. If the ratio is $2$, for example, the terms $1,2,4,8,\ldots$ grow instead of shrinking, so their partial sums cannot settle near a finite number. Terms approaching zero are necessary for convergence, although that condition alone does not guarantee convergence for every kind of series.
+
+## Worked example: twelve, then half as much forever
+
+Find the value of
+
+$$
+12+6+3+1.5+0.75+\cdots.
+$$
+
+**Step 1: identify the first term.** The first term is $a=12$.
+
+**Step 2: identify the common ratio.** Each term is half the previous term, so
+
+$$
+r=\frac{6}{12}=\frac12.
+$$
+
+The next ratio checks agree: $3/6=1/2$ and $1.5/3=1/2$.
+
+**Step 3: check convergence.** Because $|r|=1/2<1$, the infinite sum exists.
+
+**Step 4: substitute into the formula.**
+
+$$
+\begin{aligned}
+S&=\frac{a}{1-r}\\
+&=\frac{12}{1-\frac12}\\
+&=\frac{12}{\frac12}\\
+&=24.
+\end{aligned}
+$$
+
+The first five terms total
+
+$$
+12+6+3+1.5+0.75=23.25.
+$$
+
+The missing $0.75$ is not a rounding accident. After those five terms, the untouched tail begins with $0.375$ and has the same ratio $1/2$, so the tail sums to
+
+$$
+\frac{0.375}{1-\frac12}=0.75.
+$$
+
+Thus $23.25+0.75=24$, which checks the formula by a second calculation.
+
+## A paradox became an area calculation
+
+The halving puzzle reaches back to Zeno of Elea in the fifth century BCE. Zeno's original writings are lost; Aristotle preserved the motion argument later called the Dichotomy. Aristotle states that a moving object must reach the halfway point before reaching its goal. Repeating that demand creates infinitely many intermediate tasks. The [Stanford Encyclopedia of Philosophy's account of Zeno](https://plato.stanford.edu/entries/paradox-zeno/#3.1) distinguishes the ancient problem from the modern numerical observation that the associated times or distances can form a convergent series. A finite sum helps explain the measurement, but the philosophical questions about space, time, and motion were broader than one formula.
+
+Around 225 BCE, Archimedes used the same shrinking structure to calculate an area. In *Quadrature of the Parabola*, he began with an inscribed triangle of area $A$, then added triangles with total area $A/4$, then $A/16$, then $A/64$, and so on. The resulting area was
+
+$$
+A\left(1+\frac14+\frac1{16}+\frac1{64}+\cdots\right)
+=A\cdot\frac{1}{1-\frac14}
+=\frac43A.
+$$
+
+Archimedes did not write the modern limit formula. He paired the geometric construction with an exhaustion argument that trapped the remaining area. The [MacTutor history of calculus](https://mathshistory.st-andrews.ac.uk/HistTopics/The_rise_of_calculus/) calls the calculation the first known summation of an infinite series. That wording concerns the surviving historical record; it should not be read as a claim that one person or culture exhausted the many later ways people learned to reason about infinity.
+
+## Where the finite total is useful
+
+Financial valuation turns future payments into a geometric series by discounting them. Suppose an investment pays $C$ dollars at the end of every period forever and the discount rate is $i>0$ per period. The payment one period away is worth $C/(1+i)$ today, the next is worth $C/(1+i)^2$, and so on. The common ratio is $1/(1+i)$, which lies between $0$ and $1$, so the present value is
+
+$$
+\frac{C}{1+i}+\frac{C}{(1+i)^2}+\cdots=\frac{C}{i}.
+$$
+
+Finance calls that idealized payment stream a **perpetuity**. [OpenStax's *Principles of Finance*](https://openstax.org/books/principles-finance/pages/8-1-perpetuities) uses the calculation for preferred-stock dividends and endowed academic chairs. Real valuations still depend on whether payments continue and whether the chosen discount rate reflects risk.
+
+Computer graphics uses another ratio. A mipmap stores progressively smaller versions of a texture so that a graphics processor can sample an image near the resolution needed on screen. If each new level has half the width and half the height, it has one quarter as many pixels. Ignoring minimum block sizes and padding, the added pixel count is
+
+$$
+\frac14+\frac1{16}+\frac1{64}+\cdots=\frac13
+$$
+
+of the original level. A complete mipmap chain therefore uses about $4/3$ as many pixels as the full-resolution texture alone. [Microsoft's Direct3D documentation](https://learn.microsoft.com/en-us/windows/uwp/graphics-concepts/texture-filtering-with-mipmaps) specifies the halving of both dimensions, and [NVIDIA's developer guide](https://developer.nvidia.com/docs/drive/drive-os/6.0.7/public/drive-os-linux-sdk/common/topics/graphics_content/Textures124.html) states the corresponding 33 percent storage overhead for the ordinary case. Compression and hardware alignment can change the exact byte count.
+
+## Try the ratio
+
+### Problem 1
+
+Find the sum
+
+$$
+3+1+\frac13+\frac19+\cdots.
+$$
+
+<details>
+<summary>Reveal the solution</summary>
+
+The first term is $a=3$. Each term is one third of the previous term, so $r=1/3$. Because $|r|<1$, the geometric series converges:
+
+$$
+\begin{aligned}
+S&=\frac{a}{1-r}\\
+&=\frac{3}{1-\frac13}\\
+&=\frac{3}{\frac23}\\
+&=3\cdot\frac32\\
+&=\frac92.
+\end{aligned}
+$$
+
+Therefore the sum is $9/2$, or $4.5$.
+
+</details>
+
+### Problem 2
+
+Use a geometric series to write the repeating decimal $0.272727\ldots$ as a fraction in lowest terms.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Each repeated block contributes $27$ shifted two more decimal places:
+
+$$
+0.272727\ldots=\frac{27}{100}+\frac{27}{10{,}000}+\frac{27}{1{,}000{,}000}+\cdots.
+$$
+
+The first term is $a=27/100$, and the common ratio is $r=1/100$. Therefore
+
+$$
+\begin{aligned}
+S&=\frac{\frac{27}{100}}{1-\frac{1}{100}}\\
+&=\frac{\frac{27}{100}}{\frac{99}{100}}\\
+&=\frac{27}{99}\\
+&=\frac3{11}.
+\end{aligned}
+$$
+
+The final reduction divides the numerator and denominator by $9$.
+
+</details>
+
+## The idea to keep
+
+An infinite series earns a finite sum by controlling its remainder. In a geometric series with $|r|<1$, every multiplication by $r$ shrinks what comes next, and the tail can be made as small as any chosen positive tolerance.
+
+Continue with [epsilon as a precise error budget](/reckonings/daily-reckoning-2026-08-30/) for the language behind “as close as desired,” or with [the Koch curve's fractional dimension](/reckonings/daily-reckoning-2026-09-08/) for a different calculation built from repeated scaling.
+
+## Sources
+
+- National Institute of Standards and Technology, [Digital Library of Mathematical Functions, §1.2(ii): Finite Series](https://dlmf.nist.gov/1.2#ii), including the finite geometric-sum identity.
+- Nick Huggett, [“Zeno's Paradoxes”](https://plato.stanford.edu/entries/paradox-zeno/), *Stanford Encyclopedia of Philosophy*, especially §3.1 on the Dichotomy.
+- University of St Andrews MacTutor History of Mathematics Archive, [“The rise of calculus”](https://mathshistory.st-andrews.ac.uk/HistTopics/The_rise_of_calculus/), on Archimedes' geometric-series calculation in *Quadrature of the Parabola*.
+- OpenStax, [*Principles of Finance*, §8.1: “Perpetuities”](https://openstax.org/books/principles-finance/pages/8-1-perpetuities), on discounting an indefinitely long payment stream.
+- Microsoft Learn, [“Texture filtering with mipmaps”](https://learn.microsoft.com/en-us/windows/uwp/graphics-concepts/texture-filtering-with-mipmaps), on successive texture levels with half the width and height.
+- NVIDIA DRIVE OS Developer Guide, [“Textures”](https://developer.nvidia.com/docs/drive/drive-os/6.0.7/public/drive-os-linux-sdk/common/topics/graphics_content/Textures124.html), on the storage overhead and rendering use of mipmaps.

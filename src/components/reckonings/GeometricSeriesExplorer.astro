@@ -1,0 +1,185 @@
+---
+const termCount = 10;
+const barX = 64;
+const barWidth = 552;
+const segments = Array.from({ length: termCount }, (_, index) => {
+  const term = index + 1;
+  const width = barWidth / 2 ** term;
+  return {
+    term,
+    x: barX + barWidth * (1 - 1 / 2 ** index),
+    width,
+  };
+});
+---
+
+<figure class="series-lab reckoning-visual" data-series-lab>
+  <header>
+    <p>Infinite-sum sounding line</p>
+    <h3>Fill the unit interval, one half at a time</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 680 270" role="img" aria-labelledby="series-title series-desc">
+      <title id="series-title">Four terms of the halving series fill fifteen sixteenths of a unit interval</title>
+      <desc id="series-desc">Four adjacent segments have lengths one half, one quarter, one eighth, and one sixteenth. The unfilled remainder is one sixteenth.</desc>
+      <defs>
+        <pattern id="series-hatch-a" width="8" height="8" patternUnits="userSpaceOnUse">
+          <path d="M-2 8L8-2M4 12L12 4" />
+        </pattern>
+        <pattern id="series-hatch-b" width="10" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="3" r="1.4" />
+        </pattern>
+        <pattern id="series-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M24 0H0V24" />
+        </pattern>
+      </defs>
+
+      <rect class="plot-bg" width="680" height="270" rx="12" />
+      <rect class="grid" width="680" height="270" rx="12" fill="url(#series-grid)" />
+
+      <g class="axis" aria-hidden="true">
+        <line x1={barX} y1="76" x2={barX + barWidth} y2="76" />
+        <line x1={barX} y1="70" x2={barX} y2="84" />
+        <line x1={barX + barWidth} y1="70" x2={barX + barWidth} y2="84" />
+        <text x={barX} y="59" text-anchor="middle">0</text>
+        <text x={barX + barWidth} y="59" text-anchor="middle">1</text>
+      </g>
+
+      <g class="terms">
+        {segments.map(({ term, x, width }) => (
+          <g data-term={term} class:list={[term > 4 && 'hidden']}>
+            <rect
+              x={x}
+              y="94"
+              width={width}
+              height="88"
+              class:list={[term % 2 === 1 ? 'term odd' : 'term even']}
+              fill={`url(#${term % 2 === 1 ? 'series-hatch-a' : 'series-hatch-b'})`}
+            />
+            {term <= 5 && width > 24 && (
+              <text x={x + width / 2} y="143" text-anchor="middle" class="term-label">
+                {term === 1 ? '1/2' : `1/${2 ** term}`}
+              </text>
+            )}
+          </g>
+        ))}
+      </g>
+
+      <rect
+        data-remainder
+        x={barX + barWidth * (1 - 1 / 16)}
+        y="94"
+        width={barWidth / 16}
+        height="88"
+        class="remainder"
+      />
+      <path data-brace d="M581.5 195v11h34.5v-11" class="brace" />
+      <text data-remainder-label x="598.75" y="226" text-anchor="middle" class="remainder-label">1/16 remains</text>
+      <text data-sum-label x="340" y="252" text-anchor="middle" class="sum-label">S₄ = 15/16</text>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <label for="series-term-count">
+      Terms included
+      <output for="series-term-count" data-output>4</output>
+    </label>
+    <input id="series-term-count" data-range type="range" min="1" max="10" value="4" step="1" />
+    <div class="readout" data-readout aria-live="polite">
+      The first 4 terms total <strong>15/16</strong>. The remaining gap is <strong>1/16</strong>.
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> each patterned segment fills half of the gap that was left before it. Move the slider with a pointer or the arrow keys. After <em>n</em> terms, the unfilled part is exactly <em>1/2ⁿ</em>; color and pattern both distinguish neighboring terms.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-series-lab]').forEach((figure) => {
+    const range = figure.querySelector('[data-range]');
+    const output = figure.querySelector('[data-output]');
+    const readout = figure.querySelector('[data-readout]');
+    const remainder = figure.querySelector('[data-remainder]');
+    const remainderLabel = figure.querySelector('[data-remainder-label]');
+    const sumLabel = figure.querySelector('[data-sum-label]');
+    const brace = figure.querySelector('[data-brace]');
+    const title = figure.querySelector('#series-title');
+    const desc = figure.querySelector('#series-desc');
+    const terms = Array.from(figure.querySelectorAll('[data-term]'));
+    if (!(range instanceof HTMLInputElement) || !(output instanceof HTMLOutputElement) || !readout || !(remainder instanceof SVGRectElement) || !(remainderLabel instanceof SVGTextElement) || !(sumLabel instanceof SVGTextElement) || !(brace instanceof SVGPathElement) || !title || !desc) return;
+
+    const barX = 64;
+    const barWidth = 552;
+    const render = () => {
+      const n = Number(range.value);
+      const denominator = 2 ** n;
+      const numerator = denominator - 1;
+      const remainderWidth = barWidth / denominator;
+      const remainderX = barX + barWidth - remainderWidth;
+      terms.forEach((term, index) => term.classList.toggle('hidden', index + 1 > n));
+      remainder.setAttribute('x', String(remainderX));
+      remainder.setAttribute('width', String(remainderWidth));
+      const braceLeft = Math.max(remainderX, barX + barWidth - 68);
+      brace.setAttribute('d', `M${braceLeft} 195v11h${barX + barWidth - braceLeft}v-11`);
+      remainderLabel.setAttribute('x', String((braceLeft + barX + barWidth) / 2));
+      remainderLabel.textContent = `1/${denominator} remains`;
+      sumLabel.textContent = `S${n.toString().split('').map((digit) => '₀₁₂₃₄₅₆₇₈₉'[Number(digit)]).join('')} = ${numerator}/${denominator}`;
+      output.value = String(n);
+      readout.innerHTML = `The first ${n} ${n === 1 ? 'term totals' : 'terms total'} <strong>${numerator}/${denominator}</strong>. The remaining gap is <strong>1/${denominator}</strong>.`;
+      title.textContent = `${n} ${n === 1 ? 'term' : 'terms'} of the halving series fill ${numerator}/${denominator} of a unit interval`;
+      desc.textContent = `The visible adjacent segments have lengths one half through one over ${denominator}. Together they fill ${numerator}/${denominator}; the unfilled remainder is one over ${denominator}.`;
+    };
+
+    range.addEventListener('input', render);
+    render();
+  });
+</script>
+
+<style>
+  .series-lab {
+    --series-blue: #087dcc;
+    --series-green: #4f9300;
+    --series-pink: #d9007e;
+    background: radial-gradient(circle at 90% 5%, color-mix(in srgb, var(--series-pink) 12%, transparent), transparent 25rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1000px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .series-lab { --series-blue: #1493ff; --series-green: #93ff14; --series-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell, .controls { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; }
+  .diagram-shell { overflow: hidden; }
+  svg { display: block; height: auto; width: 100%; }
+  .plot-bg { fill: var(--bg-color); }
+  .grid { opacity: .32; stroke: var(--border-color); stroke-width: 1; }
+  .axis line { stroke: var(--text-secondary); stroke-width: 1.5; }
+  .axis text, .remainder-label { fill: var(--text-secondary); font-size: 12px; }
+  .term { stroke: var(--bg-color); stroke-width: 2; }
+  .term.odd { color: var(--series-blue); }
+  .term.even { color: var(--series-green); }
+  #series-hatch-a path { stroke: var(--series-blue); stroke-width: 2; }
+  #series-hatch-b circle { fill: var(--series-green); }
+  .term-label { fill: var(--text-primary); font-size: 13px; font-weight: 800; }
+  .remainder { fill: color-mix(in srgb, var(--series-pink) 12%, transparent); stroke: var(--series-pink); stroke-dasharray: 5 4; stroke-width: 2; }
+  .brace { fill: none; stroke: var(--series-pink); stroke-width: 1.5; }
+  .sum-label { fill: var(--text-primary); font-size: 15px; font-weight: 800; }
+  [data-term].hidden { display: none; }
+  .controls { margin-top: 1rem; padding: 1rem; }
+  .controls label { align-items: baseline; color: var(--text-primary); display: flex; font-size: .8rem; font-weight: 700; justify-content: space-between; }
+  output { color: var(--series-pink); font-size: 1.1rem; }
+  input[type='range'] { accent-color: var(--series-blue); cursor: pointer; margin: .75rem 0; width: 100%; }
+  input[type='range']:focus-visible { outline: 3px solid color-mix(in srgb, var(--series-green) 65%, transparent); outline-offset: 5px; }
+  .readout { background: var(--surface-color); border-radius: 7px; color: var(--text-secondary); font-size: .82rem; line-height: 1.5; padding: .7rem .8rem; }
+  .readout strong { color: var(--text-primary); }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 600px) { .series-lab { width: calc(100vw - 1.5rem); } .term-label { font-size: 11px; } }
+  @media (prefers-reduced-motion: reduce) { .series-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

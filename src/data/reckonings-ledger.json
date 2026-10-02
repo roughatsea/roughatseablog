@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-01T06:00:00-07:00",
+  "updatedAt": "2026-10-02T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -769,6 +769,37 @@
         "daily-reckoning-2026-09-09",
         "daily-reckoning-2026-09-22",
         "daily-reckoning-2026-09-23"
+      ]
+    },
+    {
+      "date": "2026-10-02",
+      "slug": "daily-reckoning-2026-10-02",
+      "title": "How Can Infinitely Many Halves Stop at One?",
+      "area": "Calculus and analysis",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Fractions",
+        "Exponents with positive whole-number powers",
+        "Finite sums"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "geometric series",
+        "infinite series",
+        "partial sums",
+        "convergence",
+        "limits",
+        "Zeno's paradoxes",
+        "Archimedes' quadrature of the parabola",
+        "perpetuities",
+        "mipmaps"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-30",
+        "daily-reckoning-2026-09-06",
+        "daily-reckoning-2026-09-08",
+        "daily-reckoning-2026-09-14",
+        "daily-reckoning-2026-09-26"
       ]
     }
   ]
