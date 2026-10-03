@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-02T06:00:00-07:00",
+  "updatedAt": "2026-10-03T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -800,6 +800,36 @@
         "daily-reckoning-2026-09-08",
         "daily-reckoning-2026-09-14",
         "daily-reckoning-2026-09-26"
+      ]
+    },
+    {
+      "date": "2026-10-03",
+      "slug": "daily-reckoning-2026-10-03",
+      "title": "How Can One Treatment Win Every Group but Lose Overall?",
+      "area": "Probability and statistics",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Fractions and percentages",
+        "Weighted averages",
+        "Reading a two-way table"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Simpson's paradox",
+        "Yule-Simpson effect",
+        "weighted averages",
+        "conditional probability",
+        "confounding",
+        "causal inference",
+        "contingency tables",
+        "covariate adjustment",
+        "history of statistics"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-05",
+        "daily-reckoning-2026-09-13",
+        "daily-reckoning-2026-09-21",
+        "daily-reckoning-2026-09-30"
       ]
     }
   ]

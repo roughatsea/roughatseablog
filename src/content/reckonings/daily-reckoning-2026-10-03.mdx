@@ -1,0 +1,285 @@
+---
+title: "How Can One Treatment Win Every Group but Lose Overall?"
+description: "Simpson’s paradox appears when separate groups point one way but their combined totals point the other. The reversal comes from unequal mixtures, not broken arithmetic."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-03.svg"
+heroImageAlt: "A dark maritime blueprint shows two pairs of cyan and acid-green data channels. Cyan leads within each separate channel, but unequal stream widths merge into a larger green total while a magenta reversal arc marks the change."
+date: 2026-10-03
+publishedAt: 2026-10-03T06:00:00-07:00
+area: "Probability and statistics"
+difficulty: "Intermediate"
+prerequisites:
+  - "Fractions and percentages"
+  - "Weighted averages"
+  - "Reading a two-way table"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - simpsons-paradox
+  - conditional-probability
+  - weighted-averages
+  - confounding
+  - causal-inference
+  - contingency-tables
+  - clinical-trials
+  - history-of-statistics
+---
+
+import SimpsonReversalExplorer from '../../components/reckonings/SimpsonReversalExplorer.astro';
+
+A hospital compares two treatments for kidney stones. Treatment A succeeds more often for patients with smaller stones. Treatment A also succeeds more often for patients with larger stones.
+
+Then the hospital combines every patient into one table. Treatment B has the higher success rate.
+
+No patient changed outcome. No fraction was calculated incorrectly. The reversal happens because the two treatments were used on different mixtures of easier and harder cases. This pattern is called **Simpson’s paradox**.
+
+## The reversal in 700 records
+
+A widely used example comes from a [1986 *British Medical Journal* study](https://pmc.ncbi.nlm.nih.gov/articles/PMC1339981/) of kidney-stone treatments. To keep the arithmetic in view, call open surgery Treatment A and percutaneous nephrolithotomy Treatment B. A treatment counted as successful when it eliminated a stone or reduced the stone below the study’s specified size after three months.
+
+The diagram below displays the two size groups first. Treatment A uses diagonal hatching; Treatment B uses dots. Switch to “All patients” to pool the same counts.
+
+<SimpsonReversalExplorer />
+
+For smaller stones, Treatment A succeeded in $81$ of $87$ cases:
+
+$$
+\frac{81}{87}\approx0.931=93.1\%.
+$$
+
+Treatment B succeeded in $234$ of $270$ smaller-stone cases:
+
+$$
+\frac{234}{270}\approx0.867=86.7\%.
+$$
+
+Treatment A leads by about $6.4$ percentage points in the smaller-stone group.
+
+For larger stones, the corresponding rates are
+
+$$
+\frac{192}{263}\approx73.0\%
+\qquad\text{and}\qquad
+\frac{55}{80}=68.75\%.
+$$
+
+Treatment A leads again, this time by about $4.2$ percentage points.
+
+Now add successes and patients across the two stone sizes. Treatment A has
+
+$$
+\frac{81+192}{87+263}
+=\frac{273}{350}
+=78.0\%.
+$$
+
+Treatment B has
+
+$$
+\frac{234+55}{270+80}
+=\frac{289}{350}
+\approx82.6\%.
+$$
+
+The pooled comparison favors Treatment B by about $4.6$ percentage points. The apparent winner has reversed.
+
+The records in the 1986 study were not produced by a randomized head-to-head trial: the treatment groups came from different periods, and the researchers themselves discussed differences among the patients and procedures. The table demonstrates the arithmetic of reversal. It does not, by itself, establish which procedure caused better outcomes.
+
+## The hidden weights
+
+The word “average” hides an important choice: what weights does each subgroup receive?
+
+For Treatment A, $263$ of $350$ patients had larger stones. That proportion is
+
+$$
+\frac{263}{350}\approx75.1\%.
+$$
+
+For Treatment B, only $80$ of $350$ patients had larger stones:
+
+$$
+\frac{80}{350}\approx22.9\%.
+$$
+
+Treatment A therefore faced the harder category about three quarters of the time. Treatment B faced the easier category more than three quarters of the time. The overall rates are weighted averages, but they use different weights:
+
+$$
+\begin{aligned}
+p_A
+&=\frac{87}{350}\left(\frac{81}{87}\right)
+ +\frac{263}{350}\left(\frac{192}{263}\right)\\
+&=\frac{81+192}{350}
+=0.780,
+\end{aligned}
+$$
+
+while
+
+$$
+\begin{aligned}
+p_B
+&=\frac{270}{350}\left(\frac{234}{270}\right)
+ +\frac{80}{350}\left(\frac{55}{80}\right)\\
+&=\frac{234+55}{350}
+\approx0.826.
+\end{aligned}
+$$
+
+Here $p_A$ and $p_B$ denote the pooled success proportions for Treatments A and B. Each coefficient, such as $87/350$, is the fraction of that treatment’s patients who belong to one stone-size group.
+
+Suppose instead that both treatments had exactly the same mixture: a proportion $w$ of smaller-stone cases and a proportion $1-w$ of larger-stone cases, where $0\leq w\leq1$. If Treatment A had the higher rate in both groups, then
+
+$$
+p_{A,\text{small}}>p_{B,\text{small}}
+\quad\text{and}\quad
+p_{A,\text{large}}>p_{B,\text{large}}.
+$$
+
+Multiplying both inequalities by the same nonnegative weights and adding gives
+
+$$
+wp_{A,\text{small}}+(1-w)p_{A,\text{large}}
+>
+wp_{B,\text{small}}+(1-w)p_{B,\text{large}}.
+$$
+
+With equal weights, the order cannot reverse. Simpson’s paradox needs unequal composition across the quantities being compared.
+
+## A definition, and why “paradox” is fair
+
+Let $X$ identify which treatment or category is being compared, let $Y$ record an outcome such as success, and let $Z$ identify a subgroup such as stone size. A Simpson reversal occurs when the association between $X$ and $Y$ has one direction within every relevant value of $Z$, but the association has the opposite direction after the values of $Z$ are combined.
+
+For two treatments and two subgroups, the pattern can be written as
+
+$$
+P(Y\mid X=A,Z=z)>P(Y\mid X=B,Z=z)
+$$
+
+for each subgroup $z$, while
+
+$$
+P(Y\mid X=A)<P(Y\mid X=B)
+$$
+
+in the pooled data. The notation $P(Y\mid X=A,Z=z)$ means the probability of outcome $Y$ among records with treatment $A$ and subgroup value $z$.
+
+The equations are compatible because the pooled probabilities average over $Z$ with treatment-specific weights. What feels paradoxical is the verbal shortcut “A does better than B.” The sentence is incomplete until the comparison population is named.
+
+## Which table should you trust?
+
+Neither “always split the data” nor “always use the total” is a sound rule. The question determines which comparison matters.
+
+For the kidney-stone example, stone size existed before treatment and strongly affected the chance of success. A like-for-like treatment comparison should therefore account for stone size. If a hospital instead asks how many of its actual patients recovered under each historical program, the pooled totals describe those particular programs and their particular case mixes.
+
+Causal questions require more than arithmetic. A third variable can be a **confounder**, meaning a prior cause connected to both the treatment and the outcome. Adjusting for a confounder can remove a misleading mixture. But conditioning on a variable caused by the treatment, or on a variable caused jointly by the treatment and the outcome, can create a misleading association. Judea Pearl’s [discussion of Simpson’s paradox](https://ftp.cs.ucla.edu/pub/stat_ser/r414.pdf) emphasizes that probability tables alone do not decide whether to pool or separate; the causal relationships among the variables do.
+
+A practical audit therefore asks three questions before choosing a rate:
+
+1. What population does the decision concern?
+2. Did the grouping variable exist before the action being compared?
+3. Does subject-matter knowledge support the proposed causal relationship?
+
+The reversal is a warning to inspect those questions, not a machine that answers them.
+
+## How the idea acquired its name
+
+Statisticians encountered mixture effects before the phrase “Simpson’s paradox” existed. In 1903, British statistician George Udny Yule devoted a section of [“Notes on the Theory of Association of Attributes in Statistics”](https://zenodo.org/records/1431599/files/article.pdf) to fallacies caused by mixing distinct records. Karl Pearson and collaborators had discussed related aggregation effects in 1899.
+
+Edward H. Simpson gave the phenomenon a compact mathematical treatment in his 1951 paper [“The Interpretation of Interaction in Contingency Tables”](https://academic.oup.com/jrsssb/article/13/2/238/7026675). Simpson’s examples concerned whether associations in separate $2\times2$ tables survive when those tables are combined. Colin Blyth used the name **Simpson’s paradox** in a [1972 paper](https://doi.org/10.1080/01621459.1972.10482387) about reversals and decision-making. The longer history is why some authors use **Yule–Simpson effect**.
+
+One famous application arrived in 1975. Peter Bickel, Eugene Hammel, and J. W. O’Connell studied 1973 graduate admissions at the University of California, Berkeley. The overall admission rate was lower for women, but applicants of different genders had applied in different proportions to departments with very different selectivity. Their department-level analysis in [*Science*](https://www.science.org/doi/10.1126/science.187.4175.398) showed why an aggregate disparity cannot, on its own, identify where a selection process operates. The paper did not make fairness measurement easy; it showed that the unit of comparison matters.
+
+## Where reversals matter now
+
+Clinical researchers routinely plan how to handle baseline variables that predict outcomes. The United States Food and Drug Administration’s [2023 guidance on covariate adjustment](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/adjusting-covariates-randomized-clinical-trials-drugs-and-biological-products) recommends deciding on adjustments before trial results are unblinded. Prespecification helps prevent analysts from searching many subgroup choices until one produces a preferred story.
+
+The same danger appears in education, hiring, lending, online experiments, and recommendation systems. A new interface may improve conversion in every country but look worse overall if it receives unusually heavy traffic from countries with lower baseline conversion. An aggregate fairness measure can move because the composition of applicants changes, even when every within-group rate stays fixed. The calculation is the same weighted-average calculation; the causal and ethical questions differ by domain.
+
+Simpson’s paradox does not imply that every aggregate is deceptive. It identifies one precise failure mode: comparisons can reverse when unlike mixtures are averaged as if the mixtures were the same.
+
+## Try the weights
+
+### Problem 1
+
+Two online courses use different exercises. Among beginners, Course A has $18$ successes in $20$ attempts and Course B has $72$ in $90$. Among advanced learners, Course A has $12$ successes in $20$ attempts and Course B has $5$ in $10$.
+
+Which course has the higher success rate within each experience group? Which has the higher pooled rate?
+
+<details>
+<summary>Reveal the solution</summary>
+
+For beginners,
+
+$$
+\frac{18}{20}=90\%
+\qquad\text{and}\qquad
+\frac{72}{90}=80\%,
+$$
+
+so Course A has the higher rate.
+
+For advanced learners,
+
+$$
+\frac{12}{20}=60\%
+\qquad\text{and}\qquad
+\frac{5}{10}=50\%,
+$$
+
+so Course A again has the higher rate.
+
+Pool the records for Course A:
+
+$$
+\frac{18+12}{20+20}=\frac{30}{40}=75\%.
+$$
+
+Pool the records for Course B:
+
+$$
+\frac{72+5}{90+10}=\frac{77}{100}=77\%.
+$$
+
+Course B has the higher pooled rate even though Course A leads within both experience groups. Course A received half of its attempts from the harder advanced group; Course B received only one tenth from that group.
+
+</details>
+
+### Problem 2
+
+Treatment A succeeds $90\%$ of the time in Group 1 and $60\%$ in Group 2. Treatment B succeeds $80\%$ in Group 1 and $50\%$ in Group 2. Both treatments are used on $40\%$ Group 1 cases and $60\%$ Group 2 cases. Can the pooled rates reverse?
+
+<details>
+<summary>Reveal the solution</summary>
+
+No. The two treatments use the same weights.
+
+For Treatment A,
+
+$$
+0.4(0.90)+0.6(0.60)=0.36+0.36=0.72.
+$$
+
+For Treatment B,
+
+$$
+0.4(0.80)+0.6(0.50)=0.32+0.30=0.62.
+$$
+
+Treatment A’s pooled rate is $72\%$, while Treatment B’s is $62\%$. Because Treatment A leads by $10$ percentage points in each group and the weights match, the pooled lead remains $10$ points.
+
+</details>
+
+## The idea to keep
+
+A pooled rate is a weighted average. If two options are tested on different mixtures of easy and hard cases, the weights can reverse the comparison—even when one option has the higher rate in every like-for-like group.
+
+Continue with [Bayes’ theorem and base rates](/reckonings/daily-reckoning-2026-09-13/) for another way that population composition changes a probability, or with [the central limit theorem](/reckonings/daily-reckoning-2026-09-21/) for the behavior of averages under repeated sampling.
+
+## Sources
+
+- Edward H. Simpson, [“The Interpretation of Interaction in Contingency Tables”](https://academic.oup.com/jrsssb/article/13/2/238/7026675), *Journal of the Royal Statistical Society: Series B* 13(2), 1951, 238–241.
+- George Udny Yule, [“Notes on the Theory of Association of Attributes in Statistics”](https://zenodo.org/records/1431599/files/article.pdf), *Biometrika* 2(2), 1903, 121–134, especially the section on mixing distinct records.
+- Colin R. Blyth, [“On Simpson’s Paradox and the Sure-Thing Principle”](https://doi.org/10.1080/01621459.1972.10482387), *Journal of the American Statistical Association* 67(338), 1972, 364–366.
+- C. R. Charig, D. R. Webb, S. R. Payne, and J. E. Wickham, [“Comparison of treatment of renal calculi by open surgery, percutaneous nephrolithotomy, and extracorporeal shockwave lithotripsy”](https://pmc.ncbi.nlm.nih.gov/articles/PMC1339981/), *British Medical Journal* 292, 1986, 879–882.
+- Peter J. Bickel, Eugene A. Hammel, and J. W. O’Connell, [“Sex Bias in Graduate Admissions: Data from Berkeley”](https://www.science.org/doi/10.1126/science.187.4175.398), *Science* 187(4175), 1975, 398–404.
+- Judea Pearl, [“Understanding Simpson’s Paradox”](https://ftp.cs.ucla.edu/pub/stat_ser/r414.pdf), *The American Statistician* 68(1), 2014, 8–13.
+- U.S. Food and Drug Administration, [*Adjusting for Covariates in Randomized Clinical Trials for Drugs and Biological Products*](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/adjusting-covariates-randomized-clinical-trials-drugs-and-biological-products), guidance for industry, May 2023.

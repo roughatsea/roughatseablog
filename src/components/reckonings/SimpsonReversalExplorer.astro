@@ -1,0 +1,194 @@
+---
+const groupedRows = [
+  { id: 'easy-a', label: 'Smaller stones · A', successes: 81, total: 87, rate: 93.1, y: 78, kind: 'a' },
+  { id: 'easy-b', label: 'Smaller stones · B', successes: 234, total: 270, rate: 86.7, y: 126, kind: 'b' },
+  { id: 'hard-a', label: 'Larger stones · A', successes: 192, total: 263, rate: 73.0, y: 202, kind: 'a' },
+  { id: 'hard-b', label: 'Larger stones · B', successes: 55, total: 80, rate: 68.8, y: 250, kind: 'b' },
+];
+const combinedRows = [
+  { id: 'all-a', label: 'All patients · A', successes: 273, total: 350, rate: 78.0, y: 126, kind: 'a' },
+  { id: 'all-b', label: 'All patients · B', successes: 289, total: 350, rate: 82.6, y: 202, kind: 'b' },
+];
+---
+
+<figure class="simpson-lab reckoning-visual" data-simpson-lab>
+  <header>
+    <p>Composition sounding</p>
+    <h3>Separate the cases, then pool them</h3>
+  </header>
+
+  <div class="mode-switch" role="group" aria-label="Choose how the treatment records are grouped">
+    <button type="button" class="active" data-mode="grouped" aria-pressed="true">By stone size</button>
+    <button type="button" data-mode="combined" aria-pressed="false">All patients</button>
+  </div>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 760 340" role="img" aria-labelledby="simpson-title simpson-desc">
+      <title id="simpson-title">Treatment A has the higher success rate for both stone sizes</title>
+      <desc id="simpson-desc">For smaller stones, treatment A succeeds in 81 of 87 cases and treatment B in 234 of 270. For larger stones, treatment A succeeds in 192 of 263 cases and treatment B in 55 of 80.</desc>
+      <defs>
+        <pattern id="simpson-a-pattern" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+          <path d="M0 0V9" />
+        </pattern>
+        <pattern id="simpson-b-pattern" width="10" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="3" r="1.45" />
+        </pattern>
+        <pattern id="simpson-grid" width="25" height="25" patternUnits="userSpaceOnUse">
+          <path d="M25 0H0V25" />
+        </pattern>
+      </defs>
+
+      <rect class="plot-bg" width="760" height="340" rx="12" />
+      <rect class="grid" width="760" height="340" rx="12" fill="url(#simpson-grid)" />
+
+      <g class="axis" aria-hidden="true">
+        <line x1="238" y1="46" x2="708" y2="46" />
+        {[0, 25, 50, 75, 100].map((tick) => (
+          <g>
+            <line x1={238 + tick * 4.7} y1="40" x2={238 + tick * 4.7} y2="304" class="guide" />
+            <text x={238 + tick * 4.7} y="31" text-anchor="middle">{tick}%</text>
+          </g>
+        ))}
+      </g>
+
+      <g data-grouped>
+        <text class="stratum-label" x="28" y="68">Smaller stones</text>
+        <text class="stratum-label" x="28" y="192">Larger stones</text>
+        {groupedRows.map((row) => (
+          <g data-row={row.id}>
+            <text class="row-label" x="210" y={row.y + 19} text-anchor="end">Treatment {row.kind.toUpperCase()}</text>
+            <rect class="track" x="238" y={row.y} width="470" height="32" rx="4" />
+            <rect class:list={['bar', row.kind]} x="238" y={row.y} width={row.rate * 4.7} height="32" rx="4" fill={`url(#simpson-${row.kind}-pattern)`} />
+            <text class="value" x={Math.min(696, 250 + row.rate * 4.7)} y={row.y + 21}>{row.rate.toFixed(1)}%</text>
+            <text class="fraction" x="210" y={row.y + 34} text-anchor="end">{row.successes}/{row.total}</text>
+          </g>
+        ))}
+        <path class="winner-bracket a-stroke" d="M718 78h14v80h-14M732 118h12" />
+        <path class="winner-bracket a-stroke" d="M718 202h14v80h-14M732 242h12" />
+        <text class="winner a-fill" x="748" y="122" text-anchor="middle">A</text>
+        <text class="winner a-fill" x="748" y="246" text-anchor="middle">A</text>
+      </g>
+
+      <g data-combined display="none">
+        <text class="stratum-label" x="28" y="108">All 700 records</text>
+        {combinedRows.map((row) => (
+          <g data-row={row.id}>
+            <text class="row-label" x="210" y={row.y + 19} text-anchor="end">Treatment {row.kind.toUpperCase()}</text>
+            <rect class="track" x="238" y={row.y} width="470" height="32" rx="4" />
+            <rect class:list={['bar', row.kind]} x="238" y={row.y} width={row.rate * 4.7} height="32" rx="4" fill={`url(#simpson-${row.kind}-pattern)`} />
+            <text class="value" x={Math.min(696, 250 + row.rate * 4.7)} y={row.y + 21}>{row.rate.toFixed(1)}%</text>
+            <text class="fraction" x="210" y={row.y + 34} text-anchor="end">{row.successes}/{row.total}</text>
+          </g>
+        ))}
+        <path class="winner-bracket b-stroke" d="M718 126h14v108h-14M732 180h12" />
+        <text class="winner b-fill" x="748" y="184" text-anchor="middle">B</text>
+      </g>
+
+      <g class="legend" aria-hidden="true">
+        <rect class="a" x="28" y="306" width="22" height="14" rx="2" fill="url(#simpson-a-pattern)" />
+        <text x="57" y="318">Treatment A</text>
+        <rect class="b" x="150" y="306" width="22" height="14" rx="2" fill="url(#simpson-b-pattern)" />
+        <text x="179" y="318">Treatment B</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="readout" data-readout aria-live="polite">
+    Treatment A leads within both size groups: by 6.4 percentage points for smaller stones and 4.2 points for larger stones.
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> A wins both like-for-like comparisons, but B wins after the records are pooled. Use the buttons with a pointer, Tab and Enter, or Tab and Space. Labels, percentages, fractions, hatching, and dots repeat the comparison without relying on color alone.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-simpson-lab]').forEach((figure) => {
+    const grouped = figure.querySelector('[data-grouped]');
+    const combined = figure.querySelector('[data-combined]');
+    const readout = figure.querySelector('[data-readout]');
+    const title = figure.querySelector('#simpson-title');
+    const desc = figure.querySelector('#simpson-desc');
+    const buttons = Array.from(figure.querySelectorAll('[data-mode]'));
+    if (!(grouped instanceof SVGGElement) || !(combined instanceof SVGGElement) || !readout || !title || !desc) return;
+
+    const render = (mode: string) => {
+      const showGrouped = mode === 'grouped';
+      if (showGrouped) {
+        grouped.removeAttribute('display');
+        combined.setAttribute('display', 'none');
+      } else {
+        grouped.setAttribute('display', 'none');
+        combined.removeAttribute('display');
+      }
+      buttons.forEach((button) => {
+        const active = button.getAttribute('data-mode') === mode;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      if (showGrouped) {
+        title.textContent = 'Treatment A has the higher success rate for both stone sizes';
+        desc.textContent = 'For smaller stones, treatment A succeeds in 81 of 87 cases and treatment B in 234 of 270. For larger stones, treatment A succeeds in 192 of 263 cases and treatment B in 55 of 80.';
+        readout.textContent = 'Treatment A leads within both size groups: by 6.4 percentage points for smaller stones and 4.2 points for larger stones.';
+      } else {
+        title.textContent = 'Treatment B has the higher success rate when all patients are combined';
+        desc.textContent = 'Treatment A succeeds in 273 of 350 cases, or 78.0 percent. Treatment B succeeds in 289 of 350 cases, or 82.6 percent.';
+        readout.textContent = 'After pooling, Treatment B leads by 4.6 percentage points. The winner reversed because the two treatments faced different mixtures of smaller and larger stones.';
+      }
+    };
+
+    buttons.forEach((button) => button.addEventListener('click', () => render(button.getAttribute('data-mode') ?? 'grouped')));
+    render('grouped');
+  });
+</script>
+
+<style>
+  .simpson-lab {
+    --a-color: #087dcc;
+    --b-color: #8a4f00;
+    --accent-color: #b80070;
+    background: radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--accent-color) 11%, transparent), transparent 25rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1000px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .simpson-lab { --a-color: #1493ff; --b-color: #dfff38; --accent-color: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .mode-switch { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .8rem; }
+  button { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: .78rem; font-weight: 700; padding: .5rem .85rem; }
+  button.active { background: color-mix(in srgb, var(--a-color) 14%, var(--bg-color)); border-color: var(--a-color); color: var(--text-primary); }
+  button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-color) 65%, transparent); outline-offset: 3px; }
+  .diagram-shell, .readout { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; }
+  .diagram-shell { overflow: hidden; }
+  svg { display: block; height: auto; width: 100%; }
+  .plot-bg { fill: var(--bg-color); }
+  .grid { opacity: .25; stroke: var(--border-color); stroke-width: 1; }
+  .axis line { stroke: var(--text-secondary); stroke-width: 1.2; }
+  .axis .guide { opacity: .23; }
+  .axis text, .legend text, .fraction { fill: var(--text-secondary); font-size: 11px; }
+  .stratum-label { fill: var(--text-primary); font-size: 13px; font-weight: 800; letter-spacing: .03em; }
+  .row-label { fill: var(--text-primary); font-size: 13px; font-weight: 700; }
+  .track { fill: color-mix(in srgb, var(--border-color) 35%, transparent); }
+  .bar { stroke-width: 2; }
+  .bar.a, .legend .a { color: var(--a-color); stroke: var(--a-color); }
+  .bar.b, .legend .b { color: var(--b-color); stroke: var(--b-color); }
+  #simpson-a-pattern path { stroke: var(--a-color); stroke-width: 3; }
+  #simpson-b-pattern circle { fill: var(--b-color); }
+  .value { fill: var(--text-primary); font-size: 12px; font-weight: 900; }
+  .winner-bracket { fill: none; stroke-width: 2; }
+  .a-stroke { stroke: var(--a-color); }
+  .b-stroke { stroke: var(--b-color); }
+  .winner { font-size: 14px; font-weight: 900; }
+  .a-fill { fill: var(--a-color); }
+  .b-fill { fill: var(--b-color); }
+  .readout { color: var(--text-secondary); font-size: .83rem; line-height: 1.5; margin-top: .8rem; padding: .75rem .85rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 600px) { .simpson-lab { width: calc(100vw - 1.5rem); } .value { font-size: 11px; } }
+  @media (prefers-reduced-motion: reduce) { .simpson-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
