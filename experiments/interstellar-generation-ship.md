@@ -728,3 +728,154 @@ Conclusions:
 6. Habitat design can progress independently as a conditional payload study; mission viability cannot be claimed from that progress.
 
 This updates the work priority: propulsion concept and heat-deposition analysis is a top feasibility gate alongside radiation/impact protection, rather than a downstream detail after interior design. Continue habitat resource and layout studies, but avoid spending effort refining propulsion geometry unsupported by physics.
+
+
+## 24. Propulsion concept screening and fuel-storage constraints
+
+Date: 2026-10-04. This pass evaluates whether published concept families actually support the reference inputs. A conceptual performance claim is not a demonstrated engine.
+
+Primary references:
+- NASA Fusion for Space Propulsion: https://ntrs.nasa.gov/citations/20020067391
+- NASA Fusion Driven Rocket: https://ntrs.nasa.gov/citations/20190001178
+- NASA direct conversion discussion: https://ntrs.nasa.gov/citations/20160010608
+- NASA fusion design practices: https://ntrs.nasa.gov/citations/20040112032
+- ITER reaction energies: https://www.iter.org/sites/default/files/education/L08_Tanabe.pdf
+- ITER tritium half-life: https://www.iter.org/fusion-energy/making-it-work
+- NASA magnetized-target fusion study: https://ntrs.nasa.gov/api/citations/20030061179/downloads/20030061179.pdf?attachment=true
+- NASA fuel-resource studies: https://ntrs.nasa.gov/citations/20210018165
+
+NASA's Fusion Driven Rocket reference describes direct transfer into propellant and exhaust velocities above 30 km/s. That quoted value is not a ceiling, but also supplies no evidence for our 10,000-km/s assumption. NASA's broader fusion overview discusses high exhaust speed and specific jet power at much lower quoted thresholds than the reference engine. Do not infer our required performance from the general word "fusion."
+
+| Concept family | Screening disposition | Main unresolved requirement |
+|---|---|---|
+| Direct/pulsed inertial fusion, Daedalus-like | Retain as conditional interstellar benchmark | Full installed mass, ignition/pellet system, nozzle, absorbed radiation, lifetime |
+| D-T magnetic/direct fusion | Retain only with explicit neutron and fuel-cycle analysis | Neutral neutron energy, shielding, damage, tritium supply at braking |
+| D-He3 direct fusion | Retain as comparative fuel candidate | Ignition/confinement, D-D side reactions, He3 procurement, burn fraction |
+| Fusion-electric propulsion | No preferred reference at this mission scale | Conversion and accelerator losses plus generator mass |
+| Lower-exhaust-speed fusion rocket aimed at planetary missions | Do not transfer published performance to this mission | Propellant ratio at interstellar delta-v |
+| Photon sail departure plus onboard fusion braking | Separate infrastructure scenario, Section 25 | Beam/sail engineering and retained braking feasibility |
+
+No fuel cycle or engine is selected by this screening.
+
+### 24.1 Reaction energy versus effective exhaust velocity
+
+At reference ve = 10^7 m/s, ideal collimated exhaust requires 0.5 ve^2 = 5 × 10^13 J per kg expelled. For a nonuniform plume this is a lower bound: effective momentum per expelled mass does not guarantee a monoenergetic jet.
+
+For D-T, 17.6 MeV per approximately five atomic mass units gives about 3.40 × 10^14 J/kg fully burned reactants. ITER gives 3.5 MeV in the charged alpha and 14.1 MeV in the neutron, so only about 19.9% is directly in charged products.
+
+Consequences under a simplified charged-product-only propulsion model:
+- Ideal charged energy per kg fully burned reactants: about 6.75 × 10^13 J.
+- Burn fraction times useful directed-energy conversion must be at least about 0.74 to produce the reference ve, if all expelled mass is that reactant stream.
+- If only 20% burns and charged-energy conversion is perfect, ideal exhaust limit is approximately 5,200 km/s, before plume/handling losses.
+- Neutron energy can escape, heat a blanket, or interact with propulsion/habitat structure. It cannot simply be magnetically collimated as charged plasma.
+These are energy screening calculations, not a universal D-T engine limit. Neutron heating of additional propellant or other architectures changes the boundary and requires a new model.
+
+Do not equate total fusion energy with useful jet energy. Future models need fusion power, charged/neutral energy partitions, ignition/recycled electrical power, propellant flow, plume divergence, absorbed heat, and emitted radiation as separate terms.
+
+### 24.2 Tritium stored for braking
+
+With half-life 12.3 years, tritium remaining after 90 years is 2^(-90/12.3) ≈ 0.0063, about 0.63% of its initial amount. Long-term stored D-T braking fuel is therefore not a satisfactory default. Starting with vastly more tritium adds mass and decay products and still requires a storage/thermal system.
+
+Possible alternatives require explicit studies: onboard production/breeding, stable fuel cycles, fuel transformation and processing, or a different braking system. None is assumed available. D-He3 is not neutron-free in a real reacting mixture because side reactions can produce neutrons. He3 acquisition is a separate industrial mission; NASA atmospheric-mining studies do not establish an existing supply chain.
+
+### 24.3 Pulse-count reliability scale
+
+Illustrative pulse frequency 250 Hz is a test input, not a selected mechanism.
+Five years per stage implies approximately 39.45 billion pulses per operating stage.
+At original first-stage 1,514-TW jet power:
+- Directed jet energy per pulse ≈ 6.06 TJ.
+- Initial propellant flow F/ve ≈ 30.28 kg/s.
+- Initial expelled mass per pulse ≈ 0.121 kg.
+The engine throttles as stage mass falls; these are initial conditions.
+
+A visual model showing occasional small flashes would misrepresent this reference mechanism. More importantly, delivery accuracy, misfires, injector replacement, nozzle erosion, magnet protection, waste heat, and pulse impulse loads need a reliability and maintenance architecture over tens of billions of events. An unproven pulse system cannot be assigned century mission reliability by assumption.
+
+## 25. External departure assistance trade
+
+Question: can external propulsion substantially reduce carried mass without requiring destination infrastructure?
+
+For an ideal departure boost reproducing the original ten-year acceleration to reference v, retain only the two original braking stages. With the same no-added-cooling Section 7 assumptions, boosted mass is about 1.307 million tonnes, versus 6.830 million tonnes for four onboard stages. This is an optimistic lower comparison: boost interface/sail, protection, separation, and revised structure masses are omitted. Cruise/braking remains speculative.
+
+For an ideal perfectly reflecting photon sail, approximately F = 2P/c at low speed. At constant boosted mass:
+- F = mass × a ≈ 57.93 MN.
+- Intercepted optical beam P ≈ 8.684 PW.
+- Ten-year intercepted beam energy ≈ 2.740 × 10^24 J.
+- Ship kinetic energy at boost completion ≈ 1.279 × 10^23 J.
+- Departure boost covers 0.2333 light-years.
+Actual moving-sail Doppler, source electrical efficiency, missed light, steering, reflectivity, and infrastructure losses increase/change demands.
+
+For a 1-micrometre wavelength, circular-aperture diffraction first-minimum radius r ≈ 1.22 lambda L / D. At final boost distance L ≈ 2.208 × 10^15 m:
+- For an illustrative 1-km sail radius, emitter aperture D ≈ 2,693 km.
+- For a 100-km sail radius, D ≈ 26.9 km.
+The radius is the first diffraction minimum, not guaranteed total beam capture. A vast sail adds structure, mass, pointing/stability, separation, and protection problems, requiring iteration.
+
+Illustrative optical absorption 10^-5, if achieved:
+8.684 PW × 10^-5 = 86.84 GW absorbed.
+A 1-km-radius sail has area 3.142 million m2, giving about 27.6 kW/m2 absorbed on average before beam-profile peaks. A larger sail lowers intensity but does not eliminate total absorbed power. These are assumed material properties; no feasible sail is selected.
+
+Research reference for the distinct gram-scale Starshot context:
+https://breakthroughinitiatives.org/concept/3
+https://breakthroughinitiatives.org/challenges/3
+Do not extrapolate its concept directly to a million-tonne inhabited vessel.
+
+Disposition: external departure assistance can improve onboard rocket mass mathematically, but photon pressure transfers the burden to extraordinary infrastructure. Retain it as a scenario, not the preferred solved architecture. Pellet/particle beams, staged launch systems, and other assistance require independent momentum-transfer, collision, steering, range, and energy studies. No destination-based braking equipment is assumed.
+
+## 26. High-speed protection: gas, dust, exposure, and orientation
+
+Primary research:
+Hoang et al., The interaction of relativistic spacecrafts with the interstellar medium:
+https://arxiv.org/abs/1608.05284
+The paper analyzes gas/material damage and dust erosion, with important example results at 0.2c. Those thickness estimates cannot be transferred directly to our 0.0467c vessel, different materials, or large-area rare-impact risk.
+
+### 26.1 Illustrative gas column
+
+Assume hydrogen nuclei density nH = 1 per cm3 = 10^6 per m3 solely as a sensitivity input, not a measured destination-route value. Distance 4.2 light-years:
+- Column ≈ 3.974 × 10^22 nuclei/m2 = 3.974 × 10^18 per cm2.
+- Hydrogen mass encountered ≈ 6.65 × 10^-5 kg/m2.
+- At peak speed, kinetic energy per hydrogen nucleus ≈ 1.02 MeV, Newtonian approximation.
+- Incident kinetic energy flux at peak speed ≈ 0.5 nH mH v^3 = 2.29 W/m2.
+
+Thus diffuse-gas gross heating need not dominate our propulsion/cabin heat load at this assumed density. That does not establish protection: implantation, sputtering, heavier-ion damage, secondary radiation, local material response, density variation, and accumulated exposure require particle/material analysis.
+
+The conservative constant-peak-speed energy over the full distance is about 6.51 GJ/m2. The actual accelerating/braking trajectory lowers this value; it is not deposited entirely as surface heat. Distinguish instantaneous thermal flux from cumulative microscopic damage.
+
+### 26.2 Large-particle risk is not captured by average dust mass
+
+At peak speed:
+- 1 microgram has approximately 97.9 kJ.
+- 1 milligram has approximately 97.9 MJ.
+- 1 gram has approximately 97.9 GJ.
+These are impact energies, not crater dimensions or survivable-shield limits.
+
+Assuming independent encounters, Poisson probability of no hits from a selected dangerous particle class is exp(-n A L). An illustrative 99% zero-hit target requires n A L ≤ 0.01005. It is not a selected mission reliability requirement.
+
+For a 236-m-radius envelope disk A ≈ 174,974 m2 and distance L ≈ 3.974 × 10^16 m, that bound corresponds to n ≤ 1.45 × 10^-24 dangerous particles/m3. This is a required upper bound under the assumptions, not evidence that the real distribution meets it. Actual projected area includes fuel stages, radiators, and posture; cannot be inferred from habitat diameter alone.
+
+Rare-event tail, spatial clustering, unknown size distribution, and route surveys matter. A shield certified for small grains says nothing by itself about an uncharacterized large-grain tail.
+
+### 26.3 Shield mass and shadow geometry
+
+An illustrative full disk covering the 472-m rotating envelope would weigh:
+- 35,000 tonnes at 200 kg/m2.
+- 87,500 tonnes at 500 kg/m2.
+- 175,000 tonnes at 1,000 kg/m2.
+These are mass calculations only; none is a proven interstellar shield. They compete with the existing 80,000-tonne radiation allowance, which already protects inhabited cylinders. Double-counting or silently sharing the same material is unacceptable. Propellant stages and radiators may require much larger coverage.
+
+Shield separation does not automatically provide a narrow safe shadow. With shield-to-protected-hardware distance ell and transverse particle velocity u, a particle trajectory shifts by approximately ell u/v; shield diameter must include protected envelope, trajectory uncertainty, debris-cloud spread, and alignment tolerances. Without a material-response model, no separation distance is selected.
+
+Braking orientation alternatives:
+1. Turn vessel: engines point along travel so exhaust opposes motion; previously sheltered rear structures become leading surfaces.
+2. Reorient engines separately: could preserve habitat pointing, but engine plume, loads, pivots, fuel routing, and shield geometry become additional machinery.
+3. Dedicated forward braking installation: separate engines/structure and plume-clearance design, with mass explicitly included.
+None is selected. Discarded stages must also be checked for later recontact/impact and plume interaction.
+
+### 26.4 Architecture consequences
+
+- Do not freeze a single nose-shield solution.
+- Add a distinct impact-protection mass account; keep galactic-radiation and collision shielding criteria separate.
+- Define a route environmental envelope and a probabilistic large-particle criterion before shield sizing.
+- Evaluate radiator projected area and damage isolation through acceleration, cruise, and braking.
+- Evaluate whether protection deploys/reconfigures by mission phase, including actuator and failure consequences.
+- Preserve the 250,000-tonne payload and four-stage case as comparison scenarios, not an endorsed complete vehicle.
+
+Current disposition: the inhabited payload can be studied as a coherent conditional design. A credible hundred-year mission still requires propulsion/thermal, fuel storage, and high-speed protection closure. The next pass should build the mass/geometry dependency ledger and compare options without selecting unsupported hardware.
