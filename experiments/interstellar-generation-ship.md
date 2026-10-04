@@ -682,3 +682,49 @@ Investigate fission as a physically grounded cruise-power candidate, separately 
 8. Verify real menu/yields and nutrient recovery before claiming food or ecological closure.
 
 Next integrated work: crop/menu mass balance and a component-level power/thermal layout; then radiation and impact protection, structure/dynamics, and revised propulsion coupling. The current calculations narrow the design but leave mission feasibility unresolved.
+
+
+## 23. Propulsion cooling feedback and architecture gate
+
+This calculation checks whether omitted propulsion radiator mass could invalidate the Section 7 reference. It is a pessimistic/additive sensitivity case: interpret the 5-MW/kg allowance as engine mass excluding these radiators. If a later validated engine allowance already includes cooling, replace its thermal allocation rather than adding it twice.
+
+Assumptions: same four stages, 250,000-tonne delivered payload, 3% tank fraction, reference acceleration and exhaust velocity. A fraction h of directed jet power requires onboard rejection. Constant radiator temperature T; emissivity 0.9; both sides radiate unobstructed; assumed installed panel mass mu = 10 kg/m2 of physical footprint. Treat radiator mass as stage dry mass, sized at initial full thrust, discarded with its stage. No extra shielding, pumps, pipes, coolant, reserve panels, or view-factor penalties beyond whatever the assumed panel density covers.
+
+Definitions:
+- Surface flux j = epsilon sigma T^4.
+- Panel footprint = h Pjet/(2j).
+- Added mass per jet watt = mu h/(2j).
+- Effective engine-plus-panel specific power alphaEffective = 1/[1/alphaEngine + mu h/(2j)].
+- Substitute alphaEffective into Section 7 stage recursion.
+
+This is a mathematical sensitivity, not a verified integrated engine model. Actual thermal deposition can depend on fusion reaction power rather than jet power; h must use a consistent boundary. Low-grade absorbed heat cannot necessarily be sent to a high-temperature radiator. Radiation escaping to space without being absorbed is not this heat load.
+
+| T | h | Effective specific power, MW/kg | Recomputed departure mass, million tonnes |
+|---|---:|---:|---:|
+| 600 K | 0.01% | 3.63 | 7.99 |
+| 600 K | 0.1% | 1.05 | 47.16 |
+| 600 K | 1% | 0.129 | No positive finite solution in this model |
+| 1,000 K | 0.01% | 4.77 | 6.97 |
+| 1,000 K | 0.1% | 3.36 | 8.37 |
+| 1,000 K | 1% | 0.848 | 106.29 |
+| 1,500 K | 0.01% | 4.95 | 6.86 |
+| 1,500 K | 0.1% | 4.56 | 7.10 |
+| 1,500 K | 1% | 2.54 | 10.32 |
+
+Reference without added cooling: 6.83 million tonnes. After mass increases, thrust/jet power and radiator size increase too; the recursion captures that simplified feedback.
+
+For the ORIGINAL 1,514-TW first-stage jet power and h=0.1%, panel footprints are about:
+- 114.5 km2 at 600 K.
+- 14.83 km2 at 1,000 K.
+- 2.93 km2 at 1,500 K.
+These are not the final recomputed areas. For example, the 600-K recomputed departure mass increases first-stage power and area by about 47.16/6.83 = 6.91. Such arrays also enlarge the impact exposure and structure problem. A radiator cannot be sized once and then left unchanged when propulsion mass rises.
+
+Conclusions:
+1. The previous four-stage mass closure is conditional on an extraordinarily capable complete propulsion installation.
+2. At fixed engine specific power, radiator temperature and absorbed fraction can change the vessel mass by multiples or remove mathematical closure.
+3. Merely selecting 1,500 K does not solve cooling. Heat-source temperature, materials, coolant, erosion, radiation, and century-stored braking-stage reliability must permit it.
+4. Reject a finalized fusion-engine silhouette, tank layout, or ship length until an actual fuel/nozzle/radiation concept establishes heat deposition and complete installed specific power.
+5. Carry external departure assistance as a live alternative, but do not assume it solves onboard braking or infrastructure scale.
+6. Habitat design can progress independently as a conditional payload study; mission viability cannot be claimed from that progress.
+
+This updates the work priority: propulsion concept and heat-deposition analysis is a top feasibility gate alongside radiation/impact protection, rather than a downstream detail after interior design. Continue habitat resource and layout studies, but avoid spending effort refining propulsion geometry unsupported by physics.
