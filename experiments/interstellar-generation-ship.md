@@ -879,3 +879,155 @@ None is selected. Discarded stages must also be checked for later recontact/impa
 - Preserve the 250,000-tonne payload and four-stage case as comparison scenarios, not an endorsed complete vehicle.
 
 Current disposition: the inhabited payload can be studied as a coherent conditional design. A credible hundred-year mission still requires propulsion/thermal, fuel storage, and high-speed protection closure. The next pass should build the mass/geometry dependency ledger and compare options without selecting unsupported hardware.
+
+
+## 27. Habitat revision driven by headroom and actual access
+
+Date: 2026-10-04. User asked to continue maturing the design after reviewing the first browser model. This pass develops the inhabited payload and updates the model. It does not resolve propulsion feasibility.
+
+### 27.1 Geometry correction
+
+The original four chord widths were floor-plane areas, not guaranteed occupiable areas. Cylinder walls narrow toward the inner/upward deck at local y=+9 m. In the first prototype, some rooms and farm racks extended outside the cylinder. Correct that geometry rather than treating a rendering as validation.
+
+For cylinder radius 12 m, floor elevation y, and required interior envelope height H, use:
+usable rectangular width = minimum of 2 sqrt(144 - t^2) over y ≤ t ≤ y+H.
+For these deck elevations the minimum occurs at an endpoint. Interior finishes, pressure shell and shielding are not yet subtracted; therefore even this is an upper envelope.
+
+| Deck y, m | Original floor width, m | Clear rectangular width at H=2.7 m, m |
+|---|---:|---:|
+| -9 | 15.875 | 15.875 |
+| -3 | 23.238 | 23.238 |
+| +3 | 23.238 | 21.120 |
+| +9 | 15.875 | 5.333 |
+
+At 60 m length, these occupiable rectangles total approximately 3,934 m2/module, versus 4,693 m2 floor-plane area. The +9 deck cannot carry the same room or rack layout as the lower decks.
+
+Adopt three principal decks (-9, -3, +3) and a narrow upper service gallery (+9). The gallery is not counted as a conventional residential or farm deck. Plate geometry is still not pressure/structure sized.
+
+Reserve 5 m at EACH module end for access shafts, vestibules and equipment movement. Main straight floor length becomes 50 m. This reduces area again; it is not a free addition of circulation to the old gross footprint.
+
+### 27.2 Revised module count
+
+Active inhabited-layout candidate now supersedes the 24-module arrangement:
+
+| Function | Per community | Ship total |
+|---|---:|---:|
+| Residential | 6 | 12 |
+| Agricultural | 10 | 20 |
+| Civic / service | 2 | 4 |
+| **Total** | **18** | **36** |
+
+Population remains about 500 per community, 1,000 shipwide. Module reference dimensions remain 60 m × 24 m at centre radius 224 m. Equal angular spacing becomes 20 degrees. This is geometrically compatible with separate tangential modules at the coarse-envelope level; joints, appendages and pressure interfaces need detailed clearance analysis.
+
+Tangential module ends enlarge the radial extent: maximum radius sqrt((224+12)^2+30^2) ≈ 237.90 m, diameter ≈ 475.80 m, before shielding and attachments. The earlier 472-m estimate neglected tangential end extent. Assembly spacing remains a browser visualization assumption.
+
+A larger count is chosen to preserve both farms and communal facilities after correcting geometry. It is not proof that 36 is optimal. Alternatives include wider cylinders, a different deck layout, larger gravity radius, nonrotating agriculture, or revised productive area; each changes structure, power and maintenance.
+
+### 27.3 Agriculture recovered with twenty modules
+
+For rack envelope H=4.6 m on three principal decks, rectangular widths are about 15.875, 23.238 and 18.573 m.
+
+Planning cultivated area:
+20 modules × 50 m length × (15.875+23.238+18.573) m × 0.60 footprint allocation × 3 layers
+≈ 103,834 m2.
+
+The 60% assumption is a planning allocation for racks versus access, process space and services; it does not establish rack coverage, crop headroom, yield, nutrition or disease resilience. The browser uses representative racks and does not depict every square metre in that allowance.
+
+At DLI=35 mol/m2/day and delivered efficacy=3 micromol/J, reference lighting rises to about 14.02 MW average and 21.03 MW during a 16-hour light period. Keep crop schedules staggered. An overall 40-MWe service target still requires component-level verification.
+
+If we retained only twelve corrected farm modules, the same method would yield about 62,300 m2. That could not be represented as the former 101,000-m2 farm. Preserve this trade explicitly.
+
+### 27.4 Residential envelopes and household mix
+
+Three principal decks, central 4-m clear aisle, four 12-m longitudinal bays, two sides per deck:
+8 apartments/deck × 3 decks × 12 residential modules = 288 apartment envelopes.
+
+Provisional bay widths:
+- Lower deck: 5.1 m -> 61.2 m2 per envelope.
+- Middle deck: 8.5 m -> 102.0 m2.
+- Upper principal deck: 7.8 m -> 93.6 m2.
+
+Total housing envelopes = 24,652.8 m2, approximately matching the earlier 25,000-m2 allowance. These are gross apartment rectangles, including later partitions, bathrooms, kitchens and internal access; do not advertise them as net usable floor area.
+
+Illustrative household assignment, not mandatory social policy:
+- 96 smaller envelopes averaging 2 residents -> 192.
+- 96 middle envelopes averaging 4 -> 384.
+- 96 upper-principal envelopes accommodating the remaining 424 -> mean 4.42.
+Total 1,000. A real population model must permit different household composition and reconfiguration; this arithmetic does not prescribe reproduction or family structure.
+
+Nominal residential-module mean is 83.33 residents. Adopt provisional maximum assigned residential occupancy 100/module for reserve sizing. The overall 1,200-person equipment screening remains; this does not demonstrate a comfortable 1,200-person century-long community.
+
+In the browser, apartments have aisle door gaps, walls kept inside headroom envelopes, and representative beds/tables. Detailed private sanitation, kitchen appliances, fire compartments, acoustic isolation, daylight simulation, personal storage, room subdivision and accessible turning spaces are not solved.
+
+### 27.5 Civic facilities and refuge capacity
+
+Four dedicated civic/service cylinders add about 13,113 m2 of H=2.7-m rectangular-envelope area at 50-m main length, including the narrow upper gallery. This is gross planning space, not a validated facility program.
+
+Distribute medical and education, dining and recreation, local repair, sanitation, reserve stores, and emergency conversion areas across BOTH communities. Avoid putting the only surgical capability, school, workshop or reserve stock in one cylinder.
+
+Each civic module can illustrate 56 temporary berths on two lower decks (28 per deck). Two modules per community -> 112 temporary berths, four shipwide -> 224. This can cover one residential module's provisional 100-person occupancy cap within its own community.
+
+Nominal view shows communal furniture. Emergency-refuge view replaces it with temporary berths; beds are not added on top of normal furniture. Conversion needs stored mattresses, sanitation throughput, privacy screens, emergency meals, medicines and evacuation assistance. It does not create 224 extra normal residential places.
+
+Initial reserves for 100 people and 72 hours, using Section 22 assumptions:
+- Oxygen: 252 kg.
+- CO2 handling: 300 kg.
+- Drinking/cooking water service: 2.1 tonnes.
+- Dry-food equivalent: 225 kg.
+These are stream/reserve quantities, excluding vessels, plumbing, power, bedding and waste handling. An intact refuge may use community utilities; independent isolation requires local provision and capacity verification.
+
+Entire-community destruction remains outside the demonstrated survival case.
+
+### 27.6 Access routes and pressure isolation
+
+Every module receives TWO separated end access shafts. Each links the principal decks to a module vestibule and the independently bounded peripheral passage. The main aisle does not require passage through an apartment or crop rack.
+
+Browser shaft radius 2 m, lift envelope and connector tubes are spatial assumptions. They do not establish lift availability, rescue operation, floor-opening guards or a working pressure door. Independent assisted evacuation must remain possible after a lift or power failure; a ladder alone is not adequate for all residents.
+
+The circumferential passage is divided conceptually into pressure sectors with local isolation; the visible continuous tube does not yet display all boundary doors. Both escape routes may still share a local fire or pressure hazard. Verify independence through scenarios, rather than counting two doors.
+
+Do not use pressure cylinder shells as the sole load path, and do not use the connected passage as proof of a structurally redundant hoop.
+
+NASA architecture/habitability guidance supports explicit hatch pressure equalization, assisted movement, escape-path identification and long-duration privacy:
+https://www.nasa.gov/reference/8-0-architecture-vol-2/
+https://www.nasa.gov/reference/7-0-habit-ability-functions-vol-2/
+These standards address human spaceflight; they do not validate a century-long rotating community or our dimensions.
+
+## 28. Revised mass dependency and comparison discipline
+
+Adding twelve cylinders increases cylinder-only exterior area from about 130,288 to 195,432 m2, +50%. At illustrative 500 kg/m2 shielding density, cylinder shielding rises from about 65,144 to 97,716 tonnes, an increase of approximately 32,572 tonnes. This excludes shafts, hubs and passage shielding and does not establish dose protection.
+
+The earlier 80,000-tonne radiation-protection allowance is already below the 36-cylinder middle-density example. It must not silently remain sufficient.
+
+Illustrative 15-mm aluminium shell material rises by about 2,638 tonnes over the original 24-cylinder shell check. That thickness is still not a selected structural design. Floors, frames, pressure endcaps, joints, pipes, equipment, shielding support and rotation loads add mass.
+
+Use an explicit +60,000-tonne sensitivity increment to the former 250,000-tonne nonpropulsive payload, producing a 310,000-tonne comparison payload. Of this increment, roughly 35,200 tonnes is the illustrative added cylinder shield and shell material; the remainder is an unverified allowance for added equipment, decks, utilities, structure and margin. This is not a bill of materials or a closed mass budget. Do not add this increment on top of the same items again when a revised ledger is built.
+
+At unchanged engine/tank/radiator assumptions, staged recursion is linear in delivered payload:
+- Former four-stage no-added-cooling case: 6.83 million tonnes -> about 8.47 million tonnes.
+- Former 600-K/0.1%-deposition cooling case: 47.16 million -> about 58.48 million tonnes.
+These are scenario comparisons, not predictions of the eventual ship.
+
+Forward impact protection remains separately unresolved. An illustrative 500-kg/m2 disk covering the corrected 237.9-m radius weighs about 88,900 tonnes before margins and support, additional to cylinder radiation shielding if it is a distinct structure. Engine/tank/radiator projected envelopes may be larger. No actual impact-protection mass is selected.
+
+Dependency ledger:
+1. Occupants and activities set private/common spaces, diet and service loads.
+2. Clear headroom and circulation set genuinely usable area.
+3. Crop design sets racks, productive area, light, climate control and water circulation.
+4. Exterior protected surfaces and dose targets set radiation-protection material.
+5. Equipment and shield loads set frame/rotation/pressure design.
+6. Revised delivered mass sets stage masses, thrust and propulsion heat.
+7. Cooling and leading protection increase area and mass, requiring another iteration.
+
+Freeze none of these totals independently. The 36-cylinder layout is the current habitable-payload candidate; the trajectory and speculative engine scenarios remain comparison tools.
+
+## 29. Browser design model v0.2
+
+Private browser experience:
+https://generation-ship-flight-lab.mannym2124.chatgpt.site
+
+v0.2 embodies the current 36-cylinder arrangement, corrected three-deck apartment/rack envelopes, upper service galleries, end access shafts, civic modules, and temporary-refuge view. Added jumps enter civic spaces and the peripheral passage. Component explanations distinguish calculated reference dimensions from planning and schematic geometry.
+
+The prototype remains free flight, without collision, evacuation simulation, pressure dynamics, structural checks or radiation transport. Propulsion tanks, chamber, shield and radiator geometry are still schematic. Neither their rendered volume nor their visual symmetry is a validated engineering result.
+
+Next maturity gates: apartment sanitation/accessibility and civic facility program; crop/menu/yield closure; complete pressure/utility topology; mass ledger based on actual installations; propulsion fuel/heat closure; and impact/dose protection. Preserve the conditional nature of the inhabited payload as these studies proceed.
