@@ -527,4 +527,158 @@ Sources consulted during discussion. Their scope must not be enlarged into proof
 
 ## 21. Continuation discipline
 
-Update this document when assumptions change. Keep accepted mission requirements separate from provisional architecture. Record superseded choices and why they changed. Give new calculations inputs, units, equations, omissions, and reproducible arithmetic. Never promote a research concept or arithmetic mass balance to a demonstrated engineering capability. The next session should resume with Section 19, item 1.
+Update this document when assumptions change. Keep accepted mission requirements separate from provisional architecture. Record superseded choices and why they changed. Give new calculations inputs, units, equations, omissions, and reproducible arithmetic. Never promote a research concept or arithmetic mass balance to a demonstrated engineering capability. Autonomous continuation begins in Section 22; retain Section 19 as the integrated work backlog.
+
+
+## 22. Autonomous continuation: resource and cruise-system study
+
+Date: 2026-10-04. Authorization: user requested autonomous design and trade studies, including repository updates. Continue engineering without requiring repeated "please continue" prompts. Browser implementation remains outside current authorization.
+
+This pass defines capacities and exposes dependencies; it does not establish a century-long closed ecosystem. Numbers labeled assumptions are test inputs, not certified requirements.
+
+### 22.1 Reference operating cases
+
+Adopt provisional cases, revisable after reliability and logistics studies:
+
+| Case | Provisional duration / capacity | Purpose |
+|---|---|---|
+| Nominal population | 1,000; essential equipment sized for 1,200 | Demographic and demand headroom |
+| Occupied compartment isolated | 72 hours, at declared maximum occupancy | Evacuation and repair buffer |
+| One rotating community disconnected | 30 days for 600 people | Cross-interface repair |
+| Whole-ship crop interruption | 30 days of independent atmosphere support; food for 730 days | Crop recovery study |
+| One farm module unavailable | Other farms plus reserves | Routine compartment-loss case |
+
+Durations are planning assumptions. A two-year food reserve does not prove two-year survival without farms: oxygen, carbon handling, micronutrients, medicines, power, and repair remain necessary. Do not call whole-assembly destruction survivable.
+
+### 22.2 Human and household loads
+
+Use deliberately rounded adult-equivalent screening inputs; population age/activity distributions must replace these. NASA BVAD is the reference framework, but its PDF could not be retrieved during this pass, so the following metabolic values are retained as explicit planning assumptions rather than freshly verified quotations.
+
+| Stream | Per person per day assumption | 1,000 people | 1,200 design capacity |
+|---|---:|---:|---:|
+| Oxygen uptake | 0.84 kg | 840 kg/day | 1,008 kg/day |
+| Carbon dioxide production | 1.00 kg | 1,000 kg/day | 1,200 kg/day |
+| Dietary energy | 2,500 kcal | 2.5 million kcal/day | 3 million kcal/day |
+| Stored dry food equivalent | 0.75 kg | 750 kg/day | 900 kg/day |
+| Drinking/cooking water service | 7 kg | 7 tonnes/day | 8.4 tonnes/day |
+| Hygiene/laundry water service | 40 kg | 40 tonnes/day | 48 tonnes/day |
+
+Water service is circulation, not net inventory consumption. The 7-kg allowance includes handling/food preparation and is not a drinking prescription. Farm water, equipment cleaning, and medical demand are additional. Dry-food mass and caloric demand imply 3,333 kcal/kg before packaging and losses; a real menu must close energy, protein, fat, micronutrients, palatability, and storage stability.
+
+At 2,500 kcal/day, human metabolic energy is about 121 W/person, or 0.121 MW total. Do not add it again to a whole-ship energy budget if food chemical energy was already included at the same accounting boundary.
+
+### 22.3 Atmosphere architecture and inventory
+
+Provisional atmosphere: Earth-like pressure and oxygen fraction, approximately 101 kPa and 21% oxygen. This is an initial design assumption requiring fire, medical, leakage, structure, and farm compatibility assessment.
+
+Geometric upper-bound gas inventory: 651,441 cubic metres times 1.2 kg/m3 = 782 tonnes over the cylinders, excluding tunnels and subtracting equipment displacement later. Approximate oxygen mass fraction 0.233 gives 182 tonnes oxygen. This is working atmosphere, not freely usable emergency oxygen: oxygen partial pressure cannot be allowed to fall arbitrarily. Different farm gas conditions need controlled interfaces.
+
+Propose per community three independently isolatable oxygen-generation trains, each 300 kg O2/day, and three CO2-removal trains, each 300 kg CO2/day. After losing one train in each community, capacities are 1,200 kg/day shipwide, sufficient for the screening design loads. Shared electrical buses, cooling, valves, controls, and regeneration equipment can defeat this redundancy and must be separated.
+
+Independent atmospheric controls are sized without credit for crops. In nominal operation crop photosynthesis and respiration are part of the same carbon/oxygen ledger; do not simultaneously run backup oxygen generation at full output and assume unrestricted crop output.
+
+Electrolysis stoichiometry for 840 kg O2/day:
+- Water feed = 840 × 36/32 = 945 kg/day.
+- Hydrogen coproduct = 840 × 4/32 = 105 kg/day.
+- At assumed 6 kWh/kg O2, electrical demand = 0.210 MW; at design capacity = 0.252 MW.
+This assumed energy intensity is a sizing input, not verified flight-hardware performance.
+
+Regenerative CO2 removal captures gas; it does not restore oxygen or eliminate carbon. At 1 tonne CO2/day, carbon flow is 273 kg/day. Thirty-day crop outage can require handling about 30 tonnes CO2 nominal, or 36 tonnes at design load. Define drying, compression/storage, toxicity protection, and eventual return to crop/carbon processing.
+
+Reject routine CO2 venting as the baseline: nominal venting over 100 years loses about 9,962 tonnes carbon and 26,564 tonnes oxygen bound in CO2. Likewise hydrogen disposal must be explicitly inventoried. Sabatier recycling can recover water but produces methane; venting methane loses carbon and hydrogen. Methane cracking or alternate carbon recovery is an unresolved process train, with catalysts, fouling, energy, and maintenance included.
+
+### 22.4 Agriculture: optical and moisture sizing
+
+Keep 101,379 m2 cultivated area as a geometric ceiling, not demonstrated productive area. NASA's vertical-farming reference reports roughly 30–40 mol/m2/day photosynthetically active radiation and about 50 m2/person for calories under the studied conditions:
+https://ntrs.nasa.gov/citations/20205008832
+https://ntrs.nasa.gov/citations/20205008786
+
+For reference DLI (daily light integral) 35 mol/m2/day and assumed delivered system efficacy 3 micromol/J:
+Eelectric per m2 per day = DLI / (0.003 mol/J) = 11.667 MJ = 3.241 kWh.
+Average light power = 13.689 MW.
+For a 16-hour photoperiod: light-on power = 20.534 MW.
+Efficacy includes the chosen delivered-light boundary; driver, optical, ageing, and distribution losses must not be hidden.
+
+Sensitivity with DLI 30–40 and efficacy 2–4 micromol/J gives 8.80–23.47 MW average. This envelope is not a yield prediction. Divide farms into staggered lighting cohorts to reduce shipwide peaks; preserve crop dark periods.
+
+Transpiration sensitivity is a planning assumption of 2/4/6 kg/m2/day, not a measured crop recipe:
+- Condensate return: 203 / 406 / 608 tonnes/day.
+- Latent heat transfer at assumed 2.45 MJ/kg: 5.75 / 11.50 / 17.25 MW.
+- Continuous recovery equivalent: 8.45 / 16.90 / 25.34 tonnes/hour shipwide.
+
+Latent transfer moves heat within the farm; it is not an independent energy source. Do not add all latent heat to lighting power as though both were separate electrical loads. Dehumidification compressor work adds energy; coil duty and radiator duty use different accounting boundaries.
+
+Per farm module: approximately 8,448 m2 cultivated surface; high case condensate about 50.7 tonnes/day. Investigate two independently powered 3-tonne/hour condensate-recovery units per module, with either capable of the 24-hour averaged high case. Daytime peaks, crop schedule, humidity buffering, coil temperatures, and sanitation could require higher capacity. Condensate is treated before potable use; nutrient solutions have separate circuits. Recirculating nutrient flow cannot be sized from transpiration alone.
+
+### 22.5 Water closure and reserves
+
+Propose 60 tonnes/day household-water treatment capacity shipwide, including margin over the 47-tonne/day nominal service assumption. Per community, three 15-tonne/day trains leave 60 tonnes/day shipwide after one train per community fails.
+
+Household recovery and farm-condensate recovery are distinct capacity problems. Add waste/brine polishing and mineral recovery; no discharge stream is presumed harmless to lose.
+
+Mass balance:
+inventory change = imported/recovered additions minus truly irreversible losses;
+internal transfers cancel.
+At a 500-tonne/day accounting throughput:
+- 0.1% irreversible loss means 18,263 tonnes lost in 100 years.
+- 0.01% means 1,826 tonnes.
+- 0.001% means 183 tonnes.
+This is a sensitivity illustration, not an actual ship prediction. Repeated treatment cycles require consistent boundaries, rather than multiplying unrelated subsystem recovery percentages.
+
+Provisional protected water reserve for thirty days at 1,200 × 7 kg/day = 252 tonnes, excluding hygiene. Community allocation = 126 tonnes each; isolation case permits hygiene rationing. This reserve may also be part of shielding inventory if its minimum retained distribution is enforced. Do not count it twice.
+
+A 72-hour isolated module with occupancy cap N requires at least:
+O2 = 2.52N kg; CO2 capture/handling = 3N kg;
+drinking/cooking service = 21N kg, unless independently recovered.
+For provisional N=120: 302 kg O2, 360 kg CO2 capacity, 2.52 tonnes water. Occupancy caps must be reconciled with apartments, communal gatherings, and evacuation.
+
+### 22.6 Food and gas reserve trade
+
+Two-year dry-food equivalent at 1,000 people: 547.5 tonnes; at 1,200: 657 tonnes. These exclude packaging, storage fixtures, distribution losses, spoilage, and diet diversity. Select the 1,200-person basis provisionally, distributed across both communities and multiple compartments.
+
+Thirty-day stored oxygen at design load: 30.24 tonnes usable O2, split 15.12 tonnes per community, plus container mass and inaccessible residuals. CO2 capture capacity is separately required. Stored gas bridges generator repair; it is not the long-duration atmosphere architecture. Select storage technology only after pressure-vessel/cryogenic/fire trades.
+
+Seed stocks alone do not ensure recovery. Preserve multiple independently stored lots, vegetative propagation where needed, beneficial cultures, growth media, nutrient stocks, and validated restart procedures. Century-long storage cannot be assumed without periodic regeneration and quality tests.
+
+### 22.7 Cruise electrical power and cooling trade
+
+Reference electrical allocations are provisional:
+- Farming light: 13.7 MW average.
+- Farm climate control, pumps, processing: 6 MW.
+- Homes/community services: 3 MW.
+- Nonfarm life support: 2 MW.
+- Workshops/manufacturing: 5 MW scheduled average.
+- Navigation, computing, interfaces, distribution: 2 MW.
+Subtotal about 31.7 MW; adopt 40 MW normal installed service target pending equipment study.
+These allowances are not a component-derived electrical ledger. Factory peaks and farm humidity-control performance are unresolved.
+
+Provisional generation arrangement: four 20-MWe units; two separately located units associated with each community. Normal operation supplies about 20 MW per community. After one generating unit fails, remaining aggregate capacity is 60 MW if distribution and cooling permit. This is installed capacity, not permission to assume century-life generators.
+
+At assumed 40% conversion efficiency, 40 MWe requires 100 MW thermal input and rejects 60 MW at generators. Approximately 40 MW delivered electricity ultimately becomes low-temperature heat over a steady closed accounting boundary; total eventual ship heat about 100 MW, allowing for temporary chemical storage and exported energy. Nuclear conversion losses must not be omitted.
+
+For emissivity 0.9, cold unobstructed space:
+- 40 MW at 300 K: 96,766 m2 emitting area; roughly 48,383 m2 two-sided panel footprint.
+- 60 MW at 600 K: 9,072 m2 emitting area; roughly 4,536 m2 footprint.
+- If all 100 MW must leave at 300 K: 241,914 m2 emitting area; roughly 120,957 m2 footprint.
+600 K is a radiator-loop assumption requiring a compatible power cycle; it is not automatic from 40% efficiency.
+
+Use 1.5 times nominal area as an explicit preliminary margin, not validated redundancy. Reference footprints become about 72,600 m2 low-temperature and 6,800 m2 hotter generator panels. These arrays are a major geometry/maintenance requirement. Human/farm cooling must establish source-to-radiator temperature differences, freezing avoidance, flow, view factors, shield obstruction, contamination, puncture isolation, and rotating utility transfer.
+
+Illustrative mass at 5/10/20 kg per square metre of deployed panel footprint gives 397/794/1,588 tonnes for both margin-inclusive arrays, before any items excluded by the chosen areal-density definition. Pumps, deployment structure, pipes, armour, coolant, heat exchangers, spare panels, and interface hardware need explicit inclusion. This does not validate the 10,000-tonne cruise power/thermal allowance.
+
+Solar is not the cruise baseline. At a distance of 1 light-year from a Sun-like source, inverse-square scaling from 1,361 W/m2 at 1 AU gives about 0.34 microwatt/m2. Solar is useful during construction/near stars but cannot support the interstellar reference demand with plausible arrays.
+
+Investigate fission as a physically grounded cruise-power candidate, separately from fusion main propulsion. At 100 MW thermal for 100 years, energy is 3.156e17 J. Using approximately 8.2e13 J/kg of fully fissioned heavy nuclei implies 3.85 tonnes actually fissioned. This is a nuclear-energy lower bound, not a fuel inventory: burnup, fuel composition, breeding, reprocessing, replacement cores, shielding, waste, safety, and reactor hardware remain unspecified. Do not present low fuel mass as proof of century-long power availability.
+
+### 22.8 Design consequences and unresolved gates
+
+1. Reserve atmosphere processing independent of crop productivity.
+2. Design distinct household, farm condensate, and nutrient/waste loops.
+3. Stagger crop photoperiods; design against peaks and dark respiration.
+4. Keep two communities independently powered/cooled for the disconnected case.
+5. Place replaceable radiator sectors and isolation valves in the architecture before freezing the silhouette.
+6. Carry explicit repair reserves and preserve shared shielding inventory minima.
+7. Add equipment installations and reserves to the mass ledger only once; current allowances remain placeholders.
+8. Verify real menu/yields and nutrient recovery before claiming food or ecological closure.
+
+Next integrated work: crop/menu mass balance and a component-level power/thermal layout; then radiation and impact protection, structure/dynamics, and revised propulsion coupling. The current calculations narrow the design but leave mission feasibility unresolved.
