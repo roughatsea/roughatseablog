@@ -1,0 +1,205 @@
+---
+const initialWidth = 0.5;
+const kappa = 5.1231672263;
+const barrierX = 270;
+const barrierWidth = 150;
+const baseline = 166;
+
+const wavePath = (start: number, end: number, amplitude: number, phase = 0) => {
+  const points = Array.from({ length: Math.floor((end - start) / 4) + 1 }, (_, index) => {
+    const x = start + index * 4;
+    const y = baseline - amplitude * Math.sin((x - start) / 18 + phase);
+    return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+  });
+  return points.join(' ');
+};
+
+const decayPath = (start: number, end: number, amplitude: number) => {
+  const points = Array.from({ length: Math.floor((end - start) / 4) + 1 }, (_, index) => {
+    const x = start + index * 4;
+    const progress = (x - start) / (end - start);
+    const envelope = Math.exp(-kappa * initialWidth * progress);
+    const y = baseline - amplitude * envelope;
+    return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+  });
+  return points.join(' ');
+};
+
+const initialTransmission = 1 / Math.cosh(kappa * initialWidth) ** 2;
+---
+
+<figure class="tunnel-lab reckoning-visual" data-tunnel-lab>
+  <header>
+    <p>Barrier-width sounding line</p>
+    <h3>Thicken the wall and watch transmission collapse</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 690 330" role="img" aria-labelledby="tunnel-title tunnel-desc">
+      <title id="tunnel-title">A one-electron-volt wave meeting a two-electron-volt barrier that is half a nanometre wide</title>
+      <desc id="tunnel-desc">A large oscillating wave approaches from the left, decays exponentially through a hatched rectangular barrier, and continues on the right with much smaller amplitude. The transmission probability is 2.35 percent.</desc>
+      <defs>
+        <pattern id="tunnel-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+          <path d="M28 0H0V28" />
+        </pattern>
+        <pattern id="tunnel-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+          <path d="M0 0V12" />
+        </pattern>
+      </defs>
+
+      <rect class="plot-bg" width="690" height="330" rx="12" />
+      <rect class="grid" width="690" height="330" rx="12" fill="url(#tunnel-grid)" />
+
+      <g class="energy-axis" aria-hidden="true">
+        <line x1="42" y1="270" x2="650" y2="270" />
+        <line x1="42" y1="44" x2="42" y2="270" />
+        <line class="energy-level" x1="42" y1="166" x2="650" y2="166" />
+        <text x="52" y="155">particle energy E = 1 eV</text>
+        <text x="49" y="65">potential energy</text>
+        <text x="650" y="293" text-anchor="end">position x</text>
+      </g>
+
+      <g data-barrier>
+        <rect x={barrierX} y="68" width={barrierWidth} height="202" class="barrier-fill" />
+        <rect x={barrierX} y="68" width={barrierWidth} height="202" class="barrier-hatch" fill="url(#tunnel-hatch)" />
+        <path d={`M${barrierX} 270V68H${barrierX + barrierWidth}V270`} class="barrier-edge" />
+        <text data-barrier-label x={barrierX + barrierWidth / 2} y="96" text-anchor="middle">U₀ = 2 eV</text>
+        <text data-width-label x={barrierX + barrierWidth / 2} y="248" text-anchor="middle">L = 0.50 nm</text>
+      </g>
+
+      <path class="incoming wave" d={wavePath(46, barrierX, 25)} />
+      <path data-decay class="decay wave" d={decayPath(barrierX, barrierX + barrierWidth, 25)} />
+      <path data-transmitted class="transmitted wave" d={wavePath(barrierX + barrierWidth, 650, 25 * Math.sqrt(initialTransmission), kappa * initialWidth)} />
+
+      <g class="region-labels" aria-hidden="true">
+        <text x="150" y="313" text-anchor="middle">oscillating</text>
+        <text data-region-middle x={barrierX + barrierWidth / 2} y="313" text-anchor="middle">exponential</text>
+        <text data-region-right x={(barrierX + barrierWidth + 650) / 2} y="313" text-anchor="middle">oscillating, smaller</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <label for="tunnel-width">
+      Barrier width, <em>L</em>
+      <output for="tunnel-width" data-output>0.50 nm</output>
+    </label>
+    <input id="tunnel-width" data-range type="range" min="0.20" max="1.20" value="0.50" step="0.05" />
+    <div class="readout" data-readout aria-live="polite">
+      Exact transmission probability: <strong>2.35%</strong> (about <strong>1 in 42</strong>).
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the hatched barrier is higher than the particle’s energy line, yet the wave does not stop at the first edge. It decays across the barrier and leaves a smaller transmitted wave. Move the width slider with a pointer or the arrow keys; pattern and labels, not color alone, mark the forbidden region.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-tunnel-lab]').forEach((figure) => {
+    const range = figure.querySelector('[data-range]');
+    const output = figure.querySelector('[data-output]');
+    const readout = figure.querySelector('[data-readout]');
+    const barrier = figure.querySelector('[data-barrier]');
+    const decay = figure.querySelector('[data-decay]');
+    const transmitted = figure.querySelector('[data-transmitted]');
+    const widthLabel = figure.querySelector('[data-width-label]');
+    const barrierLabel = figure.querySelector('[data-barrier-label]');
+    const middleLabel = figure.querySelector('[data-region-middle]');
+    const rightLabel = figure.querySelector('[data-region-right]');
+    const title = figure.querySelector('#tunnel-title');
+    const desc = figure.querySelector('#tunnel-desc');
+    if (!(range instanceof HTMLInputElement) || !(output instanceof HTMLOutputElement) || !readout || !barrier || !(decay instanceof SVGPathElement) || !(transmitted instanceof SVGPathElement) || !(widthLabel instanceof SVGTextElement) || !(barrierLabel instanceof SVGTextElement) || !(middleLabel instanceof SVGTextElement) || !(rightLabel instanceof SVGTextElement) || !title || !desc) return;
+
+    const x0 = 270;
+    const xRight = 650;
+    const y0 = 166;
+    const kappa = 5.1231672263;
+    const path = (start: number, end: number, fn: (x: number, progress: number) => number) => {
+      const count = Math.max(2, Math.floor((end - start) / 4));
+      return Array.from({ length: count + 1 }, (_, index) => {
+        const x = start + (end - start) * index / count;
+        return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)} ${fn(x, index / count).toFixed(1)}`;
+      }).join(' ');
+    };
+
+    const render = () => {
+      const widthNm = Number(range.value);
+      const screenWidth = 72 + (widthNm - 0.2) * 156;
+      const end = x0 + screenWidth;
+      const transmission = 1 / Math.cosh(kappa * widthNm) ** 2;
+      const percent = transmission * 100;
+      const odds = Math.round(1 / transmission);
+      const amplitude = 25 * Math.sqrt(transmission);
+
+      const rects = barrier.querySelectorAll('rect');
+      rects.forEach((rect) => rect.setAttribute('width', String(screenWidth)));
+      const edge = barrier.querySelector('path');
+      edge?.setAttribute('d', `M${x0} 270V68H${end}V270`);
+      widthLabel.setAttribute('x', String(x0 + screenWidth / 2));
+      widthLabel.textContent = `L = ${widthNm.toFixed(2)} nm`;
+      barrierLabel.setAttribute('x', String(x0 + screenWidth / 2));
+      middleLabel.setAttribute('x', String(x0 + screenWidth / 2));
+      rightLabel.setAttribute('x', String((end + xRight) / 2));
+
+      decay.setAttribute('d', path(x0, end, (_x, progress) => y0 - 25 * Math.exp(-kappa * widthNm * progress)));
+      transmitted.setAttribute('d', path(end, xRight, (x) => y0 - amplitude * Math.sin((x - end) / 18 + kappa * widthNm)));
+
+      output.value = `${widthNm.toFixed(2)} nm`;
+      const percentText = percent >= 0.01 ? percent.toFixed(3).replace(/0+$/, '').replace(/\.$/, '') : percent.toExponential(2);
+      readout.innerHTML = `Exact transmission probability: <strong>${percentText}%</strong> (about <strong>1 in ${odds.toLocaleString()}</strong>).`;
+      title.textContent = `A one-electron-volt wave meeting a two-electron-volt barrier that is ${widthNm.toFixed(2)} nanometres wide`;
+      desc.textContent = `A large oscillating wave approaches from the left, decays exponentially through a hatched rectangular barrier, and continues on the right with smaller amplitude. The transmission probability is ${percentText} percent.`;
+    };
+
+    range.addEventListener('input', render);
+    render();
+  });
+</script>
+
+<style>
+  .tunnel-lab {
+    --tunnel-blue: #087dcc;
+    --tunnel-green: #4f9300;
+    --tunnel-pink: #d9007e;
+    background: radial-gradient(circle at 88% 8%, color-mix(in srgb, var(--tunnel-pink) 12%, transparent), transparent 25rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1000px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .tunnel-lab { --tunnel-blue: #1493ff; --tunnel-green: #93ff14; --tunnel-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell, .controls { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; }
+  .diagram-shell { overflow: hidden; }
+  svg { display: block; height: auto; width: 100%; }
+  .plot-bg { fill: var(--bg-color); }
+  .grid { opacity: .28; stroke: var(--border-color); stroke-width: 1; }
+  .energy-axis line { stroke: var(--text-secondary); stroke-width: 1.5; }
+  .energy-axis .energy-level { stroke: var(--tunnel-pink); stroke-dasharray: 7 7; }
+  .energy-axis text, .region-labels text { fill: var(--text-secondary); font-size: 12px; }
+  .barrier-fill { fill: color-mix(in srgb, var(--tunnel-green) 10%, transparent); }
+  .barrier-hatch { color: var(--tunnel-green); opacity: .72; }
+  #tunnel-hatch path { stroke: var(--tunnel-green); stroke-width: 3; }
+  .barrier-edge { fill: none; stroke: var(--tunnel-green); stroke-width: 2.5; }
+  [data-barrier] text { fill: var(--text-primary); font-size: 12px; font-weight: 800; }
+  .wave { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3.5; }
+  .incoming { stroke: var(--tunnel-blue); }
+  .decay { stroke: var(--tunnel-pink); }
+  .transmitted { stroke: var(--tunnel-blue); }
+  .controls { margin-top: 1rem; padding: 1rem; }
+  .controls label { align-items: baseline; color: var(--text-primary); display: flex; font-size: .8rem; font-weight: 700; justify-content: space-between; }
+  output { color: var(--tunnel-pink); font-size: 1.1rem; }
+  input[type='range'] { accent-color: var(--tunnel-blue); cursor: pointer; margin: .75rem 0; width: 100%; }
+  input[type='range']:focus-visible { outline: 3px solid color-mix(in srgb, var(--tunnel-green) 65%, transparent); outline-offset: 5px; }
+  .readout { background: var(--surface-color); border-radius: 7px; color: var(--text-secondary); font-size: .82rem; line-height: 1.5; padding: .7rem .8rem; }
+  .readout strong { color: var(--text-primary); }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 600px) { .tunnel-lab { width: calc(100vw - 1.5rem); } .region-labels { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .tunnel-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

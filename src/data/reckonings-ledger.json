@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-03T06:00:00-07:00",
+  "updatedAt": "2026-10-04T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -830,6 +830,34 @@
         "daily-reckoning-2026-09-13",
         "daily-reckoning-2026-09-21",
         "daily-reckoning-2026-09-30"
+      ]
+    },
+    {
+      "date": "2026-10-04",
+      "slug": "daily-reckoning-2026-10-04",
+      "title": "Why Can a Particle Cross a Wall It Cannot Climb?",
+      "area": "Mathematical physics",
+      "difficulty": "Advanced",
+      "prerequisites": [
+        "Exponents and square roots",
+        "Second derivatives as curvature",
+        "Probability between 0 and 1"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "quantum tunneling",
+        "time-independent Schrödinger equation",
+        "wavefunctions",
+        "exponential decay",
+        "finite square barrier",
+        "transmission probability",
+        "alpha decay",
+        "scanning tunneling microscopy",
+        "history of quantum mechanics"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-24",
+        "daily-reckoning-2026-10-02"
       ]
     }
   ]
