@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AuthorTimeline from '../components/authors/AuthorTimeline';
+---
+<BaseLayout title="Author Timeline" description="Compare famous authors’ lifespans, publishing years and key books. Explore who came first without confusing chronology with proof of influence.">
+  <h1>Author Timeline</h1>
+  <p class="intro">Who came first? Compare lives and book dates to explore when literary influence was possible.</p>
+  <AuthorTimeline client:load />
+</BaseLayout>
+<style>h1{margin-bottom:.5rem}.intro{color:var(--text-secondary);line-height:1.6}</style>

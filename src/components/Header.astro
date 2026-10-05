@@ -2,7 +2,7 @@
 const pathname = Astro.url.pathname;
 const isWriting = pathname.startsWith('/notes/') || pathname.startsWith('/guides/') || pathname === '/content/';
 const isDaily = pathname.startsWith('/soundings/') || pathname.startsWith('/reckonings/') || pathname.startsWith('/save-point/') || pathname.startsWith('/wake/');
-const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/') || pathname === '/microcosm' || pathname.startsWith('/microcosm/') || pathname === '/metabolism' || pathname.startsWith('/metabolism/');
+const isExplorations = pathname === '/authors' || pathname.startsWith('/authors/') || pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/') || pathname === '/microcosm' || pathname.startsWith('/microcosm/') || pathname === '/metabolism' || pathname.startsWith('/metabolism/');
 ---
 
 <header class="glass-panel">
@@ -44,6 +44,7 @@ const isExplorations = pathname.startsWith('/atlas/') || pathname === '/fly' || 
         <details class:list={['nav-group', { 'is-current': isExplorations }]}>
           <summary>Explorations</summary>
           <div class="nav-menu">
+            <a href="/authors/" aria-current={pathname === '/authors' || pathname.startsWith('/authors/') ? 'page' : undefined}><strong>Author Timeline</strong><span>Lives, books, and who came first</span></a>
             <a href="/atlas/" aria-current={pathname.startsWith('/atlas/') ? 'page' : undefined}><strong>Atlas</strong><span>An interactive world atlas</span></a>
             <a href="/fly" aria-current={pathname === '/fly' || pathname.startsWith('/fly/') ? 'page' : undefined}><strong>Fly</strong><span>A quiet journey through alien worlds</span></a>
             <a href="/microcosm/" aria-current={pathname === '/microcosm' || pathname.startsWith('/microcosm/') ? 'page' : undefined}><strong>Microcosm</strong><span>An evolving world inside a cell</span></a>
