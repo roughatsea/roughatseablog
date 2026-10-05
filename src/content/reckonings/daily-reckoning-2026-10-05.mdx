@@ -1,0 +1,266 @@
+---
+title: "Why Does Squaring Every Error Choose the Average?"
+description: "The arithmetic mean is more than a familiar recipe: it is the unique number that makes the total squared distance to a dataset as small as possible."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-05.svg"
+heroImageAlt: "A dark maritime blueprint shows three cyan sounding beacons feeding magenta distance lines toward an acid-green balance point at the bottom of a luminous parabola."
+date: 2026-10-05
+publishedAt: 2026-10-05T06:00:00-07:00
+area: "Numbers, statistics, and optimization"
+difficulty: "Foundational"
+prerequisites:
+  - "Arithmetic mean"
+  - "Squaring positive and negative numbers"
+  - "Basic algebra with sums"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - arithmetic-mean
+  - least-squares
+  - squared-error
+  - optimization
+  - variance
+  - regression
+  - k-means
+  - history-of-statistics
+---
+
+import MeanSquaredErrorLab from '../../components/reckonings/MeanSquaredErrorLab.astro';
+
+Three instruments report the same quantity as $2$, $4$, and $9$. You must replace the three readings with one number. Which number should you choose?
+
+The middle reading, $4$, is tempting. The arithmetic mean is
+
+$$
+\frac{2+4+9}{3}=5.
+$$
+
+Neither answer is universally correct. The choice depends on how you charge for a miss. If an estimate $a$ receives a penalty of $(x-a)^2$ for missing a reading $x$, then $5$ wins—and no other estimate ties it.
+
+That statement is not a convention about averages. It is a theorem.
+
+## Turn every miss into a square
+
+Let the data be the real numbers $x_1,x_2,\ldots,x_n$. The symbol $n$ is the number of data values. For any proposed representative value $a$, define the **sum of squared errors**
+
+$$
+S(a)=\sum_{i=1}^{n}(x_i-a)^2.
+$$
+
+The index $i$ runs from $1$ through $n$. The Greek capital letter $\sum$ means to add the terms that follow it. Each difference $x_i-a$ is a **residual**: the signed distance from the estimate $a$ to the observation $x_i$. Squaring makes every contribution nonnegative and makes a miss twice as large cost four times as much.
+
+The arithmetic mean of the data is
+
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i.
+$$
+
+The bar in $\bar{x}$ is read “$x$ bar.” The central claim is precise:
+
+> For any finite list of real numbers, $S(a)$ has its unique minimum at $a=\bar{x}$.
+
+The diagram below uses the readings $2$, $4$, and $9$. Each horizontal lane shows one residual. The lower plot shows the total squared error for every possible estimate between $0$ and $10$.
+
+<MeanSquaredErrorLab />
+
+The curve is a parabola. Its lowest point sits directly under $a=5$, the mean. Moving one unit away raises the total by $3$; moving two units away raises it by $12$.
+
+## Why the mean must win
+
+The proof needs one fact about the mean: the signed deviations from it add to zero.
+
+$$
+\sum_{i=1}^{n}(x_i-\bar{x})
+=\sum_{i=1}^{n}x_i-n\bar{x}
+=n\bar{x}-n\bar{x}
+=0.
+$$
+
+Now split each residual around the mean:
+
+$$
+x_i-a=(x_i-\bar{x})+(\bar{x}-a).
+$$
+
+Square both sides and add over all $n$ observations:
+
+$$
+\begin{aligned}
+S(a)
+&=\sum_{i=1}^{n}\left[(x_i-\bar{x})+(\bar{x}-a)\right]^2\\
+&=\sum_{i=1}^{n}(x_i-\bar{x})^2
++2(\bar{x}-a)\sum_{i=1}^{n}(x_i-\bar{x})
++\sum_{i=1}^{n}(\bar{x}-a)^2.
+\end{aligned}
+$$
+
+The middle term vanishes because $\sum(x_i-\bar{x})=0$. The final summand is the same for every $i$, so adding it $n$ times gives $n(\bar{x}-a)^2$. Therefore
+
+$$
+\boxed{S(a)=S(\bar{x})+n(a-\bar{x})^2.}
+$$
+
+This identity settles the contest. The first term, $S(\bar{x})$, does not depend on $a$. The second term is a nonnegative square multiplied by the positive number $n$. It equals zero only when $a=\bar{x}$.
+
+Every move away from the mean adds exactly $n(a-\bar{x})^2$ to the minimum possible squared error.
+
+## Worked example: $2$, $4$, and $9$
+
+For the three readings, the mean is $\bar{x}=5$.
+
+**Step 1: calculate the minimum squared error.**
+
+$$
+\begin{aligned}
+S(5)
+&=(2-5)^2+(4-5)^2+(9-5)^2\\
+&=(-3)^2+(-1)^2+4^2\\
+&=9+1+16\\
+&=26.
+\end{aligned}
+$$
+
+**Step 2: write the full error curve.** There are $n=3$ readings, so the boxed identity gives
+
+$$
+S(a)=26+3(a-5)^2.
+$$
+
+**Step 3: test the tempting choice $a=4$.**
+
+$$
+S(4)=26+3(4-5)^2=26+3=29.
+$$
+
+A direct calculation agrees:
+
+$$
+(2-4)^2+(4-4)^2+(9-4)^2=4+0+25=29.
+$$
+
+Choosing $4$ helps the middle observation, but the five-unit miss from $9$ costs $25$. Moving the estimate from $4$ to $5$ increases two smaller squared residuals while shrinking the largest one enough to reduce the total from $29$ to $26$.
+
+## The penalty chooses the center
+
+The mean wins only after we decide to square the residuals. Suppose the penalty were the sum of absolute distances,
+
+$$
+A(a)=\sum_{i=1}^{n}|x_i-a|.
+$$
+
+For the same three readings,
+
+$$
+A(4)=|2-4|+|4-4|+|9-4|=2+0+5=7,
+$$
+
+while
+
+$$
+A(5)=3+1+4=8.
+$$
+
+Absolute error chooses the median, $4$, rather than the mean, $5$. Squared error gives extra influence to a distant value because large residuals grow quadratically. That sensitivity is useful when large misses are especially costly, but it also means that an outlier can pull the mean sharply.
+
+The phrase “best representative” is incomplete until the penalty is named.
+
+## From discordant observations to least squares
+
+Astronomy and geodesy made this optimization problem urgent long before electronic computers. Surveyors and astronomers often had more observations than unknown quantities, and measurements disagreed slightly. A calculation needed one set of parameters that reconciled the observations without pretending that every reading was exact.
+
+Adrien-Marie Legendre first published the method of least squares in 1805 in *Nouvelles méthodes pour la détermination des orbites des comètes*, a work on determining comet orbits. A contemporary [Royal Astronomical Society obituary preserved by MacTutor](https://mathshistory.st-andrews.ac.uk/Obituaries/Legendre_RAS/) connects the method to Legendre's work with discordant astronomical observations. The same account describes his earlier participation in the triangulation joining the Greenwich and Paris observatories and his later work on the commission that deduced the length of the metre. Precision was tied to observatories, national surveys, and the new metric standard—not merely to a clean classroom table.
+
+Carl Friedrich Gauss published a probabilistic treatment in 1809 and claimed that he had used the method since 1795. Legendre objected to the priority claim. Modern histories distinguish the achievements: Legendre published the method first; Gauss later connected least squares to a probability model for observational error. A recent [history of Gauss's 1809 argument](https://link.springer.com/article/10.1007/s00407-022-00291-w) explains that under normally distributed errors, maximizing likelihood leads to minimizing squared deviations.
+
+The small theorem in this lesson is the constant-model case of least squares. A [National Bureau of Standards measurement manual](https://emtoolbox.nist.gov/Publications/NBSSpecialPublication747.pdf) states the connection directly: using the arithmetic mean of repeated measurements fits one constant to the data by least squares.
+
+## Where the theorem works today
+
+The [National Institute of Standards and Technology description of least squares](https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd431.htm) extends the same idea from one constant to lines and more complicated models. Instead of choosing $a$, a regression calculation chooses model parameters that minimize the sum of squared residuals.
+
+The theorem also appears inside **k-means clustering**, an algorithm that groups data points around centers. The [scikit-learn clustering guide](https://scikit-learn.org/stable/modules/clustering.html) defines each cluster center as the mean of the points assigned to that cluster and measures the cluster by its within-cluster sum of squares. Once the group memberships are fixed, the theorem proves why the mean is the best center under that squared-distance rule.
+
+Neither application makes squared error mandatory. Engineers and statisticians choose other penalties when outliers, asymmetry, or domain-specific costs matter. The theorem says what follows from one particular choice: once squared distance is the score, the mean is forced.
+
+## Try the identity
+
+### Problem 1
+
+The four observations are $1$, $3$, $8$, and $8$. Find the mean, the minimum sum of squared errors, and $S(6)$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+The mean is
+
+$$
+\bar{x}=\frac{1+3+8+8}{4}=\frac{20}{4}=5.
+$$
+
+At the mean,
+
+$$
+\begin{aligned}
+S(5)
+&=(1-5)^2+(3-5)^2+(8-5)^2+(8-5)^2\\
+&=16+4+9+9\\
+&=38.
+\end{aligned}
+$$
+
+Because $n=4$, the identity gives
+
+$$
+S(a)=38+4(a-5)^2.
+$$
+
+Substitute $a=6$:
+
+$$
+S(6)=38+4(6-5)^2=38+4=42.
+$$
+
+</details>
+
+### Problem 2
+
+A sensor reports $2$ once and $6$ three times. Without expanding four squared residuals, find the constant that minimizes their total and calculate the minimum total squared error.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Treat the readings as the list $2,6,6,6$. Its mean is
+
+$$
+\bar{x}=\frac{2+6+6+6}{4}=\frac{20}{4}=5.
+$$
+
+The minimizing constant is therefore $5$. Its squared error is
+
+$$
+S(5)=(2-5)^2+3(6-5)^2=9+3=12.
+$$
+
+The three repeated readings pull the mean three times as strongly as the single reading. The same calculation can be written as a weighted least-squares problem with weights $1$ and $3$.
+
+</details>
+
+## The idea to keep
+
+The arithmetic mean is the balance point for squared distance. For any estimate $a$,
+
+$$
+S(a)=S(\bar{x})+n(a-\bar{x})^2,
+$$
+
+so leaving the mean adds a precisely known, nonnegative penalty.
+
+To continue, [Why Do Averages Keep Drawing Bell Curves?](/reckonings/daily-reckoning-2026-09-21/) studies what happens when means are formed repeatedly, [How Can One Treatment Win Every Group but Lose Overall?](/reckonings/daily-reckoning-2026-10-03/) shows how unequal weights can reverse an average, and [How Can a Tangent Line Find √2?](/reckonings/daily-reckoning-2026-09-26/) introduces a different route to a minimum.
+
+## Sources
+
+- National Institute of Standards and Technology, [“Least Squares”](https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd431.htm), the general least-squares criterion and its use in regression.
+- National Bureau of Standards, [*Experimental Statistics*](https://emtoolbox.nist.gov/Publications/NBSSpecialPublication747.pdf), section on fitting constants by least squares and the arithmetic mean.
+- MacTutor History of Mathematics, [“Adrien-Marie Legendre — RAS obituary”](https://mathshistory.st-andrews.ac.uk/Obituaries/Legendre_RAS/), Legendre's astronomical, geodetic, and least-squares work.
+- Jan R. Magnus, [“Gauss on least-squares and maximum-likelihood estimation”](https://link.springer.com/article/10.1007/s00407-022-00291-w), *Archive for History of Exact Sciences* 76 (2022), 567–576.
+- scikit-learn, [“Clustering”](https://scikit-learn.org/stable/modules/clustering.html), the k-means objective and mean-valued cluster centers.
+

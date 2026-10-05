@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Three sounding beacons converge on the minimum of a squared-error parabola</title>
+  <desc id="desc">A dark maritime blueprint shows three cyan sounding beacons feeding magenta distance lines toward an acid-green balance point at the bottom of a luminous parabola.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#04101f"/>
+      <stop offset=".56" stop-color="#07192a"/>
+      <stop offset="1" stop-color="#02070f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="70%" r="55%">
+      <stop offset="0" stop-color="#93ff14" stop-opacity=".17"/>
+      <stop offset=".5" stop-color="#1493ff" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#02070f" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#1493ff" stroke-opacity=".13" stroke-width="1"/>
+      <path d="M40 0V80M0 40H80" fill="none" stroke="#1493ff" stroke-opacity=".045" stroke-width="1"/>
+    </pattern>
+    <pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
+      <path d="M0 0V14" fill="none" stroke="#ff1493" stroke-opacity=".45" stroke-width="3"/>
+    </pattern>
+    <filter id="cyan-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="green-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+
+  <g fill="none" stroke="#1493ff" stroke-opacity=".2" stroke-width="2">
+    <path d="M-80 710C190 614 342 780 600 683S1000 570 1260 674s360-9 470-86"/>
+    <path d="M-60 760c250-88 428 76 659-9s407-96 640-6 342 5 451-64"/>
+    <path d="M-40 814c246-73 426 64 648-4s397-75 615-1 330 14 446-47"/>
+    <path d="M54 157c205-70 375 6 562-42s356-41 559 20 301 29 398-4"/>
+  </g>
+
+  <g aria-hidden="true" fill="none" stroke="#1493ff" stroke-opacity=".28">
+    <circle cx="800" cy="630" r="286" stroke-dasharray="4 18"/>
+    <circle cx="800" cy="630" r="214" stroke-dasharray="2 14"/>
+    <path d="M800 250V788M430 630H1170" stroke-dasharray="8 14"/>
+  </g>
+
+  <g filter="url(#pink-glow)">
+    <path d="M246 174C320 426 456 630 800 630S1280 426 1354 174" fill="none" stroke="#ff1493" stroke-width="8"/>
+    <path d="M246 174C320 426 456 630 800 630S1280 426 1354 174L1354 226C1263 452 1117 664 800 664S337 452 246 226Z" fill="url(#hatch)" opacity=".28"/>
+  </g>
+
+  <g fill="none" stroke="#ff1493" stroke-width="4">
+    <path d="M380 306L800 630" stroke-dasharray="12 11"/>
+    <path d="M650 210L800 630" stroke-dasharray="12 11"/>
+    <path d="M1190 342L800 630" stroke-dasharray="12 11"/>
+  </g>
+
+  <g filter="url(#cyan-glow)">
+    <g transform="translate(380 306)">
+      <circle r="32" fill="#07192a" stroke="#1493ff" stroke-width="6"/>
+      <circle r="9" fill="#1493ff"/>
+      <path d="M0-62V-37M0 37V62M-62 0H-37M37 0H62" stroke="#1493ff" stroke-width="4"/>
+    </g>
+    <g transform="translate(650 210)">
+      <circle r="32" fill="#07192a" stroke="#1493ff" stroke-width="6"/>
+      <circle r="9" fill="#1493ff"/>
+      <path d="M0-62V-37M0 37V62M-62 0H-37M37 0H62" stroke="#1493ff" stroke-width="4"/>
+    </g>
+    <g transform="translate(1190 342)">
+      <circle r="32" fill="#07192a" stroke="#1493ff" stroke-width="6"/>
+      <circle r="9" fill="#1493ff"/>
+      <path d="M0-62V-37M0 37V62M-62 0H-37M37 0H62" stroke="#1493ff" stroke-width="4"/>
+    </g>
+  </g>
+
+  <g filter="url(#green-glow)">
+    <circle cx="800" cy="630" r="30" fill="#07192a" stroke="#93ff14" stroke-width="8"/>
+    <path d="M800 582V678M752 630H848" stroke="#93ff14" stroke-width="4"/>
+    <path d="M800 604l26 26-26 26-26-26Z" fill="#93ff14" fill-opacity=".24" stroke="#93ff14" stroke-width="5"/>
+  </g>
+
+  <g fill="none" stroke="#d6edff" stroke-opacity=".35" stroke-width="2">
+    <path d="M250 174H207M1354 174h43M800 630v94"/>
+    <path d="M212 160v28M1388 160v28M785 718h30"/>
+  </g>
+
+  <g aria-hidden="true" fill="#d6edff" fill-opacity=".42" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" letter-spacing="4">
+    <text x="86" y="100">SOUNDING / RESIDUAL ARRAY</text>
+    <text x="1148" y="820">MINIMUM FIX</text>
+  </g>
+
+  <rect x="30" y="30" width="1540" height="840" rx="18" fill="none" stroke="#1493ff" stroke-opacity=".32" stroke-width="2"/>
+  <path d="M30 126H68M30 774H68M1532 126H1570M1532 774H1570" fill="none" stroke="#93ff14" stroke-opacity=".7" stroke-width="4"/>
+</svg>

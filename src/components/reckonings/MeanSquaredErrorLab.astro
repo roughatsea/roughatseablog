@@ -1,0 +1,199 @@
+---
+const observations = [2, 4, 9];
+const initialEstimate = 4;
+const mean = 5;
+const minimum = 26;
+const xFor = (value: number) => 72 + value * 61.6;
+const yFor = (value: number) => 390 - ((value - minimum) / 75) * 112;
+const curve = Array.from({ length: 81 }, (_, index) => {
+  const estimate = index / 8;
+  const value = minimum + 3 * (estimate - mean) ** 2;
+  return `${index === 0 ? 'M' : 'L'}${xFor(estimate).toFixed(1)} ${yFor(value).toFixed(1)}`;
+}).join(' ');
+---
+
+<figure class="mse-lab reckoning-visual" data-mse-lab>
+  <header>
+    <p>Squared-error sounding board</p>
+    <h3>Move one estimate against three readings</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 760 440" role="img" aria-labelledby="mse-title mse-desc">
+      <title id="mse-title">Squared errors for the estimate 4 against the readings 2, 4, and 9</title>
+      <desc id="mse-desc">Three residual lanes feed a point on a parabola. At estimate 4, the residuals are negative 2, 0, and 5, and the total squared error is 29. The parabola reaches its minimum of 26 at the mean, 5.</desc>
+      <defs>
+        <pattern id="mse-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+          <path d="M28 0H0V28" fill="none" stroke="currentColor" stroke-opacity=".5" />
+        </pattern>
+        <pattern id="mse-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+          <path d="M0 0V8" fill="none" stroke="currentColor" stroke-width="2" />
+        </pattern>
+      </defs>
+
+      <rect class="plot-bg" width="760" height="440" rx="12" />
+      <rect class="grid" width="760" height="440" rx="12" fill="url(#mse-grid)" />
+
+      <g class="residuals">
+        {observations.map((observation, index) => {
+          const y = 62 + index * 68;
+          const left = Math.min(xFor(observation), xFor(initialEstimate));
+          const width = Math.abs(xFor(observation) - xFor(initialEstimate));
+          return (
+            <g data-residual-lane data-observation={observation}>
+              <line class="lane" x1="72" y1={y} x2="688" y2={y} />
+              <rect class="residual-band" x={left} y={y - 8} width={width} height="16" fill="url(#mse-hatch)" />
+              <line class="residual-line" data-residual-line x1={xFor(observation)} y1={y} x2={xFor(initialEstimate)} y2={y} />
+              <circle class="observation" cx={xFor(observation)} cy={y} r="7" />
+              <path class="estimate-marker" data-estimate-marker d={`M${xFor(initialEstimate)} ${y - 10}L${xFor(initialEstimate) + 10} ${y}L${xFor(initialEstimate)} ${y + 10}L${xFor(initialEstimate) - 10} ${y}Z`} />
+              <text class="reading-label" x="32" y={y + 5}>x{index + 1}={observation}</text>
+              <text class="residual-label" data-residual-label x="710" y={y + 5}>{`r=${observation - initialEstimate}`}</text>
+            </g>
+          );
+        })}
+        <g class="scale-labels" aria-hidden="true">
+          {[0, 2, 4, 6, 8, 10].map((value) => <text x={xFor(value)} y="252" text-anchor="middle">{value}</text>)}
+        </g>
+      </g>
+
+      <g class="error-plot">
+        <line class="axis" x1="72" y1="390" x2="688" y2="390" />
+        <line class="axis" x1="72" y1="276" x2="72" y2="390" />
+        <path class="error-curve" d={curve} />
+        <line class="mean-line" x1={xFor(mean)} y1="276" x2={xFor(mean)} y2="390" />
+        <circle class="minimum-point" cx={xFor(mean)} cy={yFor(minimum)} r="7" />
+        <circle class="moving-point" data-moving-point cx={xFor(initialEstimate)} cy={yFor(29)} r="8" />
+        <text class="mean-label" x={xFor(mean) + 10} y={yFor(minimum) + 18}>mean = 5</text>
+        <text class="axis-label" x="34" y="289">S(a)</text>
+        <text class="axis-label" x="688" y="418" text-anchor="end">estimate a</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <label for="mse-estimate">
+      Proposed estimate, <em>a</em>
+      <output for="mse-estimate" data-output>4.00</output>
+    </label>
+    <input id="mse-estimate" data-range type="range" min="0" max="10" value="4" step="0.25" />
+    <div class="control-row">
+      <div class="readout" data-readout aria-live="polite">
+        <strong>S(4.00) = 29.00.</strong> The minimum is 26.00 at the mean, so this estimate adds 3.00.
+      </div>
+      <button type="button" data-snap>Snap to the mean</button>
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> the striped residuals change as the diamond-shaped estimate markers move. Their squared lengths add to the point on the lower parabola. Use the slider with a pointer or the arrow keys; the minimum occurs at the labelled mean, <em>a</em> = 5.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-mse-lab]').forEach((figure) => {
+    const range = figure.querySelector('[data-range]');
+    const output = figure.querySelector('[data-output]');
+    const readout = figure.querySelector('[data-readout]');
+    const snap = figure.querySelector('[data-snap]');
+    const movingPoint = figure.querySelector('[data-moving-point]');
+    const title = figure.querySelector('#mse-title');
+    const desc = figure.querySelector('#mse-desc');
+    const lanes = Array.from(figure.querySelectorAll('[data-residual-lane]'));
+    if (!(range instanceof HTMLInputElement) || !(output instanceof HTMLOutputElement) || !readout || !(snap instanceof HTMLButtonElement) || !(movingPoint instanceof SVGCircleElement) || !title || !desc) return;
+
+    const xFor = (value: number) => 72 + value * 61.6;
+    const yFor = (value: number) => 390 - ((value - 26) / 75) * 112;
+
+    const render = () => {
+      const estimate = Number(range.value);
+      const residuals = [2, 4, 9].map((observation) => observation - estimate);
+      const total = residuals.reduce((sum, residual) => sum + residual ** 2, 0);
+      const penalty = total - 26;
+
+      lanes.forEach((lane, index) => {
+        const observation = Number(lane.getAttribute('data-observation'));
+        const observationX = xFor(observation);
+        const estimateX = xFor(estimate);
+        const line = lane.querySelector('[data-residual-line]');
+        const marker = lane.querySelector('[data-estimate-marker]');
+        const label = lane.querySelector('[data-residual-label]');
+        const band = lane.querySelector('.residual-band');
+        line?.setAttribute('x2', String(estimateX));
+        const y = 62 + index * 68;
+        marker?.setAttribute('d', `M${estimateX} ${y - 10}L${estimateX + 10} ${y}L${estimateX} ${y + 10}L${estimateX - 10} ${y}Z`);
+        label && (label.textContent = `r=${residuals[index].toFixed(2).replace(/\.00$/, '')}`);
+        band?.setAttribute('x', String(Math.min(observationX, estimateX)));
+        band?.setAttribute('width', String(Math.abs(observationX - estimateX)));
+      });
+
+      movingPoint.setAttribute('cx', String(xFor(estimate)));
+      movingPoint.setAttribute('cy', String(yFor(total)));
+      output.value = estimate.toFixed(2);
+      readout.innerHTML = `<strong>S(${estimate.toFixed(2)}) = ${total.toFixed(2)}.</strong> The minimum is 26.00 at the mean, so this estimate adds ${penalty.toFixed(2)}.`;
+      title.textContent = `Squared errors for the estimate ${estimate.toFixed(2)} against the readings 2, 4, and 9`;
+      desc.textContent = `Three residual lanes feed a point on a parabola. The residuals are ${residuals.map((value) => value.toFixed(2)).join(', ')}, and the total squared error is ${total.toFixed(2)}. The parabola reaches its minimum of 26 at the mean, 5.`;
+    };
+
+    range.addEventListener('input', render);
+    snap.addEventListener('click', () => {
+      range.value = '5';
+      render();
+      range.focus();
+    });
+    render();
+  });
+</script>
+
+<style>
+  .mse-lab {
+    --mse-blue: #087dcc;
+    --mse-green: #4f9300;
+    --mse-pink: #d9007e;
+    background: radial-gradient(circle at 88% 8%, color-mix(in srgb, var(--mse-pink) 12%, transparent), transparent 25rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1000px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .mse-lab { --mse-blue: #1493ff; --mse-green: #93ff14; --mse-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell, .controls { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; }
+  .diagram-shell { overflow: hidden; }
+  svg { display: block; height: auto; width: 100%; }
+  .plot-bg { fill: var(--bg-color); }
+  .grid { color: var(--border-color); opacity: .25; }
+  .lane, .axis { stroke: var(--text-secondary); stroke-width: 1.5; }
+  .residual-band { color: var(--mse-pink); opacity: .23; }
+  .residual-line { stroke: var(--mse-pink); stroke-width: 4; }
+  .observation { fill: var(--mse-blue); stroke: var(--bg-color); stroke-width: 3; }
+  .estimate-marker { fill: var(--bg-color); stroke: var(--mse-green); stroke-width: 4; }
+  .reading-label, .residual-label, .scale-labels text, .axis-label, .mean-label { fill: var(--text-secondary); font-size: 12px; }
+  .reading-label, .residual-label, .mean-label { font-weight: 700; }
+  .error-curve { fill: none; stroke: var(--mse-pink); stroke-linecap: round; stroke-width: 4; }
+  .mean-line { stroke: var(--mse-green); stroke-dasharray: 7 6; stroke-width: 2; }
+  .minimum-point { fill: var(--mse-green); stroke: var(--bg-color); stroke-width: 3; }
+  .moving-point { fill: var(--mse-blue); stroke: var(--text-primary); stroke-width: 2.5; }
+  .mean-label { fill: var(--mse-green); }
+  .controls { margin-top: 1rem; padding: 1rem; }
+  .controls label { align-items: baseline; color: var(--text-primary); display: flex; font-size: .8rem; font-weight: 700; justify-content: space-between; }
+  output { color: var(--mse-pink); font-size: 1.1rem; }
+  input[type='range'] { accent-color: var(--mse-blue); cursor: pointer; margin: .75rem 0; width: 100%; }
+  input[type='range']:focus-visible, button:focus-visible { outline: 3px solid color-mix(in srgb, var(--mse-green) 65%, transparent); outline-offset: 4px; }
+  .control-row { align-items: stretch; display: grid; gap: .65rem; grid-template-columns: 1fr auto; }
+  .readout { background: var(--surface-color); border-radius: 7px; color: var(--text-secondary); font-size: .82rem; line-height: 1.5; padding: .7rem .8rem; }
+  .readout strong { color: var(--text-primary); }
+  button { background: transparent; border: 1px solid var(--mse-green); border-radius: 7px; color: var(--text-primary); cursor: pointer; font: inherit; font-size: .76rem; font-weight: 750; padding: .6rem .8rem; }
+  button:hover { background: color-mix(in srgb, var(--mse-green) 10%, transparent); }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 600px) {
+    .mse-lab { width: calc(100vw - 1.5rem); }
+    .control-row { grid-template-columns: 1fr; }
+    .reading-label, .residual-label { font-size: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .mse-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

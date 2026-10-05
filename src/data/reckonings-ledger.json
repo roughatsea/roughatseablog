@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-04T06:00:00-07:00",
+  "updatedAt": "2026-10-05T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -858,6 +858,37 @@
       "relatedLessons": [
         "daily-reckoning-2026-09-24",
         "daily-reckoning-2026-10-02"
+      ]
+    },
+    {
+      "date": "2026-10-05",
+      "slug": "daily-reckoning-2026-10-05",
+      "title": "Why Does Squaring Every Error Choose the Average?",
+      "area": "Numbers, statistics, and optimization",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Arithmetic mean",
+        "Squaring positive and negative numbers",
+        "Basic algebra with sums"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "arithmetic mean",
+        "least squares",
+        "sum of squared errors",
+        "residuals",
+        "optimization",
+        "variance",
+        "absolute error",
+        "median",
+        "regression",
+        "k-means clustering",
+        "history of statistics"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-21",
+        "daily-reckoning-2026-09-26",
+        "daily-reckoning-2026-10-03"
       ]
     }
   ]
