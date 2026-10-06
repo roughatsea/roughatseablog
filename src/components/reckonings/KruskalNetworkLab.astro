@@ -1,0 +1,242 @@
+---
+const nodes = [
+  { id: 'A', x: 82, y: 225 },
+  { id: 'B', x: 240, y: 105 },
+  { id: 'C', x: 240, y: 345 },
+  { id: 'D', x: 520, y: 105 },
+  { id: 'E', x: 520, y: 345 },
+  { id: 'F', x: 690, y: 225 },
+];
+
+const edges = [
+  { id: 'BC', a: 'B', b: 'C', weight: 1, lx: 226, ly: 225 },
+  { id: 'AC', a: 'A', b: 'C', weight: 2, lx: 144, ly: 304 },
+  { id: 'DE', a: 'D', b: 'E', weight: 2, lx: 536, ly: 225 },
+  { id: 'EF', a: 'E', b: 'F', weight: 3, lx: 626, ly: 305 },
+  { id: 'AB', a: 'A', b: 'B', weight: 4, lx: 144, ly: 146 },
+  { id: 'BD', a: 'B', b: 'D', weight: 5, lx: 380, ly: 88 },
+  { id: 'DF', a: 'D', b: 'F', weight: 6, lx: 626, ly: 146 },
+  { id: 'BE', a: 'B', b: 'E', weight: 7, lx: 392, ly: 238 },
+  { id: 'CD', a: 'C', b: 'D', weight: 8, lx: 368, ly: 218 },
+  { id: 'CF', a: 'C', b: 'F', weight: 9, lx: 470, ly: 316 },
+  { id: 'CE', a: 'C', b: 'E', weight: 10, lx: 380, ly: 367 },
+];
+
+const nodeById = Object.fromEntries(nodes.map((node) => [node.id, node]));
+const decisions = [
+  { edge: 'BC', verb: 'Add', reason: 'B and C begin in different components.', total: 1 },
+  { edge: 'AC', verb: 'Add', reason: 'A is separate from the component containing B and C.', total: 3 },
+  { edge: 'DE', verb: 'Add', reason: 'D and E begin in different components.', total: 5 },
+  { edge: 'EF', verb: 'Add', reason: 'F is separate from the component containing D and E.', total: 8 },
+  { edge: 'AB', verb: 'Skip', reason: 'A and B are already connected through C; this edge would close a cycle.', total: 8 },
+  { edge: 'BD', verb: 'Add', reason: 'This edge joins the two remaining components.', total: 13 },
+];
+---
+
+<figure class="kruskal-lab reckoning-visual" data-kruskal-lab>
+  <header>
+    <p>Greedy network chart</p>
+    <h3>Take the cheapest edge that does not close a loop</h3>
+  </header>
+
+  <div class="diagram-shell">
+    <svg viewBox="0 0 780 450" role="img" aria-labelledby="kruskal-title kruskal-desc">
+      <title id="kruskal-title">A weighted network before Kruskal's algorithm begins</title>
+      <desc id="kruskal-desc">Six labelled vertices and eleven weighted edges. No edge has yet been selected.</desc>
+      <defs>
+        <pattern id="kruskal-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+          <path d="M30 0H0V30" fill="none" stroke="currentColor" stroke-opacity=".45" />
+        </pattern>
+        <filter id="kruskal-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+      <rect class="plot-bg" width="780" height="450" rx="12" />
+      <rect class="grid" width="780" height="450" rx="12" fill="url(#kruskal-grid)" />
+
+      <g class="edge-layer">
+        {edges.slice().reverse().map((edge) => {
+          const a = nodeById[edge.a];
+          const b = nodeById[edge.b];
+          return (
+            <g class="edge" data-edge={edge.id} data-weight={edge.weight}>
+              <line class="edge-line" x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+              <circle class="weight-disc" cx={edge.lx} cy={edge.ly} r={edge.weight === 10 ? 16 : 13} />
+              <text class="weight-label" x={edge.lx} y={edge.ly + 4} text-anchor="middle">{edge.weight}</text>
+              <path class="reject-mark" d={`M${edge.lx - 9} ${edge.ly - 9}L${edge.lx + 9} ${edge.ly + 9}M${edge.lx + 9} ${edge.ly - 9}L${edge.lx - 9} ${edge.ly + 9}`} />
+            </g>
+          );
+        })}
+      </g>
+
+      <g class="node-layer">
+        {nodes.map((node) => (
+          <g class="node" data-node={node.id} transform={`translate(${node.x} ${node.y})`}>
+            <circle class="node-halo" r="29" />
+            <circle class="node-disc" r="20" />
+            <text x="0" y="6" text-anchor="middle">{node.id}</text>
+          </g>
+        ))}
+      </g>
+    </svg>
+  </div>
+
+  <div class="decision-strip" aria-label="Edges considered in increasing weight order">
+    {decisions.map((decision, index) => (
+      <span data-chip={index + 1}><b>{decision.edge}</b> {edges.find((edge) => edge.id === decision.edge)?.weight}<i aria-hidden="true"></i></span>
+    ))}
+  </div>
+
+  <div class="controls">
+    <div class="control-row">
+      <button type="button" data-previous disabled>Previous edge</button>
+      <p data-progress>Start · 0 of 6 decisions</p>
+      <button type="button" data-next>Next edge</button>
+      <button type="button" data-reset>Reset</button>
+    </div>
+    <div class="readout" data-readout aria-live="polite">
+      Start with six separate vertices. The lightest edge, BC with weight 1, is first in line.
+    </div>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> solid green edges are accepted; a magenta dashed edge with an × is rejected. Step through with the buttons or the keyboard after tabbing to a control. The five accepted edges connect all six vertices for a total weight of 13.
+  </figcaption>
+</figure>
+
+<script>
+  const decisions = [
+    { edge: 'BC', verb: 'Add', reason: 'B and C begin in different components.', total: 1 },
+    { edge: 'AC', verb: 'Add', reason: 'A is separate from the component containing B and C.', total: 3 },
+    { edge: 'DE', verb: 'Add', reason: 'D and E begin in different components.', total: 5 },
+    { edge: 'EF', verb: 'Add', reason: 'F is separate from the component containing D and E.', total: 8 },
+    { edge: 'AB', verb: 'Skip', reason: 'A and B are already connected through C; this edge would close a cycle.', total: 8 },
+    { edge: 'BD', verb: 'Add', reason: 'This edge joins the two remaining components.', total: 13 },
+  ];
+  document.querySelectorAll('[data-kruskal-lab]').forEach((figure) => {
+    const previous = figure.querySelector('[data-previous]');
+    const next = figure.querySelector('[data-next]');
+    const reset = figure.querySelector('[data-reset]');
+    const progress = figure.querySelector('[data-progress]');
+    const readout = figure.querySelector('[data-readout]');
+    const title = figure.querySelector('#kruskal-title');
+    const desc = figure.querySelector('#kruskal-desc');
+    if (!(previous instanceof HTMLButtonElement) || !(next instanceof HTMLButtonElement) || !(reset instanceof HTMLButtonElement) || !progress || !readout || !title || !desc) return;
+
+    let step = 0;
+    const edgeWeight = (id: string) => Number(figure.querySelector(`[data-edge="${id}"]`)?.getAttribute('data-weight'));
+
+    const render = () => {
+      figure.querySelectorAll('[data-edge]').forEach((edge) => {
+        edge.classList.remove('selected', 'rejected', 'current');
+      });
+      figure.querySelectorAll('[data-chip]').forEach((chip) => {
+        chip.classList.remove('accepted', 'rejected', 'current');
+        const marker = chip.querySelector('i');
+        if (marker) marker.textContent = '';
+      });
+
+      decisions.forEach((decision, index) => {
+        const edge = figure.querySelector(`[data-edge="${decision.edge}"]`);
+        const chip = figure.querySelector(`[data-chip="${index + 1}"]`);
+        if (index < step) {
+          const accepted = decision.verb === 'Add';
+          edge?.classList.add(accepted ? 'selected' : 'rejected');
+          chip?.classList.add(accepted ? 'accepted' : 'rejected');
+          const marker = chip?.querySelector('i');
+          if (marker) marker.textContent = accepted ? '✓' : '×';
+        }
+        if (index === step && step < decisions.length) {
+          edge?.classList.add('current');
+          chip?.classList.add('current');
+        }
+      });
+
+      previous.disabled = step === 0;
+      next.disabled = step === decisions.length;
+      if (step === 0) {
+        progress.textContent = 'Start · 0 of 6 decisions';
+        readout.textContent = 'Start with six separate vertices. The lightest edge, BC with weight 1, is first in line.';
+        title.textContent = "A weighted network before Kruskal's algorithm begins";
+        desc.textContent = 'Six labelled vertices and eleven weighted edges. No edge has yet been selected.';
+        return;
+      }
+
+      const decision = decisions[step - 1];
+      const weight = edgeWeight(decision.edge);
+      progress.textContent = `${decision.verb} ${decision.edge} (${weight}) · ${step} of 6 decisions`;
+      readout.innerHTML = `<strong>${decision.verb} ${decision.edge}.</strong> ${decision.reason} Running total: ${decision.total}.`;
+      title.textContent = `Kruskal decision ${step}: ${decision.verb.toLowerCase()} edge ${decision.edge} with weight ${weight}`;
+      desc.textContent = `${decision.reason} The accepted edges now have total weight ${decision.total}.`;
+    };
+
+    previous.addEventListener('click', () => { step = Math.max(0, step - 1); render(); });
+    next.addEventListener('click', () => { step = Math.min(decisions.length, step + 1); render(); });
+    reset.addEventListener('click', () => { step = 0; render(); next.focus(); });
+    render();
+  });
+</script>
+
+<style>
+  .kruskal-lab {
+    --net-blue: #087dcc;
+    --net-green: #4f9300;
+    --net-pink: #d9007e;
+    background: radial-gradient(circle at 85% 8%, color-mix(in srgb, var(--net-pink) 12%, transparent), transparent 25rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1000px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .kruskal-lab { --net-blue: #1493ff; --net-green: #93ff14; --net-pink: #ff1493; }
+  header > p { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .diagram-shell, .controls { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; }
+  .diagram-shell { overflow: hidden; }
+  svg { display: block; height: auto; width: 100%; }
+  .plot-bg { fill: var(--bg-color); }
+  .grid { color: var(--border-color); opacity: .25; }
+  .edge-line { stroke: var(--text-secondary); stroke-linecap: round; stroke-opacity: .45; stroke-width: 3; }
+  .weight-disc { fill: var(--bg-color); stroke: var(--text-secondary); stroke-width: 1.5; }
+  .weight-label { fill: var(--text-primary); font-size: 12px; font-weight: 800; }
+  .reject-mark { display: none; fill: none; stroke: var(--net-pink); stroke-width: 3; }
+  .edge.current .edge-line { stroke: var(--net-blue); stroke-opacity: 1; stroke-width: 7; }
+  .edge.current .weight-disc { stroke: var(--net-blue); stroke-width: 3; }
+  .edge.selected .edge-line { filter: url(#kruskal-glow); stroke: var(--net-green); stroke-opacity: 1; stroke-width: 7; }
+  .edge.selected .weight-disc { fill: var(--net-green); stroke: var(--bg-color); }
+  .edge.selected .weight-label { fill: var(--bg-color); }
+  .edge.rejected .edge-line { stroke: var(--net-pink); stroke-dasharray: 11 8; stroke-opacity: .95; stroke-width: 5; }
+  .edge.rejected .weight-label { opacity: 0; }
+  .edge.rejected .reject-mark { display: block; }
+  .node-halo { fill: color-mix(in srgb, var(--net-blue) 14%, transparent); stroke: var(--net-blue); stroke-opacity: .35; }
+  .node-disc { fill: var(--bg-color); stroke: var(--net-blue); stroke-width: 3; }
+  .node text { fill: var(--text-primary); font-size: 17px; font-weight: 850; }
+  .decision-strip { display: grid; gap: .45rem; grid-template-columns: repeat(6, 1fr); margin: 1rem 0; }
+  .decision-strip span { align-items: center; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); display: flex; font-size: .72rem; gap: .3rem; justify-content: center; min-height: 2rem; padding: .3rem .45rem; }
+  .decision-strip span.current { border-color: var(--net-blue); box-shadow: inset 0 0 0 1px var(--net-blue); color: var(--text-primary); }
+  .decision-strip span.accepted { border-color: var(--net-green); color: var(--net-green); }
+  .decision-strip span.rejected { border-color: var(--net-pink); color: var(--net-pink); text-decoration: line-through; }
+  .decision-strip i { font-style: normal; font-weight: 900; }
+  .controls { padding: 1rem; }
+  .control-row { align-items: center; display: grid; gap: .55rem; grid-template-columns: auto 1fr auto auto; }
+  .control-row p { color: var(--text-secondary); font-size: .76rem; margin: 0; text-align: center; }
+  .readout { background: var(--surface-color); border-radius: 7px; color: var(--text-secondary); font-size: .82rem; line-height: 1.5; margin-top: .75rem; min-height: 3.2rem; padding: .7rem .8rem; }
+  .readout strong { color: var(--text-primary); }
+  button { background: transparent; border: 1px solid var(--net-blue); border-radius: 7px; color: var(--text-primary); cursor: pointer; font: inherit; font-size: .74rem; font-weight: 750; padding: .55rem .7rem; }
+  button:hover:not(:disabled) { background: color-mix(in srgb, var(--net-blue) 10%, transparent); }
+  button:disabled { cursor: not-allowed; opacity: .4; }
+  button:focus-visible { outline: 3px solid color-mix(in srgb, var(--net-green) 65%, transparent); outline-offset: 3px; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 650px) {
+    .kruskal-lab { width: calc(100vw - 1.5rem); }
+    .decision-strip { grid-template-columns: repeat(3, 1fr); }
+    .control-row { grid-template-columns: 1fr 1fr; }
+    .control-row p { grid-column: 1 / -1; grid-row: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) { .kruskal-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>

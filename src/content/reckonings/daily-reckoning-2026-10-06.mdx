@@ -1,0 +1,213 @@
+---
+title: "How Can the Cheapest Network Emerge One Edge at a Time?"
+description: "Kruskal's algorithm builds a minimum spanning tree by taking the cheapest edge that does not create a cycle—and an exchange argument explains why the greedy choice is safe."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-06.svg"
+heroImageAlt: "A dark maritime blueprint shows six cyan signal beacons linked by many faint routes while five acid-green routes form a glowing loop-free network across the water."
+date: 2026-10-06
+publishedAt: 2026-10-06T06:00:00-07:00
+area: "Discrete mathematics and optimization"
+difficulty: "Intermediate"
+prerequisites:
+  - "Reading a weighted graph"
+  - "Addition and inequalities"
+  - "Basic set and grouping ideas"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - graph-theory
+  - minimum-spanning-tree
+  - kruskals-algorithm
+  - greedy-algorithms
+  - combinatorial-optimization
+  - network-design
+  - clustering
+---
+
+import KruskalNetworkLab from '../../components/reckonings/KruskalNetworkLab.astro';
+
+Six islands need a cable network. Every possible cable has a quoted cost. You want every island to reach every other island, perhaps through intermediate islands, and you want the total cost as low as possible.
+
+Must you compare every complete network?
+
+For the network in this lesson, there are 185 different loop-free ways to connect all six islands. A rule published by Joseph Kruskal in 1956 finds the cheapest one by making one local decision repeatedly:
+
+> Inspect the cables from cheapest to most expensive. Take a cable unless taking it would create a loop.
+
+This is a **greedy algorithm**: it commits to the best-looking available move without searching all future combinations. Greedy rules often fail. The cheapest airfare for each leg need not produce the cheapest whole journey. Kruskal's rule succeeds because trees have a useful exchange property.
+
+## What counts as a cheapest network?
+
+A **weighted graph** is a pair $G=(V,E)$ together with a weight function $w$. The set $V$ contains the vertices, which represent the six islands. The set $E$ contains edges, which represent available cables between pairs of islands. For an edge $e\in E$, the number $w(e)$ is its cost.
+
+A **spanning tree** $T$ is a collection of edges that has two properties:
+
+1. every vertex can be reached from every other vertex by following edges in $T$;
+2. $T$ contains no cycle, meaning no closed route that returns to its starting vertex without retracing an edge.
+
+For a graph with $n$ vertices, every spanning tree has exactly $n-1$ edges. The six-island network therefore needs five edges. Fewer than five cannot connect all six vertices; more than five would force a cycle.
+
+The total weight of a spanning tree is
+
+$$
+W(T)=\sum_{e\in T}w(e).
+$$
+
+The symbol $\sum$ means to add the weights of every edge in $T$. A **minimum spanning tree** is a spanning tree whose total weight is no larger than the total weight of any other spanning tree of the same graph.
+
+The diagram below carries out Kruskal's rule. At the start, each vertex is its own **connected component**. A connected component is a group of vertices already joined by accepted edges.
+
+<KruskalNetworkLab />
+
+## Work the example without a jump
+
+The relevant edges arrive in this order:
+
+$$
+BC(1),\ AC(2),\ DE(2),\ EF(3),\ AB(4),\ BD(5),\ldots
+$$
+
+The letters name an edge's endpoints; the number in parentheses is its weight. Here is every decision before the tree is complete.
+
+**Step 1: take $BC$, weight $1$.** Vertices $B$ and $C$ belong to different components, so the edge cannot create a cycle. The running total is $1$.
+
+**Step 2: take $AC$, weight $2$.** Vertex $A$ is separate from the component $\{B,C\}$. The accepted edges are now $BC$ and $AC$, and the running total is
+
+$$
+1+2=3.
+$$
+
+**Step 3: take $DE$, weight $2$.** Vertices $D$ and $E$ are separate. The components are now $\{A,B,C\}$, $\{D,E\}$, and $\{F\}$. The running total is
+
+$$
+3+2=5.
+$$
+
+**Step 4: take $EF$, weight $3$.** This edge joins $F$ to $\{D,E\}$. Two components remain: $\{A,B,C\}$ and $\{D,E,F\}$. The running total is
+
+$$
+5+3=8.
+$$
+
+**Step 5: skip $AB$, weight $4$.** Vertices $A$ and $B$ are already connected by the path $A-C-B$. Adding $AB$ would close the cycle $A-C-B-A$. The running total stays $8$.
+
+**Step 6: take $BD$, weight $5$.** This edge joins the two remaining components. The five accepted edges now connect all six vertices, so the algorithm stops. Their total weight is
+
+$$
+W(T)=1+2+2+3+5=13.
+$$
+
+An exhaustive computer check provides an independent verification: the graph has 185 spanning trees, the next-best total is $15$, and the tree of weight $13$ is the unique minimum.
+
+## Why the greedy choice is safe
+
+The calculation shows what Kruskal's algorithm does. The proof must explain why a cheap edge accepted now cannot force an expensive mistake later.
+
+Suppose the algorithm is about to accept an edge $e$. Its endpoints lie in different connected components of the edges already accepted. Imagine drawing a boundary around either one of those components. The edge $e$ crosses that boundary, and no cheaper unexamined edge crosses it; otherwise the cheaper edge would have appeared earlier.
+
+Now choose a minimum spanning tree $T$ that contains all edges accepted before $e$. Such a tree exists at the first step; the argument below shows how to preserve its existence after every step.
+
+There are two cases.
+
+**Case 1: $T$ already contains $e$.** Nothing needs to change.
+
+**Case 2: $T$ does not contain $e$.** Add $e$ temporarily to $T$. Because $T$ already connects every vertex, the added edge creates exactly one cycle. That cycle must cross the component boundary once to leave and again to return. Let $f$ be another edge on the cycle that crosses the boundary.
+
+The algorithm considered edges in nondecreasing order, so
+
+$$
+w(e)\leq w(f).
+$$
+
+Remove $f$. The cycle opens, but every vertex stays connected. The new collection
+
+$$
+T'=(T\cup\{e\})\setminus\{f\}
+$$
+
+is a spanning tree. Its weight satisfies
+
+$$
+W(T')=W(T)+w(e)-w(f)\leq W(T).
+$$
+
+The tree $T$ was already minimum, so $T'$ is also minimum. More importantly, $T'$ contains every previously accepted edge and now contains $e$ as well.
+
+This replacement is called an **exchange argument**. After every accepted edge, at least one minimum spanning tree remains compatible with all decisions made so far. When the algorithm has accepted $n-1$ edges, those edges themselves form a minimum spanning tree.
+
+Equal weights cause no difficulty. They can allow several minimum spanning trees, but the inequality $w(e)\leq w(f)$ still holds, so Kruskal's algorithm finds one of them.
+
+## The problem came before the name
+
+The minimum-spanning-tree problem did not begin with Kruskal. In 1926, Czech mathematician Otakar Borůvka published the first known solution while studying the economical construction of electrical networks. His original formulation asked for a shortest network joining given points, and one of his two 1926 papers explicitly concerned electricity-power networks. The historical setting matters: the abstract graph problem grew from the physical task of extending infrastructure while limiting total construction length.
+
+Borůvka used a different greedy procedure: from every current component, choose its cheapest outgoing edge, then merge the resulting components and repeat. A [scholarly translation and history preserved by the Czech Digital Mathematics Library](https://dml.cz/bitstream/handle/10338.dmlcz/500413/Boruvka_03-0000-60_1.pdf) places both original papers together and shows how the problem became a cornerstone of combinatorial optimization.
+
+Joseph B. Kruskal published the edge-by-edge rule taught here in [“On the Shortest Spanning Subtree of a Graph and the Traveling Salesman Problem”](https://doi.org/10.1090/S0002-9939-1956-0078686-7) in 1956. Kruskal's three-page paper appeared during a period when the newly developing theory of algorithms and computer science made minimum-spanning-tree methods a focus of renewed attention. Robert Prim published another influential method in 1957; Vojtěch Jarník had already described that tree-growing approach in 1930. The history is a chain of formulations, rediscoveries, and improvements—not a single flash attached to one surname.
+
+## Where minimum spanning trees earn their keep
+
+The cable story is a direct application when an edge's weight measures the cost of building a link and intermediate connections are allowed. The same mathematics applies to laying pipeline, road, or communication backbones under that simplified objective. Real projects add capacity, reliability, terrain, regulation, and redundancy constraints; a tree has no backup route if one edge fails. A minimum spanning tree is therefore often a baseline or a subproblem rather than a finished engineering plan.
+
+Minimum spanning trees also encode **single-linkage clustering**. Suppose vertices represent data points and an edge weight is the distance between two points. If $k$ is the number of groups you want, build a minimum spanning tree and cut its $k-1$ heaviest edges. The remaining $k$ components give the same grouping as single-linkage clustering at that level. J. C. Gower and G. J. S. Ross established the relationship in their 1969 paper [“Minimum Spanning Trees and Single Linkage Cluster Analysis”](https://www.jstor.org/stable/2346439).
+
+The application changes the interpretation but not the rule. A cable cost, a geographic distance, and a dissimilarity score can all serve as $w(e)$; the algorithm only needs weights it can compare.
+
+## Try the rule
+
+### Problem 1
+
+After accepting $BC$ and $AC$ in the worked graph, why must Kruskal's algorithm reject $AB$, even though its weight $4$ is smaller than the weight $5$ of the final accepted edge?
+
+<details>
+<summary>Reveal the solution</summary>
+
+The accepted edges $BC$ and $AC$ already provide the path $A-C-B$. Adding $AB$ would close the cycle
+
+$$
+A-C-B-A.
+$$
+
+Kruskal's algorithm rejects an edge whenever its endpoints already belong to the same connected component. The later edge $BD$ is heavier, but its endpoints lie in different components when it is considered, so $BD$ performs necessary work: it joins $\{A,B,C\}$ to $\{D,E,F\}$.
+
+</details>
+
+### Problem 2
+
+A graph has vertices $P,Q,R,S$ and weighted edges
+
+$$
+PQ(1),\ RS(2),\ PR(3),\ QR(4),\ QS(5).
+$$
+
+Run Kruskal's algorithm. Which edges enter the minimum spanning tree, and what is its total weight?
+
+<details>
+<summary>Reveal the solution</summary>
+
+Read the edges in the displayed order.
+
+1. Accept $PQ(1)$. It joins two separate vertices.
+2. Accept $RS(2)$. It joins two other separate vertices.
+3. Accept $PR(3)$. It joins the component $\{P,Q\}$ to the component $\{R,S\}$.
+
+All four vertices are connected after three edges. A spanning tree on four vertices has $4-1=3$ edges, so the algorithm stops. The total weight is
+
+$$
+1+2+3=6.
+$$
+
+</details>
+
+## The idea to keep
+
+Kruskal's algorithm accepts the cheapest edge that connects two different components. The exchange argument guarantees that each accepted edge can belong to a minimum spanning tree, so a sequence of safe local choices becomes a globally cheapest loop-free network.
+
+To continue, [Can You Cross Every Bridge Exactly Once?](/reckonings/daily-reckoning-2026-08-31/) introduces graphs through Euler's route problem, [Why Do the Shortest Three Roads Meet at 120°?](/reckonings/daily-reckoning-2026-09-12/) allows new junctions in a related network-design problem, and [Why Must Every Network Have an Even Number of Odd Junctions?](/reckonings/daily-reckoning-2026-09-27/) proves another structural fact about graph edges.
+
+## Sources
+
+- Paul E. Black, National Institute of Standards and Technology, [“Kruskal's algorithm”](https://xlinux.nist.gov/dads/HTML/kruskalsalgo.html), concise algorithm definition.
+- Joseph B. Kruskal, [“On the Shortest Spanning Subtree of a Graph and the Traveling Salesman Problem”](https://doi.org/10.1090/S0002-9939-1956-0078686-7), *Proceedings of the American Mathematical Society* 7 (1956), 48–50.
+- Jaroslav Nešetřil, Eva Milková, and Helena Nešetřilová, [“Otakar Borůvka on Minimum Spanning Tree Problem: Translation of Both the 1926 Papers, Comments, History”](https://dml.cz/bitstream/handle/10338.dmlcz/500413/Boruvka_03-0000-60_1.pdf), *Discrete Mathematics* 233 (2001), 3–36.
+- Robert Sedgewick and Kevin Wayne, Princeton University, [“Minimum Spanning Trees”](https://algs4.cs.princeton.edu/43mst/), algorithms, cut property, and implementations.
+- J. C. Gower and G. J. S. Ross, [“Minimum Spanning Trees and Single Linkage Cluster Analysis”](https://www.jstor.org/stable/2346439), *Journal of the Royal Statistical Society: Series C* 18 (1969), 54–64.
