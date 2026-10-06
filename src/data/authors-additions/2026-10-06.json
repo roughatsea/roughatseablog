@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-06",
+  "authorId": "garcia-marquez",
+  "authorName": "Gabriel García Márquez",
+  "selection": "Colombian literary fiction; broadens the collection's Latin American coverage.",
+  "sources": [
+    {
+      "url": "https://norman.hrc.utexas.edu/fasearch/pdf/01083.pdf",
+      "notes": "Harry Ransom Center manuscript collection biography: born March 6, 1927; died April 17, 2014. Confirms Leaf Storm (1955), In Evil Hour (1962), One Hundred Years of Solitude (1967), The Autumn of the Patriarch (1975), Chronicle of a Death Foretold (1981), Love in the Time of Cholera (1985), and Memories of My Melancholy Whores (2004). Scope description identifies Until August as a posthumous 2024 publication."
+    },
+    {
+      "url": "https://cvc.cervantes.es/actcult/garcia_marquez/bibliografia/bibliografia.htm",
+      "notes": "Instituto Cervantes bibliography confirms the selected Spanish publication years; footnote 1 distinguishes No One Writes to the Colonel's first appearance in Mito, May–June 1958, from its 1961 book edition."
+    },
+    {
+      "url": "https://enciclopedia.banrepcultural.org/Gabriel_Garc%C3%ADa_M%C3%A1rquez",
+      "notes": "Banco de la República cultural encyclopedia independently confirms the 1958 Mito publication and the 1955 first novel; earlier short fiction began in 1947 and is outside the publishing bar."
+    },
+    {
+      "url": "https://www.penguinrandomhouse.com/books/57998/memoria-de-mis-putas-tristes--memories-of-my-melancholy-whores-by-gabriel-garcia-marquez/",
+      "notes": "Publisher lists the Spanish-language edition of Memories of My Melancholy Whores on October 19, 2004; this is not an English translation date."
+    }
+  ],
+  "verifiedScope": {
+    "born": 1927,
+    "died": 2014,
+    "start": 1955,
+    "end": 2004,
+    "description": "Lifetime first Spanish-language publication of novels and novellas; earlier short fiction, journalism, nonfiction and posthumous releases excluded. A proxy for activity, not a claim of uninterrupted writing.",
+    "workYears": [1955, 1958, 1962, 1967, 1975, 1981, 1985, 2004],
+    "dateDistinctions": "English display titles refer to original Spanish releases. No One Writes to the Colonel uses its 1958 magazine debut, not its 1961 book edition or earlier composition. Until August (2024) is posthumous and excluded. No documented influence is inferred."
+  }
+}
