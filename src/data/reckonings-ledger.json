@@ -920,6 +920,35 @@
         "daily-reckoning-2026-09-18",
         "daily-reckoning-2026-09-27"
       ]
+    },
+    {
+      "date": "2026-10-07",
+      "slug": "daily-reckoning-2026-10-07",
+      "title": "Why Don’t Twelve Perfect Fifths Close the Circle?",
+      "area": "Mathematics of music and number theory",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Ratios and exponents",
+        "Prime factorization",
+        "Logarithms as inverse exponents"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "mathematics of music",
+        "Pythagorean comma",
+        "circle of fifths",
+        "frequency ratios",
+        "cents",
+        "prime factorization",
+        "twelve-tone equal temperament",
+        "just intonation",
+        "global history of tuning"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-04",
+        "daily-reckoning-2026-09-14",
+        "daily-reckoning-2026-09-30"
+      ]
     }
   ]
 }

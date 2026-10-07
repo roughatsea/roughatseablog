@@ -1,0 +1,299 @@
+---
+title: "Why Don’t Twelve Perfect Fifths Close the Circle?"
+description: "A pure musical fifth has the ratio 3:2, but twelve such jumps overshoot seven octaves. That tiny mismatch explains why tuning is a choice rather than a solved equation."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-07.svg"
+heroImageAlt: "A dark maritime blueprint shows twelve cyan tuning beacons around a sonar-like circle; an acid-green spiral nearly returns to its first beacon but leaves a small magenta gap."
+date: 2026-10-07
+publishedAt: 2026-10-07T06:00:00-07:00
+area: "Mathematics of music and number theory"
+difficulty: "Intermediate"
+prerequisites:
+  - "Ratios and exponents"
+  - "Prime factorization"
+  - "Logarithms as inverse exponents"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - mathematics-of-music
+  - pythagorean-comma
+  - circle-of-fifths
+  - frequency-ratios
+  - logarithms
+  - equal-temperament
+  - tuning-theory
+  - history-of-mathematics
+---
+
+import FifthsCommaLab from '../../components/reckonings/FifthsCommaLab.astro';
+
+Tune one string to $256$ hertz. Tune a second string a pure **perfect fifth** above it, then another pure fifth above that, and keep going. After twelve fifths, music notation says that you have returned to the same named note, seven octaves higher.
+
+The frequencies disagree.
+
+Twelve pure fifths reach $33{,}215.0625$ hertz. Seven exact octaves reach $32{,}768$ hertz. The difference is too large to dismiss as rounding, because neither calculation used a rounded number.
+
+The near miss is the **Pythagorean comma**. It is one reason a piano cannot make every interval acoustically pure in every key.
+
+## Two clean ratios that refuse to cooperate
+
+A sound's frequency counts pressure-wave cycles per second. If one note has frequency $f$, the note one octave above it has frequency $2f$. An exact octave therefore has the frequency ratio
+
+$$
+2:1.
+$$
+
+An exact perfect fifth has the ratio
+
+$$
+3:2.
+$$
+
+The ratio $3:2$ appears naturally between the second and third harmonics of many vibrating systems. The [University of New South Wales introduction to musical acoustics](https://newt.phys.unsw.edu.au/jw/brassacoustics.html) illustrates the relationship with the harmonic series.
+
+Ratios multiply when intervals stack. Twelve perfect fifths multiply a starting frequency by
+
+$$
+\left(\frac{3}{2}\right)^{12}.
+$$
+
+Seven octaves multiply it by
+
+$$
+2^7.
+$$
+
+If the circle of fifths closed exactly, those two multipliers would be equal. Calculate each one:
+
+$$
+\left(\frac{3}{2}\right)^{12}
+=\frac{3^{12}}{2^{12}}
+=\frac{531{,}441}{4{,}096}
+\approx129.7463379,
+$$
+
+while
+
+$$
+2^7=128.
+$$
+
+The first multiplier is slightly larger. Dividing one route by the other isolates the mismatch:
+
+$$
+\frac{(3/2)^{12}}{2^7}
+=\frac{3^{12}}{2^{19}}
+=\frac{531{,}441}{524{,}288}
+\approx1.0136433.
+$$
+
+Twelve pure fifths overshoot seven octaves by about $1.364\%$.
+
+The interactive diagram below folds every result back into one octave so that the first and last notes can be compared. Use the slider or buttons to follow the accumulating error.
+
+<FifthsCommaLab />
+
+The circular plot uses **cents**, a logarithmic unit for musical distance. One octave contains $1{,}200$ cents. If two frequencies have ratio $r$, the interval between them is
+
+$$
+c=1200\log_2(r),
+$$
+
+where $\log_2(r)$ is the power to which $2$ must be raised to produce $r$. Substituting the comma ratio gives
+
+$$
+1200\log_2\left(\frac{531{,}441}{524{,}288}\right)
+\approx23.460\text{ cents}.
+$$
+
+The [University of New South Wales circle-of-fourths demonstration](https://www.phys.unsw.edu.au/~jw/music/circle/) reaches the same $1.3\%$ mismatch acoustically and compares several ways of distributing it.
+
+## The circle can never close exactly
+
+Perhaps a different number of pure fifths could meet a different number of octaves exactly. Suppose $m$ fifths equaled $n$ octaves, where $m$ and $n$ are positive whole numbers. Then
+
+$$
+\left(\frac{3}{2}\right)^m=2^n.
+$$
+
+Multiply both sides by $2^m$:
+
+$$
+3^m=2^{m+n}.
+$$
+
+The number on the left has only $3$ as a prime factor. The number on the right has only $2$ as a prime factor. The fundamental theorem of arithmetic says that a positive integer has one prime factorization, apart from the order of its factors. The two sides cannot be equal.
+
+No finite sequence of exact $3:2$ fifths can meet a finite sequence of exact $2:1$ octaves. Twelve and seven merely make an unusually useful near match.
+
+## Worked example: start at 256 hertz
+
+Let the starting frequency be
+
+$$
+f_0=256\text{ Hz}.
+$$
+
+**Step 1: climb twelve pure fifths.**
+
+$$
+\begin{aligned}
+f_{12}
+&=256\left(\frac{3}{2}\right)^{12}\\
+&=256\cdot\frac{531{,}441}{4{,}096}\\
+&=\frac{531{,}441}{16}\\
+&=33{,}215.0625\text{ Hz}.
+\end{aligned}
+$$
+
+**Step 2: climb seven octaves from the same starting note.**
+
+$$
+\begin{aligned}
+f_{7\text{ oct}}
+&=256\cdot2^7\\
+&=256\cdot128\\
+&=32{,}768\text{ Hz}.
+\end{aligned}
+$$
+
+**Step 3: compare the endpoints.**
+
+$$
+33{,}215.0625-32{,}768=447.0625\text{ Hz}.
+$$
+
+That large numerical difference occurs seven octaves above the starting note. To hear the pitch-class mismatch near the original frequency, divide the twelve-fifths result by $2^7$:
+
+$$
+\frac{33{,}215.0625}{128}=259.4926758\text{ Hz}.
+$$
+
+The folded result is about $3.493$ hertz above $256$ hertz, the same $23.460$-cent comma shown in the diagram.
+
+## Temperament decides where the error goes
+
+A fixed-pitch instrument with twelve reusable notes per octave must compromise. Twelve-tone equal temperament preserves the octave exactly and divides it into twelve equal frequency ratios. One semitone has ratio $2^{1/12}$, so an equal-tempered fifth of seven semitones has ratio
+
+$$
+\left(2^{1/12}\right)^7=2^{7/12}\approx1.498307.
+$$
+
+That fifth is slightly narrower than the pure ratio $1.5$. Its size is exactly $700$ cents, while a pure fifth is
+
+$$
+1200\log_2\left(\frac32\right)\approx701.955\text{ cents}.
+$$
+
+Narrowing each of twelve fifths by about $1.955$ cents distributes the $23.460$-cent comma evenly:
+
+$$
+12(701.955-700)\approx23.460.
+$$
+
+Other temperaments distribute the error unevenly so that selected intervals sound purer and others absorb more distortion. Tuning is therefore an optimization problem with musical priorities: which intervals, keys, instruments, and kinds of modulation matter most?
+
+## A problem older than the piano
+
+The familiar label “Pythagorean tuning” can hide a longer and less solitary history. Old Babylonian tablets preserve practical instructions for retuning stringed instruments through relationships interpreted as fourths and fifths. Anne Kilmer and Steve Tinney's study of [Old Babylonian music-instruction texts](https://doi.org/10.2307/1359769) places mathematical tuning practice in Mesopotamia long before surviving Greek treatises.
+
+In the Greek tradition, the short work *Sectio canonis*—attributed to Euclid in its manuscripts—organized musical ratios as mathematical propositions. The [Cambridge edition's description](https://www.cambridge.org/core/books/abs/greek-musical-writings/euclidean-sectio-canonis/BB386D8812D97E70453550F83CE7C110) notes the work's theorem-like form. Its calculation that six $9:8$ whole tones exceed one octave yields the same exact ratio $531{,}441:524{,}288$ encountered above.
+
+Chinese theorists pursued cyclic tuning through a separate intellectual tradition. By the first century BCE, Jing Fang had extended the calculation to $53$ fifths, which come remarkably close to $31$ octaves. Ernest McClain and Ming Shui Hung document that development in [“Chinese Cyclic Tunings in Late Antiquity”](https://doi.org/10.2307/851462).
+
+The compromise used by most modern pianos also has a global history. Ming-dynasty scholar Zhu Zaiyu presented a precise mathematical treatment of twelve equal divisions in 1584. Alexander Rehding's study of [Zhu's theory and its material instruments](https://academic.oup.com/mts/article-abstract/44/2/260/6609877) argues for placing that work inside a global history rather than treating tuning as a single European line of descent. European theorists developed equal-temperament calculations independently around the same period.
+
+## Where the mismatch matters
+
+Instrument makers must decide where pitches sit. Pianos, fretted instruments, synthesizers, and digital audio systems commonly use twelve-tone equal temperament because its equal spacing allows the same interval pattern to work in every key. The MIDI frequency formula used in electronic music is built directly on powers of $2^{1/12}$; the [University of New South Wales note-frequency reference](https://newt.phys.unsw.edu.au/jw/notes.html) gives the standard conversion.
+
+Performers are not always locked to those positions. Singers and players of fretless strings or flexible-pitch winds can adjust notes by context, sometimes favoring purer ratios inside a sustained chord. Historical-performance ensembles may select a temperament suited to a repertory and its usual keys. Electronic composers can choose equal divisions other than twelve or work with rational **just intonation** ratios directly.
+
+The comma does not dictate one correct tuning. It proves that every fixed system makes a choice.
+
+## Try the mismatch
+
+### Problem 1
+
+An equal-tempered fifth above $440$ hertz has ratio $2^{7/12}$. A pure fifth has ratio $3/2$. Calculate both frequencies to three decimal places and find their difference.
+
+<details>
+<summary>Reveal the solution</summary>
+
+For the equal-tempered fifth,
+
+$$
+440\cdot2^{7/12}\approx440\cdot1.498307077=659.255\text{ Hz}.
+$$
+
+For the pure fifth,
+
+$$
+440\cdot\frac32=660.000\text{ Hz}.
+$$
+
+The pure fifth is higher by
+
+$$
+660.000-659.255=0.745\text{ Hz}.
+$$
+
+The frequency difference depends on the starting pitch, but the interval difference remains about $1.955$ cents.
+
+</details>
+
+### Problem 2
+
+Show that stacking four pure fifths and moving the result down two octaves produces the ratio $81/64$. Then compare it with the pure major-third ratio $5/4$.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Four fifths multiply to
+
+$$
+\left(\frac32\right)^4=\frac{81}{16}.
+$$
+
+Moving down two octaves divides the frequency by $2^2=4$:
+
+$$
+\frac{81}{16}\div4=\frac{81}{64}=1.265625.
+$$
+
+The pure major third is
+
+$$
+\frac54=1.25.
+$$
+
+Compare the two intervals by dividing:
+
+$$
+\frac{81/64}{5/4}=\frac{81}{64}\cdot\frac45=\frac{81}{80}=1.0125.
+$$
+
+The Pythagorean major third is therefore $1.25\%$ wider than the $5:4$ major third. Their ratio, $81:80$, is called the syntonic comma.
+
+</details>
+
+## The idea to keep
+
+The ratios $3:2$ and $2:1$ are individually exact, but their powers never coincide. Twelve fifths nearly meet seven octaves, leaving a gap of
+
+$$
+\frac{531{,}441}{524{,}288}\approx1.0136433
+$$
+
+or about $23.460$ cents. Temperament is the art and mathematics of deciding where that unavoidable mismatch should go.
+
+To continue, [Why Does Multiplying by $i$ Make a Quarter-Turn?](/reckonings/daily-reckoning-2026-09-04/) explores another use of rotation, [How Can Smooth Waves Build a Square Wave?](/reckonings/daily-reckoning-2026-09-14/) builds sound from harmonics, and [Why Is a Fair Coin Worth One Bit?](/reckonings/daily-reckoning-2026-09-30/) uses logarithms to measure information.
+
+## Sources
+
+- Joe Wolfe, [“Brass instrument acoustics: an introduction,” University of New South Wales](https://newt.phys.unsw.edu.au/jw/brassacoustics.html).
+- Joe Wolfe, [“Circle of Fourths,” University of New South Wales](https://www.phys.unsw.edu.au/~jw/music/circle/).
+- Anne Draffkorn Kilmer and Steve Tinney, [“Old Babylonian Music Instruction Texts,” *Journal of Cuneiform Studies* 48 (1996), 49–56](https://doi.org/10.2307/1359769).
+- Andrew Barker, ed., [“The Euclidean *Sectio Canonis*,” in *Greek Musical Writings, Volume 2*](https://www.cambridge.org/core/books/abs/greek-musical-writings/euclidean-sectio-canonis/BB386D8812D97E70453550F83CE7C110).
+- Ernest G. McClain and Ming Shui Hung, [“Chinese Cyclic Tunings in Late Antiquity,” *Ethnomusicology* 23, no. 2 (1979), 205–224](https://doi.org/10.2307/851462).
+- Alexander Rehding, [“Fine-Tuning a Global History of Music Theory,” *Music Theory Spectrum* 44, no. 2 (2022), 260–281](https://academic.oup.com/mts/article-abstract/44/2/260/6609877).
+- Joe Wolfe, [“Note names, MIDI numbers and frequencies,” University of New South Wales](https://newt.phys.unsw.edu.au/jw/notes.html).

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A circle of twelve tuning beacons that almost closes</title>
+  <desc id="desc">Twelve cyan beacons float on a dark maritime blueprint. An acid-green path leaps around them in fifths and ends just beyond its starting point, leaving a narrow magenta arc.</desc>
+  <defs>
+    <radialGradient id="sea" cx="50%" cy="47%" r="75%">
+      <stop offset="0" stop-color="#102b43"/>
+      <stop offset="0.58" stop-color="#071827"/>
+      <stop offset="1" stop-color="#020811"/>
+    </radialGradient>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
+      <path d="M52 0H0V52" fill="none" stroke="#1493ff" stroke-opacity=".09" stroke-width="1"/>
+      <circle cx="0" cy="0" r="2" fill="#1493ff" fill-opacity=".14"/>
+    </pattern>
+    <filter id="blueGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="greenGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="wake" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".1"/>
+      <stop offset=".5" stop-color="#93ff14" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#ff1493" stop-opacity=".12"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <path d="M0 166C220 118 374 220 590 174S971 83 1199 159s274 92 401 54M0 713c201-83 374 46 567-19s401-101 625-21 293 66 408 19" fill="none" stroke="#1493ff" stroke-opacity=".16" stroke-width="3"/>
+  <path d="M0 197C220 149 374 251 590 205s381-91 609-15 274 92 401 54M0 744c201-83 374 46 567-19s401-101 625-21 293 66 408 19" fill="none" stroke="#1493ff" stroke-dasharray="10 18" stroke-opacity=".12" stroke-width="2"/>
+
+  <g transform="translate(800 450)">
+    <circle r="318" fill="#061421" fill-opacity=".42" stroke="#1493ff" stroke-opacity=".22" stroke-width="2"/>
+    <circle r="250" fill="none" stroke="#1493ff" stroke-dasharray="4 13" stroke-opacity=".24" stroke-width="2"/>
+    <circle r="178" fill="none" stroke="#1493ff" stroke-opacity=".15" stroke-width="2"/>
+    <circle r="106" fill="none" stroke="#1493ff" stroke-dasharray="2 12" stroke-opacity=".17" stroke-width="2"/>
+    <circle r="34" fill="none" stroke="#1493ff" stroke-opacity=".2" stroke-width="2"/>
+    <path d="M-342 0H342M0-342V342" stroke="#1493ff" stroke-opacity=".12" stroke-width="2"/>
+    <path d="M-242-242L242 242M242-242L-242 242" stroke="#1493ff" stroke-opacity=".08" stroke-width="2"/>
+
+    <g fill="none" stroke="url(#wake)" stroke-linecap="round" stroke-width="10" filter="url(#greenGlow)">
+      <path d="M0-318L-159 275L275-159L-318 0L275 159L-159-275L0 318L159-275L-275 159L318 0L-275-159L159 275L13-318"/>
+    </g>
+    <path d="M0-318L-159 275L275-159L-318 0L275 159L-159-275L0 318L159-275L-275 159L318 0L-275-159L159 275L13-318" fill="none" stroke="#93ff14" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+
+    <g fill="#061421" stroke="#1493ff" stroke-width="4" filter="url(#blueGlow)">
+      <circle cx="0" cy="-318" r="13"/><circle cx="159" cy="-275" r="13"/><circle cx="275" cy="-159" r="13"/>
+      <circle cx="318" cy="0" r="13"/><circle cx="275" cy="159" r="13"/><circle cx="159" cy="275" r="13"/>
+      <circle cx="0" cy="318" r="13"/><circle cx="-159" cy="275" r="13"/><circle cx="-275" cy="159" r="13"/>
+      <circle cx="-318" cy="0" r="13"/><circle cx="-275" cy="-159" r="13"/><circle cx="-159" cy="-275" r="13"/>
+    </g>
+    <g fill="#1493ff">
+      <circle cx="0" cy="-318" r="5"/><circle cx="159" cy="-275" r="5"/><circle cx="275" cy="-159" r="5"/>
+      <circle cx="318" cy="0" r="5"/><circle cx="275" cy="159" r="5"/><circle cx="159" cy="275" r="5"/>
+      <circle cx="0" cy="318" r="5"/><circle cx="-159" cy="275" r="5"/><circle cx="-275" cy="159" r="5"/>
+      <circle cx="-318" cy="0" r="5"/><circle cx="-275" cy="-159" r="5"/><circle cx="-159" cy="-275" r="5"/>
+    </g>
+
+    <path d="M0-348A348 348 0 0 1 14-347.7" fill="none" stroke="#ff1493" stroke-linecap="round" stroke-width="12" filter="url(#greenGlow)"/>
+    <circle cx="13" cy="-318" r="16" fill="#93ff14" stroke="#061421" stroke-width="5" filter="url(#greenGlow)"/>
+    <path d="M0-339V-371M-11-355H11" stroke="#ff1493" stroke-linecap="round" stroke-width="4"/>
+  </g>
+
+  <g fill="none" stroke="#1493ff" stroke-opacity=".16">
+    <path d="M120 112h285M1195 112h285M120 788h285M1195 788h285"/>
+    <path d="M120 103v18M405 103v18M1195 103v18M1480 103v18M120 779v18M405 779v18M1195 779v18M1480 779v18"/>
+  </g>
+</svg>

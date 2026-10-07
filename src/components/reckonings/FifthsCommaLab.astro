@@ -1,0 +1,337 @@
+---
+const initialStep = 12;
+const fifthCents = 1200 * Math.log2(3 / 2);
+const equalFifthCents = 700;
+const driftPerFifth = fifthCents - equalFifthCents;
+const center = { x: 300, y: 270 };
+const radius = 192;
+const position = (cents: number, r = radius) => {
+  const angle = (cents / 1200) * Math.PI * 2 - Math.PI / 2;
+  return {
+    x: center.x + r * Math.cos(angle),
+    y: center.y + r * Math.sin(angle),
+  };
+};
+const steps = Array.from({ length: 13 }, (_, step) => {
+  const targetCents = (step * equalFifthCents) % 1200;
+  const drift = step * driftPerFifth;
+  const pureCents = (targetCents + drift) % 1200;
+  return {
+    step,
+    targetCents,
+    drift,
+    pureCents,
+    pure: position(pureCents),
+    target: position(targetCents),
+    octaveShifts: Math.floor(step * Math.log2(3 / 2)),
+    foldedRatio: Math.pow(3 / 2, step) / Math.pow(2, Math.floor(step * Math.log2(3 / 2))),
+  };
+});
+const finalStep = steps[initialStep];
+---
+
+<figure class="comma-lab reckoning-visual" data-comma-lab>
+  <header>
+    <p>Circle-of-fifths drift lab</p>
+    <h3>Walk by pure fifths and watch the circle miss its starting point</h3>
+  </header>
+
+  <div class="controls">
+    <label for="fifth-count">
+      Pure fifths taken
+      <output for="fifth-count" data-step-output>{initialStep}</output>
+    </label>
+    <input
+      id="fifth-count"
+      data-step-input
+      type="range"
+      min="0"
+      max="12"
+      step="1"
+      value={initialStep}
+      aria-label="Number of pure three-to-two fifths"
+    />
+    <div class="button-row">
+      <button type="button" data-previous>Previous fifth</button>
+      <button type="button" data-next disabled>Next fifth</button>
+      <button type="button" data-reset>Reset</button>
+    </div>
+  </div>
+
+  <div class="visual-grid">
+    <div class="diagram-shell">
+      <svg viewBox="0 0 620 560" role="img" aria-labelledby="comma-title comma-desc">
+        <title id="comma-title">Twelve pure fifths finish 23.46 cents above the starting pitch class</title>
+        <desc id="comma-desc">A solid green path takes twelve jumps around a twelve-part pitch clock. Its last point sits slightly clockwise from the dashed magenta starting target.</desc>
+        <defs>
+          <pattern id="comma-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+            <path d="M28 0H0V28" fill="none" />
+          </pattern>
+          <filter id="comma-glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+        <rect class="plot-bg" width="620" height="560" rx="12" />
+        <rect class="grid" width="620" height="560" rx="12" fill="url(#comma-grid)" />
+
+        <g class="clock" aria-hidden="true">
+          <circle cx={center.x} cy={center.y} r={radius} />
+          {Array.from({ length: 12 }, (_, index) => {
+            const inner = position(index * 100, radius - 12);
+            const outer = position(index * 100, radius + 12);
+            const label = position(index * 100, radius + 37);
+            return (
+              <g>
+                <line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} />
+                <circle cx={outer.x} cy={outer.y} r="3.5" />
+                <text x={label.x} y={label.y + 4} text-anchor="middle">{index * 100}</text>
+              </g>
+            );
+          })}
+          <text class="clock-label" x={center.x} y="26" text-anchor="middle">cents within one octave</text>
+        </g>
+
+        <g class="journey" aria-hidden="true">
+          {steps.slice(1).map((step, index) => {
+            const previous = steps[index];
+            return (
+              <line
+                data-segment={step.step}
+                class="journey-line"
+                x1={previous.pure.x}
+                y1={previous.pure.y}
+                x2={step.pure.x}
+                y2={step.pure.y}
+              />
+            );
+          })}
+          {steps.map((step) => (
+            <g data-pure-step={step.step} class="pure-step" transform={`translate(${step.pure.x} ${step.pure.y})`}>
+              <circle r={step.step === 0 ? 9 : 6} />
+              {step.step > 0 && <text x="9" y="-8">{step.step}</text>}
+            </g>
+          ))}
+        </g>
+
+        <g class="target-marker" data-target-marker transform={`translate(${finalStep.target.x} ${finalStep.target.y})`} aria-hidden="true">
+          <circle r="15" />
+          <path d="M-10 0H10M0-10V10" />
+        </g>
+        <g class="current-marker" data-current-marker transform={`translate(${finalStep.pure.x} ${finalStep.pure.y})`} aria-hidden="true">
+          <circle class="halo" r="18" />
+          <circle class="core" r="9" />
+        </g>
+      </svg>
+    </div>
+
+    <aside class="gap-panel" aria-label="Magnified tuning difference">
+      <p class="panel-kicker">Endpoint magnifier</p>
+      <h4>Distance above the equal-tempered target</h4>
+      <div class="gap-scale" aria-hidden="true">
+        <span class="scale-line"></span>
+        <span class="tick start"></span>
+        <span class="tick end"></span>
+        <span class="target-label">0</span>
+        <span class="end-label">30 cents</span>
+        <span class="gap-marker" data-gap-marker style={`left: ${(finalStep.drift / 30) * 100}%`}></span>
+      </div>
+      <strong data-gap-value>+{finalStep.drift.toFixed(3)} cents</strong>
+      <p data-gap-copy>Twelve pure fifths have passed the seven-octave target by one Pythagorean comma.</p>
+    </aside>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div>
+      <span>Raw multiplier</span>
+      <strong data-raw>{Math.pow(3 / 2, initialStep).toFixed(6)}</strong>
+    </div>
+    <div>
+      <span>Octaves removed</span>
+      <strong data-octaves>{finalStep.octaveShifts}</strong>
+    </div>
+    <div>
+      <span>Folded ratio</span>
+      <strong data-folded>{finalStep.foldedRatio.toFixed(6)}</strong>
+    </div>
+    <div>
+      <span>Pitch-class drift</span>
+      <strong data-drift>+{finalStep.drift.toFixed(3)} cents</strong>
+    </div>
+  </div>
+
+  <p class="status" data-status>
+    Twelve pure fifths land 23.460 cents above seven exact octaves.
+  </p>
+
+  <figcaption>
+    <strong>What to notice:</strong> the solid green path uses exact 3:2 fifths. The dashed magenta cross marks where twelve-tone equal temperament expects the current pitch class. Each pure fifth is only about 1.955 cents wider, but twelve small differences accumulate to 23.460 cents. The endpoint scale enlarges that gap; the circular positions retain the true angular proportions.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-comma-lab]').forEach((figure) => {
+    const slider = figure.querySelector('[data-step-input]');
+    const output = figure.querySelector('[data-step-output]');
+    const previous = figure.querySelector('[data-previous]');
+    const next = figure.querySelector('[data-next]');
+    const reset = figure.querySelector('[data-reset]');
+    const currentMarker = figure.querySelector('[data-current-marker]');
+    const targetMarker = figure.querySelector('[data-target-marker]');
+    const gapMarker = figure.querySelector('[data-gap-marker]');
+    const gapValue = figure.querySelector('[data-gap-value]');
+    const gapCopy = figure.querySelector('[data-gap-copy]');
+    const raw = figure.querySelector('[data-raw]');
+    const octaves = figure.querySelector('[data-octaves]');
+    const folded = figure.querySelector('[data-folded]');
+    const driftOutput = figure.querySelector('[data-drift]');
+    const status = figure.querySelector('[data-status]');
+    const title = figure.querySelector('#comma-title');
+    const desc = figure.querySelector('#comma-desc');
+
+    if (!(slider instanceof HTMLInputElement) || !(output instanceof HTMLOutputElement) || !(previous instanceof HTMLButtonElement) || !(next instanceof HTMLButtonElement) || !(reset instanceof HTMLButtonElement) || !(currentMarker instanceof SVGGElement) || !(targetMarker instanceof SVGGElement) || !(gapMarker instanceof HTMLElement) || !gapValue || !gapCopy || !raw || !octaves || !folded || !driftOutput || !status || !title || !desc) return;
+
+    const centerX = 300;
+    const centerY = 270;
+    const radius = 192;
+    const fifthCents = 1200 * Math.log2(3 / 2);
+    const driftPerFifth = fifthCents - 700;
+    const point = (cents: number) => {
+      const angle = (cents / 1200) * Math.PI * 2 - Math.PI / 2;
+      return { x: centerX + radius * Math.cos(angle), y: centerY + radius * Math.sin(angle) };
+    };
+
+    const render = (step: number) => {
+      const targetCents = (step * 700) % 1200;
+      const drift = step * driftPerFifth;
+      const pureCents = (targetCents + drift) % 1200;
+      const purePoint = point(pureCents);
+      const targetPoint = point(targetCents);
+      const octaveShifts = Math.floor(step * Math.log2(3 / 2));
+      const rawRatio = Math.pow(3 / 2, step);
+      const foldedRatio = rawRatio / Math.pow(2, octaveShifts);
+
+      slider.value = String(step);
+      output.value = String(step);
+      output.textContent = String(step);
+      previous.disabled = step === 0;
+      next.disabled = step === 12;
+      currentMarker.setAttribute('transform', `translate(${purePoint.x} ${purePoint.y})`);
+      targetMarker.setAttribute('transform', `translate(${targetPoint.x} ${targetPoint.y})`);
+      gapMarker.style.left = `${(drift / 30) * 100}%`;
+      gapValue.textContent = `+${drift.toFixed(3)} cents`;
+      raw.textContent = rawRatio.toFixed(6);
+      octaves.textContent = String(octaveShifts);
+      folded.textContent = foldedRatio.toFixed(6);
+      driftOutput.textContent = `+${drift.toFixed(3)} cents`;
+
+      figure.querySelectorAll('[data-segment]').forEach((segment) => {
+        segment.classList.toggle('hidden', Number(segment.getAttribute('data-segment')) > step);
+      });
+      figure.querySelectorAll('[data-pure-step]').forEach((node) => {
+        const nodeStep = Number(node.getAttribute('data-pure-step'));
+        node.classList.toggle('hidden', nodeStep > step);
+        node.classList.toggle('current', nodeStep === step);
+      });
+
+      if (step === 0) {
+        gapCopy.textContent = 'The walk begins on the equal-tempered target.';
+        status.textContent = 'Start on the reference pitch. No fifth has been taken, so the drift is zero.';
+      } else if (step === 12) {
+        gapCopy.textContent = 'Twelve pure fifths have passed the seven-octave target by one Pythagorean comma.';
+        status.textContent = 'Twelve pure fifths land 23.460 cents above seven exact octaves.';
+      } else {
+        gapCopy.textContent = `${step} pure ${step === 1 ? 'fifth has' : 'fifths have'} accumulated ${drift.toFixed(3)} cents of drift.`;
+        status.textContent = `After ${step} pure ${step === 1 ? 'fifth' : 'fifths'}, the folded pitch is ${drift.toFixed(3)} cents above its equal-tempered target.`;
+      }
+
+      title.textContent = `${step} pure fifths with ${drift.toFixed(3)} cents of accumulated drift`;
+      desc.textContent = `A solid green path shows ${step} jumps around a twelve-part pitch clock. The current point is ${drift.toFixed(3)} cents clockwise from the dashed magenta equal-tempered target.`;
+    };
+
+    slider.addEventListener('input', () => render(Number(slider.value)));
+    previous.addEventListener('click', () => render(Math.max(0, Number(slider.value) - 1)));
+    next.addEventListener('click', () => render(Math.min(12, Number(slider.value) + 1)));
+    reset.addEventListener('click', () => { render(0); slider.focus(); });
+    render(12);
+  });
+</script>
+
+<style>
+  .comma-lab {
+    --comma-blue: #087dcc;
+    --comma-green: #4f9300;
+    --comma-pink: #d9007e;
+    background: radial-gradient(circle at 88% 3%, color-mix(in srgb, var(--comma-pink) 12%, transparent), transparent 24rem), var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    margin: 2.5rem 50%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    transform: translateX(-50%);
+    width: min(1020px, calc(100vw - 3rem));
+  }
+  :global([data-theme='dark']) .comma-lab { --comma-blue: #1493ff; --comma-green: #93ff14; --comma-pink: #ff1493; }
+  header > p, .panel-kicker { color: var(--link-color); font-size: .67rem; font-weight: 700; letter-spacing: .12em; margin: 0 0 .2rem; text-transform: uppercase; }
+  h3 { font-family: var(--font-serif); font-size: clamp(1.25rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .controls, .diagram-shell, .gap-panel, .readout, .status { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 9px; }
+  .controls { display: grid; gap: .7rem; grid-template-columns: minmax(9rem, 1fr) minmax(14rem, 3fr) auto; margin-bottom: .8rem; padding: .85rem 1rem; }
+  .controls label { align-items: baseline; display: flex; font-size: .78rem; font-weight: 700; gap: .55rem; }
+  output { color: var(--comma-pink); font-family: var(--font-mono); font-size: 1rem; }
+  input[type='range'] { accent-color: var(--comma-blue); cursor: pointer; width: 100%; }
+  .button-row { display: flex; gap: .4rem; }
+  button { background: var(--surface-color); border: 1px solid var(--comma-blue); border-radius: 7px; color: var(--text-primary); cursor: pointer; font: inherit; font-size: .7rem; font-weight: 750; padding: .52rem .65rem; }
+  button:hover:not(:disabled) { background: color-mix(in srgb, var(--comma-blue) 10%, transparent); }
+  button:disabled { cursor: not-allowed; opacity: .4; }
+  button:focus-visible, input:focus-visible { outline: 3px solid color-mix(in srgb, var(--comma-green) 65%, transparent); outline-offset: 3px; }
+  .visual-grid { display: grid; gap: .8rem; grid-template-columns: minmax(0, 2fr) minmax(14rem, 1fr); }
+  .diagram-shell { overflow: hidden; }
+  svg { display: block; height: auto; width: 100%; }
+  .plot-bg { fill: var(--bg-color); }
+  .grid { color: var(--border-color); opacity: .22; stroke: currentColor; }
+  .clock > circle, .clock line { fill: none; stroke: var(--text-secondary); stroke-opacity: .45; stroke-width: 1.4; }
+  .clock circle:not(:first-child) { fill: var(--text-secondary); stroke: none; }
+  .clock text { fill: var(--text-secondary); font-size: 11px; }
+  .clock .clock-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .journey-line { stroke: var(--comma-green); stroke-linecap: round; stroke-opacity: .72; stroke-width: 3; }
+  .journey-line.hidden, .pure-step.hidden { display: none; }
+  .pure-step circle { fill: var(--bg-color); stroke: var(--comma-green); stroke-width: 2.5; }
+  .pure-step text { fill: var(--text-primary); font-size: 10px; font-weight: 800; paint-order: stroke; stroke: var(--bg-color); stroke-width: 4px; }
+  .pure-step.current circle { fill: var(--comma-green); }
+  .target-marker circle { fill: none; stroke: var(--comma-pink); stroke-dasharray: 5 4; stroke-width: 3; }
+  .target-marker path { stroke: var(--comma-pink); stroke-width: 2; }
+  .current-marker .halo { fill: color-mix(in srgb, var(--comma-green) 18%, transparent); filter: url(#comma-glow); stroke: var(--comma-green); stroke-opacity: .45; }
+  .current-marker .core { fill: var(--comma-green); stroke: var(--bg-color); stroke-width: 2.5; }
+  .gap-panel { align-self: stretch; padding: 1.1rem; }
+  .gap-panel h4 { font-size: 1rem; line-height: 1.25; margin: .25rem 0 2.2rem; }
+  .gap-scale { height: 4rem; margin: 0 .8rem; position: relative; }
+  .scale-line { background: var(--text-secondary); height: 2px; left: 0; position: absolute; right: 0; top: 1.2rem; }
+  .tick { background: var(--text-secondary); height: .8rem; position: absolute; top: .85rem; width: 2px; }
+  .tick.start { left: 0; }
+  .tick.end { right: 0; }
+  .target-label, .end-label { color: var(--text-secondary); font-size: .68rem; position: absolute; top: 2rem; }
+  .target-label { left: 0; }
+  .end-label { right: 0; }
+  .gap-marker { background: var(--comma-green); border: 3px solid var(--bg-color); border-radius: 50%; box-shadow: 0 0 0 2px var(--comma-pink); height: 13px; position: absolute; top: .82rem; transform: translateX(-50%); width: 13px; }
+  .gap-panel > strong { color: var(--comma-pink); display: block; font-family: var(--font-mono); font-size: 1.15rem; margin: .8rem 0 .45rem; }
+  .gap-panel > p:last-child { color: var(--text-secondary); font-size: .78rem; line-height: 1.5; margin: 0; }
+  .readout { display: grid; gap: .75rem; grid-template-columns: repeat(4, 1fr); margin-top: .8rem; padding: .9rem 1rem; }
+  .readout div { display: grid; gap: .18rem; }
+  .readout span { color: var(--text-secondary); font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .readout strong { color: var(--text-primary); font-family: var(--font-mono); font-size: .82rem; }
+  .status { color: var(--text-secondary); font-size: .8rem; margin: .8rem 0 0; min-height: 2.9rem; padding: .7rem .9rem; }
+  figcaption { color: var(--text-secondary); font-size: .82rem; line-height: 1.55; margin-top: .85rem; }
+  figcaption strong { color: var(--text-primary); }
+  @media (max-width: 760px) {
+    .comma-lab { width: calc(100vw - 1.5rem); }
+    .controls { grid-template-columns: 1fr; }
+    .visual-grid { grid-template-columns: 1fr; }
+    .readout { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 430px) {
+    .button-row { display: grid; grid-template-columns: 1fr 1fr; }
+    .button-row button:last-child { grid-column: 1 / -1; }
+    .readout { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .comma-lab * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
