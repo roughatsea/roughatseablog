@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-07",
+  "authorId": "wodehouse",
+  "authorName": "P. G. Wodehouse",
+  "selection": "English comic fiction; strengthens the humor category and adds a publishing career spanning the Edwardian era through the 1970s.",
+  "sources": [
+    {
+      "url": "https://www.wodehouse.co.uk/about/",
+      "notes": "The author site identifies Wodehouse as a major twentieth-century humorist, born in 1881, and records his death on February 14, 1975, at age 93."
+    },
+    {
+      "url": "https://wodehouse.org/resources/",
+      "notes": "The Wodehouse Society's works list verifies the selected novel years: The Pothunters (1902), Leave It to Psmith (1923), Right Ho, Jeeves (1934), The Code of the Woosters (1938), Joy in the Morning (1946), Pigs Have Wings (1952), and Aunts Aren't Gentlemen (1974). It identifies Sunset at Blandings (1977) as unfinished and posthumous."
+    },
+    {
+      "url": "https://madameulalie.org/tmordue/pgwbooks.html",
+      "notes": "The summary bibliography distinguishes UK and US book years, confirming that Joy in the Morning appeared in the US in 1946 and the UK in 1947; the timeline uses the earliest book edition in either market."
+    },
+    {
+      "url": "https://madameulalie.org/annots/pgwbooks/pgwtpot1.html",
+      "notes": "The detailed notes distinguish The Pothunters' January-March 1902 magazine serialization from its September 18, 1902 UK book publication."
+    },
+    {
+      "url": "https://www.newyorker.com/culture/2022-in-review/the-year-in-rereading",
+      "notes": "The New Yorker distinguishes Joy in the Morning's composition—largely in 1940 and completed later—from its 1946 release."
+    }
+  ],
+  "verifiedScope": {
+    "born": 1881,
+    "died": 1975,
+    "start": 1902,
+    "end": 1974,
+    "description": "Lifetime novel publication span using the earliest UK or US book edition as a consistent proxy; plays, lyrics, journalism, story collections, composition dates, serialization dates, and posthumous books are excluded.",
+    "workYears": [1902, 1923, 1934, 1938, 1946, 1952, 1974],
+    "dateDistinctions": "The Pothunters was serialized before its 1902 book. Right Ho, Jeeves began serialization in 1933 but the marker uses its 1934 book. Joy in the Morning was largely written in 1940; its first book edition was US 1946, before the UK 1947 edition. Sunset at Blandings (1977) was unfinished and posthumous. Chronology is not evidence of influence."
+  }
+}
