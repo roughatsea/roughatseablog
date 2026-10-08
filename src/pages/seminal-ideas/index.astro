@@ -23,10 +23,10 @@ import { thinkers, works } from '../../data/seminal-ideas';
     {thinkers.map(t => <article class="card"><h3><a href={`/seminal-ideas/thinkers/${t.slug}/`}>{t.name} →</a></h3><p class="meta">{t.years}</p><p>{t.introduction}</p></article>)}
   </section>
   <section id="ideas" aria-labelledby="ideas-heading"><h2 id="ideas-heading">Begin with a question</h2>
-    <p>These concepts currently lead into the opening work. As the collection grows, we will connect competing accounts and distinguish influence from similarity.</p>
+    <p>Follow a question into a guided work. Our first two lessons compare Nietzsche and Freud on aggression turned inward, while distinguishing similarity from documented influence.</p>
     <ul>{works.flatMap(w => w.concepts.map(c => <li><a href={`/seminal-ideas/${w.slug}/#${c.anchor}`}><strong>{c.name}</strong><span>{c.question}</span></a></li>))}</ul>
   </section>
-  <aside class="card"><h2>How to read this collection</h2><p>Influence is a reason to study an idea, not a guarantee that it is true. Each guided work distinguishes the author's claims, the reasoning behind them, and our evaluation. Historical conjectures and empirical claims require evidence; philosophical arguments require scrutiny.</p><p>This is the opening entry. The collection will expand across traditions and disciplines, with depth taking priority over the number of titles.</p></aside>
+  <aside class="card"><h2>How to read this collection</h2><p>Influence is a reason to study an idea, not a guarantee that it is true. Each guided work distinguishes the author's claims, the reasoning behind them, and our evaluation. Historical conjectures and empirical claims require evidence; philosophical arguments require scrutiny.</p><p>The collection will expand across traditions and disciplines, with depth taking priority over the number of titles.</p></aside>
 </BaseLayout>
 <style>
   header { margin-bottom: 2rem; } h1 { font-family: var(--font-serif); font-size: clamp(2.6rem,8vw,4rem); }

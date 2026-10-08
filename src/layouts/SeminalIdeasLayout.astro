@@ -1,12 +1,12 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-interface Props { frontmatter: { title: string; description: string; author: string; thinker: string; year: number; updated: string } }
+interface Props { frontmatter: { title: string; description: string; author: string; thinker: string; year: number; updated: string; discipline?: string } }
 const { frontmatter: book } = Astro.props;
 ---
 <BaseLayout title={book.title} description={book.description} article>
   <header class="book-header">
     <a href="/seminal-ideas/">← Seminal Ideas</a>
-    <p class="eyebrow">Guided work · Philosophy</p>
+    <p class="eyebrow">Guided work · {book.discipline ?? 'Philosophy'}</p>
     <h1>{book.title}</h1>
     <p><a href={`/seminal-ideas/thinkers/${book.thinker}/`}>{book.author}</a> · {book.year}</p>
     <p class="description">{book.description}</p>

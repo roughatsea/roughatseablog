@@ -225,7 +225,7 @@ The free translation linked below uses older English and sometimes unfamiliar te
 
 ### Where this opening work leads
 
-**Freud's *Civilization and Its Discontents*** would let us compare a later account of civilization, constrained aggression, and guilt. **Jung's *Two Essays on Analytical Psychology*** would open a different inquiry into psychological conflict and the development of the individual. These are proposed future lessons, not completed entries. Similarity of subject does not, by itself, establish direct influence.
+The next complete lesson, [**Freud's *Civilization and Its Discontents***](/seminal-ideas/civilization-and-its-discontents/), compares a later account of civilization, constrained aggression, and guilt. **Jung's *Two Essays on Analytical Psychology*** would open a different inquiry into psychological conflict and the development of the individual; that lesson is still planned. Similarity of subject does not, by itself, establish direct influence.
 
 We should also place Nietzsche beside strong defenses of moral commitments he attacks. **Mill's *Utilitarianism*** would ask what justifies morality through well-being; **Kant's *Groundwork of the Metaphysics of Morals*** would offer a different account of obligation. The collection should make disagreement intelligible rather than let the opening author set every later question's terms.
 
