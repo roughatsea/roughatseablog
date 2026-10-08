@@ -1,0 +1,184 @@
+---
+title: "Why Can’t a Program Predict Whether Every Program Will Stop?"
+description: "A perfect termination checker sounds like the ultimate debugging tool. Self-reference proves that no algorithm can answer correctly for every possible program and input."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-08.svg"
+heroImageAlt: "A dark maritime blueprint shows a cyan computing core above a looped tape; acid-green and magenta prediction paths curl back toward the core and end at broken markers."
+date: 2026-10-08
+publishedAt: 2026-10-08T06:00:00-07:00
+area: "Logic and foundations of computation"
+difficulty: "Advanced"
+prerequisites:
+  - "Reading short pseudocode"
+  - "Proof by contradiction"
+  - "A program can be represented as data"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - computability
+  - halting-problem
+  - undecidability
+  - diagonal-argument
+  - self-reference
+  - static-analysis
+  - turing-machines
+  - history-of-computing
+---
+
+import HaltingOracleLab from '../../components/reckonings/HaltingOracleLab.astro';
+
+A program has been running for an hour without producing an answer. Has the program entered an endless loop, or does it need one more second?
+
+Running it longer cannot settle the question. If the program stops, waiting will eventually reveal that fact. If the program has not stopped, every finite wait leaves two possibilities: it will stop later, or it will never stop.
+
+Imagine a debugging tool that reads any program together with its input and always returns one of two correct answers: **STOPS** or **LOOPS**. Such a tool would be more useful than a timeout because the tool would never answer “unknown.”
+
+No such universal tool can exist. The obstacle is logical rather than technological: a program can be asked to inspect a description of itself.
+
+## The promise a perfect checker would make
+
+Every program is finite text, so its source code can be stored as data and supplied as input to another program. Let $P$ denote an encoded program and let $x$ denote an input. Suppose a program $H$ computes
+
+$$
+H(P,x)=
+\begin{cases}
+1, & \text{if program }P\text{ eventually stops on input }x,\\
+0, & \text{if program }P\text{ runs forever on input }x.
+\end{cases}
+$$
+
+The letter $H$ names the hypothetical **halting oracle**. Its promise contains three requirements:
+
+1. $H$ accepts every valid pair $(P,x)$.
+2. $H$ itself always stops.
+3. $H$ always gives the correct answer.
+
+The **halting problem** asks whether any algorithm can meet all three requirements. The answer is no.
+
+Specific cases remain easy. A countdown that subtracts $1$ from a nonnegative integer until it reaches $0$ stops. A program whose only instruction is “jump back to this instruction” loops. Undecidability appears when one checker must handle every program that a general-purpose computer can express.
+
+## Build a program that disobeys the prediction
+
+Assume for contradiction that $H$ exists. Use $H$ inside a new program named `TWIST`:
+
+```text
+program TWIST(P):
+    if H(P, P) = 1:
+        loop forever
+    else:
+        stop
+```
+
+`TWIST` receives an encoded program $P$. It asks what $P$ will do when $P$ receives its own encoding as input. Then `TWIST` reverses the oracle's prediction: a prediction of $1$ makes `TWIST` loop, while a prediction of $0$ makes `TWIST` stop.
+
+Now give `TWIST` its own encoding. The diagram follows both answers that $H(\texttt{TWIST},\texttt{TWIST})$ could return.
+
+<HaltingOracleLab />
+
+The contradiction can be written in two lines of reasoning.
+
+**Suppose $H(\texttt{TWIST},\texttt{TWIST})=1$.** The oracle predicts that `TWIST(TWIST)` stops. The first branch of `TWIST` therefore runs forever. The oracle's answer is wrong.
+
+**Suppose $H(\texttt{TWIST},\texttt{TWIST})=0$.** The oracle predicts that `TWIST(TWIST)` runs forever. The second branch of `TWIST` therefore stops. The oracle's answer is wrong again.
+
+The two cases exhaust the possible outputs. The assumption that a universally correct $H$ exists has produced a contradiction, so the assumed program cannot exist.
+
+## Worked example: why testing longer is not a proof
+
+Consider two programs that receive a positive whole number $n$.
+
+```text
+program COUNTDOWN(n):
+    while n > 0:
+        n = n - 1
+    stop
+
+program SEARCH(n):
+    test candidate 1
+    test candidate 2
+    test candidate 3
+    ...
+    stop only after finding a candidate with property Q
+```
+
+**Step 1: settle `COUNTDOWN(1,000,000)`.** The variable $n$ falls by exactly $1$ on each pass and cannot fall below $0$ before the loop condition fails. After exactly $1{,}000{,}000$ passes, $n=0$. The program stops.
+
+**Step 2: run `SEARCH(n)` for one million tests.** If a candidate with property $Q$ appears among those tests, the run proves that this particular execution stops.
+
+**Step 3: interpret an unfinished search.** After one million failed tests, the next candidate might work. The first successful candidate might occur after $10^{100}$ tests. Perhaps no successful candidate exists. Runtime alone does not distinguish those possibilities.
+
+**Step 4: ask for a separate proof.** A mathematical argument about property $Q$ might establish that a candidate exists, that none exists, or that the search has a finite bound. The halting theorem does not forbid such proofs. It forbids one algorithm from producing the correct verdict for every arbitrary program-input pair.
+
+That last qualification prevents a common overstatement. The theorem does not say that termination is never knowable. It says that termination is not **uniformly decidable** for all programs.
+
+## From a decision procedure to a limit on computation
+
+In 1928, David Hilbert and Wilhelm Ackermann posed the **Entscheidungsproblem**, German for “decision problem.” They asked for a mechanical procedure that would determine whether any given formula of first-order logic is universally valid. The [Stanford Encyclopedia of Philosophy's historical account](https://plato.stanford.edu/entries/church-turing/decision-problem.html) explains why the question mattered to the program of placing mathematical reasoning on formal, mechanically checkable foundations.
+
+Alonzo Church and Alan Turing reached independent negative solutions in 1936. Church worked with lambda calculus and recursive functions. Turing described an idealized human calculator acting on one square of an unlimited paper tape at a time. His machine model turned the informal phrase “mechanical procedure” into something that could be analyzed mathematically.
+
+Turing's paper, [“On Computable Numbers, with an Application to the Entscheidungsproblem”](https://academic.oup.com/plms/article-abstract/s2-42/1/230/1491926), was received by the London Mathematical Society on May 28, 1936. The paper proved that no machine could decide whether an arbitrary machine was “circle-free,” Turing's term for continuing to produce output symbols, and then used that result against the Entscheidungsproblem.
+
+Textbooks often say that Turing's 1936 paper contains the modern halting problem exactly as taught above. The historical relationship is close but not word-for-word. Turing did not use the term *halting problem*, and his circle-free problem differs in formulation. Joel David Hamkins and Theodor Nenu examine that attribution in [“Did Turing prove the undecidability of the halting problem?”](https://arxiv.org/abs/2407.00680). The modern proof belongs to the same family of diagonal, self-referential arguments; it should not be pasted backward into Turing's terminology without qualification.
+
+The result also belongs to a shared development. Church's 1936 work supplied a different formal account of effective calculation, and the two accounts turned out to define the same class of computable functions. The [Stanford Encyclopedia's account of the Church–Turing thesis](https://plato.stanford.edu/entries/church-turing/) traces the independent approaches and the later recognition of their equivalence.
+
+## What software tools do instead
+
+The impossibility theorem leaves plenty of useful work. It tells tool builders where a guarantee must narrow.
+
+A static analyzer examines source code without executing every possible run. The [Clang Static Analyzer](https://clang.llvm.org/analyzer/) uses symbolic execution to find buggy paths in C, C++, and Objective-C programs. Its documentation is candid about the compromises: the analyzer bounds its work, targets particular bug classes, and can report false positives. Those limits let it produce useful answers without claiming a perfect verdict for every possible behavior.
+
+A programming language can also restrict what counts as an acceptable definition. The Lean theorem prover accepts recursive functions when termination follows from structural recursion or from a supplied well-founded argument. The [Lean reference on recursive definitions](https://lean-lang.org/doc/reference/latest/Definitions/Recursive-Definitions/) explains both routes. Lean is not solving the halting problem for arbitrary code; a programmer must write in a form whose decrease can be checked or provide a proof.
+
+Timeouts make a different promise. A sandbox can stop a process after a resource budget expires. The timeout establishes “did not finish within this budget,” not “will never finish.” Testing, static analysis, restricted languages, termination proofs, and timeouts all remain valuable because each replaces the impossible universal promise with a precise, achievable one.
+
+## Try the boundary
+
+### Problem 1
+
+A checker runs a program for one billion steps. If the program has not stopped, the checker returns **LOOPS**. Give a short reason that this checker cannot solve the halting problem.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Construct a program that performs $1{,}000{,}000{,}001$ harmless steps and then stops. The checker observes only the first one billion steps and returns **LOOPS**, but the program stops on the next step.
+
+Any fixed timeout has the same weakness. A later stop can always lie beyond the cutoff.
+
+</details>
+
+### Problem 2
+
+Suppose a small language permits only loops of the form below, where $n$ begins as a nonnegative whole number and no instruction inside the loop can increase $n$.
+
+```text
+while n > 0:
+    n = n - 1
+```
+
+Can a checker correctly decide termination for every program in this restricted language? Explain.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Yes. Every pass reduces the nonnegative integer $n$ by $1$. After at most its initial value of $n$ passes, the condition $n>0$ becomes false. A checker can recognize this loop form and certify that it stops.
+
+The universal halting theorem applies to languages expressive enough to encode arbitrary computation. Restricting the language can make termination decidable.
+
+</details>
+
+## The idea to keep
+
+No algorithm can inspect every possible program-input pair, always stop, and always decide whether the inspected program stops. If a hypothetical oracle tried, `TWIST` could read the oracle's answer about itself and do the opposite.
+
+To continue, [Can a Rulebook Prove Every Truth It Can State?](/reckonings/daily-reckoning-2026-09-03/) explores Gödel's related limit on formal proof, while [Can You List Every Infinite String of Zeros and Ones?](/reckonings/daily-reckoning-2026-09-22/) develops the diagonal move behind many impossibility arguments.
+
+## Sources
+
+- A. M. Turing, [“On Computable Numbers, with an Application to the Entscheidungsproblem,” *Proceedings of the London Mathematical Society* 42 (1936–37), 230–265](https://academic.oup.com/plms/article-abstract/s2-42/1/230/1491926).
+- B. Jack Copeland, [“The Church–Turing Thesis,” *Stanford Encyclopedia of Philosophy*](https://plato.stanford.edu/entries/church-turing/), including the historical discussion of Church's and Turing's independent 1936 results.
+- B. Jack Copeland, [“The Rise and Fall of the Entscheidungsproblem,” *Stanford Encyclopedia of Philosophy*](https://plato.stanford.edu/entries/church-turing/decision-problem.html).
+- Joel David Hamkins and Theodor Nenu, [“Did Turing prove the undecidability of the halting problem?”](https://arxiv.org/abs/2407.00680), version 2, 2024.
+- Paul E. Black, [“halting problem,” NIST Dictionary of Algorithms and Data Structures](https://xlinux.nist.gov/dads/HTML/haltingProblem.html), updated April 7, 2023.
+- LLVM Project, [“Clang Static Analyzer”](https://clang.llvm.org/analyzer/), documentation of its purpose, bounded analysis, and false-positive tradeoffs.
+- Lean Project, [“Recursive Definitions”](https://lean-lang.org/doc/reference/latest/Definitions/Recursive-Definitions/), reference documentation for structural and well-founded termination checking.

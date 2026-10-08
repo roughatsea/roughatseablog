@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A self-referential computation splits into two contradictory paths</title>
+  <desc id="desc">A dark maritime blueprint shows a cyan machine core above a looping tape. One acid-green route and one magenta route curl back toward the core, and each ends at a broken prediction marker.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020b16"/>
+      <stop offset="0.55" stop-color="#061a2b"/>
+      <stop offset="1" stop-color="#03111f"/>
+    </linearGradient>
+    <radialGradient id="coreGlow">
+      <stop offset="0" stop-color="#00e5ff" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#00e5ff" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#00e5ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1b6780" stroke-width="1" opacity=".22"/>
+    </pattern>
+    <pattern id="fine" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M10 0H0V10" fill="none" stroke="#2b8da5" stroke-width=".7" opacity=".09"/>
+    </pattern>
+    <filter id="cyanGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="greenArrow" markerWidth="13" markerHeight="13" refX="10" refY="4" orient="auto">
+      <path d="M0 0L11 4L0 8Z" fill="#a8ff60"/>
+    </marker>
+    <marker id="pinkArrow" markerWidth="13" markerHeight="13" refX="10" refY="4" orient="auto">
+      <path d="M0 0L11 4L0 8Z" fill="#ff58c8"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#fine)"/>
+  <rect x="52" y="52" width="1496" height="796" rx="24" fill="none" stroke="#1a718a" stroke-width="2" opacity=".45"/>
+  <rect x="72" y="72" width="1456" height="756" rx="18" fill="url(#grid)" stroke="#00e5ff" stroke-width="1" opacity=".55"/>
+
+  <g fill="none" stroke="#1f7590" opacity=".28">
+    <path d="M0 738C155 690 245 778 397 726S643 682 795 737S1065 795 1230 721S1460 677 1600 726" stroke-width="3"/>
+    <path d="M0 765C155 717 245 805 397 753S643 709 795 764S1065 822 1230 748S1460 704 1600 753" stroke-width="1.5"/>
+    <path d="M0 800C155 752 245 840 397 788S643 744 795 799S1065 857 1230 783S1460 739 1600 788" stroke-width="1"/>
+  </g>
+
+  <g opacity=".38" fill="none" stroke="#35a8bd">
+    <circle cx="800" cy="318" r="248" stroke-dasharray="7 15"/>
+    <circle cx="800" cy="318" r="194" stroke-dasharray="2 13"/>
+    <path d="M800 74V138M800 498V562M556 318H620M980 318H1044"/>
+    <path d="M628 146L674 192M926 444L972 490M972 146L926 192M674 444L628 490"/>
+  </g>
+
+  <circle cx="800" cy="318" r="245" fill="url(#coreGlow)"/>
+  <g filter="url(#cyanGlow)">
+    <path d="M685 226H915L972 318L915 410H685L628 318Z" fill="#071f32" stroke="#00e5ff" stroke-width="5"/>
+    <circle cx="800" cy="318" r="72" fill="#061724" stroke="#00e5ff" stroke-width="3"/>
+    <path d="M766 286H834V350H766Z" fill="none" stroke="#a8ff60" stroke-width="5"/>
+    <path d="M780 302H820M780 318H820M780 334H806" stroke="#00e5ff" stroke-width="4" stroke-linecap="round"/>
+    <g fill="#00e5ff">
+      <circle cx="681" cy="318" r="8"/><circle cx="919" cy="318" r="8"/>
+      <circle cx="800" cy="205" r="8"/><circle cx="800" cy="431" r="8"/>
+    </g>
+  </g>
+
+  <g fill="none" stroke-linecap="round">
+    <path d="M705 408C545 482 428 574 469 674C500 749 640 752 713 668C766 607 758 514 700 459" stroke="#a8ff60" stroke-width="10" filter="url(#softGlow)" marker-end="url(#greenArrow)"/>
+    <path d="M895 408C1055 482 1172 574 1131 674C1100 749 960 752 887 668C834 607 842 514 900 459" stroke="#ff58c8" stroke-width="10" filter="url(#softGlow)" marker-end="url(#pinkArrow)"/>
+  </g>
+
+  <g opacity=".95">
+    <g transform="translate(462 671)" stroke="#a8ff60" fill="#071927" filter="url(#softGlow)">
+      <circle r="42" stroke-width="4"/>
+      <path d="M-19-19L19 19M19-19L-19 19" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(1138 671)" stroke="#ff58c8" fill="#071927" filter="url(#softGlow)">
+      <circle r="42" stroke-width="4"/>
+      <path d="M-19-19L19 19M19-19L-19 19" stroke-width="6" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <g transform="translate(800 658)">
+    <path d="M-124-42H124L154 0L124 42H-124L-154 0Z" fill="#061a2b" stroke="#28bace" stroke-width="2"/>
+    <g fill="#00e5ff">
+      <rect x="-110" y="-18" width="30" height="36" rx="4"/><rect x="-62" y="-18" width="30" height="36" rx="4" opacity=".45"/>
+      <rect x="-14" y="-18" width="30" height="36" rx="4"/><rect x="34" y="-18" width="30" height="36" rx="4" opacity=".45"/>
+      <rect x="82" y="-18" width="30" height="36" rx="4"/>
+    </g>
+    <path d="M-98 0H-44M-2 0H50M98 0H140" stroke="#c6f6ff" stroke-width="4" stroke-dasharray="5 7"/>
+  </g>
+
+  <g fill="#52d5e8" opacity=".6">
+    <circle cx="130" cy="145" r="4"/><circle cx="1470" cy="145" r="4"/><circle cx="130" cy="760" r="4"/><circle cx="1470" cy="760" r="4"/>
+  </g>
+  <g fill="none" stroke="#00e5ff" opacity=".28">
+    <path d="M90 115H250M1350 115H1510M90 790H250M1350 790H1510"/>
+    <path d="M110 95V255M1490 95V255M110 650V810M1490 650V810"/>
+  </g>
+</svg>

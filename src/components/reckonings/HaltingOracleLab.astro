@@ -1,0 +1,199 @@
+---
+const cases = [
+  {
+    id: 'halts',
+    oracle: 'STOPS',
+    action: 'TWIST enters its endless loop',
+    contradiction: 'The prediction STOPS is false.',
+  },
+  {
+    id: 'loops',
+    oracle: 'LOOPS',
+    action: 'TWIST stops immediately',
+    contradiction: 'The prediction LOOPS is false.',
+  },
+];
+---
+
+<figure class="halting-lab reckoning-visual" data-halting-lab>
+  <header>
+    <p>Self-reference test</p>
+    <h3>Ask the hypothetical oracle about the program that reverses its answer</h3>
+  </header>
+
+  <div class="controls" role="group" aria-label="Choose the oracle's prediction">
+    <button type="button" data-case-button="halts" aria-pressed="false">Assume STOPS</button>
+    <button type="button" data-case-button="loops" aria-pressed="false">Assume LOOPS</button>
+    <button type="button" data-reset aria-pressed="true">Show both cases</button>
+  </div>
+
+  <div class="proof-map">
+    <svg viewBox="0 0 900 430" role="img" aria-labelledby="halting-title halting-desc">
+      <title id="halting-title">Both possible predictions about TWIST contradict themselves</title>
+      <desc id="halting-desc">The oracle receives TWIST as both program and input. A STOPS prediction makes TWIST loop forever, while a LOOPS prediction makes TWIST stop. Each branch contradicts the oracle.</desc>
+      <defs>
+        <pattern id="oracle-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M24 0H0V24" fill="none" />
+        </pattern>
+        <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0 0L9 3L0 6Z" />
+        </marker>
+        <marker id="arrow-magenta" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0 0L9 3L0 6Z" />
+        </marker>
+      </defs>
+      <rect class="plot-bg" width="900" height="430" rx="14" />
+      <rect class="grid" width="900" height="430" rx="14" fill="url(#oracle-grid)" />
+
+      <g class="oracle-node" aria-hidden="true">
+        <rect x="305" y="34" width="290" height="100" rx="16" />
+        <text class="eyebrow" x="450" y="68" text-anchor="middle">HYPOTHETICAL ORACLE</text>
+        <text class="code" x="450" y="104" text-anchor="middle">H(TWIST, TWIST)</text>
+      </g>
+
+      <g class="branch branch-halts" data-branch="halts" aria-hidden="true">
+        <path class="branch-line" d="M397 134C360 180 270 177 226 224" marker-end="url(#arrow-green)" />
+        <text class="branch-label" x="302" y="184" text-anchor="middle">oracle says STOPS</text>
+        <rect class="action-box" x="68" y="230" width="318" height="76" rx="13" />
+        <text class="code" x="227" y="260" text-anchor="middle">TWIST loops forever</text>
+        <text class="small" x="227" y="285" text-anchor="middle">because it reverses STOPS</text>
+        <path class="contradiction-line" d="M227 306V348" marker-end="url(#arrow-green)" />
+        <rect class="contradiction-box" x="91" y="352" width="272" height="48" rx="24" />
+        <text class="contradiction-text" x="227" y="382" text-anchor="middle">prediction contradicted</text>
+      </g>
+
+      <g class="branch branch-loops" data-branch="loops" aria-hidden="true">
+        <path class="branch-line" d="M503 134C540 180 630 177 674 224" marker-end="url(#arrow-magenta)" />
+        <text class="branch-label" x="598" y="184" text-anchor="middle">oracle says LOOPS</text>
+        <rect class="action-box" x="514" y="230" width="318" height="76" rx="13" />
+        <text class="code" x="673" y="260" text-anchor="middle">TWIST stops immediately</text>
+        <text class="small" x="673" y="285" text-anchor="middle">because it reverses LOOPS</text>
+        <path class="contradiction-line" d="M673 306V348" marker-end="url(#arrow-magenta)" />
+        <rect class="contradiction-box" x="537" y="352" width="272" height="48" rx="24" />
+        <text class="contradiction-text" x="673" y="382" text-anchor="middle">prediction contradicted</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="case-cards">
+    {cases.map((item) => (
+      <article data-card={item.id}>
+        <span>Oracle answer: {item.oracle}</span>
+        <strong>{item.action}</strong>
+        <p>{item.contradiction}</p>
+      </article>
+    ))}
+  </div>
+
+  <p class="status" data-status aria-live="polite">
+    Both possible oracle answers fail when TWIST receives its own encoding as input.
+  </p>
+
+  <figcaption>
+    <strong>What to notice:</strong> the two branches exhaust the oracle's possible yes-or-no answers. TWIST is constructed to do the opposite of the prediction, so self-input turns either answer into a contradiction. Color and line position both distinguish the branches.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-halting-lab]').forEach((figure) => {
+    const buttons = Array.from(figure.querySelectorAll('[data-case-button]'));
+    const reset = figure.querySelector('[data-reset]');
+    const status = figure.querySelector('[data-status]');
+    if (!(reset instanceof HTMLButtonElement) || !status) return;
+
+    const render = (selected: string | null) => {
+      figure.querySelectorAll('[data-branch], [data-card]').forEach((element) => {
+        const id = element.getAttribute(element.hasAttribute('data-branch') ? 'data-branch' : 'data-card');
+        element.classList.toggle('muted', selected !== null && id !== selected);
+        element.classList.toggle('selected', selected !== null && id === selected);
+      });
+      buttons.forEach((button) => {
+        if (button instanceof HTMLButtonElement) {
+          button.setAttribute('aria-pressed', String(button.dataset.caseButton === selected));
+        }
+      });
+      reset.setAttribute('aria-pressed', String(selected === null));
+
+      if (selected === 'halts') {
+        status.textContent = 'If the oracle predicts that TWIST stops, TWIST follows its endless-loop branch. The prediction is wrong.';
+      } else if (selected === 'loops') {
+        status.textContent = 'If the oracle predicts that TWIST loops, TWIST stops immediately. The prediction is wrong.';
+      } else {
+        status.textContent = 'Both possible oracle answers fail when TWIST receives its own encoding as input.';
+      }
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => render(button.getAttribute('data-case-button')));
+    });
+    reset.addEventListener('click', () => render(null));
+    render(null);
+  });
+</script>
+
+<style>
+  .halting-lab {
+    margin: 2.25rem 0;
+    border: 1px solid rgba(0, 229, 255, 0.28);
+    border-radius: 18px;
+    background: linear-gradient(145deg, rgba(3, 18, 34, 0.98), rgba(7, 29, 47, 0.94));
+    box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28);
+    overflow: hidden;
+  }
+  header { padding: 1.2rem 1.25rem 0.55rem; }
+  header p { margin: 0 0 0.3rem; color: #a8ff60; font: 700 0.74rem/1.2 var(--font-mono, monospace); letter-spacing: 0.14em; text-transform: uppercase; }
+  header h3 { margin: 0; color: #f4fbff; font-size: clamp(1.08rem, 2.4vw, 1.42rem); line-height: 1.25; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.55rem; padding: 0.75rem 1.25rem; }
+  button {
+    border: 1px solid rgba(177, 216, 230, 0.38);
+    border-radius: 999px;
+    background: rgba(8, 35, 55, 0.82);
+    color: #dff7ff;
+    padding: 0.58rem 0.82rem;
+    font: 700 0.78rem/1 var(--font-mono, monospace);
+    cursor: pointer;
+  }
+  button:hover, button:focus-visible, button[aria-pressed='true'] { border-color: #a8ff60; color: #a8ff60; outline: none; box-shadow: 0 0 0 3px rgba(168, 255, 96, 0.15); }
+  .proof-map { padding: 0 0.8rem; }
+  svg { display: block; width: 100%; height: auto; }
+  .plot-bg { fill: #031321; }
+  .grid { opacity: 0.34; }
+  .grid + g { color: #00e5ff; }
+  pattern path { stroke: rgba(77, 160, 187, 0.22); stroke-width: 1; }
+  .oracle-node rect { fill: #09273d; stroke: #00e5ff; stroke-width: 2.5; }
+  .eyebrow { fill: #7fdcec; font: 700 15px/1 var(--font-mono, monospace); letter-spacing: 2px; }
+  .code { fill: #f3fbff; font: 700 20px/1 var(--font-mono, monospace); }
+  .small { fill: #9ab8c5; font: 15px/1 var(--font-sans, sans-serif); }
+  .branch { transition: opacity 180ms ease, filter 180ms ease; }
+  .branch-line, .contradiction-line { fill: none; stroke-width: 3; }
+  .branch-halts .branch-line, .branch-halts .contradiction-line { stroke: #a8ff60; }
+  .branch-loops .branch-line, .branch-loops .contradiction-line { stroke: #ff58c8; }
+  #arrow-green path { fill: #a8ff60; }
+  #arrow-magenta path { fill: #ff58c8; }
+  .branch-label { fill: #d4eaf2; font: 700 15px/1 var(--font-mono, monospace); }
+  .action-box { fill: #071e30; stroke: rgba(181, 224, 238, 0.42); stroke-width: 1.5; }
+  .contradiction-box { fill: rgba(255, 88, 200, 0.08); stroke-width: 2; }
+  .branch-halts .contradiction-box { stroke: #a8ff60; }
+  .branch-loops .contradiction-box { stroke: #ff58c8; }
+  .contradiction-text { fill: #fff; font: 700 16px/1 var(--font-mono, monospace); }
+  .muted { opacity: 0.2; filter: saturate(0.3); }
+  .selected { opacity: 1; }
+  .case-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; padding: 0.2rem 1.25rem 0.9rem; }
+  .case-cards article { border: 1px solid rgba(157, 211, 229, 0.25); border-radius: 12px; background: rgba(7, 29, 47, 0.72); padding: 0.85rem; transition: opacity 180ms ease; }
+  .case-cards article:first-child { border-left: 3px solid #a8ff60; }
+  .case-cards article:last-child { border-left: 3px solid #ff58c8; }
+  .case-cards span { display: block; color: #92bbc9; font: 700 0.72rem/1.2 var(--font-mono, monospace); letter-spacing: 0.06em; text-transform: uppercase; }
+  .case-cards strong { display: block; margin-top: 0.42rem; color: #f4fbff; line-height: 1.3; }
+  .case-cards p { margin: 0.35rem 0 0; color: #bfd3dd; font-size: 0.86rem; }
+  .status { margin: 0; padding: 0.85rem 1.25rem; border-top: 1px solid rgba(0, 229, 255, 0.18); color: #a8ff60; font: 700 0.85rem/1.45 var(--font-mono, monospace); }
+  figcaption { padding: 1rem 1.25rem 1.2rem; background: rgba(0, 0, 0, 0.18); color: #b9cbd3; font-size: 0.86rem; line-height: 1.55; }
+  figcaption strong { color: #eaf9ff; }
+  @media (max-width: 650px) {
+    .case-cards { grid-template-columns: 1fr; }
+    .proof-map { overflow-x: auto; }
+    svg { min-width: 660px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .branch, .case-cards article { transition: none; }
+  }
+</style>

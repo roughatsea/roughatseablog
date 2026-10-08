@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T06:00:00-07:00",
+  "updatedAt": "2026-10-08T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -948,6 +948,35 @@
         "daily-reckoning-2026-09-04",
         "daily-reckoning-2026-09-14",
         "daily-reckoning-2026-09-30"
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "slug": "daily-reckoning-2026-10-08",
+      "title": "Why Can’t a Program Predict Whether Every Program Will Stop?",
+      "area": "Logic and foundations of computation",
+      "difficulty": "Advanced",
+      "prerequisites": [
+        "Reading short pseudocode",
+        "Proof by contradiction",
+        "A program can be represented as data"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "halting problem",
+        "computability",
+        "undecidability",
+        "diagonal argument",
+        "self-reference",
+        "Turing machines",
+        "Church–Turing thesis",
+        "static analysis",
+        "termination checking",
+        "history of computing"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-03",
+        "daily-reckoning-2026-09-22"
       ]
     }
   ]
