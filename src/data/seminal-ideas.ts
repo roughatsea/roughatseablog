@@ -4,6 +4,9 @@ export const thinkers = [{
 }, {
   slug: 'freud', name: 'Sigmund Freud', years: '1856–1939',
   introduction: 'The founder of psychoanalysis. This guided work examines his account of the conflict between individual wishes and communal life, with particular attention to aggression, guilt, and conscience.'
+}, {
+  slug: 'jung', name: 'Carl Gustav Jung', years: '1875–1961',
+  introduction: 'The founder of analytical psychology. This guided work examines persona, the proposed collective unconscious, and individuation, while separating illuminating interpretation from demonstrated explanation.'
 }];
 
 export const works = [{
@@ -29,5 +32,17 @@ export const works = [{
     { name: 'Superego', anchor: 'superego', question: 'How can authority become an internal judge?' },
     { name: 'Guilt and restraint', anchor: 'guilt-and-restraint', question: 'Why might doing the right thing fail to bring relief?' },
     { name: 'Eros and the death drive', anchor: 'eros-and-the-death-drive', question: 'Does destructiveness require a fundamental drive?' }
+  ]
+}, {
+  slug: 'two-essays-on-analytical-psychology', thinker: 'jung', title: 'Two Essays on Analytical Psychology', year: 1928,
+  question: 'How do you become yourself without mistaking your social role for your whole identity?',
+  description: 'Explore persona, unconscious conflict, symbolic interpretation, and Jung’s account of individuation, grounded in the 1928 edition.',
+  disciplines: ['Analytical psychology', 'Identity'],
+  concepts: [
+    { name: 'Persona', anchor: 'persona', question: 'When does a social role become your whole identity?' },
+    { name: 'Personal and collective unconscious', anchor: 'personal-and-collective-unconscious', question: 'What does Jung think lies beyond personal experience?' },
+    { name: 'Compensation', anchor: 'compensation', question: 'Can an unconscious response challenge a one-sided self-image?' },
+    { name: 'Individuation', anchor: 'individuation', question: 'How does becoming yourself differ from getting your own way?' },
+    { name: 'Inflation', anchor: 'inflation', question: 'When does an insight turn into an exaggerated sense of importance?' }
   ]
 }];

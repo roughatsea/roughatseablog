@@ -272,7 +272,7 @@ If the death drive is what interests you, read **VI** rather than infer the theo
 
 Return to [Nietzsche on bad conscience](/seminal-ideas/genealogy-of-morality/#bad-conscience) to compare internalization, or [his account of the ascetic ideal](/seminal-ideas/genealogy-of-morality/#ascetic-ideal) to compare guilt with interpretations of suffering.
 
-The planned Jung lesson would let us examine another account of psychological conflict and individual development. A later counterpoint should give cooperation, moral obligation, and social institutions their own positive arguments, so the collection does not present suspicion as the only way to think seriously.
+The next complete lesson, [Jung's *Two Essays on Analytical Psychology*](/seminal-ideas/two-essays-on-analytical-psychology/), examines another account of psychological conflict and individual development. A later counterpoint should give cooperation, moral obligation, and social institutions their own positive arguments, so the collection does not present suspicion as the only way to think seriously.
 
 ## Sources
 
