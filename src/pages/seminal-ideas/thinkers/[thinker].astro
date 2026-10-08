@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { thinkers, works } from '../../../data/seminal-ideas';
+export function getStaticPaths() { return thinkers.map(thinker => ({ params: { thinker: thinker.slug }, props: { thinker } })); }
+const { thinker } = Astro.props;
+const books = works.filter(work => work.thinker === thinker.slug);
+---
+<BaseLayout title={thinker.name} description={thinker.introduction}>
+  <a href="/seminal-ideas/">← Seminal Ideas</a>
+  <header><h1>{thinker.name}</h1><p>{thinker.years}</p><p>{thinker.introduction}</p></header>
+  <h2>Works in this collection</h2>
+  <p>This page lists the works we have developed guided lessons for; it is not a complete bibliography.</p>
+  {books.map(book => <article><h3><a href={`/seminal-ideas/${book.slug}/`}>{book.title} →</a></h3><p>{book.year} · {book.question}</p><p>{book.description}</p></article>)}
+</BaseLayout>
+<style>header { margin:2rem 0; } h1 {font-family:var(--font-serif);font-size:clamp(2rem,7vw,3.5rem);} a {color:var(--link-color);} article {padding:1.5rem;border:1px solid var(--border-color);border-radius:.9rem;margin:1.5rem 0;}</style>

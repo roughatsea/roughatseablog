@@ -1,0 +1,40 @@
+---
+import BaseLayout from './BaseLayout.astro';
+interface Props { frontmatter: { title: string; description: string; author: string; thinker: string; year: number; updated: string } }
+const { frontmatter: book } = Astro.props;
+---
+<BaseLayout title={book.title} description={book.description} article>
+  <header class="book-header">
+    <a href="/seminal-ideas/">← Seminal Ideas</a>
+    <p class="eyebrow">Guided work · Philosophy</p>
+    <h1>{book.title}</h1>
+    <p><a href={`/seminal-ideas/thinkers/${book.thinker}/`}>{book.author}</a> · {book.year}</p>
+    <p class="description">{book.description}</p>
+    <nav aria-label="Reading depth">
+      <a href="#orientation">Orientation · 1 minute</a>
+      <a href="#core-lesson">Core lesson · 10 minutes</a>
+      <a href="#deep-exploration">Deep exploration</a>
+    </nav>
+    <p class="meta">No prerequisites · Updated {book.updated} · Examples and evaluation are editorial unless attributed.</p>
+  </header>
+  <article class="prose seminal-prose"><slot /></article>
+</BaseLayout>
+<style>
+  .book-header > a { color: var(--link-color); }
+  .eyebrow { margin: 2rem 0 .6rem; text-transform: uppercase; letter-spacing: .12em; font-size: .75rem; color: var(--text-secondary); }
+  h1 { font-family: var(--font-serif); font-size: clamp(2.2rem,7vw,3.8rem); }
+  .description { font-size: 1.15rem; }
+  nav { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.5rem 0; }
+  nav a { padding: .65rem .85rem; border: 1px solid var(--border-color); border-radius: .6rem; }
+  nav a:hover { color: var(--link-color); }
+  .meta { font-size: .8rem; color: var(--text-secondary); }
+  :global(.seminal-prose h2), :global(.seminal-prose h3), :global(.seminal-prose h4) { scroll-margin-top: 7rem; }
+  :global(.seminal-prose ul), :global(.seminal-prose ol) { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+  :global(.seminal-prose li) { margin-bottom: .6rem; }
+  :global(.seminal-prose hr) { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--border-color); }
+  :global(.seminal-prose details) { margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--border-color); border-radius: .6rem; }
+  :global(.seminal-prose summary) { cursor: pointer; font-family: var(--font-sans); font-weight: 600; }
+  :global(.seminal-prose details[open] summary) { margin-bottom: 1rem; }
+  :global(.seminal-prose a) { text-decoration-color: var(--border-color); }
+  :global(.seminal-prose) { overflow-wrap: anywhere; }
+</style>

@@ -2,7 +2,7 @@
 const pathname = Astro.url.pathname;
 const isWriting = pathname.startsWith('/notes/') || pathname.startsWith('/guides/') || pathname === '/content/';
 const isDaily = pathname.startsWith('/soundings/') || pathname.startsWith('/reckonings/') || pathname.startsWith('/save-point/') || pathname.startsWith('/wake/');
-const isExplorations = pathname === '/algorithms' || pathname.startsWith('/algorithms/') || pathname === '/authors' || pathname.startsWith('/authors/') || pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/') || pathname === '/microcosm' || pathname.startsWith('/microcosm/') || pathname === '/metabolism' || pathname.startsWith('/metabolism/');
+const isExplorations = pathname === '/seminal-ideas' || pathname.startsWith('/seminal-ideas/') || pathname === '/algorithms' || pathname.startsWith('/algorithms/') || pathname === '/authors' || pathname.startsWith('/authors/') || pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/') || pathname === '/microcosm' || pathname.startsWith('/microcosm/') || pathname === '/metabolism' || pathname.startsWith('/metabolism/');
 ---
 
 <header class="glass-panel">
@@ -44,6 +44,7 @@ const isExplorations = pathname === '/algorithms' || pathname.startsWith('/algor
         <details class:list={['nav-group', { 'is-current': isExplorations }]}>
           <summary>Explorations</summary>
           <div class="nav-menu">
+            <a href="/seminal-ideas/" aria-current={pathname === '/seminal-ideas' || pathname.startsWith('/seminal-ideas/') ? 'page' : undefined}><strong>Seminal Ideas</strong><span>Understand the works that shaped thought</span></a>
             <a href="/algorithms/" aria-current={pathname.startsWith('/algorithms/') ? 'page' : undefined}><strong>Algorithms</strong><span>Explore computation, step by step</span></a>
             <a href="/authors/" aria-current={pathname === '/authors' || pathname.startsWith('/authors/') ? 'page' : undefined}><strong>Author Timeline</strong><span>Lives, books, and who came first</span></a>
             <a href="/atlas/" aria-current={pathname.startsWith('/atlas/') ? 'page' : undefined}><strong>Atlas</strong><span>An interactive world atlas</span></a>

@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { thinkers, works } from '../../data/seminal-ideas';
+---
+<BaseLayout title="Seminal Ideas" description="Understand influential works, follow their arguments, and develop your own judgment.">
+  <header>
+    <p class="eyebrow">Explorations · An education in ideas</p>
+    <h1>Seminal Ideas</h1>
+    <p class="intro">Understand the works that shaped how people think—and develop your own judgment about them.</p>
+    <p>Begin with a minute of orientation. Follow the argument in a core lesson. Return for objections, connections, and selected passages when something catches hold.</p>
+  </header>
+  <nav aria-label="Catalogue entry points"><a href="#books">Books</a><a href="#thinkers">Thinkers</a><a href="#ideas">Ideas</a></nav>
+  <section id="books" aria-labelledby="books-heading">
+    <h2 id="books-heading">Explore a work</h2>
+    {works.map(work => <article class="card glass-panel">
+      <p class="eyebrow">{thinkers.find(t => t.slug === work.thinker)?.name} · {work.year}</p>
+      <h3><a href={`/seminal-ideas/${work.slug}/`}>{work.title} →</a></h3>
+      <p class="question">{work.question}</p><p>{work.description}</p>
+      <p class="meta">{work.disciplines.join(' · ')} · Three reading depths · No prerequisites</p>
+    </article>)}
+  </section>
+  <section id="thinkers" aria-labelledby="thinkers-heading"><h2 id="thinkers-heading">Meet a thinker</h2>
+    {thinkers.map(t => <article class="card"><h3><a href={`/seminal-ideas/thinkers/${t.slug}/`}>{t.name} →</a></h3><p class="meta">{t.years}</p><p>{t.introduction}</p></article>)}
+  </section>
+  <section id="ideas" aria-labelledby="ideas-heading"><h2 id="ideas-heading">Begin with a question</h2>
+    <p>These concepts currently lead into the opening work. As the collection grows, we will connect competing accounts and distinguish influence from similarity.</p>
+    <ul>{works.flatMap(w => w.concepts.map(c => <li><a href={`/seminal-ideas/${w.slug}/#${c.anchor}`}><strong>{c.name}</strong><span>{c.question}</span></a></li>))}</ul>
+  </section>
+  <aside class="card"><h2>How to read this collection</h2><p>Influence is a reason to study an idea, not a guarantee that it is true. Each guided work distinguishes the author's claims, the reasoning behind them, and our evaluation. Historical conjectures and empirical claims require evidence; philosophical arguments require scrutiny.</p><p>This is the opening entry. The collection will expand across traditions and disciplines, with depth taking priority over the number of titles.</p></aside>
+</BaseLayout>
+<style>
+  header { margin-bottom: 2rem; } h1 { font-family: var(--font-serif); font-size: clamp(2.6rem,8vw,4rem); }
+  .eyebrow,.meta { color: var(--text-secondary); font-size: .8rem; } .eyebrow { letter-spacing: .08em; text-transform: uppercase; }
+  .intro { font-size: 1.25rem; } nav { display:flex; flex-wrap:wrap; gap:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border-color); }
+  a { color:var(--link-color); } section { margin:2.5rem 0; scroll-margin-top:7rem; } .card { padding:1.5rem; border:1px solid var(--border-color); border-radius: .9rem; margin:1rem 0; }
+  .question { font-size:1.2rem; } ul { list-style:none; } li a { display:grid; padding:1rem 0; border-bottom:1px solid var(--border-color); } li span { color:var(--text-secondary); } aside h2 { font-size:1.1rem; }
+</style>
