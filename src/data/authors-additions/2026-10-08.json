@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-08",
+  "authorId": "achebe",
+  "authorName": "Chinua Achebe",
+  "selection": "Nigerian literary fiction; expands the timeline's world-region coverage with a foundational figure in modern African literature.",
+  "sources": [
+    {
+      "url": "https://www.penguinrandomhouse.com/authors/75/chinua-achebe/",
+      "notes": "The publisher biography verifies that Achebe was born in Nigeria in 1930, died in 2013, published Things Fall Apart as his first novel, and wrote four subsequent novels."
+    },
+    {
+      "url": "https://www.loc.gov/loc/lcib/0812/achebe.html",
+      "notes": "The Library of Congress identifies Things Fall Apart as a 1958 publication and describes its place in modern African literature."
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2008/05/26/after-empire",
+      "notes": "The biographical essay verifies the five-novel career and the selected dates: Things Fall Apart (1958), No Longer at Ease (1960), Arrow of God (1964), A Man of the People (1966), and Anthills of the Savannah (1987). It also distinguishes the mid-1950s composition of Things Fall Apart from its 1958 publication and documents the long interval in novel publication while Achebe wrote poetry and other forms."
+    },
+    {
+      "url": "https://www.newyorker.com/books/page-turner/postscript-chinua-achebe-1930-2013",
+      "notes": "The obituary confirms Achebe's 1930–2013 lifespan and identifies Things Fall Apart as his first novel, followed by the later novels represented in the timeline."
+    }
+  ],
+  "verifiedScope": {
+    "born": 1930,
+    "died": 2013,
+    "start": 1958,
+    "end": 1987,
+    "description": "Lifetime novel publication span using first English-language book publication years as a consistent proxy; poetry, short fiction, essays, lectures, children's books, editing, later nonfiction, translations, and reissues are excluded.",
+    "workYears": [1958, 1960, 1964, 1966, 1987],
+    "dateDistinctions": "Achebe began composing Things Fall Apart in the mid-1950s before its 1958 publication. The markers use book publication rather than composition; the novels were written in English, so later translation dates are excluded. His long gap between the 1966 and 1987 novels does not imply inactivity in other literary forms. There Was a Country (2012) is nonfiction and outside the novel-only span. Chronology is not evidence of influence."
+  }
+}
