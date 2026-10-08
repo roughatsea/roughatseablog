@@ -1,0 +1,14 @@
+---
+import { algorithms } from '../../data/algorithms';
+const { algorithm } = Astro.props;
+---
+<article class="algorithm-lesson">
+  <h2>{algorithm.name}: the idea</h2><p><strong>Prerequisites:</strong> {algorithm.prerequisites}.</p><p>{algorithm.detail}</p>
+  <h3>Try it on the same input</h3><p>Start at A and aim for I on the “Weighted routes” map. Breadth-first search finds a path with four edges: A → B → D → G → I, with total weight 25. Dijkstra and A* find A → C → E → H → I, also four edges but with total weight 9. Now add an A–I connection with weight 99. Breadth-first search takes that one-edge route; the weighted algorithms keep the cheaper route.</p>
+  <h3>When to use it—and what to watch</h3><p>{algorithm.limitation}</p>
+  <h3>Time and memory</h3><p>V means the number of nodes; E means the number of edges. {algorithm.complexity}. All three searches keep costs, predecessors, and waiting nodes, requiring O(V) search memory.</p><p>The executable teaching version deliberately uses arrays: it scans the edge list to find neighbors and sorts the frontier to select a minimum. It therefore does not achieve the adjacency-list or heap bounds quoted above. Recorded playback also stores a snapshot at each operation, using more memory than the search itself. The fixed nine-node graph keeps this small and makes the state easy to inspect.</p>
+  <h3>Reading the display</h3><p>The frontier contains discovered nodes waiting to be explored. “Previous” records the predecessor used to reach a node. Dashed cyan arrows point back to those predecessors. ∞ means no route to that node has been discovered yet. Pink marks the current node or inspected connection; green marks the completed path. All connections are undirected: you can travel either way.</p><p>The Code panel shows explanatory pseudocode. The linked JavaScript is the executable implementation that produces every playback frame. A step can check a condition without changing the table; watch the highlighted line and explanation together.</p>
+  <h3>Continue exploring</h3><ul>{algorithms.filter(a=>a.slug!==algorithm.slug).map(a=><li><a href={`/algorithms/pathfinding/${a.slug}/`}>{a.name}</a> — {a.summary}</li>)}</ul>
+  <h3>Sources and further reading</h3><ul><li><a href="https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/lecture-notes/">MIT 6.006: graph search and shortest-path lecture notes</a></li><li><a href="https://ai.stanford.edu/~nilsson/OnlinePubs-Nils/PublishedPapers/astar.pdf">Hart, Nilsson, and Raphael (1968): the original A* paper</a></li></ul>
+</article>
+<style>.algorithm-lesson{max-width:780px;margin:3rem auto;line-height:1.85}.algorithm-lesson h2{font-size:1.8rem}.algorithm-lesson h3{margin-top:2rem;font-size:1.25rem}.algorithm-lesson li{margin:.6rem 0}</style>

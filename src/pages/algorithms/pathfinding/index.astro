@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Pathfinding from '../../../components/algorithms/Pathfinding.astro';
+import { algorithms } from '../../../data/algorithms';
+---
+<BaseLayout title="Pathfinding playground" description="Compare breadth-first search, Dijkstra, and A* on the same editable graph." wide>
+  <nav aria-label="Breadcrumb"><a href="/algorithms/">Algorithms</a> / Pathfinding</nav>
+  <h1>Find a way through</h1><p class="intro">Same map, three ways to search. Step through an algorithm, then switch to another to see what changes. Select a node to change the destination; select a connection to edit its weight.</p>
+  <Pathfinding />
+  <section class="guide"><h2>What are we solving?</h2><p>A graph is a collection of nodes (the labeled circles) and edges (their connections). Here, each edge has a positive weight representing travel cost. We want a route from a starting node to a destination.</p><div class="comparison"><table><thead><tr><th>Algorithm</th><th>Chooses next node by</th><th>Finds</th></tr></thead><tbody><tr><td>Breadth-first search</td><td>Discovery order</td><td>Fewest edges</td></tr><tr><td>Dijkstra</td><td>Lowest cost so far</td><td>Lowest total weight</td></tr><tr><td>A*</td><td>Lowest cost so far + estimate remaining</td><td>Lowest total weight with the safe estimate used here</td></tr></tbody></table></div><h2>Explore the lessons</h2><ul>{algorithms.map(a=><li><a href={`/algorithms/pathfinding/${a.slug}/`}>{a.name}</a> — {a.summary}</li>)}</ul><h2>A revealing experiment</h2><p>Add an A–I connection and set its weight to 99. Breadth-first search chooses that single connection. Dijkstra and A* take a longer route with a lower total cost. Then choose “Equal costs” to see why breadth-first search works well when every move costs the same.</p><p>Try the “Unreachable destination” map to watch a search exhaust its frontier. Or set the start and destination to the same node: the solution needs no connections.</p></section>
+</BaseLayout>
+<style>h1{font-size:clamp(2rem,4vw,3rem);margin:1rem 0}.intro{max-width:850px;line-height:1.75}.guide{max-width:780px;margin:3rem auto;line-height:1.85}.guide h2{font-size:1.5rem;margin-top:2rem}.comparison{overflow:auto}table{border-collapse:collapse;font-size:1rem}th,td{padding:.75rem;text-align:left;border-bottom:1px solid var(--border-color)}li{margin:.7rem 0}</style>

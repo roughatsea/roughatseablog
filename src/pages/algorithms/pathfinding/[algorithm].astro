@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Pathfinding from '../../../components/algorithms/Pathfinding.astro';
+import Lesson from '../../../components/algorithms/Lesson.astro';
+import { algorithms } from '../../../data/algorithms';
+export function getStaticPaths(){return algorithms.map(algorithm=>({params:{algorithm:algorithm.slug},props:{algorithm}}));}
+const {algorithm} = Astro.props;
+---
+<BaseLayout title={algorithm.name} description={algorithm.summary} wide>
+  <nav aria-label="Breadcrumb"><a href="/algorithms/">Algorithms</a> / <a href="/algorithms/pathfinding/">Pathfinding</a> / {algorithm.short}</nav>
+  <h1>{algorithm.name}</h1><p class="intro">{algorithm.summary}</p>
+  <Pathfinding selected={algorithm.slug} />
+  <Lesson algorithm={algorithm} />
+</BaseLayout>
+<style>h1{font-size:clamp(2rem,4vw,3rem);margin:1rem 0}.intro{font-size:1.1rem;line-height:1.75}</style>

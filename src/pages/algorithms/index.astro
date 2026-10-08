@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { algorithms, families } from '../../data/algorithms';
+---
+<BaseLayout title="Algorithms" description="Explore real computer science algorithms through interactive visualizations, live data, and step-by-step code." wide>
+  <div class="algorithms-index">
+    <p class="eyebrow">Explorations</p><h1>Algorithms</h1>
+    <p class="intro">An algorithm is a sequence of steps for solving a problem. Change the input, follow the data, and watch each decision unfold.</p>
+    {families.map(f=><section><h2>{f.name}</h2><p>{f.description}</p><a class="playground-link" href={`/algorithms/${f.slug}/`}>Open the pathfinding playground</a><div class="algorithm-cards">{algorithms.filter(a=>a.family===f.slug).map(a=><a class="algorithm-card" href={`/algorithms/${a.family}/${a.slug}/`}><span>{a.short}</span><h3>{a.name}</h3><p>{a.summary}</p><small>Prerequisites: {a.prerequisites}</small></a>)}</div></section>)}
+    <section class="journal"><h2>Release journal</h2><p><time datetime="2026-10-08">October 8, 2026</time> · First expedition</p><p>Three graph-search algorithms share an editable map, reversible playback, live distances and predecessors, and highlighted pseudocode. Compare equal costs, weighted routes, and a destination that cannot be reached.</p></section>
+  </div>
+</BaseLayout>
+<style>
+.algorithms-index{max-width:1120px;margin:0 auto}h1{font-size:clamp(2.3rem,5vw,4rem);margin:.3rem 0 1rem}.eyebrow{color:var(--link-color);text-transform:uppercase;letter-spacing:.12em;font-size:.875rem}.intro{max-width:720px;font-size:1.15rem;line-height:1.8}section{margin:2.5rem 0}h2{font-size:1.65rem}.playground-link{display:inline-block;border:1px solid var(--link-color);border-radius:.6rem;padding:.8rem 1rem;margin:.4rem 0 1.5rem}.algorithm-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.algorithm-card{display:block;padding:1.5rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-color);color:var(--text-primary)}.algorithm-card:hover{border-color:var(--link-color)}.algorithm-card span{color:var(--link-color);font-size:.875rem}.algorithm-card h3{margin:.7rem 0;font-size:1.25rem}.algorithm-card p{line-height:1.65}.algorithm-card small{font-size:.875rem;color:var(--text-secondary)}.journal{border-top:1px solid var(--border-color);padding-top:1.5rem;max-width:760px}.journal p{line-height:1.75}@media(max-width:760px){.algorithm-cards{grid-template-columns:1fr}}
+</style>

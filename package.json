@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run build:wake-exports && astro dev",
-    "build": "npm run validate:long-game && npm run test:long-game && npm run validate:save-point && npm run validate:wake && npm run build:wake-exports && astro check && astro build && node scripts/check-long-game-build.mjs",
+    "build": "npm run test:algorithms && npm run validate:long-game && npm run test:long-game && npm run validate:save-point && npm run validate:wake && npm run build:wake-exports && astro check && astro build && node scripts/check-long-game-build.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "validate:save-point": "node scripts/validate-save-point.mjs",
@@ -14,7 +14,8 @@
     "test:fly": "node --test scripts/fly.test.mjs",
     "test:metabolism": "node --test scripts/metabolism.test.mjs",
     "validate:long-game": "node scripts/long-game.mjs",
-    "test:long-game": "node --test scripts/long-game.test.mjs"
+    "test:long-game": "node --test scripts/long-game.test.mjs",
+    "test:algorithms": "node --test scripts/algorithms.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
