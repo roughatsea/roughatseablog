@@ -1,0 +1,303 @@
+---
+const optimum = 38 / 7;
+const total = Math.sqrt(85);
+---
+
+<figure class="reflection-lab reckoning-visual" data-reflection-lab>
+  <header>
+    <p>Reflection laboratory</p>
+    <h3>Move the bounce point and watch the broken path change</h3>
+  </header>
+
+  <div class="controls">
+    <label for="reflection-point">
+      Bounce coordinate <span data-coordinate>{optimum.toFixed(3)}</span>
+    </label>
+    <input
+      id="reflection-point"
+      data-slider
+      type="range"
+      min="2.5"
+      max="7.5"
+      step="0.001"
+      value={optimum}
+      aria-describedby="reflection-readout"
+    />
+    <button type="button" data-optimum>Set shortest path</button>
+  </div>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 760 560" role="img" aria-labelledby="reflection-title reflection-desc">
+      <title id="reflection-title">A reflected path becomes straight after one endpoint is mirrored</title>
+      <desc id="reflection-desc">Points A and B lie above a horizontal mirror. The movable point P lies on the mirror. A solid two-segment route runs from A through P to B. A dashed continuation runs from P to the reflected point B prime below the mirror. At the shortest route, A, P, and B prime lie on one straight line.</desc>
+      <defs>
+        <pattern id="reflection-grid" width="35" height="35" patternUnits="userSpaceOnUse">
+          <path d="M35 0H0V35" fill="none" />
+        </pattern>
+        <linearGradient id="mirror-glow" x1="0" x2="1">
+          <stop offset="0" stop-color="#1493ff" stop-opacity="0.18" />
+          <stop offset="0.5" stop-color="#00e5ff" stop-opacity="0.95" />
+          <stop offset="1" stop-color="#1493ff" stop-opacity="0.18" />
+        </linearGradient>
+      </defs>
+
+      <rect class="plot-bg" width="760" height="560" rx="16" />
+      <rect class="grid" width="760" height="560" rx="16" fill="url(#reflection-grid)" />
+
+      <line class="mirror-glow" x1="48" y1="330" x2="712" y2="330" />
+      <line class="mirror-line" x1="48" y1="330" x2="712" y2="330" />
+      <text class="axis-label" x="62" y="317">mirror: y = 0</text>
+
+      <line class="normal-line" data-normal x1="450" y1="248" x2="450" y2="412" />
+      <polyline class="physical-path" data-physical points="210,110 450,330 630,165" />
+      <line class="unfolded-path" data-unfolded x1="450" y1="330" x2="630" y2="495" />
+      <line class="straight-guide" x1="210" y1="110" x2="630" y2="495" />
+
+      <g class="point point-a">
+        <circle cx="210" cy="110" r="9" />
+        <text x="192" y="90">A = (2, 4)</text>
+      </g>
+      <g class="point point-b">
+        <circle cx="630" cy="165" r="9" />
+        <text x="646" y="151">B = (8, 3)</text>
+      </g>
+      <g class="point point-reflected">
+        <circle cx="630" cy="495" r="9" />
+        <text x="646" y="500">B′ = (8, −3)</text>
+      </g>
+      <g class="point point-p" data-point>
+        <circle cx="450" cy="330" r="10" />
+        <text data-point-label x="450" y="360" text-anchor="middle">P = (5.429, 0)</text>
+      </g>
+
+      <text class="path-label" x="320" y="202">incoming</text>
+      <text class="path-label" x="538" y="236">reflected</text>
+      <text class="ghost-label" x="543" y="423">same length as PB</text>
+    </svg>
+  </div>
+
+  <div class="readout" id="reflection-readout" data-readout aria-live="polite">
+    <div>
+      <span>Total broken-path length</span>
+      <strong data-length>{total.toFixed(3)}</strong>
+    </div>
+    <div>
+      <span>Incoming angle from the normal</span>
+      <strong data-angle-in>40.60°</strong>
+    </div>
+    <div>
+      <span>Outgoing angle from the normal</span>
+      <strong data-angle-out>40.60°</strong>
+    </div>
+  </div>
+
+  <p class="status" data-status>
+    At P = 38/7, the solid incoming segment and the dashed segment to B′ form one straight line. The total length is √85, the minimum.
+  </p>
+
+  <figcaption>
+    <strong>What to notice:</strong> reflecting B across the mirror does not change the length from P to B. The bent route A–P–B therefore has the same length as A–P–B′. Only at the minimizing point does the unfolded route become straight. The physical route is solid; the reflected construction is dashed, so the explanation does not depend on color alone.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-reflection-lab]').forEach((figure) => {
+    const slider = figure.querySelector('[data-slider]');
+    const optimumButton = figure.querySelector('[data-optimum]');
+    const physical = figure.querySelector('[data-physical]');
+    const unfolded = figure.querySelector('[data-unfolded]');
+    const normal = figure.querySelector('[data-normal]');
+    const point = figure.querySelector('[data-point]');
+    const pointLabel = figure.querySelector('[data-point-label]');
+    const coordinate = figure.querySelector('[data-coordinate]');
+    const lengthOutput = figure.querySelector('[data-length]');
+    const angleInOutput = figure.querySelector('[data-angle-in]');
+    const angleOutOutput = figure.querySelector('[data-angle-out]');
+    const status = figure.querySelector('[data-status]');
+
+    if (!(slider instanceof HTMLInputElement) || !(optimumButton instanceof HTMLButtonElement)) return;
+    if (!physical || !unfolded || !normal || !point || !pointLabel || !coordinate) return;
+    if (!lengthOutput || !angleInOutput || !angleOutOutput || !status) return;
+
+    const optimumX = 38 / 7;
+    const px = (x: number) => 70 + 70 * x;
+
+    const render = () => {
+      const p = Number(slider.value);
+      const pScreen = px(p);
+      const firstLength = Math.hypot(p - 2, 4);
+      const secondLength = Math.hypot(8 - p, 3);
+      const totalLength = firstLength + secondLength;
+      const angleIn = Math.atan(Math.abs(p - 2) / 4) * 180 / Math.PI;
+      const angleOut = Math.atan(Math.abs(8 - p) / 3) * 180 / Math.PI;
+      const nearMinimum = Math.abs(p - optimumX) < 0.002;
+
+      physical.setAttribute('points', '210,110 ' + pScreen + ',330 630,165');
+      unfolded.setAttribute('x1', String(pScreen));
+      normal.setAttribute('x1', String(pScreen));
+      normal.setAttribute('x2', String(pScreen));
+      point.setAttribute('transform', 'translate(' + (pScreen - 450) + ' 0)');
+      pointLabel.textContent = 'P = (' + p.toFixed(3) + ', 0)';
+      coordinate.textContent = p.toFixed(3);
+      lengthOutput.textContent = totalLength.toFixed(3);
+      angleInOutput.textContent = angleIn.toFixed(2) + '°';
+      angleOutOutput.textContent = angleOut.toFixed(2) + '°';
+
+      if (nearMinimum) {
+        status.textContent = 'At P = 38/7, the unfolded route is straight. The equal 40.60° angles and the minimum length √85 occur together.';
+      } else {
+        status.textContent = 'This bounce point gives length ' + totalLength.toFixed(3) + '. The unequal angles show that the unfolded route still bends at P.';
+      }
+    };
+
+    slider.addEventListener('input', render);
+    optimumButton.addEventListener('click', () => {
+      slider.value = String(optimumX);
+      render();
+      slider.focus();
+    });
+    render();
+  });
+</script>
+
+<style>
+  .reflection-lab {
+    margin: 2.25rem 0;
+    overflow: hidden;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 18px;
+    background: linear-gradient(145deg, rgba(3, 18, 34, 0.98), rgba(7, 29, 47, 0.94));
+    box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28);
+  }
+  header { padding: 1.2rem 1.25rem 0.55rem; }
+  header p {
+    margin: 0 0 0.3rem;
+    color: #a8ff60;
+    font: 700 0.74rem/1.2 var(--font-mono, monospace);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  header h3 {
+    margin: 0;
+    color: #f4fbff;
+    font-size: clamp(1.08rem, 2.4vw, 1.42rem);
+    line-height: 1.25;
+  }
+  .controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.6rem 0.9rem;
+    align-items: center;
+    padding: 0.8rem 1.25rem 1rem;
+  }
+  label {
+    grid-column: 1 / -1;
+    color: #c9e2ec;
+    font: 700 0.82rem/1.3 var(--font-mono, monospace);
+  }
+  label span { color: #a8ff60; }
+  input[type='range'] {
+    width: 100%;
+    accent-color: #a8ff60;
+  }
+  button {
+    border: 1px solid rgba(177, 216, 230, 0.42);
+    border-radius: 999px;
+    background: rgba(8, 35, 55, 0.82);
+    color: #dff7ff;
+    padding: 0.58rem 0.82rem;
+    font: 700 0.76rem/1 var(--font-mono, monospace);
+    cursor: pointer;
+  }
+  button:hover, button:focus-visible {
+    border-color: #a8ff60;
+    color: #a8ff60;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(168, 255, 96, 0.15);
+  }
+  .diagram-wrap { padding: 0 0.8rem; overflow-x: auto; }
+  svg { display: block; width: 100%; min-width: 620px; height: auto; }
+  .plot-bg { fill: #031321; }
+  .grid { opacity: 0.34; }
+  pattern path { stroke: rgba(77, 160, 187, 0.22); stroke-width: 1; }
+  .mirror-glow { stroke: url(#mirror-glow); stroke-width: 12; }
+  .mirror-line { stroke: #8ee9ff; stroke-width: 2.5; }
+  .axis-label, .path-label, .ghost-label {
+    fill: #91b7c6;
+    font: 15px/1 var(--font-mono, monospace);
+  }
+  .normal-line { stroke: #ff58c8; stroke-width: 2; stroke-dasharray: 7 7; }
+  .physical-path {
+    fill: none;
+    stroke: #a8ff60;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .unfolded-path {
+    stroke: #ff58c8;
+    stroke-width: 3;
+    stroke-dasharray: 11 8;
+  }
+  .straight-guide {
+    stroke: rgba(255, 88, 200, 0.28);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 8;
+  }
+  .point circle { fill: #061726; stroke-width: 3; }
+  .point text { fill: #eafaff; font: 700 16px/1 var(--font-mono, monospace); }
+  .point-a circle, .point-b circle { stroke: #00e5ff; }
+  .point-reflected circle { stroke: #ff58c8; stroke-dasharray: 4 3; }
+  .point-p circle { stroke: #a8ff60; }
+  .readout {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding: 0.9rem 1.25rem;
+  }
+  .readout div {
+    border: 1px solid rgba(157, 211, 229, 0.25);
+    border-radius: 12px;
+    background: rgba(7, 29, 47, 0.72);
+    padding: 0.8rem;
+  }
+  .readout span {
+    display: block;
+    min-height: 2.2em;
+    color: #92bbc9;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .readout strong {
+    display: block;
+    margin-top: 0.35rem;
+    color: #f4fbff;
+    font: 700 1.05rem/1.2 var(--font-mono, monospace);
+  }
+  .status {
+    margin: 0;
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid rgba(0, 229, 255, 0.18);
+    color: #a8ff60;
+    font: 700 0.84rem/1.45 var(--font-mono, monospace);
+  }
+  figcaption {
+    padding: 1rem 1.25rem 1.2rem;
+    background: rgba(0, 0, 0, 0.18);
+    color: #b9cbd3;
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  figcaption strong { color: #eaf9ff; }
+  @media (max-width: 650px) {
+    .controls { grid-template-columns: 1fr; }
+    button { justify-self: start; }
+    .readout { grid-template-columns: 1fr; }
+    .readout span { min-height: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; }
+  }
+</style>

@@ -1,0 +1,305 @@
+---
+title: "Why Does the Shortest Bounce Obey the Law of Reflection?"
+description: "Reflect one endpoint across a mirror and a bent route becomes straight. That single construction finds the shortest bounce and explains why the incoming and outgoing angles match."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-09.svg"
+heroImageAlt: "A dark maritime blueprint shows two cyan beacons above a luminous horizontal mirror; acid-green rays meet the mirror while a magenta dashed continuation reaches a ghost beacon below, forming one straight unfolded route."
+date: 2026-10-09
+publishedAt: 2026-10-09T06:00:00-07:00
+area: "Geometry and optimization"
+difficulty: "Intermediate"
+prerequisites:
+  - "Coordinates in the plane"
+  - "The distance formula"
+  - "The triangle inequality"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - geometry
+  - optimization
+  - reflection
+  - shortest-path
+  - herons-principle
+  - geometric-optics
+  - billiards
+  - ray-tracing
+---
+
+import ReflectionPathLab from '../../components/reckonings/ReflectionPathLab.astro';
+
+A billiard ball must touch one cushion before reaching a target. Where should the ball strike the cushion if you want the shortest possible route?
+
+Trying points one by one will find an approximation. Geometry finds the exact point without searching.
+
+The trick is to reflect the target across the cushion. The required path still looks bent on the real table, but its reflected copy becomes a straight segment. Because a straight segment is the shortest route between two points, the reflected picture solves the optimization problem at once.
+
+The same construction explains the familiar law of reflection: the angle at which a ray arrives equals the angle at which the ray leaves.
+
+## Unfold the bounce
+
+Let the horizontal line $L$ be a mirror. Points $A$ and $B$ lie on the same side of $L$. A route begins at $A$, touches the mirror at a point $P$, and ends at $B$. Its total length is
+
+$$
+D(P)=AP+PB,
+$$
+
+where $AP$ and $PB$ denote the lengths of the two segments.
+
+Reflect $B$ across $L$ to a point $B'$. Reflection preserves distance from every point on the mirror, so
+
+$$
+PB=PB'.
+$$
+
+The broken route therefore satisfies
+
+$$
+D(P)=AP+PB'.
+$$
+
+Now apply the triangle inequality to the three points $A$, $P$, and $B'$:
+
+$$
+AP+PB'\geq AB'.
+$$
+
+Equality occurs exactly when $A$, $P$, and $B'$ lie on one straight segment, with $P$ between the other two points. The shortest physical route $A\to P\to B$ is therefore found by drawing the straight line from $A$ to $B'$ and recording where that line crosses the mirror.
+
+The interactive diagram uses one fixed pair of endpoints. Move $P$ along the mirror and compare the route's length and angles. The dashed segment from $P$ to $B'$ is a construction; the solid segment from $P$ to $B$ is the reflected physical route.
+
+<ReflectionPathLab />
+
+## Why the two angles match
+
+At the minimizing point, the straight line from $A$ to $B'$ crosses the mirror at $P$. Reflect the segment $PB'$ back across the mirror. The reflected segment is $PB$.
+
+Reflection preserves angles. The angle between $PB'$ and the mirror equals the angle between $PB$ and the mirror. Because $AP$ and $PB'$ form one straight line, the angle made by $AP$ on one side of the normal matches the reflected angle made by $PB$ on the other side.
+
+Optics usually measures both angles from the **normal**, the line perpendicular to the mirror at $P$. If $\theta_i$ is the incoming angle and $\theta_r$ is the outgoing angle, the law of reflection is
+
+$$
+\theta_i=\theta_r.
+$$
+
+Measuring from the mirror instead would produce the same equality because each angle from the mirror is the complement of its angle from the normal.
+
+## Worked example: find the exact bounce point
+
+Place the mirror on the $x$-axis,
+
+$$
+L=\{(x,0):x\in\mathbb{R}\}.
+$$
+
+Let the starting point be $A=(2,4)$ and the target be $B=(8,3)$. We will find the point $P=(p,0)$ that minimizes $AP+PB$.
+
+**Step 1: reflect the target.** Reflecting across the $x$-axis changes the sign of the vertical coordinate, so
+
+$$
+B'=(8,-3).
+$$
+
+**Step 2: write the straight segment from $A$ to $B'$.** A point on that segment has the form
+
+$$
+A+t(B'-A)
+=(2,4)+t(6,-7),
+$$
+
+where $t$ runs from $0$ at $A$ to $1$ at $B'$.
+
+**Step 3: find where the segment reaches the mirror.** The vertical coordinate is
+
+$$
+4-7t.
+$$
+
+At the mirror, that coordinate equals $0$:
+
+$$
+4-7t=0
+\quad\Longrightarrow\quad
+t=\frac47.
+$$
+
+The horizontal coordinate at the same value of $t$ is
+
+$$
+p=2+6\left(\frac47\right)
+=2+\frac{24}{7}
+=\frac{38}{7}.
+$$
+
+Thus the exact bounce point is
+
+$$
+P=\left(\frac{38}{7},0\right).
+$$
+
+**Step 4: calculate the minimum length.** The unfolded route is the straight segment $AB'$, so
+
+$$
+\begin{aligned}
+AB'
+&=\sqrt{(8-2)^2+(-3-4)^2}\\
+&=\sqrt{6^2+(-7)^2}\\
+&=\sqrt{36+49}\\
+&=\sqrt{85}\\
+&\approx 9.220.
+\end{aligned}
+$$
+
+**Step 5: check the angles independently.** From $A$ to $P$, the horizontal change is
+
+$$
+\frac{38}{7}-2=\frac{24}{7},
+$$
+
+while the vertical change has magnitude $4$. The tangent of the angle from the vertical normal is therefore
+
+$$
+\tan\theta_i=\frac{24/7}{4}=\frac67.
+$$
+
+From $P$ to $B$, the horizontal change is
+
+$$
+8-\frac{38}{7}=\frac{18}{7},
+$$
+
+while the vertical change is $3$. Hence
+
+$$
+\tan\theta_r=\frac{18/7}{3}=\frac67.
+$$
+
+Both acute angles lie between $0^\circ$ and $90^\circ$, so equal tangents give
+
+$$
+\theta_i=\theta_r\approx 40.60^\circ.
+$$
+
+The reflection construction, the minimum-length calculation, and the angle check all select the same point.
+
+## A principle with a long optical history
+
+The equal-angle rule predates the shortest-path proof. The [Oxford Classical Dictionary's survey of catoptrics](https://academic.oup.com/edited-volume/61673/chapter-abstract/548509153) describes an ancient Greek tradition that included a *Catoptrica* attributed to Euclid, although the attribution is disputed, and later treatments associated with Hero of Alexandria and Ptolemy.
+
+Hero's distinctive contribution was to connect reflection with a minimum. A problem in Hero's *Catoptrica*, usually dated to the first century CE, shows that the equal-angle route has the shortest length among paths that touch a plane mirror. The [University of St Andrews account of the minimal-path problem](https://mathshistory.st-andrews.ac.uk/Extras/MinimalPaths2/) presents the same construction used in this lesson.
+
+That history should not be compressed into “Hero discovered reflection.” Earlier writers knew the equal-angle rule, and Ptolemy's optical work included experimental measurements. Hero supplied a powerful way to derive the rule from an extremal path.
+
+In the mid-seventeenth century, Pierre de Fermat proposed a broader principle: a light ray follows a path whose travel time is stationary under small changes. In the flat-mirror problem, light stays in one medium and moves at constant speed, so minimizing time is the same as minimizing distance. The [Feynman Lectures' chapter on least time](https://www.feynmanlectures.caltech.edu/I_26.html) works from that optical principle toward reflection and refraction.
+
+“Least time” is a useful historical name, but **stationary time** is the more general modern statement. In some optical systems, the physical path need not be the globally shortest path. The one-reflection problem on a flat mirror really does have the unique minimum proved above.
+
+## Where unfolding earns its keep
+
+The construction is useful whenever a path reflects from a flat boundary.
+
+A billiards player can reflect the target across a cushion, aim along the resulting straight line, and recover the intended contact point on the real cushion. The model assumes an ideal point ball, a perfectly elastic collision, no spin, and no energy loss. Real tables violate those assumptions, but the unfolded line remains the geometric starting point.
+
+Geometric optics uses the same equal-angle law for plane mirrors. The [OpenStax account of reflection](https://openstax.org/books/university-physics-volume-3/pages/1-2-the-law-of-reflection) defines the incoming and reflected angles relative to the surface normal and applies the rule to mirror images.
+
+Computer graphics turns the construction into an algorithmic operation. A ray tracer follows a viewing ray to a surface, computes a reflected direction from the surface normal, and traces the new ray through the scene. [NVIDIA's ray-tracing overview](https://developer.nvidia.com/discover/ray-tracing) describes ray tracing as a technique used in film, television, and real-time video games. Production renderers also model roughness, scattering, absorption, and many bounces; the perfect mirror is one exact case inside a larger rendering problem.
+
+Unfolding extends beyond a single bounce. A rectangular billiard path with several cushion strikes can be straightened by reflecting the entire table after each strike. The ball's complicated route in the original table becomes one line through a tiled collection of reflected tables. That idea opens a door from elementary geometry into the mathematical study of billiards and dynamical systems.
+
+## Try the construction
+
+### Problem 1
+
+The mirror is the $x$-axis. Let $A=(1,3)$ and $B=(5,2)$. Find the bounce point $P$ that minimizes $AP+PB$, and find the minimum length.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Reflect $B=(5,2)$ across the $x$-axis:
+
+$$
+B'=(5,-2).
+$$
+
+Parameterize the segment from $A$ to $B'$:
+
+$$
+(1,3)+t(4,-5).
+$$
+
+Its vertical coordinate reaches $0$ when
+
+$$
+3-5t=0
+\quad\Longrightarrow\quad
+t=\frac35.
+$$
+
+The horizontal coordinate is then
+
+$$
+1+4\left(\frac35\right)
+=1+\frac{12}{5}
+=\frac{17}{5}.
+$$
+
+Therefore
+
+$$
+P=\left(\frac{17}{5},0\right).
+$$
+
+The minimum length is the straight distance from $A$ to $B'$:
+
+$$
+AB'=\sqrt{(5-1)^2+(-2-3)^2}
+=\sqrt{4^2+(-5)^2}
+=\sqrt{41}.
+$$
+
+</details>
+
+### Problem 2
+
+Two points are $A=(0,2)$ and $B=(6,2)$ above the mirror $y=0$. Without using calculus, find the shortest route from $A$ to the mirror and then to $B$. Explain why the bounce point lies halfway between the endpoints.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Reflect $B=(6,2)$ to
+
+$$
+B'=(6,-2).
+$$
+
+The line from $A=(0,2)$ to $B'=(6,-2)$ changes its vertical coordinate from $2$ to $-2$. It reaches $0$ halfway along the segment. Halfway between the horizontal coordinates $0$ and $6$ is $3$, so
+
+$$
+P=(3,0).
+$$
+
+The minimum length is
+
+$$
+AB'=\sqrt{(6-0)^2+(-2-2)^2}
+=\sqrt{36+16}
+=\sqrt{52}
+=2\sqrt{13}.
+$$
+
+The equal heights of $A$ and $B$ make the reflected picture symmetric around the vertical line $x=3$. That symmetry places the bounce point halfway between them.
+
+</details>
+
+## The idea to keep
+
+Reflect the target across a flat boundary. Every broken path keeps the same length after unfolding, but only the minimizing path becomes a straight segment. Straightness gives the shortest route, and folding the segment back makes the incoming and outgoing angles equal.
+
+To continue, [Why Do the Shortest Three Roads Meet at 120°?](/reckonings/daily-reckoning-2026-09-12/) studies another geometric minimum, while [Why Can a Particle Cross a Wall It Cannot Climb?](/reckonings/daily-reckoning-2026-10-04/) shows where wave mechanics departs from a purely ray-like picture.
+
+## Sources
+
+- University of St Andrews, [“Minimal Path: Minimal path between two points via a line”](https://mathshistory.st-andrews.ac.uk/Extras/MinimalPaths2/), the reflection construction and its attribution to Hero.
+- A. Mark Smith, [“Catoptrics,” *Oxford Classical Dictionary*](https://academic.oup.com/edited-volume/61673/chapter-abstract/548509153), ancient treatments of reflection and the disputed attribution of Euclid's *Catoptrica*.
+- Richard P. Feynman, Robert B. Leighton, and Matthew Sands, [“Optics: The Principle of Least Time,” *The Feynman Lectures on Physics*, Volume I, Chapter 26](https://www.feynmanlectures.caltech.edu/I_26.html).
+- OpenStax, [“The Law of Reflection,” *University Physics Volume 3*](https://openstax.org/books/university-physics-volume-3/pages/1-2-the-law-of-reflection).
+- Delft University of Technology, [“Geometrical Optics”](https://interactivetextbooks.tudelft.nl/interactive-optics/content/Chap2_Geometrical_optics/GeometricalOptics_2022_01Clean.html), Fermat's principle, optical path length, reflection, and refraction.
+- NVIDIA, [“Ray Tracing”](https://developer.nvidia.com/discover/ray-tracing), current applications in offline and real-time computer graphics.

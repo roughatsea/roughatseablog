@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">A reflected route unfolded into a straight line</title>
+  <desc id="hero-desc">On a dark maritime blueprint, two cyan beacons stand above a luminous horizontal mirror. Acid-green rays meet the mirror and continue as a magenta dashed line toward a ghost beacon below, revealing one straight unfolded path.</desc>
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020914"/>
+      <stop offset="0.48" stop-color="#061a2d"/>
+      <stop offset="1" stop-color="#020b18"/>
+    </linearGradient>
+    <radialGradient id="horizon" cx="50%" cy="53%" r="62%">
+      <stop offset="0" stop-color="#0c5470" stop-opacity=".35"/>
+      <stop offset=".58" stop-color="#05243a" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#020914" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mirror" x1="0" x2="1">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".05"/>
+      <stop offset=".18" stop-color="#1493ff" stop-opacity=".55"/>
+      <stop offset=".5" stop-color="#00e5ff"/>
+      <stop offset=".82" stop-color="#1493ff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#1493ff" stop-opacity=".05"/>
+    </linearGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#1a6a87" stroke-opacity=".2" stroke-width="1"/>
+    </pattern>
+    <pattern id="micro-grid" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M10 0H0V10" fill="none" stroke="#1493ff" stroke-opacity=".06" stroke-width=".7"/>
+    </pattern>
+    <filter id="cyan-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="green-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="below"><rect x="0" y="525" width="1600" height="375"/></clipPath>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#night)"/>
+  <rect width="1600" height="900" fill="url(#horizon)"/>
+  <rect x="54" y="44" width="1492" height="812" rx="26" fill="url(#micro-grid)" stroke="#1b7596" stroke-opacity=".25"/>
+  <rect x="54" y="44" width="1492" height="812" rx="26" fill="url(#grid)"/>
+
+  <g opacity=".25" stroke="#58cce8" fill="none">
+    <circle cx="800" cy="525" r="300"/>
+    <circle cx="800" cy="525" r="225"/>
+    <circle cx="800" cy="525" r="150"/>
+    <path d="M112 170H360M1240 170h248M112 740h248M1240 740h248"/>
+    <path d="M800 80v85M800 690v130"/>
+  </g>
+
+  <path d="M70 555C210 530 310 570 450 542S720 515 842 542s240 24 350-6 223-18 338 12" fill="none" stroke="#0d4b64" stroke-width="3" opacity=".55"/>
+  <line x1="90" y1="525" x2="1510" y2="525" stroke="url(#mirror)" stroke-width="22" filter="url(#cyan-glow)" opacity=".65"/>
+  <line x1="90" y1="525" x2="1510" y2="525" stroke="#8defff" stroke-width="3"/>
+
+  <g opacity=".48" clip-path="url(#below)">
+    <path d="M360 245L835 525L1280 735" fill="none" stroke="#ff1493" stroke-width="3" stroke-dasharray="18 15"/>
+    <circle cx="1280" cy="735" r="23" fill="#ff1493" fill-opacity=".12" stroke="#ff58c8" stroke-width="4" stroke-dasharray="7 7"/>
+    <path d="M1280 685v100M1230 735h100" stroke="#ff58c8" stroke-width="2" stroke-dasharray="6 9"/>
+  </g>
+
+  <path d="M360 245L835 525L1280 315" fill="none" stroke="#93ff14" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" filter="url(#green-glow)"/>
+  <path d="M360 245L1280 735" fill="none" stroke="#ff58c8" stroke-width="3" stroke-dasharray="17 15" opacity=".7" filter="url(#pink-glow)"/>
+
+  <line x1="835" y1="405" x2="835" y2="645" stroke="#ff58c8" stroke-width="3" stroke-dasharray="10 11"/>
+  <path d="M835 468A57 57 0 0 0 786 496" fill="none" stroke="#ff58c8" stroke-width="4"/>
+  <path d="M835 468A57 57 0 0 1 886 500" fill="none" stroke="#ff58c8" stroke-width="4"/>
+
+  <g filter="url(#cyan-glow)">
+    <circle cx="360" cy="245" r="19" fill="#021321" stroke="#00e5ff" stroke-width="5"/>
+    <circle cx="1280" cy="315" r="19" fill="#021321" stroke="#00e5ff" stroke-width="5"/>
+  </g>
+  <g stroke="#00e5ff" stroke-width="2.5" opacity=".8">
+    <path d="M360 185v120M300 245h120"/>
+    <path d="M1280 255v120M1220 315h120"/>
+  </g>
+
+  <g filter="url(#green-glow)">
+    <circle cx="835" cy="525" r="16" fill="#061827" stroke="#93ff14" stroke-width="5"/>
+    <circle cx="835" cy="525" r="34" fill="none" stroke="#93ff14" stroke-width="2" opacity=".5"/>
+  </g>
+
+  <g fill="#7ccbe1" opacity=".65">
+    <circle cx="172" cy="132" r="2"/><circle cx="250" cy="190" r="2"/><circle cx="1188" cy="124" r="2"/>
+    <circle cx="1384" cy="202" r="2"/><circle cx="1048" cy="92" r="2"/><circle cx="530" cy="116" r="2"/>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T06:00:00-07:00",
+  "updatedAt": "2026-10-09T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -977,6 +977,35 @@
       "relatedLessons": [
         "daily-reckoning-2026-09-03",
         "daily-reckoning-2026-09-22"
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "slug": "daily-reckoning-2026-10-09",
+      "title": "Why Does the Shortest Bounce Obey the Law of Reflection?",
+      "area": "Geometry and optimization",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Coordinates in the plane",
+        "The distance formula",
+        "The triangle inequality"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Heron's reflection principle",
+        "shortest paths",
+        "law of reflection",
+        "geometric optics",
+        "unfolding",
+        "billiards",
+        "Fermat's principle",
+        "ray tracing",
+        "triangle inequality",
+        "history of optics"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-12",
+        "daily-reckoning-2026-10-04"
       ]
     }
   ]
