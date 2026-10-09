@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-09",
+  "authorId": "lem",
+  "authorName": "Stanisław Lem",
+  "selection": "Polish science-fiction novelist, broadening the timeline's twentieth-century European and translated-fiction coverage.",
+  "sources": [
+    {
+      "url": "https://www.lem.pl/",
+      "use": "Official author site for Lem's 1921–2006 lifespan and literary profile."
+    },
+    {
+      "url": "https://english.lem.pl/gallery/48-biography/callendarium",
+      "use": "Official biographical calendar for birth and death, the 1946 A Man from Mars serialization, the 1948 composition of Hospital of the Transfiguration, The Astronauts as his first book in 1951, and dated fiction milestones through 1987."
+    },
+    {
+      "url": "https://english.lem.pl/works/novels",
+      "use": "Official bibliography cross-check for the selected novel years: 1951, 1959, 1961, 1964, 1968, 1976 and 1987."
+    },
+    {
+      "url": "https://www.wired.com/2002/12/solaris-2/",
+      "use": "Biographical cross-check distinguishing the 1948 composition and delayed 1955 publication of Hospital of the Transfiguration, Solaris's 1961 Polish publication, and its later English translation through an abridged French version."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1921–2006",
+    "publishingSpan": "1951–1987",
+    "proxy": "Lifetime novel publication span from Lem's first book, The Astronauts, to the Polish book publication of Fiasco; it is not a claim of uninterrupted work or a complete career bibliography.",
+    "workDates": [
+      "1951 — The Astronauts",
+      "1959 — Eden",
+      "1961 — Solaris",
+      "1964 — The Invincible",
+      "1968 — His Master's Voice",
+      "1976 — The Chain of Chance",
+      "1987 — Fiasco"
+    ],
+    "dateDistinctions": "Work markers use original Polish book years. A Man from Mars was serialized in 1946 and is outside the book-span bar. Hospital of the Transfiguration was composed in 1948 but published in 1955. Solaris's later English translation was made through an abridged French version. Story collections, essays, criticism, futurology and post-1987 nonfiction are excluded.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
