@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-10",
+  "authorId": "lewis-cs",
+  "authorName": "C. S. Lewis",
+  "selection": "Northern Irish-born British fantasy author, continuing the rotation from Polish science fiction to twentieth-century fantasy.",
+  "sources": [
+    {
+      "url": "https://www.wheaton.edu/academics/academic-centers/wadecenter/authors/cs-lewis",
+      "use": "Wheaton College's Marion E. Wade Center for Lewis's November 29, 1898–November 22, 1963 lifespan, Belfast birthplace, literary profile and Till We Have Faces context."
+    },
+    {
+      "url": "https://www.dbu.edu/mitchell/c-s-lewis-resources/bibliography.html",
+      "use": "Dallas Baptist University's chronological Lewis bibliography for the selected fiction-book years from 1933 through 1956 and the 1977 publication of The Dark Tower and Other Stories."
+    },
+    {
+      "url": "https://www.cslewis.org/resource/chronocsl/",
+      "use": "C. S. Lewis Foundation timeline for Lewis's 1919 first non-school publication, the 1941 weekly serialization of The Screwtape Letters, The Lion, the Witch and the Wardrobe as the first Narnia book released in 1950, and his 1963 death."
+    },
+    {
+      "url": "https://libcat.weber.edu/cgi-bin/koha/opac-authoritiesdetail.pl?authid=556995",
+      "use": "Weber State University library authority record distinguishing Narnia publication order, beginning with The Lion, the Witch and the Wardrobe, from later numbering by internal story chronology, beginning with The Magician's Nephew."
+    },
+    {
+      "url": "https://www.wheaton.edu/magazine/winter-2021/make-believe-vs-make-belief",
+      "use": "Wheaton College cross-check for the Space Trilogy sequence and years: 1938, 1943 and 1945."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1898–1963",
+    "publishingSpan": "1933–1956",
+    "proxy": "Lifetime fiction-book publication span from The Pilgrim's Regress to Till We Have Faces; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1933 — The Pilgrim's Regress",
+      "1938 — Out of the Silent Planet",
+      "1942 — The Screwtape Letters (book edition)",
+      "1945 — That Hideous Strength",
+      "1950 — The Lion, the Witch and the Wardrobe",
+      "1952 — The Voyage of the Dawn Treader",
+      "1955 — The Magician's Nephew",
+      "1956 — Till We Have Faces"
+    ],
+    "dateDistinctions": "Markers use original English-language book years rather than composition, translation, adaptation or Narnian internal-chronology dates. The Screwtape Letters ran in weekly Guardian installments in 1941 before its 1942 book edition. Lewis published poetry by 1919, outside the fiction-book bar. Later Narnia editions may number The Magician's Nephew first by story chronology even though The Lion, the Witch and the Wardrobe was published first in 1950. Publications after Lewis's death, including The Dark Tower and Other Stories (1977), are excluded.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
