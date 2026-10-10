@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T06:00:00-07:00",
+  "updatedAt": "2026-10-10T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -1006,6 +1006,36 @@
       "relatedLessons": [
         "daily-reckoning-2026-09-12",
         "daily-reckoning-2026-10-04"
+      ]
+    },
+    {
+      "date": "2026-10-10",
+      "slug": "daily-reckoning-2026-10-10",
+      "title": "Why Do Parentheses and Polygons Count the Same Way?",
+      "area": "Discrete mathematics and computation",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Multiplication and addition",
+        "Binomial coefficients",
+        "Reading a recurrence"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "Catalan numbers",
+        "parenthesization",
+        "polygon triangulation",
+        "full binary trees",
+        "recursive counting",
+        "Catalan recurrence",
+        "binomial coefficients",
+        "syntax trees",
+        "combinatorial explosion",
+        "global history of combinatorics"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-08-31",
+        "daily-reckoning-2026-09-27",
+        "daily-reckoning-2026-10-06"
       ]
     }
   ]

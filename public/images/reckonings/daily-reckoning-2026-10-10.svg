@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">Catalan parenthesizations and pentagon triangulations</title>
+  <desc id="hero-desc">A dark maritime blueprint pairs nested neon bracket arcs and a branching binary tree with a glowing pentagon divided by two noncrossing diagonals.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020a14" />
+      <stop offset="0.5" stop-color="#06192b" />
+      <stop offset="1" stop-color="#03111e" />
+    </linearGradient>
+    <radialGradient id="sonar" cx="50%" cy="50%" r="60%">
+      <stop offset="0" stop-color="#1493ff" stop-opacity=".2" />
+      <stop offset="1" stop-color="#1493ff" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#1f6d8c" stroke-opacity=".2" stroke-width="1" />
+    </pattern>
+    <filter id="cyan-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="green-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="pink-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)" />
+  <rect width="1600" height="900" fill="url(#grid)" />
+  <ellipse cx="1180" cy="455" rx="420" ry="420" fill="url(#sonar)" />
+  <circle cx="1180" cy="455" r="338" fill="none" stroke="#1493ff" stroke-opacity=".16" stroke-width="2" />
+  <circle cx="1180" cy="455" r="250" fill="none" stroke="#1493ff" stroke-opacity=".13" stroke-width="2" />
+
+  <g fill="none" stroke="#00e5ff" stroke-width="7" stroke-linecap="round" filter="url(#cyan-glow)">
+    <path d="M180 235C122 235 122 318 122 450s0 215 58 215" />
+    <path d="M330 300c-46 0-46 58-46 150s0 150 46 150" />
+    <path d="M690 235c58 0 58 83 58 215s0 215-58 215" />
+    <path d="M540 300c46 0 46 58 46 150s0 150-46 150" />
+  </g>
+
+  <g stroke="#a8ff60" stroke-width="6" fill="#061726" filter="url(#green-glow)">
+    <path d="M435 210V330M435 330L285 470M435 330L585 470M285 470L215 610M285 470L355 610M585 470L515 610M585 470L655 610" fill="none" />
+    <circle cx="435" cy="210" r="16" /><circle cx="435" cy="330" r="16" />
+    <circle cx="285" cy="470" r="16" /><circle cx="585" cy="470" r="16" />
+    <circle cx="215" cy="610" r="14" /><circle cx="355" cy="610" r="14" />
+    <circle cx="515" cy="610" r="14" /><circle cx="655" cy="610" r="14" />
+  </g>
+
+  <path d="M1180 126L1453 324L1349 645H1011L907 324Z" fill="#1493ff" fill-opacity=".08" stroke="#00e5ff" stroke-width="8" stroke-linejoin="round" filter="url(#cyan-glow)" />
+  <g stroke="#ff58c8" stroke-width="7" stroke-dasharray="19 13" stroke-linecap="round" filter="url(#pink-glow)">
+    <path d="M1180 126L1349 645" />
+    <path d="M1180 126L1011 645" />
+  </g>
+  <g fill="#061726" stroke="#a8ff60" stroke-width="7" filter="url(#green-glow)">
+    <circle cx="1180" cy="126" r="17" /><circle cx="1453" cy="324" r="17" />
+    <circle cx="1349" cy="645" r="17" /><circle cx="1011" cy="645" r="17" />
+    <circle cx="907" cy="324" r="17" />
+  </g>
+
+  <path d="M790 170V730" stroke="#75bdd6" stroke-opacity=".35" stroke-width="2" stroke-dasharray="8 16" />
+  <g fill="#8ee9ff" fill-opacity=".5">
+    <circle cx="790" cy="170" r="5" /><circle cx="790" cy="730" r="5" />
+  </g>
+</svg>

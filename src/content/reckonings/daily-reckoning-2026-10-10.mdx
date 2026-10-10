@@ -1,0 +1,257 @@
+---
+title: "Why Do Parentheses and Polygons Count the Same Way?"
+description: "Four symbols have five complete parenthesizations. A pentagon has five triangulations. The Catalan recurrence reveals the shared branching structure behind both counts."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-10.svg"
+heroImageAlt: "A dark maritime blueprint pairs nested cyan bracket arcs and an acid-green binary tree with a glowing pentagon crossed by two dashed magenta diagonals."
+date: 2026-10-10
+publishedAt: 2026-10-10T06:00:00-07:00
+area: "Discrete mathematics and computation"
+difficulty: "Intermediate"
+prerequisites:
+  - "Multiplication and addition"
+  - "Binomial coefficients"
+  - "Reading a recurrence"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - combinatorics
+  - catalan-numbers
+  - recurrence
+  - parenthesization
+  - polygon-triangulation
+  - binary-trees
+  - parsing
+  - history-of-mathematics
+---
+
+import CatalanCorrespondence from '../../components/reckonings/CatalanCorrespondence.astro';
+
+Suppose $\star$ is a binary operation: it joins exactly two inputs. The operation might be subtraction, function composition, or a step in a computer program. If $\star$ is not associative, the bare expression
+
+$$
+a\star b\star c\star d
+$$
+
+does not say which pair to combine first.
+
+How many complete parenthesizations remove the ambiguity?
+
+There are five. A convex pentagon also has exactly five ways to be divided into triangles with noncrossing diagonals. The equality is not a numerical accident. Both problems repeatedly split one object into an ordered left part and an ordered right part. That shared act of splitting produces the **Catalan numbers**.
+
+## Count by the final operation
+
+A complete parenthesization of $a\star b\star c\star d$ must have one operation performed last. That final operation separates the original symbols into a left consecutive block and a right consecutive block.
+
+For example,
+
+$$
+(a\star b)\star(c\star d)
+$$
+
+has $\star$ between the two parenthesized pairs as its final operation. The left block contains $a,b$; the right block contains $c,d$.
+
+Let $C_n$ denote the number of complete parenthesizations of $n+1$ symbols. The index starts at $0$, so $C_0=1$: a single symbol has one harmless “parenthesization,” namely the symbol itself.
+
+For $n\geq1$, place $i+1$ symbols on the left of the final operation. The remaining $n-i$ symbols go on the right. There are $C_i$ ways to parenthesize the left block and $C_{n-1-i}$ ways to parenthesize the right block. Those choices are independent, so they multiply.
+
+The final operation may split the symbols in any of $n$ positions. The counts for the different split positions add:
+
+$$
+C_n=\sum_{i=0}^{n-1} C_iC_{n-1-i},
+\qquad C_0=1.
+$$
+
+This equation is the **Catalan recurrence**.
+
+## Worked example: four symbols
+
+Four symbols correspond to $n=3$, so we want $C_3$. First calculate the smaller values.
+
+One symbol has one form:
+
+$$
+C_0=1.
+$$
+
+Two symbols have only $a\star b$:
+
+$$
+C_1=C_0C_0=1.
+$$
+
+Three symbols can split after the first symbol or after the second:
+
+$$
+\begin{aligned}
+C_2
+&=C_0C_1+C_1C_0\\
+&=(1)(1)+(1)(1)\\
+&=2.
+\end{aligned}
+$$
+
+Now split four symbols in each possible position.
+
+**Split after $a$.** The left block has one form. The three-symbol right block has two:
+
+$$
+C_0C_2=(1)(2)=2.
+$$
+
+These are $a\star((b\star c)\star d)$ and $a\star(b\star(c\star d))$.
+
+**Split after $b$.** Each two-symbol block has one form:
+
+$$
+C_1C_1=(1)(1)=1.
+$$
+
+This gives $(a\star b)\star(c\star d)$.
+
+**Split after $c$.** The three-symbol left block has two forms. The right block has one:
+
+$$
+C_2C_0=(2)(1)=2.
+$$
+
+These are $((a\star b)\star c)\star d$ and $(a\star(b\star c))\star d$.
+
+Add the three disjoint cases:
+
+$$
+\begin{aligned}
+C_3
+&=C_0C_2+C_1C_1+C_2C_0\\
+&=2+1+2\\
+&=5.
+\end{aligned}
+$$
+
+The interactive diagram lets you inspect the five parenthesizations beside the five pentagon triangulations.
+
+<CatalanCorrespondence />
+
+## Why the pentagon obeys the same recurrence
+
+Fix one edge of a convex polygon and call it the base. Every triangulation contains exactly one triangle touching that base. The triangle's third vertex divides the remaining region into two smaller polygons, one on the left and one on the right. Either smaller polygon may collapse to a single edge; that empty side contributes the value $C_0=1$.
+
+Once the third vertex has been chosen, a triangulation on the left can be paired with any triangulation on the right. The two counts multiply. Moving the third vertex through all possible positions produces disjoint cases, so the products add.
+
+That is the Catalan recurrence again.
+
+More precisely, a convex polygon with $n+2$ vertices has $C_n$ triangulations. A pentagon has $5=3+2$ vertices, hence $C_3=5$ triangulations. The same recursive split also builds a full binary tree: the final operation is the root, and the two subexpressions become its left and right subtrees.
+
+The shared recurrence gives more than equal totals. It supplies a route for translating among parenthesizations, binary trees, and triangulations. The [Open Mathematics textbook's Catalan-number chapter](https://discrete.openmathbooks.org/more/mdm/sec_basic-catalan.html) develops the tree–triangulation correspondence explicitly.
+
+## A formula without recursion
+
+The recurrence generates the sequence
+
+$$
+1,1,2,5,14,42,132,\ldots
+$$
+
+one term at a time. A closed formula reaches the $n$th term directly:
+
+$$
+C_n=\frac{1}{n+1}\binom{2n}{n}
+=\frac{(2n)!}{n!(n+1)!}.
+$$
+
+Here $n!$ means $n(n-1)\cdots2\cdot1$, and $\binom{2n}{n}$ counts the ways to choose $n$ positions from $2n$ positions.
+
+For the four-symbol problem,
+
+$$
+C_3
+=\frac14\binom63
+=\frac14\cdot20
+=5.
+$$
+
+In a standard lattice-path proof, the factor $1/(n+1)$ selects the balanced paths from all $\binom{2n}{n}$ arrangements of $n$ upward steps and $n$ downward steps. A balanced path never falls below its starting height. Deriving the closed formula from those paths deserves its own lesson. The recurrence is enough for today's objective: recognize the two-part split and count it without omission or duplication.
+
+## A sequence with more than one birthplace
+
+The name hides a long, international history. Richard Stanley's [historical survey of Catalan numbers](https://math.mit.edu/~rstan/transparencies/china.pdf) traces the coefficients to the Mongolian mathematician and astronomer Ming Antu, also known as Minggatu, who worked at the Qing court. In the 1730s, Ming Antu obtained the sequence while studying infinite trigonometric series. His setting was not polygon counting.
+
+Ming Antu's work grew inside a cross-cultural exchange. European series had reached Qing mathematicians through Jesuit scholars, but Ming Antu supplied geometric arguments and new expansions rather than merely copying imported formulas. His student Chen Jixin completed the manuscript in 1774, and the book was not published until 1839. That delay helped keep this line of development outside the European story for generations.
+
+In Europe, Leonhard Euler posed the polygon-triangulation problem to Christian Goldbach in 1751. Johann Andreas von Segner published the recurrence in 1758; Goldbach, Segner, and Euler assembled parts of a proof, and Gabriel Lamé supplied a self-contained proof in 1838. The [MathWorld account of Euler's polygon-division problem](https://mathworld.wolfram.com/EulersPolygonDivisionProblem.html) records the 1751 question, while historian Igor Pak's [history of the sequence](https://arxiv.org/abs/1408.5711) examines how the later name obscured earlier contributors.
+
+Also in 1838, Eugène Catalan showed that the formula counts parenthesizations. The term “Catalan number” appeared only in the twentieth century and eventually stuck. The sequence did not spring from one lone insight: trigonometric series in Qing China, polygon dissections in eighteenth-century Europe, and symbolic parenthesization all exposed the same numbers from different directions.
+
+## Where the count appears in computation
+
+Programming languages represent nested expressions as trees. A parser turns a flat stream of source-code tokens into that tree; the tree determines which operations belong together and therefore what the program means. The [University of Central Florida's compiler notes](https://www.cs.ucf.edu/~gazzillo/teaching/cop3402fall24/parsing.html) show how different syntax trees give different interpretations to an arithmetic expression.
+
+For a flat sequence of $n+1$ operands joined by one binary operator, $C_n$ is the number of possible full binary tree shapes before precedence, associativity, or grammar rules remove ambiguity. A real compiler does not usually enumerate all of them. The Catalan count warns how quickly brute force grows: five operands give $14$ shapes, ten operands give $4{,}862$, and twenty operands give $1{,}767{,}263{,}190$.
+
+The same count describes the shapes of ordered binary trees. Princeton's [analysis of tree algorithms](https://aofa.cs.princeton.edu/60trees/) uses Catalan numbers to enumerate binary trees with a fixed number of internal nodes. That enumeration matters when analyzing recursive tree algorithms and when estimating the search space of structures that split into ordered left and right pieces.
+
+Polygon triangulation appears in computational geometry and mesh construction. The Catalan number does not choose a numerically stable or visually attractive triangulation; it counts every combinatorially distinct triangulation of a convex polygon. Knowing the size of that space explains why an algorithm should exploit recurrence or optimization rather than generate candidates blindly.
+
+## Try the split
+
+### Problem 1
+
+Use the recurrence to calculate $C_4$, the number of complete parenthesizations of five symbols. Show every product in the sum.
+
+<details>
+<summary>Reveal the solution</summary>
+
+Use $C_0=1$, $C_1=1$, $C_2=2$, and $C_3=5$:
+
+$$
+\begin{aligned}
+C_4
+&=C_0C_3+C_1C_2+C_2C_1+C_3C_0\\
+&=(1)(5)+(1)(2)+(2)(1)+(5)(1)\\
+&=5+2+2+5\\
+&=14.
+\end{aligned}
+$$
+
+The four products correspond to placing the final operation after the first, second, third, or fourth symbol.
+
+</details>
+
+### Problem 2
+
+How many triangulations does a convex hexagon have? Explain the index rather than quoting the next number in the sequence.
+
+<details>
+<summary>Reveal the solution</summary>
+
+A polygon with $n+2$ vertices has $C_n$ triangulations. A hexagon has $6$ vertices, so
+
+$$
+n+2=6
+\quad\Longrightarrow\quad
+n=4.
+$$
+
+Therefore the number of triangulations is
+
+$$
+C_4=14.
+$$
+
+The hexagon and the five-symbol parenthesization problem have the same Catalan index because each object makes four recursive binary joins.
+
+</details>
+
+## The idea to keep
+
+When a structure is built by choosing one dividing point, solving an ordered left part, and solving an ordered right part, look for the Catalan recurrence. Parentheses, binary trees, and polygon triangulations count alike because each hides the same recursive split.
+
+Continue with the [bridge-traversal lesson](/reckonings/daily-reckoning-2026-08-31/) for another origin story in discrete mathematics, or the [minimum-spanning-tree lesson](/reckonings/daily-reckoning-2026-10-06/) for a contrasting algorithm whose local choices avoid a Catalan-sized search.
+
+## Sources
+
+- Richard P. Stanley, [*Catalan Numbers* lecture transparencies](https://math.mit.edu/~rstan/transparencies/china.pdf), including the recurrence, historical timeline, and multiple interpretations.
+- Igor Pak, [“History of Catalan Numbers”](https://arxiv.org/abs/1408.5711), later published as the historical appendix to Stanley's monograph.
+- Massachusetts Institute of Technology OpenCourseWare, [“Catalan Numbers I”](https://ocw.mit.edu/courses/18-212-algebraic-combinatorics-spring-2019/resources/mit18_212s19_lec1/).
+- Oscar Levin, *Discrete Mathematics: An Open Introduction*, [“The Catalan Numbers”](https://discrete.openmathbooks.org/more/mdm/sec_basic-catalan.html).
+- University of Central Florida, [compiler-course notes on parsing and syntax trees](https://www.cs.ucf.edu/~gazzillo/teaching/cop3402fall24/parsing.html).
+- Princeton University, [*Analysis of Algorithms*: tree enumeration](https://aofa.cs.princeton.edu/60trees/).
