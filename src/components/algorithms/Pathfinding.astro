@@ -4,7 +4,7 @@ const { selected = 'breadth-first-search' } = Astro.props;
 ---
 <section class="algorithm-workspace" data-algorithm={selected} aria-label="Pathfinding playground">
   <div class="lab-controls">
-    <label>Algorithm<select id="algorithm">{algorithms.map(a=><option value={a.slug} selected={a.slug===selected}>{a.name}</option>)}</select></label>
+    <label>Algorithm<select id="algorithm">{algorithms.filter(a=>a.family==='pathfinding').map(a=><option value={a.slug} selected={a.slug===selected}>{a.name}</option>)}</select></label>
     <label>Start<select id="start">{'ABCDEFGHI'.split('').map(id=><option selected={id==='A'}>{id}</option>)}</select></label>
     <label>Destination<select id="goal">{'ABCDEFGHI'.split('').map(id=><option selected={id==='I'}>{id}</option>)}</select></label>
     <label>Map<select id="preset"><option value="weighted">Weighted routes</option><option value="equal">Equal costs</option><option value="disconnected">Unreachable destination</option></select></label>

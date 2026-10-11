@@ -30,3 +30,10 @@ The teaching implementation uses array scans and frontier sorting. It intentiona
 Six algorithms now share this playground. DFS uses explicit call frames with a neighbor cursor, preserving recursive depth-first behavior and showing backtracking. Its displayed tree depth is not a shortest distance. Greedy best-first search discovers nodes once and ranks only by the remaining estimate; displayed route cost is not guaranteed optimal.
 
 Bidirectional BFS alternates complete layers and minimizes the sum of the two depths over meeting nodes in the first overlapping layer. Finish the layer before returning. Frames preserve independent queues, predecessor maps, and distance tables from both endpoints. Cyan indicates the start side; amber indicates the goal side. Goal-side arrows point toward the destination. Tests compare its returned edge count with independent all-pairs shortest paths across every endpoint pair in randomized graphs.
+
+
+## October 11, 2026 — Sorting family
+
+Five additions: bubble sort, selection sort, insertion sort, merge sort, and deterministic last-pivot quicksort. `/algorithms/sorting/` shares a validated editable array, six presets, shuffle, reversible playback, highlighted pseudocode, operation counters, and identity labels. Merge frames expose copied halves and consumed buffer items; quicksort shows pivot and call depth. Lessons distinguish algorithm working memory from recorded playback, explain stability and counting conventions, and expose the quicksort worst case. Registry families now drive catalog links; graph-specific routes and dropdowns filter by family.
+
+Validation: exhaustive arrays over three values through length six, randomized arrays through length 24, sorted/reversed inputs, identity conservation, stable equal-key order, immutable frames, monotone counters, and code-line bounds. Browser verification covers all five routes, playback, switching while retaining inputs, validation, merge buffer, mobile layout, and the eleven-card catalog.

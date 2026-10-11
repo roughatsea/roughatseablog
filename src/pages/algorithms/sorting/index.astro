@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Sorting from '../../../components/algorithms/Sorting.astro';
+import {sortingAlgorithms} from '../../../data/sorting';
+---
+<BaseLayout title="Sorting playground" description="Compare five sorting algorithms on the same editable array." wide><nav aria-label="Breadcrumb"><a href="/algorithms/">Algorithms</a> / Sorting</nav><h1>Five ways to put things in order</h1><p>Sorting rearranges items by a chosen value. Here, the goal is ascending numerical order. Switch algorithms to replay the same input; compare sorted, reversed, and repeated values.</p><Sorting/><section class="guide"><h2>Explore the lessons</h2><ul>{sortingAlgorithms.map(a=><li><a href={`/algorithms/sorting/${a.slug}/`}>{a.name}</a> — {a.summary}</li>)}</ul><h2>Small input, revealing behavior</h2><p>Insertion sort can fix a nearly sorted input with very little work. Selection sort scans the remaining items regardless of their order. Merge sort buys predictable performance with temporary storage. Quicksort depends on its pivot and partition rule: this version deliberately uses the last item, making its worst case visible on sorted and all-equal inputs.</p><p>Watch equal values’ original-position labels to explore stability. Reset playback returns to the beginning; switching algorithms retains your values. Shuffle changes the input order and assigns fresh identity labels.</p></section></BaseLayout>
+<style>h1{font-size:clamp(2rem,4vw,3rem)}.guide{max-width:780px;margin:3rem auto;line-height:1.85}li{margin:.7rem 0}</style>
