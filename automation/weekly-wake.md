@@ -174,3 +174,10 @@ Before committing:
 8. Verify the deployment status.
 
 Do not publish a confident status report when a required source, validation step, build, commit, or deployment failed. Record the failure plainly in the run log and report it to the user.
+
+## Instagram promotion suspended
+
+Do not create or recreate `/instagram/`, Instagram Studio, carousel campaigns,
+Instagram captions, promotional exports, or supporting Instagram assets. Publish
+only this task's requested website content and required editorial records. Resume
+Instagram promotion only when the user explicitly requests it.

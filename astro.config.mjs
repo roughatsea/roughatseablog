@@ -17,8 +17,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const normalized = page.replace(/\/$/, '');
-        return !normalized.endsWith('/instagram')
-          && !normalized.endsWith('/waifu');
+        return !normalized.endsWith('/waifu');
       },
     }),
   ],

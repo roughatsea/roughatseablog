@@ -239,3 +239,10 @@ Do not weaken validation to accommodate missing metadata. Do not publish a
 confident status report when research, transcript access, validation, build,
 commit, push, or deployment failed. State the failure and preserve enough
 information for the next run to resume safely.
+
+## Instagram promotion suspended
+
+Do not create or recreate `/instagram/`, Instagram Studio, carousel campaigns,
+Instagram captions, promotional exports, or supporting Instagram assets. Publish
+only this task's requested website content and required editorial records. Resume
+Instagram promotion only when the user explicitly requests it.

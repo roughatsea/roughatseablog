@@ -75,3 +75,10 @@ For a genuine no-change review, retain the guide and record the bounded review h
 ## Report
 
 Give a concise result: what changed (or why no change was warranted), material limits or blockers, and the guide or changed chapter link. Readers do not need to consume a daily digest to keep using the guide. Do not ask the user for routine editorial decisions already delegated; escalate only genuinely necessary permissions or consequential unresolved issues.
+
+## Instagram promotion suspended
+
+Do not create or recreate `/instagram/`, Instagram Studio, carousel campaigns,
+Instagram captions, promotional exports, or supporting Instagram assets. Publish
+only this task's requested website content and required editorial records. Resume
+Instagram promotion only when the user explicitly requests it.

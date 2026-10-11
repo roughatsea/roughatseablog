@@ -149,3 +149,10 @@ Before committing:
 4. Confirm that the site build succeeds.
 
 A missing datum is acceptable. Fabricated precision is not.
+
+## Instagram promotion suspended
+
+Do not create or recreate `/instagram/`, Instagram Studio, carousel campaigns,
+Instagram captions, promotional exports, or supporting Instagram assets. Publish
+only this task's requested website content and required editorial records. Resume
+Instagram promotion only when the user explicitly requests it.
