@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-11",
+  "authorId": "natsume-soseki",
+  "authorName": "Natsume Sōseki",
+  "selection": "Japanese literary novelist, extending the timeline into Meiji-era East Asia after the previous fantasy addition.",
+  "sources": [
+    {
+      "url": "https://www.ndl.go.jp/portrait/e/datas/307/index.html",
+      "use": "National Diet Library profile for Sōseki's February 9, 1867–December 9, 1916 lifespan, 1905–1906 debut serialization, major later works and status in modern Japanese literature."
+    },
+    {
+      "url": "https://www.library.tohoku.ac.jp/en/collections/soseki/about.html",
+      "use": "Tohoku University Library biography for his 1905 Hototogisu debut, later Asahi Shimbun serial fiction and December 9, 1916 death."
+    },
+    {
+      "url": "https://www.library.tohoku.ac.jp/en/collections/soseki/works.html",
+      "use": "Tohoku University Library bibliography distinguishing first magazine or newspaper appearances from separate-volume dates for every selected work."
+    },
+    {
+      "url": "https://www.library.tohoku.ac.jp/en/collections/soseki/chronology.html",
+      "use": "Tohoku University Library chronology cross-checking original appearance years and identifying the May–December 1916 serialization of Light and Darkness."
+    },
+    {
+      "url": "https://tr.jpf.go.jp/20-authors/",
+      "use": "Japan Foundation profile for Sōseki's standing as an iconic Meiji-period author, traditional Japanese name order and representative works."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1867–1916",
+    "publishingSpan": "1905–1916",
+    "proxy": "Lifetime fiction first-publication span from the first installment of I Am a Cat to the opening installments of Light and Darkness; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1905 — I Am a Cat (serialization begins)",
+      "1906 — Botchan (magazine publication)",
+      "1906 — Kusamakura (magazine publication)",
+      "1908 — Sanshirō (serialization begins)",
+      "1909 — And Then (serialization begins)",
+      "1910 — The Gate (serialization begins)",
+      "1914 — Kokoro (serialization begins)",
+      "1916 — Light and Darkness (serialization begins; unfinished)"
+    ],
+    "dateDistinctions": "Markers use original Japanese magazine or newspaper first appearances, including the first year of a serialization, rather than composition, completion, separate-volume publication or translation. English titles are shown for readability. I Am a Cat ran intermittently from January 1905 through August 1906 and its three separate volumes appeared from 1905 through 1907. Light and Darkness began serialization in May 1916, remained unfinished when Sōseki died that December and appeared as a separate volume posthumously in January 1917.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
