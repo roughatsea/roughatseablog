@@ -1,0 +1,308 @@
+---
+---
+
+<figure class="eigen-lab reckoning-visual" data-eigen-lab>
+  <header>
+    <p>Eigenvector field test</p>
+    <h3>Rotate one vector through the transformation</h3>
+  </header>
+
+  <div class="controls">
+    <label for="eigen-angle">Input angle: <output data-angle>45°</output></label>
+    <input id="eigen-angle" data-slider type="range" min="0" max="180" step="1" value="45" />
+    <div class="presets" role="group" aria-label="Preset vector directions">
+      <button type="button" data-angle-value="45">45° eigenvector</button>
+      <button type="button" data-angle-value="135">135° eigenvector</button>
+      <button type="button" data-angle-value="20">20° ordinary vector</button>
+    </div>
+  </div>
+
+  <div class="plot-wrap">
+    <svg viewBox="0 0 520 420" role="img" aria-labelledby="eigen-title eigen-desc">
+      <title id="eigen-title">An input vector and its image under a linear transformation</title>
+      <desc id="eigen-desc">The solid input arrow rotates with the angle control. A dashed output arrow shows the result after multiplication by the matrix. Two fixed diagonal lines mark the eigenvector directions.</desc>
+      <defs>
+        <pattern id="eigen-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+          <path d="M30 0H0V30" fill="none" />
+        </pattern>
+        <marker id="input-head" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+          <path d="M0 0L10 5L0 10Z" />
+        </marker>
+        <marker id="output-head" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+          <path d="M0 0L10 5L0 10Z" />
+        </marker>
+      </defs>
+      <rect class="plot-bg" width="520" height="420" rx="16" />
+      <rect class="grid" width="520" height="420" rx="16" fill="url(#eigen-grid)" />
+      <line class="axis" x1="30" y1="210" x2="490" y2="210" />
+      <line class="axis" x1="260" y1="28" x2="260" y2="392" />
+      <line class="eigen-rail rail-three" x1="82" y1="388" x2="438" y2="32" />
+      <line class="eigen-rail rail-one" x1="82" y1="32" x2="438" y2="388" />
+      <text class="rail-label" x="414" y="53">λ = 3</text>
+      <text class="rail-label" x="414" y="377">λ = 1</text>
+      <line class="output-vector" data-output x1="260" y1="210" x2="413" y2="57" marker-end="url(#output-head)" />
+      <line class="input-vector" data-input x1="260" y1="210" x2="311" y2="159" marker-end="url(#input-head)" />
+      <circle class="origin" cx="260" cy="210" r="5" />
+    </svg>
+
+    <dl class="readout">
+      <div>
+        <dt>Input $\mathbf v$</dt>
+        <dd data-input-readout>(0.85, 0.85)</dd>
+      </div>
+      <div>
+        <dt>Output $A\mathbf v$</dt>
+        <dd data-output-readout>(2.55, 2.55)</dd>
+      </div>
+      <div>
+        <dt>Length factor</dt>
+        <dd data-factor>3.00×</dd>
+      </div>
+    </dl>
+  </div>
+
+  <p class="status" data-status aria-live="polite">
+    At 45°, the input lies on the eigenvector direction (1,1). The output is three times as long and points the same way.
+  </p>
+
+  <div class="legend" aria-hidden="true">
+    <span><i class="solid"></i>input vector</span>
+    <span><i class="dashed"></i>transformed vector</span>
+    <span><i class="rail"></i>eigenvector direction</span>
+  </div>
+
+  <figcaption>
+    <strong>What to notice:</strong> most input angles produce an output on a different line. At 45° and 135°, the solid and dashed arrows align. Line style, labels, and live numerical readouts carry the same information as color.
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-eigen-lab]').forEach((figure) => {
+    const slider = figure.querySelector('[data-slider]');
+    const angleOutput = figure.querySelector('[data-angle]');
+    const inputLine = figure.querySelector('[data-input]');
+    const outputLine = figure.querySelector('[data-output]');
+    const inputReadout = figure.querySelector('[data-input-readout]');
+    const outputReadout = figure.querySelector('[data-output-readout]');
+    const factorReadout = figure.querySelector('[data-factor]');
+    const status = figure.querySelector('[data-status]');
+
+    if (!(slider instanceof HTMLInputElement) || !(angleOutput instanceof HTMLOutputElement)) return;
+    if (!(inputLine instanceof SVGLineElement) || !(outputLine instanceof SVGLineElement)) return;
+    if (!(inputReadout instanceof HTMLElement) || !(outputReadout instanceof HTMLElement)) return;
+    if (!(factorReadout instanceof HTMLElement) || !(status instanceof HTMLElement)) return;
+
+    const originX = 260;
+    const originY = 210;
+    const pixelsPerUnit = 60;
+    const radius = 1.2;
+
+    const clean = (value: number) => Math.abs(value) < 0.005 ? 0 : value;
+    const format = (value: number) => clean(value).toFixed(2);
+
+    const setEndpoint = (line: SVGLineElement, x: number, y: number) => {
+      line.setAttribute('x2', String(originX + x * pixelsPerUnit));
+      line.setAttribute('y2', String(originY - y * pixelsPerUnit));
+    };
+
+    const update = () => {
+      const degrees = Number(slider.value);
+      const radians = degrees * Math.PI / 180;
+      const x = radius * Math.cos(radians);
+      const y = radius * Math.sin(radians);
+      const outX = 2 * x + y;
+      const outY = x + 2 * y;
+      const inputLength = Math.hypot(x, y);
+      const outputLength = Math.hypot(outX, outY);
+      const factor = outputLength / inputLength;
+
+      angleOutput.textContent = String(degrees) + '°';
+      setEndpoint(inputLine, x, y);
+      setEndpoint(outputLine, outX, outY);
+      inputReadout.textContent = '(' + format(x) + ', ' + format(y) + ')';
+      outputReadout.textContent = '(' + format(outX) + ', ' + format(outY) + ')';
+      factorReadout.textContent = factor.toFixed(2) + '×';
+
+      if (degrees === 45) {
+        status.textContent = 'At 45°, the input lies on the eigenvector direction (1,1). The output is three times as long and points the same way.';
+      } else if (degrees === 135) {
+        status.textContent = 'At 135°, the input lies on the eigenvector direction (1,-1). The output has the same length and points the same way.';
+      } else {
+        let turn = Math.atan2(outY, outX) * 180 / Math.PI - degrees;
+        while (turn > 180) turn -= 360;
+        while (turn < -180) turn += 360;
+        const direction = turn >= 0 ? 'counterclockwise' : 'clockwise';
+        status.textContent = 'At ' + degrees + '°, the output turns ' + Math.abs(turn).toFixed(1) + '° ' + direction + ' and changes length by a factor of ' + factor.toFixed(2) + '.';
+      }
+    };
+
+    slider.addEventListener('input', update);
+    figure.querySelectorAll('[data-angle-value]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        slider.value = button.dataset.angleValue || '45';
+        update();
+        slider.focus();
+      });
+    });
+  });
+</script>
+
+<style>
+  .eigen-lab {
+    margin: 2.25rem 0;
+    overflow: hidden;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 18px;
+    background: linear-gradient(145deg, rgba(3, 18, 34, 0.98), rgba(7, 29, 47, 0.94));
+    box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28);
+  }
+  header { padding: 1.2rem 1.25rem 0.45rem; }
+  header p {
+    margin: 0 0 0.3rem;
+    color: #a8ff60;
+    font: 700 0.74rem/1.2 var(--font-mono, monospace);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  header h3 {
+    margin: 0;
+    color: #f4fbff;
+    font-size: clamp(1.08rem, 2.4vw, 1.42rem);
+    line-height: 1.25;
+  }
+  .controls {
+    padding: 0.75rem 1.25rem 1rem;
+  }
+  label {
+    display: flex;
+    justify-content: space-between;
+    color: #dff7ff;
+    font: 0.82rem/1.4 var(--font-sans, sans-serif);
+  }
+  input[type='range'] {
+    width: 100%;
+    margin: 0.65rem 0 0.8rem;
+    accent-color: #a8ff60;
+  }
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+  button {
+    border: 1px solid rgba(177, 216, 230, 0.42);
+    border-radius: 999px;
+    background: rgba(8, 35, 55, 0.82);
+    color: #dff7ff;
+    padding: 0.52rem 0.75rem;
+    font: 700 0.72rem/1 var(--font-mono, monospace);
+    cursor: pointer;
+  }
+  button:hover,
+  button:focus-visible {
+    border-color: #a8ff60;
+    color: #a8ff60;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(168, 255, 96, 0.15);
+  }
+  .plot-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 11rem;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 1.25rem;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .plot-bg { fill: #031321; }
+  .grid { opacity: 0.45; }
+  pattern path { stroke: rgba(77, 160, 187, 0.24); stroke-width: 1; }
+  .axis { stroke: rgba(199, 232, 242, 0.42); stroke-width: 1.5; }
+  .eigen-rail { stroke-width: 3; stroke-dasharray: 6 9; }
+  .rail-three { stroke: rgba(168, 255, 96, 0.56); }
+  .rail-one { stroke: rgba(142, 233, 255, 0.38); }
+  .rail-label {
+    fill: #c8e8d1;
+    font: 700 16px/1 var(--font-mono, monospace);
+  }
+  .input-vector {
+    stroke: #8ee9ff;
+    stroke-width: 7;
+    stroke-linecap: round;
+  }
+  .output-vector {
+    stroke: #ff58c8;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 15 10;
+  }
+  #input-head path { fill: #8ee9ff; }
+  #output-head path { fill: #ff58c8; }
+  .origin { fill: #061726; stroke: #a8ff60; stroke-width: 4; }
+  .readout {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0;
+  }
+  .readout div {
+    border: 1px solid rgba(157, 211, 229, 0.25);
+    border-radius: 10px;
+    background: rgba(3, 19, 33, 0.74);
+    padding: 0.7rem;
+  }
+  dt {
+    color: #91b8c7;
+    font: 0.64rem/1.2 var(--font-mono, monospace);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  dd {
+    margin: 0.3rem 0 0;
+    color: #f4fbff;
+    font: 700 0.8rem/1.35 var(--font-mono, monospace);
+  }
+  .status {
+    margin: 0;
+    padding: 1rem 1.25rem 0;
+    color: #dff7ff;
+    font: 0.84rem/1.5 var(--font-sans, sans-serif);
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1.2rem;
+    padding: 0.8rem 1.25rem 0;
+    color: #b9d2dd;
+    font: 0.72rem/1.3 var(--font-sans, sans-serif);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .legend i { display: inline-block; width: 1.8rem; height: 0; }
+  .legend .solid { border-top: 4px solid #8ee9ff; }
+  .legend .dashed { border-top: 4px dashed #ff58c8; }
+  .legend .rail { border-top: 3px dotted #a8ff60; }
+  figcaption {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(157, 211, 229, 0.2);
+    padding: 1rem 1.25rem 1.2rem;
+    color: #b9d2dd;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+  figcaption strong { color: #f4fbff; }
+  @media (max-width: 680px) {
+    .plot-wrap { grid-template-columns: 1fr; }
+    .readout { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    dd { overflow-wrap: anywhere; }
+  }
+  @media (max-width: 470px) {
+    .readout { grid-template-columns: 1fr; }
+    .presets { display: grid; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+  }
+</style>

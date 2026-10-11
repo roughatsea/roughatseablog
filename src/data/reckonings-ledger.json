@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T06:00:00-07:00",
+  "updatedAt": "2026-10-11T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -1036,6 +1036,34 @@
         "daily-reckoning-2026-08-31",
         "daily-reckoning-2026-09-27",
         "daily-reckoning-2026-10-06"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "slug": "daily-reckoning-2026-10-11",
+      "title": "How Can a Matrix Stretch a Direction Without Turning It?",
+      "area": "Linear algebra and dynamical systems",
+      "difficulty": "Intermediate",
+      "prerequisites": [
+        "Coordinates and vectors in the plane",
+        "Multiplying a 2×2 matrix by a vector",
+        "Factoring a quadratic"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "eigenvectors",
+        "eigenvalues",
+        "characteristic polynomial",
+        "diagonalization",
+        "repeated matrix multiplication",
+        "normal modes",
+        "principal component analysis",
+        "PageRank",
+        "history of linear algebra"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-05",
+        "daily-reckoning-2026-09-25"
       ]
     }
   ]
