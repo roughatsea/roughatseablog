@@ -15,7 +15,7 @@
     "test:metabolism": "node --test scripts/metabolism.test.mjs",
     "validate:long-game": "node scripts/long-game.mjs",
     "test:long-game": "node --test scripts/long-game.test.mjs",
-    "test:algorithms": "node --test scripts/algorithms.test.mjs scripts/sorting.test.mjs"
+    "test:algorithms": "node --test scripts/algorithms.test.mjs scripts/sorting.test.mjs scripts/discovery.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",

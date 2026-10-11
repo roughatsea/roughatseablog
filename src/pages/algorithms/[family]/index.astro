@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Discovery from '../../../components/algorithms/Discovery.astro';
+import {discoveryAlgorithms,discoveryFamilies} from '../../../data/discovery-algorithms';
+export function getStaticPaths(){return discoveryFamilies.map(family=>({params:{family:family.slug},props:{family}}));}
+const {family}=Astro.props;
+const choices=discoveryAlgorithms.filter(a=>a.family===family.slug);
+---
+<BaseLayout title={`${family.name} playground`} description={family.description} wide><nav aria-label="Breadcrumb"><a href="/algorithms/">Algorithms</a> / {family.name}</nav><h1>{family.name}</h1><p>{family.description}</p><Discovery selected={choices[0].slug} family={family.slug}/><section class="guide"><h2>Explore the lessons</h2><ul>{choices.map(a=><li><a href={`/algorithms/${a.family}/${a.slug}/`}>{a.name}</a> — {a.summary}</li>)}</ul><h2>Follow the changing state</h2><p>The data display shows each algorithm’s own variables and intermediate answers. Pink marks current work, amber marks dependencies or a divisor, and green marks a result. Each lesson explains its display, prerequisites, performance, and limitations.</p><p><a href="/algorithms/">Browse all algorithm families</a></p></section></BaseLayout>
+<style>h1{font-size:clamp(2rem,4vw,3rem)}.guide{max-width:780px;margin:3rem auto;line-height:1.85}li{margin:.7rem 0}</style>

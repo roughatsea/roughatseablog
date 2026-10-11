@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Discovery from '../../../components/algorithms/Discovery.astro';
+import {discoveryAlgorithms,discoveryFamilies} from '../../../data/discovery-algorithms';
+export function getStaticPaths(){return discoveryAlgorithms.map(algorithm=>({params:{family:algorithm.family,algorithm:algorithm.slug},props:{algorithm}}));}
+const {algorithm}=Astro.props;
+const family=discoveryFamilies.find(f=>f.slug===algorithm.family)!;
+---
+<BaseLayout title={algorithm.name} description={algorithm.summary} wide><nav aria-label="Breadcrumb"><a href="/algorithms/">Algorithms</a> / <a href={`/algorithms/${family.slug}/`}>{family.name}</a> / {algorithm.short}</nav><h1>{algorithm.name}</h1><p>{algorithm.summary}</p><Discovery selected={algorithm.slug} family={algorithm.family}/><article class="lesson"><h2>{algorithm.name}: the idea</h2><p><strong>Prerequisites:</strong> {algorithm.prerequisites}.</p><p>{algorithm.detail}</p><h3>Try it</h3><p>{algorithm.experiment}</p><h3>Reading the display</h3><p>{algorithm.reading}</p><h3>Time and memory</h3><p>{algorithm.complexity}</p><p>The bounds above describe core work on prepared input. String conversion to code-point arrays and editor validation are additional work. The visualization saves the data at each operation so you can step backward. This recording requires extra time and memory beyond the algorithm’s own working storage. Input limits keep the demonstrations manageable.</p><h3>When to use it—and what to watch</h3><p>{algorithm.limitation}</p><h3>Continue exploring</h3><ul>{discoveryAlgorithms.filter(a=>a.family===algorithm.family&&a.slug!==algorithm.slug).map(a=><li><a href={`/algorithms/${a.family}/${a.slug}/`}>{a.name}</a> — {a.summary}</li>)}</ul><p><a href="/algorithms/">Browse all algorithm families</a></p><h3>Sources and further reading</h3><p><a href={algorithm.source}>Read the algorithm reference</a></p></article></BaseLayout>
+<style>h1{font-size:clamp(2rem,4vw,3rem)}.lesson{max-width:780px;margin:3rem auto;line-height:1.85}.lesson h2{font-size:1.8rem}.lesson h3{margin-top:2rem;font-size:1.25rem}.lesson li{margin:.6rem 0}</style>
