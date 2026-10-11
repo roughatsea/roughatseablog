@@ -23,3 +23,10 @@ All connections are undirected and have integer weights from 1 to 99. BFS minimi
 A* uses Euclidean distance multiplied by the minimum weight/length ratio across all edges. This is admissible and consistent, by the triangle inequality. Recompute after every graph edit and after changing between desktop and mobile graph geometry. Mobile uses a vertical graph with legible node labels.
 
 The teaching implementation uses array scans and frontier sorting. It intentionally prioritizes inspection over large-graph performance. Snapshot storage is additional to search memory. There are nine nodes; connections and weights are editable. No server, account, or external data access is required.
+
+
+## October 11, 2026 expansion
+
+Six algorithms now share this playground. DFS uses explicit call frames with a neighbor cursor, preserving recursive depth-first behavior and showing backtracking. Its displayed tree depth is not a shortest distance. Greedy best-first search discovers nodes once and ranks only by the remaining estimate; displayed route cost is not guaranteed optimal.
+
+Bidirectional BFS alternates complete layers and minimizes the sum of the two depths over meeting nodes in the first overlapping layer. Finish the layer before returning. Frames preserve independent queues, predecessor maps, and distance tables from both endpoints. Cyan indicates the start side; amber indicates the goal side. Goal-side arrows point toward the destination. Tests compare its returned edge count with independent all-pairs shortest paths across every endpoint pair in randomized graphs.
