@@ -1,6 +1,6 @@
 ---
 const pathname = Astro.url.pathname;
-const isWriting = pathname.startsWith('/notes/') || pathname.startsWith('/guides/') || pathname === '/content/';
+const isWriting = pathname.startsWith('/notes/') || pathname.startsWith('/guides/');
 const isDaily = pathname.startsWith('/soundings/') || pathname.startsWith('/reckonings/') || pathname.startsWith('/save-point/') || pathname.startsWith('/wake/');
 const isExplorations = pathname === '/seminal-ideas' || pathname.startsWith('/seminal-ideas/') || pathname === '/algorithms' || pathname.startsWith('/algorithms/') || pathname === '/authors' || pathname.startsWith('/authors/') || pathname.startsWith('/atlas/') || pathname === '/fly' || pathname.startsWith('/fly/') || pathname === '/microcosm' || pathname.startsWith('/microcosm/') || pathname === '/metabolism' || pathname.startsWith('/metabolism/');
 ---
@@ -27,7 +27,6 @@ const isExplorations = pathname === '/seminal-ideas' || pathname.startsWith('/se
         <details class:list={['nav-group', { 'is-current': isWriting }]}>
           <summary>Writing</summary>
           <div class="nav-menu">
-            <a href="/content/" aria-current={pathname === '/content/' ? 'page' : undefined}><strong>All writing</strong><span>The complete archive</span></a>
             <a href="/guides/software-engineering/" aria-current={pathname.startsWith('/guides/software-engineering/') ? 'page' : undefined}><strong>Field Guide</strong><span>Software engineering, made legible</span></a>
           <a href="/guides/long-game/" aria-current={pathname.startsWith('/guides/long-game/') ? 'page' : undefined}><strong>The Long Game</strong><span>Health, nutrition, and strength for life</span></a>
           </div>
