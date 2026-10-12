@@ -6,7 +6,7 @@ author: Sigmund Freud
 thinker: freud
 discipline: Psychoanalysis and social theory
 year: 1930
-updated: '2026-10-08'
+updated: '2026-10-12'
 ---
 
 *Reading references: Roman numerals identify the book's eight chapters. References link to the source information below. Examples, objections, and comparisons are editorial unless attributed to Freud.*
@@ -272,7 +272,7 @@ If the death drive is what interests you, read **VI** rather than infer the theo
 
 Return to [Nietzsche on bad conscience](/seminal-ideas/genealogy-of-morality/#bad-conscience) to compare internalization, or [his account of the ascetic ideal](/seminal-ideas/genealogy-of-morality/#ascetic-ideal) to compare guilt with interpretations of suffering.
 
-The next complete lesson, [Jung's *Two Essays on Analytical Psychology*](/seminal-ideas/two-essays-on-analytical-psychology/), examines another account of psychological conflict and individual development. A later counterpoint should give cooperation, moral obligation, and social institutions their own positive arguments, so the collection does not present suspicion as the only way to think seriously.
+The next complete lesson, [Jung's *Two Essays on Analytical Psychology*](/seminal-ideas/two-essays-on-analytical-psychology/), examines another account of psychological conflict and individual development. [Mill's *On Liberty*](/seminal-ideas/on-liberty/) supplies a counterpoint about justified authority: compare [his account of obligations](/seminal-ideas/on-liberty/#self-regarding-conduct-and-obligations) with the psychological costs Freud describes. A cost of restraint does not by itself settle whether a particular restraint is justified. This is an editorial comparison; Mill's book predates Freud's.
 
 ## Sources
 

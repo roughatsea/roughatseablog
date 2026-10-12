@@ -6,7 +6,7 @@ author: Carl Gustav Jung
 thinker: jung
 discipline: Analytical psychology
 year: 1928
-updated: '2026-10-08'
+updated: '2026-10-12'
 ---
 
 *Edition matters: this lesson follows the 1928 English translation by H. G. and C. F. Baynes. Later editions revise these essays and use different chapter titles and pagination. References below identify the essay, part where applicable, chapter, and printed pages of the 1928 edition. Examples and evaluation are editorial unless attributed.*
@@ -257,7 +257,7 @@ Read **Part II, II** if anima and animus are what interests you. Their place in 
 
 Return to [Freud on the superego](/seminal-ideas/civilization-and-its-discontents/#superego) to compare an internal judge with a socially shaped identity, or [Nietzsche on perspectivism](/seminal-ideas/genealogy-of-morality/#perspectivism) to revisit the value and limits of different interpretive standpoints.
 
-The proposed next work is **Mill's *On Liberty***. It would give individuality a political and ethical argument of its own: what authority should society have over a person's life? That lesson remains planned.
+The next complete lesson, [**Mill's *On Liberty***](/seminal-ideas/on-liberty/), gives individuality a political and ethical argument of its own: what authority should society have over a person's life? Compare [Mill's experiments of living](/seminal-ideas/on-liberty/#individuality-and-experiments-of-living) with Jung's individuation. The comparison concerns different arguments about development, not a claim that Mill responded to this later work.
 
 ## Sources
 

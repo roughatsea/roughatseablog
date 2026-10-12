@@ -7,6 +7,9 @@ export const thinkers = [{
 }, {
   slug: 'jung', name: 'Carl Gustav Jung', years: '1875–1961',
   introduction: 'The founder of analytical psychology. This guided work examines persona, the proposed collective unconscious, and individuation, while separating illuminating interpretation from demonstrated explanation.'
+}, {
+  slug: 'mill', name: 'John Stuart Mill', years: '1806–1873',
+  introduction: 'A philosopher and political economist who defends free discussion and the development of individuality. This guided work examines harm, obligations, and the limits of authority, including the exclusions and difficult cases within his defense of liberty.'
 }];
 
 export const works = [{
@@ -44,5 +47,17 @@ export const works = [{
     { name: 'Compensation', anchor: 'compensation', question: 'Can an unconscious response challenge a one-sided self-image?' },
     { name: 'Individuation', anchor: 'individuation', question: 'How does becoming yourself differ from getting your own way?' },
     { name: 'Inflation', anchor: 'inflation', question: 'When does an insight turn into an exaggerated sense of importance?' }
+  ]
+}, {
+  slug: 'on-liberty', thinker: 'mill', title: 'On Liberty', year: 1859,
+  question: 'When may society interfere with your life?',
+  description: 'Follow Mill’s defense of free discussion and chosen lives, then test its boundaries through harm, duties, consent, and social pressure.',
+  disciplines: ['Political philosophy', 'Ethics'],
+  concepts: [
+    { name: 'Harm principle', anchor: 'harm-principle', question: 'When does preventing harm justify interference?' },
+    { name: 'Self-regarding conduct and obligations', anchor: 'self-regarding-conduct-and-obligations', question: 'Which choices involve a duty to someone else?' },
+    { name: 'Free discussion', anchor: 'free-discussion', question: 'How does an opinion remain open to correction?' },
+    { name: 'Living conviction and dead dogma', anchor: 'living-conviction-and-dead-dogma', question: 'Can you hold a true belief without understanding it?' },
+    { name: 'Individuality and experiments of living', anchor: 'individuality-and-experiments-of-living', question: 'What do we develop by choosing how to live?' }
   ]
 }];
