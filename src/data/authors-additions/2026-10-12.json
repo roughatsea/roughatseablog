@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-12",
+  "authorId": "machado-de-assis",
+  "authorName": "Machado de Assis",
+  "selection": "Brazilian novelist and satirist, extending the timeline into nineteenth-century Lusophone South America after the previous Japanese literary-fiction addition.",
+  "sources": [
+    {
+      "url": "https://www.academia.org.br/academicos/machado-de-assis/bibliografia",
+      "use": "Brazilian Academy of Letters bibliography for the original book years of the selected novels from Ressurreição (1872) through Memorial de Aires (1908), plus the posthumous dates excluded from the span."
+    },
+    {
+      "url": "https://www2.academia.org.br/academicos/machado-de-assis/biografia",
+      "use": "Brazilian Academy of Letters biography for the 1872 first novel; newspaper and magazine serialization context; the 1880 serial and 1881 book sequence of Memórias póstumas de Brás Cubas; and Machado's literary range."
+    },
+    {
+      "url": "https://www.academia.org.br/abl/media/inventario_machado_assis.pdf",
+      "use": "Brazilian Academy of Letters archival inventory for Machado's June 21, 1839–September 29, 1908 lifespan, first poem in 1855, exact serialization windows, volume dates, and final novel in 1908."
+    },
+    {
+      "url": "https://yalebooks.yale.edu/book/9780300180824/machado-de-assis/",
+      "use": "Yale University Press scholarly-biography page cross-checking the 1839–1908 lifespan, genres, and Machado's standing in Brazilian and world literature."
+    },
+    {
+      "url": "https://www.cambridge.org/core/books/abs/cambridge-companion-to-the-latin-american-novel/dom-casmurro-by-machado-de-assis/DCF5DB08148E84AC332C707F173C74D4",
+      "use": "Cambridge University Press scholarly chapter cross-checking Dom Casmurro's 1899 date and the 1881–1908 sequence of Machado's five major later novels."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1839–1908",
+    "publishingSpan": "1872–1908",
+    "proxy": "Lifetime novel book-publication span from Ressurreição to Memorial de Aires; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1872 — Resurrection",
+      "1874 — The Hand and the Glove",
+      "1876 — Helena",
+      "1881 — The Posthumous Memoirs of Brás Cubas (book edition)",
+      "1891 — Quincas Borba (book edition)",
+      "1899 — Dom Casmurro",
+      "1904 — Esau and Jacob",
+      "1908 — Memorial de Aires"
+    ],
+    "dateDistinctions": "Markers use original Portuguese book-edition years rather than composition or later translation. English titles are shown for readability. The Hand and the Glove and Helena were serialized and issued as books in 1874 and 1876. The Posthumous Memoirs of Brás Cubas ran in Revista Brasileira from March 15 to December 15, 1880 before its 1881 volume. Quincas Borba ran in A Estação from June 15, 1886 to September 15, 1891 and appeared in volume in 1891. Poetry, drama, stories, criticism, journalism, translations, Machado's 1855 published poem and posthumous collections are outside the novel-book span.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
