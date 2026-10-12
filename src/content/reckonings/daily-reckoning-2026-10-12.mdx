@@ -1,0 +1,274 @@
+---
+title: "Why Does a Repeating Decimal Always Hide a Fraction?"
+description: "A repeating decimal is a long-division machine revisiting an old remainder. That loop proves the number is an exact fraction, not an approximation."
+heroImage: "/images/reckonings/daily-reckoning-2026-10-12.svg"
+heroImageAlt: "A dark maritime blueprint shows a luminous chain of decimal-place compartments curling back into a closed cyan loop, with acid-green pulses repeating around the circuit and a magenta division grid beneath it."
+date: 2026-10-12
+publishedAt: 2026-10-12T06:00:00-07:00
+area: "Numbers and algebra"
+difficulty: "Foundational"
+prerequisites:
+  - "Fractions and long division"
+  - "Multiplication by powers of ten"
+  - "Solving a one-step equation"
+readTimeMinutes: 9
+tags:
+  - daily-reckoning
+  - rational-numbers
+  - repeating-decimals
+  - long-division
+  - number-representation
+  - floating-point
+---
+
+import RemainderLoopLab from '../../components/reckonings/RemainderLoopLab.astro';
+
+Divide $1$ by $7$ and the decimal refuses to end:
+
+$$
+\frac17=0.142857142857\ldots
+$$
+
+The six digits $142857$ return in the same order forever. The repetition is not a coincidence in the digits. Long division has returned to a remainder it has seen before. Once the same remainder returns, every later decision repeats too.
+
+The interactive remainder machine makes that loop visible. Start with $1/7$, then compare it with a fraction that has a shorter loop and one whose decimal terminates. Each card records one exact long-division step.
+
+<RemainderLoopLab />
+
+## The claim in precise form
+
+A **rational number** is a number that can be written as
+
+$$
+\frac pq,
+$$
+
+where $p$ and $q$ are integers and $q\ne0$.
+
+A decimal is **eventually periodic** when some finite block of digits repeats forever after a possible nonrepeating beginning. For example,
+
+$$
+0.12\overline{3}=0.123333\ldots
+$$
+
+has the nonrepeating beginning $12$ and the repeating block $3$. A terminating decimal counts as eventually periodic if zeros are appended forever: $0.125=0.125000\ldots$.
+
+The central theorem is an exact two-way statement:
+
+> A real number is rational if and only if its decimal expansion terminates or eventually repeats.
+
+The two directions need different explanations. Long division proves that fractions must loop. Multiplication by a power of ten followed by subtraction turns any repeating decimal back into a fraction.
+
+## Why a fraction must terminate or repeat
+
+Suppose $0<p<q$ and we calculate $p/q$ by long division. At every step, the current remainder is one of
+
+$$
+0,1,2,\ldots,q-1.
+$$
+
+There are only $q$ possible remainders.
+
+For $1/7$, the first step multiplies the remainder $1$ by $10$:
+
+$$
+10=7(1)+3.
+$$
+
+The quotient digit is $1$, and the next remainder is $3$. The next step is
+
+$$
+30=7(4)+2,
+$$
+
+so the next digit is $4$ and the next remainder is $2$. Continuing gives the remainder path
+
+$$
+1\to3\to2\to6\to4\to5\to1.
+$$
+
+The path has returned to remainder $1$. The same input to long division produces the same quotient digit and the same next remainder, so the six-digit cycle starts again.
+
+The general argument is just as tight. If a remainder becomes $0$, the decimal terminates. If no remainder becomes $0$, long division keeps choosing from the finite list $1,2,\ldots,q-1$. Eventually one remainder must recur. From that recurrence onward, the digits repeat.
+
+This is the pigeonhole principle inside long division: an endless process with only finitely many possible states must revisit a state.
+
+## Worked example: turn a mixed decimal into a fraction
+
+Let
+
+$$
+x=0.12\overline{3}=0.123333\ldots
+$$
+
+The repeating block begins after two decimal places and contains one digit. First multiply by $100$ to move the nonrepeating beginning left of the decimal point:
+
+$$
+100x=12.3333\ldots
+$$
+
+Now multiply the original number by $1000$. This moves one additional digit—the entire repeating block—left of the decimal point:
+
+$$
+1000x=123.3333\ldots
+$$
+
+The infinite tails are now identical. Subtract the first shifted equation from the second:
+
+$$
+\begin{aligned}
+1000x-100x&=123.3333\ldots-12.3333\ldots\\
+900x&=111.
+\end{aligned}
+$$
+
+Divide both sides by $900$:
+
+$$
+x=\frac{111}{900}=\frac{37}{300}.
+$$
+
+No infinite approximation remains. The repeating decimal is exactly $37/300$.
+
+The same calculation gives a reusable formula. Suppose a decimal has $m$ nonrepeating digits followed by a repeating block of $n$ digits. Let $N_1$ be the integer formed by the first $m+n$ digits, and let $N_0$ be the integer formed by the first $m$ digits. Then
+
+$$
+x=\frac{N_1-N_0}{10^{m+n}-10^m}.
+$$
+
+For $0.12\overline3$, we have $m=2$, $n=1$, $N_1=123$, and $N_0=12$, so
+
+$$
+x=\frac{123-12}{10^3-10^2}=\frac{111}{900}.
+$$
+
+## A pure repeating block has a denominator made of nines
+
+When repetition begins immediately after the decimal point, $m=0$. A block of $n$ digits represents an integer $B$, and the formula becomes
+
+$$
+0.\overline{B}=\frac{B}{10^n-1}.
+$$
+
+The denominator $10^n-1$ is a row of $n$ nines. Therefore
+
+$$
+0.\overline{27}=\frac{27}{99}=\frac3{11}
+$$
+
+and
+
+$$
+0.\overline{045}=\frac{45}{999}=\frac5{111}.
+$$
+
+The leading zero in the block $045$ matters because the period contains three positions, so the first denominator is $999$, not $99$.
+
+This calculation also settles the famous edge case:
+
+$$
+0.\overline9=\frac99=1.
+$$
+
+The symbols $0.999\ldots$ and $1.000\ldots$ are two decimal representations of the same real number. There is no positive gap between them waiting beyond every finite decimal place.
+
+## The idea developed across several mathematical cultures
+
+Decimal fractions were not produced by one isolated inventor. Positional calculation grew through Indian arithmetic and its transmission and development in the Islamic world. MacTutor identifies a tenth-century text by [Abu'l-Hasan al-Uqlidisi](https://mathshistory.st-andrews.ac.uk/Biographies/Al-Uqlidisi/) as the earliest known direct treatment of decimal fractions. Al-Uqlidisi wrote for working arithmetic, including calculations performed without a dust board, so the notation belonged to practical computation as well as theory.
+
+In the fifteenth century, the astronomer and mathematician [Jamshid al-Kashi](https://mathshistory.st-andrews.ac.uk/Biographies/Al-Kashi/) gave a systematic account of decimal fractions and used them in high-precision numerical work. Astronomy, surveying, commerce, and measurement all rewarded notation that made fractional calculation behave more like whole-number calculation.
+
+Simon Stevin's short 1585 book *De Thiende*—*The Tenth*—helped make decimal fractions widely usable in Europe. Stevin advocated decimal arithmetic for measurement, money, and everyday calculation. That influence once led European histories to credit Stevin with invention; later scholarship restored the much earlier work of al-Uqlidisi, al-Kashi, and other mathematicians. MacTutor's [history of fraction notation](https://mathshistory.st-andrews.ac.uk/Miller/mathsym/fractions/) and the Mathematical Association of America's [account of research on Islamic mathematics](https://old.maa.org/press/periodicals/convergence/impacts-of-a-unique-course-on-the-history-of-mathematics-in-the-islamic-world-our-recent-work-on) trace that correction.
+
+## Where the loop matters now
+
+The theorem distinguishes a number from the notation used to store it. The fraction $1/10$ terminates in base ten, but its binary expansion repeats. Most computer hardware therefore stores the nearest available binary floating-point value rather than $1/10$ itself. The official [Python floating-point tutorial](https://docs.python.org/3/tutorial/floatingpoint.html) uses $0.1$ to explain why a displayed decimal can hide a nearby binary fraction and why small rounding effects are inherent in binary floating-point arithmetic.
+
+Programs that require exact ratios can store a numerator and denominator instead. Python's [`fractions` module](https://docs.python.org/3/library/fractions.html) implements that approach. Programs that need familiar base-ten rounding rules—for example, some financial calculations—can use decimal arithmetic with an explicit precision and rounding policy. The choice of representation is part of the mathematics of the program, not a formatting detail.
+
+The length of a repeating block also comes from remainder arithmetic. The six-step loop for $1/7$ is a cycle of powers of $10$ modulo $7$. That connection leads directly to modular arithmetic, full-reptend primes, and divisibility tests. The earlier Reckoning [How Can 7²²² Fit on a Clock?](/reckonings/daily-reckoning-2026-09-09/) develops the same remainder arithmetic from a different direction.
+
+## Try two
+
+<details>
+<summary>Problem 1: Convert $0.\overline{045}$ to a fraction in lowest terms.</summary>
+
+The repeating block has three digits, so multiply by $1000$:
+
+$$
+x=0.045045\ldots,
+\qquad
+1000x=45.045045\ldots
+$$
+
+Subtract the first equation from the second:
+
+$$
+999x=45.
+$$
+
+Therefore
+
+$$
+x=\frac{45}{999}.
+$$
+
+Both numerator and denominator are divisible by $9$:
+
+$$
+\frac{45}{999}=\frac5{111}.
+$$
+
+</details>
+
+<details>
+<summary>Problem 2: Show that $0.58\overline3$ is exactly $7/12$.</summary>
+
+There are two nonrepeating digits and one repeating digit. Let
+
+$$
+x=0.583333\ldots
+$$
+
+Then
+
+$$
+100x=58.3333\ldots
+$$
+
+and
+
+$$
+1000x=583.3333\ldots
+$$
+
+Subtract:
+
+$$
+900x=525.
+$$
+
+Thus
+
+$$
+x=\frac{525}{900}=\frac7{12}.
+$$
+
+Long division checks the result: $7/12=0.583333\ldots$ because the remainder becomes $4$ after the second digit and then stays $4$, producing another $3$ at every later step.
+
+</details>
+
+## The idea to keep
+
+A repeating decimal is finite-state arithmetic in disguise. A fraction's long division can use only finitely many remainders, so it must stop or revisit one; a repeated digit block can be shifted and subtracted, leaving an exact ratio of integers.
+
+Continue with [modular arithmetic](/reckonings/daily-reckoning-2026-09-09/) to study remainder cycles directly, or with [geometric series](/reckonings/daily-reckoning-2026-10-02/) to reach the same fractions by adding an infinite sequence of shrinking terms.
+
+## Sources
+
+- University of Kentucky, [*Rational and irrational numbers*](https://clp.math.uky.edu/clp2/sec_RatIrr.html), including the proof that rational numbers are exactly the numbers with eventually periodic decimal expansions.
+- MacTutor History of Mathematics, [*Al-Uqlidisi*](https://mathshistory.st-andrews.ac.uk/Biographies/Al-Uqlidisi/) and [*Al-Kashi*](https://mathshistory.st-andrews.ac.uk/Biographies/Al-Kashi/).
+- MacTutor History of Mathematics, [*Earliest Uses of Symbols for Fractions*](https://mathshistory.st-andrews.ac.uk/Miller/mathsym/fractions/).
+- Mathematical Association of America, [*Our Recent Work on History of Mathematics in the Islamic World*](https://old.maa.org/press/periodicals/convergence/impacts-of-a-unique-course-on-the-history-of-mathematics-in-the-islamic-world-our-recent-work-on).
+- Python documentation, [*Floating-Point Arithmetic: Issues and Limitations*](https://docs.python.org/3/tutorial/floatingpoint.html) and [`fractions` — Rational numbers](https://docs.python.org/3/library/fractions.html).
+

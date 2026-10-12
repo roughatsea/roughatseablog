@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-11T06:00:00-07:00",
+  "updatedAt": "2026-10-12T06:00:00-07:00",
   "entries": [
     {
       "date": "2026-08-29",
@@ -1064,6 +1064,34 @@
       "relatedLessons": [
         "daily-reckoning-2026-09-05",
         "daily-reckoning-2026-09-25"
+      ]
+    },
+    {
+      "date": "2026-10-12",
+      "slug": "daily-reckoning-2026-10-12",
+      "title": "Why Does a Repeating Decimal Always Hide a Fraction?",
+      "area": "Numbers and algebra",
+      "difficulty": "Foundational",
+      "prerequisites": [
+        "Fractions and long division",
+        "Multiplication by powers of ten",
+        "Solving a one-step equation"
+      ],
+      "miniSeries": null,
+      "relatedTopics": [
+        "rational numbers",
+        "repeating decimals",
+        "eventually periodic expansions",
+        "long division",
+        "pigeonhole principle",
+        "decimal fractions",
+        "floating-point representation",
+        "history of decimal notation"
+      ],
+      "relatedLessons": [
+        "daily-reckoning-2026-09-09",
+        "daily-reckoning-2026-09-29",
+        "daily-reckoning-2026-10-02"
       ]
     }
   ]

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Repeating decimal remainder loop</title>
+  <desc id="desc">A dark maritime blueprint with a glowing sequence of decimal compartments curling into a closed loop above a magenta division grid.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020913"/>
+      <stop offset="0.48" stop-color="#061a29"/>
+      <stop offset="1" stop-color="#02070f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="45%" r="55%">
+      <stop offset="0" stop-color="#0f8aa5" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#0f8aa5" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#56e7ff" stroke-opacity=".1" stroke-width="1"/>
+      <circle cx="0" cy="0" r="2" fill="#56e7ff" fill-opacity=".16"/>
+    </pattern>
+    <filter id="cyanGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="greenGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M1 1l9 5-9 5z" fill="#ff58dc"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sea)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <rect x="70" y="65" width="1460" height="770" rx="36" fill="url(#grid)" stroke="#56e7ff" stroke-opacity=".18" stroke-width="2"/>
+  <g opacity=".2" fill="none" stroke="#7eeeff">
+    <path d="M85 705c210-64 348 48 540-9s330-27 464 26 278 40 426-17"/>
+    <path d="M85 744c210-64 348 48 540-9s330-27 464 26 278 40 426-17"/>
+    <path d="M85 783c210-64 348 48 540-9s330-27 464 26 278 40 426-17"/>
+  </g>
+  <g transform="translate(800 415)" fill="none">
+    <ellipse rx="490" ry="245" stroke="#56e7ff" stroke-opacity=".22" stroke-width="22"/>
+    <ellipse rx="490" ry="245" stroke="#56e7ff" stroke-opacity=".84" stroke-width="4" filter="url(#cyanGlow)"/>
+    <path d="M-456-91C-315-286 55-320 340-167C528-67 526 126 342 226" stroke="#ff58dc" stroke-width="5" stroke-dasharray="18 16" marker-end="url(#arrow)" opacity=".9"/>
+  </g>
+  <g transform="translate(800 415)" filter="url(#greenGlow)">
+    <g fill="#091b27" stroke="#c9ff58" stroke-width="5">
+      <rect x="-470" y="-57" width="118" height="114" rx="18" transform="rotate(-22 -411 0)"/>
+      <rect x="-288" y="-57" width="118" height="114" rx="18" transform="rotate(-8 -229 0)"/>
+      <rect x="-95" y="-57" width="118" height="114" rx="18" transform="rotate(5 -36 0)"/>
+      <rect x="96" y="-57" width="118" height="114" rx="18" transform="rotate(18 155 0)"/>
+      <rect x="275" y="-57" width="118" height="114" rx="18" transform="rotate(31 334 0)"/>
+      <rect x="380" y="76" width="118" height="114" rx="18" transform="rotate(72 439 133)"/>
+    </g>
+    <g fill="#c9ff58">
+      <circle cx="-411" cy="0" r="19"/><circle cx="-229" cy="0" r="19"/><circle cx="-36" cy="0" r="19"/>
+      <circle cx="155" cy="0" r="19"/><circle cx="334" cy="0" r="19"/><circle cx="439" cy="133" r="19"/>
+    </g>
+  </g>
+  <g opacity=".9" transform="translate(260 650)">
+    <path d="M0 0h1080" stroke="#ff58dc" stroke-width="5"/>
+    <path d="M150-46v92M335-46v92M520-46v92M705-46v92M890-46v92" stroke="#ff58dc" stroke-width="3" stroke-dasharray="8 10"/>
+    <path d="M70-92h940" stroke="#56e7ff" stroke-width="2" stroke-dasharray="14 12" opacity=".7"/>
+  </g>
+  <g fill="none" stroke="#56e7ff" stroke-opacity=".35">
+    <circle cx="800" cy="415" r="34"/><circle cx="800" cy="415" r="20"/>
+    <path d="M770 415h60M800 385v60"/>
+  </g>
+</svg>
