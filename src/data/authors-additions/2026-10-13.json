@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-13",
+  "authorId": "jansson",
+  "authorName": "Tove Jansson",
+  "selection": "Finnish-Swedish fantasy author and illustrator, extending the timeline into twentieth-century Nordic children's literature after the previous Brazilian literary-fiction addition.",
+  "sources": [
+    {
+      "url": "https://kansalliskirjasto.finna.fi/AuthorityRecord/melinda.(FI-ASTERI-N)000045590",
+      "use": "National Library of Finland authority record for Jansson's August 9, 1914–June 27, 2001 lifespan, Helsinki birth and death, and roles as writer, painter and cartoonist."
+    },
+    {
+      "url": "https://tovejansson.com/biography/",
+      "use": "Official Tove Jansson site biography for her Finnish-Swedish background, creative range and Moomin authorship."
+    },
+    {
+      "url": "https://tovejansson.com/books/moomin-novels/",
+      "use": "Official complete list of nine Moomin prose books and their original publication years from 1945 through 1970; source for the span and all selected work markers."
+    },
+    {
+      "url": "https://tovejansson.com/book/the-moomins-and-the-great-flood/",
+      "use": "Official book page distinguishing the original Swedish-language publication in Finland in 1945 from the first English translation in 2005."
+    },
+    {
+      "url": "https://tovejansson.com/book/comet-in-moominland/",
+      "use": "Official book page distinguishing Kometjakten's 1946 Swedish publication, revised editions in 1956 and 1968, and 1951 English translation."
+    },
+    {
+      "url": "https://tovejansson.com/book/moominpappa-at-sea/",
+      "use": "Official book page distinguishing Pappan och havet's 1965 Swedish publication from its 1966 English edition."
+    },
+    {
+      "url": "https://tovejansson.com/book/moominvalley-in-november/",
+      "use": "Official book page identifying the final Moomin novel and distinguishing Sent i november's 1970 Swedish publication from its 1971 English edition."
+    },
+    {
+      "url": "https://cdn.penguin.co.uk/dam-assets/books/9780241344545/9780241344545-sample.pdf",
+      "use": "Puffin publisher edition cross-check for the 1914–2001 lifespan and the Moomin book sequence beginning in 1945."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1914–2001",
+    "publishingSpan": "1945–1970",
+    "proxy": "Lifetime original-Swedish Moomin prose-book publication span from The Moomins and the Great Flood to Moominvalley in November; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1945 — The Moomins and the Great Flood",
+      "1946 — Comet in Moominland",
+      "1948 — Finn Family Moomintroll",
+      "1950 — The Memoirs of Moominpappa",
+      "1954 — Moominsummer Madness",
+      "1957 — Moominland Midwinter",
+      "1965 — Moominpappa at Sea",
+      "1970 — Moominvalley in November"
+    ],
+    "dateDistinctions": "Markers use first Swedish-language book publication years in Finland rather than composition, revised editions or later translations; English titles are shown for readability. The Moomins and the Great Flood appeared in Swedish in 1945 and English in 2005. Comet in Moominland appeared as Kometjakten in 1946, was revised in 1956 and 1968, and reached English in 1951. Moominpappa at Sea appeared in Swedish in 1965 and English in 1966; Moominvalley in November appeared in Swedish in 1970 and English in 1971. The 1962 story collection Tales from Moominvalley is within the official nine-book series but omitted from this eight-marker selection. Picture books, comics, adult fiction, illustration and painting are outside this Moomin prose-book scope.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
