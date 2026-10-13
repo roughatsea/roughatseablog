@@ -10,6 +10,9 @@ export const thinkers = [{
 }, {
   slug: 'mill', name: 'John Stuart Mill', years: '1806–1873',
   introduction: 'A philosopher and political economist who defends free discussion and the development of individuality. This guided work examines harm, obligations, and the limits of authority, including the exclusions and difficult cases within his defense of liberty.'
+}, {
+  slug: 'du-bois', name: 'W. E. B. Du Bois', years: '1868–1963',
+  introduction: 'A sociologist, historian, writer, and political thinker who studies how the color line shapes institutions and inner life. This guided work examines the Veil, double consciousness, freedom after emancipation, education, and the testimony carried by the Sorrow Songs.'
 }];
 
 export const works = [{
@@ -59,5 +62,17 @@ export const works = [{
     { name: 'Free discussion', anchor: 'free-discussion', question: 'How does an opinion remain open to correction?' },
     { name: 'Living conviction and dead dogma', anchor: 'living-conviction-and-dead-dogma', question: 'Can you hold a true belief without understanding it?' },
     { name: 'Individuality and experiments of living', anchor: 'individuality-and-experiments-of-living', question: 'What do we develop by choosing how to live?' }
+  ]
+}, {
+  slug: 'the-souls-of-black-folk', thinker: 'du-bois', title: 'The Souls of Black Folk', year: 1903,
+  question: 'What does freedom require beyond emancipation?',
+  description: 'Follow Du Bois from the color line and double consciousness to political rights, education, economic power, and the Sorrow Songs.',
+  disciplines: ['Sociology', 'Political thought', 'Literature'],
+  concepts: [
+    { name: 'Color line', anchor: 'color-line', question: 'How does racial hierarchy organize institutions and opportunity?' },
+    { name: 'The Veil', anchor: 'the-veil', question: 'What does segregation conceal from people on either side?' },
+    { name: 'Double consciousness', anchor: 'double-consciousness', question: 'What happens when contempt becomes a measure of the self?' },
+    { name: 'Freedom after emancipation', anchor: 'freedom-after-emancipation', question: 'Why is legal freedom insufficient on its own?' },
+    { name: 'The Sorrow Songs', anchor: 'the-sorrow-songs', question: 'How can music carry historical knowledge and political hope?' }
   ]
 }];
