@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-14",
+  "authorId": "adams-douglas",
+  "authorName": "Douglas Adams",
+  "selection": "British comic science-fiction writer, adding a humor-focused late-twentieth-century entry after the previous Finnish-Swedish fantasy addition.",
+  "sources": [
+    {
+      "url": "https://www.mopop.org/sffhof/douglas-adams",
+      "use": "Science Fiction and Fantasy Hall of Fame biography for the 1952–2001 lifespan, Adams's importance to comic science fiction, the BBC radio origin, and the five Hitchhiker novel years."
+    },
+    {
+      "url": "https://sf-encyclopedia.com/entry/adams_douglas",
+      "use": "The Encyclopedia of Science Fiction for exact birth and death dates, the 1979–1992 Hitchhiker sequence, the 1987–1988 Dirk Gently novels, adaptation history, Terry Jones authorship of the 1997 Starship Titanic tie-in, and the posthumous 2002 Salmon of Doubt collection."
+    },
+    {
+      "url": "https://www.penguinrandomhouse.com/authors/114/douglas-adams/",
+      "use": "Publisher biography cross-checking the 1952–2001 lifespan, the franchise's multiple radio, novel, television, game and stage forms, and the principal book titles."
+    },
+    {
+      "url": "https://www.encyclopedia.com/arts/encyclopedias-almanacs-transcripts-and-maps/adams-douglas",
+      "use": "Literary-reference biography for the 1978 BBC radio origin, the 1979 novel reworking, all seven novel dates, the earlier Doctor Who material behind later novels, the 1990 nonfiction book and the unfinished work collected posthumously in 2002."
+    },
+    {
+      "url": "https://search.worldcat.org/title/The-hitchhiker's-guide-to-the-galaxy/oclc/283189656",
+      "use": "WorldCat library record cross-checking The Hitchhiker's Guide to the Galaxy as an English-language 1979 print book."
+    },
+    {
+      "url": "https://search.worldcat.org/title/26158345",
+      "use": "WorldCat library record cross-checking Mostly Harmless as an English-language 1992 print book and the fifth Hitchhiker volume."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1952–2001",
+    "publishingSpan": "1979–1992",
+    "proxy": "Lifetime novel publication span from The Hitchhiker's Guide to the Galaxy to Mostly Harmless; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1979 — The Hitchhiker's Guide to the Galaxy",
+      "1980 — The Restaurant at the End of the Universe",
+      "1982 — Life, the Universe and Everything",
+      "1984 — So Long, and Thanks for All the Fish",
+      "1987 — Dirk Gently's Holistic Detective Agency",
+      "1988 — The Long Dark Tea-Time of the Soul",
+      "1992 — Mostly Harmless"
+    ],
+    "dateDistinctions": "Markers use first English-language book-publication years rather than composition or adaptation dates. The Hitchhiker's Guide began as a BBC radio series in 1978 and was reworked as a novel in 1979. Life, the Universe and Everything developed from an earlier Doctor Who film idea, and Dirk Gently's Holistic Detective Agency reused elements from earlier Doctor Who scripts. Radio and television scripts, games, co-written dictionaries and Last Chance to See (1990), a nonfiction collaboration with Mark Carwardine, are outside the novel-only span. Douglas Adams's Starship Titanic (1997) was written by Terry Jones from Adams's game and is excluded. The unfinished The Salmon of Doubt appeared posthumously in a 2002 collection and is excluded.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
