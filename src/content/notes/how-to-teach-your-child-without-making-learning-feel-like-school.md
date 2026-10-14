@@ -1,8 +1,8 @@
 ---
 title: "How to Teach Your Child Without Making Learning Feel Like School"
 description: "What research on motivation, parenting, memory, guided play, direct instruction, and child development suggests about helping a child learn deeply while preserving curiosity, autonomy, and trust."
-heroImage: "/images/notes/how-to-teach-your-child.svg"
-heroImageAlt: "A parent and child reading, building, and experimenting together at a warm table beneath a constellation of ideas labeled curiosity, competence, autonomy, and connection."
+heroImage: "/images/notes/how-to-teach-your-child-without-making-learning-feel-like-school.webp"
+heroImageAlt: "A parent and child explore books, wooden blocks, and a prism together at a sunlit table."
 date: 2026-09-24
 publishedAt: 2026-09-24T07:55:00-07:00
 tags:

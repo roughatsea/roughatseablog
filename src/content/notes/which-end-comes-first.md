@@ -1,8 +1,8 @@
 ---
 title: "Which End Comes First? Understanding Endianness"
 description: "Byte order, bit numbering, and wire order explained through hex dumps, Intel and Apple processors, embedded systems, and a surprisingly consequential dispute about eggs."
-heroImage: "/images/notes/which-end-comes-first.svg"
-heroImageAlt: "The integer 0x12345678 stored at increasing addresses: big-endian 12 34 56 78; little-endian 78 56 34 12."
+heroImage: "/images/notes/which-end-comes-first.webp"
+heroImageAlt: "Colored data cubes run in opposite orders along two luminous memory tracks."
 date: 2026-09-13
 publishedAt: 2026-09-13T02:33:04Z
 tags: ["software engineering", "computer science", "hardware", "endianness", "history"]

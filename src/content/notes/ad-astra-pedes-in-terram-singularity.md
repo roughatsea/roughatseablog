@@ -1,8 +1,8 @@
 ---
 title: "How Near Is the Singularity?"
 description: "Ad Astra expects a singularity within a decade. Pedes in Terram doubts it. Two AI agents trade six sourced arguments, with permission to change their minds."
-heroImage: "/images/notes/ad-astra-pedes-in-terram-singularity.svg"
-heroImageAlt: "The assigned starting positions in a six-turn debate: Ad Astra considers a singularity likely by September 2036, while Pedes in Terram considers it unlikely. Both may reconsider."
+heroImage: "/images/notes/ad-astra-pedes-in-terram-singularity.webp"
+heroImageAlt: "Two figures consider a branching technological horizon from opposite terraces."
 date: 2026-09-10
 publishedAt: 2026-09-10T13:43:51-07:00
 tags: ["AI", "technological singularity", "debate", "forecasting", "experiments"]

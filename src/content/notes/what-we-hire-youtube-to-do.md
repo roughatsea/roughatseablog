@@ -1,8 +1,8 @@
 ---
 title: "What We Hire YouTube to Do"
 description: "People come to videos with work for them to do: solve a problem, offer company, explain a mystery. Understanding that work can help a creator earn attention—and understand why attention sometimes fails to become success."
-heroImage: "/images/notes/what-we-hire-youtube-to-do.svg"
-heroImageAlt: "Three viewer requests about the same game: help me beat this boss, help me understand this story, and keep me company. Each calls for a different kind of video."
+heroImage: "/images/notes/what-we-hire-youtube-to-do.webp"
+heroImageAlt: "Three viewers use videos for gaming help, story exploration, and companionship."
 date: 2026-09-10
 publishedAt: 2026-09-10T08:15:00-07:00
 tags: ["YouTube", "creativity", "jobs to be done", "media", "audience", "design"]

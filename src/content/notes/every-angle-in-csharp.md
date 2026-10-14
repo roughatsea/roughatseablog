@@ -1,8 +1,8 @@
 ---
 title: "Every Angle in C#: Generics, Bit Shifts, and Lambdas Without the Guesswork"
 description: "A field guide to <, >, generics, shifts, arrows, and the information C# leaves unstated—with expanded alternatives, complete calls, execution traces, and worked exercises."
-heroImage: "/images/notes/essential-coding-patterns-for-senior-engineers.webp"
-heroImageAlt: "A software architect faces a modular city as pink and blue streams of code flow through it."
+heroImage: "/images/notes/every-angle-in-csharp.webp"
+heroImageAlt: "Luminous angle brackets surround nested glass containers and branching ribbons of light."
 date: 2026-09-23
 publishedAt: 2026-09-23T22:40:13-07:00
 tags:

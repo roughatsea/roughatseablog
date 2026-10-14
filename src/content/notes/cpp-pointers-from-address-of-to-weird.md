@@ -1,8 +1,8 @@
 ---
 title: "C++ Pointers: From Address Of to What on Earth Is 1[numbers]?"
 description: "A patient, example-filled guide to pointers, references, arrays, strange declarations, lifetime traps, function pointers, and modern ownership."
-heroImage: "/images/notes/essential-coding-patterns-for-senior-engineers.webp"
-heroImageAlt: "A software architect faces a modular city threaded with pink and blue streams of code."
+heroImage: "/images/notes/cpp-pointers-from-address-of-to-weird.webp"
+heroImageAlt: "A curious explorer follows glowing arrows through rows of glass memory cells."
 date: 2026-10-12
 publishedAt: 2026-10-12T08:37:31-07:00
 tags:

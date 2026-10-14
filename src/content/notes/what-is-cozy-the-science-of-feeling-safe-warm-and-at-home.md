@@ -1,8 +1,8 @@
 ---
 title: "What Is Cozy? The Science of Feeling Safe, Warm, and at Home"
 description: "Why rain against a window, warm light, familiar routines, crackling fire, old games, and trusted company can converge on the same peculiar feeling—and what science can actually tell us about engineering coziness."
-heroImage: "/images/notes/what-is-cozy-the-science-of-feeling-safe-warm-and-at-home.svg"
-heroImageAlt: "A warm lamp-lit room protected from rain outside, surrounded by the words safety, warmth, familiarity, control, attachment, and restoration."
+heroImage: "/images/notes/what-is-cozy-the-science-of-feeling-safe-warm-and-at-home.webp"
+heroImageAlt: "A warm reading nook with a knitted blanket, steaming tea, and a sleeping dog beside a rain-streaked window."
 date: 2026-09-22
 publishedAt: 2026-09-22T22:31:00-07:00
 tags:
