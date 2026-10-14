@@ -13,6 +13,9 @@ export const thinkers = [{
 }, {
   slug: 'du-bois', name: 'W. E. B. Du Bois', years: '1868–1963',
   introduction: 'A sociologist, historian, writer, and political thinker who studies how the color line shapes institutions and inner life. This guided work examines the Veil, double consciousness, freedom after emancipation, education, and the testimony carried by the Sorrow Songs.'
+}, {
+  slug: 'wollstonecraft', name: 'Mary Wollstonecraft', years: '1759–1797',
+  introduction: 'A moral and political philosopher who asks whether anyone can become virtuous while being educated for dependence. This guided work examines reason, equal moral standards, economic and civil independence, and national coeducation.'
 }];
 
 export const works = [{
@@ -74,5 +77,17 @@ export const works = [{
     { name: 'Double consciousness', anchor: 'double-consciousness', question: 'What happens when contempt becomes a measure of the self?' },
     { name: 'Freedom after emancipation', anchor: 'freedom-after-emancipation', question: 'Why is legal freedom insufficient on its own?' },
     { name: 'The Sorrow Songs', anchor: 'the-sorrow-songs', question: 'How can music carry historical knowledge and political hope?' }
+  ]
+}, {
+  slug: 'a-vindication-of-the-rights-of-woman', thinker: 'wollstonecraft', title: 'A Vindication of the Rights of Woman', year: 1792,
+  question: 'Can anyone become virtuous while being educated for dependence?',
+  description: 'Follow Wollstonecraft from reason and equal moral standards to economic independence, citizenship, and a public system of coeducation.',
+  disciplines: ['Political philosophy', 'Education', 'Feminist thought'],
+  concepts: [
+    { name: 'Reason and virtue', anchor: 'reason-and-virtue', question: 'Why must moral duties be understood rather than merely obeyed?' },
+    { name: 'Educated dependence', anchor: 'educated-dependence', question: 'What happens when a person is trained to please instead of judge?' },
+    { name: 'Effect mistaken for cause', anchor: 'effect-mistaken-for-cause', question: 'Can inequality create the behavior later used to justify it?' },
+    { name: 'Independence and citizenship', anchor: 'independence-and-citizenship', question: 'Which conditions let someone act as a moral and political agent?' },
+    { name: 'National coeducation', anchor: 'national-coeducation', question: 'Why does Wollstonecraft make schooling a public concern?' }
   ]
 }];
