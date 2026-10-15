@@ -6,7 +6,7 @@ author: John Stuart Mill
 thinker: mill
 discipline: Political philosophy and ethics
 year: 1859
-updated: '2026-10-14'
+updated: '2026-10-15'
 ---
 
 *Reading references: I–V identify the five chapters. Page references use the Walter Scott edition reproduced in Project Gutenberg eBook 34901, with W. L. Courtney's introduction dated 1901; they are not the pagination of the 1859 first edition. The work was written in English, so no translator is involved. Examples, objections, and contemporary applications are editorial unless explicitly attributed.*
@@ -288,6 +288,8 @@ If individuality is your main interest, continue **III through pp. 119–139**. 
 ### Where to go next
 
 Return to [Jung on individuation](/seminal-ideas/two-essays-on-analytical-psychology/#individuation) to distinguish a theory of psychological integration from Mill's account of chosen lives. Compare [Freud's superego](/seminal-ideas/civilization-and-its-discontents/#superego) with the authority of public opinion, then [Nietzsche's genealogy](/seminal-ideas/genealogy-of-morality/#genealogy) with Mill's question about legitimate enforcement. Ask how [Du Bois's account of freedom after emancipation](/seminal-ideas/the-souls-of-black-folk/#freedom-after-emancipation) changes the analysis when legal liberty exists alongside organized exclusion. [Wollstonecraft's account of educated dependence](/seminal-ideas/a-vindication-of-the-rights-of-woman/#educated-dependence) asks a prior question: who is given the practice and material independence needed to become a chooser?
+
+Read [Tagore on moral anaesthesia](/seminal-ideas/nationalism/#moral-anaesthesia) beside Mill's colonial exception: can an institution's claim to serve a higher purpose weaken scrutiny of what it does to particular people? This is a comparison of arguments, not a claim of direct influence.
 
 Before the next disagreement, try one concrete change: state exactly whose interest a proposed restriction protects and how. If the explanation reduces to *they should live more like us*, the case for authority has barely begun.
 

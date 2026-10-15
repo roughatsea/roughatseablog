@@ -16,6 +16,9 @@ export const thinkers = [{
 }, {
   slug: 'wollstonecraft', name: 'Mary Wollstonecraft', years: '1759–1797',
   introduction: 'A moral and political philosopher who asks whether anyone can become virtuous while being educated for dependence. This guided work examines reason, equal moral standards, economic and civil independence, and national coeducation.'
+}, {
+  slug: 'tagore', name: 'Rabindranath Tagore', years: '1861–1941',
+  introduction: 'A Bengali poet, educator, and thinker who challenges the subordination of human relationships to organized power. This guided work examines nationalism, empire, cultural exchange, and the social conditions of freedom.'
 }];
 
 export const works = [{
@@ -89,5 +92,17 @@ export const works = [{
     { name: 'Effect mistaken for cause', anchor: 'effect-mistaken-for-cause', question: 'Can inequality create the behavior later used to justify it?' },
     { name: 'Independence and citizenship', anchor: 'independence-and-citizenship', question: 'Which conditions let someone act as a moral and political agent?' },
     { name: 'National coeducation', anchor: 'national-coeducation', question: 'Why does Wollstonecraft make schooling a public concern?' }
+  ]
+}, {
+  slug: 'nationalism', thinker: 'tagore', title: 'Nationalism', year: 1917,
+  question: 'When does loyalty to a country become obedience to a machine of power?',
+  description: 'Read Tagore’s critique of empire and nation-worship alongside his defense of cultural exchange and his challenge to social domination within India.',
+  disciplines: ['Political thought', 'Social philosophy', 'Literature'],
+  concepts: [
+    { name: 'Nation and society', anchor: 'nation-and-society', question: 'What happens when a tool of collective power becomes the purpose of life?' },
+    { name: 'Organized selfishness', anchor: 'organized-selfishness', question: 'Can defensive rivalry reproduce the danger it seeks to escape?' },
+    { name: 'Moral anaesthesia', anchor: 'moral-anaesthesia', question: 'Why might decent people excuse harm when acting for their country?' },
+    { name: 'Assimilation rather than imitation', anchor: 'assimilation-rather-than-imitation', question: 'How can a culture learn without surrendering its judgment?' },
+    { name: 'Social freedom', anchor: 'social-freedom', question: 'Can political independence coexist with everyday subjection?' }
   ]
 }];
