@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-15",
+  "authorId": "mahfouz-naguib",
+  "authorName": "Naguib Mahfouz",
+  "selection": "Egyptian Arabic-language literary fiction, adding North African and Arab representation after the previous British comic-science-fiction entry.",
+  "sources": [
+    {
+      "url": "https://aucpress.com/author/naguib-mahfouz/",
+      "use": "Primary English-language publisher biography for Mahfouz’s Cairo birth in 1911, death in August 2006, nearly forty novels and Nobel recognition."
+    },
+    {
+      "url": "https://aucpress.com/blog/2019/09/23/naguib-mahfouz-1911-2006/",
+      "use": "AUC Press career and bibliography overview for the exact 11 December 1911 birth date, 35 novel-length works, the 1939 first Arabic publication of Khufu’s Wisdom, the 1988 final extended fiction The Coffeehouse, and the distinction between original Arabic works and later English translations."
+    },
+    {
+      "url": "https://thebookerprizes.com/the-booker-library/authors/naguib-mahfouz",
+      "use": "Booker Prize Foundation biography cross-checking the 11 December 1911–30 August 2006 lifespan, Egyptian identity and seventy-year career."
+    },
+    {
+      "url": "https://www.encyclopedia.com/arts/culture-magazines/mahfouz-naguib-1911",
+      "use": "Literary-reference biography for Midaq Alley’s 1947 Arabic appearance and much later English publication, plus the Cairo Trilogy’s 1956–1957 Arabic history and early-1990s English editions."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BA12951692?l=en",
+      "use": "National Institute of Informatics library record confirming Palace Walk’s original Arabic publication in 1956 and the 1990 English edition."
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/1990/07/02/man-of-gamaliya",
+      "use": "Edward Said’s profile for Children of Gebelawi’s 1959 Al-Ahram serialization, subsequent book-publication and censorship distinction."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BA60373815",
+      "use": "National Institute of Informatics catalog note confirming The Thief and the Dogs was first published in Arabic in 1961 and translated into English in 1984."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1911–2006",
+    "publishingSpan": "1939–1988",
+    "proxy": "Lifetime original-Arabic novel publication span from Khufu’s Wisdom to The Coffeehouse; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1939 — Khufu’s Wisdom",
+      "1947 — Midaq Alley",
+      "1956 — Palace Walk",
+      "1959 — Children of Gebelawi (serialization begins)",
+      "1961 — The Thief and the Dogs",
+      "1988 — The Coffeehouse"
+    ],
+    "dateDistinctions": "Markers use first Arabic publication, except that Children of Gebelawi is explicitly marked by the beginning of its 1959 Al-Ahram serialization. They do not use composition dates, later book editions or English translations. Midaq Alley and Palace Walk reached English long after their Arabic debuts; Children of Gebelawi’s serial appearance preceded a Beirut book edition and its long Egyptian publication ban. Short stories, plays, screenplays, columns, autobiography and posthumous translations are excluded.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
