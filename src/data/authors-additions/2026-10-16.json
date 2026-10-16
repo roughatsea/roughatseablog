@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-16",
+  "authorId": "calvino",
+  "authorName": "Italo Calvino",
+  "selection": "Italian literary fantasy and postmodern fiction, adding southern European representation after the previous Egyptian Arabic-language literary-fiction entry.",
+  "sources": [
+    {
+      "url": "https://www.encyclopedia.com/people/literature-and-arts/italian-literature-biographies/italo-calvino",
+      "use": "Literary-reference biography for the exact 15 October 1923–19 September 1985 lifespan; original Italian book years; publisher details; and the distinct later English publication years for the selected works."
+    },
+    {
+      "url": "https://www.theparisreview.org/interviews/2027/the-art-of-fiction-no-130-italo-calvino",
+      "use": "Paris Review profile and interview for Calvino’s birth and death dates, the 1947 first novel, the 1952–1959 Our Ancestors works, the 1960 collection relationship, later works, and the distinction between writing and publication."
+    },
+    {
+      "url": "https://www.penguinrandomhouse.com/authors/4098/italo-calvino/",
+      "use": "Publisher biography cross-checking Calvino’s 1985 death and the continuing prominence of The Baron in the Trees, Invisible Cities, If on a Winter’s Night a Traveller and Mr. Palomar."
+    },
+    {
+      "url": "https://search.worldcat.org/title/palomar/oclc/461880054",
+      "use": "WorldCat library record confirming the original Palomar book was published by Einaudi in Turin in 1983."
+    },
+    {
+      "url": "https://www.aurarivista.it/1-2024/4724/",
+      "use": "Scholarly textual-history article documenting that selected Palomar pieces appeared in Italian newspapers from 1975 before revision and assembly into the 1983 volume."
+    },
+    {
+      "url": "https://aspbooks.org/a/volumes/article_details?paper_id=30095",
+      "use": "Astronomical Society of the Pacific conference-paper abstract independently confirming Mr. Palomar’s 1975 newspaper debut and 1983 book publication."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1923–1985",
+    "publishingSpan": "1947–1983",
+    "proxy": "Lifetime original-Italian novel and novella book-publication span from The Path to the Nest of Spiders to Mr. Palomar; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1947 — The Path to the Nest of Spiders",
+      "1952 — The Cloven Viscount",
+      "1957 — The Baron in the Trees",
+      "1959 — The Nonexistent Knight",
+      "1972 — Invisible Cities",
+      "1979 — If on a winter’s night a traveler",
+      "1983 — Mr. Palomar (book edition)"
+    ],
+    "dateDistinctions": "Markers use original Italian standalone book-publication years, not composition, earlier periodical appearances, later omnibus editions or English translations. The Our Ancestors novellas appeared separately before their 1960 Italian omnibus and 1980 English collection. Invisible Cities and If on a winter’s night a traveler reached English in 1974 and 1981. Some Mr. Palomar pieces appeared in newspapers beginning in 1975; its marker uses the 1983 Italian book edition, while the English translation followed in 1985. Story collections, essays, editorial work and posthumous books such as Under the Jaguar Sun (1986) are excluded.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
