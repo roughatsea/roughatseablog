@@ -6,7 +6,7 @@ author: W. E. B. Du Bois
 thinker: du-bois
 discipline: Sociology, political thought, and literature
 year: 1903
-updated: '2026-10-15'
+updated: '2026-10-16'
 ---
 
 *Reading references use the Forethought and the fourteen named chapters of the 1903 work. This lesson reads Project Gutenberg eBook 408, whose digital text supplies no stable print pagination; chapter names are therefore the durable references. The work was written in English, so no translator is involved. Editorial examples, present-day applications, and evaluations are labeled as such.*
@@ -237,6 +237,8 @@ Compare [Mill's harm principle](/seminal-ideas/on-liberty/#harm-principle) with 
 Wollstonecraft's [effect-mistaken-for-cause argument](/seminal-ideas/a-vindication-of-the-rights-of-woman/#effect-mistaken-for-cause) offers a further comparison: unequal formation can produce traits later used to justify exclusion. Du Bois's analysis is historically specific to racial hierarchy after emancipation, so the structural similarity should not collapse the subjects.
 
 Compare [Tagore on social freedom](/seminal-ideas/nationalism/#social-freedom) with freedom after emancipation. Both ask what a changed political status leaves intact; Tagore's critique of caste and national power should not be substituted for Du Bois's specific history of racial institutions.
+
+[Snow's cholera inquiry](/seminal-ideas/on-the-mode-of-communication-of-cholera/#natural-experiment) offers a comparison of methods: records and tables depend on close investigation of households and actual conditions. Snow studies a disease pathway; Du Bois also studies historical power and lived meanings. The comparison does not make their evidence interchangeable or assert direct influence.
 
 Try one practical question: when a situation is described as the result of personal choice, list the institutions that shaped the available choices. Then resist the opposite shortcut. Structure changes the field of action; it does not erase the purposes and judgments of the people acting within it.
 

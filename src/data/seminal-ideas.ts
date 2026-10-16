@@ -19,6 +19,9 @@ export const thinkers = [{
 }, {
   slug: 'tagore', name: 'Rabindranath Tagore', years: '1861–1941',
   introduction: 'A Bengali poet, educator, and thinker who challenges the subordination of human relationships to organized power. This guided work examines nationalism, empire, cultural exchange, and the social conditions of freedom.'
+}, {
+  slug: 'snow', name: 'John Snow', years: '1813–1858',
+  introduction: 'A physician whose investigations of cholera joined a proposed transmission mechanism to household inquiries and comparisons of water supplies. This guided work examines causal evidence, measurement, and decisions under uncertainty without reducing his work to a pump-handle legend.'
 }];
 
 export const works = [{
@@ -104,5 +107,17 @@ export const works = [{
     { name: 'Moral anaesthesia', anchor: 'moral-anaesthesia', question: 'Why might decent people excuse harm when acting for their country?' },
     { name: 'Assimilation rather than imitation', anchor: 'assimilation-rather-than-imitation', question: 'How can a culture learn without surrendering its judgment?' },
     { name: 'Social freedom', anchor: 'social-freedom', question: 'Can political independence coexist with everyday subjection?' }
+  ]
+}, {
+  slug: 'on-the-mode-of-communication-of-cholera', thinker: 'snow', title: 'On the Mode of Communication of Cholera', year: 1849,
+  question: 'How can we identify a cause before we can see the agent responsible?',
+  description: 'Read the expanded 1855 edition to follow Snow from a proposed mechanism to household evidence, water-supplier comparisons, and the limits of the famous pump intervention.',
+  disciplines: ['Epidemiology', 'Scientific reasoning', 'Public health'],
+  concepts: [
+    { name: 'Mechanism and testable predictions', anchor: 'mechanism-and-testable-predictions', question: 'What observations should differ if an explanation is right?' },
+    { name: 'Exposure beyond proximity', anchor: 'exposure-beyond-proximity', question: 'Why can living near a hazard differ from encountering it?' },
+    { name: 'Denominators and comparison', anchor: 'denominators-and-comparison', question: 'What must a count be compared with before it means a rate?' },
+    { name: 'Natural experiment', anchor: 'natural-experiment', question: 'When can circumstances supply a useful comparison without random assignment?' },
+    { name: 'Action under uncertainty', anchor: 'action-under-uncertainty', question: 'When is there enough evidence to act but not enough to claim proof?' }
   ]
 }];
