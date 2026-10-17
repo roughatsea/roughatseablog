@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-17",
+  "authorId": "tagore",
+  "authorName": "Rabindranath Tagore",
+  "selection": "Bengali literary fiction from South Asia, extending the timeline geographically and historically after the previous Italian literary-fantasy addition.",
+  "sources": [
+    {
+      "url": "https://www.tagoreweb.in/biography",
+      "use": "Nobel Lectures-derived biography for Tagore’s 1861–1941 lifespan, August 7, 1941 death, multilingual publication context, and the 1910, 1916 and 1929 dates of Gora, Ghare-Baire and Yogayog."
+    },
+    {
+      "url": "https://www.tagoreweb.in/Novels",
+      "use": "TagoreWeb novel collection for the original Bengali titles and the boundaries of the novel-only scope."
+    },
+    {
+      "url": "https://www.ngmaindia.gov.in/virtual-tour-of-rabindranath-tagore.asp",
+      "use": "Government of India National Gallery of Modern Art chronology for the May 7, 1861 birth and for distinguishing Tagore’s many literary, musical, educational and artistic activities from this novel-only selection."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BB12625040",
+      "use": "National Institute of Informatics library record for Bou Thakuranir Hat’s original Bengali publication in Bengali year 1289, cataloged as 1882 or 1883; the timeline follows the conventional 1883 Gregorian date."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BA81347405",
+      "use": "National Institute of Informatics library record identifying Chokher Bali as a Bengali novel first published in book form in 1903."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BA8135458X",
+      "use": "National Institute of Informatics library record identifying Gora as a Bengali novel first published in 1910."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BA81352008",
+      "use": "National Institute of Informatics library record for the 1916 Bengali edition of Ghare-Baire; its separate English-translation record dates The Home and the World to 1919."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BA59616512",
+      "use": "National Institute of Informatics library record for Shesher Kabita’s first Bengali publication in 1929."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BB12804163",
+      "use": "National Institute of Informatics library record for Yogayog’s first Bengali publication in 1929."
+    },
+    {
+      "url": "https://ci.nii.ac.jp/ncid/BB12625120",
+      "use": "National Institute of Informatics library record for Char Adhyay’s first Bengali publication in 1934; the English-edition record distinguishes its 1936–1937 serial translation and 1950 book."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1861–1941",
+    "publishingSpan": "1883–1934",
+    "proxy": "Lifetime original-Bengali novel book-publication span from Bou Thakuranir Hat to Char Adhyay; it is a selected publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1883 — The Young Queen’s Market (Bou Thakuranir Hat)",
+      "1903 — Chokher Bali",
+      "1910 — Gora",
+      "1916 — The Home and the World (Ghare-Baire)",
+      "1929 — The Last Poem (Shesher Kabita)",
+      "1929 — Crosscurrents (Yogayog)",
+      "1934 — Four Chapters (Char Adhyay)"
+    ],
+    "dateDistinctions": "Markers use conventional Gregorian years for original Bengali book editions rather than composition, magazine serialization or later translations; English titles and transliterations are supplied for readability. Bengali year 1289 for Bou Thakuranir Hat spans 1882–1883, and the conventional 1883 date is used. Chokher Bali’s Bengali book appeared in 1903 and its English translation was serialized in 1914. Ghare-Baire appeared in Bengali in 1916 and in English in 1919. Char Adhyay appeared in Bengali in 1934; its English translation was serialized in 1936–1937 and published as a book in 1950. Poetry, plays, stories, songs, essays, art and posthumous publications are excluded.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
