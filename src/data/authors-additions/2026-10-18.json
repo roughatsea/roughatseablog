@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-18",
+  "authorId": "verne",
+  "authorName": "Jules Verne",
+  "selection": "Nineteenth-century French science fiction and adventure, shifting the rotation from the previous South Asian literary-fiction addition while adding an early foundational figure in scientific fiction.",
+  "sources": [
+    {
+      "url": "https://jules-verne.net/jules-verne-une-vie/",
+      "use": "Centre international Jules Verne biography for Verne’s February 8, 1828 birth, March 24, 1905 death, and continued writing late in life."
+    },
+    {
+      "url": "https://jules-verne.net/l-oeuvre/les-voyages-extraordinaires/",
+      "use": "Centre international Jules Verne chronology for the first-publication years and its explicit convention of counting pre-original periodical appearances."
+    },
+    {
+      "url": "https://jules-verne.net/l-oeuvre/les-voyages-extraordinaires/1863-cinq-semaines-en-ballon/",
+      "use": "Centre international Jules Verne record for the January 31, 1863 original Hetzel book edition of Cinq semaines en ballon."
+    },
+    {
+      "url": "https://jules-verne.net/l-oeuvre/les-voyages-extraordinaires/1869-1870-vingt-mille-lieues-sous-les-mers/",
+      "use": "Centre international Jules Verne record distinguishing the March 1869–June 1870 magazine run from the two original Hetzel volumes dated October 28, 1869 and June 13, 1870."
+    },
+    {
+      "url": "https://jules-verne.net/l-oeuvre/les-voyages-extraordinaires/1872-1873-1-le-tour-du-monde-en-quatre-vingts-jours/",
+      "use": "Centre international Jules Verne record distinguishing the November–December 1872 Le Temps serialization from the January 30, 1873 original book edition of Le Tour du monde en quatre-vingts jours."
+    },
+    {
+      "url": "https://jules-verne.net/l-oeuvre/les-voyages-extraordinaires/1874-1875-1-l-ile-mysterieuse/",
+      "use": "Centre international Jules Verne record distinguishing L’Île mystérieuse’s January 1874–December 1875 magazine run from its three original volumes in 1874–1875."
+    },
+    {
+      "url": "https://jules-verne.net/l-oeuvre/les-voyages-extraordinaires/1876-michel-strogoff/",
+      "use": "Centre international Jules Verne record for Michel Strogoff’s 1876 magazine serialization and two original-volume dates."
+    },
+    {
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb14646010b",
+      "use": "Bibliothèque nationale de France authority record for L’Invasion de la mer: serialized January 1–August 1, 1905, fully revised before Verne’s March 24 death, and issued in volume the same year."
+    },
+    {
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb18001389x",
+      "use": "Bibliothèque nationale de France authority record distinguishing the 1860 composition and 1863 rejection of Paris au XXe siècle from its posthumous first edition in 1994."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1828–1905",
+    "publishingSpan": "1863–1905",
+    "proxy": "Lifetime original-French novel first-publication span from the original Hetzel book of Cinq semaines en ballon to the opening installment of L’Invasion de la mer; it is a publishing proxy, not a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1863 — Five Weeks in a Balloon (book edition)",
+      "1864 — Journey to the Center of the Earth (book edition)",
+      "1865 — From the Earth to the Moon (serialization and book)",
+      "1869 — Twenty Thousand Leagues Under the Seas (serialization begins)",
+      "1872 — Around the World in Eighty Days (serialization begins)",
+      "1874 — The Mysterious Island (serialization begins)",
+      "1876 — Michael Strogoff (serialization and book)",
+      "1905 — The Invasion of the Sea (serialization begins)"
+    ],
+    "dateDistinctions": "Markers use the earliest original-French publication: a first book edition where the novel appeared directly in volume, or the first serial year otherwise. They do not use composition, serial completion, later volume or English-translation dates; English titles are supplied for readability. Cinq semaines en ballon appeared directly as a book in January 1863. De la Terre à la Lune was serialized in September–October 1865 and issued as a book that October. Vingt mille lieues sous les mers, Le Tour du monde en quatre-vingts jours, L’Île mystérieuse and Michel Strogoff have their periodical and volume dates distinguished in the entry note. L’Invasion de la mer began serialization during Verne’s lifetime on January 1, 1905 and was fully revised before his March 24 death, although the serial and volume were completed afterward. Paris au XXe siècle was written in 1860 but first published posthumously in 1994 and is excluded, as are plays, stories and nonfiction.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
