@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-19",
+  "authorId": "wilde",
+  "authorName": "Oscar Wilde",
+  "selection": "Nineteenth-century Irish humor, drama and literary fiction, shifting the rotation from the previous French science-fiction and adventure addition while adding a writer whose public record spans poetry, fiction, essays and theatrical production.",
+  "sources": [
+    {
+      "url": "https://oscarwildesociety.co.uk/biography/",
+      "use": "Oscar Wilde Society chronology for Wilde’s 1854–1900 lifespan and the first-publication or first-production years of Poems, The Picture of Dorian Gray, Intentions, The Importance of Being Earnest and The Ballad of Reading Gaol."
+    },
+    {
+      "url": "https://www.magd.ox.ac.uk/blog/the-first-edition-of-oscar-wildes-poems-1881/",
+      "use": "Magdalen College, Oxford account for Wilde’s earliest published verse, the November 1875 appearance of ‘A Chorus of Cloud Maidens’, and the June–July 1881 publication of Poems as his first book."
+    },
+    {
+      "url": "https://www.univ.ox.ac.uk/news/oscar-wilde-abroad/",
+      "use": "University College, Oxford exhibition record for the May 1888 original edition of The Happy Prince and Other Tales."
+    },
+    {
+      "url": "https://www.wilde-manuscripts.org/the-picture-of-dorian-gray/",
+      "use": "Scholarly annotated manuscript bibliography for The Picture of Dorian Gray’s July 1890 Lippincott’s appearance and the expanded April 1891 book version."
+    },
+    {
+      "url": "https://www.univ.ox.ac.uk/news/wildes-salome/",
+      "use": "University College, Oxford exhibition record distinguishing Salomé’s 1891–1892 composition, 1893 French book, 1894 English translation, 1896 Paris premiere and posthumous 1905 English performance."
+    },
+    {
+      "url": "https://www.univ.ox.ac.uk/news/oscar-wildes-1895/",
+      "use": "University College, Oxford chronology for the February 14, 1895 premiere of The Importance of Being Earnest and Wilde’s November 1900 death."
+    },
+    {
+      "url": "https://www.univ.ox.ac.uk/news/the-ballad-of-reading-gaol/",
+      "use": "University College, Oxford account distinguishing Wilde’s May 1897 release and subsequent composition of The Ballad of Reading Gaol from its 1898 publication."
+    },
+    {
+      "url": "https://searcharchives.bl.uk/catalog/038-001987373",
+      "use": "British Library archive record for the prison manuscript of De Profundis and its first, suppressed posthumous publication in 1905."
+    },
+    {
+      "url": "https://nble.lib.unb.ca/browse/w/oscar-wilde",
+      "use": "St. Thomas University’s New Brunswick Literary Encyclopedia for Wilde’s exact October 16, 1854 birth and November 30, 1900 death dates."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1854–1900",
+    "publishingSpan": "1875–1898",
+    "proxy": "Lifetime literary first-publication and first-production span from Wilde’s earliest located published poem to his final lifetime book, used as a publishing proxy rather than a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1875 — A Chorus of Cloud Maidens (magazine poem)",
+      "1881 — Poems (book edition)",
+      "1888 — The Happy Prince and Other Tales",
+      "1890 — The Picture of Dorian Gray (magazine version)",
+      "1891 — Intentions",
+      "1893 — Salomé (original French book)",
+      "1895 — The Importance of Being Earnest (stage premiere)",
+      "1898 — The Ballad of Reading Gaol"
+    ],
+    "dateDistinctions": "Markers use the earliest public appearance suited to each form: a periodical appearance, first book edition or first stage production. They do not use composition, a later revised book edition, translation or posthumous release. The Picture of Dorian Gray first appeared in Lippincott’s in July 1890 before its expanded April 1891 book. Salomé was composed in 1891–1892, first published in French in 1893, translated into English in 1894 and first staged in Paris in 1896. The Importance of Being Earnest premiered in 1895 before its 1899 book. The Ballad of Reading Gaol was composed after Wilde’s May 1897 release and published in 1898. Journalism, lectures and magazine editing are outside the scope; De Profundis, written in prison and first published posthumously in a suppressed 1905 form, is excluded.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
