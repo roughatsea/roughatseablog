@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-20",
+  "authorId": "jackson-shirley",
+  "authorName": "Shirley Jackson",
+  "selection": "Twentieth-century American psychological horror and Gothic literary fiction, shifting the rotation from Oscar Wilde’s nineteenth-century Irish drama and humor while adding a major woman writer of the dark fantastic.",
+  "sources": [
+    {
+      "url": "https://www.penguinrandomhouse.com/authors/14238/shirley-jackson/",
+      "use": "Penguin Random House biography for Jackson’s 1916 birth, 1965 death, six-novel body of work, The Lottery’s 1948 New Yorker publication, two family chronicles and posthumous story collections."
+    },
+    {
+      "url": "https://www.loa.org/news-and-views/1591-forthcoming-fall-2020/",
+      "use": "Library of America publication announcement for the first-edition years of The Road Through the Wall (1948), Hangsaman (1951), The Bird’s Nest (1954) and The Sundial (1958)."
+    },
+    {
+      "url": "https://www.loa.org/news-and-views/1751-ruth-franklin-on-the-novels-of-shirley-jackson-8220she-never-did-the-same-thing-twice8221/",
+      "use": "Library of America interview with Jackson biographer Ruth Franklin confirming the four early novel dates and describing the works’ psychological unease, Gothic range and black humor."
+    },
+    {
+      "url": "https://www.loa.org/books/326-novels-amp-stories/",
+      "use": "Library of America volume record for The Lottery collection (1949), The Haunting of Hill House (1959) and We Have Always Lived in the Castle (1962)."
+    },
+    {
+      "url": "https://blogs.loc.gov/catbird/2017/08/shirley-jackson-and-the-lottery/",
+      "use": "Library of Congress account for Jackson’s 1916–1965 lifespan, The Lottery’s June 1948 New Yorker appearance, and the 1953 and 1957 family chronicles."
+    },
+    {
+      "url": "https://www.penguin.co.uk/discover/articles/where-to-start-shirley-jackson",
+      "use": "Penguin reading guide for the complete six-novel sequence and dates, the 1968 publication of Come Along with Me, and the later posthumous collections."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1916–1965",
+    "publishingSpan": "1948–1962",
+    "proxy": "Lifetime novel first-book-publication span from Jackson’s debut novel to her final novel, used as a publishing proxy rather than a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1948 — The Road Through the Wall",
+      "1951 — Hangsaman",
+      "1954 — The Bird’s Nest",
+      "1958 — The Sundial",
+      "1959 — The Haunting of Hill House",
+      "1962 — We Have Always Lived in the Castle"
+    ],
+    "dateDistinctions": "Markers use the first U.S. book-edition year of each of Jackson’s six novels, not composition, magazine appearance, reissue, adaptation or translation dates. The Lottery first appeared in The New Yorker in June 1948 and headed a 1949 collection, but short fiction is outside the novel-only scope. The family chronicles Life Among the Savages (1953) and Raising Demons (1957), children’s books and other nonfiction are excluded. Come Along with Me (1968) and later collections were published after Jackson’s 1965 death and do not extend the lifetime bar.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
