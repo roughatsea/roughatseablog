@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-21",
+  "authorId": "cervantes",
+  "authorName": "Miguel de Cervantes",
+  "selection": "Early-modern Spanish literary fiction, satire, poetry and drama, shifting the rotation from Shirley Jackson’s twentieth-century American Gothic while extending the timeline into the Spanish Golden Age.",
+  "sources": [
+    {
+      "url": "https://www.cervantesvirtual.com/portales/miguel_de_cervantes/autor_cronologia/",
+      "use": "Biblioteca Virtual Miguel de Cervantes scholarly chronology for the 1547 baptism evidence, 1585 La Galatea, 1604 printing preliminaries and 1605 publication of Don Quixote Part I, the 1613–1615 books, Cervantes’s 1616 death, and the posthumous 1617 Persiles publication."
+    },
+    {
+      "url": "https://www.cervantesvirtual.com/obra-visor/cervantes-y-don-quijote-0/html/ffcf21ae-82b1-11df-acc7-002185ce6064_1.html",
+      "use": "Biblioteca Virtual Miguel de Cervantes study identifying La Galatea as Cervantes’s first book, published in 1585, and discussing the posthumously published Persiles."
+    },
+    {
+      "url": "https://pares.mcu.es/ParesBusquedas20/catalogo/autoridad/117180/imprimir",
+      "use": "Spanish Ministry of Culture archival authority record for Cervantes’s 1547–1616 lifespan and the publication years of Don Quixote, Exemplary Novels, Journey to Parnassus and Persiles."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1547–1616",
+    "publishingSpan": "1585–1615",
+    "proxy": "Lifetime Spanish first-book-publication span from Cervantes’s first book to his final lifetime books, used as a publishing proxy rather than a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1585 — La Galatea",
+      "1605 — Don Quixote Part I",
+      "1613 — Exemplary Novels",
+      "1614 — Journey to Parnassus",
+      "1615 — Don Quixote Part II",
+      "1615 — Eight Comedies and Eight New Interludes"
+    ],
+    "dateDistinctions": "Markers use original Spanish book-publication years, not composition, printing licenses, completion of printing or later translation dates. Don Quixote Part I was licensed and printed in late 1604 but carries a 1605 imprint and was published in 1605; its English translation followed in 1612. Earlier poems, lost or unpublished plays and non-book appearances are outside this scope. The Trials of Persiles and Sigismunda was completed near the end of Cervantes’s life but published posthumously in 1617, so it does not extend the lifetime bar.",
+    "chartRange": "Because Cervantes predates the former 1770 lower bound, the full-view domain is now derived from the collection’s earliest birth and latest death, rounded outward to 25-year ticks; focused pair bounds remain unchanged.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}

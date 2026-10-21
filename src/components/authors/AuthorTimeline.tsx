@@ -11,7 +11,9 @@ export default function AuthorTimeline() {
   const b = authors.find(x=>x.id===right)!;
   const selected = authors.find(x=>x.id===detail)!;
   const visible = authors.filter(x=>(!focused || x.id===left || x.id===right) && `${x.name} ${x.works.map(w=>w[1]).join(' ')}`.toLowerCase().includes(query.toLowerCase()));
-  const domain = focused ? [Math.min(a.born,b.born)-5,Math.max(a.died,b.died)+5] : [1770,2025];
+  const domain = focused
+    ? [Math.min(a.born,b.born)-5,Math.max(a.died,b.died)+5]
+    : [Math.floor(Math.min(...authors.map(x=>x.born))/25)*25,Math.ceil(Math.max(...authors.map(x=>x.died))/25)*25];
   const position = (year:number)=>100*(year-domain[0])/(domain[1]-domain[0]);
   const step = focused ? 10 : 25;
   const ticks = Array.from({length:Math.ceil((domain[1]-domain[0])/step)},(_,i)=>Math.ceil(domain[0]/step)*step+i*step).filter(y=>y<=domain[1]);
