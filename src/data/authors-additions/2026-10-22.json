@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-22",
+  "authorId": "tutuola",
+  "authorName": "Amos Tutuola",
+  "selection": "Twentieth-century Nigerian mythic fantasy rooted in Yoruba oral tradition, shifting the rotation from Miguel de Cervantes’s early-modern Spanish satire and extending the collection’s representation of African speculative fiction.",
+  "sources": [
+    {
+      "url": "https://www.faber.co.uk/author/amos-tutuola/",
+      "use": "Publisher biography for Tutuola’s 1920–1997 lifespan, the 1952 publication of his first novel, and the 1990 publication of his last book."
+    },
+    {
+      "url": "https://www.faber.co.uk/product/9780571311538-the-palm-wine-drinkard/",
+      "use": "Publisher page identifying The Palm-Wine Drinkard as Tutuola’s debut novel and confirming its first Faber publication in 1952."
+    },
+    {
+      "url": "https://www.encyclopedia.com/people/literature-and-arts/miscellaneous-english-literature-20th-cent-biographies/amos-tutuola",
+      "use": "Biographical reference for the 1920–1997 lifespan, the British 1952 and U.S. 1953 publication distinction for The Palm-Wine Drinkard, the 1954, 1962, 1967 and 1981 book dates, and the earlier manuscript’s delayed 1982 publication."
+    },
+    {
+      "url": "https://www.encyclopedia.com/arts/culture-magazines/tutuola-amos-1920-1997",
+      "use": "Literary reference for the novel classifications and dates of The Palm-Wine Drinkard (1952), My Life in the Bush of Ghosts (1954), The Brave African Huntress (1958), Feather Woman of the Jungle (1962), Ajaiyi and His Inherited Poverty (1967), and The Witch-Herbalist of the Remote Town (1981)."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1920–1997",
+    "publishingSpan": "1952–1981",
+    "proxy": "Lifetime English-language novel first-publication span from Tutuola’s first published novel to his final novel, used as a publishing proxy rather than a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1952 — The Palm-Wine Drinkard",
+      "1954 — My Life in the Bush of Ghosts",
+      "1958 — The Brave African Huntress",
+      "1962 — The Feather Woman of the Jungle",
+      "1967 — Ajaiyi and His Inherited Poverty",
+      "1981 — The Witch-Herbalist of the Remote Town"
+    ],
+    "dateDistinctions": "Markers use first English-language book-publication years, not composition, later national editions, reissues or translations. The Palm-Wine Drinkard first appeared through Faber in Britain in 1952 and through Grove in the United States in 1953. The Wild Hunter in the Bush of the Ghosts was written earlier but first published in 1982, so it does not precede the publication bar. Later story and folktale books, including the 1990 Village Witch Doctor and Other Stories, are outside this novel-only scope.",
+    "chartRange": "Tutuola’s 1920–1997 lifespan already falls within the collection-derived chart domain, so no chart-range change was required.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
