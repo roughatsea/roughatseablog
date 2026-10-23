@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-23",
+  "authorId": "narayan-rk",
+  "authorName": "R. K. Narayan",
+  "selection": "Twentieth-century South Asian comic literary fiction, shifting the rotation from Amos Tutuola’s Nigerian mythic fantasy while adding another major tradition of English-language fiction outside Britain and North America.",
+  "sources": [
+    {
+      "url": "https://www.encyclopedia.com/arts/culture-magazines/narayan-rk-1906-2001",
+      "use": "Biographical and bibliographic reference for Narayan’s 1906–2001 lifespan; the 1935, 1937, 1945 and 1952 first book dates; and later U.S. editions and alternate titles."
+    },
+    {
+      "url": "https://www.encyclopedia.com/people/literature-and-arts/asian-literature-biographies/r-k-narayan",
+      "use": "Reference explaining that its chronology uses first publication because Narayan’s books often appeared through different publishers in India, Britain and the United States; also documents the 1953 U.S. retitling of The English Teacher."
+    },
+    {
+      "url": "https://www.theguardian.com/news/2001/may/14/guardianobituaries.books",
+      "use": "Obituary for Narayan’s October 10, 1906–May 13, 2001 lifespan and the dates of The Financial Expert, The Guide, The World of Nagaraj and the later non-Malgudi Grandmother’s Tale."
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2006/12/18/the-master-of-malgudi",
+      "use": "Critical profile for Narayan’s English-language authorship, the prepublication circulation of the Swami and Friends manuscript, and dates for the selected early and mature Malgudi novels."
+    },
+    {
+      "url": "https://www.outlookindia.com/books/rk-narayan-bibliography-news-211616",
+      "use": "Published bibliography used to cross-check the 1935–1990 novel sequence and distinguish novels from short stories, essays, autobiography, travel writing and epic retellings."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1906–2001",
+    "publishingSpan": "1935–1990",
+    "proxy": "Lifetime Malgudi novel first-book-publication span from Narayan’s first published novel to The World of Nagaraj, used as a publishing proxy rather than a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1935 — Swami and Friends",
+      "1937 — The Bachelor of Arts",
+      "1945 — The English Teacher",
+      "1952 — The Financial Expert",
+      "1958 — The Guide",
+      "1967 — The Vendor of Sweets",
+      "1976 — The Painter of Signs",
+      "1990 — The World of Nagaraj"
+    ],
+    "dateDistinctions": "Markers use earliest English-language book publication, regardless of country or publisher—not manuscript composition, serialization, later national editions, retitling, reissues or translations. Narayan composed these works in English. Swami and Friends circulated in manuscript before its 1935 British book; it later appeared with The Bachelor of Arts in a 1957 U.S. volume. The English Teacher’s 1945 book became Grateful to Life and Death in a 1953 U.S. edition; The Financial Expert likewise reached the United States in 1953 after its 1952 British book. None of the selected markers is a serialization or posthumous first release. Later non-Malgudi fiction and posthumous collections do not extend this scoped bar.",
+    "chartRange": "Narayan’s 1906–2001 lifespan falls within the collection-derived chart domain, so no chart-range change was required.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
