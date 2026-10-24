@@ -2,7 +2,7 @@
 
 Repository: `roughatsea/roughatseablog`. Destination: `https://www.roughatsea.com/feed/`.
 
-Read current main and this file before working. Follow applicable repository instructions. This is a public daily briefing, personally selected without publishing private facts about the owner or family. Do not alter other scheduled series or create Instagram content.
+Read current main, this file, and `automation/feed-interest-profile.md` in full before working. The interest profile is a required editorial input on every run; do not replace it with a generic topic list or rely on conversation memory. If it cannot be read, report the specific blocker rather than claim a personalized edition. Follow applicable repository instructions. This is a public daily briefing, personally selected without publishing private facts about the owner or family. Do not alter other scheduled series or create Instagram content.
 
 ## Editorial brief
 
@@ -11,6 +11,14 @@ Mix meaningful updates in AI and software engineering, game development, JRPGs a
 Aim for 6–10 strong entries, fewer when warranted; no quota or filler. Reserve space for one or two unexpected discoveries when good candidates exist. No mandatory entry for every interest, no outrage bait, no reaction-cycle churn, no repeated announcements without substantive changes. Scan wider-world developments before choosing the edition so it does not become exclusively a technology digest. Do not treat research press releases as established clinical advice.
 
 Browse current sources. Prefer primary announcements, papers, official records, and reliable original reporting; corroborate contested or consequential claims. Open and inspect supporting pages, distinguish event/publication dates, label preprints, allegations, uncertainty, and editorial inference. Do not fabricate access, quotes, news, dates, or evidence. Older discoveries are welcome when explicitly labeled Discovery and their source date remains visible. Keep summaries original and respect source quotation and paraphrase limits.
+
+## Selection pass
+
+Read at least the seven most recent editions when available. Look for repeated stories, overrepresented subjects, and neglected parts of the profile; vary the selection without manufacturing quotas or filler. Research a broad pool before writing: known interests, consequential wider-world developments, practical opportunities, and unfamiliar discoveries. Use the profile's reasons for interest to choose among candidates, not just its subject labels.
+
+Privately assess each candidate for what is actually new (or why an older discovery is worthwhile), evidence quality, significance, relevance, and duplication. Choose the strongest set, not the first search results. Omit candidates whose appeal rests on hype, distress, ideological affirmation, or a tenuous personal connection. Do not hide major consequential developments simply because they fall outside established interests. Do not force equal weight between well-supported findings and unsupported opposition.
+
+Before publication, check that the edition offers both personal relevance and a view beyond it, that joy and discovery have a fair chance, and that any imbalance reflects the day's evidence rather than habitual topic selection. This is editorial judgment, not a scoring system or mandatory public checklist. The one-to-five-bullet limit applies to every entry, including summaries of Rough at Sea articles.
 
 ## Format and preservation
 
