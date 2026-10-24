@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-24",
+  "authorId": "lispector",
+  "authorName": "Clarice Lispector",
+  "selection": "Twentieth-century Brazilian modernist literary fiction by a major woman writer, shifting the rotation from R. K. Narayan’s South Asian comic fiction while broadening the collection’s Latin American representation beyond its existing male authors.",
+  "sources": [
+    {
+      "url": "https://site.claricelispector.ims.com.br/en/",
+      "use": "The Instituto Moreira Salles chronology identifies Lispector as a major Brazilian writer and documents her 1943 debut, The Passion According to G.H. in 1964 and The Hour of the Star in 1977."
+    },
+    {
+      "url": "https://site.claricelispector.ims.com.br/en/livro-a-livro/",
+      "use": "The author archive’s book-by-book catalogue supplies the original publication sequence and classifications for the seven selected novels and novella, and distinguishes other genres and posthumous books."
+    },
+    {
+      "url": "https://www.ndbooks.com/author/clarice-lispector/",
+      "use": "Lispector’s English-language publisher confirms her 1920–1977 lifespan, the 1943 Rio publication of Near to the Wild Heart, the 1973 date of Água Viva, later English translations and the posthumous status of A Breath of Life."
+    },
+    {
+      "url": "https://www.newyorker.com/culture/the-new-yorker-interview/a-lost-interview-with-clarice-lispector",
+      "use": "A translated 1976 interview with Lispector distinguishes writing from publication: The Chandelier was published in 1946, The Passion According to G.H. was written in 1963 and published in 1964, and An Apprenticeship appeared in 1969."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1920–1977",
+    "publishingSpan": "1943–1977",
+    "proxy": "Lifetime original-Portuguese novel and novella book-publication span from Lispector’s debut novel to the last book she published, used as a publishing proxy rather than a complete bibliography or claim of uninterrupted work.",
+    "workDates": [
+      "1943 — Near to the Wild Heart",
+      "1946 — The Chandelier",
+      "1961 — The Apple in the Dark",
+      "1964 — The Passion According to G.H.",
+      "1969 — An Apprenticeship or the Book of Pleasures",
+      "1973 — Água Viva",
+      "1977 — The Hour of the Star"
+    ],
+    "dateDistinctions": "Markers use original Brazilian Portuguese book-publication years, not composition, earlier periodical appearances, revised editions or later translations. The Chandelier was completed before its 1946 publication; The Passion According to G.H. was written in 1963 and published in 1964; and Água Viva was transformed from the unpublished manuscript Screaming Object before its 1973 book. None of the selected markers is a translation or posthumous first release. The posthumous A Breath of Life (1978), assembled by Olga Borelli from Lispector’s fragments, does not extend the lifetime bar; short stories, children’s books, crônicas, journalism and translation work are excluded from the scoped span.",
+    "chartRange": "Lispector’s 1920–1977 lifespan falls within the collection-derived chart domain, so no chart-range change was required.",
+    "influence": "No claim of influence is inferred from chronological overlap."
+  }
+}
