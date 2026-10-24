@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Feed from '../../components/feed/Feed.astro';
+import type { Edition } from '../../../scripts/feed-data.mjs';
+interface Props { edition: Edition }
+import { readEditions } from '../../../scripts/feed-data.mjs';
+export function getStaticPaths() {
+  return readEditions().map(edition => ({ params: { date: edition.date }, props: { edition } }));
+}
+const { edition } = Astro.props;
+---
+<BaseLayout title={`Feed · ${edition.date}`} description="News and discoveries from the Rough at Sea daily feed, with concise summaries and original sources." wide>
+  <div style="max-width:1120px;margin:auto"><Feed editions={[edition]} dates={[]} archive /></div>
+</BaseLayout>

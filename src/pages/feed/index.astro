@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Feed from '../../components/feed/Feed.astro';
+import { readEditions } from '../../../scripts/feed-data.mjs';
+const editions = readEditions();
+---
+<BaseLayout title="Feed" description="A daily selection of meaningful news, useful opportunities, and unexpected discoveries. Five bullets at most, with sources." wide>
+  <div style="max-width:1120px;margin:auto"><Feed editions={editions.slice(0, 14)} dates={editions.map(e => e.date)} /></div>
+</BaseLayout>

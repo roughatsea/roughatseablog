@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-24",
+  "items": [
+    {
+      "id": "godot-48-enters-beta",
+      "title": "Godot 4.8 enters beta: a useful moment to test a copy of your game",
+      "lane": "Your interests",
+      "topic": "Game development",
+      "kind": "Update",
+      "sourceDate": "2026-10-15",
+      "bullets": [
+        "Godot 4.8 beta 1 has reached feature freeze; the team is concentrating on regressions and fixes ahead of the stable release.",
+        "The announcement gathers changes across animation, scripting, physics, rendering, and the editor, with a separate list of compatibility breaks.",
+        "Practical takeaway: try representative scenes in a separate project copy before planning an upgrade. This is a testing release, not a stable-release announcement."
+      ],
+      "sources": [{"label": "Godot release announcement", "url": "https://godotengine.org/article/dev-snapshot-godot-4-8-beta-1/"}]
+    },
+    {
+      "id": "climate-assessment-research-continues",
+      "title": "A new home for the research that climate assessments depend on",
+      "lane": "Wider world",
+      "topic": "Climate & public life",
+      "kind": "Discovery",
+      "sourceDate": "2026-09-22",
+      "bullets": [
+        "The American Meteorological Society and American Geophysical Union have published the first paper in their U.S. Climate Collection, drawing on 175 contributors.",
+        "The initiative gives assessment-related research a publication path across the societies’ journals, covering observations, projections, impacts, and solutions.",
+        "Why it matters: communities need research that connects individual findings into a usable picture of risk. The collection aims to inform future assessments; it is not itself a completed national assessment."
+      ],
+      "sources": [{"label": "American Meteorological Society", "url": "https://www.ametsoc.org/ams/about-ams/news/news-releases/u-s-climate-collection-publishes-first-paper/"}]
+    },
+    {
+      "id": "old-tucson-next-operator",
+      "title": "Old Tucson’s next chapter is heading to the county board",
+      "lane": "Useful opportunities",
+      "topic": "Tucson",
+      "kind": "Update",
+      "sourceDate": "2026-10-24",
+      "bullets": [
+        "KGUN reports that Pima County is seeking direction on a new leaseholder for county-owned Old Tucson Studios after the current operator opted not to renew.",
+        "A county memo asks supervisors to consider the property’s future vision, community and educational benefits, and operating model.",
+        "The report identifies November 10 as the board’s discussion date. This is a chance to follow the direction of a local cultural landmark; a replacement operator has not been announced in this report."
+      ],
+      "sources": [{"label": "KGUN 9 local reporting", "url": "https://www.kgun9.com/news/local-news/pima-county-seeks-board-guidance-on-new-lease-holder-for-old-tucson-studios"}]
+    },
+    {
+      "id": "webb-young-transient-early-universe",
+      "title": "Webb caught a possible supernova just days into its ancient explosion",
+      "lane": "Unexpected discoveries",
+      "topic": "Space",
+      "kind": "Discovery",
+      "sourceDate": "2026-09-29",
+      "bullets": [
+        "The NEXUS team reports AT 2026abck, a bright transient at redshift 5.017: light from an era when the universe was roughly 1.2 billion years old.",
+        "Their modeling suggests the observation caught it about four to ten days after explosion in its own frame of reference. Cosmic expansion stretches those changes to roughly six times as long for us.",
+        "A supernova is the favored interpretation, but the authors describe a candidate whose nature needs further observations. The cited work is a preprint."
+      ],
+      "sources": [{"label": "NEXUS research preprint", "url": "https://arxiv.org/abs/2609.38373"}]
+    },
+    {
+      "id": "ancient-ocean-oxygen-feedback",
+      "title": "A habitable planet needs more than a one-time oxygen breakthrough",
+      "lane": "Unexpected discoveries",
+      "topic": "Science",
+      "kind": "Discovery",
+      "sourceDate": "2026-09-29",
+      "bullets": [
+        "Researchers studying ancient South African rocks report evidence that phosphorus recycling helped sustain oxygen after Earth’s Great Oxidation Event.",
+        "Their proposed feedback links sulfate-using microbes, nutrient recycling, biological growth, and burial of organic carbon, which allows oxygen to accumulate.",
+        "Worldbuilding implication: an oxygen-rich atmosphere is an ongoing relationship between life, oceans, and rock chemistry. Giving a fictional planet breathable air raises the interesting question of what keeps it breathable."
+      ],
+      "sources": [{"label": "UC Riverside research summary", "url": "https://news.ucr.edu/articles/2026/09/29/how-ocean-chemistry-helped-life-keep-breathing"}]
+    }
+  ]
+}
