@@ -6,7 +6,7 @@ author: John Snow
 thinker: snow
 discipline: Epidemiology, scientific reasoning, and public health
 year: 1849
-updated: '2026-10-16'
+updated: '2026-10-25'
 ---
 
 *Edition and scope: the work first appeared in August 1849. This lesson reads the much enlarged second edition (London: John Churchill, 1855), reproduced in Project Gutenberg eBook 72894. The 1854 investigations discussed here are additions to that later edition, not discoveries reported in 1849. The text is English; no translation is involved. Page numbers refer to the printed 1855 pagination, not modern editions or screen positions. The focus is the transmission argument, Broad Street inquiry, south London comparison, objections, and preventive proposals. This is a historical and methodological lesson, not clinical advice; its examples and modern analytical vocabulary are editorial unless attributed.*
@@ -241,6 +241,8 @@ For an evidence audit, inspect several records in the appendix, pp. 138–162, a
 ### Where to go next
 
 Read [Mill on free discussion](/seminal-ideas/on-liberty/#free-discussion) beside Snow's handling of objections. Fallibility becomes useful when criticism changes the inquiry: a missing denominator, an alternative pathway, or a mistaken address gives us something specific to repair.
+
+Contrast [Rokeya’s scientific inventions in *Sultana’s Dream*](/seminal-ideas/sultanas-dream/#technology-and-the-organization-of-life). A fictional device can make a social arrangement newly questionable without supplying empirical evidence that the device would work. The comparison marks a difference between imaginative exploration and a causal investigation; it does not assert influence between the authors.
 
 For the next claim that a change “worked,” write down the outcome, the denominator, the observation period, and what was already happening before the change. If the comparison is missing, name that absence before repeating the success story.
 

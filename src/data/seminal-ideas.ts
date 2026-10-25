@@ -22,6 +22,9 @@ export const thinkers = [{
 }, {
   slug: 'snow', name: 'John Snow', years: '1813–1858',
   introduction: 'A physician whose investigations of cholera joined a proposed transmission mechanism to household inquiries and comparisons of water supplies. This guided work examines causal evidence, measurement, and decisions under uncertainty without reducing his work to a pump-handle legend.'
+}, {
+  slug: 'rokeya', name: 'Rokeya Sakhawat Hossain', years: '1880–1932',
+  introduction: 'A Bengali Muslim writer and advocate for girls’ education who uses an imagined society to make familiar restrictions look strange. This guided story examines seclusion, scientific opportunity, domestic work, and the difference between ending domination and reversing it.'
 }];
 
 export const works = [{
@@ -119,5 +122,17 @@ export const works = [{
     { name: 'Denominators and comparison', anchor: 'denominators-and-comparison', question: 'What must a count be compared with before it means a rate?' },
     { name: 'Natural experiment', anchor: 'natural-experiment', question: 'When can circumstances supply a useful comparison without random assignment?' },
     { name: 'Action under uncertainty', anchor: 'action-under-uncertainty', question: 'When is there enough evidence to act but not enough to claim proof?' }
+  ]
+}, {
+  slug: 'sultanas-dream', thinker: 'rokeya', title: 'Sultana’s Dream', year: 1905,
+  question: 'Whose freedom is sacrificed when a society promises protection?',
+  description: 'Enter Rokeya’s imagined Ladyland to examine learned timidity, education, scientific power, and the unresolved cost of reversing who gets confined.',
+  disciplines: ['Literature', 'Feminist thought', 'Science fiction'],
+  concepts: [
+    { name: 'Estrangement and role reversal', anchor: 'estrangement-and-role-reversal', question: 'What becomes visible when a familiar rule applies to someone else?' },
+    { name: 'Protection and confinement', anchor: 'protection-and-confinement', question: 'Who bears the cost of making public space safe?' },
+    { name: 'Education and scientific agency', anchor: 'education-and-scientific-agency', question: 'Which institutions let a dismissed capacity become effective power?' },
+    { name: 'Technology and the organization of life', anchor: 'technology-and-the-organization-of-life', question: 'How do energy, care, and work arrangements shape freedom?' },
+    { name: 'Emancipation or reversed domination', anchor: 'emancipation-or-reversed-domination', question: 'Does changing who rules end the injustice of the rule?' }
   ]
 }];
