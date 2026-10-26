@@ -162,6 +162,10 @@ The MOWCAP regional register records the work’s 2024 inscription and describes
 
 **“Is criticizing seclusion an attack on an entire faith?”** The story targets arrangements of exclusion and the reasoning that defends them, while imagining a religious society of its own. The author’s identity supplies historical context, not permission to collapse diverse practices into one stereotype. We should distinguish coercive restriction, voluntary practice, theological claims, and the particular fictional arrangement under examination.
 
+### A further comparison: cultivation and authority
+
+[The Great Learning](/seminal-ideas/the-great-learning/#family-example-and-reciprocity) connects household conduct with public authority. Read its demand for reciprocity beside Ladyland’s confinement of men: does a ruler’s claim to benevolence give those confined any power to challenge the arrangement? This is an editorial comparison, not a claim of influence on Rokeya.
+
 ### Common distortions
 
 - **“Ladyland proves women are biologically better rulers.”** Its success is stipulated within a fiction; Sara’s assertions supply no comparative evidence.

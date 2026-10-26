@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-26",
+  "work": "the-great-learning",
+  "thinker": "great-learning-tradition",
+  "title": "The Great Learning",
+  "lessonPath": "src/pages/seminal-ideas/the-great-learning.md",
+  "publicPath": "/seminal-ideas/the-great-learning/",
+  "sourceUrls": [
+    "https://tianmu.org/good-work-library/confucian/general-texts/the-great-learning-james-legge",
+    "https://pages.ucsd.edu/~dkjordan/chin/Koong/GreatLearning.html",
+    "https://sacred-texts.com/cfu/conf2.htm",
+    "https://plato.stanford.edu/entries/zhu-xi/",
+    "https://plato.stanford.edu/entries/wang-yangming/"
+  ]
+}

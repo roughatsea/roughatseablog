@@ -25,6 +25,9 @@ export const thinkers = [{
 }, {
   slug: 'rokeya', name: 'Rokeya Sakhawat Hossain', years: '1880–1932',
   introduction: 'A Bengali Muslim writer and advocate for girls’ education who uses an imagined society to make familiar restrictions look strange. This guided story examines seclusion, scientific opportunity, domestic work, and the difference between ending domination and reversing it.'
+}, {
+  slug: 'great-learning-tradition', name: 'Early Confucian tradition', years: 'Ancient China; authorship and composition date uncertain',
+  introduction: 'The Great Learning joins moral cultivation to household and political responsibility. Its traditional association with Confucius and Zengzi does not establish a single author; this guide keeps the early text, later interpretations, and Legge’s English translation distinct.'
 }];
 
 export const works = [{
@@ -134,5 +137,18 @@ export const works = [{
     { name: 'Education and scientific agency', anchor: 'education-and-scientific-agency', question: 'Which institutions let a dismissed capacity become effective power?' },
     { name: 'Technology and the organization of life', anchor: 'technology-and-the-organization-of-life', question: 'How do energy, care, and work arrangements shape freedom?' },
     { name: 'Emancipation or reversed domination', anchor: 'emancipation-or-reversed-domination', question: 'Does changing who rules end the injustice of the rule?' }
+  ]
+}, {
+  slug: 'the-great-learning', thinker: 'great-learning-tradition', title: 'The Great Learning', year: 'Ancient China; date uncertain',
+  question: 'How does governing yourself shape the way you govern others?',
+  description: 'Follow an early Confucian classic from inquiry and self-deception to family, reciprocity, public authority, and the purposes of wealth.',
+  disciplines: ['Chinese philosophy', 'Political ethics', 'Education'],
+  concepts: [
+    { name: 'Root and branches', anchor: 'root-and-branches', question: 'What does public authority depend on in the person exercising it?' },
+    { name: 'Investigation and moral understanding', anchor: 'investigation-and-moral-understanding', question: 'What must you learn, and what are you unwilling to acknowledge?' },
+    { name: 'Sincerity and self-deception', anchor: 'sincerity-and-self-deception', question: 'Does your principle survive the absence of an audience?' },
+    { name: 'Attention and partiality', anchor: 'attention-and-partiality', question: 'Can you recognize faults in those you love and merits in those you dislike?' },
+    { name: 'Family, example, and reciprocity', anchor: 'family-example-and-reciprocity', question: 'Do you impose treatment you resent receiving?' },
+    { name: 'Public wealth and public purpose', anchor: 'public-wealth-and-public-purpose', question: 'When does a rich treasury conceal an impoverished political relationship?' }
   ]
 }];
