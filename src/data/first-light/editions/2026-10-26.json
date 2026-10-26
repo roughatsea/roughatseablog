@@ -1,0 +1,158 @@
+{
+  "date": "2026-10-26",
+  "issue": 1,
+  "title": "A civilization with time to live",
+  "dek": "Intelligence, discovery, and the possibility of an afternoon that belongs to you.",
+  "theme": "A civilization with time to live",
+  "images": {
+    "cover": {
+      "src": "/images/first-light/2026-10-26/cover.webp",
+      "srcSmall": "/images/first-light/2026-10-26/cover-small.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "People share breakfast and sketch on a flower-covered terrace overlooking a blue harbor, with the immense inhabited curve of an imagined space habitat overhead.",
+      "caption": "A place to arrive. An imagined orbital neighborhood, seen from its breakfast tables."
+    },
+    "possibility": {
+      "src": "/images/first-light/2026-10-26/possibility.webp",
+      "srcSmall": "/images/first-light/2026-10-26/possibility-small.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "Two researchers examine specimens beneath a vast intricate amber and blue crystalline structure in a sunlit conservatory with robotic instruments, gardens, and water.",
+      "caption": "The place where questions become experiments. A speculative research conservatory, imagined as a public place of discovery."
+    },
+    "human": {
+      "src": "/images/first-light/2026-10-26/human.webp",
+      "srcSmall": "/images/first-light/2026-10-26/human-small.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "An older woman in a blue apron paints a small turquoise and terracotta ceramic bird in a warm, cluttered studio; an extraordinary harbor and ascending spacecraft appear through the window.",
+      "caption": "An afternoon of her own. The future, measured in an unfinished bird and the time to finish it."
+    },
+    "closing": {
+      "src": "/images/first-light/2026-10-26/closing.webp",
+      "srcSmall": "/images/first-light/2026-10-26/closing-small.webp",
+      "width": 1672,
+      "height": 941,
+      "alt": "Three travelers examine a tiny branching organism beside turquoise tide pools, beneath towering translucent formations on an invented alien coast at sunset.",
+      "caption": "Somewhere worth going. An invented coastline, with wonders at the scale of a landscape and a hand."
+    }
+  },
+  "fiction": {
+    "title": "An afternoon of her own",
+    "opening": [
+      "The bird leaned to the left. Leonor turned its little clay body on the table, hoping the problem might belong to the angle from which she was looking. It leaned from the other side, too.",
+      "Beyond the studio window, the morning ferry crossed the harbor. The far shore climbed into the sky: gardens, roofs, another blue inlet, all following the great curve of the habitat until distance softened them into clouds. Somewhere up there, her son was teaching his daughter to ride a bicycle. He had sent three photographs of her feet and one of his thumb.",
+      "Leonor had meant to answer. Then she had found the blue she wanted.",
+      "For years she had collected photographs of ceramics while waiting for other things: a bus, a payment, the end of a shift. The photographs lived in a folder called Someday. This morning the studio had given her a shelf, a damp apron, and a lump of clay. She had stayed through lunch."
+    ],
+    "continuation": [
+      "Across the table, a boy was making a cup with an interior so complicated that no brush could reach the bottom. He said it was for an octopus. Leonor considered this and stopped worrying about the bird.",
+      "The workshop assistant asked whether she wanted a demonstration of balancing the base. Its voice came from somewhere among the shelves. She said yes, then changed her mind. It waited while she added a little clay beneath one foot. The bird straightened, acquired a strangely officious expression, and seemed much less like her bird.",
+      "She took the clay away again.",
+      "At the next bench, two neighbors argued cheerfully about whether a chair could be improved by having seven legs. Through the open door came the smell of bread. The town's machines had spent the night repairing a water conduit below the square; by morning the paving stones were back, and someone had drawn a chalk octopus over the fresh mortar.",
+      "Her son called. On the small display, the horizon behind him curved upward in the opposite direction. He looked tired in the particular way of a person who had been running beside a bicycle.",
+      "“How's your first day?” he asked.",
+      "She held up the bird. He was quiet for a moment, and she prepared to explain the feet.",
+      "“You made that?”",
+      "“Most of it.”",
+      "His daughter appeared under his arm, breathless, and asked whether it could come to dinner. Leonor promised to bring it after firing. The child wanted to know what firing meant. By the time Leonor finished explaining, she had agreed to take her to the studio on Saturday.",
+      "She set the bird near the window. Afternoon light filled its wet blue wing. On her way to wash the brushes, she passed a tray of unused clay and broke off another piece. There was still time before the ferry."
+    ],
+    "assumptions": "This story imagines a large, inhabited space settlement, dependable automated infrastructure, helpful machine intelligence, and institutions that make homes and creative spaces broadly accessible. The reporting in this issue does not establish that these conditions will arrive together, or on any particular date. The harbor, its people, and the illustrated research conservatory are invented."
+  },
+  "items": [
+    {
+      "id": "2026-10-26-first-light-ai-mathematics",
+      "title": "Mathematicians report an AI-assisted proof of an open problem",
+      "department": "Toward the Singularity",
+      "topic": "AI & mathematical discovery",
+      "kind": "Update",
+      "sourceDate": "2026-10-16",
+      "bullets": [
+        "A new preprint resolves the computational difficulty of questions about ring-shaped systems that pass tokens between steps. Such models help researchers reason about processes that may keep running or become stuck.",
+        "The authors report that Claude Opus 5.5 found the key mathematical connection, suggested an application to another open problem, and produced a first draft. The human authors checked the argument and revised it with the model.",
+        "This is an author-reported research collaboration published as a preprint. The contribution is a specific argument that people can inspect; broader reliability across unfamiliar problems remains something to establish."
+      ],
+      "sources": [
+        { "label": "Best, Devillers, Jančar and Ošťádal — preprint and collaboration account", "url": "https://arxiv.org/html/2610.23523v1" }
+      ]
+    },
+    {
+      "id": "2026-10-26-first-light-quantum-cultivation",
+      "title": "A quantum-computing ingredient moves from theory onto hardware",
+      "department": "First Light",
+      "topic": "Quantum computing",
+      "kind": "Update",
+      "sourceDate": "2026-10-15",
+      "bullets": [
+        "Google Quantum AI reports demonstrating magic-state cultivation on its Willow processor. The method prepares special quantum states needed for a broader range of reliable quantum operations.",
+        "The researchers report about a 40-fold reduction in errors compared with uncultivated states, and 99.99% logical fidelity for the prepared T-states. These measurements concern the accuracy of this particular ingredient and experiment.",
+        "Their next challenge is demonstrating the approach at larger scale. Reducing the resources consumed by error control could eventually leave more of a quantum computer available for useful calculations."
+      ],
+      "sources": [
+        { "label": "Google Quantum AI — the experiment and its next steps", "url": "https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/" }
+      ]
+    },
+    {
+      "id": "2026-10-26-first-light-energy-building-blocks",
+      "title": "Some building blocks of a more abundant world are getting cheaper",
+      "department": "Room to Live",
+      "topic": "Energy & material abundance",
+      "kind": "Discovery",
+      "sourceDate": "2026-08-03",
+      "bullets": [
+        "An August International Energy Agency analysis reports that solar-panel module prices fell by around 50% and battery-pack prices by around 30% during 2023–2025.",
+        "The same analysis describes manufacturing capacity running ahead of deployment needs, alongside continued growth in production and international trade.",
+        "The possibility is wider access to equipment that generates and stores electricity. Turning lower equipment prices into dependable, affordable services still involves infrastructure and policy; the IEA examines trade-offs among affordability, deployment speed, and supply-chain resilience."
+      ],
+      "sources": [
+        { "label": "International Energy Agency — manufacturing and trade analysis", "url": "https://www.iea.org/commentaries/energy-technology-manufacturing-is-rebalancing-in-a-dynamic-era-for-trade-and-industrial-policy" }
+      ]
+    },
+    {
+      "id": "2026-10-26-first-light-roman-commissioning",
+      "title": "Roman is preparing a much wider window onto the universe",
+      "department": "Outward",
+      "topic": "Space & discovery",
+      "kind": "Update",
+      "sourceDate": "2026-10-22",
+      "bullets": [
+        "NASA's October 22 mission update reports that the Nancy Grace Roman Space Telescope has entered science commissioning after completing its broad observatory and primary-instrument checkout.",
+        "Commissioning is the process of adjusting and calibrating the observatory's systems and checking that they perform as expected before science operations begin.",
+        "Roman's wide, deep surveys are intended to help investigate dark matter, dark energy, and planets beyond our solar system. This milestone prepares the observatory for the discoveries its surveys may reveal."
+      ],
+      "sources": [
+        { "label": "NASA — October 22 mission update in the dated archive", "url": "https://science.nasa.gov/blogs/roman/2026/10/" },
+        { "label": "NASA — how Roman commissioning works", "url": "https://science.nasa.gov/missions/roman-space-telescope/roman-commissioning/" }
+      ]
+    }
+  ],
+  "singularity": {
+    "title": "When discovery begins to accelerate discovery",
+    "paragraphs": [
+      "The technological singularity is a proposed transition in which intelligence beyond human capabilities could accelerate invention and make the future increasingly difficult to anticipate. One question within that larger possibility is especially tangible: can better tools for discovery help us build still better tools?",
+      "The mathematical paper offers a concrete example of machine-generated reasoning entering research, with people checking and shaping the result. The quantum experiment addresses a separate problem: reducing the resources needed to perform reliable computations. It is another avenue of discovery, rather than a prerequisite for advanced AI. The possibility that improvements begin powerfully accelerating one another remains an open question.",
+      "Different kinds of progress have different clocks. Software, physical experiments, factories, and power networks develop under different constraints. We can watch whether increasingly capable intelligence measurably shortens those cycles, and whether more people gain access to what results.",
+      "This issue's imagined harbor takes another step: a society using greater capacity to give people time, security, and choice. That involves decisions about institutions, ownership, and distribution. The scene offers one possible destination for those choices."
+    ],
+    "signals": [
+      "Research contributions that other people can independently check, reproduce, and build upon.",
+      "Measured reductions in the time and resources needed to test an idea or develop a useful capability.",
+      "Evidence that growing technical capacity gives a wider range of people more time, access, and choice."
+    ],
+    "question": "If our capacity to invent grows dramatically, what would we choose to make easier about being alive?",
+    "sources": [
+      { "label": "Vernor Vinge — The Coming Technological Singularity (1993)", "url": "https://frc.ri.cmu.edu/~hpm/book98/com.ch1/vinge.singularity.html" },
+      { "label": "The AI-assisted mathematical argument and its authors' account", "url": "https://arxiv.org/html/2610.23523v1" },
+      { "label": "Google Quantum AI — the hardware demonstration", "url": "https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/" }
+    ]
+  },
+  "closing": {
+    "title": "Somewhere worth going",
+    "paragraphs": [
+      "Imagine reaching a coast like this and having no appointment to keep. You could spend the whole afternoon examining the little branching thing beside your boot. Your friends might wander ahead, find something stranger, and come back to get you.",
+      "There would be plenty of time to ask what it was. First, you would get to look."
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+---
+import type { Illustration } from '../../../scripts/first-light-data.mjs';
+
+interface Props {
+  image: Illustration;
+  number: number;
+  priority?: boolean;
+}
+
+const { image, number, priority = false } = Astro.props;
+---
+
+<figure class="artwork">
+  <a class="artwork-link" href={image.src} target="_blank" rel="noopener noreferrer" aria-label={`View illustration ${number} at full size (opens in a new tab)`}>
+    <picture>
+      {image.srcSmall && <source media="(max-width: 760px)" srcset={image.srcSmall} />}
+      <img
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        fetchpriority={priority ? 'high' : 'auto'}
+      />
+    </picture>
+    <span class="expand" aria-hidden="true">View full size <span>↗</span></span>
+  </a>
+  <figcaption>
+    <span class="caption"><span class="plate-number" aria-hidden="true">{String(number).padStart(2, '0')} / 04</span>{image.caption}</span>
+    <span class="credit">AI-generated illustration</span>
+  </figcaption>
+</figure>
+
+<style>
+  .artwork { margin: 0; min-width: 0; }
+  .artwork-link { display: block; position: relative; overflow: hidden; background: var(--fl-panel, var(--surface-color)); border-radius: 3px; }
+  picture { display: block; }
+  img { display: block; width: 100%; height: auto; }
+  .expand { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; align-items: center; gap: .6rem; padding: .5rem .75rem; border: 1px solid rgba(255,255,255,.5); border-radius: 3px; background: rgba(17,30,35,.84); color: #fff; font-size: .69rem; line-height: 1.4; letter-spacing: .025em; transition: background .2s ease; }
+  .expand > span { font-size: 1rem; }
+  .artwork-link:hover .expand { background: rgba(17,30,35,.98); }
+  .artwork-link:focus-visible { outline: 3px solid var(--fl-accent, var(--link-color)); outline-offset: 5px; }
+  figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1.5rem; padding: .8rem 0 0; color: var(--fl-muted, var(--text-secondary)); font-size: .74rem; line-height: 1.55; }
+  .caption { display: flex; align-items: baseline; gap: .85rem; max-width: 53rem; }
+  .plate-number { color: var(--fl-accent, var(--link-color)); font-size: .62rem; letter-spacing: .09em; white-space: nowrap; }
+  .credit { font-size: .65rem; letter-spacing: .035em; white-space: nowrap; }
+  @media (max-width: 600px) {
+    .expand { bottom: .6rem; right: .6rem; padding: .35rem .55rem; font-size: .62rem; }
+    figcaption { padding-top: .65rem; }
+    .caption { gap: .6rem; }
+    .credit { margin-left: 2.7rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .expand { transition: none; } }
+</style>
