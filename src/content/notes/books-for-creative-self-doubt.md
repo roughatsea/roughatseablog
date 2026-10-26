@@ -1,8 +1,8 @@
 ---
 title: "The Books That Help Artists Survive Their Own Doubt"
 description: "Eight books for the moment when a promising idea becomes an embarrassing first draft—and the artist begins wondering whether they had any right to try."
-heroImage: "/images/notes/creative-doubt-books.svg"
-heroImageAlt: "An open book in a pool of warm light, one page nearly blank and the other covered in tentative lines."
+heroImage: "/images/notes/creative-doubt-books.webp"
+heroImageAlt: "A lamplit writing desk where paper birds and an imagined world rise from an open notebook, surrounded by books and discarded drafts."
 date: 2026-10-25
 publishedAt: 2026-10-25T10:45:00-07:00
 tags: ["creativity", "writing", "art", "books", "psychology", "self-doubt"]
