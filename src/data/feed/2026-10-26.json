@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-26",
+  "items": [
+    {
+      "id": "iea-energy-disruption-outlook-2027",
+      "title": "The IEA chief warns that energy disruption could outlast this year",
+      "lane": "Wider world",
+      "topic": "Energy & household economics",
+      "kind": "Update",
+      "sourceDate": "2026-10-26",
+      "bullets": [
+        "International Energy Agency chief Fatih Birol said October 26 that he sees no credible path back to pre-Iran-war energy-market conditions in 2027.",
+        "He singled out winter diesel demand and refinery maintenance as concerns, alongside constrained gas exports from Qatar and the United Arab Emirates.",
+        "This is a warning about persistent disruption, not a prediction of a particular pump price. Birol declined to forecast oil prices; the consequences differ across countries and fuels."
+      ],
+      "sources": [
+        {
+          "label": "Reuters: Birol’s remarks in Singapore · October 26",
+          "url": "https://www.reuters.com/business/energy/ieas-birol-does-not-expect-energy-markets-return-pre-war-levels-2027-2026-10-26/"
+        }
+      ]
+    },
+    {
+      "id": "yemen-eu-additional-humanitarian-funding-2026",
+      "title": "The EU adds €22.5 million for Yemen as renewed fighting deepens needs",
+      "lane": "Wider world",
+      "topic": "Humanitarian affairs",
+      "kind": "Update",
+      "sourceDate": "2026-10-23",
+      "bullets": [
+        "The European Commission announced an additional €22.5 million in humanitarian aid on October 23, bringing its announced Yemen allocation for 2026 to €110 million.",
+        "The funding is intended to strengthen relief operations and pre-position supplies as displacement and damage to essential services increase needs. Priorities include food, nutrition, health care, water, and protection.",
+        "Announced funding is not the same as assistance already delivered. The Commission says aid can still reach people, while warning that interference with delivery continues to obstruct relief organizations."
+      ],
+      "sources": [
+        {
+          "label": "European Commission: funding announcement and operating constraints",
+          "url": "https://civil-protection-humanitarian-aid.ec.europa.eu/news-stories/news/eu-announces-additional-eur225-million-reinforce-humanitarian-assistance-yemen-2026-10-23_en"
+        }
+      ]
+    },
+    {
+      "id": "chapea-mission-two-one-year-habitat",
+      "title": "A simulated Mars crew has spent a year living with delayed help from Earth",
+      "lane": "Your interests",
+      "topic": "Space & habitat design",
+      "kind": "Update",
+      "sourceDate": "2026-10-19",
+      "bullets": [
+        "NASA’s four-person CHAPEA Mission 2 crew reached one year inside a 1,700-square-foot habitat in Houston on October 19. Their 378-day simulation is scheduled to end October 31.",
+        "The crew has grown crops, managed limited resources, and worked with communication delays. NASA will evaluate health and performance data, including how crews make decisions when immediate outside help is unavailable.",
+        "For long-duration habitat design, the interesting problem extends beyond keeping people alive: routines, autonomy, medical support, and connection to others also need deliberate design. This is an Earth-based analog, not evidence that every hazard of Mars has been reproduced."
+      ],
+      "sources": [
+        {
+          "label": "NASA: one-year milestone and planned exit",
+          "url": "https://www.nasa.gov/humans-in-space/nasas-simulated-mars-crew-marks-one-year-inside-habitat/"
+        }
+      ]
+    },
+    {
+      "id": "all-souls-procession-2026-remembrance",
+      "title": "Tucson’s All Souls Procession offers a public place for remembrance",
+      "lane": "Unexpected discoveries",
+      "topic": "Tucson & public art",
+      "kind": "Discovery",
+      "sourceDate": "2026-09-05",
+      "bullets": [
+        "The organizers’ September 5 theme announcement invites participants to imagine creating a new world through shared voices, with Morgan Sorne returning as musical director. It frames the procession as collective creativity and remembrance.",
+        "The current event listing schedules the free procession for Sunday, November 8: gathering at Speedway and Grande from 4 p.m., walking at 6 p.m., and a finale listed for 8 p.m. Times are local to Tucson.",
+        "Use the current event listing for logistics: the older theme post gives different weekend dates. The finale combines music, performance, community-made offerings, and the Burning of the Urn ceremony."
+      ],
+      "sources": [
+        {
+          "label": "Organizers’ theme announcement · September 5",
+          "url": "https://allsoulsprocession.org/theme-for-2026/"
+        },
+        {
+          "label": "Current event listing · undated, checked October 26",
+          "url": "https://allsoulsprocession.org/event/the-37th-annual-all-souls-procession/"
+        }
+      ]
+    },
+    {
+      "id": "creative-self-doubt-books-rough-at-sea",
+      "title": "New on Rough at Sea: books for making art before confidence arrives",
+      "lane": "Your interests",
+      "topic": "Writing & creative practice",
+      "kind": "Update",
+      "sourceDate": "2026-10-25",
+      "article": "/notes/books-for-creative-self-doubt/",
+      "bullets": [
+        "The new essay separates three questions that often collapse together: whether the work is good, whether an audience will care, and whether the creator deserves to try. Each calls for a different response.",
+        "Art & Fear is the suggested starting point for interpreting artistic difficulty; Bird by Bird addresses the habit of judging and deleting a first draft before it can become useful material. Six other books offer different approaches to avoidance, originality, curiosity, and courage.",
+        "The practical experiment: preserve embarrassing drafts for seven days, then look for one image, sentence, or character worth developing. Keeping material does not require liking it; it makes revision possible."
+      ],
+      "sources": [
+        {
+          "label": "Rough at Sea: The Books That Help Artists Survive Their Own Doubt",
+          "url": "https://roughatsea.com/notes/books-for-creative-self-doubt/"
+        }
+      ]
+    },
+    {
+      "id": "visual-studio-csharp-branch-highlighting",
+      "title": "Debugging C#: see which condition actually decided the branch",
+      "lane": "Useful opportunities",
+      "topic": "Software engineering",
+      "kind": "Discovery",
+      "sourceDate": "2026-09-29",
+      "bullets": [
+        "For if (ready && connected), a false value of ready ends the test before connected is evaluated. Microsoft’s September 29 Visual Studio update adds highlighting that identifies the deciding operand in compound C# conditions.",
+        "While paused in the debugger, the feature highlights the expression that made an AND condition false or an OR condition true, alongside the existing result hint. It makes short-circuit evaluation visible without manually inspecting every term.",
+        "The same update adds Podman container discovery to Attach to Process for .NET and C++. These are documented capabilities to try in a compatible updated installation, rather than a claim that every existing setup already has them."
+      ],
+      "sources": [
+        {
+          "label": "Microsoft: Visual Studio September update · debugging sections",
+          "url": "https://devblogs.microsoft.com/visualstudio/visual-studio-september-update-power-your-workflow-with-your-model/"
+        }
+      ]
+    }
+  ]
+}
