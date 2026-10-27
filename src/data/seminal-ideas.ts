@@ -28,6 +28,9 @@ export const thinkers = [{
 }, {
   slug: 'great-learning-tradition', name: 'Early Confucian tradition', years: 'Ancient China; authorship and composition date uncertain',
   introduction: 'The Great Learning joins moral cultivation to household and political responsibility. Its traditional association with Confucius and Zengzi does not establish a single author; this guide keeps the early text, later interpretations, and Legge’s English translation distinct.'
+}, {
+  slug: 'wallace', name: 'Alfred Russel Wallace', years: '1823–1913',
+  introduction: 'A naturalist who independently developed a proposal for natural selection. This guided essay examines varieties, population checks, changing conditions, and cumulative divergence while keeping the 1858 argument distinct from later evolutionary theory.'
 }];
 
 export const works = [{
@@ -150,5 +153,18 @@ export const works = [{
     { name: 'Attention and partiality', anchor: 'attention-and-partiality', question: 'Can you recognize faults in those you love and merits in those you dislike?' },
     { name: 'Family, example, and reciprocity', anchor: 'family-example-and-reciprocity', question: 'Do you impose treatment you resent receiving?' },
     { name: 'Public wealth and public purpose', anchor: 'public-wealth-and-public-purpose', question: 'When does a rich treasury conceal an impoverished political relationship?' }
+  ]
+}, {
+  slug: 'on-the-tendency-of-varieties', thinker: 'wallace', title: 'On the Tendency of Varieties to Depart Indefinitely from the Original Type', year: 1858,
+  question: 'How can inherited differences accumulate without a planner?',
+  description: 'Follow Wallace’s 1858 argument from domestic reversion and population checks to differential persistence, divergence, and the limits of biological superiority.',
+  disciplines: ['Evolutionary biology', 'Scientific reasoning'],
+  concepts: [
+    { name: 'Varieties and the fixed-type objection', anchor: 'varieties-and-the-fixed-type-objection', question: 'Does domestic reversion establish a fixed limit to change?' },
+    { name: 'Population checks and the struggle for existence', anchor: 'population-checks-and-the-struggle-for-existence', question: 'What prevents possible reproduction from becoming unlimited growth?' },
+    { name: 'Differential persistence and inherited difference', anchor: 'differential-persistence-and-inherited-difference', question: 'When can unequal survival produce lasting population change?' },
+    { name: 'Divergence without a destination', anchor: 'divergence-without-a-destination', question: 'Does increasing difference require a universal ladder of improvement?' },
+    { name: 'Domestication and changed conditions', anchor: 'domestication-and-changed-conditions', question: 'Which conditions change when human support is removed?' },
+    { name: 'Adaptation without intention', anchor: 'adaptation-without-intention', question: 'How can a useful feature persist without foresight?' }
   ]
 }];

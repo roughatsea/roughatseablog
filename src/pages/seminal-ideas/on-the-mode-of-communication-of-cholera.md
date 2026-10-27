@@ -240,6 +240,8 @@ For an evidence audit, inspect several records in the appendix, pp. 138–162, a
 
 ### Where to go next
 
+Compare [Wallace’s 1858 argument about varieties](/seminal-ideas/on-the-tendency-of-varieties/#differential-persistence-and-inherited-difference). Both works propose a process behind observed patterns. Ask which evidence establishes that the process is possible, which shows it operating, and which supports a particular historical explanation. This is an editorial comparison, not a claim of influence.
+
 Read [Mill on free discussion](/seminal-ideas/on-liberty/#free-discussion) beside Snow's handling of objections. Fallibility becomes useful when criticism changes the inquiry: a missing denominator, an alternative pathway, or a mistaken address gives us something specific to repair.
 
 Contrast [Rokeya’s scientific inventions in *Sultana’s Dream*](/seminal-ideas/sultanas-dream/#technology-and-the-organization-of-life). A fictional device can make a social arrangement newly questionable without supplying empirical evidence that the device would work. The comparison marks a difference between imaginative exploration and a causal investigation; it does not assert influence between the authors.
