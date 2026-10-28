@@ -31,6 +31,9 @@ export const thinkers = [{
 }, {
   slug: 'wallace', name: 'Alfred Russel Wallace', years: '1823–1913',
   introduction: 'A naturalist who independently developed a proposal for natural selection. This guided essay examines varieties, population checks, changing conditions, and cumulative divergence while keeping the 1858 argument distinct from later evolutionary theory.'
+}, {
+  slug: 'gilman', name: 'Charlotte Perkins Gilman', years: '1860–1935',
+  introduction: 'A writer and social critic who uses a secret journal and a disturbing room to examine care, authority, and constrained agency. This guided story distinguishes the narrator’s experience from Gilman’s biography and resistance from recovery.'
 }];
 
 export const works = [{
@@ -166,5 +169,17 @@ export const works = [{
     { name: 'Divergence without a destination', anchor: 'divergence-without-a-destination', question: 'Does increasing difference require a universal ladder of improvement?' },
     { name: 'Domestication and changed conditions', anchor: 'domestication-and-changed-conditions', question: 'Which conditions change when human support is removed?' },
     { name: 'Adaptation without intention', anchor: 'adaptation-without-intention', question: 'How can a useful feature persist without foresight?' }
+  ]
+}, {
+  slug: 'the-yellow-wall-paper', thinker: 'gilman', title: 'The Yellow Wall-Paper', year: 1892,
+  question: 'What happens when care makes disagreement impossible?',
+  description: 'Read Gilman’s secret journal through paternalism, dismissed testimony, the woman behind the pattern, and an escape that resists a simple victory.',
+  disciplines: ['Literature', 'Feminist thought', 'Medical humanities'],
+  concepts: [
+    { name: 'Care and paternalism', anchor: 'care-and-paternalism', question: 'What can make a benevolent authority reconsider?' },
+    { name: 'Testimony and the cost of disbelief', anchor: 'testimony-and-the-cost-of-disbelief', question: 'Can someone’s suffering count when their explanation is doubtful?' },
+    { name: 'Secret writing and a divided audience', anchor: 'secret-writing-and-a-divided-audience', question: 'What does visible compliance conceal?' },
+    { name: 'Pattern, projection, and confinement', anchor: 'pattern-projection-and-confinement', question: 'How can an image be meaningful without being literally true?' },
+    { name: 'Resistance without recovery', anchor: 'resistance-without-recovery', question: 'Does reversing authority restore freedom?' }
   ]
 }];

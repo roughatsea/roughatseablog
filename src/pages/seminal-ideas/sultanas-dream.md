@@ -166,6 +166,10 @@ The MOWCAP regional register records the work’s 2024 inscription and describes
 
 [The Great Learning](/seminal-ideas/the-great-learning/#family-example-and-reciprocity) connects household conduct with public authority. Read its demand for reciprocity beside Ladyland’s confinement of men: does a ruler’s claim to benevolence give those confined any power to challenge the arrangement? This is an editorial comparison, not a claim of influence on Rokeya.
 
+### Care and a constrained voice
+
+[Gilman’s The Yellow Wall-Paper](/seminal-ideas/the-yellow-wall-paper/#care-and-paternalism) follows a woman whose protective household arrangements leave little room for effective disagreement. Compare its secret journal with Sultana’s guided tour: who can speak, who can challenge the account of safety, and what counts as release? This is an editorial comparison of literary forms and protective authority, not a claim of influence between the writers.
+
 ### Common distortions
 
 - **“Ladyland proves women are biologically better rulers.”** Its success is stipulated within a fiction; Sara’s assertions supply no comparative evidence.
