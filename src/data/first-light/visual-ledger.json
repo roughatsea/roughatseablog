@@ -44,5 +44,52 @@
         "sha256": "2bcfd1e495c2ab94766d57776d6d385fefaa1930038a739bd5ae1e326c0a4c4a"
       }
     ]
+  },
+  {
+    "date": "2026-10-28",
+    "theme": "Shared instruments, open possibilities",
+    "setting": "Reclaimed limestone acoustic quarry, rainy mountain fabrication house, rehearsal room, and wind harp beneath stars",
+    "subjects": [
+      "amateur composition",
+      "robotic maintenance",
+      "shared fabrication",
+      "musicians listening",
+      "moth and reflected workshop"
+    ],
+    "palette": [
+      "vermilion",
+      "moss green",
+      "plum",
+      "mustard",
+      "Prussian blue",
+      "copper"
+    ],
+    "fictionTitle": "The note nobody ordered",
+    "images": [
+      {
+        "role": "cover",
+        "src": "/images/first-light/2026-10-28/cover.webp",
+        "prompt": "Use case: illustration-story. Original First Light magazine cover, imagined future, no text. Wide landscape 1536x1024. A vast underground acoustic garden built in an abandoned limestone quarry: gigantic curved wooden resonators and suspended scarlet fabric sails among living ferns, terraced accessible walkways and shallow pools. Foreground a confident middle-aged woman sound designer in plum work clothes rolling a wheeled marimba toward a rehearsal; a compact utilitarian robot carries folded chairs nearby. Broad daylight pours through circular openings far above. Unusual lateral composition, tactile gouache and colored-pencil editorial painting, saturated vermilion, moss green, ivory limestone and plum shadows. Inhabited, joyful, architecturally coherent. No orbital habitat, towers, sunset, holograms, lettering or watermark. Speculative artwork, not documentation.",
+        "sha256": "d42c7af71ddc326185c451cd6aca97b9e1de0500b6c7147e9e3dc54b834cb4c2"
+      },
+      {
+        "role": "possibility",
+        "src": "/images/first-light/2026-10-28/possibility.webp",
+        "prompt": "Use case: illustration-story. Original speculative magazine illustration, wide landscape 1536x1024, no text. Bird's-eye oblique cutaway view of an imagined public fabrication house in a rainy mountain town, green roofs folded back visually to reveal a bright saffron interior. Small industrial robot arms on safe separated benches cut timber components; neighbors assemble an elaborate mechanical puppet theater, bicycles and repaired household appliances at open worktables. Rain-dark pine forest, violet roofs and puddles outside, lemon yellow task lights inside. Crisp intricate ink and watercolor architectural illustration with human warmth, distinct from cinematic sci-fi, no screens or holograms, no logos or lettering. A place where automation helps ordinary people realize playful projects. Coherent safe spaces, people away from machine working envelopes.",
+        "sha256": "a67d6978bffe1f6523e51f6e0e78b6a1bace16439eca02f42705f00e30695462"
+      },
+      {
+        "role": "human",
+        "src": "/images/first-light/2026-10-28/human.webp",
+        "prompt": "Use case: illustration-story. Original speculative fiction illustration for First Light. Landscape 1536x1024. Intimate eye-level scene in a rehearsal room carved from pale limestone, two adult amateur musicians arguing amiably over a crooked handmade percussion instrument: woman in plum overalls holding a single mallet and young man wearing mustard sweater with a bicycle helmet clipped to his bag, cupping a bronze resonator to listen. He is seated in a practical manual wheelchair with clear wheels. Large soft drum and marimba bars nearby, folded crimson fabric on a chair. Focus on expressive faces and listening, hands plausible, relaxed humorous concentration. Flat-color screenprint-like painterly editorial art with strong plum, mustard, rose and charcoal, tactile paper grain, afternoon reflected light. No clay, ceramic birds, futuristic city, robot face, text, logos, watermark. These are invented people, not portraits of real individuals.",
+        "sha256": "b1964f593dc37b992f379027cf8d8a6982954f1c7ee88ca3e67d752a5915be06"
+      },
+      {
+        "role": "closing",
+        "src": "/images/first-light/2026-10-28/closing.webp",
+        "prompt": "Use case: stylized-concept. Original imagined artwork for First Light closing marvel. Wide landscape 1536x1024. Extreme close low viewpoint on a single dewdrop caught in the bronze spiral of a wind harp on a mountain roof at night. In the drop an inverted tiny reflection of warm workshop windows; beyond in shallow focus, immense dark pine silhouettes and a crisp field of stars. A small moth rests on the bronze wire, its wings beautifully patterned lime green and dark burgundy. Jewel-like oil painting, macro optical detail, deep Prussian blue, acid green, copper and pearl white; quiet, physically plausible, tactile, restrained starlight. No alien coast, sunset, people facing horizon, text, watermark, diagram or data visualization. Invented scene, a small wonder after communal music.",
+        "sha256": "87a40259cad7521425d33f56a08c000d70b6ada105ae9b33615ba85547e0e395"
+      }
+    ]
   }
 ]

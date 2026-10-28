@@ -1,0 +1,205 @@
+{
+  "date": "2026-10-28",
+  "issue": 2,
+  "title": "A place for the unfinished",
+  "dek": "Robots that rebuild experiments, structures folded from sheets, and a future with room for a very peculiar concert.",
+  "theme": "Shared instruments, open possibilities",
+  "images": {
+    "cover": {
+      "src": "/images/first-light/2026-10-28/cover.webp",
+      "srcSmall": "/images/first-light/2026-10-28/cover-small.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "A musician rolls a marimba through a sunlit limestone quarry garden beneath immense wooden resonators and scarlet sails; a robot carries chairs.",
+      "caption": "Generated imagined artwork: a quarry repurposed for music, with room for an unexpected note."
+    },
+    "possibility": {
+      "src": "/images/first-light/2026-10-28/possibility.webp",
+      "srcSmall": "/images/first-light/2026-10-28/possibility-small.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "Cutaway of a warmly lit community workshop in a rainy mountain town, with fenced robot benches, puppet theater makers and bicycle repairs.",
+      "caption": "Generated imagined artwork: a public fabrication house where useful repairs and elaborate play share a roof. This is not the reported MIT laboratory."
+    },
+    "human": {
+      "src": "/images/first-light/2026-10-28/human.webp",
+      "srcSmall": "/images/first-light/2026-10-28/human-small.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "Two invented musicians listen and discuss a handmade percussion instrument in a limestone rehearsal room; one holds a mallet and the other uses a wheelchair.",
+      "caption": "Generated imagined artwork: listening is part of making. Mara and Ivo try a sound neither ordered."
+    },
+    "closing": {
+      "src": "/images/first-light/2026-10-28/closing.webp",
+      "srcSmall": "/images/first-light/2026-10-28/closing-small.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "A green and burgundy moth rests on a bronze wind-harp spiral beside a water drop reflecting warm workshop windows under stars.",
+      "caption": "Generated imagined artwork: after the workshop closes, a moth finds its own instrument."
+    }
+  },
+  "fiction": {
+    "title": "The note nobody ordered",
+    "opening": [
+      "Mara had booked the quarry for a concert and discovered, at the final rehearsal, that the quarry intended to join in. Every time she struck the lowest bar of her marimba, a second note came back from somewhere beneath the audience terraces. It was ugly, persistent, and almost exactly the sound of a spoon falling into a drain.",
+      "The municipal acoustic assistant offered three repairs. All required moving the great wooden resonator above the stage. The rigging robots could do it overnight, but the climbing club had reserved the chamber until morning. Mara could buy their time. She had spent her entire production allowance on a bass drum large enough to sleep in.",
+      "She struck the bar again. The spoon fell again.",
+      "“Leave it,” said Ivo, who had come to collect his wheelchair from the repair bench next door. He was a bicycle mechanic and had opinions about nearly everything that vibrated. “You could write it in.”",
+      "Mara had written twenty minutes of music for this room. She had spent six months learning enough composition to dislike every easy solution the assistant proposed. Tomorrow would be the first time strangers heard anything she had made. She wanted them to hear what she had meant."
+    ],
+    "continuation": [
+      "She asked the assistant to isolate the unwanted resonance. A maintenance cart rolled along the terrace, stopped beneath a bronze drainage grille, and projected a small circle of light. Below the grille, a stormwater pipe passed through an old excavation. The pipe was singing into the cavity.",
+      "“Can we damp it?” Mara asked.",
+      "“Yes. The habitat survey requires two days.”",
+      "There might be bats. Mara sat on the edge of her enormous drum. Above her, climbers were lowering ropes through the scarlet acoustic sails. One of them called down to ask whether that noise was supposed to happen.",
+      "“Not yet,” Ivo called back.",
+      "Mara laughed despite herself. She asked him to tap the grille while she played. His first attempt was late. The second made a little rattling chord. She moved three notes in her score, then erased the entire opening. The assistant kept the old version without being asked.",
+      "For an hour they tried entrances. Ivo could not read music; Mara could not explain the rhythm without singing it badly. A climber descended to suggest a rest. They tried that too.",
+      "At the concert, the first low note went out alone. The pipe answered. A few people turned toward the terraces, searching for the clumsy percussionist. Mara waited longer than she had dared in rehearsal. From behind the grille came Ivo’s careful, slightly late reply.",
+      "She lifted both mallets. The next passage belonged to the room. Afterward she would want to change it again. For now, she had forty people listening, one borrowed mechanic, and eighteen minutes left to play."
+    ],
+    "assumptions": "This invented future assumes capable robotic maintenance, acoustic modeling assistants, broadly affordable fabrication and repair, and civic institutions that allocate shared venues and leisure time. Present-day prototypes do not establish this level of dependable service or access. The quarry, characters, concert and singing drain are imagined; the illustrations do not depict the reported experiments."
+  },
+  "items": [
+    {
+      "id": "2026-10-28-first-light-optical-workbench",
+      "title": "A robot can build the experiment, then repair its alignment",
+      "department": "Toward the Singularity",
+      "topic": "Robotics & experimental science",
+      "kind": "Discovery",
+      "sourceDate": "2026-09-17",
+      "bullets": [
+        "A September MIT report describes a robotic optics bench that assembles and aligns a working laser cavity from specially housed components. The demonstration used 50 maneuvers and took 30 minutes.",
+        "The accompanying research tests recovery after disturbances: lens-displacement recovery succeeded in 10 of 10 trials; a separate mirror-misalignment test succeeded in nine of 10. These are small, specified tests, rather than evidence of a general-purpose autonomous scientist.",
+        "The interesting capability is physical follow-through: arranging apparatus, measuring a result and correcting the setup. Remote access is a development goal, not a public service announced as available."
+      ],
+      "sources": [
+        {
+          "label": "MIT — September demonstration",
+          "url": "https://news.mit.edu/2026/robotic-lab-runs-optics-experiments-on-demand-0917"
+        },
+        {
+          "label": "Research paper — methods and recovery tests",
+          "url": "https://arxiv.org/pdf/2603.21496"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-28-first-light-proofs-under-examination",
+      "title": "An extraordinary proof claim enters public examination",
+      "department": "Toward the Singularity",
+      "topic": "AI & mathematical verification",
+      "kind": "Update",
+      "sourceDate": "2026-10-26",
+      "bullets": [
+        "OpenAI’s October 26 announcement says its models produced a refutation of the Exponential Time Hypothesis, a conjecture used to derive limits on algorithm speed. The company reports an October 16 argument and October 17 Lean formalization.",
+        "OpenAI links public artifacts and names an external group led by Russell Impagliazzo, Ramamohan Paturi and Ryan Williams to examine and explain the work. This issue reports the claim and review process; it does not independently certify the proof.",
+        "Even a correct theoretical result would need further research before becoming a practical speedup. Public inspection, agreement on the formal statement and independent rebuilding are the next meaningful milestones."
+      ],
+      "sources": [
+        {
+          "label": "OpenAI — claims, dates, artifacts and review arrangements",
+          "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/"
+        },
+        {
+          "label": "Public natural-language artifact",
+          "url": "https://github.com/openai/math/blob/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-28-first-light-folded-shells",
+      "title": "A sheet can become a room-sized structure",
+      "department": "Room to Live",
+      "topic": "Architecture & fabrication",
+      "kind": "Update",
+      "sourceDate": "2026-10-27",
+      "bullets": [
+        "MIT reports modular shells assembled from individually folded sheet components. A design solver generates manufacturable units; builders connect them with hand tools.",
+        "The team demonstrated a 23-foot aluminum sculpture at the Boston Public Library. Simulations indicated about 3.5 times the stiffness of some other structural-origami techniques, with less material; that comparison is not a claim against every conventional building method.",
+        "Emergency shelters and aerospace parts are proposed uses. Larger architectural tests remain ahead, so an exhibition sculpture should not be mistaken for a certified housing system."
+      ],
+      "sources": [
+        {
+          "label": "MIT — demonstration, comparison and remaining work",
+          "url": "https://news.mit.edu/2026/origami-based-construction-method-yields-lightweight-load-bearing-structures-architecture-1027"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-28-first-light-cosmic-listening",
+      "title": "An orbit translated into pitch",
+      "department": "Strange & Beautiful",
+      "topic": "Space, sound & access",
+      "kind": "Discovery",
+      "sourceDate": "2026-05-27",
+      "bullets": [
+        "NASA’s May 27 sonification translates hydrogen-gas velocities around the black hole in Abell2744-QSO1 into pitch. Gas moving toward the telescope becomes higher-pitched; motion away becomes lower-pitched.",
+        "The linked page provides the video and an audio-described version. This is a deliberate mapping of Webb measurements into sound, rather than a microphone recording from space. Try following the direction change using NASA’s explanation; no listening impression is claimed here."
+      ],
+      "sources": [
+        {
+          "label": "NASA — sonification, mapping and accessible versions",
+          "url": "https://science.nasa.gov/asset/webb/little-red-dot-abell2744-qso1-sonification-of-gas-velocity-around-a-supermassive-black-hole-nircam-and-nirspec-ifu/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-28-first-light-heat-health",
+      "title": "Climate harms are outpacing the health response",
+      "department": "Here on Earth",
+      "topic": "Climate & public health",
+      "kind": "Update",
+      "sourceDate": "2026-10-28",
+      "bullets": [
+        "WHO’s October 28 summary of the 2026 Lancet Countdown says climate-related health harms are growing faster than the response. The collaboration tracks 54 indicators; its annual report concerns trends and earlier observations, not only events occurring today.",
+        "WHO reports an estimated 710,000 heat-linked deaths in 2023, with more than 70% of that burden attributable to human-caused climate change. These are report estimates, not a real-time death count.",
+        "The report calls for emissions cuts, adaptation support and stronger health systems. Cleaner electricity and early warning can help, but their benefits do not erase the losses or remove the need to protect people already exposed."
+      ],
+      "sources": [
+        {
+          "label": "WHO — dated summary and interpretation",
+          "url": "https://www.who.int/news/item/28-10-2026-climate-change-is-a-growing-health-emergency--lancet-countdown-warns"
+        },
+        {
+          "label": "Lancet Countdown — 2026 report",
+          "url": "https://lancetcountdown.org/2026-report/"
+        }
+      ]
+    }
+  ],
+  "singularity": {
+    "title": "Who checks the faster discoveries?",
+    "paragraphs": [
+      "The technological singularity is the possibility that increasingly capable intelligence accelerates discovery and the development of still greater intelligence, making the course of change difficult to anticipate. Evidence for one useful research capability does not establish that such a transition is underway or supply its date.",
+      "Analysis: the optics bench and the proof release expose two different bottlenecks. A physical experiment must work when components move. A mathematical claim must survive inspection of its definitions, assumptions and argument. Producing more candidates helps only when the processes that reject mistakes and preserve useful results can keep up.",
+      "The optics paper explicitly places agentic AI and learning-based strategies among possible future additions. Its demonstrated feedback control should not be silently promoted into an AI that invents and tests its own research agenda. Conversely, a formal proof artifact deserves examination without being treated as independent community acceptance merely because a company says it verified.",
+      "Extrapolation: connecting reliable hypothesis generation, accessible robotic laboratories and independent verification could shorten discovery cycles. The measure would be replicated results per unit of time and cost, including failures and review effort. A faster stream of assertions alone could instead consume researchers’ attention.",
+      "The public workshop in the illustration imagines another step: people sharing the tools and deciding what to make. Broad access requires funding, ownership arrangements and usable institutions. Increasing intelligence does not make those choices on our behalf."
+    ],
+    "signals": [
+      "Independent teams rebuilding released proof artifacts and checking that formal statements match the advertised claims.",
+      "Robotic experiments reproduced outside their originating laboratory, with failure rates and setup labor reported.",
+      "Measured time and cost from a proposed idea to an independently replicated result, including unsuccessful attempts.",
+      "Affordable access to instruments and the ability to choose projects beyond a small set of well-funded organizations."
+    ],
+    "question": "If generating candidate discoveries becomes cheap, how do we make careful verification both faster and open to more people?",
+    "sources": [
+      {
+        "label": "Robotic optics — demonstrated scope and proposed extensions",
+        "url": "https://arxiv.org/pdf/2603.21496"
+      },
+      {
+        "label": "OpenAI — release and external review process",
+        "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/"
+      }
+    ]
+  },
+  "closing": {
+    "title": "After the rehearsal",
+    "paragraphs": [
+      "The last illustration is invented: a moth on a wind harp, a workshop reflected in one drop of water. No discovery is being claimed. It offers a place to rest after considering what machines can do and what people need.",
+      "A shared instrument is a modest proposal beside a transformed civilization. It is also something concrete to ask of greater capability: a place you can enter, tools you can use, and enough freedom to find out what you wanted to make."
+    ]
+  }
+}

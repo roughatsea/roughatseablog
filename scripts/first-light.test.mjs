@@ -20,9 +20,9 @@ test('an issue cannot publish with missing, repeated, or vector replacement art'
   assert.throws(() => validateEditions(missing), /four original illustrations/);
   const repeated = fixture(); repeated[0].images.human = repeated[0].images.cover;
   assert.throws(() => validateEditions(repeated), /Reused illustration/);
-  const absent = fixture(); absent[0].images.cover.src = '/images/first-light/2026-10-26/missing.webp';
+  const absent = fixture(); absent[0].images.cover.src = `/images/first-light/${absent[0].date}/missing.webp`;
   assert.throws(() => validateEditions(absent), /Missing image file/);
-  const vector = fixture(); vector[0].images.cover.src = '/images/first-light/2026-10-26/cover.svg';
+  const vector = fixture(); vector[0].images.cover.src = `/images/first-light/${vector[0].date}/cover.svg`;
   assert.throws(() => validateEditions(vector), /dated raster asset/);
 });
 test('fiction must remain a substantial feature', () => {
