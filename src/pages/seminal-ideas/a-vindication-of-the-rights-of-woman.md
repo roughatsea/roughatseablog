@@ -6,7 +6,7 @@ author: Mary Wollstonecraft
 thinker: wollstonecraft
 discipline: Political philosophy, education, and feminist thought
 year: 1792
-updated: '2026-10-25'
+updated: '2026-10-29'
 ---
 
 *Reading references use Wollstonecraft's Dedication, Introduction, and numbered chapters I–XIII. Chapter XIII is divided into six sections. The primary text is the English Project Gutenberg eBook 3420; no translator is involved, and its digital transcription supplies no stable first-edition page numbers. The “Brief Sketch” before the Dedication is an unsigned biographical addition, not part of Wollstonecraft's argument. Examples, objections, comparisons, and present-day applications are editorial unless explicitly attributed.*
@@ -262,6 +262,8 @@ If you continue, read chapter V's engagement with Rousseau and chapters VI–VII
 Read [Mill on individuality and experiments of living](/seminal-ideas/on-liberty/#individuality-and-experiments-of-living) and ask what prior formation makes choosing possible. Then compare [Du Bois on freedom after emancipation](/seminal-ideas/the-souls-of-black-folk/#freedom-after-emancipation): both works distinguish a declared status from the institutions needed to exercise it, though their subjects and evidence differ.
 
 Compare [Rokeya’s role reversal in *Sultana’s Dream*](/seminal-ideas/sultanas-dream/#estrangement-and-role-reversal), where a visitor’s learned shyness becomes a way to question supposed natural differences. The story also tests whether transferring authority ends domination. This is a thematic comparison, not a claim of documented influence.
+
+Compare [Smith on learned abilities and natural differences](/seminal-ideas/the-wealth-of-nations/#learned-abilities-and-natural-differences). He also asks how occupations form capacities, yet his later praise of women’s domestic education exposes a disagreement with Wollstonecraft’s aims. This is a comparison, not a claim of influence.
 
 Try one practical exercise. When a group is described as naturally lacking confidence, discipline, leadership, or aspiration, list the opportunities its members have had to practice those capacities and the penalties attached to displaying them. Do not assume the structural explanation is automatically correct. Use it to identify what evidence the naturalizing claim omitted.
 

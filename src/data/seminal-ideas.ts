@@ -34,6 +34,9 @@ export const thinkers = [{
 }, {
   slug: 'gilman', name: 'Charlotte Perkins Gilman', years: '1860–1935',
   introduction: 'A writer and social critic who uses a secret journal and a disturbing room to examine care, authority, and constrained agency. This guided story distinguishes the narrator’s experience from Gilman’s biography and resistance from recovery.'
+}, {
+  slug: 'smith', name: 'Adam Smith', years: '1723–1790',
+  introduction: 'A Scottish moral philosopher who examines how specialized work and exchange enlarge productive capacity. This guide connects that achievement to market access, learned abilities, and his argument for public attention to education.'
 }];
 
 export const works = [{
@@ -181,5 +184,17 @@ export const works = [{
     { name: 'Secret writing and a divided audience', anchor: 'secret-writing-and-a-divided-audience', question: 'What does visible compliance conceal?' },
     { name: 'Pattern, projection, and confinement', anchor: 'pattern-projection-and-confinement', question: 'How can an image be meaningful without being literally true?' },
     { name: 'Resistance without recovery', anchor: 'resistance-without-recovery', question: 'Does reversing authority restore freedom?' }
+  ]
+}, {
+  slug: 'the-wealth-of-nations', thinker: 'smith', title: 'The Wealth of Nations', year: 1776,
+  question: 'How can dividing work enlarge shared possibilities while narrowing the worker’s life?',
+  description: 'Read Smith on specialization, exchange, market size, learned abilities, and the educational responsibilities of commercial society.',
+  disciplines: ['Economics', 'Political thought'],
+  concepts: [
+    { name: 'Division of labour and productivity', anchor: 'division-of-labour-and-productivity', question: 'How can reorganizing work change what a day’s labor produces?' },
+    { name: 'Exchange and mutual advantage', anchor: 'exchange-and-mutual-advantage', question: 'Why can cooperation extend beyond friendship?' },
+    { name: 'The extent of the market', anchor: 'the-extent-of-the-market', question: 'How many buyers can a specialist actually serve?' },
+    { name: 'Learned abilities and natural differences', anchor: 'learned-abilities-and-natural-differences', question: 'Can different occupations produce the abilities used to justify them?' },
+    { name: 'Repetitive work and public education', anchor: 'repetitive-work-and-public-education', question: 'Who provides the development that narrow work neglects?' }
   ]
 }];

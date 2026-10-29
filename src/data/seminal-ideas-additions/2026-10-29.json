@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-29",
+  "work": "the-wealth-of-nations",
+  "thinker": "smith",
+  "title": "The Wealth of Nations",
+  "lessonPath": "src/pages/seminal-ideas/the-wealth-of-nations.md",
+  "publicPath": "/seminal-ideas/the-wealth-of-nations/",
+  "sourceUrls": [
+    "https://www.econlib.org/library/Smith/smWN.html",
+    "https://www.econlib.org/library/Smith/smWN.html?chapter_num=4",
+    "https://www.econlib.org/library/Smith/smWN.html?chapter_num=5",
+    "https://www.econlib.org/library/Smith/smWN.html?chapter_num=6",
+    "https://www.econlib.org/library/Smith/smWN.html?chapter_num=35",
+    "https://www.gla.ac.uk/explore/adamsmith300/lifeworkandlegacy/keyworks/wealthofnations/",
+    "https://plato.stanford.edu/entries/smith-moral-political/"
+  ]
+}
