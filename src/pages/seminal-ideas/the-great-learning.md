@@ -210,6 +210,8 @@ Then read the commentary continuously. The quotations from older writings show t
 
 For a practical exercise, choose one rule you impose on others. Write down the evidence supporting it, the exception you would want for yourself, and who can challenge your judgment. The gap between those three answers is a place to begin.
 
+For a different account of cultivated conduct, read [the Dhammapada on responsibility without moral outsourcing](/seminal-ideas/the-dhammapada/#responsibility-without-moral-outsourcing). Both ask whether instruction becomes practice; the Buddhist anthology’s aim of liberation differs from this work’s movement toward household and political order. This is a comparison, not a claim of historical influence.
+
 ## Sources
 
 **Primary translation:** *The Great Learning*, translated by James Legge, in *The Chinese Classics*, vol. 1; first volume originally published 1861, revised edition 1893. The [full Tianmu reproduction](https://tianmu.org/good-work-library/confucian/general-texts/the-great-learning-james-legge), including the opening and transmitted commentary, identifies the 1893 edition and its dependence on the Sacred Texts archive. That reproduction was read in full. Its colophon reports minor OCR corrections; it is not a photographic facsimile. The [Sacred Texts version](https://sacred-texts.com/cfu/conf2.htm) was also opened. Its confident header attribution and “500 BC” display are not adopted as established authorship or dating. The ancient work and Legge’s translation are public domain in the United States. The quoted root-and-wealth sentence belongs to the transmitted commentary.

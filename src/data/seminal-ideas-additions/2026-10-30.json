@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-30",
+  "work": "the-dhammapada",
+  "thinker": "early-buddhist-tradition",
+  "title": "The Dhammapada",
+  "lessonPath": "src/pages/seminal-ideas/the-dhammapada.md",
+  "publicPath": "/seminal-ideas/the-dhammapada/",
+  "sourceUrls": [
+    "https://www.dharmadao.press/dhammapada/2/",
+    "https://www.dharmadao.press/dhammapada/3/",
+    "https://www.gutenberg.org/files/2017/2017-h/2017-h.htm",
+    "https://www.dharmadao.press/dhammapada/17/",
+    "https://www.dharmadao.press/dhammapada/10/",
+    "https://www.dharmadao.press/dhammapada/12/",
+    "https://www.dharmadao.press/dhammapada/20/",
+    "https://accesstoinsight.org/tipitaka/kn/dhp/dhp.20.than",
+    "https://plato.stanford.edu/entries/buddha/",
+    "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Reln260/Dhammapada.htm",
+    "https://accesstoinsight.org/tipitaka/kn/dhp/dhp.intro.than.html",
+    "https://www.gutenberg.org/ebooks/2017"
+  ]
+}

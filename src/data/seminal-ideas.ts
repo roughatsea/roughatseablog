@@ -37,6 +37,9 @@ export const thinkers = [{
 }, {
   slug: 'smith', name: 'Adam Smith', years: '1723–1790',
   introduction: 'A Scottish moral philosopher who examines how specialized work and exchange enlarge productive capacity. This guide connects that achievement to market access, learned abilities, and his argument for public attention to education.'
+}, {
+  slug: 'early-buddhist-tradition', name: 'Early Buddhist tradition', years: 'Ancient South Asia; anthology compilation date uncertain',
+  introduction: 'The Dhammapada transmits verses attributed to the Buddha within the Pali Buddhist canon. This guide examines heedfulness, anger, non-harming, and ethical practice while distinguishing the anthology, its translators, and later interpretation.'
 }];
 
 export const works = [{
@@ -196,5 +199,18 @@ export const works = [{
     { name: 'The extent of the market', anchor: 'the-extent-of-the-market', question: 'How many buyers can a specialist actually serve?' },
     { name: 'Learned abilities and natural differences', anchor: 'learned-abilities-and-natural-differences', question: 'Can different occupations produce the abilities used to justify them?' },
     { name: 'Repetitive work and public education', anchor: 'repetitive-work-and-public-education', question: 'Who provides the development that narrow work neglects?' }
+  ]
+}, {
+  slug: 'the-dhammapada', thinker: 'early-buddhist-tradition', title: 'The Dhammapada', year: 'Ancient South Asia; compilation date uncertain',
+  question: 'How can we stop adding suffering through the habits of our own response?',
+  description: 'Read an early Buddhist anthology through heedfulness, trained attention, retaliation, shared vulnerability, and the difference between recitation and practice.',
+  disciplines: ['Buddhist philosophy', 'Ethics', 'Religion'],
+  concepts: [
+    { name: 'Heedfulness and the use of attention', anchor: 'heedfulness-and-the-use-of-attention', question: 'What direction does repeated conduct give a life?' },
+    { name: 'Training the mind', anchor: 'training-the-mind', question: 'How can attention become a practice rather than a wish?' },
+    { name: 'Anger and the interruption of retaliation', anchor: 'anger-and-the-interruption-of-retaliation', question: 'Can we protect ourselves without adding cruelty?' },
+    { name: 'Non-harming and shared vulnerability', anchor: 'non-harming-and-shared-vulnerability', question: 'What does another being’s fear ask of us?' },
+    { name: 'Responsibility without moral outsourcing', anchor: 'responsibility-without-moral-outsourcing', question: 'What can a teacher help with but never do for us?' },
+    { name: 'Practice and the limits of borrowed knowledge', anchor: 'practice-and-the-limits-of-borrowed-knowledge', question: 'When does knowing a teaching change how we live?' }
   ]
 }];
