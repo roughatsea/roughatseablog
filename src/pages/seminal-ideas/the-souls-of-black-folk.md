@@ -232,6 +232,8 @@ If you continue, read the intervening chapters rather than treating these as det
 
 ### Where to go next
 
+Read [Douglass’s 1852 Fourth of July oration](/seminal-ideas/what-to-the-slave-is-the-fourth-of-july/#celebration-and-unequal-membership) for a comparison across emancipation: Douglass challenges a celebration of liberty amid enslavement; Du Bois examines the institutions and powers still needed after legal emancipation. This is a comparison of arguments, not a claim that this speech alone supplied Du Bois’s framework.
+
 Compare [Mill's harm principle](/seminal-ideas/on-liberty/#harm-principle) with Du Bois's account of the institutional powers needed to exercise liberty. Then compare [Jung's persona](/seminal-ideas/two-essays-on-analytical-psychology/#persona) with double consciousness, preserving the difference between an adaptive social role and self-relation under racial exclusion. [Nietzsche's genealogy](/seminal-ideas/genealogy-of-morality/#genealogy) offers another way to ask how a value gained authority, but Du Bois's historical sociology makes institutions and public evidence central.
 
 Wollstonecraft's [effect-mistaken-for-cause argument](/seminal-ideas/a-vindication-of-the-rights-of-woman/#effect-mistaken-for-cause) offers a further comparison: unequal formation can produce traits later used to justify exclusion. Du Bois's analysis is historically specific to racial hierarchy after emancipation, so the structural similarity should not collapse the subjects.

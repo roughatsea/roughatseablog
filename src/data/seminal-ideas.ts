@@ -40,6 +40,9 @@ export const thinkers = [{
 }, {
   slug: 'early-buddhist-tradition', name: 'Early Buddhist tradition', years: 'Ancient South Asia; anthology compilation date uncertain',
   introduction: 'The Dhammapada transmits verses attributed to the Buddha within the Pali Buddhist canon. This guide examines heedfulness, anger, non-harming, and ethical practice while distinguishing the anthology, its translators, and later interpretation.'
+}, {
+  slug: 'douglass', name: 'Frederick Douglass', years: 'c. 1818–1895',
+  introduction: 'An abolitionist writer and orator who makes public professions of liberty answer to the lives excluded from them. This guide examines his 1852 oration on national celebration, personhood, institutional responsibility, constitutional interpretation, and hope.'
 }];
 
 export const works = [{
@@ -212,5 +215,18 @@ export const works = [{
     { name: 'Non-harming and shared vulnerability', anchor: 'non-harming-and-shared-vulnerability', question: 'What does another being’s fear ask of us?' },
     { name: 'Responsibility without moral outsourcing', anchor: 'responsibility-without-moral-outsourcing', question: 'What can a teacher help with but never do for us?' },
     { name: 'Practice and the limits of borrowed knowledge', anchor: 'practice-and-the-limits-of-borrowed-knowledge', question: 'When does knowing a teaching change how we live?' }
+  ]
+}, {
+  slug: 'what-to-the-slave-is-the-fourth-of-july', thinker: 'douglass', title: 'What to the Slave Is the Fourth of July?', year: 1852,
+  question: 'What must people do when their public principles condemn the institutions they support?',
+  description: 'Follow Douglass from an unshared celebration of liberty to moral evasion, national enforcement, religious responsibility, and a contested constitutional hope.',
+  disciplines: ['Political thought', 'Ethics', 'Rhetoric'],
+  concepts: [
+    { name: 'Celebration and unequal membership', anchor: 'celebration-and-unequal-membership', question: 'Who actually shares the liberty being celebrated?' },
+    { name: 'Principles turned into obligations', anchor: 'principles-turned-into-obligations', question: 'What does honoring a principle require now?' },
+    { name: 'Personhood and the refusal of evasive debate', anchor: 'personhood-and-the-refusal-of-evasive-debate', question: 'When does demanding more proof postpone an acknowledged obligation?' },
+    { name: 'Institutions and distributed responsibility', anchor: 'institutions-and-distributed-responsibility', question: 'How can people sustain a wrong without performing its central act?' },
+    { name: 'Religious profession and practical conduct', anchor: 'religious-profession-and-practical-conduct', question: 'What should a community’s professed commitments change in its conduct?' },
+    { name: 'Constitutional interpretation and the possibility of change', anchor: 'constitutional-interpretation-and-the-possibility-of-change', question: 'Can founding principles become resources against established practices?' }
   ]
 }];
