@@ -246,6 +246,8 @@ Read [Mill on free discussion](/seminal-ideas/on-liberty/#free-discussion) besid
 
 Contrast [Rokeya’s scientific inventions in *Sultana’s Dream*](/seminal-ideas/sultanas-dream/#technology-and-the-organization-of-life). A fictional device can make a social arrangement newly questionable without supplying empirical evidence that the device would work. The comparison marks a difference between imaginative exploration and a causal investigation; it does not assert influence between the authors.
 
+Compare [Clifford’s distinction between uncertain action and established belief](/seminal-ideas/the-ethics-of-belief/#action-without-manufactured-certainty). His later philosophical essay asks what justifies accepting a claim; Snow’s investigation shows how a causal claim can be tested while protective action remains urgent. This is an editorial comparison, not a claim of influence.
+
 For the next claim that a change “worked,” write down the outcome, the denominator, the observation period, and what was already happening before the change. If the comparison is missing, name that absence before repeating the success story.
 
 ## Sources

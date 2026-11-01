@@ -43,6 +43,9 @@ export const thinkers = [{
 }, {
   slug: 'douglass', name: 'Frederick Douglass', years: 'c. 1818–1895',
   introduction: 'An abolitionist writer and orator who makes public professions of liberty answer to the lives excluded from them. This guide examines his 1852 oration on national celebration, personhood, institutional responsibility, constitutional interpretation, and hope.'
+}, {
+  slug: 'clifford', name: 'William Kingdon Clifford', years: '1845–1879',
+  introduction: 'A mathematician and philosopher who asks what people owe one another in forming and sharing beliefs. This guide examines inquiry, testimony, inference, and the contested moral demand for sufficient evidence.'
 }];
 
 export const works = [{
@@ -228,5 +231,18 @@ export const works = [{
     { name: 'Institutions and distributed responsibility', anchor: 'institutions-and-distributed-responsibility', question: 'How can people sustain a wrong without performing its central act?' },
     { name: 'Religious profession and practical conduct', anchor: 'religious-profession-and-practical-conduct', question: 'What should a community’s professed commitments change in its conduct?' },
     { name: 'Constitutional interpretation and the possibility of change', anchor: 'constitutional-interpretation-and-the-possibility-of-change', question: 'Can founding principles become resources against established practices?' }
+  ]
+}, {
+  slug: 'the-ethics-of-belief', thinker: 'clifford', title: 'The Ethics of Belief', year: 1877,
+  question: 'What do we owe one another in forming and passing on beliefs?',
+  description: 'Read Clifford on sincere conviction, responsible inquiry, trustworthy testimony, and action without manufactured certainty.',
+  disciplines: ['Epistemology', 'Ethics', 'Scientific reasoning'],
+  concepts: [
+    { name: 'Sincerity, truth, and responsible inquiry', anchor: 'sincerity-truth-and-responsible-inquiry', question: 'Can a lucky conclusion excuse neglected evidence?' },
+    { name: 'Belief as a social responsibility', anchor: 'belief-as-a-social-responsibility', question: 'How might an apparently private belief affect others?' },
+    { name: 'Testimony and the limits of expertise', anchor: 'testimony-and-the-limits-of-expertise', question: 'What makes someone able to know this particular claim?' },
+    { name: 'Tradition as a method of questioning', anchor: 'tradition-as-a-method-of-questioning', question: 'Do we inherit an answer or the means of testing it?' },
+    { name: 'Inference beyond immediate experience', anchor: 'inference-beyond-immediate-experience', question: 'Which relevant likeness carries an inference to an unobserved case?' },
+    { name: 'Action without manufactured certainty', anchor: 'action-without-manufactured-certainty', question: 'Can a precaution be justified while judgment remains uncertain?' }
   ]
 }];

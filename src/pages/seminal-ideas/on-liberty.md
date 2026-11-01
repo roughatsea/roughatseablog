@@ -293,6 +293,8 @@ Read [Tagore on moral anaesthesia](/seminal-ideas/nationalism/#moral-anaesthesia
 
 [Snow's cholera investigation](/seminal-ideas/on-the-mode-of-communication-of-cholera/#action-under-uncertainty) adds an empirical question: what evidence establishes a suspected pathway of harm before society restricts it? Snow's historical inquiry does not settle Mill's ethical boundary, and Mill's principle cannot establish the facts about a hazard. This is an editorial comparison, not a claim of influence.
 
+[Clifford on testimony and expertise](/seminal-ideas/the-ethics-of-belief/#testimony-and-the-limits-of-expertise) asks when we have reason to accept what another person says. Mill’s defense of free discussion does not require equal confidence in every contribution. This is an editorial comparison with a later essay, not a claim that Mill was responding to Clifford.
+
 Before the next disagreement, try one concrete change: state exactly whose interest a proposed restriction protects and how. If the explanation reduces to *they should live more like us*, the case for authority has barely begun.
 
 ## Sources
