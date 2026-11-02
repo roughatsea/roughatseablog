@@ -46,6 +46,9 @@ export const thinkers = [{
 }, {
   slug: 'clifford', name: 'William Kingdon Clifford', years: '1845–1879',
   introduction: 'A mathematician and philosopher who asks what people owe one another in forming and sharing beliefs. This guide examines inquiry, testimony, inference, and the contested moral demand for sufficient evidence.'
+}, {
+  slug: 'marti', name: 'José Martí', years: '1853–1895',
+  introduction: 'A Cuban writer and independence organizer who asks how republics can govern people whom their elites scarcely know. This guide examines political knowledge, colonial habits, cultural learning, racial equality, and regional solidarity.'
 }];
 
 export const works = [{
@@ -244,5 +247,18 @@ export const works = [{
     { name: 'Tradition as a method of questioning', anchor: 'tradition-as-a-method-of-questioning', question: 'Do we inherit an answer or the means of testing it?' },
     { name: 'Inference beyond immediate experience', anchor: 'inference-beyond-immediate-experience', question: 'Which relevant likeness carries an inference to an unobserved case?' },
     { name: 'Action without manufactured certainty', anchor: 'action-without-manufactured-certainty', question: 'Can a precaution be justified while judgment remains uncertain?' }
+  ]
+}, {
+  slug: 'nuestra-america', thinker: 'marti', title: 'Nuestra América (Our America)', year: 1891,
+  question: 'How can a people govern itself through institutions that disregard who its members are?',
+  description: 'Read Martí on locally grounded government, colonial habits within republics, cultural learning, racial equality, and solidarity without inherited hatred.',
+  disciplines: ['Latin American political thought', 'Literature', 'Political ethics'],
+  concepts: [
+    { name: 'Political knowledge before borrowed formulas', anchor: 'political-knowledge-before-borrowed-formulas', question: 'What must a government learn before importing an admired model?' },
+    { name: 'The people excluded by cultivated authority', anchor: 'the-people-excluded-by-cultivated-authority', question: 'Whose knowledge does official expertise refuse to hear?' },
+    { name: 'Independence beyond a change of rulers', anchor: 'independence-beyond-a-change-of-rulers', question: 'Which habits of domination survive formal liberation?' },
+    { name: 'Learning from the world without copying it', anchor: 'learning-from-the-world-without-copying-it', question: 'How can a culture borrow while retaining judgment?' },
+    { name: 'Human equality and the persistence of racial power', anchor: 'human-equality-and-the-persistence-of-racial-power', question: 'Does shared humanity make organized inequality disappear?' },
+    { name: 'Solidarity without inherited hatred', anchor: 'solidarity-without-inherited-hatred', question: 'Can people coordinate against a danger without declaring another people inherently evil?' }
   ]
 }];

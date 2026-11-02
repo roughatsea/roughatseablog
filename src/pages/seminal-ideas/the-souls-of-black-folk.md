@@ -242,6 +242,8 @@ Compare [Tagore on social freedom](/seminal-ideas/nationalism/#social-freedom) w
 
 [Snow's cholera inquiry](/seminal-ideas/on-the-mode-of-communication-of-cholera/#natural-experiment) offers a comparison of methods: records and tables depend on close investigation of households and actual conditions. Snow studies a disease pathway; Du Bois also studies historical power and lived meanings. The comparison does not make their evidence interchangeable or assert direct influence.
 
+[Martí’s Nuestra América on human equality and racial power](/seminal-ideas/nuestra-america/#human-equality-and-the-persistence-of-racial-power) supplies a comparison from Latin American political thought. His rejection of natural racial hierarchy leaves a question that Du Bois’s color line makes explicit: how do institutions continue to distribute power? This comparison does not assert a historical chain of influence.
+
 Try one practical question: when a situation is described as the result of personal choice, list the institutions that shaped the available choices. Then resist the opposite shortcut. Structure changes the field of action; it does not erase the purposes and judgments of the people acting within it.
 
 ## Sources

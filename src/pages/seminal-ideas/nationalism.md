@@ -233,6 +233,8 @@ If you continue, read the intervening pages. The book's praise, warning, qualifi
 
 Return to [Du Bois's account of the Veil](/seminal-ideas/the-souls-of-black-folk/#the-veil) and ask how institutions limit what their beneficiaries know. Then read [Wollstonecraft on independence and citizenship](/seminal-ideas/a-vindication-of-the-rights-of-woman/#independence-and-citizenship) to test whether the means to refuse dependence are as real as the invitation to do so.
 
+Read [Martí’s Nuestra América on learning without copying](/seminal-ideas/nuestra-america/#learning-from-the-world-without-copying-it). His earlier essay joins cultural judgment to an urgent appeal for republican solidarity. Compare that appeal with Tagore’s warning about organized national power; similarity in their criticism of imitation does not make their political programs identical. This is an editorial comparison, not a claim of influence.
+
 For the next decision made in an institution's name, write down the affected people before writing down the institution's interests. The organization may still have a defensible case. It should have to make it.
 
 ## Sources
