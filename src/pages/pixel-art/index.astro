@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import games from '../../data/pixel-archive/games.json';
+import rawGames from '../../data/pixel-archive/games.json';
+type Game = { date:string;slug:string;title:string;developer:string;description:string;lane:'familiar'|'unexpected';genres:string[];releaseStatus:string;image:string;imageAlt:string;imageCredit:string;article:string[];links:{label:string;url:string}[] };
+const games = rawGames as Game[];
 const entries = [...games].sort((a,b)=>b.date.localeCompare(a.date));
 const genres = [...new Set(entries.flatMap(g=>g.genres))].sort();
 ---
