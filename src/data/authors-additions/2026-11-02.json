@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-02",
+  "authorId": "dick-philip-k",
+  "authorName": "Philip K. Dick",
+  "selection": "American science fiction, rotating from the previous British detective-fiction addition to speculative fiction and a later generation.",
+  "sources": [
+    {
+      "url": "https://2013philipkdick.philipdick.com/works_novels.html",
+      "use": "Estate-hosted original-publication bibliography: all eight selected novel-book dates, including Solar Lottery (1955) and The Divine Invasion (1981)."
+    },
+    {
+      "url": "https://www.penguinrandomhouse.com/authors/7018/philip-k-dick/",
+      "use": "Publisher biography confirms 1928 birth and March 2, 1982 death."
+    },
+    {
+      "url": "https://sf-encyclopedia.com/entry/dick_philip_k",
+      "use": "Scholarly bibliography distinguishes Solar Lottery composition in 1953–1954 from 1955 publication; short-fiction debut in 1952; VALIS written in 1978, The Divine Invasion in 1980, both published in 1981; Radio Free Albemuth written 1976, published posthumously in 1985."
+    },
+    {
+      "url": "https://philipdick.com/mirror/websites/pkdweb/TIMOTHY%20ARCHER.htm",
+      "use": "Estate-hosted bibliographic record distinguishes April–May 1981 composition of The Transmigration of Timothy Archer from its April 1982 posthumous first book."
+    },
+    {
+      "url": "https://2013philipkdick.philipdick.com/works_novels_divineinvasion.html",
+      "use": "Estate title page independently identifies The Divine Invasion as originally published in 1981."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1928–1982",
+    "publishingSpan": "1955–1981",
+    "proxy": "Lifetime novel first-book-publication span, from Solar Lottery to The Divine Invasion, used as a publishing proxy rather than a claim of uninterrupted writing. Markers use first English-language book-publication years, not composition, magazine serialization, translation, reissue or adaptation dates. Solar Lottery was written in 1953–1954 before its 1955 book; short-fiction publication began in 1952, outside this novel-only bar. VALIS was written in 1978 and The Divine Invasion in 1980, but both books appeared in 1981. The Transmigration of Timothy Archer was written in 1981 and published in April 1982, after Dick’s March death, so it does not extend the lifetime bar. Radio Free Albemuth, written in 1976 but published in 1985, is also excluded. Stories, collections, essays, journals and posthumous first publications fall outside this scope.",
+    "workDates": [
+      [
+        1955,
+        "Solar Lottery"
+      ],
+      [
+        1962,
+        "The Man in the High Castle"
+      ],
+      [
+        1965,
+        "The Three Stigmata of Palmer Eldritch"
+      ],
+      [
+        1968,
+        "Do Androids Dream of Electric Sheep?"
+      ],
+      [
+        1969,
+        "Ubik"
+      ],
+      [
+        1977,
+        "A Scanner Darkly"
+      ],
+      [
+        1981,
+        "VALIS"
+      ],
+      [
+        1981,
+        "The Divine Invasion"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this lifespan; no UI change needed.",
+    "influence": "No influence claim made."
+  }
+}
