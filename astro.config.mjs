@@ -14,12 +14,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     react(),
-    sitemap({
-      filter: (page) => {
-        const normalized = page.replace(/\/$/, '');
-        return !normalized.endsWith('/waifu');
-      },
-    }),
+    sitemap(),
   ],
   markdown: {
     remarkPlugins: [remarkMath],
