@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import games from '../../data/pixel-archive/games.json';
+import rawGames from '../../data/pixel-archive/games.json';
+type Game = { date:string;slug:string;title:string;developer:string;description:string;lane:'familiar'|'unexpected';genres:string[];releaseStatus:string;image:string;imageAlt:string;imageCredit:string;article:string[];links:{label:string;url:string}[] };
+const games = rawGames as Game[];
 export function getStaticPaths(){return games.map(game=>({params:{slug:game.slug},props:{game}}));}
 const {game}=Astro.props;
 ---
