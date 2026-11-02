@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "date": "2026-11-02",
+    "slug": "may-the-rain",
+    "title": "May The Rain",
+    "developer": "Ziyanthus",
+    "description": "A solitary journey across a rain-washed, surreal mountaintop, told in fifteen minutes with pixel art, silence, and illustrated interludes.",
+    "lane": "unexpected",
+    "genres": [
+      "Adventure",
+      "Interactive Fiction",
+      "Atmospheric"
+    ],
+    "releaseStatus": "Released · Windows download; untested Linux build offered",
+    "image": "",
+    "imageAlt": "",
+    "imageCredit": "",
+    "article": [
+      "Some games ask for eighty hours. May The Rain asks for ten or fifteen minutes—and places its entire journey on a lonely mountain. Its creator, Ziyanthus, describes a surreal, foggy tepui where the rain has washed away every soul. The premise is spare enough to fit on a postcard: a lone presence reaches a place where no life seems to belong. The unanswered question is what brought that presence there. Rather than advertising a huge world to conquer, the game presents a small landscape to look at carefully.",
+      "The developer calls it a two-dimensional, walking-simulator-adjacent narrative. You move with the arrow keys or WASD and interact with Z or the space bar. It also includes several illustrated cutscenes presented in a visual-novel-like fashion. That combination interests me because it gives a tiny project two distinct storytelling instruments: the player's movement through a landscape and the deliberate framing of an illustration. One leaves room to wander; the other can hold your attention on a chosen image.",
+      "Pixel art is sometimes associated with speed, nostalgia, and crowded screens. Here, the advertised ingredients are the opposite: fog, emptiness, a mountain, and rain. A low-resolution image does not have to be busy to be evocative. In a game organized around an absence of life, the things that are *not* drawn may matter as much as the objects that are. That is a reason to be curious about May The Rain, not a claim about how it feels to play; this feature is based on the creator's description rather than a completed playthrough.",
+      "The production story is as interesting as its premise. Ziyanthus says the art, writing, programming, design, and music were all created solo in one month. It was the creator's first Godot project, made with Godot 4.5 for an October 2025 game jam. That is quite a lot of disciplines compressed into a very small window of time. The downloadable release is listed for Windows, with an untested Linux build included. The creator flags depictions of gore and self-harm, as well as implicit sexual imagery, so this is not necessarily a gentle or family-friendly excursion.",
+      "If you enjoy compact, atmospheric experiments that don't demand a long-term commitment, this looks like an intriguing stop. More broadly, it is exactly the kind of work The Pixel Archive ought to preserve: a small, personal creation that could easily be missed while everyone is looking at next year's blockbuster."
+    ],
+    "links": [
+      {
+        "label": "Play or download on itch.io (developer page)",
+        "url": "https://ziyanthus.itch.io/may-the-rain"
+      }
+    ]
+  }
+]
