@@ -160,9 +160,10 @@ const isCurrent = (href: string) => {
   #menu-toggle[aria-expanded='true'] .close-icon { display: block; }
   nav { gap: .2rem; }
   nav a,summary { border-radius: 999px; color: var(--text-secondary); font-size: .82rem; padding: .4rem .65rem; }
-  nav a:hover,nav a[aria-current='page'],summary:hover,.nav-group.is-current summary { background: var(--bg-color); color: var(--text-primary); }
+  nav a:hover,nav a[aria-current='page'],summary:hover,.nav-group[open] summary,.nav-group.is-current summary { background: var(--bg-color); color: var(--text-primary); }
   nav a[aria-current='page'] { box-shadow: inset 0 0 0 1px var(--border-color); }
   .nav-group { position: relative; }
+  .nav-group summary:focus-visible, .nav-menu a:focus-visible { outline: 2px solid var(--link-color); outline-offset: 2px; }
   .nav-group:last-of-type .nav-menu { left: auto; right: 0; }
   summary { align-items: center; cursor: pointer; display: inline-flex; gap: .28rem; list-style: none; white-space: nowrap; }
   summary::-webkit-details-marker { display: none; }
@@ -211,24 +212,49 @@ const isCurrent = (href: string) => {
     navigationPanel?.classList.toggle('is-open', isOpen);
   };
   menuToggle?.addEventListener('click', () => setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true'));
-  navGroups?.forEach((group) => group.addEventListener('toggle', () => {
-    if (!group.open) return;
-    navGroups.forEach((otherGroup) => {
-      if (otherGroup !== group) otherGroup.open = false;
+  const desktopNavigation = window.matchMedia('(min-width: 1181px) and (hover: hover) and (pointer: fine)');
+  const closeNavGroups = () => navGroups?.forEach((group) => { group.open = false; });
+  const openNavGroup = (target: HTMLDetailsElement) => {
+    navGroups?.forEach((group) => { group.open = group === target; });
+  };
+  navGroups?.forEach((group) => {
+    group.addEventListener('toggle', () => {
+      if (group.open) openNavGroup(group);
     });
-  }));
-  navigationPanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
+    // Native menus only switch on hover after the user has opened one.
+    group.querySelector('summary')?.addEventListener('pointerenter', () => {
+      if (desktopNavigation.matches && Array.from(navGroups ?? []).some((item) => item.open)) {
+        openNavGroup(group);
+      }
+    });
+  });
+  // Moving across ordinary top-level links closes the currently open dropdown.
+  navigationPanel?.querySelectorAll<HTMLElement>('nav > a').forEach((link) => {
+    link.addEventListener('pointerenter', () => {
+      if (desktopNavigation.matches) closeNavGroups();
+    });
+  });
+  navigationPanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { closeNavGroups(); setMenuOpen(false); }));
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Node)) return;
     if (menuToggle?.contains(event.target) || navigationPanel?.contains(event.target)) return;
+    closeNavGroups();
     setMenuOpen(false);
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape' || menuToggle?.getAttribute('aria-expanded') !== 'true') return;
-    setMenuOpen(false);
-    menuToggle?.focus();
+    if (event.key !== 'Escape') return;
+    const activeGroup = Array.from(navGroups ?? []).find((group) => group.open);
+    if (activeGroup) {
+      closeNavGroups();
+      activeGroup.querySelector('summary')?.focus();
+      event.preventDefault();
+    } else if (menuToggle?.getAttribute('aria-expanded') === 'true') {
+      setMenuOpen(false);
+      menuToggle?.focus();
+      event.preventDefault();
+    }
   });
-  window.matchMedia('(min-width: 1181px)').addEventListener('change', (event) => { if (event.matches) setMenuOpen(false); });
+  window.matchMedia('(min-width: 1181px)').addEventListener('change', (event) => { closeNavGroups(); if (event.matches) setMenuOpen(false); });
 
   const themeToggle = document.getElementById('theme-toggle');
   const themeToggleText = themeToggle?.querySelector('.theme-toggle-text');
