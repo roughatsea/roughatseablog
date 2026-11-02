@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-01",
+  "authorId": "christie",
+  "authorName": "Agatha Christie",
+  "selection": "British Golden Age detective fiction, rotating from the previous Brazilian modernist addition into mystery and a different era and region.",
+  "sources": [
+    {
+      "url": "https://www.agathachristie.com/about-christie",
+      "use": "Official estate biography: 1890 birth, 1976 death, Curtain publication in 1975 and posthumous Sleeping Murder in 1976."
+    },
+    {
+      "url": "https://www.agathachristie.com/stories/the-mysterious-affair-at-styles",
+      "use": "Debut novel, 1920; composition preceded publication."
+    },
+    {
+      "url": "https://www.agathachristie.com/news/2024/read-christie-2024",
+      "use": "US book late 1920 versus UK early 1921; Curtain written during WWII and published September 1975."
+    },
+    {
+      "url": "https://www.christies.com/en/lot/lot-6297046",
+      "use": "First British edition record confirms US October 1920 and UK January 1921."
+    },
+    {
+      "url": "https://www.agathachristie.com/stories/the-murder-of-roger-ackroyd",
+      "use": "1926 novel book publication."
+    },
+    {
+      "url": "https://www.agathachristie.com/stories/the-murder-at-the-vicarage",
+      "use": "1930 novel book publication."
+    },
+    {
+      "url": "https://www.agathachristie.com/stories/murder-on-the-orient-express",
+      "use": "1934 novel book publication."
+    },
+    {
+      "url": "https://www.agathachristie.com/stories/and-then-there-were-none",
+      "use": "1939 original publication, displayed under current title."
+    },
+    {
+      "url": "https://www.agathachristie.com/stories/curtain-poirots-last-case",
+      "use": "1975 publication; composed during WWII and stored for decades."
+    },
+    {
+      "url": "https://www.agathachristie.com/stories/sleeping-murder",
+      "use": "1976 posthumous publication; excluded from bar."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1890–1976",
+    "publishingSpan": "1920–1975",
+    "proxy": "Lifetime detective-novel first-book-publication span, from The Mysterious Affair at Styles to Curtain, used as a publishing proxy rather than a claim of uninterrupted writing. Markers use the earliest English-language book edition, not composition, periodical serialization, translation or adaptation dates. Styles appeared in the US in 1920 before its 1921 British book. And Then There Were None is shown under its current title with its original 1939 publication year. Curtain was written during World War II but held back until 1975; it was not her last novel composed. Sleeping Murder appeared posthumously in 1976 and does not extend the bar. Short stories, plays, poetry, nonfiction and the Mary Westmacott novels are outside this detective-novel scope.",
+    "workDates": [
+      [
+        1920,
+        "The Mysterious Affair at Styles (first US book)"
+      ],
+      [
+        1926,
+        "The Murder of Roger Ackroyd"
+      ],
+      [
+        1930,
+        "The Murder at the Vicarage"
+      ],
+      [
+        1934,
+        "Murder on the Orient Express"
+      ],
+      [
+        1939,
+        "And Then There Were None"
+      ],
+      [
+        1975,
+        "Curtain: Poirot’s Last Case"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this lifespan; no UI change needed.",
+    "influence": "No influence claim made."
+  }
+}
