@@ -3,7 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import rawGames from '../../data/pixel-archive/games.json';
 type Game = { date:string;slug:string;title:string;developer:string;description:string;lane:'familiar'|'unexpected';genres:string[];releaseStatus:string;image:string;imageAlt:string;imageCredit:string;article:string[];links:{label:string;url:string}[] };
 const games = rawGames as Game[];
-export function getStaticPaths(){return games.map(game=>({params:{slug:game.slug},props:{game}}));}
+export async function getStaticPaths(){
+  const { default: rawGames } = await import('../../data/pixel-archive/games.json');
+  const games = rawGames as Game[];
+  return games.map(game => ({ params: { slug: game.slug }, props: { game } }));
+}
 const {game}=Astro.props;
 ---
 <BaseLayout title={game.title+' · The Pixel Archive'} description={game.description} image={game.image || '/og.png'} article>
