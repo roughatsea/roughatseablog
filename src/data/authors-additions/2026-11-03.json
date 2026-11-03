@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-03",
+  "authorId": "lagerlof",
+  "authorName": "Selma Lagerlöf",
+  "selection": "Swedish literary fiction with folklore and fantastic elements, rotating from American science fiction to northern Europe and an earlier generation.",
+  "sources": [
+    {
+      "url": "https://selmalagerlof.org/liv-och-verk/",
+      "use": "Author society: lifespan, original Swedish bibliography, both multi-volume sequences, and posthumous collection dates."
+    },
+    {
+      "url": "https://skbl.se/en/article/SelmaLagerlof",
+      "use": "Lisbeth Stenberg’s scholarly biography: lifespan; 1890 Idun competition chapters; 1925 and 1928 trilogy dates; later memoirs and 1933 collection. Confirms novel span excludes later literary activity."
+    },
+    {
+      "url": "https://www.albertbonniersforlag.se/bocker/198066/anna-svard/",
+      "use": "Publisher explicitly distinguishes original 1928 edition from 2015 ebook and 2019 audiobook."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1858–1940",
+    "publishingSpan": "1891–1928",
+    "proxy": "Lifetime Swedish novel book editions, from Gösta Berlings saga to Anna Svärd. First-volume years for Jerusalem (1901–1902) and Nils Holgersson (1906–1907). Original titles retained. Composition, competition excerpts, translation, memoirs, story collections, reissues and posthumous releases excluded.",
+    "workDates": [
+      [
+        1891,
+        "Gösta Berlings saga"
+      ],
+      [
+        1897,
+        "Antikrists mirakler"
+      ],
+      [
+        1901,
+        "Jerusalem (first volume)"
+      ],
+      [
+        1906,
+        "Nils Holgerssons underbara resa genom Sverige (first volume)"
+      ],
+      [
+        1914,
+        "Kejsaren av Portugallien"
+      ],
+      [
+        1925,
+        "Löwensköldska ringen"
+      ],
+      [
+        1925,
+        "Charlotte Löwensköld"
+      ],
+      [
+        1928,
+        "Anna Svärd"
+      ]
+    ],
+    "chartRange": "Existing derived 1525–2025 domain contains lifespan and all markers; no chart changes needed.",
+    "influence": "No influence claim made.",
+    "sourceDiscrepancy": "The publisher’s general author page prints 1922 for Löwensköldska ringen; the author society bibliography and Stenberg’s scholarly biography agree on 1925, used here. The publisher's title-specific Anna Svärd page confirms 1928."
+  }
+}
