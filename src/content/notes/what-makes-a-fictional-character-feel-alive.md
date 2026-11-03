@@ -4,7 +4,7 @@ description: "Why some characters seem to possess minds of their own: literary c
 heroImage: "/images/notes/what-makes-a-fictional-character-feel-alive.svg"
 heroImageAlt: "An original illustrated silhouette made of overlapping translucent profiles, handwritten lines, and constellations, suggesting a complex inner life."
 date: 2026-11-03
-publishedAt: 2026-11-03T09:15:00-07:00
+publishedAt: 2026-11-03T08:53:00-07:00
 tags:
   - literature
   - storytelling
@@ -48,7 +48,7 @@ Writers are often told to make their characters relatable. The instruction sound
 
 A reader may have little in common with an immortal goddess, a desperate criminal, or an artificial intelligence. Yet the goddess's fear of losing a loved one, the criminal's craving for dignity, or the machine's uncertainty about its own worth may be acutely recognizable. Conversely, a character with precisely the reader's age, profession, and social background can remain emotionally inaccessible.
 
-A [2023 meta-analysis of character–audience similarity and identification](https://doi.org/10.1080/15213269.2023.2173944) found that similarity had a relatively small overall relationship with identification, and psychological similarity was more consequential than many observable similarities. The specific measurements and contexts matter, but the broad implication is useful: identification cannot be reduced to demographic resemblance.
+A [2023 meta-analysis of character–audience similarity and identification](https://doi.org/10.1007/s12144-023-04842-4) found that similarity had a relatively small overall relationship with identification, and psychological similarity was more consequential than many observable similarities. The specific measurements and contexts matter, but the broad implication is useful: identification cannot be reduced to demographic resemblance.
 
 At least three reader experiences deserve separate names:
 
@@ -140,7 +140,7 @@ In [*Conceptualizing and Measuring Character Depth*](https://doi.org/10.1080/152
 
 In a subsequent [2026 experimental investigation](https://doi.org/10.1016/j.actpsy.2026.106506), the researchers manipulated character depth alongside moral behavior. Greater perceived depth affected how audiences evaluated characters, including subsequent emotional responses. The result matters because depth is not simply another name for goodness. Our response to a person is influenced by how fully we conceive of them, not just whether we endorse what they do.
 
-Research on identification also complicates the idea that an audience has one general level of connection. A [2024 study developing a multidimensional identification scale](https://doi.org/10.1080/15213269.2024.2320614) distinguished components including perspective-taking, understanding, emotional involvement, and psychological merging. Those dimensions can move together, but they are not interchangeable. The popular request to make someone “relatable” hides several different artistic goals.
+Research on identification also complicates the idea that an audience has one general level of connection. A [2024 study developing a multidimensional identification scale](https://doi.org/10.1007/s12144-024-06191-2) distinguished components including perspective-taking, understanding, emotional involvement, and psychological merging. Those dimensions can move together, but they are not interchangeable. The popular request to make someone “relatable” hides several different artistic goals.
 
 A further question is whether complicated fictional minds train readers to understand real minds. A [2026 systematic review and meta-analysis](https://doi.org/10.3389/fpsyg.2026.1865031), synthesizing 21 studies and pooling results from 12 of them, reported a small overall association or advantage on empathy-related and social-cognitive outcomes (Hedges' *g* = 0.23). The studies were heterogeneous, with uneven methods and outcomes. The findings do **not** establish that reading a particular literary novel will make someone kinder, or that intricate characterization reliably produces durable empathy.
 
