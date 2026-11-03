@@ -49,6 +49,9 @@ export const thinkers = [{
 }, {
   slug: 'marti', name: 'José Martí', years: '1853–1895',
   introduction: 'A Cuban writer and independence organizer who asks how republics can govern people whom their elites scarcely know. This guide examines political knowledge, colonial habits, cultural learning, racial equality, and regional solidarity.'
+}, {
+  slug: 'nightingale', name: 'Florence Nightingale', years: '1820–1910',
+  introduction: 'A nursing reformer and writer who examines the conditions that make care effective. This guide follows her arguments about continuity, observation, attention, and practical responsibility while scrutinizing her historical medical claims.'
 }];
 
 export const works = [{
@@ -260,5 +263,18 @@ export const works = [{
     { name: 'Learning from the world without copying it', anchor: 'learning-from-the-world-without-copying-it', question: 'How can a culture borrow while retaining judgment?' },
     { name: 'Human equality and the persistence of racial power', anchor: 'human-equality-and-the-persistence-of-racial-power', question: 'Does shared humanity make organized inequality disappear?' },
     { name: 'Solidarity without inherited hatred', anchor: 'solidarity-without-inherited-hatred', question: 'Can people coordinate against a danger without declaring another people inherently evil?' }
+  ]
+}, {
+  slug: 'notes-on-nursing', thinker: 'nightingale', title: 'Notes on Nursing: What It Is, and What It Is Not', year: 1859,
+  question: 'What makes help reliable from the perspective of the person receiving it?',
+  description: 'Read Nightingale on conditions of care, continuity during absence, precise observation, attention, and support that leaves room for honest experience.',
+  disciplines: ['Nursing', 'Medical history', 'Practical reasoning'],
+  concepts: [
+    { name: 'Care as the management of conditions', anchor: 'care-as-the-management-of-conditions', question: 'Has the intended benefit actually reached its recipient?' },
+    { name: 'Petty management and continuity', anchor: 'petty-management-and-continuity', question: 'What happens when the usual helper is absent?' },
+    { name: 'Observation before reassuring summaries', anchor: 'observation-before-reassuring-summaries', question: 'Which observations support a claim that someone is better?' },
+    { name: 'Attention is part of the work', anchor: 'attention-is-part-of-the-work', question: 'Does receiving help require supervising the helper?' },
+    { name: 'Variety and the patient’s own experience', anchor: 'variety-and-the-patients-own-experience', question: 'Which needs does the caregiver’s checklist leave unheard?' },
+    { name: 'Truthful support instead of compulsory reassurance', anchor: 'truthful-support-instead-of-compulsory-reassurance', question: 'Can someone explain difficulty without being required to deny it?' }
   ]
 }];

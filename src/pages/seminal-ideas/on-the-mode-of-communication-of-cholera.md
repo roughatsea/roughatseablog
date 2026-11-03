@@ -248,6 +248,8 @@ Contrast [Rokeya’s scientific inventions in *Sultana’s Dream*](/seminal-idea
 
 Compare [Clifford’s distinction between uncertain action and established belief](/seminal-ideas/the-ethics-of-belief/#action-without-manufactured-certainty). His later philosophical essay asks what justifies accepting a claim; Snow’s investigation shows how a causal claim can be tested while protective action remains urgent. This is an editorial comparison, not a claim of influence.
 
+[Nightingale’s Notes on Nursing on observation and summaries](/seminal-ideas/notes-on-nursing/#observation-before-reassuring-summaries) adds a comparison at the scale of daily care. Both writers ask what an observer has actually established, yet their explanations of disease differ. Read Nightingale’s causal claims as critically as her instructions to observe; this is an editorial comparison, not a claim of influence.
+
 For the next claim that a change “worked,” write down the outcome, the denominator, the observation period, and what was already happening before the change. If the comparison is missing, name that absence before repeating the success story.
 
 ## Sources

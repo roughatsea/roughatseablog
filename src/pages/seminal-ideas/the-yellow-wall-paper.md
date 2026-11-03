@@ -200,6 +200,8 @@ Read the whole short story before using the ending as an interpretive key. Then 
 4. **Pp. 655–656:** List what the narrator now controls and what remains restricted. Keep both lists when interpreting her claimed escape.
 5. **The separate 1913 retrospective:** Compare intention with literary effect. Mark the autobiographical claims, the explicit disclaimer about hallucinations, and the secondhand report about the specialist.
 
+Compare [Nightingale on variety and the patient’s experience](/seminal-ideas/notes-on-nursing/#variety-and-the-patients-own-experience). Her practical work asks caregivers to notice needs that confident routines can overlook, while its own authority also requires scrutiny. Gilman’s fiction and Nightingale’s instructions supply different kinds of evidence; this is an editorial comparison, not a claim of influence.
+
 For the next account of successful protection you encounter, ask what evidence its subjects are allowed to contribute. The story begins with a woman attempting a modest disagreement. Its ending makes the cost of not hearing that disagreement hard to evade.
 
 ## Sources
