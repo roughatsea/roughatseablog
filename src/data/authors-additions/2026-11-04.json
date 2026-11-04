@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-04",
+  "authorId": "baldwin",
+  "authorName": "James Baldwin",
+  "selection": "African American literary fiction and a later generation, following Swedish folklore-inflected fiction; no influence claim made.",
+  "sources": [
+    {
+      "url": "https://www.loa.org/writers/233-james-baldwin/",
+      "use": "Publisher biography: 1924–1987 lifespan and debut novel."
+    },
+    {
+      "url": "https://www.loa.org/books/118-early-novels-amp-stories/",
+      "use": "Publisher: first three novel dates, extended composition of the debut, and identification of Going to Meet the Man as stories."
+    },
+    {
+      "url": "https://www.loa.org/books/432-later-novels/",
+      "use": "Publisher: final three adult novels dated 1968, 1974 and 1979; Just Above My Head identified as final novel."
+    },
+    {
+      "url": "https://guides.library.cornell.edu/Baldwin/novels",
+      "use": "Cornell Africana Library guide independently confirms all six marker years. Its description calls Going to Meet the Man a novel while also listing its eight stories; publisher classification as a story collection takes precedence."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1924–1987",
+    "publishingSpan": "1953–1979",
+    "proxy": "Lifetime adult-novel book-publication span, from Go Tell It on the Mountain to Just Above My Head, used as a publishing proxy rather than a claim of uninterrupted writing. Markers use first English-language book years, not composition, magazine excerpts, translations, reissues or adaptations. Go Tell It on the Mountain took roughly ten years to write before its 1953 publication. The six markers cover his adult novels; the 1965 Going to Meet the Man is a short-story collection, not a novel, and is excluded. Essays, plays, poetry and the illustrated children's book Little Man, Little Man are outside this scope. The 1979 endpoint therefore does not mark the end of Baldwin's literary activity, and posthumous collections do not extend the bar.",
+    "workDates": [
+      [
+        1953,
+        "Go Tell It on the Mountain"
+      ],
+      [
+        1956,
+        "Giovanni’s Room"
+      ],
+      [
+        1962,
+        "Another Country"
+      ],
+      [
+        1968,
+        "Tell Me How Long the Train’s Been Gone"
+      ],
+      [
+        1974,
+        "If Beale Street Could Talk"
+      ],
+      [
+        1979,
+        "Just Above My Head"
+      ]
+    ],
+    "chartRange": "Existing derived 1525–2025 domain contains the lifespan and all markers; no chart changes required.",
+    "influence": "No documented-influence claim is made."
+  }
+}
