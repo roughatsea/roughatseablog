@@ -1,0 +1,39 @@
+name: Assemble Pixel Archive image
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/pixel-archive-staging/elechead-20261103/**'
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify and reconstruct image bytes
+        run: |
+          python3 - <<'PY'
+          import base64, glob, hashlib, pathlib, struct
+          parts = sorted(glob.glob('assets/pixel-archive-staging/elechead-20261103/*.part'))
+          if len(parts) != 13: raise RuntimeError(f"Expected 13 parts; found {len(parts)}")
+          data = base64.b64decode(''.join(pathlib.Path(p).read_text() for p in parts), validate=True)
+          expected = '0f9d8346e137abd75837a084edd760b9a967d2312d00ad06de01021a9b74082b'
+          assert hashlib.sha256(data).hexdigest() == expected, 'Image checksum mismatch'
+          assert data[:8] == b'\x89PNG\r\n\x1a\n', 'Not PNG'
+          width,height = struct.unpack('>II', data[16:24])
+          assert width >= 1200 and height >= 900, (width,height)
+          p=pathlib.Path('public/images/pixel-archive/elechead-editorial-20261103.png')
+          p.parent.mkdir(parents=True,exist_ok=True)
+          p.write_bytes(data)
+          print(f"Verified image: {width}x{height}, {len(data)} bytes, sha256={expected}")
+          PY
+      - name: Commit finished raster asset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/images/pixel-archive/elechead-editorial-20261103.png
+          git commit -m "Assemble verified ElecHead editorial illustration"
+          git push
