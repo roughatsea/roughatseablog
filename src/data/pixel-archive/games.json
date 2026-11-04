@@ -28,5 +28,43 @@
         "url": "https://ziyanthus.itch.io/may-the-rain"
       }
     ]
+  },
+  {
+    "date": "2026-11-04",
+    "slug": "until-then",
+    "title": "Until Then",
+    "developer": "Polychroma Games",
+    "description": "A Philippine-inspired high-school mystery where friendships, smartphone conversations, and ordinary errands collide with disappearing people and unreliable memories.",
+    "lane": "familiar",
+    "genres": [
+      "Narrative Adventure",
+      "Mystery",
+      "Pixel Art"
+    ],
+    "releaseStatus": "Released · June 25, 2024 (PC/PS5); also available on Switch and Xbox",
+    "image": "/images/pixel-archive/until-then-editorial-20261104.png",
+    "imageAlt": "Original dreamy painterly editorial concept painting of students inside a rainy Philippine-inspired jeepney at violet dusk, with notebooks, window reflections, and glowing city lights; not gameplay",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "In Until Then, the frightening thing isn't initially a monster. It's the possibility that a friend, a conversation, or a remembered afternoon may not be as solid as it seemed. Polychroma Games sets its narrative adventure in a fictional Philippines still recovering from catastrophe. You follow Mark Borja, a high-school student whose immediate obligations are painfully ordinary: practice the piano, finish homework, keep friendships from collapsing. Then people begin to disappear, and his memories stop making dependable witnesses.",
+      "The structure is closer to a coming-of-age drama than an RPG. Conversations happen face to face, by text message, and through email; the in-game phone also holds social posts and webpages that can supply clues. Even idle online activity may have consequences, according to the official description. Between story scenes, there are deliberately mundane minigames: trying to insert a USB drive, competing for fishballs at a stall, and paying a jeepney fare. None is a world-saving superpower. The ordinary tasks make the place feel occupied.",
+      "Those specifics matter because the setting is not generic wallpaper. The creators describe spaces inspired by Metro Manila, Philippine landscapes, and their own school experiences. A commute, a school corridor, and the food outside a classroom become part of the story's texture. Players familiar with these routines might recognize home; others can observe a place presented through the particulars of living there, not a tourist brochure.",
+      "Pixel art does more than reference older consoles. Characters and props are hand-drawn, but they occupy a world with 3D depth, lighting, shadows, and reflections. That combination lets tiny gestures sit within spaces that feel larger than their sprite outlines. The visual approach isn't simply nostalgia. It is a way to make the places where ordinary relationships unfold matter just as much as the characters.",
+      "Until Then was released on June 25, 2024, and a demo is available on Steam. This description comes from the game's published materials, not a personal playthrough. For readers drawn to character-driven mystery, modern digital intimacy, and stories that let grief surface through everyday errands, it is worth investigating. What happens to friendship when even a shared memory cannot settle what happened yesterday?"
+    ],
+    "links": [
+      {
+        "label": "Official Until Then website",
+        "url": "https://untilthengame.com/"
+      },
+      {
+        "label": "Until Then on Steam (includes demo)",
+        "url": "https://store.steampowered.com/app/1574820/Until_Then/"
+      },
+      {
+        "label": "Until Then on PlayStation Store",
+        "url": "https://store.playstation.com/en-us/concept/10004486"
+      }
+    ]
   }
 ]
