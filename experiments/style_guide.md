@@ -645,3 +645,13 @@ The governing aspiration is simple:
 > Do not try to sound like a great writer. Make specific, consequential choices; preserve what is true, strange, unresolved, and necessary; then remove every sentence whose principal purpose is to sound written.
 
 > Write as though every sentence must answer three questions: Why this? Why here? Why only this way?
+
+## Long-form essay hero artwork
+
+For homepage essays in `src/content/notes/`, when original generated artwork is intended, generate and visually inspect the actual raster illustration before publication. Do not substitute a quick SVG, an SVG wrapper around a raster, or a generic placeholder and call the artwork complete. If generation is unavailable, report the missing artwork rather than silently substituting it.
+
+- Save the real image under `public/images/notes/` and point `heroImage` at its public URL. Prefer a high-quality WebP export; retain native detail, aim for at least 1600 pixels wide, and never upscale a small preview to claim higher resolution.
+- Compose for the article's 16:9 hero and inspect the homepage card crop and mobile view. Write `heroImageAlt` from the actual visible image.
+- Before calling publication complete, check the deployed article and homepage, confirm the asset loads and decodes, and inspect its rendering.
+
+Preserve existing good illustrations. Intentional vector artwork and explanatory SVG diagrams remain valid; this is not a blanket SVG ban or a retroactive replacement policy. The Pixel Archive has separate artwork and publishing requirements and is unchanged by this guidance.

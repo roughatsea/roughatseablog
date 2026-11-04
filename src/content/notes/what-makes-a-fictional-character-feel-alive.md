@@ -1,8 +1,8 @@
 ---
 title: "What Makes a Fictional Character Feel Alive?"
 description: "Why some characters seem to possess minds of their own: literary criticism, reader psychology, moral complexity, and the emerging science of character depth."
-heroImage: "/images/notes/what-makes-a-fictional-character-feel-alive.svg"
-heroImageAlt: "An original illustrated silhouette made of overlapping translucent profiles, handwritten lines, and constellations, suggesting a complex inner life."
+heroImage: "/images/notes/what-makes-a-fictional-character-feel-alive.webp"
+heroImageAlt: "Painterly portrait of a woman whose hair and shoulders become connected rooms showing tenderness, grief beside an empty chair, and anger in a red-lit doorway."
 date: 2026-11-03
 publishedAt: 2026-11-03T08:53:00-07:00
 tags:
