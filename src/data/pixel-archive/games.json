@@ -30,6 +30,44 @@
     ]
   },
   {
+    "date": "2026-11-03",
+    "slug": "elechead",
+    "title": "ElecHead",
+    "developer": "NamaTakahashi, Tsuyomi",
+    "description": "A little robot conducts electricity through everything it touches—and throws its own head to solve puzzles in a darkened factory.",
+    "lane": "unexpected",
+    "genres": [
+      "Puzzle-Platformer",
+      "Pixel Art",
+      "Indie"
+    ],
+    "releaseStatus": "Released · October 14, 2021 (PC); also available on consoles",
+    "image": "/images/pixel-archive/elechead-editorial-20261103.png",
+    "imageAlt": "Original AI-generated dreamy painterly editorial illustration of a small brass robot throwing its lantern-like head amid glowing machinery and vines in an abandoned factory; not official gameplay",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "Most puzzle-platformers treat electricity as something to avoid. ElecHead makes it something you carry. Its hero, Elec, is a small robot exploring a factory swallowed by darkness. Wherever Elec touches a floor, wall, or switch, electricity flows through the surface and brings dormant machinery to life. That single rule gives the surroundings an unusually direct relationship to the character: movement is not merely how you reach a solution, but part of the solution itself.",
+      "The stranger twist is that Elec can detach and throw his own head. A switch beyond a gap might suddenly be reachable, but the trick comes with a limit: if the robot fails to retrieve its head within ten seconds, it shuts down. The developer does not need a long inventory of tools to create a puzzle. A body that conducts, a head that travels, and a short deadline already allow many possibilities. In the official description, the challenge comes from discovering different uses for a small number of rules.",
+      "The pixel art follows the same philosophy. ElecHead favors spare, legible graphics instead of visual clutter. In a game about activating surfaces, clarity is part of how the player reasons: you need to understand which objects can be touched, which elements receive power, and where a thrown head might land. The restraint is more than a retro costume. It keeps attention on the relationship between a simple motion and its consequences.",
+      "The project has a longer history than its compact design suggests. Creator NamaTakahashi developed an early prototype for the 2016 Japan Game Awards Amateur Division, where it received an Excellence Award. A full commercial version followed on PC in October 2021. The developer also made a particularly welcoming decision: the game has no in-game text or tutorial, asking players to learn by interacting with its mechanisms rather than reading instructions.",
+      "The release announcement estimated two to three hours for a playthrough, with hidden spaces to discover beyond the main route. It is available through the creator's itch.io page, which also offers a demo, and on other storefronts. This feature is based on the developer's published material, not a claim to have played it. ElecHead looks worth investigating if you appreciate a game that starts with one odd idea and then asks, repeatedly, whether you have truly understood it."
+    ],
+    "links": [
+      {
+        "label": "ElecHead — creator's itch.io page and demo",
+        "url": "https://namatakahashi.itch.io/elechead"
+      },
+      {
+        "label": "ElecHead — creator's official game information",
+        "url": "https://namatakahashi.notion.site/ElecHead-a19be34707c149a2beb4a18f93c2e04e"
+      },
+      {
+        "label": "ElecHead on Steam",
+        "url": "https://store.steampowered.com/app/1456880/ElecHead/"
+      }
+    ]
+  },
+  {
     "date": "2026-11-04",
     "slug": "until-then",
     "title": "Until Then",
