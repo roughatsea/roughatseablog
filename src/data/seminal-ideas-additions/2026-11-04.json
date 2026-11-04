@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-04",
+  "work": "modern-fiction",
+  "thinker": "woolf",
+  "title": "Modern Fiction",
+  "lessonPath": "src/pages/seminal-ideas/modern-fiction.md",
+  "publicPath": "/seminal-ideas/modern-fiction/",
+  "sourceUrls": [
+    "https://www.gutenberg.org/ebooks/64457",
+    "https://www.gutenberg.org/cache/epub/64457/pg64457-images.html",
+    "https://research.hrc.utexas.edu/JamesJoyceChecklist/browse_results.cfm?author=135089",
+    "https://www.britishlibrary.cn/en/articles/introduction-to-mrs-dalloway/"
+  ]
+}

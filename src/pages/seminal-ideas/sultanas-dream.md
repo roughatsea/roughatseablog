@@ -220,6 +220,8 @@ Then read [Snow on mechanism and testable predictions](/seminal-ideas/on-the-mod
 
 For the next protective rule you encounter, write down the danger, who is restricted, who decides, who can appeal, and when the restriction ends. A defensible rule must be able to answer more than the question of whether its stated purpose sounds benevolent.
 
+Compare [Woolf on experiment and its exclusions](/seminal-ideas/modern-fiction/#experiment-and-its-exclusions). Her critical essay asks what a method makes perceptible and what it omits. Rokeya’s speculative tour makes a familiar restriction strange while leaving questions about Ladyland’s own authority unresolved. This is an editorial comparison of forms, not evidence of direct influence.
+
 ## Sources
 
 **Primary text and reference edition:** Rokeya Sakhawat Hossain, *Sultana’s Dream*, first published in English in *The Indian Ladies’ Magazine*, Madras, 1905; book edition, Calcutta: S. K. Lahiri & Co., 1908. This lesson reads the complete English story in the [Liberation War Museum PDF](https://www.liberationwarmuseumbd.org/public/images/818062.pdf), an undated modern reprint with introductory material marking its 2024 MOWCAP recognition. PDF p. 3 reproduces the 1908 title page; the story occupies printed pp. 7–18. All page references in this lesson use that reprint’s numbering. The introduction is not attributed to Rokeya, and the reprint is not described as an unchanged facsimile throughout. The original story is public domain in the United States; no translation is involved.

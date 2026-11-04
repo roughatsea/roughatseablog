@@ -52,6 +52,9 @@ export const thinkers = [{
 }, {
   slug: 'nightingale', name: 'Florence Nightingale', years: '1820–1910',
   introduction: 'A nursing reformer and writer who examines the conditions that make care effective. This guide follows her arguments about continuity, observation, attention, and practical responsibility while scrutinizing her historical medical claims.'
+}, {
+  slug: 'woolf', name: 'Virginia Woolf', years: '1882–1941',
+  introduction: 'A novelist and critic who asks how literary form can convey lived experience. This guide examines her defense of artistic freedom, attention to ordinary consciousness, and scrutiny of what even innovative methods leave out.'
 }];
 
 export const works = [{
@@ -276,5 +279,17 @@ export const works = [{
     { name: 'Attention is part of the work', anchor: 'attention-is-part-of-the-work', question: 'Does receiving help require supervising the helper?' },
     { name: 'Variety and the patient’s own experience', anchor: 'variety-and-the-patients-own-experience', question: 'Which needs does the caregiver’s checklist leave unheard?' },
     { name: 'Truthful support instead of compulsory reassurance', anchor: 'truthful-support-instead-of-compulsory-reassurance', question: 'Can someone explain difficulty without being required to deny it?' }
+  ]
+}, {
+  slug: 'modern-fiction', thinker: 'woolf', title: 'Modern Fiction', year: 1925,
+  question: 'Why can a meticulously constructed novel still feel lifeless?',
+  description: 'Read Woolf on convention, ordinary consciousness, changing emphasis, and artistic freedom without making one experimental method compulsory.',
+  disciplines: ['Literary criticism', 'Aesthetics'],
+  concepts: [
+    { name: 'Modernity without guaranteed progress', anchor: 'modernity-without-guaranteed-progress', question: 'Does a new technique establish a better work?' },
+    { name: 'Materialism and misplaced attention', anchor: 'materialism-and-misplaced-attention', question: 'What does a convincing detail actually help us perceive?' },
+    { name: 'Ordinary consciousness and changing emphasis', anchor: 'ordinary-consciousness-and-changing-emphasis', question: 'Can a small incident carry the significance a plot gives to a catastrophe?' },
+    { name: 'Freedom through form', anchor: 'freedom-through-form', question: 'How can a writer discard a convention without abandoning composition?' },
+    { name: 'Experiment and its exclusions', anchor: 'experiment-and-its-exclusions', question: 'What does an innovative method leave outside its attention?' }
   ]
 }];

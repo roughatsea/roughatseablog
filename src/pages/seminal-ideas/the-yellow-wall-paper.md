@@ -204,6 +204,8 @@ Compare [Nightingale on variety and the patient’s experience](/seminal-ideas/n
 
 For the next account of successful protection you encounter, ask what evidence its subjects are allowed to contribute. The story begins with a woman attempting a modest disagreement. Its ending makes the cost of not hearing that disagreement hard to evade.
 
+Compare [Woolf on freedom through form](/seminal-ideas/modern-fiction/#freedom-through-form). Her critical essay asks how conventions can obscure experience; Gilman’s secret journal lets the reader encounter what public compliance conceals. This is a comparison of literary methods, not a documented claim of influence.
+
 ## Sources
 
 **Primary text and reference edition:** Charlotte Perkins Stetson [Charlotte Perkins Gilman], “The Yellow Wall-Paper,” *The New England Magazine*, January 1892, pp. 647–656. The complete [National Library of Medicine facsimile](https://www.nlm.nih.gov/exhibition/theliteratureofprescription/exhibitionAssets/digitalDocs/The-Yellow-Wall-Paper.pdf) supplies this lesson’s pagination; its machine extraction contains OCR errors, so the displayed final page was also inspected. [NLM’s bibliographic record](https://www.ncbi.nlm.nih.gov/nlmcatalog/101504878) corroborates publication, issue, and extent. English original; no translator. The title’s punctuation varies in later editions.
