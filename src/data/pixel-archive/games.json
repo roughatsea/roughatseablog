@@ -104,5 +104,39 @@
         "url": "https://store.playstation.com/en-us/concept/10004486"
       }
     ]
+  },
+  {
+    "date": "2026-11-05",
+    "slug": "clear-skies",
+    "title": "Clear Skies",
+    "developer": "Nash",
+    "description": "A small PICO-8 stargazing puzzle about finding real constellations with a telescope and guidebook, created in forty-eight hours for Ludum Dare 58.",
+    "lane": "familiar",
+    "genres": [
+      "Puzzle",
+      "Simulation",
+      "Stargazing"
+    ],
+    "releaseStatus": "Released · October 5, 2025; browser play and Windows, macOS, Linux downloads",
+    "image": "/images/pixel-archive/clear-skies-editorial-20261105.png",
+    "imageAlt": "Original AI-generated painterly illustration of two stargazers beside a brass telescope on a lamplit wooden porch, with an open astronomy guide beneath a constellation-filled night sky; not gameplay",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "A star chart can turn an ordinary sky into a problem worth solving. In Clear Skies, a brief pixel-art game by Nash, you are far from city lights with a telescope given to you by your father and a guidebook called Your Guide to Clear Skies. The objective is to work out which stars you are seeing, and how they belong together. For a few minutes, a familiar sky becomes a field of small questions.",
+      "The controls are simple enough to remember: arrow keys move the telescope, X selects a star, and Z or C opens the guidebook or deselects. Read about a constellation, find its stars, and connect them. The creator describes the map as an eight-bit representation of a portion of the actual night sky. That is a more interesting promise than sheer graphical detail: a pattern can become recognizable even when each star is rendered as a tiny dot.",
+      "The guidebook supplies a little of the structure that beginning stargazers need. A constellation seems obvious after somebody traces its lines on a photograph. Scanning a stretch of sky for the correct starting points is a different skill. Clear Skies makes that search into a small puzzle instead of a lecture. It also offers a reason to go outside later: Nash says the constellations are ones players can try to locate in the real sky.",
+      "Nash made the game and all its assets in forty-eight hours for the Ludum Dare 58 Compo, using PICO-8 and Aseprite. According to the developer, it placed fourteenth for innovation and twenty-ninth overall in the jam. Those details suit its scale. There is no sprawling astronomy curriculum here, only a compact exercise with enough real-world correspondence to reward patient looking. Released on October 5, 2025, Clear Skies can be played in a browser, with name-your-own-price downloads available for Windows, macOS, and Linux.",
+      "This account is based on the creator's published information, not a completed playthrough. If you like quiet experiments, short educational games, or anything that makes a real hobby seem more approachable, Clear Skies deserves a look. You might come away knowing only a few additional patterns of stars. On the next genuinely clear night, that would be something you can use."
+    ],
+    "links": [
+      {
+        "label": "Clear Skies — creator's itch.io page and downloads",
+        "url": "https://nashtanir.itch.io/clear-skies"
+      },
+      {
+        "label": "Clear Skies — Ludum Dare 58 entry",
+        "url": "https://ldjam.com/events/ludum-dare/58/clear-skies"
+      }
+    ]
   }
 ]
