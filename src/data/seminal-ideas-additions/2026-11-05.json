@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-05",
+  "work": "the-book-of-tea",
+  "thinker": "okakura",
+  "title": "The Book of Tea",
+  "lessonPath": "src/pages/seminal-ideas/the-book-of-tea.md",
+  "publicPath": "/seminal-ideas/the-book-of-tea/",
+  "sourceUrls": [
+    "https://www.gutenberg.org/ebooks/769",
+    "https://www.gutenberg.org/cache/epub/769/pg769-images.html",
+    "https://ndlsearch.ndl.go.jp/en/books/R100000002-I000006487593",
+    "https://www.ndl.go.jp/portrait/e/datas/6282",
+    "https://www.gardnermuseum.org/blog/isabella-and-okakura-kakuzos-impactful-friendship"
+  ]
+}

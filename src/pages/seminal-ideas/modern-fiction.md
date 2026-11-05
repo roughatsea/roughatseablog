@@ -209,6 +209,8 @@ For another account of attention, compare [Nightingale on observations and reass
 
 Return to the imagined novel’s perfectly furnished room. Choose one detail its occupant would notice differently after receiving unwelcome news. Now ask whether the story’s arrangement gives that difference room to occur.
 
+Compare [Okakura on cultivated appreciation](/seminal-ideas/the-book-of-tea/#appreciation-as-a-cultivated-encounter). His account of artistic reception asks what a spectator must bring to an encounter, while his preference for particular forms also needs the scrutiny Woolf gives to methods and their exclusions. This is an editorial comparison, not a claim of influence.
+
 ## Sources
 
 **Primary text, read in full:** Virginia Woolf, “Modern Fiction,” in *The Common Reader* (New York: Harcourt, Brace and Company, 1925), [Project Gutenberg eBook 64457](https://www.gutenberg.org/ebooks/64457), [complete HTML reading text](https://www.gutenberg.org/cache/epub/64457/pg64457-images.html). The reproduced title page and copyright statement identify the American edition. English original, no translation. Use the essay heading and the passage subjects specified above; page references to a different edition are not imported. Gutenberg identifies the text as public domain in the United States. The short quoted expressions here are from Woolf’s text; no modern annotations are reproduced.

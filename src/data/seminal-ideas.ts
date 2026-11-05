@@ -55,6 +55,9 @@ export const thinkers = [{
 }, {
   slug: 'woolf', name: 'Virginia Woolf', years: '1882–1941',
   introduction: 'A novelist and critic who asks how literary form can convey lived experience. This guide examines her defense of artistic freedom, attention to ordinary consciousness, and scrutiny of what even innovative methods leave out.'
+}, {
+  slug: 'okakura', name: 'Okakura Kakuzō', years: '1863–1913',
+  introduction: 'An art educator, critic, and museum curator who presents tea as an art of everyday life. This guide examines attention, hospitality, imagination, and cultivated appreciation while questioning the book’s cultural generalizations and relations to privilege.'
 }];
 
 export const works = [{
@@ -291,5 +294,17 @@ export const works = [{
     { name: 'Ordinary consciousness and changing emphasis', anchor: 'ordinary-consciousness-and-changing-emphasis', question: 'Can a small incident carry the significance a plot gives to a catastrophe?' },
     { name: 'Freedom through form', anchor: 'freedom-through-form', question: 'How can a writer discard a convention without abandoning composition?' },
     { name: 'Experiment and its exclusions', anchor: 'experiment-and-its-exclusions', question: 'What does an innovative method leave outside its attention?' }
+  ]
+}, {
+  slug: 'the-book-of-tea', thinker: 'okakura', title: 'The Book of Tea', year: 1906,
+  question: 'What makes an ordinary gathering an art?',
+  description: 'Read Okakura on adjustment, useful emptiness, unfinished beauty, hospitality, and appreciation that reaches beyond prestige.',
+  disciplines: ['Japanese aesthetics', 'Art criticism', 'Cultural thought'],
+  concepts: [
+    { name: 'Teaism and the art of the ordinary', anchor: 'teaism-and-the-art-of-the-ordinary', question: 'What makes a small daily practice worthy of serious attention?' },
+    { name: 'Adjustment rather than a fixed formula', anchor: 'adjustment-rather-than-a-fixed-formula', question: 'Which purpose does a rule serve in this particular situation?' },
+    { name: 'Useful emptiness and room for participation', anchor: 'useful-emptiness-and-room-for-participation', question: 'What activity does an unfilled space make possible?' },
+    { name: 'Unfinished beauty and the particular occasion', anchor: 'unfinished-beauty-and-the-particular-occasion', question: 'How can meticulous preparation leave room for another person?' },
+    { name: 'Appreciation as a cultivated encounter', anchor: 'appreciation-as-a-cultivated-encounter', question: 'Am I responding to a work or performing admiration for its reputation?' }
   ]
 }];
