@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-05",
+  "authorId": "jones-diana-wynne",
+  "authorName": "Diana Wynne Jones",
+  "selection": "British children's fantasy, following African American literary fiction; no influence claim made.",
+  "sources": [
+    {
+      "url": "https://sf-encyclopedia.com/entry/jones_diana_wynne",
+      "use": "Lifespan; all six first-book years; series scope, later omnibus/retitled editions, Mixed Magics stories, and posthumous Islands of Chaldea."
+    },
+    {
+      "url": "https://www.foliosociety.com/uk/the-lives-of-christopher-chant",
+      "use": "Publisher independently distinguishes the first four original years (1977, 1980, 1982, 1988) from Folio reissues (2023–2025)."
+    },
+    {
+      "url": "https://harpercollinschildrensbooks.co.uk/products/conrads-fate-the-chrestomanci-series-book-6-diana-wynne-jones-9780008718954/",
+      "use": "Publisher confirms 1934–2011 lifespan and classifies Conrad’s Fate as a novel; SFE checklist's 'coll' label is not followed."
+    },
+    {
+      "url": "https://www.publishersweekly.com/9780060747435",
+      "use": "Contemporaneous March 21, 2005 review confirms Conrad's Fate 2005 publication."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1934–2011",
+    "publishingSpan": "1977–2006",
+    "proxy": "Chrestomanci novel first-book-publication span, from Charmed Life to The Pinhoe Egg, used as a publishing proxy rather than a claim of uninterrupted work or a full-career span. The six markers use first English-language book years, not composition, fictional chronology, serialization, translation or later omnibus/reissue dates. The Lives of Christopher Chant appeared in 1988, before the 2000 retitled edition and 2001 omnibus. Mixed Magics (2000) collects short stories and is excluded from this novel-only bar. Earlier and later novels outside Chrestomanci, other series, plays, nonfiction and posthumous releases do not extend this scoped span. The Islands of Chaldea (2014), completed by her sister Ursula after Jones’s death, is outside it.",
+    "workDates": [
+      [
+        1977,
+        "Charmed Life"
+      ],
+      [
+        1980,
+        "The Magicians of Caprona"
+      ],
+      [
+        1982,
+        "Witch Week"
+      ],
+      [
+        1988,
+        "The Lives of Christopher Chant"
+      ],
+      [
+        2005,
+        "Conrad’s Fate"
+      ],
+      [
+        2006,
+        "The Pinhoe Egg"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains all dates; no chart changes required.",
+    "influence": "No documented-influence claim is made."
+  }
+}
