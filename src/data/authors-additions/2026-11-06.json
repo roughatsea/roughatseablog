@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-06",
+  "authorId": "kawabata",
+  "authorName": "Yasunari Kawabata",
+  "selection": "Japanese literary fiction after British children's fantasy; no influence claim.",
+  "sources": [
+    {
+      "url": "https://www.kawabata-kinenkai.org/sakuhin.html",
+      "use": "Japanese book editions and contents: Snow Country June 1937; Thousand Cranes February 1952 (also contains Mountain material); completed standalone Mountain June 1954; Sleeping Beauties November 1961; Old Capital June 1962; Beauty and Sadness February 1965; Dandelions September 1972."
+    },
+    {
+      "url": "https://www.kawabata-kinenkai.org/nenpyo.html",
+      "use": "1899–1972 lifespan; distinguishes Snow Country's 1935 periodical start and 1937 first book, the two 1949 serial starts, and Mountain completion in 1954."
+    },
+    {
+      "url": "https://library.rikkyo.ac.jp/archives/exhibition/exhibition1/kawabata/list/index_e.php",
+      "use": "University library first-editions exhibition independently confirms 1937, 1952 and 1954 volumes."
+    },
+    {
+      "url": "https://ndlsearch.ndl.go.jp/books/R100000002-I000001027278",
+      "use": "National Diet Library confirms Japanese Sleeping Beauties volume, Shinchosha, 1961."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1899–1972",
+    "publishingSpan": "1937–1965",
+    "proxy": "Selected original-Japanese novel and novella book-publication window, from Snow Country to Beauty and Sadness, used as a publishing proxy, not a full-career span or a claim of uninterrupted writing. English titles identify Japanese editions, not translation dates. Snow Country began appearing in magazines in 1935; the marker uses its first 1937 book, before later expansion. Thousand Cranes and The Sound of the Mountain began serial publication in 1949. Their markers use the 1952 Thousand Cranes volume and the completed standalone 1954 Sound of the Mountain; the 1952 volume also contained earlier Mountain material. The remaining markers use the 1961, 1962 and 1965 Japanese books, not composition or earlier serialization. Earlier fiction, stories, essays, later editions and posthumous books fall outside this selection; Dandelions appeared in September 1972, after his April death, and does not extend the bar.",
+    "workDates": [
+      [
+        1937,
+        "Snow Country (first book edition)"
+      ],
+      [
+        1952,
+        "Thousand Cranes (book edition)"
+      ],
+      [
+        1954,
+        "The Sound of the Mountain (completed standalone book)"
+      ],
+      [
+        1961,
+        "House of the Sleeping Beauties (book edition)"
+      ],
+      [
+        1962,
+        "The Old Capital (book edition)"
+      ],
+      [
+        1965,
+        "Beauty and Sadness (book edition)"
+      ]
+    ],
+    "chartRange": "Collection-derived 1525–2025 domain already contains all dates.",
+    "influence": "No documented-influence claim."
+  }
+}
