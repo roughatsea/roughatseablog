@@ -138,5 +138,47 @@
         "url": "https://ldjam.com/events/ludum-dare/58/clear-skies"
       }
     ]
+  },
+  {
+    "date": "2026-11-06",
+    "slug": "world-of-horror",
+    "title": "WORLD OF HORROR",
+    "developer": "panstasz (Paweł Koźmiński)",
+    "description": "In a haunted Japanese seaside town, investigate randomized occult mysteries through one-bit pixel art, turn-based combat, and difficult choices before the apocalypse arrives.",
+    "lane": "unexpected",
+    "genres": [
+      "Horror RPG",
+      "Mystery",
+      "Roguelite"
+    ],
+    "releaseStatus": "Released · October 19, 2023 (Windows/macOS); also available on Nintendo Switch and PlayStation 4",
+    "image": "/images/pixel-archive/world-of-horror-editorial-20261106-v1.webp",
+    "imageAlt": "Original AI-generated dreamy painterly editorial illustration of a woman examining documents in a lamplit, flooded records office overlooking a storm-dark seaside town; not gameplay",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "In the fictional Japanese seaside town of Shiokawa, a school corridor or hospital waiting room can become the start of an occult case. WORLD OF HORROR sets its clock to \"198X\" and lets ordinary places accumulate the wrong kinds of evidence: troubling encounters, inexplicable phenomena, and signs that ancient gods may return. The player is an investigator with limited time, tools, and nerve. Even learning what happened can leave you worse equipped for what comes next.",
+      "Rather than unraveling one fixed plot, each run assembles investigations from a pool of mysteries. You explore locations, collect items and clues, and make decisions as encounters change. Combat takes turns; spells can cost sanity. A rising DOOM meter makes delay itself dangerous. The official description emphasizes event cards and branching outcomes, a structure that asks players to plan without assuming the next case will obey the rules of the previous one.",
+      "The graphics are deliberately austere. Polish creator Paweł Koźmiński, who works as panstasz, made the game's one-bit pixel artwork in Microsoft Paint. Faces emerge from stippled marks; doors and hallways can be reduced to a few hard rectangles. The limited palette matters because it denies the viewer the reassuring visual information of a fully modeled room. A chiptune soundtrack accompanies the images. These observations come from published materials and screenshots, not a personal playthrough.",
+      "The project began in a less cinematic form. In a 2017 interview with itch.io, Koźmiński described designing a print-and-play solitaire card game, then moving the idea to a computer when printing, sorting and revising physical cards grew tedious. That origin helps explain the emphasis on inventory, event cards and irreversible choices. After entering early access in 2020, WORLD OF HORROR reached its full PC release on October 19, 2023. Console versions followed.",
+      "This is a harsher proposition than a quiet stargazing puzzle. The developer warns of disturbing violence, gore and mutilation, and the combat is advertised as unforgiving. For readers who enjoy piecing together mysteries under pressure, though, Shiokawa offers a particular kind of curiosity: a place where the next clue may be more expensive than the last. Visit the developer's or publisher's pages for actual game screenshots; the painting accompanying this article is original editorial concept art."
+    ],
+    "links": [
+      {
+        "label": "WORLD OF HORROR — official website",
+        "url": "https://wohgame.com/"
+      },
+      {
+        "label": "WORLD OF HORROR — developer's itch.io page",
+        "url": "https://panstasz.itch.io/world-of-horror"
+      },
+      {
+        "label": "WORLD OF HORROR on Steam",
+        "url": "https://store.steampowered.com/app/913740/WORLD_OF_HORROR/"
+      },
+      {
+        "label": "WORLD OF HORROR on GOG",
+        "url": "https://www.gog.com/en/game/world_of_horror"
+      }
+    ]
   }
 ]
