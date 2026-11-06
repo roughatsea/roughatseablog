@@ -58,6 +58,9 @@ export const thinkers = [{
 }, {
   slug: 'okakura', name: 'Okakura Kakuzō', years: '1863–1913',
   introduction: 'An art educator, critic, and museum curator who presents tea as an art of everyday life. This guide examines attention, hospitality, imagination, and cultivated appreciation while questioning the book’s cultural generalizations and relations to privilege.'
+}, {
+  slug: 'lovelace', name: 'Ada Lovelace', years: '1815–1852',
+  introduction: 'A mathematical writer whose Notes on Babbage’s proposed Analytical Engine distinguish operations, their objects, and the organization of a calculation. This guide examines representation, changing stored values, repeated procedures, and the limits of claims about machines.'
 }];
 
 export const works = [{
@@ -306,5 +309,17 @@ export const works = [{
     { name: 'Useful emptiness and room for participation', anchor: 'useful-emptiness-and-room-for-participation', question: 'What activity does an unfilled space make possible?' },
     { name: 'Unfinished beauty and the particular occasion', anchor: 'unfinished-beauty-and-the-particular-occasion', question: 'How can meticulous preparation leave room for another person?' },
     { name: 'Appreciation as a cultivated encounter', anchor: 'appreciation-as-a-cultivated-encounter', question: 'Am I responding to a work or performing admiration for its reputation?' }
+  ]
+}, {
+  slug: 'notes-on-the-analytical-engine', thinker: 'lovelace', title: 'Notes on the Analytical Engine', year: 1843,
+  question: 'What must we specify before a machine’s capability becomes a dependable procedure?',
+  description: 'Read Lovelace on operations and data, representation beyond quantity, changing state, cycles, and the difference between correct execution and a correct task.',
+  disciplines: ['Computing', 'Mathematics', 'Philosophy of technology'],
+  concepts: [
+    { name: 'Operations, data, and the order of work', anchor: 'operations-data-and-the-order-of-work', question: 'Why does a list of operations fail to specify a calculation?' },
+    { name: 'Representation beyond quantity', anchor: 'representation-beyond-quantity', question: 'When can numerical operations transform something besides quantity?' },
+    { name: 'Stored values and changing state', anchor: 'stored-values-and-changing-state', question: 'What must persist, change, or be cleared during a calculation?' },
+    { name: 'Cycles and reusable procedures', anchor: 'cycles-and-reusable-procedures', question: 'How can the same repeated instructions produce new results?' },
+    { name: 'Execution, error, and the limits of a claim', anchor: 'execution-error-and-the-limits-of-a-claim', question: 'Can flawless execution follow wrong instructions?' }
   ]
 }];

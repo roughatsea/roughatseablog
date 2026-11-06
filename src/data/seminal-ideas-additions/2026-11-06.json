@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-06",
+  "work": "notes-on-the-analytical-engine",
+  "thinker": "lovelace",
+  "title": "Notes on the Analytical Engine",
+  "lessonPath": "src/pages/seminal-ideas/notes-on-the-analytical-engine.md",
+  "publicPath": "/seminal-ideas/notes-on-the-analytical-engine/",
+  "sourceUrls": [
+    "https://psychclassics.yorku.ca/Lovelace/lovelace.htm",
+    "https://hsm.ox.ac.uk/imagining-ai",
+    "https://www.computerhistory.org/babbage/history/"
+  ]
+}
