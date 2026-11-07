@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-07",
+  "authorId": "herbert-frank",
+  "authorName": "Frank Herbert",
+  "selection": "U.S. science fiction after Japanese literary fiction; no influence claim.",
+  "sources": [
+    {
+      "url": "https://www.mopop.org/sffhof/frank-herbert",
+      "use": "Museum of Pop Culture Science Fiction and Fantasy Hall of Fame: 1920–1986 lifespan and all six Dune novel years."
+    },
+    {
+      "url": "https://us.macmillan.com/author/frankherbert/",
+      "use": "Publisher biography confirms lifespan and identifies the six original Dune novels."
+    },
+    {
+      "url": "https://sf-encyclopedia.com/entry/dune_series",
+      "use": "Dune's December 1963–February 1964 and January–May 1965 Analog serials, 1965 book, and distinction from later Brian Herbert/Kevin J. Anderson continuations."
+    },
+    {
+      "url": "https://www.oreilly.com/tim/herbert/biblio.html",
+      "use": "Timothy O'Reilly's 1981 Herbert bibliography confirms 1965 Chilton Dune, Dune Messiah's July–November 1969 Galaxy serial, and Children of Dune's January–April 1976 Analog serial and 1976 Putnam book. Its Dune Messiah book listing says 1970; the earlier 1969 Putnam edition is independently confirmed by Toronto Public Library, so 1970 is not used as first publication."
+    },
+    {
+      "url": "https://tpl.bibliocommons.com/v2/record/S234C2262804",
+      "use": "Toronto Public Library catalogue: Dune Messiah, New York: Putnam, [1969], confirms book year separately from serialization."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1920–1986",
+    "publishingSpan": "1965–1985",
+    "proxy": "Original Dune-series novel first-book-publication span, from Dune to Chapterhouse: Dune, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The six markers use first English-language book years, not composition, serialization, translations, reissues or screen adaptations. Dune incorporates the earlier Analog serials Dune World (December 1963–February 1964) and The Prophet of Dune (January–May 1965); its marker uses the 1965 Chilton book. Dune Messiah was serialized in Galaxy in July–November 1969 and also published as a Putnam book in 1969. Children of Dune appeared in Analog in January–April 1976 before its 1976 book. Other novels, collaborations, stories, journalism and nonfiction fall outside this six-book scope. Later Dune continuations by Brian Herbert and Kevin J. Anderson are not Frank Herbert publications and do not extend the bar.",
+    "workDates": [
+      [
+        1965,
+        "Dune (book edition)"
+      ],
+      [
+        1969,
+        "Dune Messiah (book edition)"
+      ],
+      [
+        1976,
+        "Children of Dune (book edition)"
+      ],
+      [
+        1981,
+        "God Emperor of Dune"
+      ],
+      [
+        1984,
+        "Heretics of Dune"
+      ],
+      [
+        1985,
+        "Chapterhouse: Dune"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains the new entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
