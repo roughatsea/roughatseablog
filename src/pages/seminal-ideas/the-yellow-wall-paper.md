@@ -206,6 +206,8 @@ For the next account of successful protection you encounter, ask what evidence i
 
 Compare [Woolf on freedom through form](/seminal-ideas/modern-fiction/#freedom-through-form). Her critical essay asks how conventions can obscure experience; Gilman’s secret journal lets the reader encounter what public compliance conceals. This is a comparison of literary methods, not a documented claim of influence.
 
+Compare [Zitkala-Sa on meaning before judgment](/seminal-ideas/the-school-days-of-an-indian-girl/#meaning-before-judgment). Her autobiographical account shows a school punishing a reply whose meaning a child does not understand. Both works ask how authority interprets conduct, while fiction and retrospective testimony remain different kinds of evidence. This is an editorial comparison, not a claim of influence.
+
 ## Sources
 
 **Primary text and reference edition:** Charlotte Perkins Stetson [Charlotte Perkins Gilman], “The Yellow Wall-Paper,” *The New England Magazine*, January 1892, pp. 647–656. The complete [National Library of Medicine facsimile](https://www.nlm.nih.gov/exhibition/theliteratureofprescription/exhibitionAssets/digitalDocs/The-Yellow-Wall-Paper.pdf) supplies this lesson’s pagination; its machine extraction contains OCR errors, so the displayed final page was also inspected. [NLM’s bibliographic record](https://www.ncbi.nlm.nih.gov/nlmcatalog/101504878) corroborates publication, issue, and extent. English original; no translator. The title’s punctuation varies in later editions.

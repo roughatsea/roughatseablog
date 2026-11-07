@@ -246,6 +246,8 @@ Compare [Tagore on social freedom](/seminal-ideas/nationalism/#social-freedom) w
 
 Try one practical question: when a situation is described as the result of personal choice, list the institutions that shaped the available choices. Then resist the opposite shortcut. Structure changes the field of action; it does not erase the purposes and judgments of the people acting within it.
 
+Compare [Zitkala-Sa on achievement without belonging](/seminal-ideas/the-school-days-of-an-indian-girl/#achievement-without-belonging). Her autobiographical account places public recognition beside racial humiliation and estrangement. The comparison concerns distinct accounts of recognition and exclusion; it asserts neither identical experiences nor documented influence.
+
 ## Sources
 
 **Primary text and edition:** W. E. B. Du Bois, *The Souls of Black Folk*, first published by A. C. McClurg & Co. in Chicago on April 18, 1903. This lesson reads [Project Gutenberg eBook 408](https://www.gutenberg.org/ebooks/408), using its [HTML edition](https://www.gutenberg.org/files/408/408-h/408-h.htm) and [plain-text transcription](https://www.gutenberg.org/cache/epub/408/pg408.txt). The digital front matter does not identify a particular historical printing, so the lesson does not assign its wording the pagination or physical features of the first edition. It preserves the named chapter structure and identifies no translator. The text is public domain in the United States.

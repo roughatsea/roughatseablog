@@ -61,6 +61,9 @@ export const thinkers = [{
 }, {
   slug: 'lovelace', name: 'Ada Lovelace', years: '1815–1852',
   introduction: 'A mathematical writer whose Notes on Babbage’s proposed Analytical Engine distinguish operations, their objects, and the organization of a calculation. This guide examines representation, changing stored values, repeated procedures, and the limits of claims about machines.'
+}, {
+  slug: 'zitkala-sa', name: 'Zitkala-Sa', years: '1876–1938',
+  introduction: 'A Yankton Dakota writer, musician, and advocate whose autobiographical account tests institutional claims against a child’s experience. This guide examines forced assimilation, misunderstood speech, routine, resistance, and achievement without belonging.'
 }];
 
 export const works = [{
@@ -321,5 +324,17 @@ export const works = [{
     { name: 'Stored values and changing state', anchor: 'stored-values-and-changing-state', question: 'What must persist, change, or be cleared during a calculation?' },
     { name: 'Cycles and reusable procedures', anchor: 'cycles-and-reusable-procedures', question: 'How can the same repeated instructions produce new results?' },
     { name: 'Execution, error, and the limits of a claim', anchor: 'execution-error-and-the-limits-of-a-claim', question: 'Can flawless execution follow wrong instructions?' }
+  ]
+}, {
+  slug: 'the-school-days-of-an-indian-girl', thinker: 'zitkala-sa', title: 'The School Days of an Indian Girl', year: 1900,
+  question: 'When does education enlarge a life, and when does it demand its replacement?',
+  description: 'Read Zitkala-Sa on forced assimilation, misunderstood speech, institutional routine, resistance, and the distance between achievement and belonging.',
+  disciplines: ['Indigenous literature', 'Education', 'Political thought'],
+  concepts: [
+    { name: 'Education and forced assimilation', anchor: 'education-and-forced-assimilation', question: 'Can a useful skill justify the conditions imposed to teach it?' },
+    { name: 'Meaning before judgment', anchor: 'meaning-before-judgment', question: 'Does a reply express refusal or a failure of understanding?' },
+    { name: 'Routine and the disappearance of need', anchor: 'routine-and-the-disappearance-of-need', question: 'What does an efficient record leave unexplained?' },
+    { name: 'Resistance and its costs', anchor: 'resistance-and-its-costs', question: 'What can a constrained act change, and what remains beyond it?' },
+    { name: 'Achievement without belonging', anchor: 'achievement-without-belonging', question: 'Can a public prize settle a person’s estrangement?' }
   ]
 }];
