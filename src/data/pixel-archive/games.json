@@ -180,5 +180,47 @@
         "url": "https://www.gog.com/en/game/world_of_horror"
       }
     ]
+  },
+  {
+    "date": "2026-11-07",
+    "slug": "in-stars-and-time",
+    "title": "In Stars and Time",
+    "developer": "insertdisc5 (Adrienne Bazir)",
+    "description": "A monochrome, pixel-art RPG where one adventurer remembers every reset of a two-day loop, and friendship becomes both a resource and an unbearable responsibility.",
+    "lane": "familiar",
+    "genres": [
+      "Role-Playing",
+      "Turn-Based Combat",
+      "Narrative Adventure"
+    ],
+    "releaseStatus": "Released · November 20, 2023 (PC and consoles); Steam demo available",
+    "image": "/images/pixel-archive/in-stars-and-time-editorial-20261107-v1.webp",
+    "imageAlt": "Original dreamy painterly editorial illustration of five invented fantasy travelers gathered around a cafe table with a brass clock, food, lantern light, and a contemplative companion at the edge; not gameplay or official characters",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "At the end of a long fantasy quest, success is finally within reach. In In Stars and Time, that is when the story starts going wrong. Siffrin and four companions are trying to stop a king who is freezing their world in time. A disaster resets the clock, sending Siffrin back to the same two days. Their friends remember none of it. A familiar RPG promise—keep trying until you win—becomes an uncomfortable predicament.",
+      "The loop is more than a plot premise. New knowledge changes which conversation choices Siffrin can make and how they solve puzzles. Battles are turn-based, with attacks built around rock-paper-scissors relationships. Rather than only equipping weapons, the party can equip memories of friends for an advantage; a prayer to the Change God can improve its capabilities. These details tie ordinary RPG systems to a character who is learning far too much from repetition.",
+      "Visually, the game combines monochrome, pixel-art environments with expressive, hand-drawn character portraits. The limited palette does not flatten the companions into interchangeable sprites: faces and poses carry the social information that Siffrin keeps gathering, while repeated rooms and routes acquire significance through recognition. In a time-loop story, there is power in seeing the same space and understanding something different about it. That is an interpretation of the published presentation, not a claim of a completed playthrough.",
+      "Developer Adrienne Bazir, working as insertdisc5, first explored the idea in START AGAIN: a prologue, which remains available separately. In Stars and Time was released on November 20, 2023, by publisher Armor Games Studios. A telling design choice emerged in a January 2024 interview: Bazir explained that the repetition needed to become frustrating, because Siffrin is frustrated too. That may be brave storytelling, but it also gives prospective players an honest warning about the experience.",
+      "The official listing also warns of references to depression, death, suicide, unreality, and self-harm. This is a character-driven RPG for players who appreciate conversation, party dynamics, and the ways mechanics can make a difficult emotion tangible. If you want an efficient, always-forward-moving adventure, its deliberate repetition may be hard going. If you are curious what happens when the only person who can fix a catastrophe is also the only one who remembers it, there is a demo on Steam."
+    ],
+    "links": [
+      {
+        "label": "In Stars and Time — official website",
+        "url": "https://www.instarsandtime.com/"
+      },
+      {
+        "label": "In Stars and Time — publisher's itch.io page",
+        "url": "https://armor-games-studios.itch.io/in-stars-and-time"
+      },
+      {
+        "label": "In Stars And Time — Steam and demo",
+        "url": "https://store.steampowered.com/app/1677310/In_Stars_And_Time/"
+      },
+      {
+        "label": "Interview with creator about deliberate repetition (TechRadar, January 2024)",
+        "url": "https://www.techradar.com/gaming/consoles-pc/in-stars-and-time-developer-on-why-their-rpg-has-to-be-frustrating-it-is-art-and-art-should-be-annoying-sometimes"
+      }
+    ]
   }
 ]
