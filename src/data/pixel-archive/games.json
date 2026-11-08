@@ -222,5 +222,43 @@
         "url": "https://www.techradar.com/gaming/consoles-pc/in-stars-and-time-developer-on-why-their-rpg-has-to-be-frustrating-it-is-art-and-art-should-be-annoying-sometimes"
       }
     ]
+  },
+  {
+    "date": "2026-11-08",
+    "slug": "admin",
+    "title": "Admin",
+    "developer": "jbodah, GabeMalk (Sergio Jomori), ZeroStas",
+    "description": "A new IT hire plays detective when every coworker forgets their password, investigating desks and conversations in a compact pixel-art office comedy.",
+    "lane": "unexpected",
+    "genres": [
+      "Point-and-Click",
+      "Puzzle",
+      "Comedy"
+    ],
+    "releaseStatus": "Released · free browser game (2021 jam release; available on itch.io and Newgrounds)",
+    "image": "/images/pixel-archive/admin-editorial-20261108-v1.webp",
+    "imageAlt": "Original AI-generated dreamy painterly illustration of a frazzled technician investigating a beige CRT computer in a colorful, cluttered office while coworkers argue, eat donuts and hold keys; not gameplay",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "On your first day in IT, the office has one enormous problem: after New Year, everybody has forgotten their computer password. That is the emergency in Admin, a short browser puzzle from the 2021 My First Game Jam. The premise works because it barely needs exaggeration. The person hired to keep things running must figure out what colleagues know about themselves, then turn that knowledge into a way back into their computers.",
+      "The game replaces command-line wizardry with detective work. You point and click around the office, talk to coworkers, examine objects, and type possible passwords. A missed clue can matter more than technical expertise. Dialogue choices even let you answer people with a little attitude; the office is populated by personalities rather than anonymous trouble tickets. If you are stuck, a question-mark button supplies hints, with another becoming available each minute.",
+      "Pixel art suits this particular mystery. Artist ZeroStas draws a workplace in which a note or a desk ornament might deserve scrutiny. The little objects encourage attention, while the expressive character art supports the game's humor. Office interiors are usually backgrounds we ignore; here, looking closely at everyday surroundings is the work. The visual economy also makes the joke legible: a routine business inconvenience has turned into an investigation.",
+      "Admin was made in two weeks for My First Game Jam: Winter 2021, whose theme was 'Locked.' The itch.io credits name jbodah and GabeMalk for programming, ZeroStas for art, and Sergio Jomori (GabeMalk) for writing and game design. The team used Godot. In September 2025, the developer reported fixing music that had stopped working after an engine-related issue and announced plans for a follow-up called Admin 2. That is a project announcement, not a released sequel.",
+      "The itch.io listing estimates an average session of about half an hour. Expect a compact jam-sized experience, not a full simulation of tech support or a lesson in real password security. This account draws on the creators' published materials rather than a completed playthrough. If you enjoy puzzles based on ordinary jobs, or the absurd intimacy of having to guess how your coworkers think, the free browser version is available on itch.io and Newgrounds."
+    ],
+    "links": [
+      {
+        "label": "Admin — official itch.io browser game and developer notes",
+        "url": "https://jbodah.itch.io/admin-play"
+      },
+      {
+        "label": "Admin — play on Newgrounds",
+        "url": "https://www.newgrounds.com/portal/view/784994"
+      },
+      {
+        "label": "Admin — My First Game Jam: Winter 2021 entry",
+        "url": "https://itch.io/jam/my-first-game-jam-winter-2021/rate/880573"
+      }
+    ]
   }
 ]
