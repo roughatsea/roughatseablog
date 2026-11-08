@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-08",
+  "authorId": "waugh-evelyn",
+  "authorName": "Evelyn Waugh",
+  "selection": "English humor and satire after U.S. science fiction; no influence claim.",
+  "sources": [
+    {
+      "url": "https://le.ac.uk/evelyn-waugh/about/evelyn-waugh-biography",
+      "use": "University of Leicester biography confirms 1903–1966 lifespan, first novel in 1928 and the later autobiography in 1964."
+    },
+    {
+      "url": "https://le.ac.uk/evelyn-waugh/about/volumes",
+      "use": "University of Leicester Complete Works project identifies original publication years for all eight selected books and distinguishes the later revised Sword of Honour."
+    },
+    {
+      "url": "https://evelynwaughsociety.org/about-evelyn-waugh/works/",
+      "use": "Independent bibliography cross-check of the eight book years; dates Basil Seal Rides Again to 1963 and the Sword of Honour redaction to 1965."
+    },
+    {
+      "url": "https://www.hertford.ox.ac.uk/associate/evelyn-waugh-1903-1966/",
+      "use": "Oxford college biography corroborates lifespan, original novel dates, Brideshead Revisited's revised 1960 edition and the 1965 Sword of Honour compilation."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1903–1966",
+    "publishingSpan": "1928–1961",
+    "proxy": "Lifetime novel first-book-publication span, from Decline and Fall to Unconditional Surrender, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The eight selected markers use original English-language book-publication years, not composition, magazine serialization, translation or adaptation dates. Brideshead Revisited uses its 1945 first edition, not the revised 1960 text. Sword of Honour (1965) revises and collects the three wartime novels originally published in 1952, 1955 and 1961; it does not extend this first-publication bar. Short fiction, including Basil Seal Rides Again (1963), juvenilia, journalism, travel writing, biographies, the autobiography A Little Learning (1964) and posthumous releases are outside this novel-only scope.",
+    "workDates": [
+      [
+        1928,
+        "Decline and Fall"
+      ],
+      [
+        1930,
+        "Vile Bodies"
+      ],
+      [
+        1932,
+        "Black Mischief"
+      ],
+      [
+        1934,
+        "A Handful of Dust"
+      ],
+      [
+        1938,
+        "Scoop"
+      ],
+      [
+        1945,
+        "Brideshead Revisited (first book edition)"
+      ],
+      [
+        1948,
+        "The Loved One"
+      ],
+      [
+        1961,
+        "Unconditional Surrender"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
