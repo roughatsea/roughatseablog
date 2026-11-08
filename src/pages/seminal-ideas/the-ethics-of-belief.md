@@ -222,6 +222,8 @@ Before passing on the next allegation, trace it one step closer to someone who c
 
 Compare [Lovelace on execution and the limits of a claim](/seminal-ideas/notes-on-the-analytical-engine/#execution-error-and-the-limits-of-a-claim). Her Notes distinguish a mechanism’s correct execution from the correctness of its instructions. A successful result alone cannot replace inquiry into how confidence was earned. This is an editorial comparison, not a documented historical connection.
 
+Compare [Plato’s Socrates on human wisdom and expertise](/seminal-ideas/apology/#human-wisdom-and-the-limits-of-expertise). The *Apology* recognizes skilled craftspeople while challenging the extension of skill into unlimited authority. Its religious account of a philosophical mission also differs from Clifford’s grounds for inquiry. This is an editorial comparison, not a documented influence claim.
+
 ## Sources
 
 **Primary text:** W. K. Clifford, [“The Ethics of Belief”](https://infidels.org/library/historical/w-k-clifford-ethics-of-belief/), first published in *Contemporary Review* (1877), reprinted in *Lectures and Essays* (1879). All three sections were read. The Historical Library reproduction does not specify a printing as copy-text and warns about transcription limitations. Section numbers, section titles, and named examples are our locators. The single quoted principle is from the end of the main argument in I; the remainder is original paraphrase and editorial teaching.

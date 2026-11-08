@@ -297,6 +297,8 @@ Read [Tagore on moral anaesthesia](/seminal-ideas/nationalism/#moral-anaesthesia
 
 Before the next disagreement, try one concrete change: state exactly whose interest a proposed restriction protects and how. If the explanation reduces to *they should live more like us*, the case for authority has barely begun.
 
+Compare [civic dissent in Plato’s *Apology*](/seminal-ideas/apology/#civic-dissent-and-accountability). Socrates portrays questioning as service to Athens, while grounding his refusal to stop in a divine mission. Mill’s political account of protected discussion asks a different question about collective authority. The comparison does not identify their positions or assert a direct historical influence.
+
 ## Sources
 
 **Primary text and edition:** John Stuart Mill, *On Liberty*, originally published in London by John W. Parker and Son in 1859. This lesson reads the English text in [Project Gutenberg eBook 34901](https://www.gutenberg.org/ebooks/34901), [HTML reading edition](https://www.gutenberg.org/cache/epub/34901/pg34901-images.html). The reproduced imprint is The Walter Scott Publishing Co., Ltd., London and Felling-on-Tyne, with New York and Melbourne also listed. Its introduction by W. L. Courtney is dated July 5, 1901. The displayed title page does not supply a publication year for this printing; the introduction's date must not be substituted for one. No translation is involved.

@@ -64,6 +64,9 @@ export const thinkers = [{
 }, {
   slug: 'zitkala-sa', name: 'Zitkala-Sa', years: '1876–1938',
   introduction: 'A Yankton Dakota writer, musician, and advocate whose autobiographical account tests institutional claims against a child’s experience. This guide examines forced assimilation, misunderstood speech, routine, resistance, and achievement without belonging.'
+}, {
+  slug: 'plato', name: 'Plato', years: '429?–347 BCE',
+  introduction: 'An Athenian philosopher whose writings examine how people should live through speech, argument, and dramatic setting. This guide reads his portrayal of Socrates at trial while distinguishing the author, the represented speaker, and the historical evidence.'
 }];
 
 export const works = [{
@@ -336,5 +339,17 @@ export const works = [{
     { name: 'Routine and the disappearance of need', anchor: 'routine-and-the-disappearance-of-need', question: 'What does an efficient record leave unexplained?' },
     { name: 'Resistance and its costs', anchor: 'resistance-and-its-costs', question: 'What can a constrained act change, and what remains beyond it?' },
     { name: 'Achievement without belonging', anchor: 'achievement-without-belonging', question: 'Can a public prize settle a person’s estrangement?' }
+  ]
+}, {
+  slug: 'apology', thinker: 'plato', title: 'Apology', year: 'After 399 BCE; exact composition date uncertain',
+  question: 'What is worth protecting when safety and integrity come apart?',
+  description: 'Read Plato’s portrayal of Socrates on human wisdom, examination, care of the soul, civic dissent, and uncertainty about death.',
+  disciplines: ['Ancient Greek philosophy', 'Ethics', 'Political thought'],
+  concepts: [
+    { name: 'Human wisdom and the limits of expertise', anchor: 'human-wisdom-and-the-limits-of-expertise', question: 'Where does a real competence stop supporting a claim to authority?' },
+    { name: 'Examination and the limits of refutation', anchor: 'examination-and-the-limits-of-refutation', question: 'What does exposing a contradiction actually establish?' },
+    { name: 'Care of the soul and the order of goods', anchor: 'care-of-the-soul-and-the-order-of-goods', question: 'What makes an advantage worth having?' },
+    { name: 'Civic dissent and accountability', anchor: 'civic-dissent-and-accountability', question: 'Can criticism serve a community while remaining answerable to it?' },
+    { name: 'Uncertainty and moral courage', anchor: 'uncertainty-and-moral-courage', question: 'Can an unknown outcome justify a known wrong?' }
   ]
 }];
