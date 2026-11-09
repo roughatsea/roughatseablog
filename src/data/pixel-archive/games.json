@@ -260,5 +260,47 @@
         "url": "https://itch.io/jam/my-first-game-jam-winter-2021/rate/880573"
       }
     ]
+  },
+  {
+    "date": "2026-11-09",
+    "slug": "rhythm-doctor",
+    "title": "Rhythm Doctor",
+    "developer": "7th Beat Games",
+    "description": "Treat fictional hospital patients by tapping the seventh beat: a one-button pixel-art rhythm game that hides complex meters, human stories, and visual mischief inside its music.",
+    "lane": "familiar",
+    "genres": [
+      "Rhythm",
+      "Music",
+      "Pixel Art"
+    ],
+    "releaseStatus": "Released · December 6, 2025 (full PC release); Windows, macOS, Linux",
+    "image": "/images/pixel-archive/rhythm-doctor-editorial-20261109-hq.png",
+    "imageAlt": "Original AI-generated painterly editorial illustration of a cheerful fictional hospital bedside at sunset, where a patient and two clinicians are framed by a heart monitor and floating turquoise and amber rhythm lights; not official gameplay",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "A defibrillator is not a musical instrument. In Rhythm Doctor, it becomes one. The setting is a fictional hospital where a patient can be treated by pressing the spacebar in time with a heartbeat. Six beats pass; you strike on the seventh. It sounds like a rule that could be exhausted in a minute. The surprise is how much 7th Beat Games can ask you to hear with a single button.",
+      "Different patients bring different rhythmic problems. Polyrhythms put competing pulses into motion at once; irregular time signatures and hemiolas complicate the count in other ways. Those words can seem forbidding on a music-theory worksheet, but the creators' stated aim is to teach the underlying ideas through play. A mistake has a cartoonish medical consequence, not a realistic one. The hospital is a stage for musical attention rather than a simulation of treatment.",
+      "Rhythm Doctor's pixel art gives the ward a cast of recognizable patients and staff, not merely a sterile strip of flashing notes. Its handmade levels include character stories, so the rhythm chart belongs to somebody in the room. Meanwhile, the interface itself can become untrustworthy. A PC Gamer review describes moments when the game window moves across the desktop, glitches, or appears frozen. Keeping count when the picture rebels is a very different challenge from following an on-screen marker.",
+      "There are ways to share the pressure. A second player can join the campaign locally, although the Steam listing cautions that online Remote Play may suffer from latency. The level editor lets people arrange notes to their own music and build custom visual effects; tougher Night Shift versions offer another test. These features suit a game whose basic challenge is simple to explain and difficult to master: keep a pulse alive in your head.",
+      "Rhythm Doctor entered Steam Early Access on February 26, 2021, before its full release on December 6, 2025. The creators also sell a Windows, macOS, and Linux edition on itch.io, without Steam Workshop integration. This account comes from published descriptions and criticism, not a claimed playthrough. If you enjoy games that make musical structure tangible—or simply want to discover how much one well-timed press can mean—its strange little hospital is worth a visit."
+    ],
+    "links": [
+      {
+        "label": "Rhythm Doctor — official game website",
+        "url": "https://www.rhythmdr.com/"
+      },
+      {
+        "label": "Rhythm Doctor on Steam",
+        "url": "https://store.steampowered.com/app/774181/Rhythm_Doctor/"
+      },
+      {
+        "label": "Rhythm Doctor on itch.io (creator storefront)",
+        "url": "https://fizzd.itch.io/rhythm-doctor"
+      },
+      {
+        "label": "PC Gamer review — discussion of the game's visual tricks",
+        "url": "https://www.pcgamer.com/games/rhythm/rhythm-doctor-review/"
+      }
+    ]
   }
 ]
