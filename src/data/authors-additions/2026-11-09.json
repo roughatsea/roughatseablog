@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-09",
+  "authorId": "camus",
+  "authorName": "Albert Camus",
+  "selection": "Algerian-born French literary fiction after English humor and satire; no influence claim.",
+  "sources": [
+    {
+      "url": "https://www.bnf.fr/fr/albert-camus-1913-1960-bibliographie",
+      "use": "French national library biography confirms birth on November 7, 1913 in Mondovi, Algeria, death on January 4, 1960, and L’Étranger publication in 1942."
+    },
+    {
+      "url": "https://www.camus-society.com/camus-works",
+      "use": "Specialist society bibliography confirms all four original fiction-book years and identifies A Happy Death as written 1936–1938 but published in 1971, and The First Man as unfinished and published in 1994."
+    },
+    {
+      "url": "https://classiques.uqam.ca/classiques/camus_albert/camus_albert.html",
+      "use": "University-hosted digital library independently records the four French books as 1942, 1947, 1956 and 1957, and distinguishes posthumous 1971 and 1994 editions."
+    },
+    {
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb32939564m",
+      "use": "National library catalogue corroborates the 1957 Gallimard Exile and the Kingdom volume as nouvelles (short stories)."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1913–1960",
+    "publishingSpan": "1942–1957",
+    "proxy": "Lifetime original-French prose-fiction book-publication span, from The Stranger to Exile and the Kingdom, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The four markers cover his three lifetime novels and his short-story collection, using first French book years, not composition, periodical appearances, later editions or English translations; English titles are supplied for readability. The Stranger (also translated as The Outsider), The Plague and The Fall appeared in French in 1942, 1947 and 1956; Exile and the Kingdom followed in 1957. A Happy Death was written in 1936–1938 but first published posthumously in 1971, and the unfinished The First Man appeared in 1994; neither extends this lifetime bar. Essays, journalism, plays, adaptations, notebooks and correspondence are outside this prose-fiction-book scope.",
+    "workDates": [
+      [
+        1942,
+        "The Stranger (L’Étranger)"
+      ],
+      [
+        1947,
+        "The Plague (La Peste)"
+      ],
+      [
+        1956,
+        "The Fall (La Chute)"
+      ],
+      [
+        1957,
+        "Exile and the Kingdom (story collection)"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains the new entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
