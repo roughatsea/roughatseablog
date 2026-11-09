@@ -229,6 +229,8 @@ Use the [1898 Appleton text reproduced by Gutenberg](https://www.gutenberg.org/c
 
 For the next offer of help, name the task that leaves your hands and the coordination that might remain in the recipient’s. Ask whether both have actually been reduced.
 
+Compare [James on felt significance and the spectator’s mistake](/seminal-ideas/on-a-certain-blindness-in-human-beings/#felt-significance-and-the-spectators-mistake). His essay challenges an outsider’s dismissal of another person’s experience. Nightingale’s practical instructions ask how help can make room for that experience, while James’s examples of meaning in hardship require care not to excuse inadequate conditions. This is an editorial comparison, not a claim of documented influence.
+
 ## Sources
 
 **Primary text and edition:** Florence Nightingale, *Notes on Nursing: What It Is, and What It Is Not*, first published 1859. This lesson uses [Project Gutenberg eBook 12439](https://www.gutenberg.org/ebooks/12439), [English reading text](https://www.gutenberg.org/cache/epub/12439/pg12439.html.utf8), reproducing an 1898 D. Appleton and Company, New York, title page. No translator is involved. The book is public domain in the United States. The reading concentrates on the portions identified in the edition note and reading path; it does not claim to evaluate every dietary or technical instruction in the volume.

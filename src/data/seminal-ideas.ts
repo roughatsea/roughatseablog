@@ -67,6 +67,9 @@ export const thinkers = [{
 }, {
   slug: 'plato', name: 'Plato', years: '429?–347 BCE',
   introduction: 'An Athenian philosopher whose writings examine how people should live through speech, argument, and dramatic setting. This guide reads his portrayal of Socrates at trial while distinguishing the author, the represented speaker, and the historical evidence.'
+}, {
+  slug: 'william-james', name: 'William James', years: '1842–1910',
+  introduction: 'A psychologist and philosopher who examines experience, attention, and the variety of human goods. This guide follows his challenge to the spectator who mistakes an unfamiliar source of meaning for an empty life.'
 }];
 
 export const works = [{
@@ -351,5 +354,17 @@ export const works = [{
     { name: 'Care of the soul and the order of goods', anchor: 'care-of-the-soul-and-the-order-of-goods', question: 'What makes an advantage worth having?' },
     { name: 'Civic dissent and accountability', anchor: 'civic-dissent-and-accountability', question: 'Can criticism serve a community while remaining answerable to it?' },
     { name: 'Uncertainty and moral courage', anchor: 'uncertainty-and-moral-courage', question: 'Can an unknown outcome justify a known wrong?' }
+  ]
+}, {
+  slug: 'on-a-certain-blindness-in-human-beings', thinker: 'william-james', title: 'On a Certain Blindness in Human Beings', year: 1899,
+  question: 'When does calling a life empty reveal the limits of the observer?',
+  description: 'Read James on felt significance, partial perspectives, hidden enjoyment, ordinary goods, and respect without compulsory agreement.',
+  disciplines: ['Moral psychology', 'Ethics', 'Philosophy of experience'],
+  concepts: [
+    { name: 'Felt significance and the spectator’s mistake', anchor: 'felt-significance-and-the-spectators-mistake', question: 'Does my lack of interest establish an absence of meaning?' },
+    { name: 'Perspective and the meaning of a clearing', anchor: 'perspective-and-the-meaning-of-a-clearing', question: 'What history does a participant see in an ordinary scene?' },
+    { name: 'Hidden enjoyment and the limits of description', anchor: 'hidden-enjoyment-and-the-limits-of-description', question: 'What can an accurate external account leave out?' },
+    { name: 'Attention and ordinary goods', anchor: 'attention-and-ordinary-goods', question: 'Can a familiar world disclose something a usual measure misses?' },
+    { name: 'Partial knowledge and the duty of restraint', anchor: 'partial-knowledge-and-the-duty-of-restraint', question: 'Must I share an enthusiasm before respecting it?' }
   ]
 }];

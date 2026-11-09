@@ -221,6 +221,8 @@ Use the contents of the [Gutenberg reading edition](https://www.gutenberg.org/ca
 
 For a practical exercise, choose a familiar gathering. Write down what is meant to receive attention, what preparation supports it, whose labor supplies that preparation, and what an unfamiliar guest would need to participate. Change one thing because of an actual answer, rather than because it resembles a picture of serenity.
 
+Compare [William James on hidden enjoyment and description](/seminal-ideas/on-a-certain-blindness-in-human-beings/#hidden-enjoyment-and-the-limits-of-description). His essay asks what an outside account misses when it records objects and conduct without their significance to participants. Both works challenge confident judgments of value while retaining their own preferences. This is a thematic comparison, not evidence of historical borrowing.
+
 ## Sources
 
 **Primary reading edition:** Okakura Kakuzō, *The Book of Tea*, [Project Gutenberg eBook 769](https://www.gutenberg.org/ebooks/769), [HTML text](https://www.gutenberg.org/cache/epub/769/pg769-images.html), electronic edition credited to Matthew, Gabrielle Harbowy, and David Widger, updated 17 January 2016. Close reading covers I and III–VII, with II used for its account of changing preparations and its closing cultural contrasts. Original English, no translator of the book. The electronic edition does not identify a printed copy whose pagination can safely be applied; chapter references preserve that limitation. The original work is public domain in the United States. The short passage quoted above is from V; no modern annotations are reproduced.
