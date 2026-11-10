@@ -70,6 +70,9 @@ export const thinkers = [{
 }, {
   slug: 'william-james', name: 'William James', years: '1842–1910',
   introduction: 'A psychologist and philosopher who examines experience, attention, and the variety of human goods. This guide follows his challenge to the spectator who mistakes an unfamiliar source of meaning for an empty life.'
+}, {
+  slug: 'poincare', name: 'Henri Poincaré', years: '1854–1912',
+  introduction: 'A mathematician and philosopher of science who examines how an idea becomes worth pursuing and how it becomes knowledge. This guide distinguishes his reports of sudden insight from his hypotheses about selection, unconscious work, and mathematical beauty.'
 }];
 
 export const works = [{
@@ -366,5 +369,17 @@ export const works = [{
     { name: 'Hidden enjoyment and the limits of description', anchor: 'hidden-enjoyment-and-the-limits-of-description', question: 'What can an accurate external account leave out?' },
     { name: 'Attention and ordinary goods', anchor: 'attention-and-ordinary-goods', question: 'Can a familiar world disclose something a usual measure misses?' },
     { name: 'Partial knowledge and the duty of restraint', anchor: 'partial-knowledge-and-the-duty-of-restraint', question: 'Must I share an enthusiasm before respecting it?' }
+  ]
+}, {
+  slug: 'mathematical-creation', thinker: 'poincare', title: 'Mathematical Creation', year: 1908,
+  question: 'How does a promising mathematical idea become knowledge?',
+  description: 'Read Poincaré on the order of a proof, selective invention, interrupted work, mathematical beauty, and verification after conviction.',
+  disciplines: ['Mathematics', 'Philosophy of science', 'Psychology of invention'],
+  concepts: [
+    { name: 'The order of a proof', anchor: 'the-order-of-a-proof', question: 'Why do these steps belong in this order?' },
+    { name: 'Invention as selective connection', anchor: 'invention-as-selective-connection', question: 'What makes a new combination worth pursuing?' },
+    { name: 'Preparation, interruption, and illumination', anchor: 'preparation-interruption-and-illumination', question: 'What does the sudden arrival of an idea establish about its origins?' },
+    { name: 'Mathematical beauty as a selective sieve', anchor: 'mathematical-beauty-as-a-selective-sieve', question: 'Can an attractive pattern direct attention without establishing truth?' },
+    { name: 'Verification after conviction', anchor: 'verification-after-conviction', question: 'What work remains when an idea feels certain?' }
   ]
 }];

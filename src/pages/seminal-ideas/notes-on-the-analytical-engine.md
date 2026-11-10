@@ -189,6 +189,8 @@ The conceptual achievement can be inspected directly: distinctions among operati
 - [Clifford on sincerity and responsible inquiry](/seminal-ideas/the-ethics-of-belief/#sincerity-truth-and-responsible-inquiry) separates a fortunate result from a responsible route to confidence. A program producing the expected answer once has not thereby established that its procedure is correct.
 - [Smith on division of labour](/seminal-ideas/the-wealth-of-nations/#division-of-labour-and-productivity) asks what becomes possible when work is reorganized. Lovelace’s separation of decisions makes a different kind of organization explicit. Similarity in the question is not evidence of direct influence.
 
+For a different question about mathematical work, read [Poincaré on invention and selective connection](/seminal-ideas/mathematical-creation/#invention-as-selective-connection). He examines how a fruitful direction becomes available before a detailed calculation begins. This is an editorial comparison, not a claim of direct influence.
+
 ### Common distortions
 
 - **“The Notes merely translate Menabrea.”** They are a distinct English commentary appended to the translation.

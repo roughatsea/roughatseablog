@@ -195,6 +195,8 @@ These are comparisons of questions and methods, not claims of documented influen
 - [Zitkala-Sa on meaning before judgment](/seminal-ideas/the-school-days-of-an-indian-girl/#meaning-before-judgment) shows the concrete consequences of an authority misreading a child’s response. Her autobiographical testimony puts pressure on an observer’s imagined account of another person’s good.
 - [Mill’s harm principle](/seminal-ideas/on-liberty/#harm-principle) makes the unresolved word *harmlessly* a starting point for further political reasoning. James’s respect for an unfamiliar good does not supply a complete boundary for legitimate interference.
 
+Compare [Poincaré on mathematical beauty as a selective sieve](/seminal-ideas/mathematical-creation/#mathematical-beauty-as-a-selective-sieve). His hypothesis gives feeling a role in directing mathematical attention, while his warning about false insights keeps felt certainty distinct from proof. This is an editorial comparison, not a claim of historical influence.
+
 ### Common distortions
 
 - **“You must enjoy everyone else’s interests.”** Respect can coexist with not sharing an enthusiasm.

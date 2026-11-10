@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-10",
+  "work": "mathematical-creation",
+  "thinker": "poincare",
+  "title": "Mathematical Creation",
+  "lessonPath": "src/pages/seminal-ideas/mathematical-creation.md",
+  "publicPath": "/seminal-ideas/mathematical-creation/",
+  "sourceUrls": [
+    "https://www.gutenberg.org/cache/epub/39713/pg39713-images.html",
+    "https://henripoincarepapers.univ-nantes.fr/chp/text/hp1999sm",
+    "https://mathshistory.st-andrews.ac.uk/Biographies/Poincare/",
+    "https://www.cambridge.org/core/books/abs/foundations-of-science/mathematical-creation/C706ABE045A7096F20CB04E4CACCB832"
+  ]
+}
