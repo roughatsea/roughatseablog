@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-10",
+  "authorId": "baum-l-frank",
+  "authorName": "L. Frank Baum",
+  "selection": "Earlier American children's fantasy after Algerian-born French literary fiction; no influence claim.",
+  "sources": [
+    {
+      "url": "https://sf-encyclopedia.com/entry/baum_l_frank",
+      "use": "Biographical dates May 15, 1856–May 6, 1919; original Oz book editions and years, 1904/1914 retitling, and 1939 film distinction."
+    },
+    {
+      "url": "https://www.csusb.edu/special-collections/exhibits/oz",
+      "use": "University special-collections exhibit corroborates the eight selected book years and explicitly identifies The Magic of Oz (1919) and Glinda of Oz (1920) as posthumous."
+    },
+    {
+      "url": "https://www.loc.gov/exhibits/oz/ozsect1.html",
+      "use": "Library of Congress displays the 1900 first book and copyright deposit and distinguishes the 1902 stage adaptation. The 1919 Glinda copyright registration is not its 1920 book-publication year."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1856–1919",
+    "publishingSpan": "1900–1918",
+    "proxy": "Lifetime Oz-novel first-book-publication span, from The Wonderful Wizard of Oz to The Tin Woodman of Oz, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The eight selected markers use original English-language book years, not composition, serialization, later retitlings, translations or adaptations. The Marvelous Land of Oz dates to 1904, not its 1914 retitling as The Land of Oz. The Wonderful Wizard of Oz uses its 1900 book date, not the 1902 stage version or 1939 film. The Magic of Oz (1919) and Glinda of Oz (1920) were published after Baum’s death and do not extend the lifetime bar. Non-Oz books, short stories, verse, journalism, plays and later Oz continuations by other authors are outside this Oz-novel scope.",
+    "workDates": [
+      [
+        1900,
+        "The Wonderful Wizard of Oz"
+      ],
+      [
+        1904,
+        "The Marvelous Land of Oz"
+      ],
+      [
+        1907,
+        "Ozma of Oz"
+      ],
+      [
+        1908,
+        "Dorothy and the Wizard in Oz"
+      ],
+      [
+        1909,
+        "The Road to Oz"
+      ],
+      [
+        1910,
+        "The Emerald City of Oz"
+      ],
+      [
+        1913,
+        "The Patchwork Girl of Oz"
+      ],
+      [
+        1918,
+        "The Tin Woodman of Oz"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
