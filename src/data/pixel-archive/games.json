@@ -302,5 +302,47 @@
         "url": "https://www.pcgamer.com/games/rhythm/rhythm-doctor-review/"
       }
     ]
+  },
+  {
+    "date": "2026-11-10",
+    "slug": "theropods",
+    "title": "Theropods",
+    "developer": "Lost Token",
+    "description": "A wordless, hand-animated pixel-art adventure where a prehistoric hunter and a stranded space traveler use observation, improvisation, and puzzles to survive among dinosaurs.",
+    "lane": "unexpected",
+    "genres": [
+      "Point-and-Click Adventure",
+      "Puzzle",
+      "Pixel Art"
+    ],
+    "releaseStatus": "Released · August 20, 2026 · Windows, macOS, Linux",
+    "image": "/images/pixel-archive/theropods-editorial-20261110-v1.webp",
+    "imageAlt": "Original AI-generated dreamy painterly editorial illustration of two prehistoric travelers planning a river crossing with a small brass scouting machine, while a long-necked dinosaur stands in a lush jungle valley; not game imagery",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "A dinosaur is an inconvenient obstacle for someone who has no dialogue options. In Theropods, a hand-animated point-and-click adventure from Lost Token, a young hunter survives an attack on her village and flees into the jungle. A strange stone that fell from the sky turns out to be connected to a stranded visitor from space. To rescue her people and help him return home, she must cross territory occupied by creatures unlikely to negotiate.",
+      "The game tells its story without dialogue, subtitles, or explanatory text. Puzzles depend on noticing how creatures behave and how characters respond to your actions. The publisher describes solutions built around distracting predators, avoiding aggressors, and triggering useful reactions rather than overpowering enemies. That restriction is interesting because it makes misunderstanding a real design risk: a clue has to be legible in movement and timing, not merely described in a hint.",
+      "Pixel art therefore has a job beyond resembling an old adventure game. The team says the backgrounds, characters, and animations were crafted pixel by pixel, frame by frame. A raised arm, an animal's pause, or an altered expression must carry information when no dialogue tree can explain a puzzle. There is a trade-off here. Watching closely may be rewarding, but if a particular animation is ambiguous, players have fewer verbal clues to fall back on.",
+      "Theropods traveled an unusually long road to release. The project began as a small game-jam experiment in 2015, attracted Kickstarter support in 2019, and finally arrived on August 20, 2026, published by Dionous Games. The publisher cites the wordless adventures Machinarium and Gobliiins as influences. Its prehistoric danger and science-fiction visitor are unusual companions, but the more revealing design decision is asking gestures and actions to carry an entire rescue story.",
+      "The finished adventure is sold for Windows, macOS, and Linux through storefronts including Steam, GOG, and itch.io. This account draws on the creators' descriptions rather than a completed playthrough. Someone who enjoys observing a scene, trying an object, and revising a hypothesis might find the silence inviting. Someone who wants explicit hints may find it frustrating. Theropods is worth a look for the particular question it poses: how much can a handful of animated pixels communicate when words are deliberately unavailable?"
+    ],
+    "links": [
+      {
+        "label": "Theropods — publisher's official website",
+        "url": "https://www.dionous.com/theropods/"
+      },
+      {
+        "label": "Theropods — developer and publisher on itch.io",
+        "url": "https://dionous.itch.io/theropods"
+      },
+      {
+        "label": "Theropods on Steam (demo available)",
+        "url": "https://store.steampowered.com/app/1091870/Theropods/"
+      },
+      {
+        "label": "Theropods on GOG (DRM-free)",
+        "url": "https://www.gog.com/en/game/theropods"
+      }
+    ]
   }
 ]
