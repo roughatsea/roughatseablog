@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-11",
+  "authorId": "capek-karel",
+  "authorName": "Karel Čapek",
+  "selection": "Czech science fiction, satire and philosophical novels after earlier American fantasy; no influence claim.",
+  "sources": [
+    {
+      "url": "https://biography.hiu.cas.cz/wiki/%C4%8CAPEK_Karel_1890%E2%80%931938",
+      "use": "Czech Academy of Sciences biographical dictionary confirms January 9, 1890–December 25, 1938."
+    },
+    {
+      "url": "https://karelcapek.cz/en/life-and-creation/karel-capek",
+      "use": "Memorial biography and works list confirms all six Czech book years and the unfinished, posthumous 1939 Life and Work of the Composer Foltýn."
+    },
+    {
+      "url": "https://sf-encyclopedia.com/entry/capek_karel",
+      "use": "Scholarly encyclopedia confirms The Absolute at Large's 1921–1922 newspaper serialization, 1922 Czech book and 1927 English translation; Krakatit's 1924 Czech book and 1925 English translation."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1890–1938",
+    "publishingSpan": "1922–1936",
+    "proxy": "Lifetime original-Czech novel book-publication span, from The Absolute at Large to War with the Newts, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The six markers use Czech book-edition years, not composition, newspaper serialization, later translations or adaptations; English titles are supplied for readability. The Absolute at Large began serialization in Lidové noviny in 1921 before its 1922 book and 1927 English translation. Krakatit uses its 1924 Czech book, not the 1925 English translation. The trilogy Hordubal, Meteor and An Ordinary Life appeared as Czech books in 1933, 1934 and 1934. The unfinished Life and Work of the Composer Foltýn appeared posthumously in 1939 and does not extend the bar. Plays, including R.U.R., short stories, collaborations, travel books, journalism and nonfiction are outside this novel-only scope.",
+    "workDates": [
+      [
+        1922,
+        "The Absolute at Large (Czech book edition)"
+      ],
+      [
+        1924,
+        "Krakatit"
+      ],
+      [
+        1933,
+        "Hordubal"
+      ],
+      [
+        1934,
+        "Meteor (Povětroň)"
+      ],
+      [
+        1934,
+        "An Ordinary Life"
+      ],
+      [
+        1936,
+        "War with the Newts (Czech book edition)"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
