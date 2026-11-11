@@ -344,5 +344,47 @@
         "url": "https://www.gog.com/en/game/theropods"
       }
     ]
+  },
+  {
+    "date": "2026-11-11",
+    "slug": "arco",
+    "title": "Arco",
+    "developer": "Franek Nowotniak, Max Cahill, José Ramón “Bibiki” García, Antonio “Fayer” Uribe",
+    "description": "A Mesoamerican-inspired pixel-art tactical RPG in which simultaneous turns demand careful positioning, and the guilt from narrative decisions can haunt future battles.",
+    "lane": "familiar",
+    "genres": [
+      "Tactical RPG",
+      "Turn-Based Strategy",
+      "Pixel Art"
+    ],
+    "releaseStatus": "Released · August 15, 2024; Windows, macOS, Nintendo Switch (Steam demo available)",
+    "image": "/images/pixel-archive/arco-editorial-20261111-q94.webp",
+    "imageAlt": "Original AI-generated dreamy painterly editorial illustration of four invented travelers planning around a map on a desert-cliff terrace at dusk, with a brazier, pack animal, wildflowers, and stone ruins; not official game imagery",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "Arco begins with an uncomfortable combination: the patience of a turn-based RPG and the urgency of dodging a bullet. Its Mesoamerican-inspired fantasy frontier is crossed by four Indigenous protagonists whose intertwined journeys lead toward the Red Company, a violent force moving across their land. Revenge supplies direction, but the design makes the road to it less straightforward than a procession of victories.",
+      "During a fight, you choose a movement or ability while your opponents' next actions are in view. When the turn advances, your move and theirs resolve together. This 'simultaneous turn-based' design turns a battle into an argument about where everybody will be a moment from now. Moving to avoid an incoming shot can matter as much as landing your own attack. Four protagonists have distinct skill trees, so their answers to the same tactical problem are not identical.",
+      "Then comes a complication you cannot solve simply by counting squares. The story responds to decisions made in conversation and exploration. Reviewers describe a guilt mechanic in which certain choices cause ghosts to appear during combat. Those ghosts can move while you are still planning, turning what ought to be a safe moment of deliberation into a period of danger. It is an unusually literal consequence: the past interrupts the act of thinking about the future.",
+      "The pixel art has a job beyond making the setting attractive. Polish artist Franek Nowotniak builds striking contrasts between small traveling figures and broad environments: desert paths, green forests, and settlements. The small scale of the characters helps the landscapes read as places to cross rather than backdrops to admire. The international development team is itself notable. Nowotniak worked with Australian developer Max Cahill, Spanish composer José Ramón 'Bibiki' García, and Mexican developer Antonio 'Fayer' Uribe; their collaboration began in 2021.",
+      "Published by Panic on August 15, 2024, Arco is a finished commercial game for Windows, macOS, and Nintendo Switch, and Steam offers a demo. This account draws from the team's official information and published reviews, not a personal playthrough. For players who like RPGs where combat and moral choices occupy the same system, Arco asks a pointed question: what if a decision does not stay in the dialogue box after you make it?"
+    ],
+    "links": [
+      {
+        "label": "Official Arco website",
+        "url": "https://arco.game/"
+      },
+      {
+        "label": "Arco developer press kit",
+        "url": "https://arco.game/presskit/"
+      },
+      {
+        "label": "Arco on Steam (demo available)",
+        "url": "https://store.steampowered.com/app/2366970/Arco/"
+      },
+      {
+        "label": "Game Informer review (guilt and combat)",
+        "url": "https://gameinformer.com/review/arco/bringing-a-bow-to-a-gunfight"
+      }
+    ]
   }
 ]
