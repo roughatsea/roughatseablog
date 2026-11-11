@@ -248,6 +248,8 @@ Try one practical question: when a situation is described as the result of perso
 
 Compare [Zitkala-Sa on achievement without belonging](/seminal-ideas/the-school-days-of-an-indian-girl/#achievement-without-belonging). Her autobiographical account places public recognition beside racial humiliation and estrangement. The comparison concerns distinct accounts of recognition and exclusion; it asserts neither identical experiences nor documented influence.
 
+Compare [Cooper on the people missing from a progress story](/seminal-ideas/the-higher-education-of-women/#the-people-missing-from-a-progress-story). Her 1892 essay asks which women share the gains announced for women in general and what support Black women actually receive. This is a comparison of arguments, not a claim that chronology alone establishes influence.
+
 ## Sources
 
 **Primary text and edition:** W. E. B. Du Bois, *The Souls of Black Folk*, first published by A. C. McClurg & Co. in Chicago on April 18, 1903. This lesson reads [Project Gutenberg eBook 408](https://www.gutenberg.org/ebooks/408), using its [HTML edition](https://www.gutenberg.org/files/408/408-h/408-h.htm) and [plain-text transcription](https://www.gutenberg.org/cache/epub/408/pg408.txt). The digital front matter does not identify a particular historical printing, so the lesson does not assign its wording the pagination or physical features of the first edition. It preserves the named chapter structure and identifies no translator. The text is public domain in the United States.

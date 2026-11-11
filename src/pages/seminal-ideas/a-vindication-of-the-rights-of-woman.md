@@ -267,6 +267,8 @@ Compare [Smith on learned abilities and natural differences](/seminal-ideas/the-
 
 Try one practical exercise. When a group is described as naturally lacking confidence, discipline, leadership, or aspiration, list the opportunities its members have had to practice those capacities and the penalties attached to displaying them. Do not assume the structural explanation is automatically correct. Use it to identify what evidence the naturalizing claim omitted.
 
+For a later inquiry into educational conditions, read [Cooper on encouragement made material](/seminal-ideas/the-higher-education-of-women/#encouragement-made-material). Her essay examines how different expectations and financial support shape the opportunities offered to Black women. This is an editorial comparison, not a claim of direct influence.
+
 ## Sources
 
 **Primary text and edition:** Mary Wollstonecraft, *A Vindication of the Rights of Woman: with Strictures on Political and Moral Subjects*, first published in London by J. Johnson in 1792; a second edition also appeared in 1792. This lesson reads the English text of [Project Gutenberg eBook 3420](https://www.gutenberg.org/ebooks/3420), using its [HTML edition](https://www.gutenberg.org/cache/epub/3420/pg3420-images.html) and [plain-text transcription](https://www.gutenberg.org/cache/epub/3420/pg3420.txt). Gutenberg does not identify the historical printing from which every feature of its transcription derives, so this lesson does not assign its wording first- or second-edition pagination. The text is public domain in the United States; no translator is involved.

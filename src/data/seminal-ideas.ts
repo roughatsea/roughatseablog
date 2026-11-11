@@ -73,6 +73,9 @@ export const thinkers = [{
 }, {
   slug: 'poincare', name: 'Henri Poincaré', years: '1854–1912',
   introduction: 'A mathematician and philosopher of science who examines how an idea becomes worth pursuing and how it becomes knowledge. This guide distinguishes his reports of sudden insight from his hypotheses about selection, unconscious work, and mathematical beauty.'
+}, {
+  slug: 'anna-julia-cooper', name: 'Anna Julia Cooper', years: 'c. 1858–1964',
+  introduction: 'An educator and philosopher who examines the development of Black women’s powers and the institutions that constrain them. This guide follows her argument from demanding education and self-development to unequal encouragement and material support.'
 }];
 
 export const works = [{
@@ -381,5 +384,17 @@ export const works = [{
     { name: 'Preparation, interruption, and illumination', anchor: 'preparation-interruption-and-illumination', question: 'What does the sudden arrival of an idea establish about its origins?' },
     { name: 'Mathematical beauty as a selective sieve', anchor: 'mathematical-beauty-as-a-selective-sieve', question: 'Can an attractive pattern direct attention without establishing truth?' },
     { name: 'Verification after conviction', anchor: 'verification-after-conviction', question: 'What work remains when an idea feels certain?' }
+  ]
+}, {
+  slug: 'the-higher-education-of-women', thinker: 'anna-julia-cooper', title: 'The Higher Education of Women', year: 1892,
+  question: 'What does a chance to learn require beyond permission?',
+  description: 'Read Cooper on demanding study, self-development, gendered expectations, the people missing from a progress story, and scholarships for Black women.',
+  disciplines: ['Education', 'Black feminist thought', 'Social philosophy'],
+  concepts: [
+    { name: 'Admission and the terms of education', anchor: 'admission-and-the-terms-of-education', question: 'What opportunity accompanies permission to enter?' },
+    { name: 'Educated influence and the worship of power', anchor: 'educated-influence-and-the-worship-of-power', question: 'Does the capacity to dominate establish a right to do so?' },
+    { name: 'Self-development beyond pleasing others', anchor: 'self-development-beyond-pleasing-others', question: 'Whose preferences are being made the measure of a life?' },
+    { name: 'The people missing from a progress story', anchor: 'the-people-missing-from-a-progress-story', question: 'Which members of a group share its reported gains?' },
+    { name: 'Encouragement made material', anchor: 'encouragement-made-material', question: 'Who supplies the resources that make sustained study possible?' }
   ]
 }];
