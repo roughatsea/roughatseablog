@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-12",
+  "authorId": "saramago-jose",
+  "authorName": "José Saramago",
+  "selection": "Portuguese literary fiction after Czech science fiction and satire; no influence claim.",
+  "sources": [
+    {
+      "url": "https://webs.uab.cat/catedrajosesaramago/es/biografi-del-autor/",
+      "use": "University biography confirms November 16, 1922–June 18, 2010; distinguishes the November 18 date on official birth documents."
+    },
+    {
+      "url": "https://www.josesaramago.org/bibliografia-ativa/",
+      "use": "Author foundation bibliography identifies the six selected novels and their original publication years; separates novels from other literary forms and lists 2011 and 2014 posthumous novels."
+    },
+    {
+      "url": "https://webs.uab.cat/catedrajosesaramago/pt-pt/bibliografia-do-autor/",
+      "use": "University bibliography corroborates all six dates and explicitly states that its dates refer to first editions."
+    },
+    {
+      "url": "https://www.josesaramago.org/en/biography/",
+      "use": "Foundation autobiography explains the 1947 title change and publishing gap; editorial note distinguishes Skylight’s 1953 completion from 2011 posthumous publication and the unfinished novel published in 2014."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1922–2010",
+    "publishingSpan": "1947–2009",
+    "proxy": "Lifetime original-Portuguese novel first-book-publication span, from Terra do Pecado to Caim, used as a publishing proxy rather than a claim of uninterrupted writing. The six selected markers use Portuguese first-edition years, not composition, serialization, later translations or adaptations; English titles are supplied for readability. The first novel appeared in 1947 as Terra do Pecado after the publisher changed Saramago’s proposed title A Viúva (The Widow). The long gap before his later novels is part of this publishing span, not evidence of continuous novel production. Claraboia (Skylight) was completed in 1953 but first published posthumously in 2011. The unfinished Alabardas, alabardas, Espingardas, espingardas followed posthumously in 2014; neither extends the lifetime bar. Poetry, plays, short stories, chronicles, journalism, translation work, diaries, memoirs and nonfiction are outside this novel-only scope.",
+    "workDates": [
+      [
+        1947,
+        "Land of Sin (Terra do Pecado)"
+      ],
+      [
+        1980,
+        "Raised from the Ground"
+      ],
+      [
+        1982,
+        "Baltasar and Blimunda (Memorial do Convento)"
+      ],
+      [
+        1984,
+        "The Year of the Death of Ricardo Reis"
+      ],
+      [
+        1995,
+        "Blindness"
+      ],
+      [
+        2009,
+        "Cain (Caim)"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
