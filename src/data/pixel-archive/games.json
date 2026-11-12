@@ -386,5 +386,43 @@
         "url": "https://gameinformer.com/review/arco/bringing-a-bow-to-a-gunfight"
       }
     ]
+  },
+  {
+    "date": "2026-11-12",
+    "slug": "globs",
+    "title": "Globs",
+    "developer": "Ninesliced (ArkanYota, Notgoyome, Theobosse, Strochnis, Yolwoocle)",
+    "description": "A playful pixel-art puzzle about resizing gelatinous creatures to squeeze through gaps, push friends, block holes, and rethink the geometry of a room.",
+    "lane": "unexpected",
+    "genres": [
+      "Puzzle",
+      "Logic",
+      "Pixel Art"
+    ],
+    "releaseStatus": "Released · November 15, 2024; Windows, macOS, Linux, and mobile versions available",
+    "image": "/images/pixel-archive/globs-editorial-20261112-hq-v1.webp",
+    "imageAlt": "Original AI-generated dreamy painterly editorial illustration of a bespectacled craftsperson observing multicolored translucent jelly creatures stretching through a small architectural maze in a sunlit flower-filled greenhouse; not gameplay",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "Imagine a puzzle piece that can change how much room it occupies. In Globs, the pieces are cheerful, jelly-like creatures, and resizing them is the central action. Select a Glob and drag its handles. A narrow body can slip through a gap; a larger one can press against a wall or push a neighbor out of the way. The floor plan stays put, but its inhabitants do not hold their shapes.",
+      "That simple change complicates the familiar logic of block-pushing puzzles. Something that looks like an obstruction may be a tool for reaching the next space. The creators describe Globs squeezing through tight passages, expanding to cover holes, and using their bodies to move one another. A player is asked to consider not just where each piece belongs, but what dimensions it ought to have when it arrives. There is room for a wrong guess, a reset, and a more imaginative second attempt.",
+      "Despite the spatial bookkeeping, Globs does not present itself as a stern exercise. The team's pixel art gives the little bodies expressive animations, and the full game has four differently styled worlds and more than forty levels. Its jazzy, upbeat soundtrack appears designed to keep the atmosphere light. The developers describe the main puzzles as approachable, while offering optional challenges for players who want a tougher test. That separation respects two different pleasures: finding a clever solution and exhausting every possibility.",
+      "The game began with a strict production constraint. The Montpellier-based collective Ninesliced made its first version in ninety-six hours for the 2024 Game Maker's Toolkit Game Jam, responding to the theme 'Built to Scale.' The group then expanded the prototype into a commercial game released on November 15, 2024. Ninesliced credits ArkanYota and Theobosse with programming, Notgoyome and Yolwoocle with programming and art, and Strochnis with music. The project was built with Godot.",
+      "The original jam edition can still be played in a browser for free, though its page warns of problems with the web version on macOS. The full edition is sold on itch.io and Steam, with desktop and mobile versions offered. I have not played either edition; these details come from the developers' own pages. For someone who likes puzzle games but finds fixed blocks too predictable, Globs offers a delightful-looking question: what if the obstacle could simply be made a different size?"
+    ],
+    "links": [
+      {
+        "label": "Globs full edition — developer's itch.io page",
+        "url": "https://ninesliced.itch.io/globs"
+      },
+      {
+        "label": "Play the original 2024 game-jam version on itch.io",
+        "url": "https://yolwoocle.itch.io/globs"
+      },
+      {
+        "label": "Globs on Steam",
+        "url": "https://store.steampowered.com/app/3219110/Globs/"
+      }
+    ]
   }
 ]
