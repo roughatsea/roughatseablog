@@ -76,6 +76,9 @@ export const thinkers = [{
 }, {
   slug: 'anna-julia-cooper', name: 'Anna Julia Cooper', years: 'c. 1858–1964',
   introduction: 'An educator and philosopher who examines the development of Black women’s powers and the institutions that constrain them. This guide follows her argument from demanding education and self-development to unequal encouragement and material support.'
+}, {
+  slug: 'lu-xun', name: 'Lu Xun', years: '1881–1936',
+  introduction: 'A Chinese writer whose fiction tests respectable language against suffering, exclusion, and complicity. This guide examines the competing voices and unsettling moral questions of A Madman’s Diary.'
 }];
 
 export const works = [{
@@ -396,5 +399,17 @@ export const works = [{
     { name: 'Self-development beyond pleasing others', anchor: 'self-development-beyond-pleasing-others', question: 'Whose preferences are being made the measure of a life?' },
     { name: 'The people missing from a progress story', anchor: 'the-people-missing-from-a-progress-story', question: 'Which members of a group share its reported gains?' },
     { name: 'Encouragement made material', anchor: 'encouragement-made-material', question: 'Who supplies the resources that make sustained study possible?' }
+  ]
+}, {
+  slug: 'a-madmans-diary', thinker: 'lu-xun', title: 'A Madman’s Diary', year: 1918,
+  question: 'When does an accepted custom become an excuse for harm?',
+  description: 'Read Lu Xun on the meaning of recovery, moral language, unreliable testimony, inherited practices, complicity, and the uncertain future of children.',
+  disciplines: ['Chinese literature', 'Social criticism', 'Ethics'],
+  concepts: [
+    { name: 'The frame and the meaning of recovery', anchor: 'the-frame-and-the-meaning-of-recovery', question: 'Who decides what counts as a return to normal?' },
+    { name: 'Moral words and the image of eating people', anchor: 'moral-words-and-the-image-of-eating-people', question: 'What costs can respectable language conceal?' },
+    { name: 'Custom is not justification', anchor: 'custom-is-not-justification', question: 'Does a practice become right because it has always happened?' },
+    { name: 'Shared fear and the critic’s complicity', anchor: 'shared-fear-and-the-critics-complicity', question: 'Can I oppose a harmful arrangement while having participated in it?' },
+    { name: 'Children and an uncertain future', anchor: 'children-and-an-uncertain-future', question: 'What must change for a different inheritance to become possible?' }
   ]
 }];
