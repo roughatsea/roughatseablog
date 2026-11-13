@@ -424,5 +424,47 @@
         "url": "https://store.steampowered.com/app/3219110/Globs/"
       }
     ]
+  },
+  {
+    "date": "2026-11-13",
+    "slug": "one-dreamer",
+    "title": "One Dreamer",
+    "developer": "F2House (Gareth Ffoulkes)",
+    "description": "An emotional pixel-art adventure about an exhausted game developer who edits C#-inspired pseudocode to repair objects, fix glitches, and recover his creative purpose.",
+    "lane": "familiar",
+    "genres": [
+      "Adventure",
+      "Programming Puzzle",
+      "Narrative"
+    ],
+    "releaseStatus": "Released · September 9, 2022 (Windows, macOS, Linux)",
+    "image": "/images/pixel-archive/one-dreamer-editorial-20261113-q92.webp",
+    "imageAlt": "Original AI-generated dreamy painterly editorial illustration of two people making a miniature fantasy game world in a rainlit nighttime studio, with a sleeping dog and imagined floating platforms on a painted wall; not official game imagery",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "A game about making a game can become a hall of mirrors. One Dreamer chooses an uncomfortable reflection: what happens when the thing you love doing turns into something you can barely face? Its protagonist, Frank, is an exhausted independent developer struggling to release his first game. He knows how to work on it. Whether he can recover a reason to keep working is the harder question.",
+      "Australian creator Gareth Ffoulkes gives Frank an unusual kind of power. Objects in the environment expose editable pseudocode inspired by C#. You can change a toaster's behavior or modify a playable minigame by altering supplied lines, then see what the change does. The official description advertises more than 350 editable snippets. It is an approachable simulation of debugging rather than a course in software engineering: the pleasure comes from reading an existing system and deciding which small change will make it behave differently.",
+      "That mechanic makes the story's metaphor concrete. Every bug seems solvable once you identify its rules; exhaustion, ambition, and a fading sense of purpose are less cooperative. Rather than treating programming as magic where a keyboard summons answers, the puzzles ask you to look carefully at causes and consequences. Knowing C# may make the syntax familiar, but the premise is legible without being a professional programmer.",
+      "The world surrounding the code is drawn pixel by pixel, with atmospheric environments and fully voiced characters. A detailed room can hold the accumulated evidence of years spent pursuing a project: objects, workspaces, and the distractions that share them. The visual scale suits an independent story about labor because it makes small surroundings worth inspecting. Ben Yusuf Quinn composed the score; the official press materials say its music was developed over seven years.",
+      "Ffoulkes first shared a demo in July 2015 and funded development through Kickstarter the following month. A prologue arrived in 2020; the completed game launched September 9, 2022, for Windows, macOS and Linux. Those dates give the fictional struggle a real-world echo, without making Frank's experiences a literal autobiography. I haven't played it; these details come from the developer and storefront listings. For people who love creating things but have felt consumed by the work, One Dreamer looks like a question posed as a puzzle: when you can change the code, what restores the person writing it?"
+    ],
+    "links": [
+      {
+        "label": "One Dreamer — official developer press kit",
+        "url": "https://www.one-dreamer.com/press/"
+      },
+      {
+        "label": "One Dreamer on Steam",
+        "url": "https://store.steampowered.com/app/1156380/One_Dreamer/"
+      },
+      {
+        "label": "One Dreamer on GOG (DRM-free)",
+        "url": "https://www.gog.com/en/game/one_dreamer"
+      },
+      {
+        "label": "One Dreamer: Prologue on Steam",
+        "url": "https://store.steampowered.com/app/1274140/One_Dreamer_Prologue/"
+      }
+    ]
   }
 ]
