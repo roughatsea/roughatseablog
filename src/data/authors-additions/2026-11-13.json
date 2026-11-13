@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-13",
+  "authorId": "singh-khushwant",
+  "authorName": "Khushwant Singh",
+  "selection": "Indian novelist and humorist, born in Punjab in present-day Pakistan, after Portuguese literary fiction; no influence claim.",
+  "sources": [
+    {
+      "url": "https://www.innertemple.org.uk/directory/khushwant-singh/",
+      "use": "Institutional biography confirms 1915–2014 and explains that his exact birthday was unrecorded; only verified lifespan years are used."
+    },
+    {
+      "url": "https://southasianbritain.org/people/khushwant-singh/",
+      "use": "Scholarly South Asian Britain biography and bibliography dates Train to Pakistan to its 1956 Chatto & Windus book, Delhi to Penguin 1990, The Company of Women to Viking 1999, and the earlier story collection to 1950."
+    },
+    {
+      "url": "https://www.penguin.co.in/book_author/singh-khushwant-2/",
+      "use": "Publisher biography explicitly identifies The Sunset Club as a novel published by Penguin in 2010, the scoped endpoint."
+    },
+    {
+      "url": "https://humanitiesinstitute.org/__static/99b0d5a18e0930b36a8ffb83743713b2/khushwant-singh.pdf?dl=1",
+      "use": "Stuart Blackburn's scholarly biography corroborates lifespan, the 1956 first novel and all four selected book years; distinguishes later nonfiction, including The Good, the Bad and the Ridiculous (2013)."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1915–2014",
+    "publishingSpan": "1956–2010",
+    "proxy": "Lifetime English-language novel first-book-publication span, from Train to Pakistan to The Sunset Club, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The four selected markers use original book-publication years, not composition, serialization, later national editions, translations, adaptations or reissues. Train to Pakistan appeared in 1956; Delhi: A Novel in 1990; The Company of Women in 1999; and The Sunset Club in 2010. Earlier short fiction, including The Mark of Vishnu and Other Stories (1950), falls outside this novel-only bar. His humorous columns, joke collections, journalism, histories, translations, memoirs, other nonfiction and posthumous collections are also excluded. The 2010 endpoint therefore does not mark the end of his literary activity.",
+    "workDates": [
+      [
+        1956,
+        "Train to Pakistan"
+      ],
+      [
+        1990,
+        "Delhi: A Novel"
+      ],
+      [
+        1999,
+        "The Company of Women"
+      ],
+      [
+        2010,
+        "The Sunset Club"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
