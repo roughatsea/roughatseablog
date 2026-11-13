@@ -79,6 +79,9 @@ export const thinkers = [{
 }, {
   slug: 'lu-xun', name: 'Lu Xun', years: '1881–1936',
   introduction: 'A Chinese writer whose fiction tests respectable language against suffering, exclusion, and complicity. This guide examines the competing voices and unsettling moral questions of A Madman’s Diary.'
+}, {
+  slug: 'hume', name: 'David Hume', years: '1711–1776',
+  introduction: 'A Scottish philosopher who examines human understanding, feeling, and judgment. This guide follows his account of cultivated taste, critical authority, prejudice, and the disagreements that appreciation need not eliminate.'
 }];
 
 export const works = [{
@@ -411,5 +414,17 @@ export const works = [{
     { name: 'Custom is not justification', anchor: 'custom-is-not-justification', question: 'Does a practice become right because it has always happened?' },
     { name: 'Shared fear and the critic’s complicity', anchor: 'shared-fear-and-the-critics-complicity', question: 'Can I oppose a harmful arrangement while having participated in it?' },
     { name: 'Children and an uncertain future', anchor: 'children-and-an-uncertain-future', question: 'What must change for a different inheritance to become possible?' }
+  ]
+}, {
+  slug: 'of-the-standard-of-taste', thinker: 'hume', title: 'Of the Standard of Taste', year: 1757,
+  question: 'Can criticism improve judgment without dictating what you must enjoy?',
+  description: 'Read Hume on sentiment, trained attention, comparison, prejudice, critical authority, and the limits of a common standard.',
+  disciplines: ['Aesthetics', 'Philosophical criticism'],
+  concepts: [
+    { name: 'Sentiment and critical authority', anchor: 'sentiment-and-critical-authority', question: 'Does a real feeling make a dependable recommendation?' },
+    { name: 'Delicacy as discrimination', anchor: 'delicacy-as-discrimination', question: 'What does a perceptive critic notice that another reader missed?' },
+    { name: 'Practice, comparison, and good sense', anchor: 'practice-comparison-and-good-sense', question: 'How can experience improve a judgment rather than merely repeat it?' },
+    { name: 'Prejudice and the required point of view', anchor: 'prejudice-and-the-required-point-of-view', question: 'What must we understand before judging an unfamiliar work?' },
+    { name: 'The true judge and blameless disagreement', anchor: 'the-true-judge-and-blameless-disagreement', question: 'Which differences can criticism properly leave unresolved?' }
   ]
 }];
