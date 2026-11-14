@@ -239,6 +239,8 @@ Use the note letters in the [York University transcription](https://psychclassic
 
 For a small exercise, trace our square-sum procedure on 2, 3, and 4, then on a fresh list containing only 5. The results should be 29 and 25. If the second run yields 54, ask which value was retained when it should have been reset.
 
+Compare [Leavitt’s investigation of variable stars](/seminal-ideas/periods-of-25-variable-stars/#magnitudes-and-logarithmic-structure). Her logarithmic plot makes a measured relation easier to inspect while leaving its physical interpretation dependent on observations and assumptions. Numerical transformation and a warranted conclusion remain different achievements. This is an editorial comparison, not a claim of direct influence.
+
 ## Sources
 
 **Primary text:** Ada Lovelace, “Notes by the Translator,” appended to her translation of L. F. Menabrea’s *Sketch of the Analytical Engine invented by Charles Babbage, Esq.*, *Scientific Memoirs* 3 (1843), pp. 666–731 for the combined work. Read in [Christopher D. Green’s York University reproduction](https://psychclassics.yorku.ca/Lovelace/lovelace.htm), focusing on A, B, C, D’s explanations of storage and notation, and G’s argument and procedural prose. Menabrea’s French source dates to 1842. The Notes are original English commentary, signed A. A. L., rather than part of the French original. Note letters, numbered operations, and named passages are our locators. The original text is public domain; the host’s modern editorial notes are separate. Formatting interventions and image-based formulae make this a reading transcription, not a certified executable program.

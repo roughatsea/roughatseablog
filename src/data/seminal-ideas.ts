@@ -82,6 +82,9 @@ export const thinkers = [{
 }, {
   slug: 'hume', name: 'David Hume', years: '1711–1776',
   introduction: 'A Scottish philosopher who examines human understanding, feeling, and judgment. This guide follows his account of cultivated taste, critical authority, prejudice, and the disagreements that appreciation need not eliminate.'
+}, {
+  slug: 'leavitt', name: 'Henrietta Swan Leavitt', years: '1868–1921',
+  introduction: 'An American astronomer whose measurements of variable stars connected their periods to their light output. This guide examines the evidence, common-distance assumption, calibration, and remaining uncertainties in the 1912 circular crediting her investigation.'
 }];
 
 export const works = [{
@@ -426,5 +429,17 @@ export const works = [{
     { name: 'Practice, comparison, and good sense', anchor: 'practice-comparison-and-good-sense', question: 'How can experience improve a judgment rather than merely repeat it?' },
     { name: 'Prejudice and the required point of view', anchor: 'prejudice-and-the-required-point-of-view', question: 'What must we understand before judging an unfamiliar work?' },
     { name: 'The true judge and blameless disagreement', anchor: 'the-true-judge-and-blameless-disagreement', question: 'Which differences can criticism properly leave unresolved?' }
+  ]
+}, {
+  slug: 'periods-of-25-variable-stars', thinker: 'leavitt', title: 'Periods of 25 Variable Stars in the Small Magellanic Cloud', year: 1912,
+  question: 'How can a star’s changing brightness become a measure of distance?',
+  description: 'Read Leavitt on repeated observations, a common-distance assumption, logarithmic patterns, calibration, and the questions left open by a powerful empirical relation.',
+  disciplines: ['Astronomy', 'Scientific reasoning'],
+  concepts: [
+    { name: 'Repeated observation and the period', anchor: 'repeated-observation-and-the-period', question: 'Which observations establish a repeating cycle?' },
+    { name: 'Common distance as a working assumption', anchor: 'common-distance-as-a-working-assumption', question: 'What ambiguity does a shared setting reduce?' },
+    { name: 'Magnitudes and logarithmic structure', anchor: 'magnitudes-and-logarithmic-structure', question: 'What does changing a graph’s scale reveal?' },
+    { name: 'Calibration before distance', anchor: 'calibration-before-distance', question: 'Which independent reference turns a relation into a measuring tool?' },
+    { name: 'Residuals and unfinished inquiry', anchor: 'residuals-and-unfinished-inquiry', question: 'What can departures from a pattern teach us?' }
   ]
 }];

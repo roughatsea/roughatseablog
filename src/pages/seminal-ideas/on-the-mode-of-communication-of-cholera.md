@@ -254,6 +254,8 @@ For the next claim that a change “worked,” write down the outcome, the denom
 
 Compare [Lovelace on execution and error](/seminal-ideas/notes-on-the-analytical-engine/#execution-error-and-the-limits-of-a-claim). A calculation can execute its instructions correctly while the instructions or inputs misrepresent the intended problem. Snow’s comparisons make the corresponding demand on measurements and denominators concrete. This is a methodological comparison, not a claim of direct influence.
 
+Compare [Leavitt’s investigation of variable stars](/seminal-ideas/periods-of-25-variable-stars/#common-distance-as-a-working-assumption). Her shared-distance comparison reduces a different ambiguity: whether apparent brightness differences reflect output or distance. Both inquiries depend on explaining which differences a comparison holds approximately constant. This is an editorial comparison, not a claim of direct influence.
+
 ## Sources
 
 **Primary text and edition:** John Snow, *On the Mode of Communication of Cholera*, first published August 1849; second edition, much enlarged (London: John Churchill, 1855). The preface is dated December 11, 1854 and identifies the earlier publication. This lesson uses [Project Gutenberg eBook 72894](https://www.gutenberg.org/ebooks/72894), its [HTML transcription](https://www.gutenberg.org/files/72894/72894-h/72894-h.htm), and [plain text](https://www.gutenberg.org/cache/epub/72894/pg72894.txt). The [Wellcome Collection record](https://wellcomecollection.org/works/uqa27qrt) independently identifies the 1855 second edition. No translator is involved. The primary text is public domain in the United States.
