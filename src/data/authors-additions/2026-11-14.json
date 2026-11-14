@@ -1,0 +1,73 @@
+{
+  "date": "2026-11-14",
+  "authorId": "montgomery-lm",
+  "authorName": "L. M. Montgomery",
+  "selection": "Earlier Canadian domestic and coming-of-age fiction after an Indian novelist and humorist; no influence claim.",
+  "sources": [
+    {
+      "url": "https://lmmontgomery.ca/about/l-m-montgomery/",
+      "use": "University of Prince Edward Island institute biography confirms November 30, 1874–April 24, 1942, and distinguishes Anne of Green Gables’ 1905 composition from 1908 publication."
+    },
+    {
+      "url": "https://lmmonline.org/books/",
+      "use": "Scholarly bibliography linked by the UPEI institute confirms all eight selected book years and distinguishes novels, story collections and modern series numbering."
+    },
+    {
+      "url": "https://lmmonline.org/books/anne-of-windy-poplars/",
+      "use": "Confirms August 1936 publication and the British/Australian title Anne of Windy Willows; explains its earlier fictional chronology."
+    },
+    {
+      "url": "https://lmmonline.org/books/anne-of-ingleside/",
+      "use": "Confirms July 1939 publication and identifies this as Montgomery’s last lifetime book."
+    },
+    {
+      "url": "https://lmmonline.org/books/rilla-of-ingleside/",
+      "use": "Confirms September 1921 first publication; notes erroneous 1920 copyright dates in some later printings. This edition-specific evidence takes precedence over the institute timeline’s 1920 placement."
+    },
+    {
+      "url": "https://lmmonline.org/books/the-blythes-are-quoted/",
+      "use": "Distinguishes completion near death in 1942, abridged publication as The Road to Yesterday in 1974, and full publication in October 2009."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1874–1942",
+    "publishingSpan": "1908–1939",
+    "proxy": "Lifetime Anne-series novel first-book-publication span, from Anne of Green Gables to Anne of Ingleside, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The eight markers use original English-language book years, not composition, serialization, later translations, reissues, adaptations or fictional chronology. Anne of Green Gables was written in 1905 but published in 1908. Anne of Windy Poplars (1936), issued as Anne of Windy Willows in Britain and Australia, and Anne of Ingleside (1939) fill earlier gaps in Anne’s life despite appearing after Rilla of Ingleside (1921). The Blythes Are Quoted was completed near her death in 1942 but first published in full in 2009, after an abridged 1974 version; it does not extend the lifetime bar. Story collections, including the two Chronicles of Avonlea volumes, novels outside the Anne sequence, poetry, journalism, journals, letters and posthumous releases are excluded.",
+    "workDates": [
+      [
+        1908,
+        "Anne of Green Gables"
+      ],
+      [
+        1909,
+        "Anne of Avonlea"
+      ],
+      [
+        1915,
+        "Anne of the Island"
+      ],
+      [
+        1917,
+        "Anne’s House of Dreams"
+      ],
+      [
+        1919,
+        "Rainbow Valley"
+      ],
+      [
+        1921,
+        "Rilla of Ingleside"
+      ],
+      [
+        1936,
+        "Anne of Windy Poplars"
+      ],
+      [
+        1939,
+        "Anne of Ingleside"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
