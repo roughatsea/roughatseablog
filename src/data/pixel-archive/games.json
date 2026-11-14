@@ -466,5 +466,48 @@
         "url": "https://store.steampowered.com/app/1274140/One_Dreamer_Prologue/"
       }
     ]
+  },
+  {
+    "date": "2026-11-14",
+    "slug": "whos-lila",
+    "title": "Who's Lila?",
+    "developer": "Garage Heathen",
+    "description": "A dithered pixel-art psychological mystery where you physically manipulate a suspect's facial expression and a neural network interprets it, changing how conversations unfold.",
+    "lane": "unexpected",
+    "genres": [
+      "Point-and-Click Adventure",
+      "Psychological Horror",
+      "Mystery",
+      "Pixel Art"
+    ],
+    "releaseStatus": "Released · February 23, 2022 (Windows; free Steam demo available)",
+    "image": "/images/pixel-archive/whos-lila-editorial-20261114-painterly-q92.webp",
+    "imageAlt": "Original AI-generated dreamy painterly editorial illustration of an invented man adjusting his smile before several mirrors reflecting different emotions, with theatrical masks on a dim dressing-room table; not official game imagery",
+    "imageCredit": "AI-generated editorial concept art — not official game artwork or gameplay",
+    "article": [
+      "William was the last person known to have seen Tanya Kennedy before she disappeared. His friends want answers. Garage Heathen's Who's Lila? makes an uncomfortable change to the usual detective-story conversation: the player has to decide what William's face will communicate, whether or not his words are convincing.",
+      "The game is a point-and-click adventure with a radically different dialogue control. You explore scenes, interact with people, and then manipulate parts of William's face with the mouse rather than select a written reply. A specially trained neural network interprets his resulting expression as an emotion and sends the conversation down a corresponding branch. The expression you intended and the one the game recognizes need not be the same.",
+      "A smile can reassure someone, conceal panic, or look alarmingly out of place. Making the player assemble an expression turns that ambiguity into a puzzle. There is a limit to the experiment: the game ultimately classifies facial movements into recognizable emotions, whereas a real listener brings a whole history to the encounter. But that limitation makes the mechanism fascinating. William's face is simultaneously a character portrait, a control surface, and evidence against him.",
+      "Garage Heathen calls the game's look 'ditherpunk.' Dense patterns of contrasting pixels build surreal architecture, industrial interiors, and a disquietingly detailed close-up of William's face. The coarse visual texture makes tiny changes to his features unusually conspicuous. The developer also offers alternative palettes, letting the same troubling world appear in different restricted sets of color. Pixel art here supports the act of watching a person closely instead of merely supplying nostalgia.",
+      "Who's Lila? was released for Windows on February 23, 2022. The developer advertises 15 endings and more than 50 soundtrack pieces; Steam currently offers a playable demo. The old itch.io listing explicitly says the full game is no longer available there, so Steam is the reliable purchase route. I have not played the game; these details come from its developer's materials and storefront. For anyone interested in odd narrative interfaces and mysteries about performance and identity, consider its central discomfort: you can control a face, but can you control what someone reads into it?"
+    ],
+    "links": [
+      {
+        "label": "Who's Lila? on Steam (full game and free demo)",
+        "url": "https://store.steampowered.com/app/1697700/Whos_Lila/"
+      },
+      {
+        "label": "Who's Lila? official developer press kit",
+        "url": "https://whoslila-press.carrd.co/"
+      },
+      {
+        "label": "Developer's itch.io page (full game no longer sold there)",
+        "url": "https://garage-heathen.itch.io/whos-lila"
+      },
+      {
+        "label": "Developer's early design notes",
+        "url": "https://garage-heathen.itch.io/whos-lila-demo/devlog/213911/whos-lila"
+      }
+    ]
   }
 ]
