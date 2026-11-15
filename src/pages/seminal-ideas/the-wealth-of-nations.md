@@ -6,7 +6,7 @@ author: Adam Smith
 thinker: smith
 discipline: Economics and political thought
 year: 1776
-updated: '2026-10-29'
+updated: '2026-11-15'
 ---
 
 *Edition and scope: An Inquiry into the Nature and Causes of the Wealth of Nations first appeared in 1776. This guide closely reads Book I, chapters I–III, in the Econlib transcription of Edwin Cannan’s 1904 edition, based on Smith’s fifth edition (1789), rather than claiming to reproduce the first edition. It also reads the education discussion in Book V, chapter I, Part III, Article II, particularly the sequence beginning “Ought the public, therefore, to give no attention”. References below identify books, chapters, and named subdivisions, not screen positions. English original; no translator. Smith’s text and Cannan’s edition are public domain in the United States. This is a complete guided lesson on a defined central argument, not a survey of all five books. Examples, reconstructions, objections, and evaluations are editorial unless attributed.*
@@ -146,6 +146,8 @@ Samuel Fleischacker’s [Stanford Encyclopedia discussion of Smith’s political
 There is also a limit inside Smith’s historical geography. Chapter III combines a useful transport mechanism with sweeping rankings of peoples and claims about whole regions. Such claims do not become established history because they accompany a persuasive explanation of shipping costs. We can examine the mechanism without adopting the hierarchy or treating his account of world development as verified.
 
 ### Connections and a difficult disagreement
+
+[Bastiat on machinery and adjustment](/seminal-ideas/that-which-is-seen-and-that-which-is-not-seen/#machinery-and-the-speed-of-adjustment) asks where purchasing power goes when production uses less labor. Read his confident account of alternative employment beside Smith’s attention to workers’ capacities. Greater productive possibilities do not establish that the people displaced can promptly share the gains. This is an editorial comparison, not a claim of direct influence.
 
 [Mill on individuality](/seminal-ideas/on-liberty/#individuality-and-experiments-of-living) values the exercise of judgment in choosing a life. Smith’s education discussion raises a prior practical question: what opportunities to exercise judgment survive the working day? The comparison links two arguments about development without claiming identity or influence.
 

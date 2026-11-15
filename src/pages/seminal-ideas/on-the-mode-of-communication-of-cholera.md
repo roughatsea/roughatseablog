@@ -6,7 +6,7 @@ author: John Snow
 thinker: snow
 discipline: Epidemiology, scientific reasoning, and public health
 year: 1849
-updated: '2026-10-25'
+updated: '2026-11-15'
 ---
 
 *Edition and scope: the work first appeared in August 1849. This lesson reads the much enlarged second edition (London: John Churchill, 1855), reproduced in Project Gutenberg eBook 72894. The 1854 investigations discussed here are additions to that later edition, not discoveries reported in 1849. The text is English; no translation is involved. Page numbers refer to the printed 1855 pagination, not modern editions or screen positions. The focus is the transmission argument, Broad Street inquiry, south London comparison, objections, and preventive proposals. This is a historical and methodological lesson, not clinical advice; its examples and modern analytical vocabulary are editorial unless attributed.*
@@ -189,6 +189,7 @@ The confidence is intelligible: neighboring households can differ in water sourc
 
 These are editorial comparisons, not claims of documented influence.
 
+- [Bastiat’s missing alternative](/seminal-ideas/that-which-is-seen-and-that-which-is-not-seen/#a-missing-alternative-and-opportunity-cost) asks what a visible benefit prevents or replaces. His economic parables and Snow’s investigations both require a specified alternative, but an imagined transaction cannot substitute for evidence about a causal effect.
 - [Mill's harm principle](/seminal-ideas/on-liberty/#harm-principle) asks when interference can be justified. Snow's inquiry helps show a different task: establishing the pathway and magnitude of the harm being alleged. Evidence of danger does not alone choose the fairest restriction; a principle about authority cannot supply missing empirical facts.
 - [Wollstonecraft's effect-mistaken-for-cause argument](/seminal-ideas/a-vindication-of-the-rights-of-woman/#effect-mistaken-for-cause) challenges an inference from observed differences to natural inferiority. Snow challenges an inference from unhealthy places to harmful air. Both make rival causal explanations important, but Snow's water comparisons and Wollstonecraft's moral-political reasoning are not interchangeable methods.
 - [Du Bois's account of facts, lives, and form](/seminal-ideas/the-souls-of-black-folk/#a-hybrid-method-facts-lives-and-form) combines records with close inquiry into lived conditions. Snow likewise shows why a table depends on household investigation. Neither comparison licenses treating one vivid case as proof of a population claim.

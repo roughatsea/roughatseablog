@@ -85,6 +85,9 @@ export const thinkers = [{
 }, {
   slug: 'leavitt', name: 'Henrietta Swan Leavitt', years: '1868–1921',
   introduction: 'An American astronomer whose measurements of variable stars connected their periods to their light output. This guide examines the evidence, common-distance assumption, calibration, and remaining uncertainties in the 1912 circular crediting her investigation.'
+}, {
+  slug: 'bastiat', name: 'Frédéric Bastiat', years: '1801–1850',
+  introduction: 'A French economist and political writer who asks which alternatives disappear from a persuasive account of economic benefits. This guide follows his comparisons of damage, public services, machinery, and credit while examining their assumptions and moral limits.'
 }];
 
 export const works = [{
@@ -441,5 +444,17 @@ export const works = [{
     { name: 'Magnitudes and logarithmic structure', anchor: 'magnitudes-and-logarithmic-structure', question: 'What does changing a graph’s scale reveal?' },
     { name: 'Calibration before distance', anchor: 'calibration-before-distance', question: 'Which independent reference turns a relation into a measuring tool?' },
     { name: 'Residuals and unfinished inquiry', anchor: 'residuals-and-unfinished-inquiry', question: 'What can departures from a pattern teach us?' }
+  ]
+}, {
+  slug: 'that-which-is-seen-and-that-which-is-not-seen', thinker: 'bastiat', title: 'That Which Is Seen, and That Which Is Not Seen', year: 1850,
+  question: 'Which feasible alternative disappears from the story of a visible benefit?',
+  description: 'Read Bastiat on opportunity cost, the broken window, public services, machinery, credit, and the evidence needed to evaluate unseen effects.',
+  disciplines: ['Economics', 'Political thought'],
+  concepts: [
+    { name: 'A missing alternative and opportunity cost', anchor: 'a-missing-alternative-and-opportunity-cost', question: 'What is the best feasible use forgone by this choice?' },
+    { name: 'The broken window and net wealth', anchor: 'the-broken-window-and-net-wealth', question: 'Does paid repair make causing damage beneficial?' },
+    { name: 'Public spending and the value of its service', anchor: 'public-spending-and-the-value-of-its-service', question: 'What does this project supply that justifies its cost?' },
+    { name: 'Machinery and the speed of adjustment', anchor: 'machinery-and-the-speed-of-adjustment', question: 'Who receives the gains, and how long do displaced workers wait?' },
+    { name: 'Credit, saving, and real resources', anchor: 'credit-saving-and-real-resources', question: 'Does the financial arrangement add capacity or reassign what exists?' }
   ]
 }];
