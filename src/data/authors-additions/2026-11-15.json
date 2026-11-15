@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-15",
+  "authorId": "mccaffrey-anne",
+  "authorName": "Anne McCaffrey",
+  "selection": "Science fiction and fantasy from an American-born Irish writer, following yesterday’s Canadian literary-fiction addition.",
+  "sources": [
+    {
+      "url": "https://sf-encyclopedia.com/entry/mccaffrey_anne",
+      "use": "First English-language book years for all eight selected Pern novels; Dragonflight’s earlier Analog components; Restoree (1967); solo Pern scope through The Skies of Pern (2001), followed by collaborative continuations."
+    },
+    {
+      "url": "https://sfwa.org/nebulas/grand-master/?seq=22",
+      "use": "Lifespan: 1 April 1926–21 November 2011; American-born Irish writer associated with the Dragonriders of Pern."
+    },
+    {
+      "url": "https://us.macmillan.com/author/annemccaffrey/",
+      "use": "Publisher corroborates birth in 1926, first novel in 1967, residence in Ireland and death in 2011."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1926–2011",
+    "publishingSpan": "1968–2001",
+    "proxy": "Solo Pern novel first-book-publication span, from Dragonflight to The Skies of Pern, used as a publishing proxy rather than a claim of uninterrupted work or a full-career span. Markers use first English-language book years, not composition, translation, reissue dates or Pern’s fictional chronology. Dragonflight (1968) incorporates Weyr Search (October 1967, Analog) and Dragonrider (December 1967–January 1968, Analog); those magazine appearances are distinct from the book marker. Her first novel, Restoree (1967), belongs outside Pern. Short fiction, collections, other series and collaborative continuations are excluded from this scoped bar.",
+    "workDates": [
+      [
+        1968,
+        "Dragonflight"
+      ],
+      [
+        1971,
+        "Dragonquest"
+      ],
+      [
+        1978,
+        "The White Dragon"
+      ],
+      [
+        1988,
+        "Dragonsdawn"
+      ],
+      [
+        1989,
+        "The Renegades of Pern"
+      ],
+      [
+        1991,
+        "All the Weyrs of Pern"
+      ],
+      [
+        1994,
+        "The Dolphins of Pern"
+      ],
+      [
+        2001,
+        "The Skies of Pern"
+      ]
+    ],
+    "chartRange": "The existing collection-derived 1525–2025 domain contains her lifespan and publishing span; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
