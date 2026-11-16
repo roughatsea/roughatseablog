@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-16",
+  "authorId": "moliere",
+  "authorName": "Molière",
+  "selection": "Seventeenth-century French comedy follows yesterday’s American-born Irish science-fiction author.",
+  "sources": [
+    {
+      "url": "https://comedie-francaise.fr/chronologie",
+      "use": "Eight premiere years; Tartuffe’s successive versions; 1622 baptism and 1673 death."
+    },
+    {
+      "url": "https://www.chateauversailles.fr/decouvrir/histoire/grands-personnages/moliere",
+      "use": "Lifespan corroboration; 1664 court Tartuffe and 1670 Bourgeois gentilhomme."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1622–1673. The 1622 year is conventional; January 15 records baptism, not a verified exact birth date.",
+    "publishingSpan": "1659–1673",
+    "proxy": "Selected Paris-and-court comedy premiere span, from Les Précieuses ridicules to Le Malade imaginaire, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. Markers date first French stage productions, not composition, printed editions, serialization, later revivals or translations; French titles are retained. Tartuffe’s 1664 marker denotes its early three-act version at court, before the revised public versions of 1667 and 1669. Earlier provincial plays and performances are outside this selection. Later printed editions and posthumous productions do not extend the bar.",
+    "workDates": [
+      [
+        1659,
+        "Les Précieuses ridicules (stage premiere)"
+      ],
+      [
+        1662,
+        "L’École des femmes (stage premiere)"
+      ],
+      [
+        1664,
+        "Tartuffe (early three-act court version)"
+      ],
+      [
+        1665,
+        "Dom Juan (stage premiere)"
+      ],
+      [
+        1666,
+        "Le Misanthrope (stage premiere)"
+      ],
+      [
+        1668,
+        "L’Avare (stage premiere)"
+      ],
+      [
+        1670,
+        "Le Bourgeois gentilhomme (stage premiere)"
+      ],
+      [
+        1673,
+        "Le Malade imaginaire (stage premiere)"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
