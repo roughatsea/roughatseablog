@@ -6,7 +6,7 @@ author: Frederick Douglass
 thinker: douglass
 discipline: Political thought, ethics, and rhetoric
 year: 1852
-updated: '2026-10-31'
+updated: '2026-11-16'
 ---
 
 *Edition and scope: Douglass delivered this English-language oration at Corinthian Hall, Rochester, New York, on July 5, 1852. It was printed that year as Oration, Delivered in Corinthian Hall, Rochester, by Frederick Douglass, July 5th, 1852 (Rochester: Lee, Mann & Co.). The familiar question used here as the title is its conventional modern title. This lesson reads the complete online transcription at the American Revolution Institute, which identifies Philip S. Foner’s edited Frederick Douglass: Selected Speeches and Writings (Lawrence Hill, 1999), pp. 188–206, as its source. No translation is involved. We have not assigned the online wording the pagination of the 1852 pamphlet. Because the speech has no numbered chapters, references below use explicitly editorial reading divisions with searchable paragraph openings; these are locators, not Douglass’s own section headings. The 1852 speech is public domain in the United States. Examples, reconstructions, and evaluations are editorial unless attributed.*
@@ -234,6 +234,8 @@ Read [Du Bois on freedom after emancipation](/seminal-ideas/the-souls-of-black-f
 Compare [Wollstonecraft on educated dependence](/seminal-ideas/a-vindication-of-the-rights-of-woman/#educated-dependence) with Douglass’s account of restrictions on literacy. Both make the social formation of capacities relevant to judgments about people. Their institutions and histories differ.
 
 Then read [Tagore on moral anaesthesia](/seminal-ideas/nationalism/#moral-anaesthesia). National self-praise can obscure harm done in the nation’s name. Douglass also claims national founding principles as a resource; Tagore questions the political organization of the nation more broadly. Similarity does not establish influence.
+
+Read [Truth on labor as a counterexample](/seminal-ideas/address-at-the-womans-rights-convention/#labor-as-a-counterexample). Her reported 1851 address and Douglass’s later oration challenge degrading accounts through capacities already exercised. Neither should be converted into a demand that excluded people earn rights through exceptional achievement. This is an editorial comparison, not a documented influence.
 
 ## Sources
 

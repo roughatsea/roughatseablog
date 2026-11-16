@@ -88,6 +88,9 @@ export const thinkers = [{
 }, {
   slug: 'bastiat', name: 'Frédéric Bastiat', years: '1801–1850',
   introduction: 'A French economist and political writer who asks which alternatives disappear from a persuasive account of economic benefits. This guide follows his comparisons of damage, public services, machinery, and credit while examining their assumptions and moral limits.'
+}, {
+  slug: 'sojourner-truth', name: 'Sojourner Truth', years: 'c. 1797–1883',
+  introduction: 'An abolitionist, religious speaker, and advocate for women’s rights who tests reasons for exclusion through experience and interpretation. This guide reads the reported 1851 Akron address while keeping competing written representations of her voice distinct.'
 }];
 
 export const works = [{
@@ -456,5 +459,17 @@ export const works = [{
     { name: 'Public spending and the value of its service', anchor: 'public-spending-and-the-value-of-its-service', question: 'What does this project supply that justifies its cost?' },
     { name: 'Machinery and the speed of adjustment', anchor: 'machinery-and-the-speed-of-adjustment', question: 'Who receives the gains, and how long do displaced workers wait?' },
     { name: 'Credit, saving, and real resources', anchor: 'credit-saving-and-real-resources', question: 'Does the financial arrangement add capacity or reassign what exists?' }
+  ]
+}, {
+  slug: 'address-at-the-womans-rights-convention', thinker: 'sojourner-truth', title: 'Address at the Woman’s Rights Convention', year: 1851,
+  question: 'Does the reason offered for excluding someone actually justify the exclusion?',
+  description: 'Read Truth on labor, rights, intellectual authority, religious interpretation, and the source criticism required by competing reports of a speech.',
+  disciplines: ['Political thought', 'Feminist thought', 'Rhetoric'],
+  concepts: [
+    { name: 'Labor as a counterexample', anchor: 'labor-as-a-counterexample', question: 'What can one person’s experience establish against a general claim?' },
+    { name: 'The pint and the claim to rights', anchor: 'the-pint-and-the-claim-to-rights', question: 'Would a difference in capacity justify withholding opportunity?' },
+    { name: 'Hearing, literacy, and intellectual authority', anchor: 'hearing-literacy-and-intellectual-authority', question: 'Does the absence of a credential establish an absence of reasoning?' },
+    { name: 'Scripture as internal criticism', anchor: 'scripture-as-internal-criticism', question: 'Do shared commitments support the exclusion attributed to them?' },
+    { name: 'Rights without exclusive possession of power', anchor: 'rights-without-exclusive-possession-of-power', question: 'Does losing exclusive authority mean losing a justified right?' }
   ]
 }];

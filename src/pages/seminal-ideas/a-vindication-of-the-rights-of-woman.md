@@ -6,7 +6,7 @@ author: Mary Wollstonecraft
 thinker: wollstonecraft
 discipline: Political philosophy, education, and feminist thought
 year: 1792
-updated: '2026-10-29'
+updated: '2026-11-16'
 ---
 
 *Reading references use Wollstonecraft's Dedication, Introduction, and numbered chapters I–XIII. Chapter XIII is divided into six sections. The primary text is the English Project Gutenberg eBook 3420; no translator is involved, and its digital transcription supplies no stable first-edition page numbers. The “Brief Sketch” before the Dedication is an unsigned biographical addition, not part of Wollstonecraft's argument. Examples, objections, comparisons, and present-day applications are editorial unless explicitly attributed.*
@@ -268,6 +268,8 @@ Compare [Smith on learned abilities and natural differences](/seminal-ideas/the-
 Try one practical exercise. When a group is described as naturally lacking confidence, discipline, leadership, or aspiration, list the opportunities its members have had to practice those capacities and the penalties attached to displaying them. Do not assume the structural explanation is automatically correct. Use it to identify what evidence the naturalizing claim omitted.
 
 For a later inquiry into educational conditions, read [Cooper on encouragement made material](/seminal-ideas/the-higher-education-of-women/#encouragement-made-material). Her essay examines how different expectations and financial support shape the opportunities offered to Black women. This is an editorial comparison, not a claim of direct influence.
+
+Compare [Truth’s 1851 Akron address](/seminal-ideas/address-at-the-womans-rights-convention/#the-pint-and-the-claim-to-rights). Its reported pint-and-quart analogy tests whether a supposed difference in capacity would justify withholding opportunity. Set that conditional challenge beside Wollstonecraft’s account of how unequal formation produces apparent differences. This is an editorial comparison, not a claim of direct influence.
 
 ## Sources
 
