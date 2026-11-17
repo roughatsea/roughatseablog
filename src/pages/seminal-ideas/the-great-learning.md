@@ -6,7 +6,7 @@ author: Early Confucian tradition; authorship disputed
 thinker: great-learning-tradition
 discipline: Chinese philosophy and political ethics
 year: 'Ancient China; date uncertain'
-updated: '2026-10-26'
+updated: '2026-11-17'
 ---
 
 *Edition and scope: Dàxué (大學), conventionally The Great Learning, circulated within the Book of Rites (Lǐjì) before its later standing as one of the Four Books. Its composition has no securely established single author or original publication year. Traditional attributions connect its opening with Confucius and its commentary with Zengzi; these are attributions, not verified authorship. This lesson reads James Legge’s English translation, identified by the consulted reproductions as the revised 1893 Chinese Classics text. Legge’s first volume originally appeared in 1861; neither date is the ancient work’s composition date. We read the opening and transmitted commentary in full, using the Tianmu reproduction and checking the opening against UC San Diego’s bilingual text. The latter omits the commentary. References use the opening’s numbered paragraphs in the UCSD text and distinctive opening words or topics in the commentary; they do not claim identical pagination across editions. The modern introductions are separate from the ancient text. Definitions, examples, argument reconstructions, and evaluations below are editorial unless attributed.*
@@ -213,6 +213,8 @@ For a practical exercise, choose one rule you impose on others. Write down the e
 For a different account of cultivated conduct, read [the Dhammapada on responsibility without moral outsourcing](/seminal-ideas/the-dhammapada/#responsibility-without-moral-outsourcing). Both ask whether instruction becomes practice; the Buddhist anthology’s aim of liberation differs from this work’s movement toward household and political order. This is a comparison, not a claim of historical influence.
 
 Compare [Okakura on adjustment and daily practice](/seminal-ideas/the-book-of-tea/#adjustment-rather-than-a-fixed-formula). His account of tea asks how an ideal becomes a way of acting, but its aesthetic purposes differ from this classic’s program of moral and political cultivation. This is a comparison of questions, not a documented historical connection.
+
+Compare [Mencius on good nature and actual conduct](/seminal-ideas/mencius/#good-nature-and-actual-conduct). His account asks what moral education develops in a person and how destructive conditions can obscure that capacity. Both works connect cultivation with government; this is a comparison of arguments, not a claim of a settled chronology or direct borrowing between the transmitted texts.
 
 ## Sources
 

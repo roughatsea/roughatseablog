@@ -91,6 +91,9 @@ export const thinkers = [{
 }, {
   slug: 'sojourner-truth', name: 'Sojourner Truth', years: 'c. 1797–1883',
   introduction: 'An abolitionist, religious speaker, and advocate for women’s rights who tests reasons for exclusion through experience and interpretation. This guide reads the reported 1851 Akron address while keeping competing written representations of her voice distinct.'
+}, {
+  slug: 'mencius', name: 'Mencius (Mengzi)', years: '4th century BCE; dates uncertain',
+  introduction: 'A Confucian philosopher who asks how human moral beginnings can become dependable conduct. This guide examines good nature, damaged development, reflection, selective compassion, and the conditions of humane government while preserving uncertainties about the transmitted collection.'
 }];
 
 export const works = [{
@@ -471,5 +474,17 @@ export const works = [{
     { name: 'Hearing, literacy, and intellectual authority', anchor: 'hearing-literacy-and-intellectual-authority', question: 'Does the absence of a credential establish an absence of reasoning?' },
     { name: 'Scripture as internal criticism', anchor: 'scripture-as-internal-criticism', question: 'Do shared commitments support the exclusion attributed to them?' },
     { name: 'Rights without exclusive possession of power', anchor: 'rights-without-exclusive-possession-of-power', question: 'Does losing exclusive authority mean losing a justified right?' }
+  ]
+}, {
+  slug: 'mencius', thinker: 'mencius', title: 'Mencius (Mengzi)', year: 'Ancient China; compilation date uncertain',
+  question: 'What must happen for a beginning of concern to become dependable conduct?',
+  description: 'Read Mencius on human nature, the four beginnings of virtue, Ox Mountain, sustained cultivation, and the material conditions of humane government.',
+  disciplines: ['Chinese philosophy', 'Ethics', 'Political thought'],
+  concepts: [
+    { name: 'Good nature and actual conduct', anchor: 'good-nature-and-actual-conduct', question: 'Does bad behavior reveal an original incapacity for good?' },
+    { name: 'The four beginnings of virtue', anchor: 'the-four-beginnings-of-virtue', question: 'What separates a humane response from a dependable virtue?' },
+    { name: 'Ox Mountain and damaged development', anchor: 'ox-mountain-and-damaged-development', question: 'Which history disappears when present damage is treated as original nature?' },
+    { name: 'Reflection and sustained cultivation', anchor: 'reflection-and-sustained-cultivation', question: 'How does a capacity become a sustained way of acting?' },
+    { name: 'Extending care into government', anchor: 'extending-care-into-government', question: 'What does a humane ruler owe people before demanding better conduct?' }
   ]
 }];

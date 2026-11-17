@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-17",
+  "workId": "mencius",
+  "thinkerId": "mencius",
+  "lessonPath": "src/pages/seminal-ideas/mencius.md",
+  "publicPath": "/seminal-ideas/mencius/",
+  "sourceUrls": [
+    "https://oll.libertyfund.org/titles/legge-the-chinese-classics-vol-2-the-life-and-teachings-of-mencius",
+    "https://oll-resources.s3.us-east-2.amazonaws.com/oll3/store/titles/2269/Legge_1430-02_EBk_v6.0.pdf",
+    "https://plato.stanford.edu/entries/mencius/",
+    "https://iep.utm.edu/mencius/"
+  ]
+}

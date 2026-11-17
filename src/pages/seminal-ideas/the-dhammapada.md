@@ -6,7 +6,7 @@ author: Early Buddhist tradition; verses attributed to the Buddha
 thinker: early-buddhist-tradition
 discipline: Buddhist philosophy and ethics
 year: 'Ancient South Asia; compilation date uncertain'
-updated: '2026-10-30'
+updated: '2026-11-17'
 ---
 
 *Edition and scope: The Dhammapada is an anthology transmitted within the Theravada Pali canon, not a book with a securely dated first publication or a verified single compiler. Its verses are traditionally attributed to the Buddha; that attribution does not establish a verbatim contemporary record. This lesson closely reads chapters I–III, X, XII, XVII, and XX in F. Max Müller’s 1881 English translation from Pali, published in The Sacred Books of the East, volume X, part I. Project Gutenberg’s transcription omits the introduction, notes, and index. Chapter-specific reproductions of the same translation are linked below. References use chapter and verse numbers, not pagination. Thanissaro Bhikkhu’s 1997 translation and introduction supply a comparison, especially for verses 277–279; they are not silently substituted for Müller. The 1881 translation is public domain in the United States. Examples, reconstructions, objections, and evaluations are editorial unless attributed.*
@@ -187,6 +187,8 @@ The observations about response can invite empirical questions. Does a particula
 4. Read **[XII, 157–166](https://www.dharmadao.press/dhammapada/12/)** alongside **[XX, 273–289](https://www.dharmadao.press/dhammapada/20/)**. Compare the latter with [Thanissaro’s chapter XX](https://accesstoinsight.org/tipitaka/kn/dhp/dhp.20.than), especially 277–279. Note where a change of English vocabulary changes the question you think is being answered.
 
 Before sending a difficult reply, identify the sentence that protects something necessary and the sentence whose main purpose is to wound. Decide whether both belong in the message.
+
+Compare [Mencius on reflection and sustained cultivation](/seminal-ideas/mencius/#reflection-and-sustained-cultivation). Both distinguish instruction or capacity from sustained conduct. Mencius’s account of good human nature and humane government differs from this anthology’s orientation toward liberation; the comparison does not make their aims or accounts of persons interchangeable.
 
 ## Sources
 
