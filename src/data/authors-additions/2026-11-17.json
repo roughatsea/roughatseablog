@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-17",
+  "authorId": "gordimer-nadine",
+  "authorName": "Nadine Gordimer",
+  "selection": "South African literary fiction follows seventeenth-century French comedy.",
+  "sources": [
+    {
+      "url": "https://research.hrc.utexas.edu/fasearch/findingAid.cfm?eadid=00048",
+      "use": "All eight novel years; first novel, earlier story collection, lifespan years."
+    },
+    {
+      "url": "https://thebookerprizes.com/the-booker-library/books/the-conservationist",
+      "use": "Jonathan Cape publication dated 31 October 1974; supports 1974 despite Macmillan’s author biography listing 1975."
+    },
+    {
+      "url": "https://thebookerprizes.com/the-booker-library/authors/nadine-gordimer",
+      "use": "Final novel No Time Like the Present (2012); death in 2014."
+    },
+    {
+      "url": "https://us.macmillan.com/author/nadinegordimer/",
+      "use": "Publisher corroborates lifespan 1923–2014 and seven selected novel dates; its Conservationist year differs from the archive and Booker records."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1923–2014; only years used, no exact day asserted.",
+    "publishingSpan": "1953–2012",
+    "proxy": "Lifetime novel first-book-publication span, from The Lying Days to No Time Like the Present, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The eight selected markers use original English-language book years, not composition, periodical serialization, later national editions, reissues or translations. The Conservationist uses the 1974 Jonathan Cape publication. Earlier short fiction and story collections, including Face to Face (1949), are outside this novel-only bar. Essays, journalism, lectures, later story collections and posthumous releases are also excluded; the endpoint marks her final novel, not the end of all literary activity.",
+    "workDates": [
+      [
+        1953,
+        "The Lying Days"
+      ],
+      [
+        1958,
+        "A World of Strangers"
+      ],
+      [
+        1974,
+        "The Conservationist"
+      ],
+      [
+        1979,
+        "Burger’s Daughter"
+      ],
+      [
+        1981,
+        "July’s People"
+      ],
+      [
+        1990,
+        "My Son’s Story"
+      ],
+      [
+        2001,
+        "The Pickup"
+      ],
+      [
+        2012,
+        "No Time Like the Present"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
