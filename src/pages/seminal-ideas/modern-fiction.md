@@ -6,7 +6,7 @@ author: Virginia Woolf
 thinker: woolf
 discipline: Literary criticism and aesthetics
 year: 1925
-updated: '2026-11-04'
+updated: '2026-11-18'
 ---
 
 *Edition and scope: This lesson reads the complete “Modern Fiction” in Virginia Woolf’s The Common Reader, New York: Harcourt, Brace and Company, 1925, as transcribed in Project Gutenberg eBook 64457. English original; no translator. An earlier version, “Modern Novels,” appeared in the Times Literary Supplement on 10 April 1919, pp. 189–190. The registry uses 1925 for the collected version taught here, rather than silently treating the versions as identical. The collected text preserves a footnote dating its discussion of the still-serializing Ulysses to April 1919. References below identify the essay and passage subjects; the transcription does not supply dependable printed page breaks. Examples, conceptual labels, and evaluations are editorial unless attributed.*
@@ -212,6 +212,8 @@ Return to the imagined novel’s perfectly furnished room. Choose one detail its
 Compare [Okakura on cultivated appreciation](/seminal-ideas/the-book-of-tea/#appreciation-as-a-cultivated-encounter). His account of artistic reception asks what a spectator must bring to an encounter, while his preference for particular forms also needs the scrutiny Woolf gives to methods and their exclusions. This is an editorial comparison, not a claim of influence.
 
 Compare [Hume on cultivated taste](/seminal-ideas/of-the-standard-of-taste/#practice-comparison-and-good-sense). His defense of rules answerable to experience offers a comparison with Woolf’s refusal to make one method compulsory. This is a thematic comparison, not a claim of direct influence.
+
+Compare [Mansfield on perspective and the limits of sympathy](/seminal-ideas/the-garden-party/#perspective-and-the-limits-of-sympathy). The Garden Party lets readers experience Laura’s changing attention while examining what her perspective excludes. This is a comparison of literary methods, not a claim that the story implements Woolf’s essay as a program.
 
 ## Sources
 

@@ -94,6 +94,9 @@ export const thinkers = [{
 }, {
   slug: 'mencius', name: 'Mencius (Mengzi)', years: '4th century BCE; dates uncertain',
   introduction: 'A Confucian philosopher who asks how human moral beginnings can become dependable conduct. This guide examines good nature, damaged development, reflection, selective compassion, and the conditions of humane government while preserving uncertainties about the transmitted collection.'
+}, {
+  slug: 'mansfield', name: 'Katherine Mansfield', years: '1888–1923',
+  introduction: 'A New Zealand writer whose short fiction examines perception, relationships, and the pressures beneath ordinary occasions. This guide follows The Garden Party through class, selective sympathy, beauty, charity, and an unsettled encounter with death.'
 }];
 
 export const works = [{
@@ -486,5 +489,17 @@ export const works = [{
     { name: 'Ox Mountain and damaged development', anchor: 'ox-mountain-and-damaged-development', question: 'Which history disappears when present damage is treated as original nature?' },
     { name: 'Reflection and sustained cultivation', anchor: 'reflection-and-sustained-cultivation', question: 'How does a capacity become a sustained way of acting?' },
     { name: 'Extending care into government', anchor: 'extending-care-into-government', question: 'What does a humane ruler owe people before demanding better conduct?' }
+  ]
+}, {
+  slug: 'the-garden-party', thinker: 'mansfield', title: 'The Garden Party', year: 1922,
+  question: 'What does a powerful feeling let us understand, and what can it leave unchanged?',
+  description: 'Read Mansfield on class perception, beauty and attention, the claims of neighbors, imperfect charity, and an unfinished moment of insight.',
+  disciplines: ['Literature', 'Ethics', 'Modernism'],
+  concepts: [
+    { name: 'Perspective and the limits of sympathy', anchor: 'perspective-and-the-limits-of-sympathy', question: 'Does feeling close to someone establish that we understand their circumstances?' },
+    { name: 'Beauty and the redirection of attention', anchor: 'beauty-and-the-redirection-of-attention', question: 'Can a pleasing experience displace a question without answering it?' },
+    { name: 'Moral distance and the claims of neighbors', anchor: 'moral-distance-and-the-claims-of-neighbors', question: 'What follows when nearby suffering becomes known?' },
+    { name: 'Charity and the recipient’s experience', anchor: 'charity-and-the-recipients-experience', question: 'Who decides what makes a gift helpful?' },
+    { name: 'Encounter and the unfinished ending', anchor: 'encounter-and-the-unfinished-ending', question: 'What distinguishes a moment of insight from a lasting change?' }
   ]
 }];
