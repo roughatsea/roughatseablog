@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-18",
+  "authorId": "ende-michael",
+  "authorName": "Michael Ende",
+  "selection": "German fantasy follows South African literary fiction.",
+  "sources": [
+    {
+      "url": "https://michaelende.de/en/author/bibliography",
+      "use": "All five original German publication years and the later books excluded by this selection."
+    },
+    {
+      "url": "https://michaelende.de/en/author/biography/michael-ende-0",
+      "use": "Lifespan: 12 November 1929–28 August 1995; German author."
+    },
+    {
+      "url": "https://michaelende.de/en/book/jim-button-and-luke-engine-driver",
+      "use": "Original Thienemann edition, 1960."
+    },
+    {
+      "url": "https://michaelende.de/en/book/jim-button-and-wild-13",
+      "use": "Original Thienemann edition, 1962."
+    },
+    {
+      "url": "https://www.michaelende.de/buch/momo",
+      "use": "Original edition explicitly dated 1973."
+    },
+    {
+      "url": "https://www.thienemann.de/fileadmin/Thienemann-Esslinger.de/Verlag/Paedagogen/Unterrichtsmaterialien/Momo.pdf",
+      "use": "Publisher independently corroborates Momo (1973), distinguished from its 2013 school edition."
+    },
+    {
+      "url": "https://michaelende.de/en/book/neverending-story",
+      "use": "German first publication 1979; English Doubleday edition 1983."
+    },
+    {
+      "url": "https://michaelende.de/buch/der-satanarchaeoluegenialkohoellische-wunschpunsch",
+      "use": "Original German edition of The Night of Wishes, 1989."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1929–1995",
+    "publishingSpan": "1960–1989",
+    "proxy": "Selected fantasy-novel first-book-publication window, from Jim Button and Luke the Engine Driver to The Night of Wishes, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The five markers use original German book years, not composition, serialization, later editions, translations or adaptations; English titles are supplied for readability. Momo uses its documented 1973 original edition. The Neverending Story appeared in German in 1979; the cited English Doubleday edition followed in 1983. Picture books, shorter fiction, collections, plays, poetry, nonfiction and posthumous releases are outside this selection, so later books do not extend this scoped bar.",
+    "workDates": [
+      [
+        1960,
+        "Jim Button and Luke the Engine Driver"
+      ],
+      [
+        1962,
+        "Jim Button and the Wild 13"
+      ],
+      [
+        1973,
+        "Momo"
+      ],
+      [
+        1979,
+        "The Neverending Story"
+      ],
+      [
+        1989,
+        "The Night of Wishes"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
