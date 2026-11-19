@@ -97,6 +97,9 @@ export const thinkers = [{
 }, {
   slug: 'mansfield', name: 'Katherine Mansfield', years: '1888–1923',
   introduction: 'A New Zealand writer whose short fiction examines perception, relationships, and the pressures beneath ordinary occasions. This guide follows The Garden Party through class, selective sympathy, beauty, charity, and an unsettled encounter with death.'
+}, {
+  slug: 'harvey', name: 'William Harvey', years: '1578–1657',
+  introduction: 'An English physician and anatomist whose circulation argument connects heart action, quantities, interrupted flow, and venous valves. This guide distinguishes the strength of the combined evidence from exact measurement, unseen connections, historical treatment claims, and the costs of experimentation.'
 }];
 
 export const works = [{
@@ -501,5 +504,17 @@ export const works = [{
     { name: 'Moral distance and the claims of neighbors', anchor: 'moral-distance-and-the-claims-of-neighbors', question: 'What follows when nearby suffering becomes known?' },
     { name: 'Charity and the recipient’s experience', anchor: 'charity-and-the-recipients-experience', question: 'Who decides what makes a gift helpful?' },
     { name: 'Encounter and the unfinished ending', anchor: 'encounter-and-the-unfinished-ending', question: 'What distinguishes a moment of insight from a lasting change?' }
+  ]
+}, {
+  slug: 'on-the-motion-of-the-heart-and-blood', thinker: 'harvey', title: 'On the Motion of the Heart and Blood in Animals', year: 1628,
+  question: 'How can quantities and directional tests establish a circuit before every connection is visible?',
+  description: 'Read Harvey on the heart’s contraction, throughput and return, interrupted flow, venous valves, and the limits of a successful demonstration.',
+  disciplines: ['Physiology', 'History of science', 'Scientific reasoning'],
+  concepts: [
+    { name: 'Observing motion and identifying its phase', anchor: 'observing-motion-and-identifying-its-phase', question: 'Which coordinated observations distinguish filling from ejection?' },
+    { name: 'Quantity and the necessity of return', anchor: 'quantity-and-the-necessity-of-return', question: 'How can total passage exceed the amount present at once?' },
+    { name: 'Intervention and the direction of flow', anchor: 'intervention-and-the-direction-of-flow', question: 'What does changing an obstruction reveal, and what might it disturb?' },
+    { name: 'Valves and competing explanations', anchor: 'valves-and-competing-explanations', question: 'Which proposed function explains orientation and behavior together?' },
+    { name: 'Converging evidence and unseen connections', anchor: 'converging-evidence-and-unseen-connections', question: 'What can a strong overall explanation leave unresolved?' }
   ]
 }];

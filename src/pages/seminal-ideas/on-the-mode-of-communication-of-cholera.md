@@ -6,7 +6,7 @@ author: John Snow
 thinker: snow
 discipline: Epidemiology, scientific reasoning, and public health
 year: 1849
-updated: '2026-11-15'
+updated: '2026-11-19'
 ---
 
 *Edition and scope: the work first appeared in August 1849. This lesson reads the much enlarged second edition (London: John Churchill, 1855), reproduced in Project Gutenberg eBook 72894. The 1854 investigations discussed here are additions to that later edition, not discoveries reported in 1849. The text is English; no translation is involved. Page numbers refer to the printed 1855 pagination, not modern editions or screen positions. The focus is the transmission argument, Broad Street inquiry, south London comparison, objections, and preventive proposals. This is a historical and methodological lesson, not clinical advice; its examples and modern analytical vocabulary are editorial unless attributed.*
@@ -256,6 +256,8 @@ For the next claim that a change “worked,” write down the outcome, the denom
 Compare [Lovelace on execution and error](/seminal-ideas/notes-on-the-analytical-engine/#execution-error-and-the-limits-of-a-claim). A calculation can execute its instructions correctly while the instructions or inputs misrepresent the intended problem. Snow’s comparisons make the corresponding demand on measurements and denominators concrete. This is a methodological comparison, not a claim of direct influence.
 
 Compare [Leavitt’s investigation of variable stars](/seminal-ideas/periods-of-25-variable-stars/#common-distance-as-a-working-assumption). Her shared-distance comparison reduces a different ambiguity: whether apparent brightness differences reflect output or distance. Both inquiries depend on explaining which differences a comparison holds approximately constant. This is an editorial comparison, not a claim of direct influence.
+
+Compare [Harvey on converging evidence and unseen connections](/seminal-ideas/on-the-motion-of-the-heart-and-blood/#converging-evidence-and-unseen-connections). His account joins quantity, arterial delivery, and venous return before directly observing the smallest connecting vessels. Snow investigates a different unseen process through exposure inquiries and comparisons; this is a methodological comparison, not a claim of direct influence.
 
 ## Sources
 
