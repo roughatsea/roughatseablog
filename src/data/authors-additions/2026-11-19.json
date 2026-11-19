@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-19",
+  "authorId": "banks-iain-m",
+  "authorName": "Iain M. Banks",
+  "selection": "Scottish science fiction follows German fantasy.",
+  "sources": [
+    {
+      "url": "https://iainbanks.co.uk/breaking-into-banks/",
+      "use": "All eight first-publication years; Culture scope and exclusion of The State of the Art collection and non-Culture titles."
+    },
+    {
+      "url": "https://iainbanks.co.uk/biography/",
+      "use": "Scottish author’s lifespan, 1954–2013; Iain Banks and Iain M. Banks name variants refer to one author."
+    },
+    {
+      "url": "https://sf-encyclopedia.com/entry/banks_iain_m",
+      "use": "Lifespan 16 February 1954–9 June 2013; London first editions for all eight markers; early SF drafts; posthumous 2023 Drawings."
+    },
+    {
+      "url": "https://www.hachettebookgroup.com/contributor/iain-m-banks/",
+      "use": "Publisher corroborates The Wasp Factory (1984) and Consider Phlebas (1987) as distinct publishing milestones."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1954–2013",
+    "publishingSpan": "1987–2012",
+    "proxy": "Culture-novel first-book-publication span, from Consider Phlebas to The Hydrogen Sonata, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The eight selected markers use original English-language book years, not composition, serialization, later national editions, translations or the Culture’s internal chronology. Some early science-fiction drafts predate his 1984 debut as Iain Banks; that does not move these publication dates. The State of the Art short-fiction collection (1991), non-Culture science fiction and his other novels are outside this scoped bar. Poetry, nonfiction and posthumous releases—including The Culture: The Drawings (2023)—are also excluded.",
+    "workDates": [
+      [
+        1987,
+        "Consider Phlebas"
+      ],
+      [
+        1988,
+        "The Player of Games"
+      ],
+      [
+        1990,
+        "Use of Weapons"
+      ],
+      [
+        1996,
+        "Excession"
+      ],
+      [
+        2000,
+        "Look to Windward"
+      ],
+      [
+        2008,
+        "Matter"
+      ],
+      [
+        2010,
+        "Surface Detail"
+      ],
+      [
+        2012,
+        "The Hydrogen Sonata"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
