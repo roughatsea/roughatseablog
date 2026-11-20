@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-20",
+  "authorId": "lu-xun",
+  "authorName": "Lu Xun",
+  "selection": "Chinese literary fiction and satire follows Scottish science fiction.",
+  "sources": [
+    {
+      "url": "https://www.cuhk.edu.hk/renditions/authors/luxun.html",
+      "use": "Lifespan 1881–1936; Diary of a Madman (1918); Ah Q (1921–1922); English Old Tales Retold edition (1961)."
+    },
+    {
+      "url": "https://hkupress.hku.hk/image/catalog/pdf-preview/9789622098251.pdf",
+      "use": "Jeremy Tambling, Madmen and Other Survivors: early stories appeared in periodicals before Call to Arms (1923) and Wandering (1926); Old Tales Retold completed in 1935."
+    },
+    {
+      "url": "https://assets.cambridge.org/97811070/69497/frontmatter/9781107069497_frontmatter.pdf",
+      "use": "Wu Fuhui, A Cultural History of Modern Chinese Literature, figures 15.12 and 16.1: Call to Arms original edition August 1923; Ah Q serial began 4 December 1921."
+    },
+    {
+      "url": "https://madeinchinajournal.com/2017/12/24/resurrecting-the-dead/",
+      "use": "Ivan Franceschini: Old Tales Retold published January 1936, before the author’s death."
+    },
+    {
+      "url": "https://www.simonandschuster.com/books/Call-to-Arms/Lu-Xun/9781476774923",
+      "use": "Publisher corroborates lifespan 25 September 1881–19 October 1936 and inclusion of Diary of a Madman and Ah Q in Call to Arms; 2014 ebook date is not the original collection date."
+    },
+    {
+      "url": "https://icsin.org/activity/show/conference-the-true-story-of-ah-q-centenary-13-january-1030-am-ist-3-pm-ist-zoom-webinar",
+      "use": "Ah Q first appeared as a serial from December 1921 through February 1922."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1881–1936",
+    "publishingSpan": "1918–1936",
+    "proxy": "Selected vernacular-fiction publication span, from Diary of a Madman to Old Tales Retold, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. Markers use original Chinese periodical appearances or first collection editions, as labeled, not composition or English translation. The True Story of Ah Q began serialization in December 1921 and concluded in February 1922; its marker dates the opening installment. Call to Arms (1923) collects earlier stories, including Diary of a Madman and Ah Q. Old Tales Retold was completed in 1935 but published in January 1936, during his lifetime; the cited English edition dates to 1961. Earlier writing, prose poetry, essays, scholarship, translation work and posthumous editions are outside this scope.",
+    "workDates": [
+      [
+        1918,
+        "Diary of a Madman (periodical publication)"
+      ],
+      [
+        1921,
+        "The True Story of Ah Q (serialization begins)"
+      ],
+      [
+        1923,
+        "Call to Arms (Nahan; story collection)"
+      ],
+      [
+        1926,
+        "Wandering (Panghuang; story collection)"
+      ],
+      [
+        1936,
+        "Old Tales Retold (Gushi xinbian; story collection)"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
