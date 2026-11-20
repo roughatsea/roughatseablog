@@ -6,7 +6,7 @@ author: Rabindranath Tagore
 thinker: tagore
 discipline: Political thought, social philosophy, and literature
 year: 1917
-updated: '2026-10-15'
+updated: '2026-11-20'
 ---
 
 *Edition and references: this lesson reads the English text in Project Gutenberg eBook 40766, reproducing the London Macmillan 1918 printing. Its imprint records the first edition as 1917. “West,” “Japan,” and “India” below abbreviate the three lecture titles; Japan has parts I and II. Printed page numbers refer only to this 1918 printing. The prose credits no separate translator. The closing poem identifies a Bengali original; the printing does not name a separate translator for its English version. Examples, stepwise reconstructions, objections, and comparisons are editorial unless attributed.*
@@ -234,6 +234,8 @@ If you continue, read the intervening pages. The book's praise, warning, qualifi
 Return to [Du Bois's account of the Veil](/seminal-ideas/the-souls-of-black-folk/#the-veil) and ask how institutions limit what their beneficiaries know. Then read [Wollstonecraft on independence and citizenship](/seminal-ideas/a-vindication-of-the-rights-of-woman/#independence-and-citizenship) to test whether the means to refuse dependence are as real as the invitation to do so.
 
 Read [Martí’s Nuestra América on learning without copying](/seminal-ideas/nuestra-america/#learning-from-the-world-without-copying-it). His earlier essay joins cultural judgment to an urgent appeal for republican solidarity. Compare that appeal with Tagore’s warning about organized national power; similarity in their criticism of imitation does not make their political programs identical. This is an editorial comparison, not a claim of influence.
+
+Compare [Ambedkar’s early inquiry into hereditary enclosure](/seminal-ideas/castes-in-india/#mechanism-and-historical-origin). His account of marriage rules, imitation, and exclusion sharpens the question of how social subjection persists, while his origin theory also requires historical scrutiny. This is an editorial comparison, not a claim of influence.
 
 For the next decision made in an institution's name, write down the affected people before writing down the institution's interests. The organization may still have a defensible case. It should have to make it.
 

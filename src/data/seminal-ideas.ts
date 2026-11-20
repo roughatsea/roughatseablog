@@ -100,6 +100,9 @@ export const thinkers = [{
 }, {
   slug: 'harvey', name: 'William Harvey', years: '1578–1657',
   introduction: 'An English physician and anatomist whose circulation argument connects heart action, quantities, interrupted flow, and venous valves. This guide distinguishes the strength of the combined evidence from exact measurement, unseen connections, historical treatment claims, and the costs of experimentation.'
+}, {
+  slug: 'ambedkar', name: 'B. R. Ambedkar', years: '1891–1956',
+  introduction: 'An Indian social theorist, jurist, and opponent of caste oppression who examines how hereditary boundaries are maintained. This guide reads his early paper on marriage rules, gendered enforcement, imitation, and exclusion while testing its historical conjectures.'
 }];
 
 export const works = [{
@@ -516,5 +519,17 @@ export const works = [{
     { name: 'Intervention and the direction of flow', anchor: 'intervention-and-the-direction-of-flow', question: 'What does changing an obstruction reveal, and what might it disturb?' },
     { name: 'Valves and competing explanations', anchor: 'valves-and-competing-explanations', question: 'Which proposed function explains orientation and behavior together?' },
     { name: 'Converging evidence and unseen connections', anchor: 'converging-evidence-and-unseen-connections', question: 'What can a strong overall explanation leave unresolved?' }
+  ]
+}, {
+  slug: 'castes-in-india', thinker: 'ambedkar', title: 'Castes in India: Their Mechanism, Genesis and Development', year: 1917,
+  question: 'How does a social group make its boundaries hereditary?',
+  description: 'Read Ambedkar on marriage rules, unequal enforcement, moral idealization, imitation, exclusion, and the evidence needed for an origin story.',
+  disciplines: ['Sociology', 'Social theory', 'Indian political thought'],
+  concepts: [
+    { name: 'Endogamy and exogamy', anchor: 'endogamy-and-exogamy', question: 'Which different boundaries can marriage rules enforce at once?' },
+    { name: 'Gendered enforcement of a boundary', anchor: 'gendered-enforcement-of-a-boundary', question: 'Who bears the cost of preserving a group’s continuity?' },
+    { name: 'Means presented as ideals', anchor: 'means-presented-as-ideals', question: 'What social effect can a celebrated practice help maintain?' },
+    { name: 'Imitation and exclusion', anchor: 'imitation-and-exclusion', question: 'Does separation express a preference or a constraint imposed by others?' },
+    { name: 'Mechanism and historical origin', anchor: 'mechanism-and-historical-origin', question: 'Does explaining how a practice persists establish how it began?' }
   ]
 }];
