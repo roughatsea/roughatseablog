@@ -103,6 +103,9 @@ export const thinkers = [{
 }, {
   slug: 'ambedkar', name: 'B. R. Ambedkar', years: '1891–1956',
   introduction: 'An Indian social theorist, jurist, and opponent of caste oppression who examines how hereditary boundaries are maintained. This guide reads his early paper on marriage rules, gendered enforcement, imitation, and exclusion while testing its historical conjectures.'
+}, {
+  slug: 'peirce', name: 'Charles Sanders Peirce', years: '1839–1914',
+  introduction: 'An American philosopher, logician, and working scientist whose account of inquiry asks how belief can answer to facts rather than preference. This guide examines habit, doubt, four methods of settling opinion, and public correction.'
 }];
 
 export const works = [{
@@ -531,5 +534,17 @@ export const works = [{
     { name: 'Means presented as ideals', anchor: 'means-presented-as-ideals', question: 'What social effect can a celebrated practice help maintain?' },
     { name: 'Imitation and exclusion', anchor: 'imitation-and-exclusion', question: 'Does separation express a preference or a constraint imposed by others?' },
     { name: 'Mechanism and historical origin', anchor: 'mechanism-and-historical-origin', question: 'Does explaining how a practice persists establish how it began?' }
+  ]
+}, {
+  slug: 'the-fixation-of-belief', thinker: 'peirce', title: 'The Fixation of Belief', year: 1877,
+  question: 'What could correct a conviction that feels entirely settled?',
+  description: 'Read Peirce on habits of action, genuine doubt, guiding principles, tenacity, authority, the a priori method, and inquiry constrained by reality.',
+  disciplines: ['Epistemology', 'Logic', 'Philosophy of science'],
+  concepts: [
+    { name: 'Belief as a habit of action', anchor: 'belief-as-a-habit-of-action', question: 'How does believing shape conduct before an occasion to act?' },
+    { name: 'Genuine doubt and the settlement of opinion', anchor: 'genuine-doubt-and-the-settlement-of-opinion', question: 'Does ending uncertainty establish that we have found the truth?' },
+    { name: 'Guiding principles and reliable inference', anchor: 'guiding-principles-and-reliable-inference', question: 'Which rule supports the move from this observation to that conclusion?' },
+    { name: 'Four methods of fixing belief', anchor: 'four-methods-of-fixing-belief', question: 'What is being allowed to settle the disputed question?' },
+    { name: 'Public correction and independent reality', anchor: 'public-correction-and-independent-reality', question: 'What can correct a whole community’s preferred answer?' }
   ]
 }];

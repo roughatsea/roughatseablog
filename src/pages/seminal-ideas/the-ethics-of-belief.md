@@ -6,7 +6,7 @@ author: William Kingdon Clifford
 thinker: clifford
 discipline: Epistemology and ethics
 year: 1877
-updated: '2026-11-01'
+updated: '2026-11-21'
 ---
 
 *Edition and scope: This lesson reads all three sections of W. K. Clifford’s English essay “The Ethics of Belief,” first published in Contemporary Review in 1877 and collected in Lectures and Essays in 1879. The linked Internet Infidels Historical Library transcription identifies that publication history but does not identify a particular printing as its copy-text. No translation is involved. References therefore use the essay’s stable numbered sections and named examples or opening words, not invented original-edition page numbers. A Columbia-hosted teaching PDF identifies an 1886 collected edition as its source; it is a comparison copy, not the basis of our pagination. Clifford’s nineteenth-century essay is public domain in the United States; the modern hosts’ surrounding material is separate. Contemporary examples, reconstructions, and judgments below are editorial.*
@@ -225,6 +225,8 @@ Compare [Lovelace on execution and the limits of a claim](/seminal-ideas/notes-o
 Compare [Plato’s Socrates on human wisdom and expertise](/seminal-ideas/apology/#human-wisdom-and-the-limits-of-expertise). The *Apology* recognizes skilled craftspeople while challenging the extension of skill into unlimited authority. Its religious account of a philosophical mission also differs from Clifford’s grounds for inquiry. This is an editorial comparison, not a documented influence claim.
 
 For a literary test of conviction and evidence, read [Lu Xun on moral words and the image of eating people](/seminal-ideas/a-madmans-diary/#moral-words-and-the-image-of-eating-people). The story gives reasons to question a witness’s conclusions while preserving ethical questions that the wider society must answer. This is an editorial comparison, not a claim of historical influence.
+
+Compare [Peirce’s four methods of fixing belief](/seminal-ideas/the-fixation-of-belief/#four-methods-of-fixing-belief). His 1877 essay asks how confidence is settled and which procedures allow it to answer to facts. Read that question beside Clifford’s moral demand for responsible inquiry. This is an editorial comparison, not a claim that either essay influenced the other.
 
 ## Sources
 
