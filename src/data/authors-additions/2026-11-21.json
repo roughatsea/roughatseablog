@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-21",
+  "authorId": "saki",
+  "authorName": "Saki",
+  "selection": "Edwardian British comic fiction and satire follows Chinese literary fiction.",
+  "sources": [
+    {
+      "url": "https://sf-encyclopedia.com/entry/saki",
+      "use": "All seven book years; lifespan 1870–1916; When William Came published in 1913 though dated 1914."
+    },
+    {
+      "url": "https://rediscoveredsaki.net/biography-of-munro-saki/",
+      "use": "Brian Gibson’s scholarly biography: birth 1870 and death 1916; earlier Gazette sketches and later wartime writing; history outside fiction scope."
+    },
+    {
+      "url": "https://rediscoveredsaki.net/saki-bibliography/",
+      "use": "All seven book publications, including November 1913 When William Came; 1900 Alice newspaper beginnings; posthumous January 1919 and January 1924 collections."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1870–1916; only years used.",
+    "publishingSpan": "1902–1914",
+    "proxy": "Hector Hugh Munro’s lifetime fiction and satirical-sketch first-book-publication span, from The Westminster Alice to Beasts and Super-Beasts, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The seven markers use first English-language book years, not composition, newspaper serialization, translation or reissue dates. The Westminster Alice (1902) collects political sketches that began appearing in The Westminster Gazette in 1900. When William Came was published in November 1913 despite its 1914 book date. The history The Rise of the Russian Empire (1900), journalism and plays are outside this scope. The Toys of Peace (1919) and The Square Egg (1924) were collected posthumously and do not extend the bar; periodical writing continued after 1914.",
+    "workDates": [
+      [
+        1902,
+        "The Westminster Alice"
+      ],
+      [
+        1904,
+        "Reginald"
+      ],
+      [
+        1910,
+        "Reginald in Russia and Other Sketches"
+      ],
+      [
+        1911,
+        "The Chronicles of Clovis"
+      ],
+      [
+        1912,
+        "The Unbearable Bassington"
+      ],
+      [
+        1913,
+        "When William Came (first publication; dated 1914)"
+      ],
+      [
+        1914,
+        "Beasts and Super-Beasts"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain contains this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
