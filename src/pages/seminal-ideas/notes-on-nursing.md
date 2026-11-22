@@ -6,7 +6,7 @@ author: Florence Nightingale
 thinker: nightingale
 discipline: Nursing, medical history, and practical reasoning
 year: 1859
-updated: '2026-11-03'
+updated: '2026-11-22'
 ---
 
 *Edition and scope: First published in 1859, this English work also circulated in 1860 editions. This lesson uses Project Gutenberg eBook 12439, whose reproduced title page identifies D. Appleton and Company, New York, 1898. The later printing is not silently presented as the first edition. No translation is involved. The close reading concentrates on the Preface and opening argument; III, Petty Management; IV, Noise; V, Variety; XII, Chattering Hopes and Advices; XIII, Observation of the Sick; the disease argument in footnote 4 to II; and the opening of the Conclusion. References use chapter numbers, titles, and passage subjects rather than importing another edition’s page numbers. This is a historical and methodological lesson, not a contemporary clinical manual. Examples, definitions, and evaluations are editorial unless attributed.*
@@ -230,6 +230,8 @@ Use the [1898 Appleton text reproduced by Gutenberg](https://www.gutenberg.org/c
 For the next offer of help, name the task that leaves your hands and the coordination that might remain in the recipient’s. Ask whether both have actually been reduced.
 
 Compare [James on felt significance and the spectator’s mistake](/seminal-ideas/on-a-certain-blindness-in-human-beings/#felt-significance-and-the-spectators-mistake). His essay challenges an outsider’s dismissal of another person’s experience. Nightingale’s practical instructions ask how help can make room for that experience, while James’s examples of meaning in hardship require care not to excuse inadequate conditions. This is an editorial comparison, not a claim of documented influence.
+
+Compare [Follett on training before commands](/seminal-ideas/the-giving-of-orders/#training-before-commands). Her account of giving orders asks what habits, rules, and opportunities make an instruction usable. Set that question beside Nightingale’s insistence that good intentions cannot replace dependable arrangements. This is an editorial comparison, not a documented influence claim.
 
 ## Sources
 

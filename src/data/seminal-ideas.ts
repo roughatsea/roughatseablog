@@ -106,6 +106,9 @@ export const thinkers = [{
 }, {
   slug: 'peirce', name: 'Charles Sanders Peirce', years: '1839–1914',
   introduction: 'An American philosopher, logician, and working scientist whose account of inquiry asks how belief can answer to facts rather than preference. This guide examines habit, doubt, four methods of settling opinion, and public correction.'
+}, {
+  slug: 'follett', name: 'Mary Parker Follett', years: '1868–1933',
+  introduction: 'An American thinker on community, democracy, and management who asks how people can coordinate work through shared inquiry. This guide examines training, situational authority, integration, circular response, and the tensions between responsibility and obedience.'
 }];
 
 export const works = [{
@@ -546,5 +549,17 @@ export const works = [{
     { name: 'Guiding principles and reliable inference', anchor: 'guiding-principles-and-reliable-inference', question: 'Which rule supports the move from this observation to that conclusion?' },
     { name: 'Four methods of fixing belief', anchor: 'four-methods-of-fixing-belief', question: 'What is being allowed to settle the disputed question?' },
     { name: 'Public correction and independent reality', anchor: 'public-correction-and-independent-reality', question: 'What can correct a whole community’s preferred answer?' }
+  ]
+}, {
+  slug: 'the-giving-of-orders', thinker: 'follett', title: 'The Giving of Orders', year: 1926,
+  question: 'What should make an instruction authoritative besides the rank of its speaker?',
+  description: 'Read Follett on training, the law of the situation, joint inquiry, changing conditions, and the limits of reconciling obedience with responsibility.',
+  disciplines: ['Management', 'Organizational thought', 'Social philosophy'],
+  concepts: [
+    { name: 'Training before commands', anchor: 'training-before-commands', question: 'What makes a requested action possible beyond agreement?' },
+    { name: 'The law of the situation', anchor: 'the-law-of-the-situation', question: 'Whose knowledge can correct a proposed instruction?' },
+    { name: 'Integration and joint inquiry', anchor: 'integration-and-joint-inquiry', question: 'Can the organization of a problem change instead of suppressing a concern?' },
+    { name: 'Circular response and an evolving situation', anchor: 'circular-response-and-an-evolving-situation', question: 'How should the effects of a decision change what happens next?' },
+    { name: 'Responsibility without servility', anchor: 'responsibility-without-servility', question: 'Can an instruction require judgment while demanding obedience?' }
   ]
 }];
