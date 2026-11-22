@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-22",
+  "authorId": "bester-alfred",
+  "authorName": "Alfred Bester",
+  "selection": "American science fiction follows Edwardian British satire; Bester is absent from the existing collection.",
+  "sources": [
+    {
+      "url": "https://sciencefiction.loa.org/biographies/bester.php",
+      "use": "Lifespan 1913–1987; 1952 serial versus 1953 book; 1956 British versus 1957 American edition; later novel years and posthumous exclusions."
+    },
+    {
+      "url": "https://sciencefiction.loa.org/biographies/bester_other.php",
+      "use": "Book bibliography: 1953, 1975, 1980 and 1981; later posthumous books."
+    },
+    {
+      "url": "https://sf-encyclopedia.com/entry/bester_alfred",
+      "use": "Five original book dates; Galaxy serialization 1956–1957; The Indian Giver serialization November 1974–January 1975; Golem 100 expands the 1974 story The Four-Hour Fugue."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1913–1987",
+    "publishingSpan": "1953–1981",
+    "proxy": "Lifetime solo science-fiction novel first-book-publication span, from The Demolished Man to The Deceivers, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The five markers use first English-language book years, not composition, serialization, translation or later revised editions. The Demolished Man ran in Galaxy in 1952 before its 1953 book. Tiger! Tiger! appeared in Britain in 1956; the revised American edition, titled The Stars My Destination, followed in 1957, while the Galaxy serial ran in 1956–1957. The Computer Connection was serialized as The Indian Giver in 1974–1975 before its 1975 book. Stories, collections, comics, scripts, journalism and the non-SF Who He? (1953) are outside this scope. Tender Loving Rage (1991) and Psychoshop (1998, completed by Roger Zelazny) appeared posthumously and do not extend the bar.",
+    "workDates": [
+      [
+        1953,
+        "The Demolished Man (book edition)"
+      ],
+      [
+        1956,
+        "Tiger! Tiger! (later The Stars My Destination)"
+      ],
+      [
+        1975,
+        "The Computer Connection (book edition)"
+      ],
+      [
+        1980,
+        "Golem 100"
+      ],
+      [
+        1981,
+        "The Deceivers"
+      ]
+    ],
+    "chartRange": "Existing collection-derived domain contains the new entry; no UI change required.",
+    "influence": "No documented-influence claim."
+  }
+}
