@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-23",
+  "authorId": "macdonald-george",
+  "authorName": "George MacDonald",
+  "selection": "Victorian Scottish fantasy follows American science fiction; absent ID and name checked on fresh main.",
+  "sources": [
+    {
+      "url": "https://www.wheaton.edu/__data/assets/file/0021/30594/George-MacDonald-Timeline20210204.pdf",
+      "use": "1824–1905 lifespan; Phantastes 1858, Portent serial 1860/book 1864, first Lilith draft 1890/publication 1895; later writing outside selection."
+    },
+    {
+      "url": "https://victorianresearch.org/atcl/show_author.php?aid=195",
+      "use": "Original book editions and bibliographic imprint years."
+    },
+    {
+      "url": "https://victorianresearch.org/atcl/show_title.php?aid=195&tid=8811",
+      "use": "North Wind first serial begins November 1868; book catalogued 1871. Only opening serial year used; conflicting end-year accounts are not resolved here."
+    },
+    {
+      "url": "https://victorianresearch.org/atcl/show_title.php?aid=195&tid=8813",
+      "use": "Goblin serialization begins November 1870; book catalogued 1872. Marker uses serial opening, not the book imprint."
+    },
+    {
+      "url": "https://victorianresearch.org/atcl/show_title.php?aid=195&tid=8816",
+      "use": "Curdie serialization January–June 1877; book catalogued 1883."
+    },
+    {
+      "url": "https://www.jstor.org/stable/j.ctv1931hkq",
+      "use": "Colin Manlove, Lutterworth Press (2019), confirms Curdie first serialized in 1877; its 1882 book dating differs from 1883 bibliographic imprint, neither used for marker."
+    },
+    {
+      "url": "https://ead-pdfs.library.yale.edu/525.pdf",
+      "use": "Beinecke biography independently verifies 1824–1905 and Phantastes/Lilith book years."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1824–1905",
+    "publishingSpan": "1858–1895",
+    "proxy": "Selected fantasy-fiction first-publication window, from Phantastes to Lilith, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. Phantastes and Lilith use first English-language book years; the other four markers date the opening year of serialization, not completion or later book editions. The Portent began in The Cornhill Magazine in 1860; At the Back of the North Wind began in Good Words for the Young in 1868; The Princess and the Goblin began there in 1870; The Princess and Curdie was serialized in 1877. Bibliographies catalogue their book editions under 1864, 1871, 1872 and 1883 respectively; imprint years should not be confused with first serial appearances. Lilith’s first draft was completed in 1890, before its 1895 publication. Poetry, sermons, translations, realistic fiction, other tales, reissues and posthumous releases are outside this selection; later works do not extend this scoped bar.",
+    "workDates": [
+      [
+        1858,
+        "Phantastes (book edition)"
+      ],
+      [
+        1860,
+        "The Portent (serialization begins)"
+      ],
+      [
+        1868,
+        "At the Back of the North Wind (serialization begins)"
+      ],
+      [
+        1870,
+        "The Princess and the Goblin (serialization begins)"
+      ],
+      [
+        1877,
+        "The Princess and Curdie (serialization begins)"
+      ],
+      [
+        1895,
+        "Lilith (book edition)"
+      ]
+    ],
+    "chartRange": "Existing collection-derived domain includes the new author; no chart change needed.",
+    "influence": "No documented-influence claim."
+  }
+}
