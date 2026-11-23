@@ -109,6 +109,9 @@ export const thinkers = [{
 }, {
   slug: 'follett', name: 'Mary Parker Follett', years: '1868–1933',
   introduction: 'An American thinker on community, democracy, and management who asks how people can coordinate work through shared inquiry. This guide examines training, situational authority, integration, circular response, and the tensions between responsibility and obedience.'
+}, {
+  slug: 'epictetus', name: 'Epictetus', years: 'c. 50s–c. 135 CE',
+  introduction: 'A Greek Stoic teacher, formerly enslaved in Rome, who asks how judgment and choice can sustain a free life amid dependence. This guide examines agency, impressions, desire, relationships, and practice while questioning the handbook’s severe claims about loss and obedience.'
 }];
 
 export const works = [{
@@ -561,5 +564,17 @@ export const works = [{
     { name: 'Integration and joint inquiry', anchor: 'integration-and-joint-inquiry', question: 'Can the organization of a problem change instead of suppressing a concern?' },
     { name: 'Circular response and an evolving situation', anchor: 'circular-response-and-an-evolving-situation', question: 'How should the effects of a decision change what happens next?' },
     { name: 'Responsibility without servility', anchor: 'responsibility-without-servility', question: 'Can an instruction require judgment while demanding obedience?' }
+  ]
+}, {
+  slug: 'enchiridion', thinker: 'epictetus', title: 'Enchiridion (Handbook)', year: '2nd century CE; compilation date uncertain',
+  question: 'What remains your responsibility when the outcome is uncertain?',
+  description: 'Read Epictetus on judgment, desire, relationships, and the demanding practice of Stoic freedom, including its limits concerning grief and obedience.',
+  disciplines: ['Ancient Greek philosophy', 'Ethics', 'Moral psychology'],
+  concepts: [
+    { name: 'What is up to us', anchor: 'what-is-up-to-us', question: 'What belongs to your agency without guaranteeing its outcome?' },
+    { name: 'Impressions and assent', anchor: 'impressions-and-assent', question: 'Which claim are you accepting when an event provokes you?' },
+    { name: 'Desire and action with reservation', anchor: 'desire-and-action-with-reservation', question: 'Can you act seriously without demanding a guaranteed result?' },
+    { name: 'Roles and appropriate action', anchor: 'roles-and-appropriate-action', question: 'What does a relationship require, and is the requirement defensible?' },
+    { name: 'Practice rather than display', anchor: 'practice-rather-than-display', question: 'What changes when a principle becomes inconvenient to follow?' }
   ]
 }];

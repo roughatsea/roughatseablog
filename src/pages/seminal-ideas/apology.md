@@ -6,7 +6,7 @@ author: Plato
 thinker: plato
 discipline: Ancient Greek philosophy and ethics
 year: 'After 399 BCE; exact composition date uncertain'
-updated: '2026-11-08'
+updated: '2026-11-23'
 ---
 
 *Edition and scope: Apology means a defense, not an expression of regret. Plato’s Greek work portrays Socrates speaking at his Athenian trial in 399 BCE. That is the event’s date, not a securely known publication year; the work is generally placed near the beginning of Plato’s writing career, but its precise composition date remains uncertain. This lesson reads the complete Benjamin Jowett translation supplied by Lexundria, whose edition statement identifies The Dialogues of Plato, third edition (1892), volume 2. References such as 21b–23b are Stephanus page-and-letter divisions, the conventional locators used across many editions of Plato. They are neither this website’s screen positions nor the pages of an English printing. The nineteenth-century English is a translation with interpretive choices; Jowett’s “God,” for example, should not automatically be heard as a statement of modern monotheism. Plato is the author; Socrates is the speaker he portrays. We do not treat the speech as a verbatim transcript or import doctrines from other dialogues.*
@@ -175,6 +175,8 @@ The speech’s demand is most useful when turned toward one’s own priorities. 
 [Mill on living conviction and dead dogma](/seminal-ideas/on-liberty/#living-conviction-and-dead-dogma) asks whether someone understands a belief’s reasons. Socrates presses a related question face to face, sometimes at personal cost to the respondent. Mill also asks what society may compel; the *Apology* is not a substitute for that political argument.
 
 [The Great Learning on sincerity and self-deception](/seminal-ideas/the-great-learning/#sincerity-and-self-deception) places moral attention within relations of cultivation and government. The *Apology* stresses examination and refusal under civic pressure. Both make how one lives answerable to scrutiny, through distinct traditions and forms. Similarity does not establish borrowing or interchangeable meanings of virtue.
+
+[Epictetus’s Enchiridion on what is up to us](/seminal-ideas/enchiridion/#what-is-up-to-us) develops a demanding account of moral agency amid uncertain outcomes. The handbook explicitly invokes Socrates as a model in §§5, 33, 46, and 51. Compare its ranking of external losses with the Apology’s account of care of the soul, then examine whether preserving integrity establishes that health and relationships are not constituents of a good life. This textual connection does not make the Stoic handbook and Plato’s represented speaker interchangeable.
 
 ### Common distortions
 

@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-23",
+  "workId": "enchiridion",
+  "thinkerId": "epictetus",
+  "lessonPath": "src/pages/seminal-ideas/enchiridion.md",
+  "publicPath": "/seminal-ideas/enchiridion/",
+  "sourceUrls": [
+    "https://en.wikisource.org/wiki/Epictetus,_the_Discourses_as_reported_by_Arrian,_the_Manual,_and_Fragments/Manual",
+    "https://en.wikisource.org/wiki/Epictetus,_the_Discourses_as_reported_by_Arrian,_the_Manual,_and_Fragments",
+    "https://plato.stanford.edu/entries/epictetus/",
+    "https://iep.utm.edu/epictetu/"
+  ]
+}
