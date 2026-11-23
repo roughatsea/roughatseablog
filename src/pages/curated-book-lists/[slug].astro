@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { curatedLists } from '../../data/curated-book-lists';
+export function getStaticPaths() {
+  return curatedLists.map(list => ({ params: { slug: list.slug }, props: { list } }));
+}
+const { list } = Astro.props;
+---
+<BaseLayout title={list.title} description={list.description} article>
+  <article>
+    <a class="back" href="/curated-book-lists/">← All curated book lists</a>
+    <header class="hero">
+      <p class="eyebrow">Curated Book Lists · {list.books.length} books</p>
+      <h1>{list.title}</h1>
+      <p class="lead">{list.subtitle}</p>
+      <p>{list.description}</p>
+      <p class="audience"><strong>For:</strong> {list.audience}</p>
+    </header>
+    <section aria-labelledby="why"><h2 id="why">Why these books together?</h2>
+      <p>Good writing operates at several scales. Lukeman sharpens the editorial eye; Clark equips the toolbox; Klinkenborg slows us down to attend to each sentence; and Maass connects craft to the reader’s emotional experience. Taken together, they offer more than four variations of the same advice.</p>
+      <p>This collection originated as a four-book recommendation shared by a published author on Instagram. The recommendation is the starting point; the descriptions and suggested reading order here are Rough at Sea’s own interpretation, not a claim about the recommender’s rationale.</p>
+    </section>
+    <section aria-labelledby="books"><h2 id="books">The books</h2>
+      <ol class="books">{list.books.map((book, i) => <li class="book glass-panel">
+        <div class="number" aria-hidden="true">{String(i+1).padStart(2,'0')}</div>
+        <div><p class="eyebrow">{book.contribution}</p><h3><cite>{book.title}</cite></h3><p class="byline">by {book.author}</p>
+        <p class="question">{book.question}</p><p>{book.note}</p></div>
+      </li>)}</ol>
+    </section>
+    <section aria-labelledby="path"><h2 id="path">A practical reading path</h2>
+      <p>Start with <em>The First Five Pages</em> to notice common problems in a draft. Move to <em>Writing Tools</em> for ways to fix and strengthen passages. Read <em>Several Short Sentences About Writing</em> slowly, testing its ideas one sentence at a time. Finish with <em>The Emotional Craft of Fiction</em> to consider what those sentences, scenes and choices cause a reader to experience.</p>
+      <p>At every stage, revise the same short scene. Compare the drafts rather than merely collecting advice.</p>
+    </section>
+    <aside class="limits"><h2>What this list does not cover</h2><p>These books do not amount to a complete fiction education. Plot architecture, character design, worldbuilding, genre conventions and original artistic vision warrant their own reading paths. A rule that improves one manuscript may damage another; judge advice by its effect on the page.</p></aside>
+    <p class="return"><a href="/curated-book-lists/">← Explore other reading paths</a></p>
+  </article>
+</BaseLayout>
+<style>
+  article{max-width:49rem;margin:auto}.back,.return a{color:var(--link-color);font-size:.9rem}.hero{margin:2rem 0 3rem}
+  .eyebrow{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary)}
+  h1{font-family:var(--font-serif);font-size:clamp(2.5rem,7vw,4rem);line-height:1.12;margin:.55rem 0}
+  .lead{font-size:1.35rem;color:var(--text-primary)}p{line-height:1.75}
+  .hero>p:not(.lead),.book p,.limits p{color:var(--text-secondary)}
+  .audience{font-size:.9rem}.audience strong{color:var(--text-primary)}
+  section{margin:2.8rem 0}h2{font-family:var(--font-serif);font-size:1.65rem;margin-bottom:1rem}
+  .books{list-style:none;padding:0;display:grid;gap:1.1rem}.book{display:grid;grid-template-columns:2.5rem 1fr;gap:1rem;border:1px solid var(--border-color);border-radius:1rem;padding:1.3rem}
+  .number{font-family:var(--font-serif);font-size:1.6rem;color:var(--link-color)}.book h3{font-size:1.38rem;margin:.2rem 0}.book cite{font-style:italic}.byline{font-size:.9rem;margin:.1rem 0 1rem}.question{font-weight:600;color:var(--text-primary)!important}
+  .limits{border-left:3px solid var(--link-color);padding:1rem 1.5rem;background:var(--surface-color);border-radius:.5rem}.limits h2{font-size:1.2rem;margin:.2rem 0}.return{margin:3rem 0}
+  @media(max-width:560px){.book{grid-template-columns:1fr;gap:0}.number{font-size:1.15rem}}
+</style>
