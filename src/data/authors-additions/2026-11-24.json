@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-24",
+  "authorId": "akutagawa-ryunosuke",
+  "authorName": "Ryūnosuke Akutagawa",
+  "selection": "Early twentieth-century Japanese literary fiction and satire follows Victorian Scottish fantasy; ID and name absent on fresh main.",
+  "sources": [
+    {
+      "url": "https://www.ndl.go.jp/portrait/e/datas/224/",
+      "use": "National Diet Library: birth March 1, 1892; death July 24, 1927. Its brief biography lists Rashomon under 1917; work-level first-appearance records instead establish the 1915 periodical date used here."
+    },
+    {
+      "url": "https://www.aozora.gr.jp/cards/000879/card128.html",
+      "use": "Aozora Bunko first-appearance field: Rashomon, Teikoku Bungaku, November 1915."
+    },
+    {
+      "url": "https://ndlsearch.ndl.go.jp/books/R000000014-I000879card128000879",
+      "use": "NDL Search mirrors the November 1915 first appearance; the displayed 1976 date describes the source edition, not original publication."
+    },
+    {
+      "url": "https://www.aozora.gr.jp/cards/000879/card42.html",
+      "use": "The Nose, Shinshicho, February 1916."
+    },
+    {
+      "url": "https://www.aozora.gr.jp/cards/000879/card179.html",
+      "use": "In a Grove, Shincho, January 1922."
+    },
+    {
+      "url": "https://www.aozora.gr.jp/cards/000879/files/179_15255.html",
+      "use": "Text-end dateline December Taisho 10 (1921), distinguished from first-appearance metadata January Taisho 11 (1922)."
+    },
+    {
+      "url": "https://www.aozora.gr.jp/cards/000879/card69.html",
+      "use": "Kappa, Kaizo, March 1927; lifetime publication before July 24 death."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1892–1927",
+    "publishingSpan": "1915–1927",
+    "proxy": "Selected lifetime Japanese prose-fiction first-periodical-publication window, from Rashōmon to Kappa, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The four markers use original Japanese magazine publication years, not composition, later book collections, reissues, translations or adaptations; familiar English titles are supplied for readability. Rashōmon appeared in Teikoku Bungaku in November 1915, The Nose in Shinshichō in February 1916, In a Grove in Shinchō in January 1922, and Kappa in Kaizō in March 1927, before his July death. In a Grove’s text carries a December 1921 dateline, which is not its first-publication date. Earlier and unselected fiction, essays, poetry and posthumous releases are outside this selection; the bar is not a complete account of his literary activity.",
+    "workDates": [
+      [
+        1915,
+        "Rashōmon (magazine publication)"
+      ],
+      [
+        1916,
+        "The Nose (magazine publication)"
+      ],
+      [
+        1922,
+        "In a Grove (magazine publication)"
+      ],
+      [
+        1927,
+        "Kappa (magazine publication)"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain includes this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
