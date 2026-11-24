@@ -112,6 +112,9 @@ export const thinkers = [{
 }, {
   slug: 'epictetus', name: 'Epictetus', years: 'c. 50s–c. 135 CE',
   introduction: 'A Greek Stoic teacher, formerly enslaved in Rome, who asks how judgment and choice can sustain a free life amid dependence. This guide examines agency, impressions, desire, relationships, and practice while questioning the handbook’s severe claims about loss and obedience.'
+}, {
+  slug: 'jane-addams', name: 'Jane Addams', years: '1860–1935',
+  introduction: 'An American social philosopher and settlement organizer who asks how good intentions can answer to the people they affect. This guide examines industrial paternalism, solidarity, consent, and progress sustained through shared participation.'
 }];
 
 export const works = [{
@@ -576,5 +579,17 @@ export const works = [{
     { name: 'Desire and action with reservation', anchor: 'desire-and-action-with-reservation', question: 'Can you act seriously without demanding a guaranteed result?' },
     { name: 'Roles and appropriate action', anchor: 'roles-and-appropriate-action', question: 'What does a relationship require, and is the requirement defensible?' },
     { name: 'Practice rather than display', anchor: 'practice-rather-than-display', question: 'What changes when a principle becomes inconvenient to follow?' }
+  ]
+}, {
+  slug: 'a-modern-lear', thinker: 'jane-addams', title: 'A Modern Lear', year: 1912,
+  question: 'When does generosity become a reason to refuse correction?',
+  description: 'Read Addams on industrial paternalism, workers’ solidarity, consent, and progress made with other people, including the limits of sympathy under unequal power.',
+  disciplines: ['Social ethics', 'Political thought', 'Labor history'],
+  concepts: [
+    { name: 'Benevolence and social ethics', anchor: 'benevolence-and-social-ethics', question: 'When do generous provisions leave a relationship unjust?' },
+    { name: 'Gratitude and independent judgment', anchor: 'gratitude-and-independent-judgment', question: 'Does appreciation require surrendering a claim to disagree?' },
+    { name: 'Socialized work and concentrated control', anchor: 'socialized-work-and-concentrated-control', question: 'Who can change the decisions governing an interdependent life?' },
+    { name: 'Sympathy without surrender', anchor: 'sympathy-without-surrender', question: 'Can we understand an opponent without endorsing their authority?' },
+    { name: 'Consent and lateral progress', anchor: 'consent-and-lateral-progress', question: 'Which decisions can the people affected genuinely alter?' }
   ]
 }];

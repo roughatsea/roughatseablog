@@ -6,7 +6,7 @@ author: Mary Parker Follett
 thinker: follett
 discipline: Management, organizational thought, and social philosophy
 year: 1926
-updated: '2026-11-22'
+updated: '2026-11-24'
 ---
 
 *Edition and references: Follett presented this paper in January 1925; it was published in Scientific Foundations of Business Administration, edited by Henry C. Metcalf (1926). The catalogue records publication rather than delivery. This lesson reads the complete English text in the linked 17-page teaching PDF, whose header identifies Dynamic Administration (1942) as its source. No translation is involved. “PDF p.” means the file’s own numbered pages 1–17, not pages in the 1926 or 1942 books. Later editorial footnotes are distinguished from Follett’s argument. Examples, reconstructions, and judgments are editorial unless attributed.*
@@ -186,6 +186,8 @@ These are editorial comparisons, not claims of direct influence.
 - [Nightingale on the management of conditions](/seminal-ideas/notes-on-nursing/#care-as-the-management-of-conditions) asks whether the intended assistance can actually reach its recipient. Follett similarly refuses to make an individual instruction substitute for the arrangements that enable action. Their purposes and institutional settings differ.
 - [Wollstonecraft on educated dependence](/seminal-ideas/a-vindication-of-the-rights-of-woman/#educated-dependence) questions demanding judgment from people trained for obedience. Follett brings the relation between obedience and responsibility into the workplace, while preserving a stronger role for post-decision compliance than a simple liberation narrative would suggest.
 - [Peirce on public correction](/seminal-ideas/the-fixation-of-belief/#public-correction-and-independent-reality) asks what can correct preferred beliefs. Follett’s situational inquiry needs a similar openness to unwelcome evidence. Deciding organizational purposes, however, also involves values that a factual observation cannot settle alone.
+
+[Addams’s A Modern Lear on benevolence and social ethics](/seminal-ideas/a-modern-lear/#benevolence-and-social-ethics) questions whether benefits from an employer can replace workers’ participation in determining their needs. Read it beside Follett’s joint inquiry: which decisions may the affected people actually change, and what happens when their interests cannot be integrated? This is an editorial comparison, not a documented claim of influence.
 
 ### Common distortions
 
