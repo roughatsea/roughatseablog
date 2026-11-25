@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-25",
+  "authorId": "dahl-roald",
+  "authorName": "Roald Dahl",
+  "selection": "Children's comic fiction by a Welsh-born author follows Japanese literary fiction and satire; ID and name absent on fresh main.",
+  "sources": [
+    {
+      "url": "https://www.roalddahlmuseum.org/archive/roald-dahls-published-works/",
+      "use": "Museum publication timeline verifies all eight book years, 1943 children's debut, 1990 Esio Trot, and 1991 posthumous exclusions. The Minpins was later retitled Billy and the Minpins; the 2017 illustrations do not move its 1991 first-publication year."
+    },
+    {
+      "url": "https://www.calmview.co.uk/Dahl/CalmView/Record.aspx?id=RD&src=CalmView.Catalog",
+      "use": "Roald Dahl Museum archive: lifespan 1916–1990; distinguishes manuscripts, proofs and other archival material from publication."
+    },
+    {
+      "url": "https://www.chilterns.org.uk/map_marker/roald-dahl/",
+      "use": "Birth September 13, 1916; death November 23, 1990; James and the Giant Peach first published in US in 1961 and Britain in 1967."
+    },
+    {
+      "url": "https://www.nysoclib.org/roald-dahl",
+      "use": "New York Society Library independently confirms lifespan 1916–1990."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1916–1990",
+    "publishingSpan": "1943–1990",
+    "proxy": "Lifetime children's prose-fiction first-book-publication span, from The Gremlins to Esio Trot, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The eight selected markers use original English-language book years, not composition, earlier periodical appearances, later national editions, revised texts, translations or adaptations. James and the Giant Peach uses its 1961 US publication, not its 1967 British edition. The long gap after The Gremlins is part of this publishing span, not evidence of continuous children's-book production. Adult fiction, short-story collections, verse, memoirs and scripts are outside this scope. The Vicar of Nibbleswicke and The Minpins appeared in 1991, after Dahl's 1990 death, and do not extend the bar; later retitlings and new illustrations do not create new first-publication dates.",
+    "workDates": [
+      [
+        1943,
+        "The Gremlins"
+      ],
+      [
+        1961,
+        "James and the Giant Peach (first US book)"
+      ],
+      [
+        1964,
+        "Charlie and the Chocolate Factory"
+      ],
+      [
+        1970,
+        "Fantastic Mr Fox"
+      ],
+      [
+        1982,
+        "The BFG"
+      ],
+      [
+        1983,
+        "The Witches"
+      ],
+      [
+        1988,
+        "Matilda"
+      ],
+      [
+        1990,
+        "Esio Trot"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain includes this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
