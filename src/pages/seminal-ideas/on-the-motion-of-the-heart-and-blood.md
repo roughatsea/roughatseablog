@@ -6,7 +6,7 @@ author: William Harvey
 thinker: harvey
 discipline: Physiology and scientific reasoning
 year: 1628
-updated: '2026-11-19'
+updated: '2026-11-25'
 ---
 
 *Edition and scope: Harvey’s Latin Exercitatio anatomica de motu cordis et sanguinis in animalibus first appeared in Frankfurt in 1628. This guide closely reads chapters I–II and VIII–XIV, in full, in Robert Willis’s translation, “An Anatomical Disquisition on the Motion of the Heart and Blood in Animals,” in The Works of William Harvey, M.D. (London: Sydenham Society, 1847). The reading text is the Distributed Proofreaders Canada transcription hosted by Faded Page. Chapter references and printed pagination belong to that translation: I–II, pp. 19–24; VIII–XIV, pp. 45–68. The 1847 volume contains other works and Willis’s biography; those are not treated as parts of the 1628 argument. This is a historical lesson, not an instruction to reproduce experiments on people or animals.*
@@ -148,6 +148,8 @@ The Royal College of Physicians’ museum places the 1628 publication within a c
 Harvey’s own acknowledgment of Fabricius in chapter XIII already complicates a lone-discoverer story. A familiar structure can receive a new functional explanation, and an argument can depend on work whose original interpretation it rejects. The complete history of circulation also exceeds this focused lesson; no claim that Harvey invented every relevant observation or every account of pulmonary transit is necessary to understand his contribution.
 
 The breakthrough taught here is the organization of evidence for sustained return: the quantity problem, the routes, and the directional constraints become one account. The work deserves study because that account changes the questions available to an investigator. Its authority remains answerable to evidence, rather than inhering in Harvey’s reputation.
+
+[Bose on reversal tests and specimen history](/seminal-ideas/response-in-the-living-and-non-living/#reversal-tests-and-specimen-history) examines how controlled changes make a response informative, while the preparation and apparatus remain part of the explanation. Compare what an obstruction reveals in the two investigations and which alternative causes it leaves open. This is an editorial comparison, not a documented claim of influence.
 
 ### Common distortions
 

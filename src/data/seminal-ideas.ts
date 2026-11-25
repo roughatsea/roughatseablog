@@ -115,6 +115,9 @@ export const thinkers = [{
 }, {
   slug: 'jane-addams', name: 'Jane Addams', years: '1860–1935',
   introduction: 'An American social philosopher and settlement organizer who asks how good intentions can answer to the people they affect. This guide examines industrial paternalism, solidarity, consent, and progress sustained through shared participation.'
+}, {
+  slug: 'jagadish-chandra-bose', name: 'Jagadish Chandra Bose', years: '1858–1937',
+  introduction: 'An Indian physicist and investigator of plant response whose instruments brought different materials into experimental comparison. This guide examines controlled stimulation, electrical recording, specimen history, and the limits of his argument for continuity between living and inorganic matter.'
 }];
 
 export const works = [{
@@ -591,5 +594,17 @@ export const works = [{
     { name: 'Socialized work and concentrated control', anchor: 'socialized-work-and-concentrated-control', question: 'Who can change the decisions governing an interdependent life?' },
     { name: 'Sympathy without surrender', anchor: 'sympathy-without-surrender', question: 'Can we understand an opponent without endorsing their authority?' },
     { name: 'Consent and lateral progress', anchor: 'consent-and-lateral-progress', question: 'Which decisions can the people affected genuinely alter?' }
+  ]
+}, {
+  slug: 'response-in-the-living-and-non-living', thinker: 'jagadish-chandra-bose', title: 'Response in the Living and Non-Living', year: 1902,
+  question: 'What can similar response curves establish about different kinds of matter?',
+  description: 'Read Bose on instruments, controlled stimulation, reversal tests, specimen history, and the limits of inferring a common mechanism from comparable responses.',
+  disciplines: ['Experimental science', 'Electrophysiology', 'History of science'],
+  concepts: [
+    { name: 'Response as a measured change', anchor: 'response-as-a-measured-change', question: 'What does an instrument register before we explain it?' },
+    { name: 'Differential recording and a misleading zero', anchor: 'differential-recording-and-a-misleading-zero', question: 'Can equal changes disappear from a measurement of difference?' },
+    { name: 'Controlled stimulation and calibration', anchor: 'controlled-stimulation-and-calibration', question: 'Which conditions make two response curves comparable?' },
+    { name: 'Reversal tests and specimen history', anchor: 'reversal-tests-and-specimen-history', question: 'What would make a predicted reversal informative?' },
+    { name: 'Analogy, mechanism, and continuity', anchor: 'analogy-mechanism-and-continuity', question: 'Does a shared pattern establish a shared cause?' }
   ]
 }];
