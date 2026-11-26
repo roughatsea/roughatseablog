@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-26",
+  "authorId": "head-bessie",
+  "authorName": "Bessie Head",
+  "selection": "Southern African literary prose by a South African-born Botswana writer follows Welsh-born children's comic fiction; ID and name absent on fresh main.",
+  "sources": [
+    {
+      "url": "https://botswanawriters.org/writers/head.php",
+      "use": "Birth July 6, 1937; death April 17, 1986. Six original book years 1968, 1971, 1973, 1977, 1981, 1984. The Cardinals written before the 1964 move to Botswana and first published posthumously in 1993."
+    },
+    {
+      "url": "https://journals.sagepub.com/doi/10.1177/001132558701900302",
+      "use": "Cathy Giffuni's scholarly bibliography (1987) corroborates all six book years. Power's heading says 1974 but its edition record gives London Davis Poynter 1973, then New York Pantheon 1974. Records earlier magazine stories separately."
+    },
+    {
+      "url": "https://www.bu.edu/library/wp-assets/finding-aids/Head-Bessie%20479.pdf",
+      "use": "Howard Gotlieb Archival Research Center confirms 1937–1986; Maru 1971, Power 1973, Serowe 1981 and Crossroad 1984. Manuscript and setting-copy dates (including circa 1976 for Collector) are not first-book dates; uses a 1969 Rain Clouds edition."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1937–1986",
+    "publishingSpan": "1968–1984",
+    "proxy": "Lifetime prose-book first-publication span, from When Rain Clouds Gather to A Bewitched Crossroad, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. The six markers cover novels, the story collection The Collector of Treasures, and historical writing including Serowe; this is not a novel-only bar. Years use first English-language book publication, not composition, magazine appearances, later national editions, reissues or translations. A Question of Power uses the 1973 London Davis-Poynter edition, before the 1974 American edition. Some collected stories appeared earlier in periodicals; their marker dates the 1977 collection. The Cardinals was written before Head moved to Botswana in 1964 but published posthumously in 1993, so neither its composition nor its release extends this bar. Earlier journalism, uncollected pieces, letters and posthumous collections are outside this scope.",
+    "workDates": [
+      [
+        1968,
+        "When Rain Clouds Gather"
+      ],
+      [
+        1971,
+        "Maru"
+      ],
+      [
+        1973,
+        "A Question of Power"
+      ],
+      [
+        1977,
+        "The Collector of Treasures and Other Botswana Village Tales"
+      ],
+      [
+        1981,
+        "Serowe: Village of the Rain Wind"
+      ],
+      [
+        1984,
+        "A Bewitched Crossroad: An African Saga"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain includes this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
