@@ -118,6 +118,9 @@ export const thinkers = [{
 }, {
   slug: 'jagadish-chandra-bose', name: 'Jagadish Chandra Bose', years: '1858–1937',
   introduction: 'An Indian physicist and investigator of plant response whose instruments brought different materials into experimental comparison. This guide examines controlled stimulation, electrical recording, specimen history, and the limits of his argument for continuity between living and inorganic matter.'
+}, {
+  slug: 'dewey', name: 'John Dewey', years: '1859–1952',
+  introduction: 'An American philosopher and educator who examines how inquiry turns uncertainty into warranted judgment. This guide reads the 1910 account of reflection, problem definition, suggestions, testing, and learning while distinguishing it from his later revision.'
 }];
 
 export const works = [{
@@ -607,4 +610,17 @@ export const works = [{
     { name: 'Reversal tests and specimen history', anchor: 'reversal-tests-and-specimen-history', question: 'What would make a predicted reversal informative?' },
     { name: 'Analogy, mechanism, and continuity', anchor: 'analogy-mechanism-and-continuity', question: 'Does a shared pattern establish a shared cause?' }
   ]
+}, {
+  slug: 'how-we-think', thinker: 'dewey', title: 'How We Think', year: 1910,
+  question: 'When does a plausible explanation become a warranted judgment?',
+  description: 'Read Dewey on reflective thought, defining problems, rival suggestions, testing, and learning through inquiry, with attention to the limits of a fixed method.',
+  disciplines: ['Philosophy of education', 'Logic', 'Inquiry'],
+  concepts: [
+    { name: 'Reflective thought and grounds for belief', anchor: 'reflective-thought-and-grounds-for-belief', question: 'What makes an association a reason to believe?' },
+    { name: 'Defining the difficulty', anchor: 'defining-the-difficulty', question: 'Which assumptions have already entered the question?' },
+    { name: 'Suggestions, reasoning, and testable consequences', anchor: 'suggestions-reasoning-and-testable-consequences', question: 'What would follow if the proposed explanation were right?' },
+    { name: 'The double movement of inquiry', anchor: 'the-double-movement-of-inquiry', question: 'How do an interpretation and a new observation change each other?' },
+    { name: 'Learning through inquiry and proportionate judgment', anchor: 'learning-through-inquiry-and-proportionate-judgment', question: 'How much investigation does this particular decision require?' }
+  ]
 }];
+

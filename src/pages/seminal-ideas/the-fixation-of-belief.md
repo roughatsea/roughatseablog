@@ -6,7 +6,7 @@ author: Charles Sanders Peirce
 thinker: peirce
 discipline: Epistemology, logic, and philosophy of science
 year: 1877
-updated: '2026-11-21'
+updated: '2026-11-26'
 ---
 
 *Edition and references: this lesson reads the complete English transcription at Peirce.org of the essay published in Popular Science Monthly 12 (November 1877), pp. 1–15. No translator is involved. References use its Roman-numbered sections I–V and, within the long section V, distinctive paragraph openings. The transcription does not supply continuous original page markers or a copy-text apparatus; original pagination is therefore bibliographic information, not our passage locator. Examples, argument reconstructions, objections, and comparisons are editorial unless attributed.*
@@ -230,6 +230,8 @@ Return to [Clifford on testimony](/seminal-ideas/the-ethics-of-belief/#testimony
 
 Then choose one confident explanation you use in work or daily life. Write down its guiding principle, one observation that would count against it, and a feasible way to obtain that observation. If the observation would not change anything you believe or do, examine what is actually settling the question.
 
+Compare [Dewey on suggestions, reasoning, and testable consequences](/seminal-ideas/how-we-think/#suggestions-reasoning-and-testable-consequences). His 1910 account develops the work involved in investigating a difficulty: formulating it, entertaining alternatives, developing their implications, and checking them. This is a comparison of arguments, not a claim of direct influence between the two texts.
+
 ## Sources
 
 **Primary text and edition:** Charles S. Peirce, [“The Fixation of Belief”](https://peirce.org/writings/p107.html), *Popular Science Monthly* 12 (November 1877), pp. 1–15, first installment of *Illustrations of the Logic of Science*. All five Roman-numbered sections were read. The English original is public domain in the United States; no translation is used. The online transcription supplies section divisions but no continuous original-page apparatus. We therefore cite sections and paragraph openings rather than manufacture page-specific references. Typographical irregularities in the transcription are not treated as philosophical claims. The single quoted sentence is from IV.
@@ -239,3 +241,4 @@ Then choose one confident explanation you use in work or daily life. Write down 
 **Scholarly context:** [“Charles Sanders Peirce,” *Stanford Encyclopedia of Philosophy*](https://plato.stanford.edu/entries/peirce/), first published June 22, 2001, substantive revision February 11, 2021, especially §1 and §4. The entry supplies Peirce’s dates, 1839–1914, his scientific career, the essay’s relation to the following paper on conceptual clarity, and context for public inquiry and fallibilism. These contextual points do not replace close reading of the 1877 argument or establish that every later Peircean position already appears in it.
 
 **Editorial standing:** The reconstructions, contemporary examples, comparison tables, objections, exercises, and answers are editorial. The essay’s descriptions of habit, doubt, the four methods, independent reality, and eventual convergence are Peirce’s claims to assess. No modern psychological experiment, guaranteed convergence of actual investigators, or undocumented influence between catalogue entries is asserted.
+

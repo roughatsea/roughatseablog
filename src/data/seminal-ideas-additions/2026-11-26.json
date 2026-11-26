@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-26",
+  "workId": "how-we-think",
+  "thinkerId": "dewey",
+  "lessonPath": "src/pages/seminal-ideas/how-we-think.md",
+  "publicPath": "/seminal-ideas/how-we-think/",
+  "sourceUrls": [
+    "https://brocku.ca/MeadProject/Dewey/Dewey_1910a/Dewey_1910_a.html",
+    "https://brocku.ca/MeadProject/Dewey/Dewey_1910a/Dewey_1910_f.html",
+    "https://brocku.ca/MeadProject/Dewey/Dewey_1910a/Dewey_1910_g.html",
+    "https://plato.stanford.edu/entries/critical-thinking/history.html",
+    "https://plato.stanford.edu/entries/dewey/"
+  ]
+}
