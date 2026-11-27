@@ -121,6 +121,9 @@ export const thinkers = [{
 }, {
   slug: 'dewey', name: 'John Dewey', years: '1859–1952',
   introduction: 'An American philosopher and educator who examines how inquiry turns uncertainty into warranted judgment. This guide reads the 1910 account of reflection, problem definition, suggestions, testing, and learning while distinguishing it from his later revision.'
+}, {
+  slug: 'ida-b-wells', name: 'Ida B. Wells', years: '1862–1931',
+  introduction: 'An American journalist and organizer whose anti-lynching investigations challenge racialized accusations and institutional impunity. This guide examines evidence, unequal protection, press power, and strategies of collective resistance.'
 }];
 
 export const works = [{
@@ -622,5 +625,18 @@ export const works = [{
     { name: 'The double movement of inquiry', anchor: 'the-double-movement-of-inquiry', question: 'How do an interpretation and a new observation change each other?' },
     { name: 'Learning through inquiry and proportionate judgment', anchor: 'learning-through-inquiry-and-proportionate-judgment', question: 'How much investigation does this particular decision require?' }
   ]
+}, {
+  slug: 'southern-horrors', thinker: 'ida-b-wells', title: 'Southern Horrors: Lynch Law in All Its Phases', year: 1892,
+  question: 'How can public evidence challenge violence defended as protection?',
+  description: 'Read Wells on accusation, racial double standards, the press, impunity, and organized resistance, while distinguishing reported evidence from conjecture.',
+  disciplines: ['Investigative journalism', 'Political thought', 'Social criticism'],
+  concepts: [
+    { name: 'Accusation is not proof or permission', anchor: 'accusation-is-not-proof-or-permission', question: 'What separates a serious allegation from evidence and authority to punish?' },
+    { name: 'Testing a protective claim through unequal treatment', anchor: 'testing-a-protective-claim-through-unequal-treatment', question: 'Whose safety does the stated principle actually protect?' },
+    { name: 'Counterevidence and the changing excuse', anchor: 'counterevidence-and-the-changing-excuse', question: 'What persists when the stated justification changes?' },
+    { name: 'The press as evidence and participant', anchor: 'the-press-as-evidence-and-participant', question: 'What can a hostile source establish without being trusted in everything?' },
+    { name: 'Impunity and organized resistance', anchor: 'impunity-and-organized-resistance', question: 'What changes condemnation into effective protection and accountability?' }
+  ]
 }];
+
 

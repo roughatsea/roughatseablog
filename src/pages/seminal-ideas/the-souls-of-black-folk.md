@@ -6,7 +6,7 @@ author: W. E. B. Du Bois
 thinker: du-bois
 discipline: Sociology, political thought, and literature
 year: 1903
-updated: '2026-10-16'
+updated: '2026-11-27'
 ---
 
 *Reading references use the Forethought and the fourteen named chapters of the 1903 work. This lesson reads Project Gutenberg eBook 408, whose digital text supplies no stable print pagination; chapter names are therefore the durable references. The work was written in English, so no translator is involved. Editorial examples, present-day applications, and evaluations are labeled as such.*
@@ -250,6 +250,8 @@ Compare [Zitkala-Sa on achievement without belonging](/seminal-ideas/the-school-
 
 Compare [Cooper on the people missing from a progress story](/seminal-ideas/the-higher-education-of-women/#the-people-missing-from-a-progress-story). Her 1892 essay asks which women share the gains announced for women in general and what support Black women actually receive. This is a comparison of arguments, not a claim that chronology alone establishes influence.
 
+Compare [Wells on impunity and organized resistance](/seminal-ideas/southern-horrors/#impunity-and-organized-resistance). Her 1892 pamphlet examines how property, public speech, and economic achievement remain insecure when officials fail to protect Black citizens. The comparison concerns institutions needed to make freedom effective, not a claim that this pamphlet directly supplied Du Bois’s argument.
+
 ## Sources
 
 **Primary text and edition:** W. E. B. Du Bois, *The Souls of Black Folk*, first published by A. C. McClurg & Co. in Chicago on April 18, 1903. This lesson reads [Project Gutenberg eBook 408](https://www.gutenberg.org/ebooks/408), using its [HTML edition](https://www.gutenberg.org/files/408/408-h/408-h.htm) and [plain-text transcription](https://www.gutenberg.org/cache/epub/408/pg408.txt). The digital front matter does not identify a particular historical printing, so the lesson does not assign its wording the pagination or physical features of the first edition. It preserves the named chapter structure and identifies no translator. The text is public domain in the United States.
@@ -261,3 +263,4 @@ Compare [Cooper on the people missing from a progress story](/seminal-ideas/the-
 **Scholarly interpretation:** Robert Gooding-Williams, “W. E. B. Du Bois,” [*Stanford Encyclopedia of Philosophy*](https://plato.stanford.edu/entries/dubois/), especially §§2.1, 3, 4.1, 4.3, and 5. It supplies context for double consciousness, Du Bois's philosophy of social science, uplift and democracy, feminist criticisms, and art. The entry distinguishes interpretations and debates rather than conferring consensus on every reading.
 
 **Editorial standing:** Claims about the color line, Veil, education, Washington, and the Sorrow Songs are identified as Du Bois's. Stepwise reconstructions, present-day examples, comparisons, and proposed revisions are editorial. Historical claims are bounded to the sources and periods described. No comparison asserts influence without evidence; no historical importance is offered as proof; and no current empirical or policy claim is inferred from the 1903 evidence alone.
+
