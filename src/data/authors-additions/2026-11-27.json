@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-27",
+  "authorId": "vance-jack",
+  "authorName": "Jack Vance",
+  "selection": "American science fiction follows southern African literary prose; ID and name absent on fresh main.",
+  "sources": [
+    {
+      "url": "https://www.ebsco.com/research-starters/literature-and-writing/demon-princes-series-jack-vance/",
+      "use": "William Laskowski's reference article: five first-book years 1964, 1964, 1967, 1979, 1981, with separate Galaxy serial dates."
+    },
+    {
+      "url": "https://sf-encyclopedia.com/entry/vance_jack",
+      "use": "Lifespan August 28, 1916–May 26, 2013; original series, serials and later editions. Narrative gives Palace of Love 1967; its checklist instead prints 1964. EBSCO and Spatterlight's listing independently corroborate 1967, used here."
+    },
+    {
+      "url": "https://play.google.com/store/books/details/Jack_Vance_The_Palace_of_Love?id=WsSmS-8XDu0C",
+      "use": "Spatterlight Press listing displays January 1967 for Palace of Love, corroborating the first-book year rather than the inconsistent SFE checklist date."
+    }
+  ],
+  "verifiedScope": {
+    "lifespan": "1916–2013",
+    "publishingSpan": "1964–1981",
+    "proxy": "Original five Demon Princes novels' first-book-publication span, from The Star King to The Book of Dreams, used as a publishing proxy rather than a full-career span or a claim of uninterrupted writing. All five markers use first English-language book years, not composition, magazine serialization, later national editions, retitlings, translations or omnibus dates. The Star King ran in Galaxy in December 1963 and February 1964 before its 1964 book; the 1966 British Star King is a later edition. The Palace of Love ran in Galaxy from October 1966 to February 1967 and uses its 1967 book year. Other science-fiction and fantasy cycles, mysteries, short fiction and nonfiction are outside this series-only scope. Posthumous editions and continuations by other writers do not extend the bar.",
+    "workDates": [
+      [
+        1964,
+        "The Star King (book edition)"
+      ],
+      [
+        1964,
+        "The Killing Machine"
+      ],
+      [
+        1967,
+        "The Palace of Love (book edition)"
+      ],
+      [
+        1979,
+        "The Face"
+      ],
+      [
+        1981,
+        "The Book of Dreams"
+      ]
+    ],
+    "chartRange": "Existing collection-derived 1525–2025 domain includes this author; no chart change required.",
+    "influence": "No documented-influence claim."
+  }
+}
